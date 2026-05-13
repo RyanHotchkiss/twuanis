@@ -113,13 +113,13 @@ export default function FavoritesPage() {
           {favorites.map((property) => (
 
             <Link
-              key={listing.id}
-              href={`/listing/${listing.id}`}
-              style={{
-                textDecoration: 'none',
-                color: '#fff'
-              }}
-            >
+                key={property.id}
+                href={`/listing/${property.id}`}
+                style={{
+                    textDecoration: 'none',
+                    color: '#fff'
+                }}
+                >
 
               <div style={{
                 background: '#181818',
