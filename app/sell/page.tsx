@@ -2197,46 +2197,46 @@ const [showCsvStaging, setShowCsvStaging] = useState(false)
                     </label>
 
                     {/* IMAGE PREVIEW GRID */}
-                    {propertyData.images.length > 0 && (
+                            {propertyData.images.length > 0 && (
 
-                        <div style={imageGrid}>
+                            <div style={imageGrid}>
 
-                        {propertyData.images.map((image, index) => (
+                                {propertyData.images.map((image, imageIndex) => (
 
-                            <div
-                            key={index}
-                            style={imageCard}
-                            >
+                                <div
+                                    key={imageIndex}
+                                    style={imageCard}
+                                >
 
-                            <img
-                                src={image}
-                                alt={`Upload ${index}`}
-                                style={previewImage}
-                            />
+                                    <img
+                                    src={image.preview}
+                                    alt={`Upload ${imageIndex}`}
+                                    style={previewImage}
+                                    />
 
-                            <button
-                                onClick={() => {
+                                    <button
+                                    onClick={() => {
 
-                                setPropertyData({
-                                    ...propertyData,
-                                    images: propertyData.images.filter(
-                                    (_, i) => i !== index
-                                    )
-                                })
+                                        setPropertyData({
+                                        ...propertyData,
+                                        images: propertyData.images.filter(
+                                            (_, i) => i !== imageIndex
+                                        )
+                                        })
 
-                                }}
-                                style={removeImageButton}
-                            >
-                                ✕
-                            </button>
+                                    }}
+                                    style={removeImageButton}
+                                    >
+                                    ✕
+                                    </button>
+
+                                </div>
+
+                                ))}
 
                             </div>
 
-                        ))}
-
-                        </div>
-
-                    )}
+                            )}
 
                     </div>
 
