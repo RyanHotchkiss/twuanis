@@ -113,8 +113,8 @@ export default function FavoritesPage() {
           {favorites.map((property) => (
 
             <Link
-              key={property.id}
-              href={`/listing/${property.id}`}
+              key={listing.id}
+              href={`/listing/${listing.id}`}
               style={{
                 textDecoration: 'none',
                 color: '#fff'

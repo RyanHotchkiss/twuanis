@@ -42,7 +42,7 @@ async function completeSwipe(direction: 'left' | 'right') {
 
   // SAVE RIGHT SWIPES
   if (direction === 'right') {
-    await saveProperty(currentProperty.id)
+    await saveProperty(currentlisting.id)
   }
 
   // START LEAVING ANIMATION
