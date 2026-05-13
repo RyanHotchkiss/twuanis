@@ -169,7 +169,7 @@ export default function ListingPage() {
                         const alreadySaved =
                         existingFavorites.includes(listing.id)
 
-                        let updatedFavorites = []
+                        let updatedFavorites: string[] = []
 
                         if (alreadySaved) {
 
