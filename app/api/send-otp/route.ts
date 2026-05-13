@@ -15,8 +15,10 @@ export async function POST(req: Request) {
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
   // Save OTP in memory for now (temporary)
-  globalThis.OTP_STORE = globalThis.OTP_STORE || {};
-  globalThis.OTP_STORE[phone] = otp;
+  ;(globalThis as any).OTP_STORE =
+    (globalThis as any).OTP_STORE || {}
+
+  ;(globalThis as any).OTP_STORE[phone] = otp
 
   await client.messages.create({
     from: process.env.TWILIO_WHATSAPP_NUMBER!,
