@@ -1810,8 +1810,8 @@ export default function HomePage() {
                       {filteredProperties.map((property) => (
 
                         <Link
-                          href={`/listing/${listing.id}`}
-                          key={listing.id}
+                          href={`/listing/${property.id}`}
+                          key={property.id}
                           style={{
                             textDecoration: 'none',
                             color: 'inherit'
@@ -1870,76 +1870,76 @@ export default function HomePage() {
 
                             )}
                                     <button
-                                      onClick={(e) => {
+                                        onClick={(e) => {
 
-                                        e.preventDefault()
-                                        e.stopPropagation()
+                                          e.preventDefault()
+                                          e.stopPropagation()
 
-                                        const existingFavorites =
-                                          JSON.parse(
-                                            localStorage.getItem('favorites') || '[]'
-                                          )
-
-                                        const alreadySaved =
-                                          existingFavorites.includes(listing.id)
-
-                                        let updatedFavorites = []
-
-                                        if (alreadySaved) {
-
-                                          updatedFavorites =
-                                            existingFavorites.filter(
-                                              (id: string) => id !== listing.id
+                                          const existingFavorites =
+                                            JSON.parse(
+                                              localStorage.getItem('favorites') || '[]'
                                             )
 
-                                        } else {
+                                          const alreadySaved =
+                                            existingFavorites.includes(property.id)
 
-                                          updatedFavorites = [
-                                            ...existingFavorites,
-                                            listing.id
-                                          ]
+                                          let updatedFavorites = []
 
-                                        }
+                                          if (alreadySaved) {
 
-                                        localStorage.setItem(
-                                          'favorites',
-                                          JSON.stringify(updatedFavorites)
-                                        )
+                                            updatedFavorites =
+                                              existingFavorites.filter(
+                                                (id: string) => id !== property.id
+                                              )
 
-                                        window.location.reload()
+                                          } else {
 
-                                      }}
-                                      style={{
-                                        position: 'absolute',
-                                        top: '1rem',
-                                        right: '1rem',
-                                        width: '2.75rem',
-                                        height: '2.75rem',
-                                        borderRadius: '999px',
-                                        border: '1px solid rgba(255,255,255,.15)',
-                                        background: 'rgba(0,0,0,.55)',
-                                        backdropFilter: 'blur(8px)',
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        cursor: 'pointer',
-                                        zIndex: 20
-                                      }}
-                                    >
+                                            updatedFavorites = [
+                                              ...existingFavorites,
+                                              property.id
+                                            ]
 
-                                      <span style={{
-                                        fontSize: '1.25rem',
-                                        color: JSON.parse(
-                                          localStorage.getItem('favorites') || '[]'
-                                        ).includes(listing.id)
-                                          ? '#ff3b30'
-                                          : '#fff',
-                                        transition: 'all .2s ease'
-                                      }}>
-                                        ♥
-                                      </span>
+                                          }
 
-                                    </button>
+                                          localStorage.setItem(
+                                            'favorites',
+                                            JSON.stringify(updatedFavorites)
+                                          )
+
+                                          window.location.reload()
+
+                                        }}
+                                        style={{
+                                          position: 'absolute',
+                                          top: '1rem',
+                                          right: '1rem',
+                                          width: '2.75rem',
+                                          height: '2.75rem',
+                                          borderRadius: '999px',
+                                          border: '1px solid rgba(255,255,255,.15)',
+                                          background: 'rgba(0,0,0,.55)',
+                                          backdropFilter: 'blur(8px)',
+                                          display: 'flex',
+                                          justifyContent: 'center',
+                                          alignItems: 'center',
+                                          cursor: 'pointer',
+                                          zIndex: 20
+                                        }}
+                                      >
+
+                                        <span style={{
+                                          fontSize: '1.25rem',
+                                          color: JSON.parse(
+                                            localStorage.getItem('favorites') || '[]'
+                                          ).includes(property.id)
+                                            ? '#ff3b30'
+                                            : '#fff',
+                                          transition: 'all .2s ease'
+                                        }}>
+                                          ♥
+                                        </span>
+
+                                      </button>
                           </div>
 
                           {/* CONTENT */}
