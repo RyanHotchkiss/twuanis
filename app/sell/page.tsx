@@ -2209,7 +2209,7 @@ const [showCsvStaging, setShowCsvStaging] = useState(false)
                             >
 
                             <img
-                                src={image.preview}
+                                src={image}
                                 alt={`Upload ${index}`}
                                 style={previewImage}
                             />
