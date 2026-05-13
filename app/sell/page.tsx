@@ -1145,7 +1145,9 @@ const [showCsvStaging, setShowCsvStaging] = useState(false)
 
                                         }),
 
-                                        images: uploadedImageUrls
+                                        images: propertyData.images.map(
+                                            (img: any) => img.uploadedUrl
+                                            )
 
                                         }))
 
@@ -2353,7 +2355,9 @@ const [showCsvStaging, setShowCsvStaging] = useState(false)
                                     description:
                                         generateListingDescription(propertyData),
 
-                                    images: uploadedImageUrls
+                                    images: propertyData.images.map(
+                                        (img: any) => img.uploadedUrl
+                                        )
                                     }
 
                                 ])
