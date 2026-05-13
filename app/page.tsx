@@ -518,10 +518,10 @@ export default function HomePage() {
                 </button>
 
                 <a
-                  href="/saved"
+                  href="/favorites"
                   style={navLink}
                 >
-                  Saved
+                  Favorite Properties
                 </a>
 
                 <a
