@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, type CSSProperties } from 'react'
 import { supabase } from '@/lib/supabase'
 import Papa from 'papaparse'
 import Link from 'next/link'
@@ -3018,7 +3018,7 @@ const definitionValue = {
   lineHeight: '1.5'
 }
 
-const pillWrap = {
+const pillWrap: CSSProperties = {
   display: 'flex',
   flexWrap: 'wrap',
   gap: '10px'
