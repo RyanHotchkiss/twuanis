@@ -167,7 +167,7 @@ export default function ListingPage() {
                         )
 
                         const alreadySaved =
-                        existingFavorites.includes(property.id)
+                        existingFavorites.includes(listing.id)
 
                         let updatedFavorites = []
 
@@ -175,14 +175,14 @@ export default function ListingPage() {
 
                         updatedFavorites =
                             existingFavorites.filter(
-                            (id: string) => id !== property.id
+                            (id: string) => id !== listing.id
                             )
 
                         } else {
 
                         updatedFavorites = [
                             ...existingFavorites,
-                            property.id
+                            listing.id
                         ]
 
                         }
