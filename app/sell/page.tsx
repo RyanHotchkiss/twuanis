@@ -2825,18 +2825,16 @@ const [showCsvStaging, setShowCsvStaging] = useState(false)
                                 </label>
 
                                 {/* IMAGE PREVIEWS */}
-                                {listing.images.length > 0 && (
+                                    {listing.images.length > 0 && (
 
-                                <div style={{
+                                    <div style={{
+                                        display: 'grid',
+                                        gridTemplateColumns: 'repeat(3,1fr)',
+                                        gap: '.75rem',
+                                        marginTop: '1.5rem'
+                                    }}>
 
-                                    display: 'grid',
-                                    gridTemplateColumns: 'repeat(3,1fr)',
-                                    gap: '.75rem',
-                                    marginTop: '1.5rem'
-
-                                }}>
-
-                                    {listing.images.map((
+                                        {listing.images.map((
                                         image: {
                                             preview: string
                                             file: File
@@ -2845,34 +2843,32 @@ const [showCsvStaging, setShowCsvStaging] = useState(false)
                                         imageIndex: number
                                         ) => (
 
-                                    <img
-                                        key={imageIndex}
-                                        src={image}
-                                        alt=""
-                                        style={{
+                                        <img
+                                            key={imageIndex}
+                                            src={image.preview}
+                                            alt=""
+                                            style={{
+                                            width: '100%',
+                                            aspectRatio: '4 / 3',
+                                            objectFit: 'cover',
+                                            borderRadius: '.75rem',
+                                            border: '1px solid #222'
+                                            }}
+                                        />
 
-                                        width: '100%',
-                                        aspectRatio: '4 / 3',
-                                        objectFit: 'cover',
-                                        borderRadius: '.75rem',
-                                        border: '1px solid #222'
+                                        ))}
 
-                                        }}
-                                    />
-
-                                    ))}
-
-                                </div>
+                                    </div>
 
                                 )}
 
                             </div>
 
-                            </div>
-
-                        ))}
-
                         </div>
+
+                    ))}
+
+                </div>
 
 {/* PUBLISH BUTTON */}
                         <div style={{
