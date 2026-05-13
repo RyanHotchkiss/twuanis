@@ -2840,7 +2840,7 @@ const [showCsvStaging, setShowCsvStaging] = useState(false)
 
                                     <img
                                         key={imageIndex}
-                                        src={image.preview}
+                                        src={image}
                                         alt=""
                                         style={{
 
