@@ -2836,7 +2836,14 @@ const [showCsvStaging, setShowCsvStaging] = useState(false)
 
                                 }}>
 
-                                    {listing.images.map((image: string, imageIndex: number) => (
+                                    {listing.images.map((
+                                        image: {
+                                            preview: string
+                                            file: File
+                                            uploadedUrl: string
+                                        },
+                                        imageIndex: number
+                                        ) => (
 
                                     <img
                                         key={imageIndex}

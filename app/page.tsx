@@ -256,7 +256,7 @@ export default function HomePage() {
         Jiménez: [
           'Juan Viñas',
           'Tucurrique',
-          'Pejibaye'
+          'Pejivalle'
         ],
 
         Turrialba: [
