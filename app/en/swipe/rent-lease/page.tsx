@@ -31,7 +31,7 @@ export default function SwipePage() {
 
             ...listing,
 
-            id: createListingId(listing, index),
+            id: createListingId(listing),
 
             images:
               Array.isArray(listing.images)

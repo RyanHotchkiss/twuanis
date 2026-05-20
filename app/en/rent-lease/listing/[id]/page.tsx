@@ -26,7 +26,7 @@ export default function ListingPage() {
 
           ...listing,
 
-          id: createListingId(listing, index),
+          id: createListingId(listing),
 
           images:
             Array.isArray(listing.images)

@@ -51,7 +51,7 @@ export default function HomePage() {
 
             ...listing,
 
-            id: createListingId(listing, index),
+            id: createListingId(listing),
 
             images:
               Array.isArray(listing.images)
@@ -677,10 +677,6 @@ export default function HomePage() {
                   setSelectedprovince={setSelectedprovince}
                   setSelectedcanton={setSelectedcanton}
                   setSelecteddistrict={setSelecteddistrict}
-
-                  selectprovince={selectprovince}
-                  selectcanton={selectcanton}
-                  selectdistrict={selectdistrict}
 
                 />
 

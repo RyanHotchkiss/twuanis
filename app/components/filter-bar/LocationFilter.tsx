@@ -12,9 +12,6 @@ type LocationFilterProps = {
   setSelectedcanton: (value: string) => void
   setSelecteddistrict: (value: string) => void
 
-  selectprovince: (province: string) => void
-  selectcanton: (canton: string) => void
-  selectdistrict: (district: string) => void
 }
 
 export default function LocationFilter({
@@ -22,17 +19,13 @@ export default function LocationFilter({
   provinces,
   districts,
 
-  selectedprovince,
-  selectedcanton,
-  selecteddistrict,
+selectedprovince,
+selectedcanton,
+selecteddistrict,
 
-  setSelectedprovince,
-  setSelectedcanton,
-  setSelecteddistrict,
-
-  selectprovince,
-  selectcanton,
-  selectdistrict
+setSelectedprovince,
+setSelectedcanton,
+setSelecteddistrict,
 
 }: LocationFilterProps) {
 
@@ -58,7 +51,9 @@ export default function LocationFilter({
               key={province}
               onClick={(e) => {
                 e.preventDefault()
-                selectprovince(province)
+                setSelectedprovince(province)
+                setSelectedcanton('')
+                setSelecteddistrict('')
               }}
               style={
                 selectedprovince === province
@@ -109,7 +104,8 @@ export default function LocationFilter({
                 key={canton}
                 onClick={(e) => {
                   e.preventDefault()
-                  selectcanton(canton)
+                  setSelectedcanton(canton)
+                  setSelecteddistrict('')
                 }}
                 style={listButton}
               >
@@ -159,7 +155,7 @@ export default function LocationFilter({
                 key={district}
                 onClick={(e) => {
                   e.preventDefault()
-                  selectdistrict(district)
+                  setSelecteddistrict(district)
                 }}
                 style={
                   selecteddistrict === district

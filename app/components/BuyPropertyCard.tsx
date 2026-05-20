@@ -1,193 +1,144 @@
- {filteredProperties.map((property) => (
+'use client'
 
-                        <Link
-                          href={`/en/buy/listing/${property.id}`}
-                          key={property.id}
-                          style={{
-                            textDecoration: 'none',
-                            color: 'inherit'
-                          }}
-                        >
+import Link from 'next/link'
 
-                          <div
-                            style={{
-                              background: '#181818',
-                              border: '1px solid #222',
-                              borderRadius: '22px',
-                              overflow: 'hidden',
-                              cursor: 'pointer'
-                            }}
-                          >
+type BuyPropertyCardProps = {
+  property: any
+}
 
-                          {/* PROPERTY IMAGE */}
-                          <div
-                            style={{
-                              aspectRatio: '4 / 3',
-                              overflow: 'hidden',
-                              position: 'relative',
-                              background: '#111'
-                            }}
-                          >
+export default function BuyPropertyCard({
+  property
+}: BuyPropertyCardProps) {
 
-                            {Array.isArray(property.images) &&
-                                property.images[0] ? (
+  return (
 
-                              <img
-                                src={property.images[0]}
-                                alt={property.title}
-                                style={{
-                                  width: '100%',
-                                  height: '100%',
-                                  objectFit: 'cover',
-                                  display: 'block'
-                                }}
-                              />
+    <Link
+      href={`/en/buy/listing/${property.id}`}
+      style={{
+        textDecoration: 'none',
+        color: 'inherit'
+      }}
+    >
 
-                            ) : (
+      <div
+        style={{
+          background: '#181818',
+          border: '1px solid #222',
+          borderRadius: '22px',
+          overflow: 'hidden',
+          cursor: 'pointer'
+        }}
+      >
 
-                              <div
-                                style={{
-                                  height: '100%',
-                                  background:
-                                    'linear-gradient(135deg, #222 0%, #333 100%)',
-                                  display: 'flex',
-                                  justifyContent: 'center',
-                                  alignItems: 'center',
-                                  color: '#555',
-                                  fontSize: '20px'
-                                }}
-                              >
-                                No Image
-                              </div>
+        {/* PROPERTY IMAGE */}
+        <div
+          style={{
+            aspectRatio: '4 / 3',
+            overflow: 'hidden',
+            position: 'relative',
+            background: '#111'
+          }}
+        >
 
-                            )}
-                                    <button
-                                        onClick={(e) => {
+          {Array.isArray(property.images) &&
+            property.images[0] ? (
 
-                                          e.preventDefault()
-                                          e.stopPropagation()
+            <img
+              src={property.images[0]}
+              alt={property.title}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                display: 'block'
+              }}
+            />
 
-                                          const existingFavorites =
-                                            JSON.parse(
-                                              localStorage.getItem('favorites') || '[]'
-                                            )
+          ) : (
 
-                                          const alreadySaved =
-                                            existingFavorites.includes(property.id)
+            <div
+              style={{
+                height: '100%',
+                background:
+                  'linear-gradient(135deg, #222 0%, #333 100%)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                color: '#555',
+                fontSize: '20px'
+              }}
+            >
+              No Image
+            </div>
 
-                                          let updatedFavorites = []
+          )}
 
-                                          if (alreadySaved) {
+        </div>
 
-                                            updatedFavorites =
-                                              existingFavorites.filter(
-                                                (id: string) => id !== property.id
-                                              )
+        {/* CONTENT */}
+        <div
+          style={{
+            padding: '1.25rem'
+          }}
+        >
 
-                                          } else {
+          <h2
+            style={{
+              fontSize: '1.25rem',
+              marginBottom: '.75rem'
+            }}
+          >
+            {property.title}
+          </h2>
 
-                                            updatedFavorites = [
-                                              ...existingFavorites,
-                                              property.id
-                                            ]
+          <p
+            style={{
+              color: '#888',
+              marginBottom: '16px'
+            }}
+          >
+            {property.province} → {property.canton} → {property.district}
+          </p>
 
-                                          }
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '10px'
+            }}
+          >
 
-                                          localStorage.setItem(
-                                              'favorites',
-                                            JSON.stringify(updatedFavorites)
-                                          )
+            <span style={pill}>
+              {property.property_type}
+            </span>
 
-                                          window.location.reload()
+            <span style={pill}>
+              {property.environment}
+            </span>
 
-                                        }}
-                                        style={{
-                                          position: 'absolute',
-                                          top: '1rem',
-                                          right: '1rem',
-                                          width: '2.75rem',
-                                          height: '2.75rem',
-                                          borderRadius: '999px',
-                                          border: '1px solid rgba(255,255,255,.15)',
-                                          background: 'rgba(0,0,0,.55)',
-                                          backdropFilter: 'blur(8px)',
-                                          display: 'flex',
-                                          justifyContent: 'center',
-                                          alignItems: 'center',
-                                          cursor: 'pointer',
-                                          zIndex: 20
-                                        }}
-                                      >
+            <span style={pill}>
+              {Array.isArray(property.terrain)
+                ? property.terrain.join(', ')
+                : property.terrain}
+            </span>
 
-                                        <span style={{
-                                          fontSize: '1.25rem',
-                                          color: JSON.parse(
-                                            localStorage.getItem('favorites') || '[]'
-                                          ).includes(property.id)
-                                            ? '#ff3b30'
-                                            : '#fff',
-                                          transition: 'all .2s ease'
-                                        }}>
-                                          ♥
-                                        </span>
+          </div>
 
-                                      </button>
-                          </div>
+        </div>
 
-                          {/* CONTENT */}
-                          <div
-                            style={{
-                              padding: '1.25rem'
-                            }}
-                          >
+      </div>
 
-                            <h2
-                              style={{
-                                fontSize: '1.25rem',
-                                marginBottom: '.75rem'
-                              }}
-                            >
-                              {property.title}
-                            </h2>
+    </Link>
 
-                            <p
-                              style={{
-                                color: '#888',
-                                marginBottom: '16px'
-                              }}
-                            >
-                              {property.province} → {property.canton} → {property.district}
-                            </p>
+  )
 
-                            <div
-                              style={{
-                                display: 'flex',
-                                flexWrap: 'wrap',
-                                gap: '10px'
-                              }}
-                            >
+}
 
-                              <span style={pill}>
-                                {property.property_type}
-                              </span>
-
-                              <span style={pill}>
-                                {property.environment}
-                              </span>
-
-                              <span style={pill}>
-                                {Array.isArray(property.terrain)
-                                  ? property.terrain.join(', ')
-                                  : property.terrain}
-                              </span>
-
-                            </div>
-
-                          </div>
-
-                          </div>
-                        
-  
-                      </Link>
-
-                      ))}
+const pill = {
+  background: '#181818',
+  border: '1px solid #2a2a2a',
+  color: '#bbb',
+  padding: '10px 14px',
+  borderRadius: '999px',
+  cursor: 'pointer'
+}

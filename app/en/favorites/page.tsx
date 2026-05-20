@@ -60,7 +60,7 @@ export default function FavoritesPage() {
 
     ...listing,
 
-    id: createListingId(listing, index),
+    id: createListingId(listing),
 
     images:
       Array.isArray(listing.images)

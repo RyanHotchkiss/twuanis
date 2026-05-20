@@ -57,7 +57,7 @@ export default function HomePage() {
 
             ...listing,
 
-            id: createListingId(listing, index),
+            id: createListingId(listing),
 
             images:
               Array.isArray(listing.images)

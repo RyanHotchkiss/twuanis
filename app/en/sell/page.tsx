@@ -380,10 +380,6 @@ export default function SellPage() {
                     canton={propertyData.canton}
                     district={propertyData.district}
 
-                    showPropertyTypeOptions={
-                    showproperty_typeOptions
-                    }
-
                     setShowPropertyTypeOptions={
                     setShowproperty_typeOptions
                     }
@@ -432,11 +428,7 @@ export default function SellPage() {
 {/* PROPERTY TYPE */}
 
                     <PropertyTypeFilterS
-
-                    showPropertyAreaOptions={
-                    showproperty_areaOptions
-                    }
-
+                    
                     setShowPropertyAreaOptions={
                     setShowproperty_areaOptions
                     }
