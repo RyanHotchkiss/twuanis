@@ -310,39 +310,8 @@ const filteredProperties = properties.filter((property) => {
                           href="/en/swipe/buy"
                           label="Swipe View"
                         />
-              </div>
 
-
-{/* RIGHT */}
-             
-            <AddProperty />
-
-            </div>
-
-            {/* HEADER */}
-            <div style={{
-              textAlign: 'center',
-              marginBottom: '40px'
-            }}>
-
-          <h1 style={{
-            fontSize: '72px',
-            marginBottom: '10px',
-            fontWeight: 'bold'
-          }}>
-            Twuanis
-          </h1>
-
-          <p style={{
-            color: '#999',
-            fontSize: '22px'
-          }}>
-            Find Properties for Sale
-          </p>
-
-        </div>
-
-                  {isMobile && (
+                          {isMobile && (
 
                       <button
                         onClick={() =>
@@ -375,6 +344,39 @@ const filteredProperties = properties.filter((property) => {
                       </button>
 
                     )}
+              </div>
+
+
+{/* RIGHT */}
+             
+            <AddProperty />
+
+            </div>
+
+            {/* HEADER */}
+            <div style={{
+              textAlign: 'center',
+              marginBottom: '40px'
+            }}>
+
+          <h1 style={{
+            fontSize: '72px',
+            marginBottom: '10px',
+            fontWeight: 'bold'
+          }}>
+            Twuanis
+          </h1>
+
+          <p style={{
+            color: '#999',
+            fontSize: '22px'
+          }}>
+            Find Properties for Sale
+          </p>
+
+        </div>
+
+                 
 
         {/* MAIN GRID */}
           <div style={{
@@ -407,7 +409,7 @@ const filteredProperties = properties.filter((property) => {
 {/* SIDEBAR */}
             <div
               style={{
-                background: '#0d0d0d',
+                background: '#0d0d0d50',
                 borderRight: '1px solid #222',
                 padding: '25px',
 
