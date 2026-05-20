@@ -60,7 +60,7 @@ export default function LotSizeFilter({
 const miniHeading = {
   fontSize:'.85rem',
   marginBottom:'1rem',
-  color:'#888',
+  color:'#ff3b00',
   textTransform:'uppercase' as const,
   letterSpacing:'.05rem'
 }

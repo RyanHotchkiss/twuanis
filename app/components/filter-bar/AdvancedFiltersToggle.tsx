@@ -63,7 +63,7 @@ const topBar = {
 const filterHeading = {
   fontSize:'1rem',
   marginBottom:0,
-  color:'#ffffff50'
+  color:'#ff3b00'
 }
 
 const toggleButton = {

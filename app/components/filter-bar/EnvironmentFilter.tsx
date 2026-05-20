@@ -98,7 +98,7 @@ const filterHeading = {
 
   marginBottom:'1rem',
 
-  color:'#ffffff50'
+  color:'#ff3b00'
 
 }
 

@@ -62,7 +62,7 @@ export default function PropertyTypeFilter({
 const filterHeading = {
   fontSize:'1rem',
   marginBottom:'1rem',
-  color:'#ffffff50'
+  color:'#ff3b00'
 }
 
 const pillWrap = {

@@ -8,7 +8,7 @@ export default function AddProperty() {
       href="/en/sell"
       style={sellButton}
     >
-      + List a Property for Sale
+      + List a Property
     </a>
 
   )

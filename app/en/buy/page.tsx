@@ -319,20 +319,20 @@ const filteredProperties = properties.filter((property) => {
                         }
                         style={{
                           position: 'fixed',
-                          bottom: '20px',
+                          top: '20px',
                           right: '20px',
                           zIndex: 9999,
 
-                          background: '#00ff99',
-                          color: '#000',
+                          background: '#00ff9920',
+                          color: '#ff6900',
 
                           border: 'none',
                           borderRadius: '999px',
 
-                          padding: '16px 22px',
+                          padding: '12px 22px',
 
-                          fontWeight: 'bold',
-                          fontSize: '16px',
+                          
+                          fontSize: '15px',
 
                           boxShadow:
                             '0 10px 30px rgba(0,0,0,.45)',
@@ -409,7 +409,7 @@ const filteredProperties = properties.filter((property) => {
 {/* SIDEBAR */}
             <div
               style={{
-                background: '#0d0d0d10',
+                background: '#000000',
                 borderRight: '1px solid #222',
                 padding: '25px',
 
@@ -451,10 +451,11 @@ const filteredProperties = properties.filter((property) => {
                           setShowMobileFilters(false)
                         }
                         style={{
-                          background: '#181818',
+                          background: '#00ff9980',
                           border: '1px solid #333',
                           color: '#fff',
-
+                          
+                          fontSize: '18px',
                           padding: '12px',
 
                           borderRadius: '12px',
