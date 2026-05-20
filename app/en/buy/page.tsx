@@ -409,7 +409,7 @@ const filteredProperties = properties.filter((property) => {
 {/* SIDEBAR */}
             <div
               style={{
-                background: '#0d0d0d50',
+                background: '#0d0d0d10',
                 borderRight: '1px solid #222',
                 padding: '25px',
 
