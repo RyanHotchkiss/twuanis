@@ -1,8 +1,8 @@
 'use client'
 
 type AccessibilityFilterProps = {
-  selectedaccessibility: string
-  setSelectedaccessibility: (value: string) => void
+  selectedaccessibility: string[]
+  setSelectedaccessibility: (value: string[]) => void
 }
 
 export default function AccessibilityFilter({
@@ -30,25 +30,39 @@ export default function AccessibilityFilter({
 
         {accessibilityOptions.map((option) => (
 
-          <button
-            key={option}
-            onClick={() =>
-              setSelectedaccessibility(
-                selectedaccessibility === option
-                  ? ''
-                  : option
-              )
-            }
-            style={
-              selectedaccessibility === option
-                ? activePill
-                : pill
-            }
-          >
-            {option}
-          </button>
+              <button
+                key={option}
+                onClick={() => {
+                      if (
+                        selectedaccessibility.includes(option)
+                      ) {
 
-        ))}
+                        setSelectedaccessibility(
+                          selectedaccessibility.filter(
+                            (item) => item !== option
+                          )
+                        )
+
+                      } else {
+
+                        setSelectedaccessibility([
+                          ...selectedaccessibility,
+                          option
+                        ])
+
+                      }
+
+                    }}
+                    style={
+                      selectedaccessibility.includes(option)
+                        ? activePill
+                        : pill
+                    }
+              >
+                {option}
+              </button>
+
+            ))}
 
       </div>
 

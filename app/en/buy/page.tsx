@@ -49,14 +49,22 @@ const navButton = {
     property_type: '',
     use_type: '',
     property_area: '',
-    utility: '',
+    utility: [] as string[],
     legal_status: '',
     environment: '',
-    accessibility: '',
-    terrain: ''
+    accessibility: [] as string[],
+    terrain: [] as string[]
   })
 
   const [showadvanced_filters, setShowadvanced_filters] = useState(false)
+  const [showproperty_typeOptions, setShowproperty_typeOptions] = useState(false)
+  const [showproperty_areaOptions, setShowproperty_areaOptions] = useState(false)
+  const [showutilityOptions, setShowutilityOptions] = useState(false)
+  const [showenvironmentOptions, setShowenvironmentOptions] = useState(false)
+  const [showAccessibilityOptions, setShowAccessibilityOptions] = useState(false)
+  const [showTerrainOptions, setShowTerrainOptions] = useState(false)
+  const [showlegal_statusOptions, setShowlegal_statusOptions] = useState(false)
+
 
   const [showMobileFilters, setShowMobileFilters] = useState(false)
 
@@ -217,8 +225,12 @@ const filteredProperties = properties.filter((property) => {
                   }
 
                   if (
-                    filters.utility &&
-                    property.utility !== filters.utility
+                    filters.utility.length > 0 &&
+                    !filters.utility.some((item) =>
+                      Array.isArray(property.utility)
+                        ? property.utility.includes(item)
+                        : property.utility === item
+                    )
                   ) {
                     return false
                   }
@@ -238,15 +250,23 @@ const filteredProperties = properties.filter((property) => {
                   }
 
                   if (
-                    filters.accessibility &&
-                    property.accessibility !== filters.accessibility
+                    filters.accessibility.length > 0 &&
+                    !filters.accessibility.some((item) =>
+                      Array.isArray(property.accessibility)
+                        ? property.accessibility.includes(item)
+                        : property.accessibility === item
+                    )
                   ) {
                     return false
                   }
 
                   if (
-                    filters.terrain &&
-                    property.terrain !== filters.terrain
+                    filters.terrain.length > 0 &&
+                    !filters.terrain.some((item) =>
+                      Array.isArray(property.terrain)
+                        ? property.terrain.includes(item)
+                        : property.terrain === item
+                    )
                   ) {
                     return false
                   }
@@ -479,14 +499,16 @@ const filteredProperties = properties.filter((property) => {
                     selectedcanton={filters.canton}
                     selecteddistrict={filters.district}
 
-                    setSelectedprovince={(value) =>
+                    setSelectedprovince={(value) => {
                       setFilters(prev => ({
                         ...prev,
                         province: value,
                         canton: '',
                         district: ''
                       }))
-                    }
+
+                      setShowproperty_typeOptions(true)
+                    }}
 
                     setSelectedcanton={(value) =>
                       setFilters(prev => ({
@@ -496,12 +518,14 @@ const filteredProperties = properties.filter((property) => {
                       }))
                     }
 
-                    setSelecteddistrict={(value) =>
+                    setSelecteddistrict={(value) => {
                       setFilters(prev => ({
                         ...prev,
                         district: value
                       }))
-                    }
+
+                      setShowproperty_typeOptions(true)
+                    }}
 
                   />
 
@@ -515,15 +539,20 @@ const filteredProperties = properties.filter((property) => {
                       }
                     />
 
+{showproperty_typeOptions && (
+
 <PropertyTypeFilter
                     selectedproperty_type={filters.property_type}
-                    setSelectedproperty_type={(value) =>
-                      setFilters(prev => ({
-                        ...prev,
-                        property_type: value
-                      }))
-                    }
+                    setSelectedproperty_type={(value) => {
+                    setFilters(prev => ({
+                      ...prev,
+                      property_type: value
+                    }))
+
+                    setShowproperty_areaOptions(true)
+                  }}
                   />
+)}
 
 <UseTypeFilter
                       selecteduse_type={filters.use_type}
@@ -535,32 +564,44 @@ const filteredProperties = properties.filter((property) => {
                       }
                     />
 
+{showproperty_areaOptions && (
+
 <LotSizeFilter
                         selectedproperty_area={filters.property_area}
-                        setSelectedproperty_area={(value) =>
+                        setSelectedproperty_area={(value) => {
                           setFilters(prev => ({
                             ...prev,
                             property_area: value
                           }))
-                        }
+
+                          setShowutilityOptions(true)
+                        }}
                       />
+)}
+
+{showutilityOptions && (
 
 <UtilitiesFilter
                         selectedutility={filters.utility}
-                        setSelectedutility={(value) =>
-                          setFilters(prev => ({
-                            ...prev,
-                            utility: value
-                          }))
-                        }
+                        setSelectedutility={(value) => {
+                        setFilters(prev => ({
+                          ...prev,
+                          utility: value
+                        }))
+
+                        setShowenvironmentOptions(true)
+                      }}
                       />
+)}
 
 <AdvancedFiltersToggle
                         showadvanced_filters={showadvanced_filters}
                         setShowadvanced_filters={setShowadvanced_filters}
                       >
 
-  <LegalStatusFilter
+{showlegal_statusOptions && (
+
+<LegalStatusFilter
                         selectedlegal_status={filters.legal_status}
                         setSelectedlegal_status={(value) =>
                           setFilters(prev => ({
@@ -569,36 +610,54 @@ const filteredProperties = properties.filter((property) => {
                           }))
                         }
                       />
+)}
 
-  <EnvironmentFilter
+
+{showenvironmentOptions && (
+
+<EnvironmentFilter
                         selectedenvironment={filters.environment}
-                        setSelectedenvironment={(value) =>
+                        setSelectedenvironment={(value) => {
                           setFilters(prev => ({
                             ...prev,
                             environment: value
                           }))
-                        }
-                      />
 
-  <AccessibilityFilter
+                          setShowAccessibilityOptions(true)
+                        }}
+                      />
+)}
+
+
+{showAccessibilityOptions && (
+
+<AccessibilityFilter
                         selectedaccessibility={filters.accessibility}
-                        setSelectedaccessibility={(value) =>
+                        setSelectedaccessibility={(value) => {
                           setFilters(prev => ({
                             ...prev,
                             accessibility: value
                           }))
-                        }
-                      />
 
-  <TerrainFilter
+                          setShowTerrainOptions(true)
+                        }}
+                      />
+)}
+
+{showTerrainOptions && (
+
+<TerrainFilter
                         selectedterrain={filters.terrain}
-                        setSelectedterrain={(value) =>
+                        setSelectedterrain={(value) => {
                           setFilters(prev => ({
                             ...prev,
                             terrain: value
                           }))
-                        }
+
+                          setShowlegal_statusOptions(true)
+                        }}
                       />
+)}
 
 </AdvancedFiltersToggle>
 

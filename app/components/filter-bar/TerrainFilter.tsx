@@ -1,8 +1,8 @@
 'use client'
 
 type TerrainFilterProps = {
-  selectedterrain: string
-  setSelectedterrain: (value: string) => void
+  selectedterrain: string[]
+  setSelectedterrain: (value: string[]) => void
 }
 
 export default function TerrainFilter({
@@ -35,27 +35,42 @@ export default function TerrainFilter({
 
       <div style={pillWrap}>
 
-        {terrainOptions.map((option) => (
+            {terrainOptions.map((option) => (
 
-          <button
-            key={option}
-            onClick={() =>
-              setSelectedterrain(
-                selectedterrain === option
-                  ? ''
-                  : option
-              )
-            }
-            style={
-              selectedterrain === option
-                ? activePill
-                : pill
-            }
-          >
-            {option}
-          </button>
+              <button
+                key={option}
+                onClick={() => {
 
-        ))}
+                  if (
+                    selectedterrain.includes(option)
+                  ) {
+
+                    setSelectedterrain(
+                      selectedterrain.filter(
+                        (item) => item !== option
+                      )
+                    )
+
+                  } else {
+
+                    setSelectedterrain([
+                      ...selectedterrain,
+                      option
+                    ])
+
+                  }
+
+                }}
+                style={
+                  selectedterrain.includes(option)
+                    ? activePill
+                    : pill
+                }
+              >
+                {option}
+              </button>
+
+            ))}
 
       </div>
 

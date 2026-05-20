@@ -1926,217 +1926,221 @@ export default function HomePage() {
 
                       </div>
 {/* Terrain */}
-                              <div>
-                                <p style={miniHeading}>
-                                  Terrain
-                                </p>
-                                <div style={pillWrap}>
+                      <div>
 
-                                <button
-                                onClick={() =>
-                                  setSelectedterrain(
-                                    selectedterrain === 'Build Ready'
-                                      ? ''
-                                      : 'Build Ready'
-                                  )
-                                }
-                                style={
-                                  selectedterrain === 'Build Ready'
-                                    ? activePill
-                                    : pill
-                                }
-                              >
-                                Build Ready
-                              </button>
+                        <p style={miniHeading}>
+                          Terrain
+                        </p>
 
-                                <button
-                                onClick={() =>
-                                  setSelectedterrain(
-                                    selectedterrain === 'Cleared Land'
-                                      ? ''
-                                      : 'Cleared Land'
-                                  )
-                                }
-                                style={
-                                  selectedterrain === 'Cleared Land'
-                                    ? activePill
-                                    : pill
-                                }
-                              >
-                                Cleared Land
-                              </button>
+                        <div style={pillWrap}>
 
-                              <button
-                                onClick={() =>
-                                  setSelectedterrain(
-                                    selectedterrain === 'Flat'
-                                      ? ''
-                                      : 'Flat'
-                                  )
-                                }
-                                style={
-                                  selectedterrain === 'Flat'
-                                    ? activePill
-                                    : pill
-                                }
-                              >
-                                Flat
-                              </button>
+                          <button
+                            onClick={() =>
+                              setSelectedterrain(
+                                selectedterrain === 'Build Ready'
+                                  ? ''
+                                  : 'Build Ready'
+                              )
+                            }
+                            style={
+                              selectedterrain === 'Build Ready'
+                                ? activePill
+                                : pill
+                            }
+                          >
+                            Build Ready
+                          </button>
 
-                              <button
-                                onClick={() =>
-                                  setSelectedterrain(
-                                    selectedterrain === 'Mostly Flat'
-                                      ? ''
-                                      : 'Mostly Flat'
-                                  )
-                                }
-                                style={
-                                  selectedterrain === 'Mostly Flat'
-                                    ? activePill
-                                    : pill
-                                }
-                              >
-                                Mostly Flat
-                              </button>
+                          <button
+                            onClick={() =>
+                              setSelectedterrain(
+                                selectedterrain === 'Cleared Land'
+                                  ? ''
+                                  : 'Cleared Land'
+                              )
+                            }
+                            style={
+                              selectedterrain === 'Cleared Land'
+                                ? activePill
+                                : pill
+                            }
+                          >
+                            Cleared Land
+                          </button>
 
-                              <button
-                                onClick={() =>
-                                  setSelectedterrain(
-                                    selectedterrain === 'Rolling Hills'
-                                      ? ''
-                                      : 'Rolling Hills'
-                                  )
-                                }
-                                style={
-                                  selectedterrain === 'Rolling Hills'
-                                    ? activePill
-                                    : pill
-                                }
-                              >
-                                Rolling Hills
-                              </button>
+                          <button
+                            onClick={() =>
+                              setSelectedterrain(
+                                selectedterrain === 'Flat'
+                                  ? ''
+                                  : 'Flat'
+                              )
+                            }
+                            style={
+                              selectedterrain === 'Flat'
+                                ? activePill
+                                : pill
+                            }
+                          >
+                            Flat
+                          </button>
 
-                              <button
-                                onClick={() =>
-                                  setSelectedterrain(
-                                    selectedterrain === 'Steep Slope'
-                                      ? ''
-                                      : 'Steep Slope'
-                                  )
-                                }
-                                style={
-                                  selectedterrain === 'Steep Slope'
-                                    ? activePill
-                                    : pill
-                                }
-                              >
-                                Steep Slope
-                              </button>
+                          <button
+                            onClick={() =>
+                              setSelectedterrain(
+                                selectedterrain === 'Mostly Flat'
+                                  ? ''
+                                  : 'Mostly Flat'
+                              )
+                            }
+                            style={
+                              selectedterrain === 'Mostly Flat'
+                                ? activePill
+                                : pill
+                            }
+                          >
+                            Mostly Flat
+                          </button>
 
-                              <button
-                                onClick={() =>
-                                  setSelectedterrain(
-                                    selectedterrain === 'Mountainous'
-                                      ? ''
-                                      : 'Mountainous'
-                                  )
-                                }
-                                style={
-                                  selectedterrain === 'Mountainous'
-                                    ? activePill
-                                    : pill
-                                }
-                              >
-                                Mountainous
-                              </button>
+                          <button
+                            onClick={() =>
+                              setSelectedterrain(
+                                selectedterrain === 'Rolling Hills'
+                                  ? ''
+                                  : 'Rolling Hills'
+                              )
+                            }
+                            style={
+                              selectedterrain === 'Rolling Hills'
+                                ? activePill
+                                : pill
+                            }
+                          >
+                            Rolling Hills
+                          </button>
 
-                              <button
-                                onClick={() =>
-                                  setSelectedterrain(
-                                    selectedterrain === 'Rocky'
-                                      ? ''
-                                      : 'Rocky'
-                                  )
-                                }
-                                style={
-                                  selectedterrain === 'Rocky'
-                                    ? activePill
-                                    : pill
-                                }
-                              >
-                                Rocky
-                              </button>
+                          <button
+                            onClick={() =>
+                              setSelectedterrain(
+                                selectedterrain === 'Steep Slope'
+                                  ? ''
+                                  : 'Steep Slope'
+                              )
+                            }
+                            style={
+                              selectedterrain === 'Steep Slope'
+                                ? activePill
+                                : pill
+                            }
+                          >
+                            Steep Slope
+                          </button>
 
-                              <button
-                                onClick={() =>
-                                  setSelectedterrain(
-                                    selectedterrain === 'Forested'
-                                      ? ''
-                                      : 'Forested'
-                                  )
-                                }
-                                style={
-                                  selectedterrain === 'Forested'
-                                    ? activePill
-                                    : pill
-                                }
-                              >
-                                Forested
-                              </button>
+                          <button
+                            onClick={() =>
+                              setSelectedterrain(
+                                selectedterrain === 'Mountainous'
+                                  ? ''
+                                  : 'Mountainous'
+                              )
+                            }
+                            style={
+                              selectedterrain === 'Mountainous'
+                                ? activePill
+                                : pill
+                            }
+                          >
+                            Mountainous
+                          </button>
 
-                              <button
-                                onClick={() =>
-                                  setSelectedterrain(
-                                    selectedterrain === 'River Valley'
-                                      ? ''
-                                      : 'River Valley'
-                                  )
-                                }
-                                style={
-                                  selectedterrain === 'River Valley'
-                                    ? activePill
-                                    : pill
-                                }
-                              >
-                                River Valley
-                              </button>
+                          <button
+                            onClick={() =>
+                              setSelectedterrain(
+                                selectedterrain === 'Rocky'
+                                  ? ''
+                                  : 'Rocky'
+                              )
+                            }
+                            style={
+                              selectedterrain === 'Rocky'
+                                ? activePill
+                                : pill
+                            }
+                          >
+                            Rocky
+                          </button>
 
-                              <button
-                                onClick={() =>
-                                  setSelectedterrain(
-                                    selectedterrain === 'Jungle Terrain'
-                                      ? ''
-                                      : 'Jungle Terrain'
-                                  )
-                                }
-                                style={
-                                  selectedterrain === 'Jungle Terrain'
-                                    ? activePill
-                                    : pill
-                                }
-                              >
-                                Jungle Terrain
-                              </button>
+                          <button
+                            onClick={() =>
+                              setSelectedterrain(
+                                selectedterrain === 'Forested'
+                                  ? ''
+                                  : 'Forested'
+                              )
+                            }
+                            style={
+                              selectedterrain === 'Forested'
+                                ? activePill
+                                : pill
+                            }
+                          >
+                            Forested
+                          </button>
 
-                              <button
-                                onClick={() =>
-                                  setSelectedterrain(
-                                    selectedterrain === 'Agricultural Terrain'
-                                      ? ''
-                                      : 'Agricultural Terrain'
-                                  )
-                                }
-                                style={
-                                  selectedterrain === 'Agricultural Terrain'
-                                    ? activePill
-                                    : pill
-                                }
-                              >
-                                Agricultural Terrain
-                              </button>
-                                </div>
-                              </div>
+                          <button
+                            onClick={() =>
+                              setSelectedterrain(
+                                selectedterrain === 'River Valley'
+                                  ? ''
+                                  : 'River Valley'
+                              )
+                            }
+                            style={
+                              selectedterrain === 'River Valley'
+                                ? activePill
+                                : pill
+                            }
+                          >
+                            River Valley
+                          </button>
+
+                          <button
+                            onClick={() =>
+                              setSelectedterrain(
+                                selectedterrain === 'Jungle Terrain'
+                                  ? ''
+                                  : 'Jungle Terrain'
+                              )
+                            }
+                            style={
+                              selectedterrain === 'Jungle Terrain'
+                                ? activePill
+                                : pill
+                            }
+                          >
+                            Jungle Terrain
+                          </button>
+
+                          <button
+                            onClick={() =>
+                              setSelectedterrain(
+                                selectedterrain === 'Agricultural Terrain'
+                                  ? ''
+                                  : 'Agricultural Terrain'
+                              )
+                            }
+                            style={
+                              selectedterrain === 'Agricultural Terrain'
+                                ? activePill
+                                : pill
+                            }
+                          >
+                            Agricultural Terrain
+                          </button>
+
+                        </div>
+
+                      </div>
 
 
                     </div>

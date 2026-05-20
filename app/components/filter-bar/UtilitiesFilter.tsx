@@ -1,8 +1,8 @@
 'use client'
 
 type UtilitiesFilterProps = {
-  selectedutility: string
-  setSelectedutility: (value: string) => void
+      selectedutility: string[]
+    setSelectedutility: (value: string[]) => void
 }
 
 export default function UtilitiesFilter({
@@ -22,28 +22,43 @@ export default function UtilitiesFilter({
 
     <div>
 
-      <p style={miniHeading}>
-        UTILITIES
-      </p>
+            <p style={miniHeading}>
+              UTILITIES
+            </p>
 
-      <div style={pillWrap}>
+            <div style={pillWrap}>
 
         {utilities.map((utility) => (
 
           <button
             key={utility}
-            onClick={() =>
-              setSelectedutility(
-                selectedutility === utility
-                  ? ''
-                  : utility
-              )
-            }
-            style={
-              selectedutility === utility
-                ? activePill
-                : pill
-            }
+                onClick={() => {
+
+                  if (
+                    selectedutility.includes(utility)
+                  ) {
+
+                    setSelectedutility(
+                      selectedutility.filter(
+                        (item) => item !== utility
+                      )
+                    )
+
+                  } else {
+
+                    setSelectedutility([
+                      ...selectedutility,
+                      utility
+                    ])
+
+                  }
+
+                }}
+                style={
+                  selectedutility.includes(utility)
+                    ? activePill
+                    : pill
+                }
           >
             {utility}
           </button>

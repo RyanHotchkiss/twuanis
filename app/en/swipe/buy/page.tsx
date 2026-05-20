@@ -235,57 +235,208 @@ export default function SwipePage() {
 
   const rotation = dragX / 20
 
-  const topNav = (
-  <div style={{
-    position: 'absolute',
-    top: '1.5rem',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    display: 'flex',
-    gap: '1rem',
-    zIndex: 20,
-    flexWrap: 'wrap',
-    justifyContent: 'center'
-  }}>
+  const [showMobileFilters, setShowMobileFilters] =
+  useState(false)
+
+const [isMobile, setIsMobile] =
+  useState(false)
+
+useEffect(() => {
+
+  function handleResize() {
+
+    setIsMobile(
+      window.innerWidth <= 768
+    )
+
+  }
+
+  handleResize()
+
+  window.addEventListener(
+    'resize',
+    handleResize
+  )
+
+  return () => {
+
+    window.removeEventListener(
+      'resize',
+      handleResize
+    )
+
+  }
+
+}, [])
+
+const topNav = (
+  <div
+    style={{
+      position: 'fixed',
+
+      top: '1.25rem',
+      left: '50%',
+
+      transform: 'translateX(-50%)',
+
+      display: 'flex',
+      flexDirection: 'row',
+
+      alignItems: 'center',
+      justifyContent: 'center',
+
+      gap: '.75rem',
+
+      zIndex: 3000,
+
+      flexWrap: 'nowrap',
+
+      whiteSpace: 'nowrap',
+
+      width: 'max-content'
+    }}
+  >
 
     <a
-      href="/en/buy"
-      style={navButton}
-    >
-      Exit Swipe View
-    </a>
+          href="/en/favorites"
+          style={{
+            ...navButton,
+            color: '#00ff99',
+            minWidth: 'fit-content'
+          }}
+        >
+          Favorite Properties
+          {' '}
+          <span
+            style={{
+              color: '#ff3b30'
+            }}
+          >
+            ♥
+          </span>
+        </a>
 
-    <a
-      href="/buy_favorites"
-      style={{
-        ...navButton,
-        color: '#00ff99'
-      }}
-    >
-      Favorite Properties <span style={{ color: '#ff3b30' }}>♥</span>
-    </a>
+          <button
+            onClick={() =>
+              setShowMobileFilters(true)
+            }
+            style={{
+              ...navButton,
+              background: '#00ff9999',
+              color: '#000',
+              minWidth: 'fit-content'
+            }}
+          >
+            Filters
+            {' '}
+            <span
+              style={{
+                color: '#ff6900'
+              }}
+            >
+              ⩔
+            </span>
+          </button>
+
+          <button
+            onClick={() =>
+              window.history.back()
+            }
+            style={{
+              ...navButton,
+              minWidth: 'fit-content'
+            }}
+          >
+            Exit Swipe View
+            {' '}
+            <span
+              style={{
+                color: '#ff3b30'
+              }}
+            >
+              ⊘
+            </span>
+          </button>
+
+    
+
+
 
   </div>
 )
 
-const filterBar = (
-  <div style={{
-    position: 'absolute',
-    top: '6rem',
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    gap: '.75rem',
-    flexWrap: 'wrap',
-    zIndex: 20,
-    padding: '0 1rem'
-  }}>
+const filterSidebar = (
+  <div
+    style={{
+      position: 'fixed',
+
+      top: 0,
+
+      left:
+        showMobileFilters
+          ? '0'
+          : '-100%',
+
+      width: isMobile
+        ? '85vw'
+        : '320px',
+
+      height: '100vh',
+
+      background: '#000000ee',
+
+      backdropFilter: 'blur(14px)',
+
+      borderRight: '1px solid #222',
+
+      padding: '25px',
+
+      display: 'flex',
+      flexDirection: 'column',
+
+      gap: '1.25rem',
+
+      overflowY: 'auto',
+
+      zIndex: 4000,
+
+      transition: 'left .3s ease'
+    }}
+  >
+
+    <button
+      onClick={() =>
+        setShowMobileFilters(false)
+      }
+      style={{
+        background: '#00ff9980',
+        border: '1px solid #333',
+        color: '#fff',
+
+        fontSize: '18px',
+
+        padding: '12px',
+
+        borderRadius: '12px',
+
+        marginBottom: '10px',
+
+        cursor: 'pointer'
+      }}
+    >
+      Close Filters
+    </button>
 
     <select
       value={selectedProvince}
       onChange={(e) => {
-        setSelectedProvince(e.target.value)
+
+        setSelectedProvince(
+          e.target.value
+        )
+
         setCurrentIndex(0)
+
       }}
       style={filterSelect}
     >
@@ -294,11 +445,15 @@ const filterBar = (
       </option>
 
       {[...new Set(
-        properties.map((p) => p.province)
-      )].map((province) => (
+        properties.map(
+          (p) => p.province
+        )
+      )]
+      .filter(Boolean)
+      .map((province, index) => (
 
         <option
-          key={province}
+          key={`${province}-${index}`}
           value={province}
         >
           {province}
@@ -311,8 +466,13 @@ const filterBar = (
     <select
       value={selectedCanton}
       onChange={(e) => {
-        setSelectedCanton(e.target.value)
+
+        setSelectedCanton(
+          e.target.value
+        )
+
         setCurrentIndex(0)
+
       }}
       style={filterSelect}
     >
@@ -327,10 +487,12 @@ const filterBar = (
             p.province === selectedProvince
           )
           .map((p) => p.canton)
-      )].map((canton) => (
+      )]
+      .filter(Boolean)
+      .map((canton, index) => (
 
         <option
-          key={canton}
+          key={`${canton}-${index}`}
           value={canton}
         >
           {canton}
@@ -343,8 +505,13 @@ const filterBar = (
     <select
       value={selectedPropertyType}
       onChange={(e) => {
-        setSelectedPropertyType(e.target.value)
+
+        setSelectedPropertyType(
+          e.target.value
+        )
+
         setCurrentIndex(0)
+
       }}
       style={filterSelect}
     >
@@ -356,10 +523,12 @@ const filterBar = (
         properties.map(
           (p) => p.property_type
         )
-      )].map((type) => (
+      )]
+      .filter(Boolean)
+      .map((type, index) => (
 
         <option
-          key={type}
+          key={`${type}-${index}`}
           value={type}
         >
           {type}
@@ -372,8 +541,13 @@ const filterBar = (
     <select
       value={selectedEnvironment}
       onChange={(e) => {
-        setSelectedEnvironment(e.target.value)
+
+        setSelectedEnvironment(
+          e.target.value
+        )
+
         setCurrentIndex(0)
+
       }}
       style={filterSelect}
     >
@@ -385,10 +559,12 @@ const filterBar = (
         properties.map(
           (p) => p.environment
         )
-      )].map((environment) => (
+      )]
+      .filter(Boolean)
+      .map((environment, index) => (
 
         <option
-          key={environment}
+          key={`${environment}-${index}`}
           value={environment}
         >
           {environment}
@@ -401,8 +577,13 @@ const filterBar = (
     <select
       value={selectedPriceRange}
       onChange={(e) => {
-        setSelectedPriceRange(e.target.value)
+
+        setSelectedPriceRange(
+          e.target.value
+        )
+
         setCurrentIndex(0)
+
       }}
       style={filterSelect}
     >
@@ -440,12 +621,12 @@ if (!currentProperty) {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      padding: '2rem'
+      padding: '6rem 2rem 8rem'
     }}>
 
       {topNav}
 
-      {filterBar}
+      {filterSidebar}
 
       {/* EMPTY STATE */}
       <div style={{
@@ -514,12 +695,12 @@ return (
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: '2rem'
+    padding: '0rem 2rem 8rem'
   }}>
 
     {topNav}
 
-    {filterBar}
+    {filterSidebar}
 
     {/* NEXT CARD */}
       {nextProperty && (
@@ -648,7 +829,7 @@ return (
         }}>
 
           <h1 style={{
-            fontSize: '1.8rem',
+            fontSize: '1.2rem',
             marginBottom: '.75rem'
           }}>
             {currentProperty.title}
@@ -656,9 +837,9 @@ return (
 
           <p style={{
             color: '#999',
-            marginBottom: '1rem'
+            marginBottom: '2rem'
           }}>
-            {currentProperty.district},
+            {currentProperty.district}
             {' '}
             {currentProperty.canton}
           </p>
@@ -728,13 +909,13 @@ return (
 }
 
 const navButton = {
-  background: '#181818',
+  background: '#18181899',
   border: '1px solid #2a2a2a',
   color: '#fff',
-  padding: '.9rem 1.25rem',
+  padding: '.5rem .5rem',
   borderRadius: '999px',
   textDecoration: 'none',
-  fontWeight: 'bold'
+  
 }
 
 const filterSelect = {
