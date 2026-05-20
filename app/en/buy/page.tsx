@@ -58,6 +58,38 @@ const navButton = {
 
   const [showadvanced_filters, setShowadvanced_filters] = useState(false)
 
+  const [showMobileFilters, setShowMobileFilters] = useState(false)
+
+  const [isMobile, setIsMobile] =
+    useState(false)
+
+  useEffect(() => {
+
+    function handleResize() {
+
+      setIsMobile(
+        window.innerWidth <= 768
+      )
+
+    }
+
+    handleResize()
+
+    window.addEventListener(
+      'resize',
+      handleResize
+    )
+
+    return () => {
+
+      window.removeEventListener(
+        'resize',
+        handleResize
+      )
+
+    }
+
+  }, [])
 
     useEffect(() => {
 
@@ -310,11 +342,46 @@ const filteredProperties = properties.filter((property) => {
 
         </div>
 
+                  {isMobile && (
+
+                      <button
+                        onClick={() =>
+                          setShowMobileFilters(true)
+                        }
+                        style={{
+                          position: 'fixed',
+                          bottom: '20px',
+                          right: '20px',
+                          zIndex: 9999,
+
+                          background: '#00ff99',
+                          color: '#000',
+
+                          border: 'none',
+                          borderRadius: '999px',
+
+                          padding: '16px 22px',
+
+                          fontWeight: 'bold',
+                          fontSize: '16px',
+
+                          boxShadow:
+                            '0 10px 30px rgba(0,0,0,.45)',
+
+                          cursor: 'pointer'
+                        }}
+                      >
+                        Filters
+                      </button>
+
+                    )}
+
         {/* MAIN GRID */}
           <div style={{
-            display: 'flex',
-            gap: '1rem',
-            alignItems: 'flex-start'
+              display: 'flex',
+              gap: '1rem',
+              alignItems: 'flex-start',
+              position: 'relative'
           }}>
 
         {/* BUY EXPERIENCE */}
@@ -322,25 +389,83 @@ const filteredProperties = properties.filter((property) => {
             style={{
               background: '#111',
               borderRadius: '28px',
-              overflow: 'hidden',
+              overflow: isMobile
+                ? 'visible'
+                : 'hidden',
               textDecoration: 'none',
               color: '#fff',
               border: '1px solid #222',
               display: 'grid',
-              gridTemplateColumns: '320px 1fr',
+              gridTemplateColumns: isMobile
+                ? '1fr'
+                : '320px 1fr',
               minHeight: '620px',
               width: '100%'
             }}
           >
-            {/* SIDEBAR */}
-            <div style={{
-              background: '#0d0d0d',
-              borderRight: '1px solid #222',
-              padding: '25px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '28px'
-            }}>
+
+{/* SIDEBAR */}
+            <div
+              style={{
+                background: '#0d0d0d',
+                borderRight: '1px solid #222',
+                padding: '25px',
+
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '28px',
+
+                position: isMobile
+                  ? 'fixed'
+                  : 'relative',
+
+                top: 0,
+
+                left:
+                  isMobile && !showMobileFilters
+                    ? '-100%'
+                    : '0',
+
+                width: isMobile
+                  ? '85vw'
+                  : '320px',
+
+                height: isMobile
+                  ? '100vh'
+                  : 'auto',
+
+                zIndex: 1500,
+
+                transition: 'left .3s ease',
+
+                overflowY: 'auto'
+              }}
+            >
+
+                    {isMobile && (
+
+                      <button
+                        onClick={() =>
+                          setShowMobileFilters(false)
+                        }
+                        style={{
+                          background: '#181818',
+                          border: '1px solid #333',
+                          color: '#fff',
+
+                          padding: '12px',
+
+                          borderRadius: '12px',
+
+                          marginBottom: '20px',
+
+                          cursor: 'pointer'
+                        }}
+                      >
+                        Close Filters
+                      </button>
+
+                    )}
 
 <LocationFilter
 
@@ -473,18 +598,18 @@ const filteredProperties = properties.filter((property) => {
                       />
 
 </AdvancedFiltersToggle>
-                      
 
-                        </div>
                 </div>   
 
 {/* PROPERTY PREVIEW right-center column */}
                 <div
                   style={{
-                    padding: '30px',
+                    padding: isMobile ? '16px' : '30px',
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'space-between'
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    overflow: 'hidden'
                   }}
                 >
 
@@ -493,7 +618,10 @@ const filteredProperties = properties.filter((property) => {
                     <div
                       style={{
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(5, 1fr)',
+                        gridTemplateColumns:
+  isMobile
+    ? '1fr'
+    : 'repeat(5, 1fr)',
                         gap: '1.25rem',
                         alignContent: 'start'
                       }}
@@ -725,14 +853,11 @@ const filteredProperties = properties.filter((property) => {
                           </p>
 
                         </div>
-
                       )}
-
                     </div>
-
                   </div>
-
                 </div>
+              </div>
            </div>     
     </main>
   )

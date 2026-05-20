@@ -23,6 +23,12 @@ export default function HomePage() {
   const [selectedutility, setSelectedutility] = useState('')
 
   const [showadvanced_filters, setShowadvanced_filters] = useState(false)
+  const [showMobileFilters, setShowMobileFilters] = useState(false)
+
+  const isMobile =
+  typeof window !== 'undefined' &&
+  window.innerWidth <= 768
+
   const overlayBackButton = {
     background:'#00ff9940',
     border:'.0625rem solid #ffffff50',
@@ -847,11 +853,43 @@ export default function HomePage() {
 
         </div>
 
+        {isMobile && (
+
+          <button
+            onClick={() =>
+              setShowMobileFilters(true)
+            }
+            style={{
+              position: 'fixed',
+              bottom: '20px',
+              right: '20px',
+              zIndex: 1000,
+
+              background: '#00ff99',
+              color: '#000',
+
+              border: 'none',
+              borderRadius: '999px',
+
+              padding: '16px 22px',
+
+              fontWeight: 'bold',
+              fontSize: '16px',
+
+              boxShadow: '0 10px 30px rgba(0,0,0,.45)'
+            }}
+          >
+            Filters
+          </button>
+
+        )}
+
         {/* MAIN GRID */}
           <div style={{
             display: 'flex',
             gap: '1rem',
-            alignItems: 'flex-start'
+            alignItems: 'flex-start',
+            position: 'relative'
           }}>
 
           {/* BUY EXPERIENCE */}
@@ -870,14 +908,58 @@ export default function HomePage() {
           >
 
             {/* SIDEBAR */}
-            <div style={{
-              background: '#0d0d0d',
-              borderRight: '1px solid #222',
-              padding: '25px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '28px'
-            }}>
+            {isMobile && (
+
+                <button
+                  onClick={() =>
+                    setShowMobileFilters(false)
+                  }
+                  style={{
+                    background: '#181818',
+                    border: '1px solid #333',
+                    color: '#fff',
+                    padding: '12px',
+                    borderRadius: '12px',
+                    marginBottom: '20px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Close Filters
+                </button>
+
+              )}
+
+              <div
+                style={{
+                  background: '#0d0d0d',
+                  borderRight: '1px solid #222',
+                  padding: '25px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '28px',
+
+                  position: isMobile
+                    ? 'fixed'
+                    : 'relative',
+
+                  top: 0,
+                  left: showMobileFilters ? 0 : '-100%',
+
+                  width: isMobile
+                    ? '85vw'
+                    : '320px',
+
+                  height: isMobile
+                    ? '100vh'
+                    : 'auto',
+
+                  zIndex: 999,
+
+                  transition: 'left .3s ease',
+
+                  overflowY: 'auto'
+                }}
+              >
 
               {/* LOCATION */}
               <div>
@@ -2080,7 +2162,10 @@ export default function HomePage() {
                     <div
                       style={{
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(5, 1fr)',
+                        gridTemplateColumns:
+                        isMobile
+                          ? '1fr'
+                          : 'repeat(5, 1fr)', 
                         gap: '1.25rem',
                         alignContent: 'start'
                       }}

@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { createListingId } from '@/lib/createListingId'
 import { supabase } from '@/lib/supabase'
-import rawListings from '@/data/encuentra24-rent-lease-listings.json'
 import Breadcrumbs from '@/app/components/Breadcrumbs'
+import rawListings from '@/data/encuentra24-rent-lease-listings.json'
 import Favorites from '@/app/components/Favorites'
 import SwipeCard from '@/app/components/SwipeCard'
 import LocationFilter from '@/app/components/filter-bar/LocationFilter'
@@ -20,27 +20,44 @@ import AccessibilityFilter from '@/app/components/filter-bar/AccessibilityFilter
 import EnvironmentFilter from '@/app/components/filter-bar/EnvironmentFilter'
 import LegalStatusFilter from '@/app/components/filter-bar/LegalStatusFilter'
 import TerrainFilter from '@/app/components/filter-bar/TerrainFilter'
+import {
+      provinces,
+      districts
+    } from '@/data/property-data'
 export default function HomePage() {
+
+const navButton = {
+            background:'#00ff9950',
+            border:'.0625rem solid #ffffff50',
+            color:'#fff',
+            borderRadius:'999rem',
+            padding:'.85rem 1.25rem',
+            fontWeight:'bold',
+            cursor:'pointer',
+            transition:'all .2s ease',
+            backdropFilter:'blur(10px)'
+          }
 
   const [properties, setProperties] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
-  const [selectedprovince, setSelectedprovince] = useState('')
-  const [selectedcanton, setSelectedcanton] = useState('')
-  const [selecteddistrict, setSelecteddistrict] = useState('')
-
-  const [selectedmonthly_price, setSelectedmonthly_price] = useState('')
-  const [selectedproperty_type, setSelectedproperty_type] = useState('')
-  const [selecteduse_type, setSelecteduse_type] = useState('')
-  const [selectedproperty_area, setSelectedproperty_area] = useState('')
-  const [selectedutility, setSelectedutility] = useState('')
+  const [filters, setFilters] = useState({
+    province: '',
+    canton: '',
+    district: '',
+    monthly_price: '',
+    property_type: '',
+    use_type: '',
+    property_area: '',
+    utility: '',
+    legal_status: '',
+    environment: '',
+    accessibility: '',
+    terrain: ''
+  })
 
   const [showadvanced_filters, setShowadvanced_filters] = useState(false)
 
-  const [selectedlegal_status, setSelectedlegal_status] = useState('')
-  const [selectedenvironment, setSelectedenvironment] = useState('')
-  const [selectedaccessibility, setSelectedaccessibility] = useState('')
-  const [selectedterrain, setSelectedterrain] = useState('')
 
     useEffect(() => {
 
@@ -115,436 +132,96 @@ export default function HomePage() {
 
     }, [])
 
-      const provinces: Record<string, string[]> = {
+                          
+const filteredProperties = properties.filter((property) => {
 
-        'San José': [
-          'Central San José',
-          'Escazú',
-          'Desamparados',
-          'Puriscal',
-          'Tarrazú',
-          'Aserrí',
-          'Mora',
-          'Goicoechea',
-          'Santa Ana',
-          'Alajuelita',
-          'Vásquez de Coronado',
-          'Acosta',
-          'Tibás',
-          'Moravia',
-          'Montes de Oca',
-          'Turrubares',
-          'Dota',
-          'Curridabat',
-          'Pérez Zeledón',
-          'León Cortés'
-        ],
+                  if (
+                    filters.province &&
+                    property.province !== filters.province
+                  ) {
+                    return false
+                  }
 
-        Alajuela: [
-          'Central Alajuela',
-          'San Ramón',
-          'Grecia',
-          'San Mateo',
-          'Atenas',
-          'Naranjo',
-          'Palmares',
-          'Poás',
-          'Orotina',
-          'San Carlos',
-          'Zarcero',
-          'Valverde Vega',
-          'Upala',
-          'Los Chiles',
-          'Guatuso',
-          'Río Cuarto'
-        ],
+                  if (
+                    filters.canton &&
+                    property.canton !== filters.canton
+                  ) {
+                    return false
+                  }
 
-        Cartago: [
-          'Central Cartago',
-          'Paraíso',
-          'La Unión',
-          'Jiménez',
-          'Turrialba',
-          'Alvarado',
-          'Oreamuno',
-          'El Guarco'
-        ],
+                  if (
+                    filters.district &&
+                    property.district !== filters.district
+                  ) {
+                    return false
+                  }
 
-        Heredia: [
-          'Central Heredia',
-          'Barva',
-          'Santo Domingo',
-          'Santa Bárbara',
-          'San Rafael',
-          'San Isidro',
-          'Belén',
-          'Flores',
-          'San Pablo',
-          'Sarapiquí'
-        ],
+                  if (
+                    filters.monthly_price &&
+                    property.monthly_price !== filters.monthly_price
+                  ) {
+                    return false
+                  }
 
-        Guanacaste: [
-          'Liberia',
-          'Nicoya',
-          'Santa Cruz',
-          'Bagaces',
-          'Carrillo',
-          'Cañas',
-          'Abangares',
-          'Tilarán',
-          'Nandayure',
-          'La Cruz',
-          'Hojancha'
-        ],
+                  if (
+                    filters.property_type &&
+                    property.property_type !== filters.property_type
+                  ) {
+                    return false
+                  }
 
-        Puntarenas: [
-          'Central Puntarenas',
-          'Esparza',
-          'Buenos Aires',
-          'Montes de Oro',
-          'Osa',
-          'Quepos',
-          'Golfito',
-          'Coto Brus',
-          'Parrita',
-          'Corredores',
-          'Garabito'
-        ],
+                  if (
+                    filters.use_type &&
+                    property.use_type !== filters.use_type
+                  ) {
+                    return false
+                  }
 
-        Limón: [
-          'Central Limón',
-          'Pococí',
-          'Siquirres',
-          'Talamanca',
-          'Matina',
-          'Guácimo'
-        ]
+                  if (
+                    filters.property_area &&
+                    property.property_area !== filters.property_area
+                  ) {
+                    return false
+                  }
 
-      }
+                  if (
+                    filters.utility &&
+                    property.utility !== filters.utility
+                  ) {
+                    return false
+                  }
 
-        const districts: Record<string, string[]> = {
+                  if (
+                    filters.legal_status &&
+                    property.legal_status !== filters.legal_status
+                  ) {
+                    return false
+                  }
 
-        // SAN JOSÉ
-        'Central San José': [
-          'Carmen',
-          'Merced',
-          'Hospital',
-          'Catedral',
-          'Zapote',
-          'San Francisco de Dos Ríos'
-        ],
+                  if (
+                    filters.environment &&
+                    property.environment !== filters.environment
+                  ) {
+                    return false
+                  }
 
-        Escazú: [
-          'Escazú Centro',
-          'San Rafael',
-          'San Antonio'
-        ],
+                  if (
+                    filters.accessibility &&
+                    property.accessibility !== filters.accessibility
+                  ) {
+                    return false
+                  }
 
-        Desamparados: [
-          'Desamparados Centro',
-          'San Miguel',
-          'San Juan de Dios',
-          'San Rafael Arriba',
-          'San Antonio',
-          'Frailes'
-        ],
+                  if (
+                    filters.terrain &&
+                    property.terrain !== filters.terrain
+                  ) {
+                    return false
+                  }
 
-        'Santa Ana': [
-          'Santa Ana Centro',
-          'Pozos',
-          'Uruca',
-          'Piedades',
-          'Brasil'
-        ],
+                  return true
 
-        Curridabat: [
-          'Curridabat Centro',
-          'Granadilla',
-          'Sánchez',
-          'Tirrases'
-        ],
-
-        // ALAJUELA
-        'Central Alajuela': [
-          'Alajuela Centro',
-          'San José',
-          'Carrizal',
-          'San Antonio'
-        ],
-
-        'San Ramón': [
-          'San Ramón Centro',
-          'Santiago',
-          'San Juan',
-          'Piedades Norte'
-        ],
-
-        Grecia: [
-          'Grecia Centro',
-          'San Isidro',
-          'San José',
-          'Tacares'
-        ],
-
-        'San Carlos': [
-          'Quesada',
-          'Florencia',
-          'Aguas Zarcas',
-          'Venecia',
-          'Pital',
-          'La Fortuna'
-        ],
-
-        // CARTAGO
-        'Central Cartago': [
-          'Oriental',
-          'Occidental',
-          'Carmen',
-          'San Nicolás',
-          'Aguacaliente'
-        ],
-
-        Paraíso: [
-          'Paraíso Centro',
-          'Santiago',
-          'Orosi',
-          'Cachí'
-        ],
-
-        'La Unión': [
-          'Tres Ríos',
-          'San Diego',
-          'San Juan',
-          'Concepción'
-        ],
-
-        Jiménez: [
-          'Juan Viñas',
-          'Tucurrique',
-          'Pejivalle'
-        ],
-
-        Turrialba: [
-          'Turrialba Centro',
-          'La Suiza',
-          'Peralta',
-          'Santa Cruz',
-          'Santa Teresita',
-          'Pavones',
-          'Tayutic'
-        ],
-
-        // HEREDIA
-        'Central Heredia': [
-          'Heredia Centro',
-          'Mercedes',
-          'San Francisco',
-          'Ulloa'
-        ],
-
-        Barva: [
-          'Barva Centro',
-          'San Pedro',
-          'San Pablo'
-        ],
-
-        Sarapiquí: [
-          'Puerto Viejo',
-          'La Virgen',
-          'Horquetas'
-        ],
-
-        // GUANACASTE
-        Liberia: [
-          'Liberia Centro',
-          'Cañas Dulces',
-          'Mayorga'
-        ],
-
-        Nicoya: [
-          'Nicoya Centro',
-          'Sámara',
-          'Nosara'
-        ],
-
-        'Santa Cruz': [
-          'Santa Cruz Centro',
-          'Tamarindo',
-          'Brasilito',
-          'Potrero'
-        ],
-
-        Carrillo: [
-          'Filadelfia',
-          'Palmira',
-          'Sardinal'
-        ],
-
-        // PUNTARENAS
-        'Central Puntarenas': [
-          'Puntarenas Centro',
-          'Pitahaya',
-          'Chomes',
-          'Lepanto'
-        ],
-
-        Osa: [
-          'Puerto Cortés',
-          'Palmar',
-          'Sierpe',
-          'Bahía Ballena'
-        ],
-
-        Quepos: [
-          'Quepos Centro',
-          'Savegre',
-          'Naranjito'
-        ],
-
-        Garabito: [
-          'Jacó',
-          'Tárcoles'
-        ],
-
-        // LIMÓN
-        'Central Limón': [
-          'Limón Centro',
-          'Valle La Estrella',
-          'Río Blanco'
-        ],
-
-        Pococí: [
-          'Guápiles',
-          'Jiménez',
-          'La Rita',
-          'Cariari'
-        ],
-
-        Siquirres: [
-          'Siquirres Centro',
-          'Pacuarito',
-          'Florida'
-        ],
-
-        Talamanca: [
-          'Bratsi',
-          'Sixaola',
-          'Cahuita'
-        ]
-
-      }
-
- const filteredProperties = properties.filter((property) => {
-
-                    if (
-                      selectedprovince &&
-                      property.province !== selectedprovince
-                    ) {
-                      return false
-                    }
-
-                    if (
-                      selectedcanton &&
-                      property.canton !== selectedcanton
-                    ) {
-                      return false
-                    }
-
-                    if (
-                      selecteddistrict &&
-                      property.district !== selecteddistrict
-                    ) {
-                      return false
-                    }
-
-                    if (
-                      selectedmonthly_price &&
-                      property.monthly_price !== selectedmonthly_price
-                    ) {
-                      return false
-                    }
-
-                    if (
-                      selectedproperty_type &&
-                      property.property_type !== selectedproperty_type
-                    ) {
-                      return false
-                    }
-
-                    if (
-                      selecteduse_type &&
-                      property.use_type !== selecteduse_type
-                    ) {
-                      return false
-                    }
-
-                    if (
-                      selectedproperty_area &&
-                      property.property_area !== selectedproperty_area
-                    ) {
-                      return false
-                    }
-
-                    if (
-                      selectedutility &&
-                      property.utility !== selectedutility
-                    ) {
-                      return false
-                    }
-
-                    if (
-                      selectedenvironment &&
-                      property.environment !== selectedenvironment
-                    ) {
-                      return false
-                    }
-
-                    if (
-                      selectedaccessibility &&
-                      property.accessibility !== selectedaccessibility
-                    ) {
-                      return false
-                    }
-
-                    return true
-
-                  })
-
-  function selectprovince(province: string) {
-
-    if (selectedprovince === province) {
-      setSelectedprovince('')
-      setSelectedcanton('')
-      setSelecteddistrict('')
-      return
-    }
-
-    setSelectedprovince(province)
-    setSelectedcanton('')
-    setSelecteddistrict('')
-  }
-
-  function selectcanton(canton: string) {
-
-    if (selectedcanton === canton) {
-      setSelectedcanton('')
-      setSelecteddistrict('')
-      return
-    }
-
-    setSelectedcanton(canton)
-    setSelecteddistrict('')
-  }
-
-  function selectdistrict(district: string) {
-
-    if (selecteddistrict === district) {
-      setSelecteddistrict('')
-      return
-    }
-
-    setSelecteddistrict(district)
-  }
+                })
 
   return (
       <main style={{
@@ -560,7 +237,7 @@ export default function HomePage() {
 
           
 
-{/* TOP NAV */}
+        {/* TOP NAV */}
             <div style={{
               display: 'flex',
               justifyContent: 'space-between',
@@ -628,7 +305,7 @@ export default function HomePage() {
             color: '#999',
             fontSize: '22px'
           }}>
-           Find Properties for Rent & Lease
+            Find Properties for Rent & Lease
           </p>
 
         </div>
@@ -640,7 +317,7 @@ export default function HomePage() {
             alignItems: 'flex-start'
           }}>
 
-        {/* RENT & LEASE EXPERIENCE */}
+        {/* BUY EXPERIENCE */}
           <div
             style={{
               background: '#111',
@@ -665,76 +342,140 @@ export default function HomePage() {
               gap: '28px'
             }}>
 
-              <LocationFilter
+<LocationFilter
 
-                  provinces={provinces}
-                  districts={districts}
+                    provinces={provinces}
+                    districts={districts}
 
-                  selectedprovince={selectedprovince}
-                  selectedcanton={selectedcanton}
-                  selecteddistrict={selecteddistrict}
+                    selectedprovince={filters.province}
+                    selectedcanton={filters.canton}
+                    selecteddistrict={filters.district}
 
-                  setSelectedprovince={setSelectedprovince}
-                  setSelectedcanton={setSelectedcanton}
-                  setSelecteddistrict={setSelecteddistrict}
+                    setSelectedprovince={(value) =>
+                      setFilters(prev => ({
+                        ...prev,
+                        province: value,
+                        canton: '',
+                        district: ''
+                      }))
+                    }
 
-                />
+                    setSelectedcanton={(value) =>
+                      setFilters(prev => ({
+                        ...prev,
+                        canton: value,
+                        district: ''
+                      }))
+                    }
 
-                <PriceFilterRL
-                    selectedmonthly_price={selectedmonthly_price}
-                    setSelectedmonthly_price={setSelectedmonthly_price}
+                    setSelecteddistrict={(value) =>
+                      setFilters(prev => ({
+                        ...prev,
+                        district: value
+                      }))
+                    }
+
                   />
 
-                 <PropertyTypeFilter
-                    selectedproperty_type={selectedproperty_type}
-                    setSelectedproperty_type={setSelectedproperty_type}
-                  />
-
-                  <UseTypeFilter
-                    selecteduse_type={selecteduse_type}
-                    setSelecteduse_type={setSelecteduse_type}
-                  />
-
-                  <LotSizeFilter
-                    selectedproperty_area={selectedproperty_area}
-                    setSelectedproperty_area={setSelectedproperty_area}
-                  />
-
-                  <UtilitiesFilter
-                    selectedutility={selectedutility}
-                    setSelectedutility={setSelectedutility}
-                  />
-
-                  
-                <AdvancedFiltersToggle
-                  showadvanced_filters={showadvanced_filters}
-                  setShowadvanced_filters={setShowadvanced_filters}
-                >
-
-                  <LegalStatusFilter
-                    selectedlegal_status={selectedlegal_status}
-                    setSelectedlegal_status={setSelectedlegal_status}
-                  />
-
-                  <EnvironmentFilter
-                    selectedenvironment={selectedenvironment}
-                    setSelectedenvironment={setSelectedenvironment}
-                  />
-
-                  <AccessibilityFilter
-                        selectedaccessibility={selectedaccessibility}
-                        setSelectedaccessibility={setSelectedaccessibility}
-                  />
-
-                  <TerrainFilter
-                      selectedterrain={selectedterrain}
-                      setSelectedterrain={setSelectedterrain}
+<PriceFilterRL
+                      selectedmonthly_price={filters.monthly_price}
+                      setSelectedmonthly_price={(value) =>
+                        setFilters(prev => ({
+                          ...prev,
+                          monthly_price: value
+                        }))
+                      }
                     />
 
-                </AdvancedFiltersToggle>
+<PropertyTypeFilter
+                    selectedproperty_type={filters.property_type}
+                    setSelectedproperty_type={(value) =>
+                      setFilters(prev => ({
+                        ...prev,
+                        property_type: value
+                      }))
+                    }
+                  />
+
+<UseTypeFilter
+                      selecteduse_type={filters.use_type}
+                      setSelecteduse_type={(value) =>
+                        setFilters(prev => ({
+                          ...prev,
+                          use_type: value
+                        }))
+                      }
+                    />
+
+<LotSizeFilter
+                        selectedproperty_area={filters.property_area}
+                        setSelectedproperty_area={(value) =>
+                          setFilters(prev => ({
+                            ...prev,
+                            property_area: value
+                          }))
+                        }
+                      />
+
+<UtilitiesFilter
+                        selectedutility={filters.utility}
+                        setSelectedutility={(value) =>
+                          setFilters(prev => ({
+                            ...prev,
+                            utility: value
+                          }))
+                        }
+                      />
+
+<AdvancedFiltersToggle
+                        showadvanced_filters={showadvanced_filters}
+                        setShowadvanced_filters={setShowadvanced_filters}
+                      >
+
+  <LegalStatusFilter
+                        selectedlegal_status={filters.legal_status}
+                        setSelectedlegal_status={(value) =>
+                          setFilters(prev => ({
+                            ...prev,
+                            legal_status: value
+                          }))
+                        }
+                      />
+
+  <EnvironmentFilter
+                        selectedenvironment={filters.environment}
+                        setSelectedenvironment={(value) =>
+                          setFilters(prev => ({
+                            ...prev,
+                            environment: value
+                          }))
+                        }
+                      />
+
+  <AccessibilityFilter
+                        selectedaccessibility={filters.accessibility}
+                        setSelectedaccessibility={(value) =>
+                          setFilters(prev => ({
+                            ...prev,
+                            accessibility: value
+                          }))
+                        }
+                      />
+
+  <TerrainFilter
+                        selectedterrain={filters.terrain}
+                        setSelectedterrain={(value) =>
+                          setFilters(prev => ({
+                            ...prev,
+                            terrain: value
+                          }))
+                        }
+                      />
+
+</AdvancedFiltersToggle>
                       
 
-                 
+                        </div>
                 </div>   
 
 {/* PROPERTY PREVIEW right-center column */}
@@ -758,70 +499,71 @@ export default function HomePage() {
                       }}
                     >
 
-                      {filteredProperties.map((property) => (
+                              {filteredProperties.map((property) => (
 
-                        <Link
-                          href={`/en/rent-lease/listing/${property.id}`}
-                          key={property.id}
-                          style={{
-                            textDecoration: 'none',
-                            color: 'inherit'
-                          }}
-                        >
+                                <Link
+                                  href={`/en/rent-lease/listing/${property.id}`}
+                                  key={property.id}
+                                  style={{
+                                    textDecoration: 'none',
+                                    color: 'inherit'
+                                  }}
+                                >
 
-                          <div
-                            style={{
-                              background: '#181818',
-                              border: '1px solid #222',
-                              borderRadius: '22px',
-                              overflow: 'hidden',
-                              cursor: 'pointer'
-                            }}
-                          >
+                                  <div
+                                    style={{
+                                      background: '#181818',
+                                      border: '1px solid #222',
+                                      borderRadius: '22px',
+                                      overflow: 'hidden',
+                                      cursor: 'pointer'
+                                    }}
+                                  >
 
-                          {/* PROPERTY IMAGE */}
-                          <div
-                            style={{
-                              aspectRatio: '4 / 3',
-                              overflow: 'hidden',
-                              position: 'relative',
-                              background: '#111'
-                            }}
-                          >
+                                    {/* PROPERTY IMAGE */}
+                                    <div
+                                      style={{
+                                        aspectRatio: '4 / 3',
+                                        overflow: 'hidden',
+                                        position: 'relative',
+                                        background: '#111'
+                                      }}
+                                    >
 
-                            {Array.isArray(property.images) &&
-                                property.images[0] ? (
+                                      {Array.isArray(property.images) &&
+                                      property.images[0] ? (
 
-                              <img
-                                src={property.images[0]}
-                                alt={property.title}
-                                style={{
-                                  width: '100%',
-                                  height: '100%',
-                                  objectFit: 'cover',
-                                  display: 'block'
-                                }}
-                              />
+                                        <img
+                                          src={property.images[0]}
+                                          alt={property.title}
+                                          style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            objectFit: 'cover',
+                                            display: 'block'
+                                          }}
+                                        />
 
-                            ) : (
+                                      ) : (
 
-                              <div
-                                style={{
-                                  height: '100%',
-                                  background:
-                                    'linear-gradient(135deg, #222 0%, #333 100%)',
-                                  display: 'flex',
-                                  justifyContent: 'center',
-                                  alignItems: 'center',
-                                  color: '#555',
-                                  fontSize: '20px'
-                                }}
-                              >
-                                No Image
-                              </div>
+                                        <div
+                                          style={{
+                                            height: '100%',
+                                            background:
+                                              'linear-gradient(135deg, #222 0%, #333 100%)',
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            color: '#555',
+                                            fontSize: '20px'
+                                          }}
+                                        >
+                                          No Image
+                                        </div>
 
-                            )}
-                                    <button
+                                      )}
+
+                                      <button
                                         onClick={(e) => {
 
                                           e.preventDefault()
@@ -854,7 +596,7 @@ export default function HomePage() {
                                           }
 
                                           localStorage.setItem(
-                                              'favorites',
+                                            'favorites',
                                             JSON.stringify(updatedFavorites)
                                           )
 
@@ -892,65 +634,67 @@ export default function HomePage() {
                                         </span>
 
                                       </button>
-                          </div>
 
-                          {/* CONTENT */}
-                          <div
-                            style={{
-                              padding: '1.25rem'
-                            }}
-                          >
+                                    </div>
 
-                            <h2
-                              style={{
-                                fontSize: '1.25rem',
-                                marginBottom: '.75rem'
-                              }}
-                            >
-                              {property.title}
-                            </h2>
+                                    {/* CONTENT */}
+                                    <div
+                                      style={{
+                                        padding: '1.25rem'
+                                      }}
+                                    >
 
-                            <p
-                              style={{
-                                color: '#888',
-                                marginBottom: '16px'
-                              }}
-                            >
-                              {property.province} → {property.canton} → {property.district}
-                            </p>
+                                      <h2
+                                        style={{
+                                          fontSize: '1.25rem',
+                                          marginBottom: '.75rem'
+                                        }}
+                                      >
+                                        {property.title}
+                                      </h2>
 
-                            <div
-                              style={{
-                                display: 'flex',
-                                flexWrap: 'wrap',
-                                gap: '10px'
-                              }}
-                            >
+                                      <p
+                                        style={{
+                                          color: '#888',
+                                          marginBottom: '16px'
+                                        }}
+                                      >
+                                        {property.province} → {property.canton} → {property.district}
+                                      </p>
 
-                              <span style={pill}>
-                                {property.property_type}
-                              </span>
+                                      <div
+                                        style={{
+                                          display: 'flex',
+                                          flexWrap: 'wrap',
+                                          gap: '10px'
+                                        }}
+                                      >
 
-                              <span style={pill}>
-                                {property.environment}
-                              </span>
+                                        <span style={pill}>
+                                          {property.property_type}
+                                        </span>
 
-                              <span style={pill}>
-                                {Array.isArray(property.terrain)
-                                  ? property.terrain.join(', ')
-                                  : property.terrain}
-                              </span>
+                                        <span style={pill}>
+                                          {property.environment}
+                                        </span>
 
-                            </div>
+                                        <span style={pill}>
+                                          {Array.isArray(property.terrain)
+                                            ? property.terrain.join(', ')
+                                            : property.terrain}
+                                        </span>
 
-                          </div>
+                                      </div>
 
-                          </div>
-                        
-  
-                      </Link>
+                                    </div>
 
-                      ))}
+                                  </div>
+
+                                </Link>
+
+                              ))}
+
+                     
 
                       {filteredProperties.length === 0 && (
 
@@ -985,9 +729,10 @@ export default function HomePage() {
                       )}
 
                     </div>
+
                   </div>
+
                 </div>
-              </div>
            </div>     
     </main>
   )
@@ -1126,7 +871,17 @@ const navLink = {
 
 const navButton = {
   background: '#181818',
-  border: '.0625rem solid #222',
+  border: '.0625rem solid #fff',
+  color: '#fff',
+  padding: '.75rem 1rem',
+  borderRadius: '.75rem',
+  cursor: 'pointer',
+  fontSize: '.875rem'
+}
+
+const navButton0 = {
+  background: '#ff3b0095',
+  border: '.0625rem solid #ffffff50',
   color: '#fff',
   padding: '.75rem 1rem',
   borderRadius: '.75rem',
@@ -1135,8 +890,9 @@ const navButton = {
 }
 
 const sellButton = {
-  background: '#00ff99',
-  color: '#000',
+  background: '#00ff9950',
+  color: '#fff',
+  border:'.0625rem solid #ffffff50',
   textDecoration: 'none',
   padding: '.75rem 1.125rem',
   borderRadius: '.875rem',
