@@ -352,38 +352,38 @@ const filteredProperties = properties.filter((property) => {
             }}>
 
         {/* TOP BAR */}
-              <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '1rem',
-                  flexWrap: 'wrap'
-                }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '1rem',
+                    flexWrap: 'wrap'
+                  }}>
 
                     <Breadcrumbs
-                        breadcrumbs={[
-                          {
-                            label: 'Home',
-                            href: '/en/'
-                          },
-                          {
-                            label: 'Buy',
-                            href: '/en/buy'
-                          }
-                        ]}
-                      />
+                      breadcrumbs={[
+                        {
+                          label: 'Home',
+                          href: '/en/'
+                        },
+                        {
+                          label: 'Buy',
+                          href: '/en/buy'
+                        }
+                      ]}
+                    />
 
-                        <Favorites
-                          href="/en/favorites"
-                          label="Favorite Properties"
-                          icon="♥"
-                        />
+                    <Favorites
+                      href="/en/favorites"
+                      label="Favorite Properties"
+                      icon="♥"
+                    />
 
-                        <SwipeCard
-                          href="/en/swipe/buy"
-                          label="Swipe View"
-                        />
+                    <SwipeCard
+                      href="/en/swipe/buy"
+                      label="Swipe View"
+                    />
 
-                          {isMobile && (
+                    {isMobile && (
 
                       <button
                         onClick={() =>
@@ -391,20 +391,27 @@ const filteredProperties = properties.filter((property) => {
                         }
                         style={{
                           position: 'fixed',
-                          top: '20px',
-                          right: '20px',
+
+                          bottom: '1.25rem',
+                          left: '50%',
+
+                          transform: 'translateX(-50%)',
+
                           zIndex: 9999,
 
-                          background: '#00ff9920',
-                          color: '#ff6900',
+                          width: 'calc(100% - 2rem)',
+                          maxWidth: '28rem',
+
+                          background: '#ff3b00',
+                          color: '#fff',
 
                           border: 'none',
-                          borderRadius: '999px',
+                          borderRadius: '999rem',
 
-                          padding: '12px 22px',
+                          padding: '1rem 1.25rem',
 
-                          
-                          fontSize: '15px',
+                          fontSize: '1rem',
+                          fontWeight: 'bold',
 
                           boxShadow:
                             '0 10px 30px rgba(0,0,0,.45)',
@@ -412,11 +419,12 @@ const filteredProperties = properties.filter((property) => {
                           cursor: 'pointer'
                         }}
                       >
-                        Filters
+                        Show Results
                       </button>
 
                     )}
-              </div>
+
+                  </div>
 
 
 {/* RIGHT */}
