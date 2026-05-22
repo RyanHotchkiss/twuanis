@@ -26,6 +26,14 @@ type PropertyTypeFilterSProps = {
 
       enableResidentialFlow: () => void
 
+      showSummaryCard: boolean
+
+      bedrooms: string
+      bathrooms: string
+      parking: string
+      yearBuiltRange: string
+      constructionArea: string
+
     }
 
     export default function PropertyTypeFilterS({
@@ -46,7 +54,16 @@ type PropertyTypeFilterSProps = {
 
       resetResidentialFields,
 
+      showSummaryCard,
+
+      bedrooms,
+      bathrooms,
+      parking,
+      yearBuiltRange,
+      constructionArea,
+
       enableResidentialFlow
+      
 
     }: PropertyTypeFilterSProps) {
 
@@ -66,26 +83,33 @@ type PropertyTypeFilterSProps = {
               Property Type
             </h2>
 
-            <button
-              onClick={() =>
-                setShowPropertyTypeOptions(
-                  !showPropertyTypeOptions
-                )
-              }
-              style={collapseButton}
-            >
-              {showPropertyTypeOptions ? '−' : '+'}
-            </button>
-
           </div>
 
-{/* COLLAPSED SUMMARY */}
-          {!showPropertyTypeOptions && (
+{/* SUMMARY */}
+
+        {selectedPropertyType && (
 
             <div style={summaryCard}>
 
               <span>
-                {selectedPropertyType || 'None Selected'}
+
+               {selectedPropertyType}
+
+              {constructionArea && bedrooms &&
+                ` ${bedrooms}`}
+
+              {constructionArea && bathrooms &&
+                ` ${bathrooms}`}
+
+              {constructionArea && parking &&
+                ` ${parking}`}
+
+              {constructionArea && yearBuiltRange &&
+                ` ${yearBuiltRange}`}
+
+              {constructionArea &&
+                ` ${constructionArea}`}
+
               </span>
 
               <button
@@ -185,20 +209,11 @@ const activePill = {
   color:'#fff'
 }
 
-const collapseButton = {
-  background:'transparent',
-  border:'1px solid #333',
-  color:'#fff',
-  width:'2rem',
-  height:'2rem',
-  borderRadius:'999rem',
-  cursor:'pointer'
-}
 
 const summaryCard = {
   display:'flex',
   justifyContent:'space-between',
-  alignItems:'center',
+  alignItems:'flex-start',
   background:'#181818',
   border:'1px solid #222',
   borderRadius:'1rem',

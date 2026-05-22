@@ -2,9 +2,17 @@
 
 type EnvironmentFilterProps = {
 
-  selectedenvironment: string
+    selectedenvironment: string[]
 
-  setSelectedenvironment: (value: string) => void
+    setSelectedenvironment: (
+      value: string[]
+    ) => void
+
+  showenvironmentOptions: boolean
+
+  setShowenvironmentOptions: (
+    value: boolean
+  ) => void
 
 }
 
@@ -12,7 +20,11 @@ export default function EnvironmentFilter({
 
   selectedenvironment,
 
-  setSelectedenvironment
+  setSelectedenvironment,
+
+  showenvironmentOptions,
+
+  setShowenvironmentOptions
 
 }: EnvironmentFilterProps) {
 
@@ -44,47 +56,115 @@ export default function EnvironmentFilter({
 
       </h3>
 
-      <div style={pillWrap}>
+      {showenvironmentOptions && (
 
-        {environments.map((environment) => (
+  <div style={pillWrap}>
 
-          <button
+    {environments.map((environment) => (
 
-            key={environment}
+      <button
 
-            onClick={() =>
+              key={environment}
 
-              setSelectedenvironment(
+              onClick={() => {
 
-                selectedenvironment === environment
+                if (
+                  selectedenvironment.includes(environment)
+                ) {
 
-                  ? ''
+                  setSelectedenvironment(
+                    selectedenvironment.filter(
+                      (item) => item !== environment
+                    )
+                  )
 
-                  : environment
+                } else {
 
-              )
+                  setSelectedenvironment([
+                    ...selectedenvironment,
+                    environment
+                  ])
 
-            }
+                }
 
-            style={
+              }}
 
-              selectedenvironment === environment
+              style={
 
-                ? activePill
+                selectedenvironment.includes(environment)
 
-                : pill
+                  ? activePill
 
-            }
+                  : pill
 
-          >
+              }
 
-            {environment}
+            >
 
-          </button>
+        {environment}
 
-        ))}
+      </button>
 
-      </div>
+    ))}
+
+  </div>
+
+)}
+
+{!showenvironmentOptions &&
+selectedenvironment.length > 0 && (
+
+      <div style={summaryCard}>
+
+                  <span
+                    onClick={() => {
+
+                      setShowenvironmentOptions(
+                        true
+                      )
+
+                    }}
+                    style={{
+                      ...breadcrumbText,
+                      cursor:'pointer'
+                    }}
+                  >
+                    {selectedenvironment.map((item, index) => (
+
+                            <span key={item}>
+
+                              {index > 0 && (
+                                <span style={{ color:'#fff' }}>
+                                  {' • '}
+                                </span>
+                              )}
+
+                              {item}
+
+                            </span>
+
+                          ))}
+                  </span>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+
+                      setSelectedenvironment([])
+
+                      setShowenvironmentOptions(
+                        true
+                      )
+
+                    }}
+                    style={resetButton}
+                  >
+                    ✕
+                  </button>
+
+                </div>
+
+              )}
 
     </div>
 
@@ -140,6 +220,30 @@ const activePill = {
 
   color:'#fff'
 
+}
+
+const summaryCard = {
+  display:'flex',
+  justifyContent:'space-between',
+  alignItems:'flex-start',
+  background:'#181818',
+  border:'1px solid #00ff9950',
+  borderRadius:'1rem',
+  padding:'1rem',
+  marginTop:'1rem'
+}
+
+const breadcrumbText = {
+  color:'#00ff99',
+  fontSize:'.85rem'
+}
+
+const resetButton = {
+  background:'transparent',
+  border:'none',
+  color:'#ff6666',
+  cursor:'pointer',
+  fontSize:'1rem'
 }
 
 /*

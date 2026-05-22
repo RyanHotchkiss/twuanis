@@ -58,7 +58,7 @@ export default function SellPage() {
     const [showproperty_typeOptions, setShowproperty_typeOptions] = useState(true)
     const [showproperty_areaOptions, setShowproperty_areaOptions] = useState(true)
     const [showutilityOptions, setShowutilityOptions] = useState(true)
-    const [showenvironmentOptions, setShowenvironmentOptions] = useState(false)
+    const [showenvironmentOptions, setShowenvironmentOptions] = useState(true)
     const [showAccessibilityOptions, setShowAccessibilityOptions] = useState(true)
     const [showlegal_statusOptions, setShowlegal_statusOptions] = useState(true)
     const [csvFile, setCsvFile] = useState<File | null>(null)
@@ -417,9 +417,31 @@ export default function SellPage() {
 
 {/* PROPERTY TYPE */}
 
-                    <PropertyTypeFilterS
+<PropertyTypeFilterS
 
-                    setShowPropertyAreaOptions={
+                    showSummaryCard={false}
+
+                    bedrooms={propertyData.bedrooms}
+
+                    bathrooms={propertyData.bathrooms}
+
+                    parking={propertyData.parking}
+
+                    yearBuiltRange={propertyData.year_built_range}
+
+                    constructionArea={propertyData.construction_area}
+
+                    propertyTypes={property_types}
+
+                    residentialPropertyTypes={
+                        residential_property_types
+                    }
+
+                    showPropertyTypeOptions={
+                        showproperty_typeOptions
+                    }
+
+                     setShowPropertyAreaOptions={
                     setShowproperty_areaOptions
                     }
 
@@ -432,16 +454,6 @@ export default function SellPage() {
                         ...propertyData,
                         property_type: value
                         })
-                    }
-
-                    propertyTypes={property_types}
-
-                    residentialPropertyTypes={
-                        residential_property_types
-                    }
-
-                    showPropertyTypeOptions={
-                        showproperty_typeOptions
                     }
 
                     setShowPropertyTypeOptions={
@@ -486,6 +498,17 @@ export default function SellPage() {
                     {show_residential_fields && (
 
                     <ResidentialAttributesS
+
+                        showResidentialSummary={false}
+                        setShowResidentialSummary={() => {}}
+
+                        setShowproperty_typeOptions={
+                        setShowproperty_typeOptions
+                        }
+
+                        setShowproperty_areaOptions={
+                        setShowproperty_areaOptions
+                        }
 
                         bedrooms={propertyData.bedrooms}
                         setBedrooms={(value) =>
@@ -667,29 +690,6 @@ export default function SellPage() {
                         setShowlegal_statusOptions
                         }
                         terrainOptions={terrainOptions}
-                        />
-
-                    
-{/* LEGAL STATUS */}
-                    <LegalStatusFilterS
-                        selectedLegalStatus={propertyData.legal_status}
-                        setSelectedLegalStatus={(value) =>
-                            setPropertyData({
-                            ...propertyData,
-                            legal_status: value
-                            })
-                        }
-                        showLegalStatusOptions={
-                            showlegal_statusOptions
-                        }
-                        setShowLegalStatusOptions={
-                            setShowlegal_statusOptions
-                        }
-                        setShowTerrainOptions={
-
-                            setShowTerrainOptions
-
-                        }
                         />
                     
 

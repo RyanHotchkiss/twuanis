@@ -9,17 +9,17 @@ import rawListings from '@/data/encuentra24-sale-listings.json'
 import Favorites from '@/app/components/Favorites'
 import SwipeCard from '@/app/components/SwipeCard'
 import LocationFilter from '@/app/components/filter-bar/LocationFilter'
-import AddProperty from '@/app/components/filter-bar/AddProperty'
+import CreateListingButtonS from '@/app/components/CreateListingButtonS'
 import PriceFilter from '@/app/components/filter-bar/PriceFilter'
 import PropertyTypeFilter from '@/app/components/filter-bar/PropertyTypeFilter'
-import UseTypeFilter from '@/app/components/filter-bar/UseTypeFilter'
-import LotSizeFilter from '@/app/components/filter-bar/LotSizeFilter'
 import UtilitiesFilter from '@/app/components/filter-bar/UtilitiesFilter'
 import AdvancedFiltersToggle from '@/app/components/filter-bar/AdvancedFiltersToggle'
 import AccessibilityFilter from '@/app/components/filter-bar/AccessibilityFilter'
 import EnvironmentFilter from '@/app/components/filter-bar/EnvironmentFilter'
 import LegalStatusFilter from '@/app/components/filter-bar/LegalStatusFilter'
 import TerrainFilter from '@/app/components/filter-bar/TerrainFilter'
+import PropertyAreaFilter from '@/app/components/filter-bar/PropertyAreaFilter'
+import ResidentialAttributesS from '@/app/components/filter-bar/ResidentialAttributesS'
 import {
       provinces,
       districts
@@ -40,31 +40,45 @@ const navButton = {
 
   const [properties, setProperties] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
-
   const [filters, setFilters] = useState({
     province: '',
     canton: '',
     district: '',
     price_range: '',
     property_type: '',
+    bedrooms: '',
+    bathrooms: '',
+    parking: '',
+    year_built: '',
+    construction_area: '',
     use_type: '',
     property_area: '',
     utility: [] as string[],
     legal_status: '',
-    environment: '',
-    accessibility: [] as string[],
+    environment: [] as string[],
+    accessibility: '',
     terrain: [] as string[]
   })
 
   const [showadvanced_filters, setShowadvanced_filters] = useState(false)
-  const [showproperty_typeOptions, setShowproperty_typeOptions] = useState(false)
-  const [showproperty_areaOptions, setShowproperty_areaOptions] = useState(false)
-  const [showutilityOptions, setShowutilityOptions] = useState(false)
-  const [showenvironmentOptions, setShowenvironmentOptions] = useState(false)
-  const [showAccessibilityOptions, setShowAccessibilityOptions] = useState(false)
-  const [showTerrainOptions, setShowTerrainOptions] = useState(false)
-  const [showlegal_statusOptions, setShowlegal_statusOptions] = useState(false)
-
+  const [showProvinceOptions, setShowProvinceOptions] = useState(true)
+  const [showCantonOptions, setShowCantonOptions] = useState(false)
+  const [showDistrictOptions, setShowDistrictOptions] = useState(false)
+  const [showLocationOptions, setShowLocationOptions] = useState(true)
+  const [showPriceOptions, setShowPriceOptions] = useState(true)
+  const [showproperty_typeOptions, setShowproperty_typeOptions] = useState(true)
+  const [showproperty_areaOptions, setShowproperty_areaOptions] = useState(true)
+  const [showutilityOptions, setShowutilityOptions] = useState(true)
+  const [showenvironmentOptions, setShowenvironmentOptions] = useState(true)
+  const [showAccessibilityOptions, setShowAccessibilityOptions] = useState(true)
+  const [showTerrainOptions, setShowTerrainOptions] = useState(true)
+  const [showlegal_statusOptions, setShowlegal_statusOptions] = useState(true)
+  const [showBedroomOptions, setShowBedroomOptions] = useState(false)
+  const [showBathroomOptions, setShowBathroomOptions] = useState(false)
+  const [showParkingOptions, setShowParkingOptions] = useState(false)
+  const [showYearBuiltOptions, setShowYearBuiltOptions] = useState(false)
+  const [showConstructionAreaOptions, setShowConstructionAreaOptions] = useState(false)
+  const [showResidentialSummary, setShowResidentialSummary] = useState(false)
 
   const [showMobileFilters, setShowMobileFilters] = useState(false)
 
@@ -172,6 +186,44 @@ const navButton = {
 
     }, [])
 
+    const bedroomOptions = [
+        '1+ Bedrooms',
+        '2+ Bedrooms',
+        '3+ Bedrooms',
+        '4+ Bedrooms',
+        '5+ Bedrooms'
+      ]
+
+      const bathroomOptions = [
+        '1+ Bathrooms',
+        '2+ Bathrooms',
+        '3+ Bathrooms',
+        '4+ Bathrooms'
+      ]
+
+      const parkingOptions = [
+        '1+ Spaces',
+        '2+ Spaces',
+        '3+ Spaces',
+        '4+ Spaces'
+      ]
+
+      const yearBuiltOptions = [
+        'Pre-1980',
+        '1980s',
+        '1990s',
+        '2000s',
+        '2010s',
+        '2020+'
+      ]
+
+      const constructionAreaOptions = [
+        '<50m²',
+        '50-100m²',
+        '100-200m²',
+        '200-400m²',
+        '400m²+'
+      ]
                           
 const filteredProperties = properties.filter((property) => {
 
@@ -243,22 +295,22 @@ const filteredProperties = properties.filter((property) => {
                   }
 
                   if (
-                    filters.environment &&
-                    property.environment !== filters.environment
+                    filters.environment.length > 0 &&
+                    !filters.environment.some((item) =>
+                      Array.isArray(property.environment)
+                        ? property.environment.includes(item)
+                        : property.environment === item
+                    )
                   ) {
                     return false
                   }
 
                   if (
-                    filters.accessibility.length > 0 &&
-                    !filters.accessibility.some((item) =>
-                      Array.isArray(property.accessibility)
-                        ? property.accessibility.includes(item)
-                        : property.accessibility === item
-                    )
-                  ) {
-                    return false
-                  }
+                      filters.accessibility &&
+                      property.accessibility !== filters.accessibility
+                    ) {
+                      return false
+                    }
 
                   if (
                     filters.terrain.length > 0 &&
@@ -369,7 +421,12 @@ const filteredProperties = properties.filter((property) => {
 
 {/* RIGHT */}
              
-            <AddProperty />
+            <CreateListingButtonS
+            onCreateListing={() => {
+              window.location.href =
+                '/en/rent-out-lease-out'
+            }}
+          />
 
             </div>
 
@@ -492,6 +549,18 @@ const filteredProperties = properties.filter((property) => {
 
 <LocationFilter
 
+                    showLocationOptions={showLocationOptions}
+                    setShowLocationOptions={setShowLocationOptions}
+
+                    showProvinceOptions={showProvinceOptions}
+                    setShowProvinceOptions={setShowProvinceOptions}
+
+                    showCantonOptions={showCantonOptions}
+                    setShowCantonOptions={setShowCantonOptions}
+
+                    showDistrictOptions={showDistrictOptions}
+                    setShowDistrictOptions={setShowDistrictOptions}
+                    
                     provinces={provinces}
                     districts={districts}
 
@@ -500,6 +569,7 @@ const filteredProperties = properties.filter((property) => {
                     selecteddistrict={filters.district}
 
                     setSelectedprovince={(value) => {
+
                       setFilters(prev => ({
                         ...prev,
                         province: value,
@@ -507,157 +577,472 @@ const filteredProperties = properties.filter((property) => {
                         district: ''
                       }))
 
-                      setShowproperty_typeOptions(true)
+                      setShowProvinceOptions(false)
+                      setShowCantonOptions(true)
+                      setShowDistrictOptions(false)
+
                     }}
 
-                    setSelectedcanton={(value) =>
+                    setSelectedcanton={(value) => {
+
                       setFilters(prev => ({
                         ...prev,
                         canton: value,
                         district: ''
                       }))
-                    }
 
-                    setSelecteddistrict={(value) => {
+                      setShowCantonOptions(false)
+                      setShowDistrictOptions(true)
+
+                    }}
+
+                      setSelecteddistrict={(value) => {
+
                       setFilters(prev => ({
                         ...prev,
                         district: value
                       }))
 
+                      setShowProvinceOptions(false)
+                      setShowCantonOptions(false)
+                      setShowDistrictOptions(false)
+
+                      setShowLocationOptions(false)
+
                       setShowproperty_typeOptions(true)
+
                     }}
 
                   />
 
 <PriceFilter
-                      selectedprice_range={filters.price_range}
-                      setSelectedprice_range={(value) =>
-                        setFilters(prev => ({
-                          ...prev,
-                          price_range: value
-                        }))
-                      }
-                    />
 
-{showproperty_typeOptions && (
+                  showPriceOptions={showPriceOptions}
+                  setShowPriceOptions={setShowPriceOptions}
 
-<PropertyTypeFilter
-                    selectedproperty_type={filters.property_type}
-                    setSelectedproperty_type={(value) => {
+                  setShowProvinceOptions={
+                    setShowProvinceOptions
+                  }
+
+                  setShowCantonOptions={
+                    setShowCantonOptions
+                  }
+
+                  setShowDistrictOptions={
+                    setShowDistrictOptions
+                  }
+
+                  selectedprice_range={filters.price_range}
+
+                  setSelectedprice_range={(value) => {
+
                     setFilters(prev => ({
                       ...prev,
-                      property_type: value
+                      price_range: value
                     }))
 
-                    setShowproperty_areaOptions(true)
+                    setShowPriceOptions(false)
+
+                    setShowproperty_typeOptions(true)
+
                   }}
-                  />
-)}
 
-<UseTypeFilter
-                      selecteduse_type={filters.use_type}
-                      setSelecteduse_type={(value) =>
-                        setFilters(prev => ({
-                          ...prev,
-                          use_type: value
-                        }))
-                      }
-                    />
+                />
 
-{showproperty_areaOptions && (
 
-<LotSizeFilter
-                        selectedproperty_area={filters.property_area}
-                        setSelectedproperty_area={(value) => {
-                          setFilters(prev => ({
-                            ...prev,
-                            property_area: value
-                          }))
+<PropertyTypeFilter
 
-                          setShowutilityOptions(true)
-                        }}
-                      />
-)}
+                              showproperty_typeOptions={showproperty_typeOptions}
+                              setShowproperty_typeOptions={setShowproperty_typeOptions}
 
-{showutilityOptions && (
+                              setShowproperty_areaOptions={setShowproperty_areaOptions}
+
+                              setShowBedroomOptions={
+                                setShowBedroomOptions
+                              }
+
+                              setShowProvinceOptions={
+                                setShowProvinceOptions
+                              }
+
+                              setShowCantonOptions={
+                                setShowCantonOptions
+                              }
+
+                              setShowDistrictOptions={
+                                setShowDistrictOptions
+                              }
+
+                              selectedproperty_type={filters.property_type}
+
+                              bedrooms={filters.bedrooms}
+
+                              bathrooms={filters.bathrooms}
+
+                              parking={filters.parking}
+
+                              yearBuiltRange={filters.year_built}
+
+                              constructionArea={filters.construction_area}
+
+                              setSelectedproperty_type={(value) => {
+
+                                setFilters(prev => ({
+                                  ...prev,
+                                  property_type: value
+                                }))
+
+                              }}
+
+                            />
+
+                                        {
+                                          (
+                                            filters.property_type === 'House' ||
+                                            filters.property_type === 'Condo' ||
+                                            filters.property_type === 'Cabin'
+                                          ) && (
+
+                                            <ResidentialAttributesS
+
+                                              setShowproperty_typeOptions={
+                                                setShowproperty_typeOptions
+                                              }
+
+                                              setShowproperty_areaOptions={
+                                                setShowproperty_areaOptions
+                                              }
+
+                                              bedrooms={filters.bedrooms}
+                                              setBedrooms={(value) =>
+                                                setFilters(prev => ({
+                                                  ...prev,
+                                                  bedrooms: value
+                                                }))
+                                              }
+
+                                              bathrooms={filters.bathrooms}
+                                              setBathrooms={(value) =>
+                                                setFilters(prev => ({
+                                                  ...prev,
+                                                  bathrooms: value
+                                                }))
+                                              }
+
+                                              parking={filters.parking}
+                                              setParking={(value) =>
+                                                setFilters(prev => ({
+                                                  ...prev,
+                                                  parking: value
+                                                }))
+                                              }
+
+                                              yearBuiltRange={filters.year_built}
+                                              setYearBuiltRange={(value) =>
+                                                setFilters(prev => ({
+                                                  ...prev,
+                                                  year_built: value
+                                                }))
+                                              }
+
+                                              constructionArea={filters.construction_area}
+                                              setConstructionArea={(value) =>
+                                                setFilters(prev => ({
+                                                  ...prev,
+                                                  construction_area: value
+                                                }))
+                                              }
+
+                                              setShowResidentialSummary={
+                                                setShowResidentialSummary
+                                              }
+
+                                              bedroomOptions={bedroomOptions}
+                                              bathroomOptions={bathroomOptions}
+                                              parkingOptions={parkingOptions}
+                                              yearBuiltOptions={yearBuiltOptions}
+                                              constructionAreaOptions={constructionAreaOptions}
+
+                                              showBedroomOptions={showBedroomOptions}
+                                              setShowBedroomOptions={setShowBedroomOptions}
+
+                                              showBathroomOptions={showBathroomOptions}
+                                              setShowBathroomOptions={setShowBathroomOptions}
+
+                                              showParkingOptions={showParkingOptions}
+                                              setShowParkingOptions={setShowParkingOptions}
+
+                                              showYearBuiltOptions={showYearBuiltOptions}
+                                              setShowYearBuiltOptions={setShowYearBuiltOptions}
+
+                                              showConstructionAreaOptions={
+                                                showConstructionAreaOptions
+                                              }
+
+                                              setShowConstructionAreaOptions={
+                                                setShowConstructionAreaOptions
+                                              }
+
+                                              showResidentialSummary={showResidentialSummary}
+
+                                            />
+
+                                          )
+                                        }
+
+<PropertyAreaFilter
+
+                          showproperty_areaOptions={
+                            showproperty_areaOptions
+                          }
+
+                          setShowproperty_areaOptions={
+                            setShowproperty_areaOptions
+                          }
+
+                          setShowutilityOptions={
+                            setShowutilityOptions
+                          }
+
+                          selectedproperty_area={
+                            filters.property_area
+                          }
+
+                          setShowProvinceOptions={
+                            setShowProvinceOptions
+                          }
+
+                          setShowCantonOptions={
+                            setShowCantonOptions
+                          }
+
+                          setShowDistrictOptions={
+                            setShowDistrictOptions
+                          }
+
+                          setSelectedproperty_area={(value) => {
+
+                            setFilters(prev => ({
+                              ...prev,
+                              property_area: value
+                            }))
+
+                            setShowproperty_areaOptions(false)
+
+                            setShowutilityOptions(true)
+
+                          }}
+
+                        />
 
 <UtilitiesFilter
-                        selectedutility={filters.utility}
-                        setSelectedutility={(value) => {
-                        setFilters(prev => ({
-                          ...prev,
-                          utility: value
-                        }))
 
-                        setShowenvironmentOptions(true)
-                      }}
+                        showutilityOptions={
+                          showutilityOptions
+                        }
+
+                        setShowutilityOptions={
+                          setShowutilityOptions
+                        }
+
+                        selectedutility={
+                          filters.utility
+                        }
+
+                        setShowProvinceOptions={
+                        setShowProvinceOptions
+                      }
+
+                      setShowCantonOptions={
+                        setShowCantonOptions
+                      }
+
+                      setShowDistrictOptions={
+                        setShowDistrictOptions
+                      }
+
+                        setSelectedutility={(value) => {
+
+                          setFilters(prev => ({
+                            ...prev,
+                            utility: value
+                          }))
+
+                          setShowenvironmentOptions(true)
+
+                        }}
+
                       />
-)}
+
 
 <AdvancedFiltersToggle
-                        showadvanced_filters={showadvanced_filters}
-                        setShowadvanced_filters={setShowadvanced_filters}
-                      >
+  showadvanced_filters={showadvanced_filters}
+  setShowadvanced_filters={setShowadvanced_filters}
+  setShowutilityOptions={setShowutilityOptions}
+  setShowProvinceOptions={
+  setShowProvinceOptions
+    }
 
-{showlegal_statusOptions && (
+    setShowCantonOptions={
+      setShowCantonOptions
+    }
 
-<LegalStatusFilter
-                        selectedlegal_status={filters.legal_status}
-                        setSelectedlegal_status={(value) =>
-                          setFilters(prev => ({
-                            ...prev,
-                            legal_status: value
-                          }))
-                        }
-                      />
-)}
-
-
-{showenvironmentOptions && (
+    setShowDistrictOptions={
+      setShowDistrictOptions
+    }
+>
 
 <EnvironmentFilter
-                        selectedenvironment={filters.environment}
-                        setSelectedenvironment={(value) => {
-                          setFilters(prev => ({
-                            ...prev,
-                            environment: value
-                          }))
 
-                          setShowAccessibilityOptions(true)
-                        }}
-                      />
-)}
+                    showenvironmentOptions={
+                      showenvironmentOptions
+                    }
 
+                    setShowenvironmentOptions={
+                      setShowenvironmentOptions
+                    }
 
-{showAccessibilityOptions && (
+                    selectedenvironment={
+                      filters.environment
+                    }
+
+                    setSelectedenvironment={(value) => {
+
+                        setFilters(prev => ({
+                          ...prev,
+                          environment: value
+                        }))
+
+                        setShowAccessibilityOptions(true)
+
+                      }}
+
+                  />
 
 <AccessibilityFilter
-                        selectedaccessibility={filters.accessibility}
-                        setSelectedaccessibility={(value) => {
-                          setFilters(prev => ({
-                            ...prev,
-                            accessibility: value
-                          }))
 
-                          setShowTerrainOptions(true)
-                        }}
-                      />
-)}
+                  showaccessibilityOptions={
+                    showAccessibilityOptions
+                  }
 
-{showTerrainOptions && (
+                  setShowaccessibilityOptions={
+                    setShowAccessibilityOptions
+                  }
+
+                  setShowenvironmentOptions={
+                    setShowenvironmentOptions
+                  }
+
+                  setShowTerrainOptions={
+                    setShowTerrainOptions
+                  }
+
+                  setShowProvinceOptions={
+                    setShowProvinceOptions
+                  }
+
+                  setShowCantonOptions={
+                    setShowCantonOptions
+                  }
+
+                  setShowDistrictOptions={
+                    setShowDistrictOptions
+                  }
+
+                  selectedaccessibility={
+                    filters.accessibility
+                  }
+
+                  setSelectedaccessibility={(value) => {
+
+                    setFilters(prev => ({
+                      ...prev,
+                      accessibility: value
+                    }))
+
+                    setShowTerrainOptions(true)
+
+                  }}
+
+                />
 
 <TerrainFilter
-                        selectedterrain={filters.terrain}
-                        setSelectedterrain={(value) => {
-                          setFilters(prev => ({
-                            ...prev,
-                            terrain: value
-                          }))
 
-                          setShowlegal_statusOptions(true)
-                        }}
-                      />
-)}
+                    showTerrainOptions={
+                      showTerrainOptions
+                    }
+
+                    setShowTerrainOptions={
+                      setShowTerrainOptions
+                    }
+
+                    selectedterrain={
+                      filters.terrain
+                    }
+
+                    setShowProvinceOptions={
+                      setShowProvinceOptions
+                    }
+
+                    setShowCantonOptions={
+                      setShowCantonOptions
+                    }
+
+                    setShowDistrictOptions={
+                      setShowDistrictOptions
+                    }
+
+                    setSelectedterrain={(value) => {
+
+                      setFilters(prev => ({
+                        ...prev,
+                        terrain: value
+                      }))
+
+                      setShowlegal_statusOptions(true)
+
+                    }}
+
+                  />
+
+<LegalStatusFilter
+
+                    showlegal_statusOptions={
+                      showlegal_statusOptions
+                    }
+
+                    setShowlegal_statusOptions={
+                      setShowlegal_statusOptions
+                    }
+
+                    setShowTerrainOptions={
+                      setShowTerrainOptions
+                    }
+
+                    selectedlegal_status={
+                      filters.legal_status
+                    }
+
+                    setShowProvinceOptions={
+                      setShowProvinceOptions
+                    }
+
+                    setShowCantonOptions={
+                      setShowCantonOptions
+                    }
+
+                    setShowDistrictOptions={
+                      setShowDistrictOptions
+                    }
+
+                    setSelectedlegal_status={(value) =>
+                      setFilters(prev => ({
+                        ...prev,
+                        legal_status: value
+                      }))
+                    }
+
+                  />
 
 </AdvancedFiltersToggle>
 

@@ -1,20 +1,22 @@
 'use client'
 
-type CreateListingButtonSProps = {
-  onCreateListing: () => void
-}
+import { useRouter } from 'next/navigation'
 
-export default function CreateListingButtonS({
-  onCreateListing
-}: CreateListingButtonSProps) {
+export default function CreateRentalListingButton() {
+
+  const router = useRouter()
 
   return (
 
     <button
-      onClick={onCreateListing}
+      onClick={() =>
+        router.push(
+          '/en/rent-out-lease-out'
+        )
+      }
       style={createListingButton}
     >
-      Create Listing
+    List Rental Property
     </button>
 
   )

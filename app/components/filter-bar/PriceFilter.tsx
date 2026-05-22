@@ -3,11 +3,29 @@
 type PriceFilterProps = {
   selectedprice_range: string
   setSelectedprice_range: (value: string) => void
+
+  showPriceOptions: boolean
+  setShowPriceOptions: (value: boolean) => void
+
+  setShowProvinceOptions: (value: boolean) => void
+
+  setShowCantonOptions: (value: boolean) => void
+
+  setShowDistrictOptions: (value: boolean) => void
 }
 
 export default function PriceFilter({
   selectedprice_range,
-  setSelectedprice_range
+  setSelectedprice_range,
+
+  showPriceOptions,
+  setShowPriceOptions,
+
+  setShowProvinceOptions,
+
+  setShowCantonOptions,
+
+  setShowDistrictOptions
 }: PriceFilterProps) {
 
   const priceOptions = [
@@ -25,36 +43,106 @@ export default function PriceFilter({
         PRICE
       </h3>
 
-      <div style={pillWrap}>
+{showPriceOptions && (
 
-        {priceOptions.map((price) => (
+            <div style={pillWrap}>
 
-          <button
-            key={price}
-            onClick={() =>
-              setSelectedprice_range(
-                selectedprice_range === price
-                  ? ''
-                  : price
-              )
-            }
-            style={
-              selectedprice_range === price
-                ? activePill
-                : pill
-            }
-          >
-            {price}
-          </button>
+              {priceOptions.map((price) => (
 
-        ))}
+                <button
+                  key={price}
+                  onClick={() => {
 
-      </div>
+                    setSelectedprice_range(price)
+
+                    setShowProvinceOptions(false)
+
+                    setShowCantonOptions(false)
+
+                    setShowDistrictOptions(false)
+
+                    setShowPriceOptions(false)
+
+                  }}
+                  style={
+                    selectedprice_range === price
+                      ? activePill
+                      : pill
+                  }
+                >
+                  {price}
+                </button>
+
+              ))}
+
+            </div>
+
+          )}
+
+{!showPriceOptions &&
+            selectedprice_range && (
+
+              <div style={summaryCard}>
+
+                <span
+                  onClick={() => {
+                    setShowPriceOptions(true)
+                  }}
+                  style={{
+                    ...breadcrumbText,
+                    cursor:'pointer'
+                  }}
+                >
+                  {selectedprice_range}
+                </span>
+
+                <button
+                  type="button"
+                  onClick={() => {
+
+                    setSelectedprice_range('')
+
+                    setShowPriceOptions(true)
+
+                  }}
+                  style={resetButton}
+                >
+                  ✕
+                </button>
+
+              </div>
+
+            )}
 
     </div>
 
   )
 
+}
+
+
+const breadcrumbText = {
+  color:'#00ff99',
+  fontSize:'.85rem'
+}
+
+const summaryCard = {
+  display:'flex',
+  justifyContent:'space-between',
+  alignItems:'flex-start',
+  background:'#181818',
+  border:'1px solid #00ff9950',
+  borderRadius:'1rem',
+  padding:'1rem',
+  marginTop:'1rem'
+}
+
+const resetButton = {
+  background:'transparent',
+  border:'none',
+  color:'#ff6666',
+  cursor:'pointer',
+  fontSize:'1rem'
 }
 
 const filterHeading = {

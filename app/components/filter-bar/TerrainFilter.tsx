@@ -3,11 +3,33 @@
 type TerrainFilterProps = {
   selectedterrain: string[]
   setSelectedterrain: (value: string[]) => void
+
+  showTerrainOptions: boolean
+  setShowTerrainOptions: (value: boolean) => void
+
+  setShowProvinceOptions: (
+    value: boolean
+  ) => void
+
+  setShowCantonOptions: (
+    value: boolean
+  ) => void
+
+  setShowDistrictOptions: (
+    value: boolean
+  ) => void
 }
 
 export default function TerrainFilter({
   selectedterrain,
-  setSelectedterrain
+  setSelectedterrain,
+
+  showTerrainOptions,
+  setShowTerrainOptions,
+  setShowProvinceOptions,
+  setShowCantonOptions,
+  setShowDistrictOptions
+
 }: TerrainFilterProps) {
 
   const terrainOptions = [
@@ -33,48 +55,109 @@ export default function TerrainFilter({
         TERRAIN
       </h3>
 
+      {showTerrainOptions && (
+
       <div style={pillWrap}>
 
             {terrainOptions.map((option) => (
 
-              <button
-                key={option}
-                onClick={() => {
+                      <button
+                        key={option}
+                        onClick={() => {
 
-                  if (
-                    selectedterrain.includes(option)
-                  ) {
+                          if (
+                            selectedterrain.includes(option)
+                          ) {
 
-                    setSelectedterrain(
-                      selectedterrain.filter(
-                        (item) => item !== option
-                      )
-                    )
+                            setSelectedterrain(
+                              selectedterrain.filter(
+                                (item) => item !== option
+                              )
+                            )
 
-                  } else {
+                          } else {
 
-                    setSelectedterrain([
-                      ...selectedterrain,
-                      option
-                    ])
+                            setSelectedterrain([
+                              ...selectedterrain,
+                              option
+                            ])
 
-                  }
+                          }
 
-                }}
-                style={
-                  selectedterrain.includes(option)
-                    ? activePill
-                    : pill
-                }
-              >
-                {option}
-              </button>
+                          setShowProvinceOptions(false)
 
-            ))}
+                          setShowCantonOptions(false)
 
-      </div>
+                          setShowDistrictOptions(false)
 
-    </div>
+                        }}
+                        style={
+                          selectedterrain.includes(option)
+                            ? activePill
+                            : pill
+                        }
+                      >
+                        {option}
+                      </button>
+
+                    ))}
+
+            </div>
+
+            )}
+
+            {!showTerrainOptions &&
+            selectedterrain.length > 0 && (
+
+              <div style={summaryCard}>
+
+                <span
+                  onClick={() => {
+
+                    setShowTerrainOptions(true)
+
+                  }}
+                  style={{
+                    ...breadcrumbText,
+                    cursor:'pointer'
+                  }}
+                >
+                  {selectedterrain.map((item, index) => (
+
+                          <span key={item}>
+
+                            {index > 0 && (
+                              <span style={{ color:'#fff' }}>
+                                {' • '}
+                              </span>
+                            )}
+
+                            {item}
+
+                          </span>
+
+                        ))}
+                </span>
+
+                <button
+                  type="button"
+                  onClick={() => {
+
+                    setSelectedterrain([])
+
+                    setShowTerrainOptions(true)
+
+                  }}
+                  style={resetButton}
+                >
+                  ✕
+                </button>
+
+              </div>
+
+            )}
+
+                </div>
 
   )
 
@@ -107,6 +190,30 @@ const activePill = {
   background:'#00ff9970',
   border:'1px solid #00ff99',
   color:'#fff'
+}
+
+const summaryCard = {
+  display:'flex',
+  justifyContent:'space-between',
+  alignItems:'flex-start',
+  background:'#181818',
+  border:'1px solid #00ff9950',
+  borderRadius:'1rem',
+  padding:'1rem',
+  marginTop:'1rem'
+}
+
+const breadcrumbText = {
+  color:'#00ff99',
+  fontSize:'.85rem'
+}
+
+const resetButton = {
+  background:'transparent',
+  border:'none',
+  color:'#ff6666',
+  cursor:'pointer',
+  fontSize:'1rem'
 }
 
 /*

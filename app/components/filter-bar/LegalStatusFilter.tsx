@@ -3,11 +3,43 @@
 type LegalStatusFilterProps = {
   selectedlegal_status: string
   setSelectedlegal_status: (value: string) => void
+
+  showlegal_statusOptions: boolean
+  setShowlegal_statusOptions: (
+    value: boolean
+  ) => void
+
+  setShowTerrainOptions: (
+    value: boolean
+  ) => void
+
+    setShowProvinceOptions: (
+      value: boolean
+    ) => void
+
+    setShowCantonOptions: (
+      value: boolean
+    ) => void
+
+    setShowDistrictOptions: (
+      value: boolean
+    ) => void
+
 }
 
 export default function LegalStatusFilter({
   selectedlegal_status,
-  setSelectedlegal_status
+  setSelectedlegal_status,
+
+  showlegal_statusOptions,
+  setShowlegal_statusOptions,
+
+  setShowTerrainOptions,
+
+  setShowProvinceOptions,
+  setShowCantonOptions,
+  setShowDistrictOptions 
+
 }: LegalStatusFilterProps) {
 
   const legalStatuses = [
@@ -25,31 +57,80 @@ export default function LegalStatusFilter({
         LEGAL STATUS
       </p>
 
-      <div style={pillWrap}>
+      {showlegal_statusOptions && (
 
-        {legalStatuses.map((status) => (
+        <div style={pillWrap}>
+
+          {legalStatuses.map((status) => (
+
+            <button
+              key={status}
+              onClick={() => {
+
+                setSelectedlegal_status(status)
+
+                setShowTerrainOptions(false)
+
+                setShowlegal_statusOptions(false) 
+
+                setShowProvinceOptions(false)
+
+                setShowCantonOptions(false)
+
+                setShowDistrictOptions(false)
+
+              }}
+              style={
+                selectedlegal_status === status
+                  ? activePill
+                  : pill
+              }
+            >
+              {status}
+            </button>
+
+          ))}
+
+        </div>
+
+      )}
+
+      {!showlegal_statusOptions &&
+      selectedlegal_status && (
+
+        <div style={summaryCard}>
+
+          <span
+            onClick={() => {
+
+              setShowlegal_statusOptions(true)
+
+            }}
+            style={{
+              ...breadcrumbText,
+              cursor:'pointer'
+            }}
+          >
+            {selectedlegal_status}
+          </span>
 
           <button
-            key={status}
-            onClick={() =>
-              setSelectedlegal_status(
-                selectedlegal_status === status
-                  ? ''
-                  : status
-              )
-            }
-            style={
-              selectedlegal_status === status
-                ? activePill
-                : pill
-            }
+            type="button"
+            onClick={() => {
+
+              setSelectedlegal_status('')
+
+              setShowlegal_statusOptions(true)
+
+            }}
+            style={resetButton}
           >
-            {status}
+            ✕
           </button>
 
-        ))}
+        </div>
 
-      </div>
+      )}
 
     </div>
 
@@ -88,6 +169,29 @@ const activePill = {
   color:'#fff'
 }
 
+const summaryCard = {
+  display:'flex',
+  justifyContent:'space-between',
+  alignItems:'flex-start',
+  background:'#181818',
+  border:'1px solid #00ff9950',
+  borderRadius:'1rem',
+  padding:'1rem',
+  marginTop:'1rem'
+}
+
+const breadcrumbText = {
+  color:'#00ff99',
+  fontSize:'.85rem'
+}
+
+const resetButton = {
+  background:'transparent',
+  border:'none',
+  color:'#ff6666',
+  cursor:'pointer',
+  fontSize:'1rem'
+}
 /*
 
 IMPORT:

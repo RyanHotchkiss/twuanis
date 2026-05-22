@@ -62,7 +62,7 @@ export default function SellPage() {
     const [showproperty_typeOptions, setShowproperty_typeOptions] = useState(true)
     const [showproperty_areaOptions, setShowproperty_areaOptions] = useState(true)
     const [showutilityOptions, setShowutilityOptions] = useState(true)
-    const [showenvironmentOptions, setShowenvironmentOptions] = useState(false)
+    const [showenvironmentOptions, setShowenvironmentOptions] = useState(true)
     const [showAccessibilityOptions, setShowAccessibilityOptions] = useState(true)
     const [showlegal_statusOptions, setShowlegal_statusOptions] = useState(true)
     const [csvFile, setCsvFile] = useState<File | null>(null)
@@ -159,7 +159,7 @@ export default function SellPage() {
                 <main style={{
                     background: '#000',
                     minHeight: '100vh',
-                    color: '#fff',
+                    color: '#00ff99',
                     padding: '1rem'
                 }}>
 
@@ -428,6 +428,20 @@ export default function SellPage() {
 {/* PROPERTY TYPE */}
 
                     <PropertyTypeFilterS
+
+                    bedrooms={propertyData.bedrooms}
+
+                    bathrooms={propertyData.bathrooms}
+
+                    parking={propertyData.parking}
+
+                    yearBuiltRange={
+                    propertyData.year_built_range
+                    }
+
+                    constructionArea={
+                    propertyData.construction_area
+                    }
                     
                     setShowPropertyAreaOptions={
                     setShowproperty_areaOptions
@@ -452,6 +466,10 @@ export default function SellPage() {
 
                     showPropertyTypeOptions={
                         showproperty_typeOptions
+                    }
+
+                    showSummaryCard={
+                    propertyData.construction_area !== ''
                     }
 
                     setShowPropertyTypeOptions={
@@ -493,9 +511,13 @@ export default function SellPage() {
 
 {/* RESIDENTIAL STRUCTURE ATTRIBUTES */}
 
-                    {show_residential_fields && (
+                    {show_residential_fields &&
+                        !propertyData.construction_area && (
 
-                    <ResidentialAttributesS
+<ResidentialAttributesS
+
+                        showResidentialSummary={false}
+                        setShowResidentialSummary={() => {}}
 
                         bedrooms={propertyData.bedrooms}
                         setBedrooms={(value) =>
@@ -560,6 +582,14 @@ export default function SellPage() {
                         }
                         setShowConstructionAreaOptions={
                         setShow_construction_area_options
+                        }
+
+                        setShowproperty_typeOptions={
+                        setShowproperty_typeOptions
+                        }
+
+                        setShowproperty_areaOptions={
+                        setShowproperty_areaOptions
                         }
 
                     />

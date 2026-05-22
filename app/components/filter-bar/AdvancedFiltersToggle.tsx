@@ -3,13 +3,29 @@
 type AdvancedFiltersToggleProps = {
   showadvanced_filters: boolean
   setShowadvanced_filters: (value: boolean) => void
+  setShowutilityOptions?: (value: boolean) => void
+  setShowProvinceOptions: (
+  value: boolean
+    ) => void
+
+    setShowCantonOptions: (
+      value: boolean
+    ) => void
+
+    setShowDistrictOptions: (
+      value: boolean
+    ) => void
   children: React.ReactNode
 }
 
 export default function AdvancedFiltersToggle({
   showadvanced_filters,
   setShowadvanced_filters,
-  children
+  setShowutilityOptions,
+  children,
+  setShowProvinceOptions,
+  setShowCantonOptions,
+  setShowDistrictOptions
 }: AdvancedFiltersToggleProps) {
 
   return (
@@ -23,19 +39,35 @@ export default function AdvancedFiltersToggle({
         </h3>
 
         <button
-          onClick={(e) => {
-            e.preventDefault()
+              onClick={(e) => {
 
-            setShowadvanced_filters(
-              !showadvanced_filters
-            )
-          }}
-          style={toggleButton}
-        >
-          {showadvanced_filters
-            ? 'Collapse'
-            : 'Expand'}
-        </button>
+                e.preventDefault()
+
+                const nextState =
+                  !showadvanced_filters
+
+                setShowadvanced_filters(
+                  nextState
+                )
+
+                if (nextState) {
+
+                  setShowutilityOptions?.(false)
+
+                  setShowProvinceOptions(false)
+
+                  setShowCantonOptions(false)
+
+                  setShowDistrictOptions(false)
+                }
+
+              }}
+              style={toggleButton}
+            >
+              {showadvanced_filters
+                ? 'Collapse'
+                : 'Expand'}
+            </button>
 
       </div>
 

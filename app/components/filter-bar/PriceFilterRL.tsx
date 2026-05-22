@@ -1,111 +1,114 @@
 'use client'
 
 type PriceFilterRLProps = {
+
   selectedmonthly_price: string
-  setSelectedmonthly_price: (value: string) => void
+
+  setSelectedmonthly_price: (
+    value: string
+  ) => void
+
+  showPriceOptions: boolean
+
+  setShowPriceOptions: (
+    value: boolean
+  ) => void
+
 }
 
 export default function PriceFilterRL({
+
   selectedmonthly_price,
-  setSelectedmonthly_price
+  setSelectedmonthly_price,
+
+  showPriceOptions,
+  setShowPriceOptions
+
 }: PriceFilterRLProps) {
+
+  const priceOptions = [
+    '-₡100K / month',
+    '₡100K - ₡200K / month',
+    '₡200K - ₡300K / month',
+    '₡300K - ₡400K / month',
+    '₡400K+ / month'
+  ]
 
   return (
 
     <div>
 
       <h3 style={filterHeading}>
-        price
+        PRICE
       </h3>
 
-      <div style={pillWrap}>
+      {/* COLLAPSED */}
+      {!showPriceOptions &&
+      selectedmonthly_price && (
 
-        <button
-          onClick={() =>
-            setSelectedmonthly_price(
-              selectedmonthly_price === '-₡100K / month'
-                ? ''
-                : '-₡100K / month'
-            )
-          }
-          style={
-            selectedmonthly_price === '-₡100K / month'
-              ? activePill
-              : pill
-          }
-        >
-          -₡100K / month
-        </button>
+        <div style={summaryCard}>
 
-        <button
-          onClick={() =>
-            setSelectedmonthly_price(
-              selectedmonthly_price === '₡100K - ₡200K / month'
-                ? ''
-                : '₡100K - ₡200K / month'
-            )
-          }
-          style={
-            selectedmonthly_price === '₡100K - ₡200K / month'
-              ? activePill
-              : pill
-          }
-        >
-          ₡100K - ₡200K / month
-        </button>
+          <span
+            onClick={() =>
+              setShowPriceOptions(true)
+            }
+            style={{
+              ...summaryText,
+              cursor:'pointer'
+            }}
+          >
+            {selectedmonthly_price}
+          </span>
 
-        <button
-          onClick={() =>
-            setSelectedmonthly_price(
-              selectedmonthly_price === '₡200K - ₡300K / month'
-                ? ''
-                : '₡200K - ₡300K / month'
-            )
-          }
-          style={
-            selectedmonthly_price === '₡200K - ₡300K / month'
-              ? activePill
-              : pill
-          }
-        >
-          ₡200K - ₡300K / month
-        </button>
+          <button
+            type="button"
+            onClick={() => {
 
-        <button
-          onClick={() =>
-            setSelectedmonthly_price(
-              selectedmonthly_price === '₡300K - ₡400K / month'
-                ? ''
-                : '₡300K - ₡400K / month'
-            )
-          }
-          style={
-            selectedmonthly_price === '₡300K - ₡400K / month'
-              ? activePill
-              : pill
-          }
-        >
-          ₡300K - ₡400K / month
-        </button>
+              setSelectedmonthly_price('')
 
-        <button
-          onClick={() =>
-            setSelectedmonthly_price(
-              selectedmonthly_price === '₡400K+ / month'
-                ? ''
-                : '₡400K+ / month'
-            )
-          }
-          style={
-            selectedmonthly_price === '₡400K+ / month'
-              ? activePill
-              : pill
-          }
-        >
-          ₡400K+ / month
-        </button>
+              setShowPriceOptions(true)
 
-      </div>
+            }}
+            style={resetButton}
+          >
+            ✕
+          </button>
+
+        </div>
+
+      )}
+
+      {/* OPTIONS */}
+      {showPriceOptions && (
+
+        <div style={pillWrap}>
+
+          {priceOptions.map((price) => (
+
+            <button
+              type="button"
+              key={price}
+              onClick={() => {
+
+                setSelectedmonthly_price(price)
+
+                setShowPriceOptions(false)
+
+              }}
+              style={
+                selectedmonthly_price === price
+                  ? activePill
+                  : pill
+              }
+            >
+              {price}
+            </button>
+
+          ))}
+
+        </div>
+
+      )}
 
     </div>
 
@@ -148,17 +151,25 @@ const activePill = {
   transition:'all .2s ease'
 }
 
-/*
+const summaryCard = {
+  display:'flex',
+  justifyContent:'space-between',
+  alignItems:'center',
+  background:'#181818',
+  border:'1px solid #222',
+  borderRadius:'1rem',
+  padding:'1rem'
+}
 
-IMPORT:
+const summaryText = {
+  color:'#00ff99',
+  fontSize:'.85rem'
+}
 
-import PriceFilterRL from '@/app/components/filter-bar/PriceFilterRL'
-
-USAGE:
-
-<PriceFilterRL
-  selectedmonthly_price={selectedmonthly_price}
-  setSelectedmonthly_price={setSelectedmonthly_price}
-/>
-
-*/
+const resetButton = {
+  background:'transparent',
+  border:'none',
+  color:'#ff6666',
+  cursor:'pointer',
+  fontSize:'1rem'
+}

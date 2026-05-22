@@ -64,37 +64,25 @@ export default function LocationSelectorS({
 
   <div>
 
- {/* HEADER */}
-          <div style={{
-            display:'flex',
-            justifyContent:'space-between',
-            alignItems:'center',
-            marginBottom:'1rem'
-          }}>
+{/* HEADER */}
+              <div style={{
+                marginBottom:'1rem'
+              }}>
 
-            <h2 style={sectionHeading}>
-              Location
-            </h2>
+                <h2 style={sectionHeading}>
+                  Location
+                </h2>
 
-            <button
-            type="button"
-              onClick={() =>
-                setShowLocationOptions(
-                  !showLocationOptions
-                )
-              }
-              style={collapseButton}
-            >
-              {showLocationOptions ? '−' : '+'}
-            </button>
-
-          </div>
+              </div>
 
 {/* COLLAPSED SUMMARY */}
 
 {/* EXPANDED OPTIONS */}
          
-          {!showLocationOptions && (
+          {!showLocationOptions &&
+              province &&
+              canton &&
+              district && (
 
             <div style={summaryCard}>
 
@@ -361,7 +349,7 @@ const collapseButton = {
 const summaryCard = {
   display:'flex',
   justifyContent:'space-between',
-  alignItems:'center',
+  alignItems:'flex-start',
   background:'#181818',
   border:'1px solid #222',
   borderRadius:'1rem',

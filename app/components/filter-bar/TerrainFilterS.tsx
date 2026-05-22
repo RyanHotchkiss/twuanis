@@ -158,7 +158,7 @@ const collapseButton = {
 const summaryCard = {
   display:'flex',
   justifyContent:'space-between',
-  alignItems:'center',
+  alignItems:'flex-start',
   background:'#111',
   border:'1px solid #222',
   borderRadius:'1rem',

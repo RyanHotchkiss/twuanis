@@ -5,21 +5,19 @@ import Link from 'next/link'
 import { createListingId } from '@/lib/createListingId'
 import { supabase } from '@/lib/supabase'
 import Breadcrumbs from '@/app/components/Breadcrumbs'
-import rawListings from '@/data/encuentra24-rent-lease-listings.json'
+import rawListings from '@/data/encuentra24-sale-listings.json'
 import Favorites from '@/app/components/Favorites'
 import SwipeCard from '@/app/components/SwipeCard'
 import LocationFilter from '@/app/components/filter-bar/LocationFilter'
-import AddPropertyRL from '@/app/components/filter-bar/AddPropertyRL'
 import PriceFilterRL from '@/app/components/filter-bar/PriceFilterRL'
 import PropertyTypeFilter from '@/app/components/filter-bar/PropertyTypeFilter'
-import UseTypeFilter from '@/app/components/filter-bar/UseTypeFilter'
-import LotSizeFilter from '@/app/components/filter-bar/LotSizeFilter'
 import UtilitiesFilter from '@/app/components/filter-bar/UtilitiesFilter'
 import AdvancedFiltersToggle from '@/app/components/filter-bar/AdvancedFiltersToggle'
 import AccessibilityFilter from '@/app/components/filter-bar/AccessibilityFilter'
 import EnvironmentFilter from '@/app/components/filter-bar/EnvironmentFilter'
-import LegalStatusFilter from '@/app/components/filter-bar/LegalStatusFilter'
-import TerrainFilter from '@/app/components/filter-bar/TerrainFilter'
+import PropertyAreaFilter from '@/app/components/filter-bar/PropertyAreaFilter'
+import ResidentialAttributesS from '@/app/components/filter-bar/ResidentialAttributesS'
+import CreateRentalListingButton from '@/app/components/CreateRentalListingButton'
 import {
       provinces,
       districts
@@ -40,56 +38,78 @@ const navButton = {
 
   const [properties, setProperties] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
-
   const [filters, setFilters] = useState({
     province: '',
     canton: '',
     district: '',
     monthly_price: '',
     property_type: '',
+    bedrooms: '',
+    bathrooms: '',
+    parking: '',
+    year_built: '',
+    construction_area: '',
     use_type: '',
     property_area: '',
     utility: [] as string[],
     legal_status: '',
-    environment: '',
-    accessibility: [] as string[],
-    terrain: [] as string[],
+    environment: [] as string[],
+    accessibility: '',
+    terrain: [] as string[]
   })
 
   const [showadvanced_filters, setShowadvanced_filters] = useState(false)
+  const [showProvinceOptions, setShowProvinceOptions] = useState(true)
+  const [showLocationOptions, setShowLocationOptions] = useState(true)
+  const [showCantonOptions, setShowCantonOptions] = useState(false)
+  const [showDistrictOptions, setShowDistrictOptions] = useState(false)
+  const [showPriceOptions, setShowPriceOptions] = useState(true)
+  const [showproperty_typeOptions, setShowproperty_typeOptions] = useState(true)
+  const [showproperty_areaOptions, setShowproperty_areaOptions] = useState(true)
+  const [showutilityOptions, setShowutilityOptions] = useState(true)
+  const [showenvironmentOptions, setShowenvironmentOptions] = useState(true)
+  const [showAccessibilityOptions, setShowAccessibilityOptions] = useState(true)
+  const [showTerrainOptions, setShowTerrainOptions] = useState(true)
+  const [showlegal_statusOptions, setShowlegal_statusOptions] = useState(true)
+  const [showBedroomOptions, setShowBedroomOptions] = useState(false)
+  const [showBathroomOptions, setShowBathroomOptions] = useState(false)
+  const [showParkingOptions, setShowParkingOptions] = useState(false)
+  const [showYearBuiltOptions, setShowYearBuiltOptions] = useState(false)
+  const [showConstructionAreaOptions, setShowConstructionAreaOptions] = useState(false)
+  const [showResidentialSummary, setShowResidentialSummary] = useState(false)
 
   const [showMobileFilters, setShowMobileFilters] = useState(false)
 
   const [isMobile, setIsMobile] =
     useState(false)
 
-    useEffect(() => {
+  useEffect(() => {
 
-      function handleResize() {
+    function handleResize() {
 
-        setIsMobile(
-          window.innerWidth <= 768
-        )
+      setIsMobile(
+        window.innerWidth <= 768
+      )
 
-      }
+    }
 
-      handleResize()
+    handleResize()
 
-      window.addEventListener(
+    window.addEventListener(
+      'resize',
+      handleResize
+    )
+
+    return () => {
+
+      window.removeEventListener(
         'resize',
         handleResize
       )
 
-      return () => {
+    }
 
-        window.removeEventListener(
-          'resize',
-          handleResize
-        )
-
-      }
-
-    }, [])
+  }, [])
 
     useEffect(() => {
 
@@ -113,7 +133,7 @@ const navButton = {
         )
 
         const { data, error } = await supabase
-          .from('rent_lease_listings')
+          .from('sale_listing')
           .select('*')
           .order('id', { ascending: false })
 
@@ -164,6 +184,44 @@ const navButton = {
 
     }, [])
 
+    const bedroomOptions = [
+        '1+ Bedrooms',
+        '2+ Bedrooms',
+        '3+ Bedrooms',
+        '4+ Bedrooms',
+        '5+ Bedrooms'
+      ]
+
+      const bathroomOptions = [
+        '1+ Bathrooms',
+        '2+ Bathrooms',
+        '3+ Bathrooms',
+        '4+ Bathrooms'
+      ]
+
+      const parkingOptions = [
+        '1+ Spaces',
+        '2+ Spaces',
+        '3+ Spaces',
+        '4+ Spaces'
+      ]
+
+      const yearBuiltOptions = [
+        'Pre-1980',
+        '1980s',
+        '1990s',
+        '2000s',
+        '2010s',
+        '2020+'
+      ]
+
+      const constructionAreaOptions = [
+        '<50m²',
+        '50-100m²',
+        '100-200m²',
+        '200-400m²',
+        '400m²+'
+      ]
                           
 const filteredProperties = properties.filter((property) => {
 
@@ -190,7 +248,7 @@ const filteredProperties = properties.filter((property) => {
 
                   if (
                     filters.monthly_price &&
-                    property.monthly_price !== filters.monthly_price
+                    property.price_range !== filters.monthly_price
                   ) {
                     return false
                   }
@@ -217,8 +275,12 @@ const filteredProperties = properties.filter((property) => {
                   }
 
                   if (
-                    filters.utility &&
-                    property.utility !== filters.utility
+                    filters.utility.length > 0 &&
+                    !filters.utility.some((item) =>
+                      Array.isArray(property.utility)
+                        ? property.utility.includes(item)
+                        : property.utility === item
+                    )
                   ) {
                     return false
                   }
@@ -231,22 +293,30 @@ const filteredProperties = properties.filter((property) => {
                   }
 
                   if (
-                    filters.environment &&
-                    property.environment !== filters.environment
+                    filters.environment.length > 0 &&
+                    !filters.environment.some((item) =>
+                      Array.isArray(property.environment)
+                        ? property.environment.includes(item)
+                        : property.environment === item
+                    )
                   ) {
                     return false
                   }
 
                   if (
-                    filters.accessibility &&
-                    property.accessibility !== filters.accessibility
-                  ) {
-                    return false
-                  }
+                      filters.accessibility &&
+                      property.accessibility !== filters.accessibility
+                    ) {
+                      return false
+                    }
 
                   if (
-                    filters.terrain &&
-                    property.terrain !== filters.terrain
+                    filters.terrain.length > 0 &&
+                    !filters.terrain.some((item) =>
+                      Array.isArray(property.terrain)
+                        ? property.terrain.includes(item)
+                        : property.terrain === item
+                    )
                   ) {
                     return false
                   }
@@ -269,7 +339,7 @@ const filteredProperties = properties.filter((property) => {
 
           
 
-        {/* TOP NAV */}
+{/* TOP LEFT NAV */}
             <div style={{
               display: 'flex',
               justifyContent: 'space-between',
@@ -294,8 +364,8 @@ const filteredProperties = properties.filter((property) => {
                             href: '/en/'
                           },
                           {
-                            label: 'Rent & Lease',
-                            href: '/en/rent-lease'
+                            label: 'Buy',
+                            href: '/en/buy'
                           }
                         ]}
                       />
@@ -307,48 +377,49 @@ const filteredProperties = properties.filter((property) => {
                         />
 
                         <SwipeCard
-                          href="/en/swipe/rent-lease"
+                          href="/en/swipe/buy"
                           label="Swipe View"
                         />
 
-                        {isMobile && (
+                          {isMobile && (
 
-                            <button
-                              onClick={() =>
-                                setShowMobileFilters(true)
-                              }
-                              style={{
-                                position: 'fixed',
-                                top: '20px',
-                                right: '20px',
-                                zIndex: 9999,
+                      <button
+                        onClick={() =>
+                          setShowMobileFilters(true)
+                        }
+                        style={{
+                          position: 'fixed',
+                          top: '20px',
+                          right: '20px',
+                          zIndex: 9999,
 
-                                background: '#00ff9920',
-                                color: '#ff6900',
+                          background: '#00ff9920',
+                          color: '#ff6900',
 
-                                border: 'none',
-                                borderRadius: '999px',
+                          border: 'none',
+                          borderRadius: '999px',
 
-                                padding: '12px 22px',
+                          padding: '12px 22px',
 
-                                fontSize: '15px',
+                          
+                          fontSize: '15px',
 
-                                boxShadow:
-                                  '0 10px 30px rgba(0,0,0,.45)',
+                          boxShadow:
+                            '0 10px 30px rgba(0,0,0,.45)',
 
-                                cursor: 'pointer'
-                              }}
-                            >
-                              Filters
-                            </button>
+                          cursor: 'pointer'
+                        }}
+                      >
+                        Filters
+                      </button>
 
-                          )}
+                    )}
               </div>
 
 
-{/* RIGHT */}
+{/* TOP RIGHT NAV */}
              
-            <AddPropertyRL />
+            <CreateRentalListingButton />
 
             </div>
 
@@ -370,16 +441,19 @@ const filteredProperties = properties.filter((property) => {
             color: '#999',
             fontSize: '22px'
           }}>
-            Find Properties for Rent & Lease
+            Find a Rent Property or Commercial Lease
           </p>
 
         </div>
 
+                 
+
         {/* MAIN GRID */}
           <div style={{
-            display: 'flex',
-            gap: '1rem',
-            alignItems: 'flex-start'
+              display: 'flex',
+              gap: '1rem',
+              alignItems: 'flex-start',
+              position: 'relative'
           }}>
 
         {/* BUY EXPERIENCE */}
@@ -388,84 +462,98 @@ const filteredProperties = properties.filter((property) => {
               background: '#111',
               borderRadius: '28px',
               overflow: isMobile
-                  ? 'visible'
-                  : 'hidden',
+                ? 'visible'
+                : 'hidden',
               textDecoration: 'none',
               color: '#fff',
               border: '1px solid #222',
               display: 'grid',
               gridTemplateColumns: isMobile
-                  ? '1fr'
-                  : '320px 1fr',
+                ? '1fr'
+                : '320px 1fr',
               minHeight: '620px',
               width: '100%'
             }}
           >
-{/* SIDEBAR */}
-                <div
-                  style={{
-                    background: '#000000',
-                    borderRight: '1px solid #222',
-                    padding: '25px',
 
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '28px',
+{/* SIDEBAR LEFT */}
+            <div
+              style={{
+                background: '#000000',
+                borderRight: '1px solid #222',
+                padding: '25px',
 
-                    position: isMobile
-                      ? 'fixed'
-                      : 'relative',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '28px',
 
-                    top: 0,
+                position: isMobile
+                  ? 'fixed'
+                  : 'relative',
 
-                    left:
-                      isMobile && !showMobileFilters
-                        ? '-100%'
-                        : '0',
+                top: 0,
 
-                    width: isMobile
-                      ? '85vw'
-                      : '320px',
+                left:
+                  isMobile && !showMobileFilters
+                    ? '-100%'
+                    : '0',
 
-                    height: isMobile
-                      ? '100vh'
-                      : 'auto',
+                width: isMobile
+                  ? '85vw'
+                  : '320px',
 
-                    zIndex: 1500,
+                height: isMobile
+                  ? '100vh'
+                  : 'auto',
 
-                    transition: 'left .3s ease',
+                zIndex: 1500,
 
-                    overflowY: 'auto'
-                  }}
-                >
+                transition: 'left .3s ease',
 
-                  {isMobile && (
+                overflowY: 'auto'
+              }}
+            >
 
-                  <button
-                    onClick={() =>
-                      setShowMobileFilters(false)
-                    }
-                    style={{
-                      background: '#00ff9980',
-                      border: '1px solid #333',
-                      color: '#fff',
+                    {isMobile && (
 
-                      fontSize: '18px',
-                      padding: '12px',
+                      <button
+                        onClick={() =>
+                          setShowMobileFilters(false)
+                        }
+                        style={{
+                          background: '#00ff9980',
+                          border: '1px solid #333',
+                          color: '#fff',
+                          
+                          fontSize: '18px',
+                          padding: '12px',
 
-                      borderRadius: '12px',
+                          borderRadius: '12px',
 
-                      marginBottom: '20px',
+                          marginBottom: '20px',
 
-                      cursor: 'pointer'
-                    }}
-                  >
-                    Close Filters
-                  </button>
+                          cursor: 'pointer'
+                        }}
+                      >
+                        Close Filters
+                      </button>
 
-                )}
+                    )}
+
 <LocationFilter
 
+                    showLocationOptions={showLocationOptions}
+                    setShowLocationOptions={setShowLocationOptions}
+
+                    showProvinceOptions={showProvinceOptions}
+                    setShowProvinceOptions={setShowProvinceOptions}
+
+                    showCantonOptions={showCantonOptions}
+                    setShowCantonOptions={setShowCantonOptions}
+
+                    showDistrictOptions={showDistrictOptions}
+                    setShowDistrictOptions={setShowDistrictOptions}
+                    
                     provinces={provinces}
                     districts={districts}
 
@@ -473,140 +561,409 @@ const filteredProperties = properties.filter((property) => {
                     selectedcanton={filters.canton}
                     selecteddistrict={filters.district}
 
-                    setSelectedprovince={(value) =>
+                    setSelectedprovince={(value) => {
+
                       setFilters(prev => ({
                         ...prev,
                         province: value,
                         canton: '',
                         district: ''
                       }))
-                    }
 
-                    setSelectedcanton={(value) =>
+                      setShowProvinceOptions(false)
+                      setShowCantonOptions(true)
+                      setShowDistrictOptions(false)
+
+                    }}
+
+                    setSelectedcanton={(value) => {
+
                       setFilters(prev => ({
                         ...prev,
                         canton: value,
                         district: ''
                       }))
-                    }
 
-                    setSelecteddistrict={(value) =>
-                      setFilters(prev => ({
-                        ...prev,
-                        district: value
-                      }))
-                    }
+                      setShowCantonOptions(false)
+                      setShowDistrictOptions(true)
+
+                    }}
+
+                      setSelecteddistrict={(value) => {
+
+                        setFilters(prev => ({
+                          ...prev,
+                          district: value
+                        }))
+
+                        setShowProvinceOptions(false)
+                        setShowCantonOptions(false)
+                        setShowDistrictOptions(false)
+
+                        setShowproperty_typeOptions(true)
+
+                      }}
 
                   />
 
 <PriceFilterRL
-                      selectedmonthly_price={filters.monthly_price}
-                      setSelectedmonthly_price={(value) =>
-                        setFilters(prev => ({
-                          ...prev,
-                          monthly_price: value
-                        }))
-                      }
-                    />
+
+                                showPriceOptions={showPriceOptions}
+                                setShowPriceOptions={setShowPriceOptions}
+
+                                selectedmonthly_price={filters.monthly_price}
+
+                                setSelectedmonthly_price={(value) => {
+
+                                setFilters(prev => ({
+                                  ...prev,
+                                  monthly_price: value
+                                }))
+
+                                setShowPriceOptions(false)
+
+                                setShowProvinceOptions(false)
+                                setShowCantonOptions(false)
+                                setShowDistrictOptions(false)
+
+                                setShowproperty_typeOptions(true)
+
+                              }}
+
+                              />
+
 
 <PropertyTypeFilter
-                    selectedproperty_type={filters.property_type}
-                    setSelectedproperty_type={(value) =>
-                      setFilters(prev => ({
-                        ...prev,
-                        property_type: value
-                      }))
-                    }
-                  />
 
-<UseTypeFilter
-                      selecteduse_type={filters.use_type}
-                      setSelecteduse_type={(value) =>
-                        setFilters(prev => ({
-                          ...prev,
-                          use_type: value
-                        }))
-                      }
-                    />
+                              showproperty_typeOptions={showproperty_typeOptions}
+                              setShowproperty_typeOptions={setShowproperty_typeOptions}
 
-<LotSizeFilter
-                        selectedproperty_area={filters.property_area}
-                        setSelectedproperty_area={(value) =>
-                          setFilters(prev => ({
-                            ...prev,
-                            property_area: value
-                          }))
-                        }
-                      />
+                              setShowproperty_areaOptions={setShowproperty_areaOptions}
+
+                              setShowBedroomOptions={
+                                setShowBedroomOptions
+                              }
+
+                              setShowProvinceOptions={
+                                setShowProvinceOptions
+                              }
+
+                              setShowCantonOptions={
+                                setShowCantonOptions
+                              }
+
+                              setShowDistrictOptions={
+                                setShowDistrictOptions
+                              }
+
+                              selectedproperty_type={filters.property_type}
+
+                              bedrooms={filters.bedrooms}
+
+                              bathrooms={filters.bathrooms}
+
+                              parking={filters.parking}
+
+                              yearBuiltRange={filters.year_built}
+
+                              constructionArea={filters.construction_area}
+
+                              setSelectedproperty_type={(value) => {
+
+                                setFilters(prev => ({
+                                  ...prev,
+                                  property_type: value
+                                }))
+
+                              }}
+
+                            />
+
+                                        {
+                                          (
+                                            filters.property_type === 'House' ||
+                                            filters.property_type === 'Condo' ||
+                                            filters.property_type === 'Cabin'
+                                          ) && (
+
+                                            <ResidentialAttributesS
+
+                                              setShowproperty_typeOptions={
+                                                setShowproperty_typeOptions
+                                              }
+
+                                              setShowproperty_areaOptions={
+                                                setShowproperty_areaOptions
+                                              }
+
+                                              setShowResidentialSummary={
+                                                setShowResidentialSummary
+                                              }
+
+                                              bedrooms={filters.bedrooms}
+                                              setBedrooms={(value) =>
+                                                setFilters(prev => ({
+                                                  ...prev,
+                                                  bedrooms: value
+                                                }))
+                                              }
+
+                                              bathrooms={filters.bathrooms}
+                                              setBathrooms={(value) =>
+                                                setFilters(prev => ({
+                                                  ...prev,
+                                                  bathrooms: value
+                                                }))
+                                              }
+
+                                              parking={filters.parking}
+                                              setParking={(value) =>
+                                                setFilters(prev => ({
+                                                  ...prev,
+                                                  parking: value
+                                                }))
+                                              }
+
+                                              yearBuiltRange={filters.year_built}
+                                              setYearBuiltRange={(value) =>
+                                                setFilters(prev => ({
+                                                  ...prev,
+                                                  year_built: value
+                                                }))
+                                              }
+
+                                              constructionArea={filters.construction_area}
+                                              setConstructionArea={(value) =>
+                                                setFilters(prev => ({
+                                                  ...prev,
+                                                  construction_area: value
+                                                }))
+                                              }
+
+                                              bedroomOptions={bedroomOptions}
+                                              bathroomOptions={bathroomOptions}
+                                              parkingOptions={parkingOptions}
+                                              yearBuiltOptions={yearBuiltOptions}
+                                              constructionAreaOptions={constructionAreaOptions}
+
+                                              showBedroomOptions={showBedroomOptions}
+                                              setShowBedroomOptions={setShowBedroomOptions}
+
+                                              showBathroomOptions={showBathroomOptions}
+                                              setShowBathroomOptions={setShowBathroomOptions}
+
+                                              showParkingOptions={showParkingOptions}
+                                              setShowParkingOptions={setShowParkingOptions}
+
+                                              showYearBuiltOptions={showYearBuiltOptions}
+                                              setShowYearBuiltOptions={setShowYearBuiltOptions}
+
+                                              showConstructionAreaOptions={
+                                                showConstructionAreaOptions
+                                              }
+
+                                              setShowConstructionAreaOptions={
+                                                setShowConstructionAreaOptions
+                                              }
+
+                                              showResidentialSummary={showResidentialSummary}
+
+                                            />
+
+                                          )
+                                        }
+
+<PropertyAreaFilter
+
+                          showproperty_areaOptions={
+                            showproperty_areaOptions
+                          }
+
+                          setShowproperty_areaOptions={
+                            setShowproperty_areaOptions
+                          }
+
+                          setShowutilityOptions={
+                            setShowutilityOptions
+                          }
+
+                          selectedproperty_area={
+                            filters.property_area
+                          }
+
+                          setShowProvinceOptions={
+                            setShowProvinceOptions
+                          }
+
+                          setShowCantonOptions={
+                            setShowCantonOptions
+                          }
+
+                          setShowDistrictOptions={
+                            setShowDistrictOptions
+                          }
+
+                          setSelectedproperty_area={(value) => {
+
+                            setFilters(prev => ({
+                              ...prev,
+                              property_area: value
+                            }))
+
+                            setShowproperty_areaOptions(false)
+
+                            setShowutilityOptions(true)
+
+                          }}
+
+                        />
 
 <UtilitiesFilter
-                        selectedutility={filters.utility}
-                        setSelectedutility={(value) =>
+
+                        showutilityOptions={
+                          showutilityOptions
+                        }
+
+                        setShowutilityOptions={
+                          setShowutilityOptions
+                        }
+
+                        selectedutility={
+                          filters.utility
+                        }
+
+                        setShowProvinceOptions={
+                        setShowProvinceOptions
+                      }
+
+                      setShowCantonOptions={
+                        setShowCantonOptions
+                      }
+
+                      setShowDistrictOptions={
+                        setShowDistrictOptions
+                      }
+
+                        setSelectedutility={(value) => {
+
                           setFilters(prev => ({
                             ...prev,
                             utility: value
                           }))
-                        }
+
+                          setShowenvironmentOptions(true)
+
+                        }}
+
                       />
+
 
 <AdvancedFiltersToggle
-                        showadvanced_filters={showadvanced_filters}
-                        setShowadvanced_filters={setShowadvanced_filters}
-                      >
+  showadvanced_filters={showadvanced_filters}
+  setShowadvanced_filters={setShowadvanced_filters}
+  setShowutilityOptions={setShowutilityOptions}
+  setShowProvinceOptions={
+  setShowProvinceOptions
+    }
 
-  <LegalStatusFilter
-                        selectedlegal_status={filters.legal_status}
-                        setSelectedlegal_status={(value) =>
-                          setFilters(prev => ({
-                            ...prev,
-                            legal_status: value
-                          }))
-                        }
-                      />
+    setShowCantonOptions={
+      setShowCantonOptions
+    }
 
-  <EnvironmentFilter
-                        selectedenvironment={filters.environment}
-                        setSelectedenvironment={(value) =>
-                          setFilters(prev => ({
-                            ...prev,
-                            environment: value
-                          }))
-                        }
-                      />
+    setShowDistrictOptions={
+      setShowDistrictOptions
+    }
+>
 
-  <AccessibilityFilter
-                        selectedaccessibility={filters.accessibility}
-                        setSelectedaccessibility={(value) =>
-                          setFilters(prev => ({
-                            ...prev,
-                            accessibility: value
-                          }))
-                        }
-                      />
+<EnvironmentFilter
 
-  <TerrainFilter
-                        selectedterrain={filters.terrain}
-                        setSelectedterrain={(value) =>
-                          setFilters(prev => ({
-                            ...prev,
-                            terrain: value
-                          }))
-                        }
-                      />
+                    showenvironmentOptions={
+                      showenvironmentOptions
+                    }
+
+                    setShowenvironmentOptions={
+                      setShowenvironmentOptions
+                    }
+
+                    selectedenvironment={
+                      filters.environment
+                    }
+
+                    setSelectedenvironment={(value) => {
+
+                        setFilters(prev => ({
+                          ...prev,
+                          environment: value
+                        }))
+
+                        setShowAccessibilityOptions(true)
+
+                      }}
+
+                  />
+
+
+
+<AccessibilityFilter
+
+                  showaccessibilityOptions={
+                    showAccessibilityOptions
+                  }
+
+                  setShowaccessibilityOptions={
+                    setShowAccessibilityOptions
+                  }
+
+                  setShowenvironmentOptions={
+                    setShowenvironmentOptions
+                  }
+
+                  setShowTerrainOptions={
+                    setShowTerrainOptions
+                  }
+
+                  setShowProvinceOptions={
+                    setShowProvinceOptions
+                  }
+
+                  setShowCantonOptions={
+                    setShowCantonOptions
+                  }
+
+                  setShowDistrictOptions={
+                    setShowDistrictOptions
+                  }
+
+                  selectedaccessibility={
+                    filters.accessibility
+                  }
+
+                  setSelectedaccessibility={(value) => {
+
+                    setFilters(prev => ({
+                      ...prev,
+                      accessibility: value
+                    }))
+
+                    setShowTerrainOptions(true)
+
+                  }}
+
+                />
 
 </AdvancedFiltersToggle>
-                      
 
-                    
                 </div>   
 
 {/* PROPERTY PREVIEW right-center column */}
                 <div
                   style={{
-                    padding: '30px',
+                    padding: isMobile ? '16px' : '30px',
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'space-between'
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    overflow: 'hidden'
                   }}
                 >
 
@@ -616,18 +973,18 @@ const filteredProperties = properties.filter((property) => {
                       style={{
                         display: 'grid',
                         gridTemplateColumns:
-                  isMobile
-                    ? '1fr'
-                    : 'repeat(5, 1fr)',
-                                        gap: '1.25rem',
-                                        alignContent: 'start'
-                                      }}
-                                    >
+  isMobile
+    ? '1fr'
+    : 'repeat(5, 1fr)',
+                        gap: '1.25rem',
+                        alignContent: 'start'
+                      }}
+                    >
 
                               {filteredProperties.map((property) => (
 
                                 <Link
-                                  href={`/en/rent-lease/listing/${property.id}`}
+                                  href={`/en/buy/listing/${property.id}`}
                                   key={property.id}
                                   style={{
                                     textDecoration: 'none',
@@ -838,7 +1195,7 @@ const filteredProperties = properties.filter((property) => {
                               marginBottom: '10px'
                             }}
                           >
-                            No matching rental properties
+                            No matching properties for sale
                           </h2>
 
                           <p
@@ -846,20 +1203,19 @@ const filteredProperties = properties.filter((property) => {
                               color: '#777'
                             }}
                           >
-                            Try adjusting your rental filters.
+                            Try adjusting your property filters.
                           </p>
 
                         </div>
-
                       )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </main>
-      )
-    }
+           </div>     
+    </main>
+  )
+}
 
 
 const filterHeading = {

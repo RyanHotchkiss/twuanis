@@ -1,5 +1,5 @@
 'use client'
-
+import { useState } from 'react'
 type ResidentialAttributesSProps = {
 
   bedrooms: string
@@ -17,26 +17,49 @@ type ResidentialAttributesSProps = {
   constructionArea: string
   setConstructionArea: (value: string) => void
 
+  setShowproperty_typeOptions: (
+    value: boolean
+  ) => void
+
+  setShowproperty_areaOptions: (
+    value: boolean
+  ) => void
+
   bedroomOptions: string[]
   bathroomOptions: string[]
   parkingOptions: string[]
   yearBuiltOptions: string[]
   constructionAreaOptions: string[]
 
+  showResidentialSummary: boolean
+  setShowResidentialSummary: (
+    value: boolean
+  ) => void
+
   showBedroomOptions: boolean
-  setShowBedroomOptions: (value: boolean) => void
+  setShowBedroomOptions: (
+    value: boolean
+  ) => void
 
   showBathroomOptions: boolean
-  setShowBathroomOptions: (value: boolean) => void
+  setShowBathroomOptions: (
+    value: boolean
+  ) => void
 
   showParkingOptions: boolean
-  setShowParkingOptions: (value: boolean) => void
+  setShowParkingOptions: (
+    value: boolean
+  ) => void
 
   showYearBuiltOptions: boolean
-  setShowYearBuiltOptions: (value: boolean) => void
+  setShowYearBuiltOptions: (
+    value: boolean
+  ) => void
 
   showConstructionAreaOptions: boolean
-  setShowConstructionAreaOptions: (value: boolean) => void
+  setShowConstructionAreaOptions: (
+    value: boolean
+  ) => void
 
 }
 
@@ -53,6 +76,10 @@ export default function ResidentialAttributesS({
 
   yearBuiltRange,
   setYearBuiltRange,
+
+  setShowproperty_typeOptions,
+
+  setShowproperty_areaOptions,
 
   constructionArea,
   setConstructionArea,
@@ -76,444 +103,567 @@ export default function ResidentialAttributesS({
   setShowYearBuiltOptions,
 
   showConstructionAreaOptions,
-  setShowConstructionAreaOptions
+  setShowConstructionAreaOptions,
+
+  showResidentialSummary,
+  setShowResidentialSummary,
 
 }: ResidentialAttributesSProps) {
 
   return (
 
-    <div style={{
-      display:'flex',
-      flexDirection:'column',
-      gap:'2rem'
-    }}>
+              <div style={{
+                display:'flex',
+                flexDirection:'column',
+                gap:'2rem'
+              }}>
 
-{/* BEDROOMS */}
+                {/* RESIDENTIAL SUMMARY */}
 
-            <div>
+                {showResidentialSummary && (
 
-              {!showBedroomOptions && bedrooms && (
+                  <div
+                    style={{
+                      ...summaryCard,
+                      cursor:'pointer',
+                      flexDirection:'column',
+                      alignItems:'flex-start',
+                      gap:'.5rem'
+                    }}
+                    onClick={() => {
 
-                <div
-                  style={{
-                    ...summaryCard,
-                    cursor:'pointer'
-                  }}
-                  onClick={() => {
-
-                    setShowBedroomOptions(true)
-
-                  }}
-                >
-
-                  <span>
-                    {bedrooms} →
-                  </span>
-
-                  <button
-                    type="button"
-                    onClick={(e) => {
-
-                      e.stopPropagation()
-
-                      setBedrooms('')
+                      setShowResidentialSummary(false)
 
                       setShowBedroomOptions(true)
-                      setShowBathroomOptions(false)
 
                     }}
-                    style={resetButton}
                   >
-                    ✕
-                  </button>
 
-                </div>
+                    <span style={{
+                            color:'#00ff99',
+                            lineHeight:'1.7',
+                            wordBreak:'break-word',
+                            paddingRight:'1rem',
+                            flex:'1',
+                            display:'flex',
+                            flexWrap:'wrap',
+                            alignItems:'center',
+                            gap:'.5rem'
+                          }}>
 
-              )}
+                            {bedrooms && (
+                              <>
+                                <span>{bedrooms}</span>
+                                <span style={{ color:'#fff' }}>•</span>
+                              </>
+                            )}
 
-              {showBedroomOptions && (
+                            {bathrooms && (
+                              <>
+                                <span>{bathrooms}</span>
+                                <span style={{ color:'#fff' }}>•</span>
+                              </>
+                            )}
 
-                <div>
+                            {parking && (
+                              <>
+                                <span>{parking}</span>
+                                <span style={{ color:'#fff' }}>•</span>
+                              </>
+                            )}
 
-                  <h2 style={sectionHeading}>
-                    Bedrooms
-                  </h2>
+                            {yearBuiltRange && (
+                              <>
+                                <span>{yearBuiltRange}</span>
+                                <span style={{ color:'#fff' }}>•</span>
+                              </>
+                            )}
 
-                  <div style={pillWrap}>
+                            {constructionArea && (
+                              <span>{constructionArea}</span>
+                            )}
 
-                    {bedroomOptions.map((option) => (
+                          </span>
 
-                      <button
-                        type="button"
-                        key={option}
-                        onClick={() => {
+                    <button
+                      type="button"
+                      onClick={(e) => {
 
-                          setBedrooms(option)
+                        e.stopPropagation()
 
-                          setShowBedroomOptions(false)
-                          setShowBathroomOptions(true)
+                        setBedrooms('')
+                        setBathrooms('')
+                        setParking('')
+                        setYearBuiltRange('')
+                        setConstructionArea('')
 
-                        }}
-                        style={
-                          bedrooms === option
-                            ? activePill
-                            : pill
-                        }
-                      >
-                        {option}
-                      </button>
+                        setShowResidentialSummary(false)
 
-                    ))}
+                        setShowBedroomOptions(true)
+                        setShowBathroomOptions(false)
+                        setShowParkingOptions(false)
+                        setShowYearBuiltOptions(false)
+                        setShowConstructionAreaOptions(false)
+
+                      }}
+                      style={resetButton}
+                    >
+                      ✕
+                    </button>
 
                   </div>
 
-                </div>
+                )}
 
-              )}
+                {!showResidentialSummary && (
 
-            </div>
+                  <>
 
-      {/* BATHROOMS */}
+                    {/* BEDROOMS */}
 
-            <div>
+                    <div>
 
-              {!showBathroomOptions && bathrooms && (
+                      {!showBedroomOptions && bedrooms && (
 
-                <div
-                  style={{
-                    ...summaryCard,
-                    cursor:'pointer'
-                  }}
-                  onClick={() => {
+                        <div
+                          style={{
+                            ...summaryCard,
+                            cursor:'pointer'
+                          }}
+                          onClick={() => {
 
-                    setShowBathroomOptions(true)
+                            setShowBedroomOptions(true)
 
-                  }}
-                >
+                          }}
+                        >
 
-                  <span>
-                    {bathrooms} →
-                  </span>
+                          <span>
+                            {bedrooms}
+                          </span>
 
-                  <button
-                    type="button"
-                    onClick={(e) => {
+                          <button
+                            type="button"
+                            onClick={(e) => {
 
-                      e.stopPropagation()
+                              e.stopPropagation()
 
-                      setBathrooms('')
+                              setBedrooms('')
 
-                      setShowBathroomOptions(true)
-                      setShowParkingOptions(false)
+                              setShowBedroomOptions(true)
+                              setShowBathroomOptions(false)
 
-                    }}
-                    style={resetButton}
-                  >
-                    ✕
-                  </button>
+                            }}
+                            style={resetButton}
+                          >
+                            ✕
+                          </button>
 
-                </div>
+                        </div>
 
-              )}
+                      )}
 
-              {showBathroomOptions && (
+                      {showBedroomOptions && (
 
-                <div>
+                        <div>
 
-                  <h2 style={sectionHeading}>
-                    Bathrooms
-                  </h2>
+                          <h2 style={sectionHeading}>
+                            Bedrooms
+                          </h2>
 
-                  <div style={pillWrap}>
+                          <div style={pillWrap}>
 
-                    {bathroomOptions.map((option) => (
+                            {bedroomOptions.map((option) => (
 
-                      <button
-                        type="button"
-                        key={option}
-                        onClick={() => {
+                              <button
+                                type="button"
+                                key={option}
+                                onClick={() => {
 
-                          setBathrooms(option)
+                                  setBedrooms(option)
 
-                          setShowBathroomOptions(false)
-                          setShowParkingOptions(true)
+                                  setShowBedroomOptions(false)
+                                  setShowBathroomOptions(true)
 
-                        }}
-                        style={
-                          bathrooms === option
-                            ? activePill
-                            : pill
-                        }
-                      >
-                        {option}
-                      </button>
+                                }}
+                                style={
+                                  bedrooms === option
+                                    ? activePill
+                                    : pill
+                                }
+                              >
+                                {option}
+                              </button>
 
-                    ))}
+                            ))}
 
-                  </div>
+                          </div>
 
-                </div>
+                        </div>
 
-              )}
+                      )}
 
-            </div>
+                    </div>
 
-            {/* PARKING */}
+                    {/* BATHROOMS */}
 
-            <div>
+                    <div>
 
-              {!showParkingOptions && parking && (
+                      {!showBathroomOptions && bathrooms && (
 
-                <div
-                  style={{
-                    ...summaryCard,
-                    cursor:'pointer'
-                  }}
-                  onClick={() => {
+                        <div
+                          style={{
+                            ...summaryCard,
+                            cursor:'pointer'
+                          }}
+                          onClick={() => {
 
-                    setShowParkingOptions(true)
+                            setShowBathroomOptions(true)
 
-                  }}
-                >
+                          }}
+                        >
 
-                  <span>
-                    {parking} →
-                  </span>
+                          <span>
+                            {bathrooms}
+                          </span>
 
-                  <button
-                    type="button"
-                    onClick={(e) => {
+                          <button
+                            type="button"
+                            onClick={(e) => {
 
-                      e.stopPropagation()
+                              e.stopPropagation()
 
-                      setParking('')
+                              setBathrooms('')
 
-                      setShowParkingOptions(true)
-                      setShowYearBuiltOptions(false)
+                              setShowBathroomOptions(true)
+                              setShowParkingOptions(false)
 
-                    }}
-                    style={resetButton}
-                  >
-                    ✕
-                  </button>
+                            }}
+                            style={resetButton}
+                          >
+                            ✕
+                          </button>
 
-                </div>
+                        </div>
 
-              )}
+                      )}
 
-              {showParkingOptions && (
+                      {showBathroomOptions && (
 
-                <div>
+                        <div>
 
-                  <h2 style={sectionHeading}>
-                    Parking
-                  </h2>
+                          <h2 style={sectionHeading}>
+                            Bathrooms
+                          </h2>
 
-                  <div style={pillWrap}>
+                          <div style={pillWrap}>
 
-                    {parkingOptions.map((option) => (
+                            {bathroomOptions.map((option) => (
 
-                      <button
-                        type="button"
-                        key={option}
-                        onClick={() => {
+                              <button
+                                type="button"
+                                key={option}
+                                onClick={() => {
 
-                          setParking(option)
+                                  setBathrooms(option)
 
-                          setShowParkingOptions(false)
-                          setShowYearBuiltOptions(true)
+                                  setShowBathroomOptions(false)
+                                  setShowParkingOptions(true)
 
-                        }}
-                        style={
-                          parking === option
-                            ? activePill
-                            : pill
-                        }
-                      >
-                        {option}
-                      </button>
+                                }}
+                                style={
+                                  bathrooms === option
+                                    ? activePill
+                                    : pill
+                                }
+                              >
+                                {option}
+                              </button>
 
-                    ))}
+                            ))}
 
-                  </div>
+                          </div>
 
-                </div>
+                        </div>
 
-              )}
+                      )}
 
-            </div>
+                    </div>
 
-            {/* YEAR BUILT */}
+                    {/* PARKING */}
 
-            <div>
+                    <div>
 
-              {!showYearBuiltOptions && yearBuiltRange && (
+                      {!showParkingOptions && parking && (
 
-                <div
-                  style={{
-                    ...summaryCard,
-                    cursor:'pointer'
-                  }}
-                  onClick={() => {
+                        <div
+                          style={{
+                            ...summaryCard,
+                            cursor:'pointer'
+                          }}
+                          onClick={() => {
 
-                    setShowYearBuiltOptions(true)
+                            setShowParkingOptions(true)
 
-                  }}
-                >
+                          }}
+                        >
 
-                  <span>
-                    {yearBuiltRange} →
-                  </span>
+                          <span>
+                            {parking}
+                          </span>
 
-                  <button
-                    type="button"
-                    onClick={(e) => {
+                          <button
+                            type="button"
+                            onClick={(e) => {
 
-                      e.stopPropagation()
+                              e.stopPropagation()
 
-                      setYearBuiltRange('')
+                              setParking('')
 
-                      setShowYearBuiltOptions(true)
-                      setShowConstructionAreaOptions(false)
+                              setShowParkingOptions(true)
+                              setShowYearBuiltOptions(false)
 
-                    }}
-                    style={resetButton}
-                  >
-                    ✕
-                  </button>
+                            }}
+                            style={resetButton}
+                          >
+                            ✕
+                          </button>
 
-                </div>
+                        </div>
 
-              )}
+                      )}
 
-              {showYearBuiltOptions && (
+                      {showParkingOptions && (
 
-                <div>
+                        <div>
 
-                  <h2 style={sectionHeading}>
-                    Year Built
-                  </h2>
+                          <h2 style={sectionHeading}>
+                            Parking
+                          </h2>
 
-                  <div style={pillWrap}>
+                          <div style={pillWrap}>
 
-                    {yearBuiltOptions.map((option) => (
+                            {parkingOptions.map((option) => (
 
-                      <button
-                        type="button"
-                        key={option}
-                        onClick={() => {
+                              <button
+                                type="button"
+                                key={option}
+                                onClick={() => {
 
-                          setYearBuiltRange(option)
+                                  setParking(option)
 
-                          setShowYearBuiltOptions(false)
-                          setShowConstructionAreaOptions(true)
+                                  setShowParkingOptions(false)
+                                  setShowYearBuiltOptions(true)
 
-                        }}
-                        style={
-                          yearBuiltRange === option
-                            ? activePill
-                            : pill
-                        }
-                      >
-                        {option}
-                      </button>
+                                }}
+                                style={
+                                  parking === option
+                                    ? activePill
+                                    : pill
+                                }
+                              >
+                                {option}
+                              </button>
 
-                    ))}
+                            ))}
 
-                  </div>
+                          </div>
 
-                </div>
+                        </div>
 
-              )}
+                      )}
 
-            </div>
+                    </div>
 
-            {/* CONSTRUCTION AREA */}
+                    {/* YEAR BUILT */}
 
-            <div>
+                    <div>
 
-              {!showConstructionAreaOptions && constructionArea && (
+                      {!showYearBuiltOptions && yearBuiltRange && (
 
-                <div
-                  style={{
-                    ...summaryCard,
-                    cursor:'pointer'
-                  }}
-                  onClick={() => {
+                        <div
+                          style={{
+                            ...summaryCard,
+                            cursor:'pointer'
+                          }}
+                          onClick={() => {
 
-                    setShowConstructionAreaOptions(true)
+                            setShowYearBuiltOptions(true)
 
-                  }}
-                >
+                          }}
+                        >
 
-                  <span>
-                    {constructionArea}
-                  </span>
+                          <span>
+                            {yearBuiltRange}
+                          </span>
 
-                  <button
-                    type="button"
-                    onClick={(e) => {
+                          <button
+                            type="button"
+                            onClick={(e) => {
 
-                      e.stopPropagation()
+                              e.stopPropagation()
 
-                      setConstructionArea('')
+                              setYearBuiltRange('')
 
-                      setShowConstructionAreaOptions(true)
+                              setShowYearBuiltOptions(true)
+                              setShowConstructionAreaOptions(false)
 
-                    }}
-                    style={resetButton}
-                  >
-                    ✕
-                  </button>
+                            }}
+                            style={resetButton}
+                          >
+                            ✕
+                          </button>
 
-                </div>
+                        </div>
 
-              )}
+                      )}
 
-              {showConstructionAreaOptions && (
+                      {showYearBuiltOptions && (
 
-                <div>
+                        <div>
 
-                  <h2 style={sectionHeading}>
-                    Construction Area
-                  </h2>
+                          <h2 style={sectionHeading}>
+                            Year Built
+                          </h2>
 
-                  <div style={pillWrap}>
+                          <div style={pillWrap}>
 
-                    {constructionAreaOptions.map((option) => (
+                            {yearBuiltOptions.map((option) => (
 
-                      <button
-                        type="button"
-                        key={option}
-                        onClick={() => {
+                              <button
+                                type="button"
+                                key={option}
+                                onClick={() => {
 
-                          setConstructionArea(option)
+                                  setYearBuiltRange(option)
 
-                          setShowConstructionAreaOptions(false)
+                                  setShowYearBuiltOptions(false)
+                                  setShowConstructionAreaOptions(true)
 
-                        }}
-                        style={
-                          constructionArea === option
-                            ? activePill
-                            : pill
-                        }
-                      >
-                        {option}
-                      </button>
+                                }}
+                                style={
+                                  yearBuiltRange === option
+                                    ? activePill
+                                    : pill
+                                }
+                              >
+                                {option}
+                              </button>
 
-                    ))}
+                            ))}
 
-                  </div>
+                          </div>
 
-                </div>
+                        </div>
 
-              )}
+                      )}
 
-            </div>
-        </div>
-  )
+                    </div>
+
+                    {/* CONSTRUCTION AREA */}
+
+                    <div>
+
+                      {!showConstructionAreaOptions && constructionArea && (
+
+                        <div
+                          style={{
+                            ...summaryCard,
+                            cursor:'pointer'
+                          }}
+                          onClick={() => {
+
+                            setShowConstructionAreaOptions(true)
+
+                          }}
+                        >
+
+                          <span>
+                            {constructionArea}
+                          </span>
+
+                          <button
+                            type="button"
+                            onClick={(e) => {
+
+                              e.stopPropagation()
+
+                              setConstructionArea('')
+
+                              setShowConstructionAreaOptions(true)
+
+                            }}
+                            style={resetButton}
+                          >
+                            ✕
+                          </button>
+
+                        </div>
+
+                      )}
+
+                      {showConstructionAreaOptions && (
+
+                        <div>
+
+                          <h2 style={sectionHeading}>
+                            Construction Area
+                          </h2>
+
+                          <div style={pillWrap}>
+
+                            {constructionAreaOptions.map((option) => (
+
+                              <button
+                                type="button"
+                                key={option}
+                                onClick={() => {
+
+                                  setConstructionArea(option)
+
+                                  setShowConstructionAreaOptions(false)
+
+                                  setShowBedroomOptions(false)
+                                  setShowBathroomOptions(false)
+                                  setShowParkingOptions(false)
+                                  setShowYearBuiltOptions(false)
+
+                                  setShowResidentialSummary(true)
+
+                                  setShowproperty_typeOptions(false)
+
+                                  setShowproperty_areaOptions(true)
+
+                                }}
+                                style={
+                                  constructionArea === option
+                                    ? activePill
+                                    : pill
+                                }
+                              >
+                                {option}
+                              </button>
+
+                            ))}
+
+                          </div>
+
+                        </div>
+
+                      )}
+
+                    </div>
+
+                  </>
+
+                )}
+
+              </div>
+
+            )
 
 }
+
+
 
 const sectionHeading = {
   fontSize:'1rem',

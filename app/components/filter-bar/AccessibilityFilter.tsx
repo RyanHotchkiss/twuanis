@@ -1,14 +1,38 @@
 'use client'
 
 type AccessibilityFilterProps = {
-  selectedaccessibility: string[]
-  setSelectedaccessibility: (value: string[]) => void
+  selectedaccessibility: string
+  setSelectedaccessibility: (value: string) => void
+
+  showaccessibilityOptions: boolean
+  setShowaccessibilityOptions: (value: boolean) => void
+
+  setShowenvironmentOptions: (value: boolean) => void
+
+  setShowTerrainOptions: (value: boolean) => void
+
+  setShowProvinceOptions: (value: boolean) => void
+
+  setShowCantonOptions: (value: boolean) => void
+
+  setShowDistrictOptions: (value: boolean) => void
 }
 
 export default function AccessibilityFilter({
   selectedaccessibility,
-  setSelectedaccessibility
-}: AccessibilityFilterProps) {
+  setSelectedaccessibility,
+
+  showaccessibilityOptions,
+  setShowaccessibilityOptions,
+
+  setShowProvinceOptions,
+  setShowCantonOptions,
+  setShowDistrictOptions,
+
+  setShowenvironmentOptions,
+  setShowTerrainOptions
+  }: AccessibilityFilterProps) 
+{
 
   const accessibilityOptions = [
     '2WD Accessible',
@@ -26,45 +50,78 @@ export default function AccessibilityFilter({
         ACCESSIBILITY
       </h3>
 
-      <div style={pillWrap}>
+      {showaccessibilityOptions && (
 
-        {accessibilityOptions.map((option) => (
+        <div style={pillWrap}>
 
-              <button
-                key={option}
-                onClick={() => {
-                      if (
-                        selectedaccessibility.includes(option)
-                      ) {
+          {accessibilityOptions.map((option) => (
 
-                        setSelectedaccessibility(
-                          selectedaccessibility.filter(
-                            (item) => item !== option
-                          )
-                        )
+            <button
+              key={option}
+              onClick={() => {
 
-                      } else {
+                setSelectedaccessibility(option)
 
-                        setSelectedaccessibility([
-                          ...selectedaccessibility,
-                          option
-                        ])
+                setShowProvinceOptions(false)
 
-                      }
+                setShowCantonOptions(false)
 
-                    }}
-                    style={
-                      selectedaccessibility.includes(option)
-                        ? activePill
-                        : pill
-                    }
-              >
-                {option}
-              </button>
+                setShowDistrictOptions(false)
 
-            ))}
+                setShowenvironmentOptions(false)
 
-      </div>
+                setShowaccessibilityOptions(false)
+
+              }}
+              style={
+                selectedaccessibility === option
+                  ? activePill
+                  : pill
+              }
+            >
+              {option}
+            </button>
+
+          ))}
+
+        </div>
+
+      )}
+
+      {!showaccessibilityOptions &&
+      selectedaccessibility && (
+
+        <div style={summaryCard}>
+
+          <span
+            onClick={() =>
+              setShowaccessibilityOptions(true)
+            }
+            style={{
+              ...breadcrumbText,
+              cursor:'pointer'
+            }}
+          >
+            {selectedaccessibility}
+          </span>
+
+          <button
+            type="button"
+            onClick={() => {
+
+              setSelectedaccessibility('')
+
+              setShowaccessibilityOptions(true)
+
+            }}
+            style={resetButton}
+          >
+            ✕
+          </button>
+
+        </div>
+
+      )}
 
     </div>
 
@@ -101,17 +158,26 @@ const activePill = {
   color:'#fff'
 }
 
-/*
+const summaryCard = {
+  display:'flex',
+  justifyContent:'space-between',
+  alignItems:'flex-start',
+  background:'#181818',
+  border:'1px solid #00ff9950',
+  borderRadius:'1rem',
+  padding:'1rem',
+  marginTop:'1rem'
+}
 
-IMPORT:
+const breadcrumbText = {
+  color:'#00ff99',
+  fontSize:'.85rem'
+}
 
-import AccessibilityFilter from '@/app/components/filter-bar/AccessibilityFilter'
-
-USAGE:
-
-<AccessibilityFilter
-  selectedaccessibility={selectedaccessibility}
-  setSelectedaccessibility={setSelectedaccessibility}
-/>
-
-*/
+const resetButton = {
+  background:'transparent',
+  border:'none',
+  color:'#ff6666',
+  cursor:'pointer',
+  fontSize:'1rem'
+}
