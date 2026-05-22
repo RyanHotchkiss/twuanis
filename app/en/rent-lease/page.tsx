@@ -516,27 +516,57 @@ const filteredProperties = properties.filter((property) => {
 
                     {isMobile && (
 
-                      <button
-                        onClick={() =>
-                          setShowMobileFilters(false)
-                        }
-                        style={{
-                          background: '#00ff9980',
-                          border: '1px solid #333',
-                          color: '#fff',
-                          
-                          fontSize: '18px',
-                          padding: '12px',
+                            <button
 
-                          borderRadius: '12px',
+                              onClick={() =>
 
-                          marginBottom: '20px',
+                                setShowMobileFilters(true)
 
-                          cursor: 'pointer'
-                        }}
-                      >
-                        Close Filters
-                      </button>
+                              }
+
+                              style={{
+
+                                position: 'fixed',
+
+                                bottom: '1.25rem',
+
+                                left: '50%',
+
+                                transform: 'translateX(-50%)',
+
+                                zIndex: 9999,
+
+                                width: 'calc(100% - 2rem)',
+
+                                maxWidth: '28rem',
+
+                                background: '#ff3b00',
+
+                                color: '#fff',
+
+                                border: 'none',
+
+                                borderRadius: '999rem',
+
+                                padding: '1rem 1.25rem',
+
+                                fontSize: '1rem',
+
+                                fontWeight: 'bold',
+
+                                boxShadow:
+
+                                  '0 10px 30px rgba(0,0,0,.45)',
+
+                                cursor: 'pointer'
+
+                              }}
+
+                            >
+
+                              Filter Properties
+
+                            </button>
 
                     )}
 
