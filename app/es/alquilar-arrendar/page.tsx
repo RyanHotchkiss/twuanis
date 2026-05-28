@@ -10,8 +10,8 @@ import LocationFilterES from '@/app/components/filter-bar/LocationFilterES'
 import PriceFilterRLES from '@/app/components/filter-bar/PriceFilterRLES'
 import PropertyTypeFilterES from '@/app/components/filter-bar/PropertyTypeFilterES'
 import UtilitiesFilterES from '@/app/components/filter-bar/UtilitiesFilterES'
-import AdvancedFiltersToggle from '@/app/components/filter-bar/AdvancedFiltersToggleES'
-import AccessibilityFilter from '@/app/components/filter-bar/AccessibilityFilter'
+import AdvancedFiltersToggleES from '@/app/components/filter-bar/AdvancedFiltersToggleES'
+import AccessibilityFilterES from '@/app/components/filter-bar/AccessibilityFilterES'
 import EnvironmentFilterES from '@/app/components/filter-bar/EnvironmentFilterES'
 import PropertyAreaFilter from '@/app/components/filter-bar/PropertyAreaFilterES'
 import ResidentialAttributesS from '@/app/components/filter-bar/ResidentialAttributesS'
@@ -889,7 +889,7 @@ const filteredProperties = properties.filter((property) => {
 
                 />
 
-</AdvancedFiltersToggle>
+</AdvancedFiltersToggleES>
 
                 </div>   
 
