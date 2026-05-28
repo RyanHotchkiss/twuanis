@@ -7,7 +7,7 @@ import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { createListingId } from '@/lib/createListingId'
 import TopBarES from '@/app/components/TopBarES'
-import rawListings from '@/data/encuentra24-sale-listings.json'
+
 
 export default function ListingPage() {
 
@@ -35,23 +35,6 @@ export default function ListingPage() {
   useEffect(() => {
 
     async function fetchListing() {
-
-      const normalizedJsonListings = rawListings.map(
-        (listing: any, index: number) => ({
-
-          ...listing,
-
-          id: createListingId(listing),
-
-          images:
-            Array.isArray(listing.images)
-              ? listing.images
-              : typeof listing.images === 'string'
-              ? listing.images.split('|')
-              : []
-
-        })
-      )
 
       // SEARCH SUPABASE FIRST
       const { data, error } = await supabase
@@ -82,21 +65,6 @@ export default function ListingPage() {
 
       }
 
-      // FALLBACK TO JSON
-      const jsonListing = normalizedJsonListings.find(
-        (listing: any) =>
-          listing.id === String(params.id)
-      )
-
-      if (jsonListing) {
-
-        setListing(jsonListing)
-
-      } else {
-
-        console.error('Propiedad No Encontrada')
-
-      }
 
       setLoading(false)
 

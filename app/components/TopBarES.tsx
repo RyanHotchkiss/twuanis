@@ -73,7 +73,7 @@ export default function TopBar({
 
         href="/es/deslizar/comprar"
 
-        label="Swipe"
+        label=""
 
       />
 

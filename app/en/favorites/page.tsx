@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import rawListings from '@/data/encuentra24-sale-listings.json'
+
 import TopBar from '@/app/components/TopBar'
-import { createListingId } from '@/lib/createListingId'
+
 
 import { supabase } from '@/lib/supabase'
 
@@ -58,28 +58,10 @@ export default function FavoritesPage() {
 
         }       
 
-        const normalizedJsonListings = rawListings.map(
-  (listing: any, index: number) => ({
+        
+  
 
-    ...listing,
-
-    id: createListingId(listing),
-
-    images:
-      Array.isArray(listing.images)
-        ? listing.images
-        : typeof listing.images === 'string'
-        ? listing.images.split('|')
-        : []
-
-            })
-            )
-
-            const jsonFavorites =
-            normalizedJsonListings.filter(
-                (listing: any) =>
-                favoriteIds.includes(listing.id)
-            )
+    
 
             const normalizedSupabaseListings =
             (data || []).map(
@@ -97,10 +79,9 @@ export default function FavoritesPage() {
                 })
             )
 
-            setFavorites([
-            ...jsonFavorites,
-            ...normalizedSupabaseListings
-            ])
+            setFavorites(
+                normalizedSupabaseListings
+              )
 
       setLoading(false)
 

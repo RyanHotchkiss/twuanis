@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { createListingId } from '@/lib/createListingId'
+
 import { supabase } from '@/lib/supabase'
 import TopBar from '@/app/components/TopBar'
-import rawListings from '@/data/encuentra24-sale-listings.json'
+
 import LocationFilter from '@/app/components/filter-bar/LocationFilter'
 import PriceFilterRL from '@/app/components/filter-bar/PriceFilterRL'
 import PropertyTypeFilter from '@/app/components/filter-bar/PropertyTypeFilter'
@@ -113,22 +113,10 @@ const navButton = {
 
       async function fetchListings() {
 
-        const normalizedJsonListings = rawListings.map(
-          (listing: any, index: number) => ({
+        
+          
 
-            ...listing,
 
-            id: createListingId(listing),
-
-            images:
-              Array.isArray(listing.images)
-                ? listing.images
-                : typeof listing.images === 'string'
-                ? listing.images.split('|')
-                : []
-
-          })
-        )
 
         const { data, error } = await supabase
           .from('listings')
@@ -141,7 +129,7 @@ const navButton = {
             JSON.stringify(error, null, 2)
           )
 
-          setProperties(normalizedJsonListings)
+          setProperties([])
 
           setLoading(false)
 
@@ -164,15 +152,7 @@ const navButton = {
           })
         )
 
-        const mergedListings = [
-
-          ...normalizedJsonListings,
-
-          ...normalizedSupabaseListings
-
-        ]
-
-        setProperties(mergedListings)
+        setProperties(normalizedSupabaseListings)
 
         setLoading(false)
 

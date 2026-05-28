@@ -7,8 +7,6 @@ import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { createListingId } from '@/lib/createListingId'
 
-import rawListings from '@/data/encuentra24-rent-lease-listings.json'
-
 export default function ListingPage() {
 
   const params = useParams()
@@ -16,82 +14,51 @@ export default function ListingPage() {
   const [listing, setListing] = useState<any>(null)
 
   const [loading, setLoading] = useState(true)
-
+  
   useEffect(() => {
 
-    async function fetchListing() {
+          async function fetchListing() {
 
-      const normalizedJsonListings = rawListings.map(
-        (listing: any, index: number) => ({
+            const { data, error } = await supabase
+              .from('rent_lease_listings')
+              .select('*')
+              .eq('id', String(params.id))
+              .single()
 
-          ...listing,
+            if (data) {
 
-          id: createListingId(listing),
+              setListing({
 
-          images:
-            Array.isArray(listing.images)
-              ? listing.images
-              : typeof listing.images === 'string'
-              ? listing.images.split('|')
-              : []
+                ...data,
 
-        })
-      )
+                id: createListingId(data),
 
-      // SEARCH SUPABASE FIRST
-      const { data, error } = await supabase
-        .from('rent_lease_listings')
-        .select('*')
-        .eq('id', String(params.id))
-        .single()
+                images:
+                  Array.isArray(data.images)
+                    ? data.images
+                    : typeof data.images === 'string'
+                    ? data.images.split('|')
+                    : []
 
-      // IF SUPABASE FOUND MATCH
-      if (data) {
+              })
 
-        setListing({
+            } else {
 
-          ...data,
+              console.error('Propiedad No Encontrada')
 
-          images:
-            Array.isArray(data.images)
-              ? data.images
-              : typeof data.images === 'string'
-              ? data.images.split('|')
-              : []
+            }
 
-        })
+            setLoading(false)
 
-        setLoading(false)
+          }
 
-        return
+          if (params.id) {
 
-      }
+            fetchListing()
 
-      // FALLBACK TO JSON
-      const jsonListing = normalizedJsonListings.find(
-        (listing: any) =>
-          listing.id === String(params.id)
-      )
+          }
 
-      if (jsonListing) {
-
-        setListing(jsonListing)
-
-      } else {
-
-        console.error('Propiedad No Encontrada')
-
-      }
-
-      setLoading(false)
-
-    }
-
-    if (params.id) {
-      fetchListing()
-    }
-
-  }, [params.id])
+        }, [params.id])
 
   if (loading) {
 
@@ -112,24 +79,6 @@ export default function ListingPage() {
 
   }
 
-  if (!listing) {
-
-    return (
-
-      <main style={{
-        background: '#000',
-        minHeight: '100vh',
-        color: '#fff',
-        padding: '2rem'
-      }}>
-
-        Propiedad No Encontrada
-
-      </main>
-
-    )
-
-  }
 
   return (
 

@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { createListingId } from '@/lib/createListingId'
 import { supabase } from '@/lib/supabase'
 import TopBarES from '@/app/components/TopBarES'
-import rawListings from '@/data/encuentra24-sale-listings.json'
+
 import LocationFilterES from '@/app/components/filter-bar/LocationFilterES'
 import PriceFilterRLES from '@/app/components/filter-bar/PriceFilterRLES'
 import PropertyTypeFilterES from '@/app/components/filter-bar/PropertyTypeFilterES'
@@ -113,23 +113,6 @@ const navButton = {
 
       async function fetchListings() {
 
-        const normalizedJsonListings = rawListings.map(
-          (listing: any, index: number) => ({
-
-            ...listing,
-
-            id: createListingId(listing),
-
-            images:
-              Array.isArray(listing.images)
-                ? listing.images
-                : typeof listing.images === 'string'
-                ? listing.images.split('|')
-                : []
-
-          })
-        )
-
         const { data, error } = await supabase
           .from('listings')
           .select('*')
@@ -141,7 +124,7 @@ const navButton = {
             JSON.stringify(error, null, 2)
           )
 
-          setProperties(normalizedJsonListings)
+          setProperties([])
 
           setLoading(false)
 
@@ -149,24 +132,26 @@ const navButton = {
 
         }
 
-        const normalizedSupabaseListings = (data || []).map(
-          (listing: any) => ({
+          const normalizedSupabaseListings = (data || []).map(
+            (listing: any) => ({
 
-            ...listing,
+              ...listing,
 
-            images:
-              Array.isArray(listing.images)
-                ? listing.images
-                : typeof listing.images === 'string'
-                ? listing.images.split('|')
-                : []
+              id: createListingId(listing),
 
-          })
-        )
+              images:
+                Array.isArray(listing.images)
+                  ? listing.images
+                  : typeof listing.images === 'string'
+                  ? listing.images.split('|')
+                  : []
+
+            })
+          )
 
         const mergedListings = [
 
-          ...normalizedJsonListings,
+          
 
           ...normalizedSupabaseListings
 

@@ -73,7 +73,7 @@ export default function TopBar({
 
         href="/en/swipe/buy"
 
-        label="Swipe"
+        label=""
 
       />
 

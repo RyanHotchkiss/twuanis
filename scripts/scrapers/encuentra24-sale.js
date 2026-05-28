@@ -10,9 +10,12 @@ async function scrapeEncuentra24Sale() {
 
   try {
 
-    const baseUrl =
-      'https://www.encuentra24.com/costa-rica-en/searchresult/real-estate?q=keyword.&regionslug=san-jose-san-jose-capital-el-carmen'
+    const regionSlug =
+  process.argv[2]
 
+const baseUrl =
+  `https://www.encuentra24.com/costa-rica-en/searchresult/real-estate?q=keyword.&regionslug=${regionSlug}`
+  
     const homepageResponse =
       await axios.get(baseUrl, {
 

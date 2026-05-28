@@ -7,7 +7,7 @@ import { supabase } from '@/lib/supabase'
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 
-import rawListings from '@/data/encuentra24-sale-listings.json'
+
 
 function HomePageContent() {
 
@@ -89,8 +89,28 @@ const [isMobile, setIsMobile] =
 
       async function fetchListings() {
 
-        const normalizedJsonListings = rawListings.map(
-          (listing: any, index: number) => ({
+
+        const { data, error } = await supabase
+          .from('listings')
+          .select('*')
+          .order('id', { ascending: false })
+
+        if (error) {
+
+          console.error(
+            JSON.stringify(error, null, 2)
+          )
+
+          setProperties([])
+
+          setLoading(false)
+
+          return
+
+        }
+
+       const normalizedSupabaseListings = (data || []).map(
+          (listing: any) => ({
 
             ...listing,
 
@@ -106,43 +126,9 @@ const [isMobile, setIsMobile] =
           })
         )
 
-        const { data, error } = await supabase
-          .from('listings')
-          .select('*')
-          .order('id', { ascending: false })
-
-        if (error) {
-
-          console.error(
-            JSON.stringify(error, null, 2)
-          )
-
-          setProperties(normalizedJsonListings)
-
-          setLoading(false)
-
-          return
-
-        }
-
-        const normalizedSupabaseListings = (data || []).map(
-          (listing: any) => ({
-
-            ...listing,
-
-            images:
-              Array.isArray(listing.images)
-                ? listing.images
-                : typeof listing.images === 'string'
-                ? listing.images.split('|')
-                : []
-
-          })
-        )
-
         const mergedListings = [
 
-          ...normalizedJsonListings,
+          
 
           ...normalizedSupabaseListings
 
@@ -732,7 +718,7 @@ const [isMobile, setIsMobile] =
                     <button
                       onClick={() =>
                         window.location.href =
-                          '/en/rent-lease'
+                          '/es/alquilar-arrendar'
                       }
                       style={overlaySecondaryButton}
                     >
@@ -767,7 +753,7 @@ const [isMobile, setIsMobile] =
                     <button
                       onClick={() =>
                         window.location.href =
-                          '/en/sell'
+                          '/es/publicar-alquiler-arrendamiento'
                       }
                       style={overlayPrimaryButton}
                     >
@@ -777,7 +763,7 @@ const [isMobile, setIsMobile] =
                     <button
                       onClick={() =>
                         window.location.href =
-                          '/en/rent-out-lease-out'
+                          '/es/publicar-alquiler-arrendamiento'
                       }
                       style={overlaySecondaryButton}
                     >
@@ -853,7 +839,7 @@ const [isMobile, setIsMobile] =
 
 {/* RIGHT */}
               <a
-                href="/sell"
+                href="/vender"
                 style={sellButton}
               >
                 + Vender Propiedad

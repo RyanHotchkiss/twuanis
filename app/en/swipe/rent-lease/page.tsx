@@ -2,8 +2,6 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { supabase } from '@/lib/supabase'
-import rawListings from '@/data/encuentra24-sale-listings.json'
-import { createListingId } from '@/lib/createListingId'
 
 export default function SwipePage() {
 
@@ -24,61 +22,30 @@ export default function SwipePage() {
     fetchProperties()
         }, [])
 
-        async function fetchProperties() {
-
-        const normalizedJsonListings = rawListings.map(
-          (listing: any, index: number) => ({
-
-            ...listing,
-
-            id: createListingId(listing),
-
-            images:
-              Array.isArray(listing.images)
-                ? listing.images
-                : typeof listing.images === 'string'
-                ? listing.images.split('|')
-                : []
-
-          })
-        )
-
+async function fetchProperties() {
   const { data, error } = await supabase
             .from('listings')
             .select('*')
-
           if (error) {
-
             console.error(
               JSON.stringify(error, null, 2)
             )
-
-            setProperties(normalizedJsonListings)
-
             return
-
           }
-
           const normalizedSupabaseListings = (data || []).map(
             (listing: any) => ({
-
               ...listing,
-
               images:
                 Array.isArray(listing.images)
                   ? listing.images
                   : typeof listing.images === 'string'
                   ? listing.images.split('|')
                   : []
-
             })
           )
-
           setProperties([
-            ...normalizedJsonListings,
             ...normalizedSupabaseListings
           ])
-
         }
 
   function saveProperty(propertyId: string) {

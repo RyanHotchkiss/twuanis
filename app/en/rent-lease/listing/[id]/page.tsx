@@ -5,9 +5,6 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 
 import { supabase } from '@/lib/supabase'
-import { createListingId } from '@/lib/createListingId'
-
-import rawListings from '@/data/encuentra24-rent-lease-listings.json'
 
 export default function ListingPage() {
 
@@ -21,22 +18,9 @@ export default function ListingPage() {
 
     async function fetchListing() {
 
-      const normalizedJsonListings = rawListings.map(
-        (listing: any, index: number) => ({
+      
+        
 
-          ...listing,
-
-          id: createListingId(listing),
-
-          images:
-            Array.isArray(listing.images)
-              ? listing.images
-              : typeof listing.images === 'string'
-              ? listing.images.split('|')
-              : []
-
-        })
-      )
 
       // SEARCH SUPABASE FIRST
       const { data, error } = await supabase
@@ -67,23 +51,13 @@ export default function ListingPage() {
 
       }
 
-      // FALLBACK TO JSON
-      const jsonListing = normalizedJsonListings.find(
-        (listing: any) =>
-          listing.id === String(params.id)
-      )
+    if (!data) {
 
-      if (jsonListing) {
+      console.error('Listing Not Found')
 
-        setListing(jsonListing)
+    }
 
-      } else {
-
-        console.error('Listing Not Found')
-
-      }
-
-      setLoading(false)
+    setLoading(false)
 
     }
 

@@ -5,9 +5,9 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 
 import { supabase } from '@/lib/supabase'
-import { createListingId } from '@/lib/createListingId'
+
 import TopBar from '@/app/components/TopBar'
-import rawListings from '@/data/encuentra24-sale-listings.json'
+
 
 export default function ListingPage() {
 
@@ -29,29 +29,11 @@ export default function ListingPage() {
 
   const [loading, setLoading] = useState(true)
 
-  const [showMobileFilters, setShowMobileFilters] =
-  useState(false)
-
   useEffect(() => {
 
     async function fetchListing() {
 
-      const normalizedJsonListings = rawListings.map(
-        (listing: any, index: number) => ({
 
-          ...listing,
-
-          id: createListingId(listing),
-
-          images:
-            Array.isArray(listing.images)
-              ? listing.images
-              : typeof listing.images === 'string'
-              ? listing.images.split('|')
-              : []
-
-        })
-      )
 
       // SEARCH SUPABASE FIRST
       const { data, error } = await supabase
@@ -76,22 +58,6 @@ export default function ListingPage() {
 
         })
 
-        setLoading(false)
-
-        return
-
-      }
-
-      // FALLBACK TO JSON
-      const jsonListing = normalizedJsonListings.find(
-        (listing: any) =>
-          listing.id === String(params.id)
-      )
-
-      if (jsonListing) {
-
-        setListing(jsonListing)
-
       } else {
 
         console.error('Listing Not Found')
@@ -99,6 +65,8 @@ export default function ListingPage() {
       }
 
       setLoading(false)
+
+
 
     }
 
@@ -156,9 +124,9 @@ export default function ListingPage() {
     }}>
 
             <TopBar
-              onFilterClick={() =>
-                setShowMobileFilters(true)
-              }
+
+              onFilterClick={() => {}}
+
             />
 
         {/* MAIN LAYOUT */}

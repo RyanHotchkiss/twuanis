@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { createListingId } from '@/lib/createListingId'
 import { supabase } from '@/lib/supabase'
-import rawListings from '@/data/encuentra24-sale-listings.json'
+
 import LocationFilter from '@/app/components/filter-bar/LocationFilter'
 import PriceFilter from '@/app/components/filter-bar/PriceFilter'
 import PropertyTypeFilter from '@/app/components/filter-bar/PropertyTypeFilter'
@@ -114,72 +114,48 @@ const navButton = {
 
     useEffect(() => {
 
-      async function fetchListings() {
+async function fetchListings() {
 
-        const normalizedJsonListings = rawListings.map(
-          (listing: any, index: number) => ({
+  const { data, error } = await supabase
+    .from('listings')
+    .select('*')
+    .order('id', { ascending: false })
 
-            ...listing,
+  if (error) {
 
-            id: createListingId(listing),
+    console.error(
+      JSON.stringify(error, null, 2)
+    )
 
-            images:
-              Array.isArray(listing.images)
-                ? listing.images
-                : typeof listing.images === 'string'
-                ? listing.images.split('|')
-                : []
+    setLoading(false)
 
-          })
-        )
+    return
 
-        const { data, error } = await supabase
-          .from('listings')
-          .select('*')
-          .order('id', { ascending: false })
+  }
 
-        if (error) {
+  const normalizedSupabaseListings = (data || []).map(
+    (listing: any) => ({
 
-          console.error(
-            JSON.stringify(error, null, 2)
-          )
+      ...listing,
 
-          setProperties(normalizedJsonListings)
+      id: createListingId(listing),
 
-          setLoading(false)
+      images:
+        Array.isArray(listing.images)
+          ? listing.images
+          : typeof listing.images === 'string'
+          ? listing.images.split('|')
+          : []
 
-          return
+    })
+  )
 
-        }
+  setProperties(normalizedSupabaseListings)
 
-        const normalizedSupabaseListings = (data || []).map(
-          (listing: any) => ({
+  setLoading(false)
 
-            ...listing,
-
-            images:
-              Array.isArray(listing.images)
-                ? listing.images
-                : typeof listing.images === 'string'
-                ? listing.images.split('|')
-                : []
-
-          })
-        )
-
-        const mergedListings = [
-
-          ...normalizedJsonListings,
-
-          ...normalizedSupabaseListings
-
-        ]
-
-        setProperties(mergedListings)
-
-        setLoading(false)
-
-      }
+}
+        
 
       fetchListings()
 

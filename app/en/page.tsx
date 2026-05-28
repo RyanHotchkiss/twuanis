@@ -7,7 +7,7 @@ import { supabase } from '@/lib/supabase'
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 
-import rawListings from '@/data/encuentra24-sale-listings.json'
+
 
 function HomePageContent() {
 
@@ -72,41 +72,25 @@ function HomePageContent() {
 
       async function fetchListings() {
 
-        const normalizedJsonListings = rawListings.map(
-          (listing: any, index: number) => ({
-
-            ...listing,
-
-            id: createListingId(listing),
-
-            images:
-              Array.isArray(listing.images)
-                ? listing.images
-                : typeof listing.images === 'string'
-                ? listing.images.split('|')
-                : []
-
-          })
-        )
 
         const { data, error } = await supabase
           .from('listings')
           .select('*')
           .order('id', { ascending: false })
 
-        if (error) {
+          if (error) {
 
-          console.error(
-            JSON.stringify(error, null, 2)
-          )
+            console.error(
+              JSON.stringify(error, null, 2)
+            )
 
-          setProperties(normalizedJsonListings)
+            setProperties([])
 
-          setLoading(false)
+            setLoading(false)
 
-          return
+            return
 
-        }
+          }
 
         const normalizedSupabaseListings = (data || []).map(
           (listing: any) => ({
@@ -123,15 +107,7 @@ function HomePageContent() {
           })
         )
 
-        const mergedListings = [
-
-          ...normalizedJsonListings,
-
-          ...normalizedSupabaseListings
-
-        ]
-
-        setProperties(mergedListings)
+      setProperties(normalizedSupabaseListings)
 
         setLoading(false)
 
