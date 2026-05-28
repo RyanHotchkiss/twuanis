@@ -70,7 +70,11 @@ export default function TopBar({
         />
         </div>
       <SwipeCard
+
         href="/en/swipe/buy"
+
+        label="Swipe"
+
       />
 
       <Favorites

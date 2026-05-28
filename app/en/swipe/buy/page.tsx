@@ -347,7 +347,7 @@ const filterSidebar = (
         cursor: 'pointer'
       }}
     >
-      Cerrar Filtros
+      Close Filters
     </button>
 
     <select
@@ -364,7 +364,7 @@ const filterSidebar = (
       style={filterSelect}
     >
       <option value="">
-        Todas las Provincias
+        All Provinces
       </option>
 
       {[...new Set(
@@ -400,7 +400,7 @@ const filterSidebar = (
       style={filterSelect}
     >
       <option value="">
-        Todos los Cantones
+        All Cantons
       </option>
 
       {[...new Set(
@@ -439,7 +439,7 @@ const filterSidebar = (
       style={filterSelect}
     >
       <option value="">
-        Todos los Tipos de Propiedad
+        All Property Types
       </option>
 
       {[...new Set(
@@ -475,7 +475,7 @@ const filterSidebar = (
       style={filterSelect}
     >
       <option value="">
-        Todos los Entornos
+        All Environments
       </option>
 
       {[...new Set(
@@ -511,7 +511,7 @@ const filterSidebar = (
       style={filterSelect}
     >
       <option value="">
-        Todos los Precios
+        All Prices
       </option>
 
       <option value="under-50">
@@ -565,7 +565,7 @@ if (!currentProperty) {
           fontSize: '3rem',
           margin: 0
         }}>
-          No Hay Más Propiedades
+          No More Properties
         </h1>
 
         <p style={{
@@ -573,7 +573,7 @@ if (!currentProperty) {
           fontSize: '1.2rem',
           lineHeight: '1.7'
         }}>
-          Quita filtros para ver más resultados.
+          Remove filters to see more results.
         </p>
 
         <button
@@ -597,7 +597,7 @@ if (!currentProperty) {
             cursor: 'pointer'
           }}
         >
-          Limpiar Filtros
+          Clear Filters
         </button>
 
       </div>
@@ -690,7 +690,7 @@ return (
             fontWeight: 'bold',
             zIndex: 5
           }}>
-            GUARDAR
+            SAVE
           </div>
 
         )}
@@ -707,7 +707,7 @@ return (
             fontWeight: 'bold',
             zIndex: 5
           }}>
-            NO
+            NOPE
           </div>
 
         )}
@@ -740,7 +740,7 @@ return (
               alignItems: 'center',
               color: '#555'
             }}>
-              Sin Imagen
+              No Image
             </div>
 
           )}
@@ -797,7 +797,7 @@ return (
               ? `₡${Number(
                   currentProperty.price_millions
                 ).toLocaleString()}M`
-              : 'Precio No Disponible'}
+              : 'Price Unavailable'}
           </div>
 
           {/* BUTTONS */}
@@ -810,14 +810,14 @@ return (
               onClick={() => completeSwipe('left')}
               style={rejectButton}
             >
-              Rechazar
+              Reject
             </button>
 
             <button
               onClick={() => completeSwipe('right')}
               style={saveButton}
             >
-              Guardar
+              Save
             </button>
 
           </div>

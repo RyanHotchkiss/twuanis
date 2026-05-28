@@ -79,6 +79,7 @@ export default function SellPage() {
     const [showCsvStaging, setShowCsvStaging] = useState(false)
     const [showTerrainOptions, setShowTerrainOptions] = useState(true)
     const [isMobile, setIsMobile] = useState(false)
+    const [showMobileFilters, setShowMobileFilters] = useState(false)
     const [showAuthOverlay, setShowAuthOverlay] = useState(false)
     
 
@@ -478,6 +479,22 @@ export default function SellPage() {
                     setShowproperty_areaOptions
                     }
 
+                    setShowBedroomOptions={
+                    setShow_bedroom_options
+                    }
+
+                    setShowProvinceOptions={
+                    setShow_province_options
+                    }
+
+                    setShowCantonOptions={
+                    setShow_canton_options
+                    }
+
+                    setShowDistrictOptions={
+                    setShow_district_options
+                    }
+
                     selectedPropertyType={
                         propertyData.property_type
                     }
@@ -497,10 +514,6 @@ export default function SellPage() {
 
                     showPropertyTypeOptions={
                         showproperty_typeOptions
-                    }
-
-                    showSummaryCard={
-                    propertyData.construction_area !== ''
                     }
 
                     setShowPropertyTypeOptions={
@@ -645,6 +658,7 @@ export default function SellPage() {
                         setShowPropertyAreaOptions={
                             setShowproperty_areaOptions
                         }
+                        
                         setShowUtilityOptions={
                             setShowutilityOptions
                         }

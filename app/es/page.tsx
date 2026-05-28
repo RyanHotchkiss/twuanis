@@ -5,10 +5,11 @@ import Link from 'next/link'
 import { createListingId } from '@/lib/createListingId'
 import { supabase } from '@/lib/supabase'
 import { useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 
 import rawListings from '@/data/encuentra24-sale-listings.json'
 
-export default function HomePage() {
+function HomePageContent() {
 
   const [properties, setProperties] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -2634,4 +2635,16 @@ const sellButton = {
   fontSize: '.875rem'
 }
 
+export default function HomePage() {
 
+  return (
+
+    <Suspense fallback={null}>
+
+      <HomePageContent />
+
+    </Suspense>
+
+  )
+
+}

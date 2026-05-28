@@ -13,6 +13,9 @@ export default function FavoritesPage() {
   const [favorites, setFavorites] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
+  const [showMobileFilters, setShowMobileFilters] =
+  useState(false)
+
   useEffect(() => {
 
     async function fetchFavorites() {

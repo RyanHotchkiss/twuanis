@@ -1,72 +1,98 @@
 'use client'
 
 type PropertyTypeFilterProps = {
-  selectedproperty_type: string
-  setSelectedproperty_type: (value: string) => void
 
-   bedrooms: string
+  propertyTypes: string[]
 
-    bathrooms: string
+  residentialPropertyTypes: string[]
 
-    parking: string
+  selectedPropertyType: string
 
-    yearBuiltRange: string
+  setSelectedPropertyType: (
+    value: string
+  ) => void
 
-    constructionArea: string
+  bedrooms: string
 
-  showproperty_typeOptions: boolean
-  setShowproperty_typeOptions: (value: boolean) => void
+  bathrooms: string
 
-  setShowproperty_areaOptions: (value: boolean) => void
+  parking: string
+
+  yearBuiltRange: string
+
+  constructionArea: string
+
+  showPropertyTypeOptions: boolean
+
+  setShowPropertyTypeOptions: (
+    value: boolean
+  ) => void
+
+  setShowPropertyAreaOptions: (
+    value: boolean
+  ) => void
 
   setShowBedroomOptions: (
     value: boolean
   ) => void
 
   setShowProvinceOptions: (
-  value: boolean
-    ) => void
+    value: boolean
+  ) => void
 
-    setShowCantonOptions: (
-      value: boolean
-    ) => void
+  setShowCantonOptions: (
+    value: boolean
+  ) => void
 
-    setShowDistrictOptions: (
-      value: boolean
-    ) => void
+  setShowDistrictOptions: (
+    value: boolean
+  ) => void
+
+  resetResidentialFields: () => void
+
+  enableResidentialFlow: () => void
+
 }
 
-export default function PropertyTypeFilter({
-  selectedproperty_type,
-  setSelectedproperty_type,
+export default function PropertyTypeFilterSES({
 
-    bedrooms,
-    bathrooms,
-    parking,
-    yearBuiltRange,
-    constructionArea,
+  propertyTypes,
 
-  showproperty_typeOptions,
-  setShowproperty_typeOptions,
+  residentialPropertyTypes,
 
-  setShowproperty_areaOptions,
+  selectedPropertyType,
+
+  setSelectedPropertyType,
+
+  bedrooms,
+
+  bathrooms,
+
+  parking,
+
+  yearBuiltRange,
+
+  constructionArea,
+
+  showPropertyTypeOptions,
+
+  setShowPropertyTypeOptions,
+
+  setShowPropertyAreaOptions,
 
   setShowBedroomOptions,
 
   setShowProvinceOptions,
+
   setShowCantonOptions,
-  setShowDistrictOptions
+
+  setShowDistrictOptions,
+
+  resetResidentialFields,
+
+  enableResidentialFlow
 
 }: PropertyTypeFilterProps) {
-
-  const propertyTypes = [
-    'Casa',
-    'Condominio',
-    'Terreno',
-    'Finca',
-    'Cabaña',
-    'Propiedad Comercial',
-    ]
 
   return (
 
@@ -76,117 +102,144 @@ export default function PropertyTypeFilter({
         TIPO DE PROPIEDAD
       </h3>
 
-      {showproperty_typeOptions && (
+      {showPropertyTypeOptions && (
 
-  <div style={pillWrap}>
+        <div style={pillWrap}>
 
-                {propertyTypes.map((type) => (
+          {propertyTypes.map((type) => (
 
-                  <button
-                    key={type}
-                    onClick={() => {
+            <button
+              key={type}
+              onClick={() => {
 
-                      setSelectedproperty_type(type)
+                setSelectedPropertyType(type)
 
-                      setShowproperty_typeOptions(false)
+                setShowPropertyTypeOptions(false)
 
-                      setShowBedroomOptions(true)
+                setShowBedroomOptions(true)
 
-                      setShowProvinceOptions(false)
+                setShowProvinceOptions(false)
 
-                      setShowCantonOptions(false)
+                setShowCantonOptions(false)
 
-                      setShowDistrictOptions(false)
+                setShowDistrictOptions(false)
 
-                    }}
-                    style={
-                      selectedproperty_type === type
-                        ? activePill
-                        : pill
-                    }
-                  >
-                    {type}
-                  </button>
+                if (
+                  residentialPropertyTypes.includes(type)
+                ) {
 
-                ))}
+                  enableResidentialFlow()
 
-              </div>
+                }
 
+              }}
+              style={
+                selectedPropertyType === type
+                  ? activePill
+                  : pill
+              }
+            >
+              {type}
+            </button>
+
+          ))}
+
+        </div>
+
+      )}
+
+      {!showPropertyTypeOptions &&
+      selectedPropertyType && (
+
+        <div style={summaryCard}>
+
+          <span
+            onClick={() => {
+
+              setShowPropertyTypeOptions(true)
+
+            }}
+            style={{
+              ...breadcrumbText,
+              cursor:'pointer'
+            }}
+          >
+
+            {selectedPropertyType}
+
+            {bedrooms && (
+              <>
+                <span style={{ color:'#fff' }}>
+                  {' '}•{' '}
+                </span>
+
+                {bedrooms}
+              </>
             )}
 
-            {!showproperty_typeOptions &&
-            selectedproperty_type && (
+            {bathrooms && (
+              <>
+                <span style={{ color:'#fff' }}>
+                  {' '}•{' '}
+                </span>
 
-                    <div style={summaryCard}>
-
-                      <span
-                        onClick={() => {
-
-                          setShowproperty_typeOptions(true)
-
-                        }}
-                        style={{
-                          ...breadcrumbText,
-                          cursor:'pointer'
-                        }}
-                      >
-                       {selectedproperty_type}
-
-                              {bedrooms && (
-                                <>
-                                  <span style={{ color:'#fff' }}> • </span>
-                                  {bedrooms}
-                                </>
-                              )}
-
-                              {bathrooms && (
-                                <>
-                                  <span style={{ color:'#fff' }}> • </span>
-                                  {bathrooms}
-                                </>
-                              )}
-
-                              {parking && (
-                                <>
-                                  <span style={{ color:'#fff' }}> • </span>
-                                  {parking}
-                                </>
-                              )}
-
-                              {yearBuiltRange && (
-                                <>
-                                  <span style={{ color:'#fff' }}> • </span>
-                                  {yearBuiltRange}
-                                </>
-                              )}
-
-                              {constructionArea && (
-                                <>
-                                  <span style={{ color:'#fff' }}> • </span>
-                                  {constructionArea}
-                                </>
-                              )}
-                      </span>
-
-                      <button
-                        type="button"
-                        onClick={() => {
-
-                          setSelectedproperty_type('')
-
-                          setShowproperty_typeOptions(true)
-
-                          setShowproperty_areaOptions(false)
-
-                        }}
-                        style={resetButton}
-                      >
-                        ✕
-                      </button>
-
-                    </div>
-
+                {bathrooms}
+              </>
             )}
+
+            {parking && (
+              <>
+                <span style={{ color:'#fff' }}>
+                  {' '}•{' '}
+                </span>
+
+                {parking}
+              </>
+            )}
+
+            {yearBuiltRange && (
+              <>
+                <span style={{ color:'#fff' }}>
+                  {' '}•{' '}
+                </span>
+
+                {yearBuiltRange}
+              </>
+            )}
+
+            {constructionArea && (
+              <>
+                <span style={{ color:'#fff' }}>
+                  {' '}•{' '}
+                </span>
+
+                {constructionArea}
+              </>
+            )}
+
+          </span>
+
+          <button
+            type="button"
+            onClick={() => {
+
+              setSelectedPropertyType('')
+
+              setShowPropertyTypeOptions(true)
+
+              setShowPropertyAreaOptions(false)
+
+              resetResidentialFields()
+
+            }}
+            style={resetButton}
+          >
+            ✕
+          </button>
+
+        </div>
+
+      )}
 
     </div>
 
@@ -251,7 +304,7 @@ const resetButton = {
 
 IMPORT:
 
-import PropertyTypeFilterSES from '@/app/components/filter-bar/PropertyTypeFilter'
+import PropertyTypeFilterSES from '@/app/components/filter-bar/PropertyTypeFilterES'
 
 USAGE:
 

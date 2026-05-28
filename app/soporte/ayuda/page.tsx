@@ -64,7 +64,9 @@ export default function HelpPage() {
         borderBottom:'1px solid #151515'
       }}>
 
-        <TopBarES />
+        <TopBarES
+        onFilterClick={() => {}}
+        />
 
       </div>
 
@@ -156,7 +158,9 @@ export default function HelpPage() {
               <div style={iconCard}>
                 <div style={icon}>
 
-                  <FilterButton />
+                  <FilterButton
+                    onClick={() => {}}
+                    />
 
                 </div>
 
@@ -174,7 +178,9 @@ export default function HelpPage() {
               <div style={iconCard}>
                 <div style={icon}>
 
-                  <CreateListingButtonS />
+                  <CreateListingButtonS
+                    onCreateListing={() => {}}
+                    />
 
                 </div>
 
@@ -192,7 +198,10 @@ export default function HelpPage() {
               <div style={iconCard}>
                 <div style={icon}>
 
-                <SwipeCard />
+                <SwipeCard
+                href="/"
+                label="Swipe"
+                />
 
               </div>
 
@@ -210,7 +219,11 @@ export default function HelpPage() {
               <div style={iconCard}>
                 <div style={icon}>
 
-                  <Favorites />
+                  <Favorites
+                    href="/"
+                    label="Favorites"
+                    icon="♥"
+                    />
 
                 </div>
 

@@ -105,6 +105,9 @@ export default function SellPage() {
 
         const [showMonthlyRentOptions, setShowMonthlyRentOptions] = useState(true)
 
+        const [showMobileFilters, setShowMobileFilters] =
+            useState(false)
+
         const handleImageUpload = (
                     event: React.ChangeEvent<HTMLInputElement>
                     ) => {
@@ -426,7 +429,7 @@ export default function SellPage() {
 
 <PropertyTypeFilterS
 
-                    showSummaryCard={false}
+                    
 
                     bedrooms={propertyData.bedrooms}
 
@@ -450,6 +453,22 @@ export default function SellPage() {
 
                      setShowPropertyAreaOptions={
                     setShowproperty_areaOptions
+                    }
+
+                    setShowBedroomOptions={
+                        setShow_bedroom_options
+                    }
+
+                    setShowProvinceOptions={
+                        setShow_province_options
+                    }
+
+                    setShowCantonOptions={
+                        setShow_canton_options
+                    }
+
+                    setShowDistrictOptions={
+                        setShow_district_options
                     }
 
                     selectedPropertyType={

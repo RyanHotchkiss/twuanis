@@ -29,6 +29,9 @@ export default function ListingPage() {
 
   const [loading, setLoading] = useState(true)
 
+  const [showMobileFilters, setShowMobileFilters] =
+  useState(false)
+
   useEffect(() => {
 
     async function fetchListing() {
