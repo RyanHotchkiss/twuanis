@@ -4,10 +4,8 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { createListingId } from '@/lib/createListingId'
 import { supabase } from '@/lib/supabase'
-import Breadcrumbs from '@/app/components/Breadcrumbs'
+import TopBar from '@/app/components/TopBar'
 import rawListings from '@/data/encuentra24-sale-listings.json'
-import Favorites from '@/app/components/Favorites'
-import SwipeCard from '@/app/components/SwipeCard'
 import LocationFilter from '@/app/components/filter-bar/LocationFilter'
 import PriceFilterRL from '@/app/components/filter-bar/PriceFilterRL'
 import PropertyTypeFilter from '@/app/components/filter-bar/PropertyTypeFilter'
@@ -133,7 +131,7 @@ const navButton = {
         )
 
         const { data, error } = await supabase
-          .from('sale_listing')
+          .from('listings')
           .select('*')
           .order('id', { ascending: false })
 
@@ -349,77 +347,16 @@ const filteredProperties = properties.filter((property) => {
               borderBottom: '1px solid #151515'
             }}>
 
-        {/* TOP BAR */}
-              <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '1rem',
-                  flexWrap: 'wrap'
-                }}>
-
-                    <Breadcrumbs
-                        breadcrumbs={[
-                          {
-                            label: 'Home',
-                            href: '/en/'
-                          },
-                          {
-                            label: 'Buy',
-                            href: '/en/buy'
+                        <TopBar
+                          onFilterClick={() =>
+                            setShowMobileFilters(true)
                           }
-                        ]}
-                      />
-
-                        <Favorites
-                          href="/en/favorites"
-                          label="Favorite Properties"
-                          icon="♥"
                         />
-
-                        <SwipeCard
-                          href="/en/swipe/buy"
-                          label="Swipe View"
-                        />
-
-                          {isMobile && (
-
-                      <button
-                        onClick={() =>
-                          setShowMobileFilters(true)
-                        }
-                        style={{
-                          position: 'fixed',
-                          top: '20px',
-                          right: '20px',
-                          zIndex: 9999,
-
-                          background: '#00ff9920',
-                          color: '#ff6900',
-
-                          border: 'none',
-                          borderRadius: '999px',
-
-                          padding: '12px 22px',
-
-                          
-                          fontSize: '15px',
-
-                          boxShadow:
-                            '0 10px 30px rgba(0,0,0,.45)',
-
-                          cursor: 'pointer'
-                        }}
-                      >
-                        Filters
-                      </button>
-
-                    )}
-              </div>
 
 
 {/* TOP RIGHT NAV */}
              
-            <CreateRentalListingButton />
+            
 
             </div>
 
@@ -516,57 +453,27 @@ const filteredProperties = properties.filter((property) => {
 
                     {isMobile && (
 
-                            <button
+                      <button
+                        onClick={() =>
+                          setShowMobileFilters(false)
+                        }
+                        style={{
+                          background: '#00ff9980',
+                          border: '1px solid #333',
+                          color: '#fff',
+                          
+                          fontSize: '18px',
+                          padding: '12px',
 
-                              onClick={() =>
+                          borderRadius: '12px',
 
-                                setShowMobileFilters(true)
+                          marginBottom: '20px',
 
-                              }
-
-                              style={{
-
-                                position: 'fixed',
-
-                                bottom: '1.25rem',
-
-                                left: '50%',
-
-                                transform: 'translateX(-50%)',
-
-                                zIndex: 9999,
-
-                                width: 'calc(100% - 2rem)',
-
-                                maxWidth: '28rem',
-
-                                background: '#ff3b00',
-
-                                color: '#fff',
-
-                                border: 'none',
-
-                                borderRadius: '999rem',
-
-                                padding: '1rem 1.25rem',
-
-                                fontSize: '1rem',
-
-                                fontWeight: 'bold',
-
-                                boxShadow:
-
-                                  '0 10px 30px rgba(0,0,0,.45)',
-
-                                cursor: 'pointer'
-
-                              }}
-
-                            >
-
-                              Filter Properties
-
-                            </button>
+                          cursor: 'pointer'
+                        }}
+                      >
+                        Close Filters
+                      </button>
 
                     )}
 

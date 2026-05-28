@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { createListingId } from '@/lib/createListingId'
 import { supabase } from '@/lib/supabase'
+import { useSearchParams } from 'next/navigation'
 
 import rawListings from '@/data/encuentra24-sale-listings.json'
 
@@ -11,6 +12,7 @@ export default function HomePage() {
 
   const [properties, setProperties] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const searchParams = useSearchParams()
 
   const [selectedprovince, setSelectedprovince] = useState('')
   const [selectedcanton, setSelectedcanton] = useState('')
@@ -49,8 +51,19 @@ export default function HomePage() {
   const [selectedenvironment, setSelectedenvironment] = useState('')
   const [selectedaccessibility, setSelectedaccessibility] = useState('')
   const [selectedterrain, setSelectedterrain] = useState('')
+  
+
+  const initialOverlayState =  
+    searchParams.get('overlay') === 'looking'
+      ? 'looking'
+      : searchParams.get('overlay') === 'posting'
+      ? 'posting'
+      : 'initial'
+
   const [overlayState, setOverlayState] =
-  useState<'initial' | 'looking' | 'posting' | null>('initial')
+  useState<'initial' | 'looking' | 'posting' | null>(
+    initialOverlayState
+  )
   const homepageBlurred =
   overlayState !== null
 
@@ -76,7 +89,7 @@ export default function HomePage() {
         )
 
         const { data, error } = await supabase
-          .from('sale_listing')
+          .from('listings')
           .select('*')
           .order('id', { ascending: false })
 

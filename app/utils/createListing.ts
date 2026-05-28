@@ -89,11 +89,18 @@ export async function createListing(
           generateListingDescription(
             propertyData
           ),
-
         images: uploadedImageUrls
       }
-
     ])
+.select()
+
+    console.log(
+
+        'FULL INSERT RESPONSE:',
+
+        JSON.stringify(response, null, 2)
+
+      )
 
   if (response.error) {
 

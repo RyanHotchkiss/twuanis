@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Papa from 'papaparse'
 import {
                     collapseButton,
@@ -41,14 +41,13 @@ import TerrainFilterS from '@/app/components/filter-bar/TerrainFilterS'
 import ImagePreviewGridS from '@/app/components/ImagePreviewGridS'
 import ImageUploaderS from '@/app/components/ImageUploaderS'
 import WhatsAppInputS from '@/app/components/WhatsAppInputS'
-import CreateListingButtonS from '@/app/components/CreateListingButtonS'
 import { createRentalListing } from '@/app/utils/createRentalListing'
 import CsvStagingModal from '@/app/components/CsvStagingModal'
 import RentalPropertyDefinitionPanel from '@/app/components/RentalPropertyDefinitionPanel'
 import PropertyTypeFilterS from '@/app/components/filter-bar/PropertyTypeFilterS'
-import Breadcrumbs from '@/app/components/Breadcrumbs'
+import TopBar from '@/app/components/TopBar'
 import MonthlyRentSelectorS from '@/app/components/filter-bar/MonthlyRentSelectorS'
-
+import CreateListingButtonSXL from '@/app/components/CreateListingButtonSXL'
 export default function SellPage() {
 
     const [showLocationOptions, setShowLocationOptions] = useState(true)
@@ -70,6 +69,7 @@ export default function SellPage() {
     const [show_construction_area_options, setShow_construction_area_options] = useState(false)
     const [showCsvStaging, setShowCsvStaging] = useState(false)
     const [showTerrainOptions, setShowTerrainOptions] = useState(true)
+    const [isMobile, setIsMobile] = useState(false)
     
         const [propertyData, setPropertyData] = useState({
             province: '',
@@ -143,7 +143,23 @@ export default function SellPage() {
                         whatsapp: propertyData.whatsapp.slice(0, -1)
                     })
                     }
-
+        
+        useEffect(() => {
+                    function handleResize() {
+                        setIsMobile(window.innerWidth <= 768)
+                    }
+                    handleResize()
+                    window.addEventListener(
+                        'resize',
+                        handleResize
+                    )
+                    return () => {
+                        window.removeEventListener(
+                        'resize',
+                        handleResize
+                        )
+                    }
+                    }, [])
 
                         return (
                         <main style={{
@@ -170,25 +186,13 @@ export default function SellPage() {
                     flexWrap: 'wrap'
                     }}>
 
-  {/* LEFT HEADER CONTENT */}
-                    <div style={{
-                    marginBottom: '2rem'
-                    }}>
+                                        <TopBar
+                                            onFilterClick={() =>
+                                                setShowMobileFilters(true)
+                                            }
+                                        />
 
-                    <Breadcrumbs
-                    breadcrumbs={[
-                        {
-                        label: 'Home',
-                        href: '/en/'
-                        },
-                        {
-                        label: 'Rent / Lease',
-                        href: '/en/rent-out-lease-out/'
-                        }
-                    ]}
-                    />
-
-                    </div>
+                    
                     <div>
 
                         <h1 style={{
@@ -348,8 +352,11 @@ export default function SellPage() {
 {/* MAIN GRID */}
                 <div style={{
                 display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: '2rem'
+                    gridTemplateColumns: isMobile
+                    ? '1fr'
+                    : '1fr 1fr',
+                    gap: '2rem',
+                    alignItems: 'start'
                 }}>
                 {/* LEFT SIDE */}
                 <div style={{
@@ -695,14 +702,23 @@ export default function SellPage() {
 
 {/* Monthly Price */}
                         <MonthlyRentSelectorS
+
                             monthlyPrice={propertyData.monthly_price}
 
-                            setMonthlyPrice={(value) =>
+                            setMonthlyPrice={(value) => {
+
                                 setPropertyData({
-                                ...propertyData,
-                                monthly_price: value
+                                    ...propertyData,
+                                    monthly_price: value
                                 })
-                            }
+
+                                if (value !== '') {
+
+                                    setShowTerrainOptions(false)
+
+                                }
+
+                            }}
 
                             showMonthlyRentOptions={
                                 showMonthlyRentOptions
@@ -711,6 +727,11 @@ export default function SellPage() {
                             setShowMonthlyRentOptions={
                                 setShowMonthlyRentOptions
                             }
+
+                            setShowTerrainOptions={
+                                setShowTerrainOptions
+                            }
+
                         />
 
 
@@ -744,17 +765,7 @@ export default function SellPage() {
                     }
                     />
 
-{/* CREATE LISTING BUTTON */}
-                          
-                <CreateListingButtonS
-                    onCreateListing={() =>
-                        createRentalListing(
-                        propertyData,
-                        generateListingTitle,
-                        generateListingDescription
-                        )
-                    }
-                    />
+
 
 </div> {/* LEFT SIDE */}
 
@@ -766,13 +777,27 @@ export default function SellPage() {
                     borderRadius: '1.5rem',
                     padding: '2rem',
 
-                    position: 'sticky',
-                    top: '1rem',
-                    height: 'fit-content'
+                    position: isMobile
+                        ? 'relative'
+                        : 'sticky',
+                        top: isMobile
+                        ? '0'
+                        : '1rem',
+                        height: 'fit-content',
+                        width: '100%'
                     }}>
 
                     <RentalPropertyDefinitionPanel
                             propertyData={propertyData}
+                        />
+                    <CreateListingButtonSXL
+                        onCreateListing={() =>
+                            createRentalListing(
+                            propertyData,
+                            generateListingTitle,
+                            generateListingDescription
+                            )
+                        }
                         />
                     </div>
                 </div>

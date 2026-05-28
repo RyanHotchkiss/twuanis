@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import Papa from 'papaparse'
 import Link from 'next/link'
@@ -51,7 +51,11 @@ import { createListing } from '@/app/utils/createListing'
 import CsvStagingModal from '@/app/components/CsvStagingModal'
 import PropertyDefinitionPanel from '@/app/components/PropertyDefinitionPanel'
 import PropertyTypeFilterS from '@/app/components/filter-bar/PropertyTypeFilterS'
-import Breadcrumbs from '@/app/components/Breadcrumbs'
+import TopBar from '@/app/components/TopBar'
+import CreateListingButtonSXL from '@/app/components/CreateListingButtonSXL'
+import AuthOverlay
+from '@/app/AuthOverlay'
+
 
 export default function SellPage() {
 
@@ -74,7 +78,10 @@ export default function SellPage() {
     const [show_construction_area_options, setShow_construction_area_options] = useState(false)
     const [showCsvStaging, setShowCsvStaging] = useState(false)
     const [showTerrainOptions, setShowTerrainOptions] = useState(true)
+    const [isMobile, setIsMobile] = useState(false)
+    const [showAuthOverlay, setShowAuthOverlay] = useState(false)
     
+
   const [propertyData, setPropertyData] = useState({
     province: '',
     canton: '',
@@ -147,25 +154,55 @@ export default function SellPage() {
             })
             }
 
-            function deleteWhatsAppDigit() {
-            setPropertyData({
-                ...propertyData,
-                whatsapp: propertyData.whatsapp.slice(0, -1)
-            })
-            }
+           function deleteWhatsAppDigit() {
+                    setPropertyData({
+                        ...propertyData,
+                        whatsapp: propertyData.whatsapp.slice(0, -1)
+                    })
+                    }
 
+                    /* PUT IT HERE */
+                    useEffect(() => {
 
-                return (
-                <main style={{
-                    background: '#000',
-                    minHeight: '100vh',
-                    color: '#00ff99',
-                    padding: '1rem'
-                }}>
+                    function handleResize() {
 
-                    <div style={{
+                        setIsMobile(window.innerWidth <= 768)
+
+                    }
+
+                    handleResize()
+
+                    window.addEventListener(
+                        'resize',
+                        handleResize
+                    )
+
+                    return () => {
+
+                        window.removeEventListener(
+                        'resize',
+                        handleResize
+                        )
+
+                    }
+
+                    }, [])
+
+                    /* THEN YOUR RETURN */
+                    return (
+
+                    <main style={{
+                        background: '#000',
+                        minHeight: '100vh',
+                        color: '#00ff99',
+                        padding: '1rem'
+                    }}>
+
+                <div style={{
                 maxWidth: '90rem',
-                margin: '0 auto'
+                margin: '0 auto',
+                width: '100%',
+                overflowX: 'hidden'
                 }}>
 
 
@@ -180,25 +217,12 @@ export default function SellPage() {
                     flexWrap: 'wrap'
                     }}>
 
-  {/* LEFT HEADER CONTENT */}
-                    <div style={{
-                    marginBottom: '2rem'
-                    }}>
+                                        <TopBar
+                                            onFilterClick={() =>
+                                                setShowMobileFilters(true)
+                                            }
+                                        />
 
-                    <Breadcrumbs
-                    breadcrumbs={[
-                        {
-                        label: 'Home',
-                        href: '/en/'
-                        },
-                        {
-                        label: 'Sell',
-                        href: '/en/sell/'
-                        }
-                    ]}
-                    />
-
-                    </div>
                     <div>
 
                         <h1 style={{
@@ -356,11 +380,17 @@ export default function SellPage() {
 
 
 {/* MAIN GRID */}
-                <div style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: '2rem'
-                }}>
+        <div style={{
+            display: 'grid',
+
+            gridTemplateColumns: isMobile
+                ? '1fr'
+                : '1fr 1fr',
+
+            gap: '2rem',
+
+            alignItems: 'start'
+            }}>
                 {/* LEFT SIDE */}
                 <div style={{
                     background: '#111',
@@ -782,51 +812,108 @@ export default function SellPage() {
 
 {/* CREATE LISTING BUTTON */}
                           
-                <CreateListingButtonS
-                    onCreateListing={() =>
-                        createListing(
-                        propertyData,
-                        generateListingTitle,
-                        generateListingDescription
-                        )
-                    }
-                    />
+                <CreateListingButtonSXL
+                    onCreateListing={() => {
+                        if (!propertyData.whatsapp) {
+                            alert(
+                            'Please enter your WhatsApp number'
+                            )
+                            return
+                        }
+                        setShowAuthOverlay(true)
+                    }}
+                />
 
 </div> {/* LEFT SIDE */}
 
 {/* RIGHT SIDE */}
 
-                    <div style={{
+        <div style={{
                     background: '#0d0d0d',
                     border: '.0625rem solid #222',
                     borderRadius: '1.5rem',
                     padding: '2rem',
 
-                    position: 'sticky',
-                    top: '1rem',
-                    height: 'fit-content'
+                    position: isMobile
+                    ? 'relative'
+                    : 'sticky',
+
+                    top: isMobile
+                    ? '0'
+                    : '1rem',
+
+                    height: 'fit-content',
+
+                    width: '100%'
                     }}>
 
                     <PropertyDefinitionPanel
                         propertyData={propertyData}
                     />
-                    </div>
-                </div>
-            </div> {/* MAIN GRID */}
 
-{/* CSV STAGING MODAL */}
-                    {showCsvStaging && (
+            </div>
+        </div>
+    </div> 
+            
+            {/* MAIN GRID */}
 
-                    <CsvStagingModal
-                        csvListings={csvListings}
-                        setCsvListings={setCsvListings}
-                        setShowCsvStaging={setShowCsvStaging}
+                {/* CSV STAGING MODAL */}
+                {showCsvStaging && (
+
+                <CsvStagingModal
+                    csvListings={csvListings}
+                    setCsvListings={setCsvListings}
+                    setShowCsvStaging={setShowCsvStaging}
+                />
+
+                )}
+
+               {/* AUTH OVERLAY */}
+                    {showAuthOverlay && (
+
+                    <AuthOverlay
+                        whatsapp={propertyData.whatsapp}
+
+                        formatWhatsAppNumber={
+                        formatWhatsAppNumber
+                        }
+
+                        onVerify={async () => {
+
+                                console.log(
+                                    'ON VERIFY CALLBACK FIRED'
+                                )
+
+                                console.log(
+                                    'PROPERTY DATA:',
+                                    propertyData
+                                )
+
+                                const result = await createListing(
+                                    propertyData,
+                                    generateListingTitle,
+                                    generateListingDescription
+                                )
+
+                                console.log(
+                                    'CREATE LISTING RESULT:',
+                                    result
+                                )
+
+                                setShowAuthOverlay(false)
+
+                                }}
+
+                        onClose={() =>
+                        setShowAuthOverlay(false)
+                        }
+
                     />
 
                     )}
-              
-    </main>
 
-  )
+                    </main>
 
-}
+                    )
+
+                    }

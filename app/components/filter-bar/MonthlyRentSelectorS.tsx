@@ -8,6 +8,11 @@ type MonthlyRentSelectorSProps = {
   setShowMonthlyRentOptions: (
     value: boolean
   ) => void
+
+  setShowTerrainOptions: (
+    value: boolean
+  ) => void
+
 }
 
 export default function MonthlyRentSelectorS({
@@ -15,7 +20,8 @@ export default function MonthlyRentSelectorS({
   setMonthlyPrice,
 
   showMonthlyRentOptions,
-  setShowMonthlyRentOptions
+  setShowMonthlyRentOptions,
+  setShowTerrainOptions
 
 }: MonthlyRentSelectorSProps) {
 
@@ -44,11 +50,15 @@ export default function MonthlyRentSelectorS({
         </h2>
 
         <button
-          onClick={() =>
-            setShowMonthlyRentOptions(
-              !showMonthlyRentOptions
-            )
-          }
+          onClick={() => {
+
+              setShowMonthlyRentOptions(
+                !showMonthlyRentOptions
+              )
+
+              setShowTerrainOptions(true)
+
+            }}
           style={collapseButton}
         >
           {showMonthlyRentOptions ? '−' : '+'}
@@ -70,7 +80,7 @@ export default function MonthlyRentSelectorS({
 
               setMonthlyPrice('')
               setShowMonthlyRentOptions(true)
-
+              setShowTerrainOptions(true)
             }}
             style={resetButton}
           >

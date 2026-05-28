@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 import { supabase } from '@/lib/supabase'
 import { createListingId } from '@/lib/createListingId'
-
+import TopBar from '@/app/components/TopBar'
 import rawListings from '@/data/encuentra24-sale-listings.json'
 
 export default function ListingPage() {
@@ -152,93 +152,19 @@ export default function ListingPage() {
       padding: '2rem'
     }}>
 
-      {/* TOP BAR */}
-      <div style={{
-          marginBottom: '2rem',
+            <TopBar
+              onFilterClick={() =>
+                setShowMobileFilters(true)
+              }
+            />
+
+        {/* MAIN LAYOUT */}
+        <div style={{
           display: 'flex',
-          alignItems: 'center',
-          gap: '1rem',
-          flexWrap: 'wrap'
+          flexDirection: 'column',
+          gap: '2rem',
+          width: '100%'
         }}>
-
-            <nav
-              aria-label="Breadcrumb"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                marginBottom: 0
-              }}
-            >
-
-              <button
-                onClick={() => window.location.href = '/en/'}
-                style={{
-                  ...navButton,
-                  background:'rgba(0,255,153,.7)',
-                  border:'.0625rem solid rgba(0,255,153,.25)',
-                  borderTopRightRadius: 0,
-                  borderBottomRightRadius: 0,
-                  marginRight: '-.5rem',
-                  position: 'relative',
-                  zIndex: 1
-                }}
-              >
-                Home
-              </button>
-
-              <button
-                onClick={() => window.location.href = '/en/buy'}
-                style={{
-                  ...navButton,
-                  background:'rgba(0,255,153,.85)',
-                  border:'.0625rem solid rgba(0,255,153,.5)',
-                  borderRadius: 0,
-                  marginRight: '-.5rem',
-                  position: 'relative',
-                  zIndex: 2
-                }}
-              >
-                Buy
-              </button>
-
-              <button
-                style={{
-                  ...navButton,
-                  borderTopLeftRadius: 0,
-                  borderBottomLeftRadius: 0,
-                  position: 'relative',
-                  zIndex: 3,
-                  cursor: 'default'
-                }}
-              >
-                Listing
-              </button>
-
-            </nav>
-
-       <button
-                  onClick={() => window.location.href = '/en/favorites'}
-                  style={navButton}
-                >
-                  Favorite Properites <span style={{ color: '#ff3b30' }}>♥</span>
-                </button>
-
-                <button
-                  onClick={() => window.location.href = '/en/swipe/buy'}
-                  style={navButton}
-                >
-                  Properties for Sale Swipe View <span style={{ color: '#00ff99' }}>⇄</span>
-                </button>
-
-
-      </div>
-
-      {/* MAIN GRID */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: '1.2fr .8fr',
-        gap: '2rem'
-      }}>
 
         {/* LEFT */}
         <div>
@@ -279,88 +205,8 @@ export default function ListingPage() {
             )}
 
           </div>
-                    <button
-                    onClick={(e) => {
-
-                        e.preventDefault()
-                        e.stopPropagation()
-
-                        const existingFavorites =
-                        JSON.parse(
-                            localStorage.getItem('favorites') || '[]'
-                        )
-
-                        const alreadySaved =
-                        existingFavorites.includes(listing.id)
-
-                        let updatedFavorites: string[] = []
-
-                        if (alreadySaved) {
-
-                        updatedFavorites =
-                            existingFavorites.filter(
-                            (id: string) => id !== listing.id
-                            )
-
-                        } else {
-
-                        updatedFavorites = [
-                            ...existingFavorites,
-                            listing.id
-                        ]
-
-                        }
-
-                        localStorage.setItem(
-                        'favorites',
-                        JSON.stringify(updatedFavorites)
-                        )
-
-                    }}
-                    style={{
-                        marginTop: '1rem',
-                        width: '100%',
-                        background: '#111',
-                        border: '1px solid #333',
-                        color: '#00ff99',
-                        borderRadius: '999px',
-                        marginBottom: '1rem',
-                        padding: '.85rem',
-                        cursor: 'pointer',
-                        fontWeight: 'bold'
-                    }}
-                    >
-                    Save To Favorites
-                    </button>
-          {/* IMAGE GRID */}
-          {listing.images?.length > 1 && (
-
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: '1rem'
-            }}>
-
-              {listing.images.slice(1).map((image: string, index: number) => (
-
-                <img
-                  key={index}
-                  src={image}
-                  alt=""
-                  style={{
-                    width: '100%',
-                    height: '8rem',
-                    objectFit: 'cover',
-                    borderRadius: '1rem',
-                    border: '1px solid #222'
-                  }}
-                />
-
-              ))}
-
-            </div>
-
-          )}
+                    
+        
 
         </div>
 

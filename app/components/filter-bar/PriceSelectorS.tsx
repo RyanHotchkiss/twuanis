@@ -67,68 +67,58 @@ export default function PriceSelectorS({
 
       <div style={priceWheelContainer}>
 
-        {/* UP */}
-        <button
-          onMouseDown={startIncreasing}
-          onMouseUp={stopChanging}
-          onMouseLeave={stopChanging}
-          onTouchStart={startIncreasing}
-          onTouchEnd={stopChanging}
-          style={priceArrow}
-        >
-          ▲
-        </button>
+  {/* UP */}
+<button
+  onMouseDown={startIncreasing}
+  onMouseUp={stopChanging}
+  onMouseLeave={stopChanging}
+  onTouchStart={startIncreasing}
+  onTouchEnd={stopChanging}
+  style={priceArrow}
+>
+  ▲
+</button>
 
-        {/* DISPLAY */}
-        <div style={priceDisplay}>
+{/* DISPLAY */}
+<div style={priceDisplay}>
 
-          ₡
-          {String(priceMillions).padStart(3, '0')}
-          M
+  <div>
+    ₡
+    {String(priceMillions).padStart(3)}
+    M
+  </div>
 
-        </div>
+  <div style={{
+    fontSize: '.95rem',
+    color: '#888',
+    marginTop: '.35rem'
+  }}>
+    $
+      {((priceMillions * 1000000) / 500).toLocaleString()}
+      {' '}USD
+  </div>
 
-        {/* DOWN */}
-        <button
-          onMouseDown={startDecreasing}
-          onMouseUp={stopChanging}
-          onMouseLeave={stopChanging}
-          onTouchStart={startDecreasing}
-          onTouchEnd={stopChanging}
-          style={priceArrow}
-        >
-          ▼
-        </button>
+</div>
 
-      </div>
+{/* DOWN */}
+<button
+  onMouseDown={startDecreasing}
+  onMouseUp={stopChanging}
+  onMouseLeave={stopChanging}
+  onTouchStart={startDecreasing}
+  onTouchEnd={stopChanging}
+  style={priceArrow}
+>
+  ▼
+</button>
 
-      <div style={priceConversion}>
+</div>
 
-        {priceMillions > 0
-          ? (
-            <>
-              {formatColones(priceMillions)}
+</div>
 
-              {' · '}
-
-              $
-              {convertToUSD(
-                priceMillions
-              ).toLocaleString()}
-              {' '}
-              USD
-            </>
-          )
-          : 'Select price'}
-
-      </div>
-
-    </div>
-
-  )
+)
 
 }
-
 const sectionHeading = {
   fontSize:'1rem',
   marginBottom:'1rem',

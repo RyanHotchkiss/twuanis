@@ -15,13 +15,15 @@ export default function SwipeCard({
         window.location.href = href
       }}
       style={{
-        background:'#ff3b0095',
-        border:'.0625rem solid #ffffff50',
+        
+        flexShrink: 0,
+       
         color:'#fff',
-        padding:'.75rem 1rem',
+        padding:'.5rem .5rem',
         borderRadius:'.75rem',
         cursor:'pointer',
         fontSize:'.875rem',
+        background: 'transparent',
         display:'flex',
         alignItems:'center',
         justifyContent:'center',
@@ -40,25 +42,35 @@ export default function SwipeCard({
         lineHeight:1
       }}>
 
-        <span style={{
-          fontSize:'.5rem',
-          marginBottom:'-.1rem'
-        }}>
-          si
-        </span>
+        <svg
+          width="25"
+          height="25"
+          viewBox="0 0 200 200"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
 
-        <span style={{
-          fontSize:'1rem'
-        }}>
-          ⇄
-        </span>
+                  <path
+                    d="
+                      M20 100
+                      L75 45
+                      L75 75
+                      L125 75
+                      L125 45
+                      L180 100
+                      L125 155
+                      L125 125
+                      L75 125
+                      L75 155
+                      Z
+                    "
+                    
+                    stroke="#00ff99"
+                    strokeWidth="6"
+                    strokeLinejoin="round"
+                  />
 
-        <span style={{
-          fontSize:'.5rem',
-          marginTop:'-.1rem'
-        }}>
-          no
-        </span>
+      </svg>
 
       </span>
 

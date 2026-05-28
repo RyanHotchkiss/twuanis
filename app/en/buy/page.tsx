@@ -4,12 +4,8 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { createListingId } from '@/lib/createListingId'
 import { supabase } from '@/lib/supabase'
-import Breadcrumbs from '@/app/components/Breadcrumbs'
 import rawListings from '@/data/encuentra24-sale-listings.json'
-import Favorites from '@/app/components/Favorites'
-import SwipeCard from '@/app/components/SwipeCard'
 import LocationFilter from '@/app/components/filter-bar/LocationFilter'
-import CreateListingButtonS from '@/app/components/CreateListingButtonS'
 import PriceFilter from '@/app/components/filter-bar/PriceFilter'
 import PropertyTypeFilter from '@/app/components/filter-bar/PropertyTypeFilter'
 import UtilitiesFilter from '@/app/components/filter-bar/UtilitiesFilter'
@@ -20,6 +16,9 @@ import LegalStatusFilter from '@/app/components/filter-bar/LegalStatusFilter'
 import TerrainFilter from '@/app/components/filter-bar/TerrainFilter'
 import PropertyAreaFilter from '@/app/components/filter-bar/PropertyAreaFilter'
 import ResidentialAttributesS from '@/app/components/filter-bar/ResidentialAttributesS'
+import TopBar from '@/app/components/TopBar'
+
+import Image from 'next/image'
 import {
       provinces,
       districts
@@ -135,7 +134,7 @@ const navButton = {
         )
 
         const { data, error } = await supabase
-          .from('sale_listing')
+          .from('listings')
           .select('*')
           .order('id', { ascending: false })
 
@@ -337,10 +336,6 @@ const filteredProperties = properties.filter((property) => {
         overflow: 'hidden'
       }}>
 
-      
-
-          
-
         {/* TOP NAV */}
             <div style={{
               display: 'flex',
@@ -351,90 +346,11 @@ const filteredProperties = properties.filter((property) => {
               borderBottom: '1px solid #151515'
             }}>
 
-        {/* TOP BAR */}
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '1rem',
-              flexWrap: 'wrap'
-            }}>
-
-              <Breadcrumbs
-                breadcrumbs={[
-                  {
-                    label: 'Home',
-                    href: '/en/'
-                  },
-                  {
-                    label: 'Buy',
-                    href: '/en/buy'
-                  }
-                ]}
-              />
-
-              <Favorites
-                href="/en/favorites"
-                label="Favorite Properties"
-                icon="♥"
-              />
-
-              <SwipeCard
-                href="/en/swipe/buy"
-                label="Swipe View"
-              />
-
-              {isMobile && !showMobileFilters && (
-
-                <button
-                  onClick={() =>
-                    setShowMobileFilters(true)
-                  }
-                  style={{
-                    position: 'fixed',
-
-                    bottom: '1.25rem',
-                    left: '50%',
-
-                    transform: 'translateX(-50%)',
-
-                    zIndex: 9999,
-
-                    width: 'calc(100vw - 2rem)',
-                    maxWidth: '28rem',
-
-                    background: '#ff3b00',
-                    color: '#fff',
-
-                    border: 'none',
-                    borderRadius: '999rem',
-
-                    padding: '1rem 1.25rem',
-
-                    fontSize: '1rem',
-                    fontWeight: 'bold',
-
-                    boxShadow:
-                      '0 10px 30px rgba(0,0,0,.45)',
-
-                    cursor: 'pointer'
-                  }}
-                >
-                  Show Filtered Properties
-                </button>
-
-              )}
-
-            </div>
-
-
-{/* RIGHT */}
-             
-            <CreateListingButtonS
-            onCreateListing={() => {
-              window.location.href =
-                '/en/rent-out-lease-out'
-            }}
-          />
+                    <TopBar
+                      onFilterClick={() =>
+                        setShowMobileFilters(true)
+                      }
+                    />
 
             </div>
 
@@ -444,13 +360,13 @@ const filteredProperties = properties.filter((property) => {
               marginBottom: '40px'
             }}>
 
-          <h1 style={{
-            fontSize: '72px',
-            marginBottom: '10px',
-            fontWeight: 'bold'
-          }}>
-            Twuanis
-          </h1>
+                  <h1 style={{
+                    fontSize: '72px',
+                    marginBottom: '10px',
+                    color: '#ff3b00'
+                  }}>
+                    Twuanis
+                  </h1>
 
           <p style={{
             color: '#999',
@@ -529,31 +445,50 @@ const filteredProperties = properties.filter((property) => {
               }}
             >
 
-                    {isMobile && (
+              {isMobile && (
 
-                      <button
-                        onClick={() =>
-                          setShowMobileFilters(false)
-                        }
-                        style={{
-                          background: '#00ff9980',
-                          border: '1px solid #333',
-                          color: '#fff',
-                          
-                          fontSize: '18px',
-                          padding: '12px',
+                <button
+                  onClick={() =>
+                    setShowMobileFilters(false)
+                  }
+                  style={{
+                    position: 'fixed',
 
-                          borderRadius: '12px',
+                      display: showMobileFilters
+                          ? 'block'
+                          : 'none',
 
-                          marginBottom: '20px',
+                    top: '1.25rem',
+                    left: '50%',
 
-                          cursor: 'pointer'
-                        }}
-                      >
-                        Close Filters
-                      </button>
+                    transform: 'translateX(-50%)',
 
-                    )}
+                    width: 'calc(85vw - 2rem)',
+                    maxWidth: '8rem',
+
+                    background: '#ff3b0099',
+                    color: '#fff',
+
+                    border: 'none',
+                    borderRadius: '999rem',
+
+                    padding: '.5rem .5rem',
+
+                    fontSize: '.6rem',
+                  
+
+                    boxShadow:
+                      '0 10px 40px rgba(0,0,0,.45)',
+
+                    zIndex: 9999,
+
+                    cursor: 'pointer'
+                  }}
+                >
+                  View Filtered Properties
+                </button>
+
+              )}
 
 <LocationFilter
 

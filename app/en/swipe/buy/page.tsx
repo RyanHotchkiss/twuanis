@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import rawListings from '@/data/encuentra24-sale-listings.json'
 import { createListingId } from '@/lib/createListingId'
+import TopBar from '@/app/components/TopBar'
 
 export default function SwipePage() {
 
@@ -269,101 +270,23 @@ useEffect(() => {
 
 }, [])
 
-const topNav = (
-  <div
-    style={{
-      position: 'fixed',
-
-      top: '1.25rem',
-      left: '50%',
-
-      transform: 'translateX(-50%)',
-
-      display: 'flex',
-      flexDirection: 'row',
-
-      alignItems: 'center',
-      justifyContent: 'center',
-
-      gap: '.75rem',
-
-      zIndex: 3000,
-
-      flexWrap: 'nowrap',
-
-      whiteSpace: 'nowrap',
-
-      width: 'max-content'
-    }}
-  >
-
-    <a
-          href="/en/favorites"
-          style={{
-            ...navButton,
-            color: '#00ff99',
-            minWidth: 'fit-content'
-          }}
-        >
-          Favorite Properties
-          {' '}
-          <span
-            style={{
-              color: '#ff3b30'
-            }}
-          >
-            ♥
-          </span>
-        </a>
-
-          <button
-            onClick={() =>
-              setShowMobileFilters(true)
-            }
-            style={{
-              ...navButton,
-              background: '#00ff9999',
-              color: '#000',
-              minWidth: 'fit-content'
-            }}
-          >
-            Filters
-            {' '}
-            <span
+          const topNav = (
+            <div
               style={{
-                color: '#ff6900'
+                position: 'fixed',
+                top: '1.25rem',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                zIndex: 3000
               }}
             >
-              ⩔
-            </span>
-          </button>
-
-          <button
-            onClick={() =>
-              window.history.back()
-            }
-            style={{
-              ...navButton,
-              minWidth: 'fit-content'
-            }}
-          >
-            Exit Swipe View
-            {' '}
-            <span
-              style={{
-                color: '#ff3b30'
-              }}
-            >
-              ⊘
-            </span>
-          </button>
-
-    
-
-
-
-  </div>
-)
+                        <TopBar
+                          onFilterClick={() =>
+                            setShowMobileFilters(true)
+                          }
+                        />
+            </div>
+          )
 
 const filterSidebar = (
   <div
@@ -424,7 +347,7 @@ const filterSidebar = (
         cursor: 'pointer'
       }}
     >
-      Close Filters
+      Cerrar Filtros
     </button>
 
     <select
@@ -441,7 +364,7 @@ const filterSidebar = (
       style={filterSelect}
     >
       <option value="">
-        All Provinces
+        Todas las Provincias
       </option>
 
       {[...new Set(
@@ -477,7 +400,7 @@ const filterSidebar = (
       style={filterSelect}
     >
       <option value="">
-        All Cantons
+        Todos los Cantones
       </option>
 
       {[...new Set(
@@ -516,7 +439,7 @@ const filterSidebar = (
       style={filterSelect}
     >
       <option value="">
-        All Property Types
+        Todos los Tipos de Propiedad
       </option>
 
       {[...new Set(
@@ -552,7 +475,7 @@ const filterSidebar = (
       style={filterSelect}
     >
       <option value="">
-        All Environments
+        Todos los Entornos
       </option>
 
       {[...new Set(
@@ -588,7 +511,7 @@ const filterSidebar = (
       style={filterSelect}
     >
       <option value="">
-        All Prices
+        Todos los Precios
       </option>
 
       <option value="under-50">
@@ -642,7 +565,7 @@ if (!currentProperty) {
           fontSize: '3rem',
           margin: 0
         }}>
-          No More Properties
+          No Hay Más Propiedades
         </h1>
 
         <p style={{
@@ -650,7 +573,7 @@ if (!currentProperty) {
           fontSize: '1.2rem',
           lineHeight: '1.7'
         }}>
-          Remove filters to see more results.
+          Quita filtros para ver más resultados.
         </p>
 
         <button
@@ -674,7 +597,7 @@ if (!currentProperty) {
             cursor: 'pointer'
           }}
         >
-          Clear Filters
+          Limpiar Filtros
         </button>
 
       </div>
@@ -734,6 +657,7 @@ return (
         onPointerCancel={handlePointerUp}
         style={{
           position: 'relative',
+          marginTop: '8rem',
           zIndex: 2,
           width: '100%',
           maxWidth: '420px',
@@ -766,7 +690,7 @@ return (
             fontWeight: 'bold',
             zIndex: 5
           }}>
-            SAVE
+            GUARDAR
           </div>
 
         )}
@@ -783,7 +707,7 @@ return (
             fontWeight: 'bold',
             zIndex: 5
           }}>
-            NOPE
+            NO
           </div>
 
         )}
@@ -816,7 +740,7 @@ return (
               alignItems: 'center',
               color: '#555'
             }}>
-              No Image
+              Sin Imagen
             </div>
 
           )}
@@ -873,7 +797,7 @@ return (
               ? `₡${Number(
                   currentProperty.price_millions
                 ).toLocaleString()}M`
-              : 'Price Unavailable'}
+              : 'Precio No Disponible'}
           </div>
 
           {/* BUTTONS */}
@@ -886,14 +810,14 @@ return (
               onClick={() => completeSwipe('left')}
               style={rejectButton}
             >
-              Reject
+              Rechazar
             </button>
 
             <button
               onClick={() => completeSwipe('right')}
               style={saveButton}
             >
-              Save
+              Guardar
             </button>
 
           </div>

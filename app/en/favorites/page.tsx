@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import rawListings from '@/data/encuentra24-sale-listings.json'
-import BackButton from '@/app/components/BackButton'
+import TopBar from '@/app/components/TopBar'
 import { createListingId } from '@/lib/createListingId'
 
 import { supabase } from '@/lib/supabase'
@@ -123,16 +123,11 @@ export default function FavoritesPage() {
 
     <main style={mainStyle}>
 
-      {/* TOP BAR */}
-      <div style={{
-        marginBottom: '2rem'
-      }}>
-
-        <BackButton
-          label="← Back to Listings"
-        />
-
-      </div>
+                    <TopBar
+                        onFilterClick={() =>
+                          setShowMobileFilters(true)
+                        }
+                      />
 
       <h1 style={{
         fontSize: '3rem',

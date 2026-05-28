@@ -47,6 +47,16 @@ export default function SwipePage() {
             .from('listings')
             .select('*')
 
+                  console.log(
+                    'LISTINGS FETCH:',
+                    JSON.stringify(
+                      { data, error },
+                      null,
+                      2
+                    )
+                  )
+
+
           if (error) {
 
             console.error(
