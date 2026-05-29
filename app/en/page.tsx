@@ -27,6 +27,10 @@ function HomePageContent() {
 
   const [showadvanced_filters, setShowadvanced_filters] = useState(false)
   const [showMobileFilters, setShowMobileFilters] = useState(false)
+  
+  const [showIntroOverlay, setShowIntroOverlay] = useState(true)
+  const [countdown, setCountdown] = useState(12)
+
 
   const isMobile =
   typeof window !== 'undefined' &&
@@ -70,52 +74,81 @@ function HomePageContent() {
 
     useEffect(() => {
 
-      async function fetchListings() {
+            async function fetchListings() {
 
+              const { data, error } = await supabase
+                .from('listings')
+                .select('*')
+                .order('id', { ascending: false })
 
-        const { data, error } = await supabase
-          .from('listings')
-          .select('*')
-          .order('id', { ascending: false })
+              if (error) {
 
-          if (error) {
+                console.error(
+                  JSON.stringify(error, null, 2)
+                )
 
-            console.error(
-              JSON.stringify(error, null, 2)
-            )
+                setProperties([])
 
-            setProperties([])
+                setLoading(false)
 
-            setLoading(false)
+                return
 
-            return
+              }
 
-          }
+              const normalizedSupabaseListings = (data || []).map(
+                (listing: any) => ({
 
-        const normalizedSupabaseListings = (data || []).map(
-          (listing: any) => ({
+                  ...listing,
 
-            ...listing,
+                  images:
+                    Array.isArray(listing.images)
+                      ? listing.images
+                      : typeof listing.images === 'string'
+                      ? listing.images.split('|')
+                      : []
 
-            images:
-              Array.isArray(listing.images)
-                ? listing.images
-                : typeof listing.images === 'string'
-                ? listing.images.split('|')
-                : []
+                })
+              )
 
-          })
-        )
+              setProperties(
+                normalizedSupabaseListings
+              )
 
-      setProperties(normalizedSupabaseListings)
+              setLoading(false)
 
-        setLoading(false)
+            }
 
-      }
+            fetchListings()
 
-      fetchListings()
+          }, [])
 
-    }, [])
+          useEffect(() => {
+
+            if (!showIntroOverlay) return
+
+            const interval = setInterval(() => {
+
+              setCountdown(prev => {
+
+                if (prev <= 1) {
+
+                  clearInterval(interval)
+
+                  setShowIntroOverlay(false)
+
+                  return 0
+
+                }
+
+                return prev - 1
+
+              })
+
+            }, 1000)
+
+            return () => clearInterval(interval)
+
+          }, [showIntroOverlay])
 
       const provinces: Record<string, string[]> = {
 
@@ -440,6 +473,7 @@ function HomePageContent() {
                           
                 const filteredProperties = properties.filter((property) => {
 
+                  
                     if (
                       selectedprovince &&
                       property.province !== selectedprovince
@@ -550,8 +584,9 @@ function HomePageContent() {
     setSelecteddistrict(district)
   }
 
+  {/* OVERLAY over OVERLAY */}
   return (
-      <main style={{
+      <main style={{        
         background: '#000',
         minHeight: '100vh',
         color: '#fff',
@@ -559,6 +594,329 @@ function HomePageContent() {
         position: 'relative',
         overflow: 'hidden'
       }}>
+
+      {showIntroOverlay && (
+
+          <div
+            style={{
+              position:'fixed',
+              inset:0,
+
+              background:'rgba(0,0,0,.88)',
+
+              backdropFilter:'blur(20px)',
+
+              zIndex:10000,
+
+              display:'flex',
+              justifyContent:'center',
+              alignItems:'flex-start',
+              overflowY:'auto',
+
+              paddingTop:'3rem',
+              paddingBottom:'3rem',
+            }}
+          >
+
+         <button
+            onClick={() =>
+              setShowIntroOverlay(false)
+            }
+            style={{
+              position:'fixed',
+
+              top:'1rem',
+              right:'1rem',
+
+              width:'3rem',
+              height:'3rem',
+
+              borderRadius:'999rem',
+
+              background:'rgba(0,0,0,.6)',
+              border:'1px solid rgba(255,255,255,.15)',
+
+              backdropFilter:'blur(10px)',
+
+              color:'#fff',
+
+              fontSize:'1.5rem',
+
+              cursor:'pointer',
+
+              zIndex:10051,
+
+              pointerEvents:'auto'
+            }}
+          >
+            ✕
+          </button>
+
+            <div
+              style={{
+                maxWidth:'74rem',
+                width:'100%',
+
+                paddingTop:isMobile
+                  ? '2rem'
+                  : '5rem',
+
+                paddingBottom:isMobile
+                  ? '2rem'
+                  : '5rem',
+
+                paddingLeft:isMobile
+                  ? '1rem'
+                  : '2rem',
+
+                paddingRight:isMobile
+                  ? '1rem'
+                  : '2rem',
+
+                textAlign:'center'
+              }}
+            >
+
+              <h1
+  style={{
+    fontSize:isMobile
+      ? '2rem'
+      : '3.5rem',
+
+    lineHeight:'1.15',
+
+    marginBottom:'1.5rem'
+  }}
+>
+  <span style={{ color:'#ff3b00' }}>
+    Do
+  </span>
+
+  {' '}exponentially{' '}
+
+  <span style={{ color:'#ff3b00' }}>
+    more with Twuanis
+  </span>
+
+  {' '}than any other real estate website.
+</h1>
+
+              <div
+                  style={{
+                    display:'flex',
+                    flexWrap:'wrap',
+                    justifyContent:'center',
+                    alignItems:'flex-start',
+
+                    gap:isMobile
+                      ? '2rem'
+                      : '4rem',
+
+                    marginTop:'3rem',
+                    marginBottom:'3rem'
+                  }}
+                >
+
+                  {/* LEFT */}
+                  <div
+                    style={{
+                      flex:'1 1 18rem',
+                      minWidth:'16rem',
+                      maxWidth:'22rem'
+                    }}
+                  >
+
+                    <p
+                      style={{
+                        color:'#00ff99',
+                        fontWeight:'bold',
+                        fontSize:'1.2rem',
+                        marginBottom:'1rem'
+                      }}
+                    >
+                      Without typing a single letter.
+                    </p>
+
+                    <p
+                      style={{
+                        fontWeight:'bold',
+                        fontSize:'1.4rem',
+                        marginBottom:'2rem'
+                      }}
+                    >
+                      Not. One. Word.
+                    </p>
+
+                    <div
+                      style={{
+                        color:'#cccccc',
+                        lineHeight:'2'
+                      }}
+                    >
+                      No titles.<br />
+                      No descriptions.<br />
+                      No endless forms.<br />
+                      No wasted time.
+                    </div>
+
+                  </div>
+
+                  {/* CENTER */}
+                  <div
+                    style={{
+                      flex:'1 1 18rem',
+                      minWidth:'16rem',
+                      maxWidth:'22rem'
+                    }}
+                  >
+
+                    <div
+                      style={{
+                        color:'#ffffff',
+                        lineHeight:'2'
+                      }}
+                    >
+
+                      <p
+                      style={{
+                        color:'#00ff99',
+                        fontWeight:'bold',
+                        fontSize:'1.2rem',
+                        marginBottom:'1rem'
+                      }}
+                    >
+                      Describe any property in under a minute.
+                    </p>
+
+                      Buying.<br />
+                      Selling.<br />
+                      Renting.<br />
+                      Leasing.
+
+                      
+                    </div>
+
+                  </div>
+
+                  {/* RIGHT */}
+                  <div
+                    style={{
+                      flex:'1 1 18rem',
+                      minWidth:'16rem',
+                      maxWidth:'22rem'
+                    }}
+                  >
+                    <p
+                      style={{
+                        color:'#00ff99',
+                        fontWeight:'bold',
+                        fontSize:'1.2rem',
+                        marginBottom:'1rem'
+                      }}
+                    >
+                      Simply select the options that match the property.
+                    </p>
+
+                    <div
+                      style={{
+                        color:'#bbbbbb',
+                        lineHeight:'2'
+                      }}
+                    >
+                      • Property titles<br />
+                      • Property descriptions<br />
+                      • Property categorization<br />
+                      • Keyword-rich search signals<br />
+                      • Contact information
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <p
+                  style={{
+                    marginTop:'2rem',
+                    color:'#ff3b00',
+                    fontWeight:'bold',
+                    fontSize:isMobile
+                      ? '1rem'
+                      : '1.15rem'
+                  }}
+                >
+                  What normally takes 15–30 minutes can be completed in under 80 seconds.
+                </p>
+
+                <div
+                        style={{
+                          position:'fixed',
+
+                          top:isMobile ? '1rem' : 'auto',
+                          bottom:isMobile ? 'auto' : '8rem',
+
+                          left:isMobile ? '1rem' : '50%',
+
+                          transform:isMobile
+                            ? 'none'
+                            : 'translateX(-50%)',
+
+                          display:'flex',
+                          alignItems:'center',
+                          gap:'.75rem',
+
+                          zIndex:10050,
+
+                          pointerEvents:'auto'
+                        }}
+                      >
+
+                        <div
+                          style={{
+                            background:'rgba(0,0,0,.6)',
+                            border:'1px solid rgba(255,255,255,.15)',
+                            backdropFilter:'blur(10px)',
+
+                            padding:'.75rem 1.25rem',
+
+                            borderRadius:'999rem',
+
+                            color:'#00ff99',
+
+                            fontWeight:'bold'
+                          }}
+                        >
+                          Continue in {countdown}s
+                        </div>
+
+                        <Link
+                          href="/es"
+                          style={{
+                            background:'rgba(0,0,0,.6)',
+                            border:'1px solid rgba(255,255,255,.15)',
+                            backdropFilter:'blur(10px)',
+
+                            padding:'.75rem 1.25rem',
+
+                            borderRadius:'999rem',
+
+                            color:'#fff',
+
+                            textDecoration:'none',
+
+                            fontWeight:'bold'
+                          }}
+                        >
+                          Español
+                        </Link>
+
+                      </div>
+
+            </div>
+
+          </div>
+
+        )}
+
 
       {/* OVERLAY */}
           {overlayState && (
@@ -600,22 +958,6 @@ function HomePageContent() {
                     justifyContent: 'flex-end',
                     marginBottom: '1rem'
                     }}>
-
-                    <Link
-                        href="/es"
-                        style={{
-                        background: 'rgba(255,255,255,.06)',
-                        border: '1px solid rgba(255,255,255,.12)',
-                        color: '#fff',
-                        textDecoration: 'none',
-                        padding: '.75rem 1rem',
-                        borderRadius: '999px',
-                        fontSize: '.85rem',
-                        backdropFilter: 'blur(12px)'
-                        }}
-                    >
-                        Español
-                    </Link>
 
                     </div>
 
