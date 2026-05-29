@@ -780,10 +780,10 @@ function HomePageContent() {
                     Haz
                   </span>
 
-                  {' '}exponencialmente más con{' '}
+                  {' '}exponencialmente{' '}
 
                   <span style={{ color:'#ff3b00' }}>
-                    Twuanis
+                    más con Twuanis
                   </span>
 
                   {' '}que con cualquier otro sitio web inmobiliario.
