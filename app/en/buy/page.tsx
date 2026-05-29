@@ -23,6 +23,22 @@ import {
       provinces,
       districts
     } from '@/data/property-data'
+
+function normalizeLocation(
+  value: string | null | undefined
+) {
+
+  return value
+    ?.normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/^el\s+/i, '')
+    .replace(/^central\s+/i, '')
+    .trim()
+    .toLowerCase()
+
+}
+
+
 export default function HomePage() {
 
 const navButton = {
@@ -133,8 +149,12 @@ async function fetchListings() {
 
   }
 
-  const normalizedSupabaseListings = (data || []).map(
-    (listing: any) => ({
+const normalizedSupabaseListings = (data || []).map(
+  (listing: any) => {
+
+    console.log('RAW LISTING IMAGES:', listing.images)
+
+    return {
 
       ...listing,
 
@@ -144,11 +164,24 @@ async function fetchListings() {
         Array.isArray(listing.images)
           ? listing.images
           : typeof listing.images === 'string'
-          ? listing.images.split('|')
+          ? listing.images
+              .split('|')
+              .map((img: string) => img.trim())
+              .filter(Boolean)
           : []
 
-    })
+    }
+
+  }
+)
+
+console.log(
+  JSON.stringify(
+    normalizedSupabaseListings[0],
+    null,
+    2
   )
+)
 
   setProperties(normalizedSupabaseListings)
 
@@ -202,26 +235,68 @@ async function fetchListings() {
                           
 const filteredProperties = properties.filter((property) => {
 
-                  if (
-                    filters.province &&
-                    property.province !== filters.province
-                  ) {
-                    return false
-                  }
+  console.log(
+
+    'PROPERTY:',
+
+    property.province,
+
+    property.canton,
+
+    property.district
+
+  )
+
+  console.log(
+
+    'FILTERS:',
+
+    filters.province,
+
+    filters.canton,
+
+    filters.district
+
+  )
+
+
+                 if (filters.province) {
+
+  console.log(
+    'COMPARE:',
+    normalizeLocation(property.province),
+    '===',
+    normalizeLocation(filters.province)
+  )
+
+  if (
+    normalizeLocation(property.province) !==
+    normalizeLocation(filters.province)
+  ) {
+
+    console.log('FAILED PROVINCE MATCH')
+
+    return false
+
+  }
+
+}
 
                   if (
-                    filters.canton &&
-                    property.canton !== filters.canton
-                  ) {
-                    return false
-                  }
+                      filters.canton &&
+                      normalizeLocation(property.canton) !==
+                      normalizeLocation(filters.canton)
+                    ) {
+                      return false
+                    }
 
                   if (
-                    filters.district &&
-                    property.district !== filters.district
-                  ) {
-                    return false
-                  }
+                      filters.district &&
+                      normalizeLocation(property.district) !==
+                      normalizeLocation(filters.district)
+                    ) {
+                      return false
+                    }
 
                   if (
                     filters.price_range &&
@@ -297,6 +372,17 @@ const filteredProperties = properties.filter((property) => {
                   ) {
                     return false
                   }
+
+console.log({
+  selectedProvince: filters.province,
+  propertyProvince: property.province,
+
+  selectedCanton: filters.canton,
+  propertyCanton: property.canton,
+
+  selectedDistrict: filters.district,
+  propertyDistrict: property.district
+})
 
                   return true
 
@@ -993,7 +1079,23 @@ const filteredProperties = properties.filter((property) => {
                       }}
                     >
 
-                              {filteredProperties.map((property) => (
+{(() => {
+  console.log(filteredProperties)
+  return null
+})()}
+
+
+                              {filteredProperties.map((property) => {
+
+                                console.log('FULL IMAGES:', property.images)
+                                console.log('FIRST IMAGE:', property.images?.[0])
+                                console.log('TYPE:', typeof property.images)
+                                console.log('COMPONENT RENDERED')
+                                console.log('FILTERED LENGTH:', filteredProperties.length)
+
+                                return (
+                                                            
+
 
                                 <Link
                                   href={`/en/buy/listing/${property.id}`}
@@ -1025,10 +1127,16 @@ const filteredProperties = properties.filter((property) => {
                                     >
 
                                       {Array.isArray(property.images) &&
-                                      property.images[0] ? (
+                                        property.images.length > 0 ? (
+
 
                                         <img
-                                          src={property.images[0]}
+                                          referrerPolicy="no-referrer"
+                                          src={
+                                                Array.isArray(property.images)
+                                                  ? property.images[0]
+                                                  : property.images
+                                              }
                                           alt={property.title}
                                           style={{
                                             width: '100%',
@@ -1185,8 +1293,9 @@ const filteredProperties = properties.filter((property) => {
                                   </div>
 
                                 </Link>
+                                    )
 
-                              ))}
+                                })}
 
                      
 

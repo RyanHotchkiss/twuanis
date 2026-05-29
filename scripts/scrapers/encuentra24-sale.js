@@ -6,12 +6,135 @@ const puppeteer = require('puppeteer')
 
 const fs = require('fs')
 
+
+
+
 async function scrapeEncuentra24Sale() {
 
-  try {
+            try {
 
-    const regionSlug =
-  process.argv[2]
+              const regionSlug =
+
+                process.argv[2]
+
+              const slugParts =
+
+                regionSlug.split('-')
+
+              let province = ''
+
+              let canton = ''
+
+              let district = ''
+
+      const sanJoseCapitalDistrictMap = {
+
+                      'carmen': 'Carmen',
+                      'merced': 'Merced',
+                      'hospital': 'Hospital',
+                      'catedral': 'Catedral',
+                      'zapote': 'Zapote',
+                      'san-francisco-de-dos-rios':
+                        'San Francisco de Dos Ríos',
+                      'uruca': 'Uruca',
+                      'mata-redonda': 'Mata Redonda',
+                      'pavas': 'Pavas',
+                      'hatillo': 'Hatillo',
+                      'san-sebastian':
+                        'San Sebastián'
+
+                    }
+
+                    if (slugParts.length === 2) {
+
+                      province =
+                        slugParts[0]
+                          .replace(/\b\w/g, c => c.toUpperCase())
+
+                      canton =
+                        slugParts[1]
+                          .replace(/\b\w/g, c => c.toUpperCase())
+
+                      district = ''
+
+                    }
+
+                    else if (
+                      regionSlug.startsWith(
+                        'san-jose-san-jose-capital-'
+                      )
+                    ) {
+
+                      province = 'San Jose'
+
+                      canton = 'Central San José'
+
+                      const districtSlug =
+                        regionSlug.replace(
+                          'san-jose-san-jose-capital-',
+                          ''
+                        )
+
+                      district =
+                        sanJoseCapitalDistrictMap[
+                          districtSlug
+                        ] || districtSlug
+
+                    }
+
+                    else if (
+                      regionSlug ===
+                      'san-jose-escazu'
+                    ) {
+
+                      province = 'San Jose'
+
+                      canton = 'Escazú'
+
+                      district = ''
+
+                    }
+
+                    else if (
+                      regionSlug.startsWith(
+                        'san-jose-escazu-'
+                      )
+                    ) {
+
+                      province = 'San Jose'
+
+                      canton = 'Escazú'
+
+                      district =
+                        regionSlug
+                          .replace(
+                            'san-jose-escazu-',
+                            ''
+                          )
+                          .replace(/-/g, ' ')
+                          .replace(/\b\w/g,
+                            c => c.toUpperCase()
+                          )
+
+                    }
+
+                    else {
+
+                      console.log(
+                        'UNKNOWN SLUG:',
+                        regionSlug
+                      )
+
+                    }
+
+
+
+console.log(
+  'FINAL LOCATION:',
+  province,
+  canton,
+  district
+)
 
 const baseUrl =
   `https://www.encuentra24.com/costa-rica-en/searchresult/real-estate?q=keyword.&regionslug=${regionSlug}`
@@ -178,7 +301,7 @@ const baseUrl =
       const detail$ =
         cheerio.load(detailResponse.data)
 
-      let province = 'San José'
+
 
       let construction_area = ''
 
@@ -197,6 +320,8 @@ const baseUrl =
       let whatsapp = ''
 
       let images = []
+
+console.log(detailResponse.data)
 
       description =
         detail$('.d3-property-about__text')
@@ -399,39 +524,55 @@ const baseUrl =
 
       listings.push({
 
-        title,
+              province,
 
-        transaction_type,
+              canton,
 
-        province,
+              district,
 
-        property_type,
+              property_type,
 
-        raw_property_type,
+              property_area,
 
-        price,
+              utility: '',
 
-        bedrooms,
+              environment: '',
 
-        bathrooms,
+              accessibility: '',
 
-        construction_area,
+              terrain: '',
 
-        parking,
+              legal_status: '',
 
-        property_area,
+              price_millions:
+                Math.round(
+                  (
+                    parseInt(
+                      price.replace(/[^\d]/g, '')
+                    ) || 0
+                  ) / 1000000
+                ),
 
-        year_built,
+              whatsapp,
 
-        whatsapp,
+              images: images.join('|'),
 
-        listing_url: listingUrl,
+              title,
 
-        images: images.join('|'),
+              description,
 
-        description
+              bedrooms,
 
-      })
+              bathrooms,
+
+              parking,
+
+              year_built_range:
+                year_built,
+
+              construction_area
+
+            })
 
     }
 
@@ -439,41 +580,38 @@ const baseUrl =
       JSON.stringify(listings, null, 2)
     )
 
-    const headers = [
+   const headers = [
 
-      'title',
+          'province',
+          'canton',
+          'district',
 
-      'transaction_type',
+          'property_type',
+          'property_area',
 
-      'province',
+          'utility',
+          'environment',
+          'accessibility',
+          'terrain',
+          'legal_status',
 
-      'property_type',
+          'price_millions',
 
-      'raw_property_type',
+          'whatsapp',
+          'images',
 
-      'price',
+          'title',
+          'description',
 
-      'bedrooms',
+          'bedrooms',
+          'bathrooms',
+          'parking',
 
-      'bathrooms',
+          'year_built_range',
 
-      'construction_area',
+          'construction_area'
 
-      'parking',
-
-      'property_area',
-
-      'year_built',
-
-      'whatsapp',
-
-      'listing_url',
-
-      'images',
-
-      'description'
-
-    ]
+        ]
 
     const csvRows = []
 
@@ -505,14 +643,17 @@ const baseUrl =
     const csv =
       csvRows.join('\n')
 
-    fs.writeFileSync(
-      'encuentra24-sale-listings.csv',
-      csv
-    )
+        const fileName =
+          `${regionSlug}.csv`
 
-    console.log(
-      'CSV CREATED: encuentra24-sale-listings.csv'
-    )
+        fs.writeFileSync(
+          fileName,
+          csv
+        )
+
+        console.log(
+          `CSV CREATED: ${fileName}`
+        )
 
   } catch (error) {
 
@@ -526,3 +667,11 @@ const baseUrl =
 }
 
 scrapeEncuentra24Sale()
+
+/*
+
+npm run build
+cd scripts/scrapers
+node encuentra24-sale.js "slug"
+
+*/

@@ -22,6 +22,21 @@ import {
       provinces,
       districts
     } from '@/data/property-data'
+
+function normalizeLocation(
+        value: string | null | undefined
+      ) {
+
+        return value
+          ?.normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/^el\s+/i, '')
+          .replace(/^central\s+/i, '')
+          .trim()
+          .toLowerCase()
+
+      }
+
 export default function HomePage() {
 
 const navButton = {
@@ -145,7 +160,10 @@ const navButton = {
                   Array.isArray(listing.images)
                     ? listing.images
                     : typeof listing.images === 'string'
-                    ? listing.images.split('|')
+                    ? listing.images
+                        .split('|')
+                        .map((img: string) => img.trim())
+                        .filter(Boolean)
                     : []
 
               })
@@ -203,25 +221,28 @@ const navButton = {
 const filteredProperties = properties.filter((property) => {
 
                   if (
-                    filters.province &&
-                    property.province !== filters.province
-                  ) {
-                    return false
-                  }
+                        filters.province &&
+                        normalizeLocation(property.province) !==
+                        normalizeLocation(filters.province)
+                      ) {
+                        return false
+                      }
 
-                  if (
-                    filters.canton &&
-                    property.canton !== filters.canton
-                  ) {
-                    return false
-                  }
+                      if (
+                        filters.canton &&
+                        normalizeLocation(property.canton) !==
+                        normalizeLocation(filters.canton)
+                      ) {
+                        return false
+                      }
 
-                  if (
-                    filters.district &&
-                    property.district !== filters.district
-                  ) {
-                    return false
-                  }
+                      if (
+                        filters.district &&
+                        normalizeLocation(property.district) !==
+                        normalizeLocation(filters.district)
+                      ) {
+                        return false
+                      }
 
                   if (
                     filters.price_range &&
@@ -1028,6 +1049,7 @@ const filteredProperties = properties.filter((property) => {
                                       property.images[0] ? (
 
                                         <img
+                                          referrerPolicy="no-referrer"
                                           src={property.images[0]}
                                           alt={property.title}
                                           style={{
