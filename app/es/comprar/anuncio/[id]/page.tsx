@@ -368,8 +368,10 @@ export default function ListingPage() {
 
                 {(Array.isArray(listing.accessibility)
                 ? listing.accessibility
+                : Array.isArray(listing.accessibility)
+                ? listing.accessibility
                 : typeof listing.accessibility === 'string'
-                ? JSON.parse(listing.accessibility)
+                ? [listing.accessibility]
                 : []
                 ).map((item: string) => (
 

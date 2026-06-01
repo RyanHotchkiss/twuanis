@@ -1,15 +1,21 @@
 'use client'
 
+import CsvListingsGrid from '@/app/components/CsvListingsGrid'
+import CsvPublishActions from '@/app/components/CsvPublishActions'
+import CsvPublishActionsRentLease from '@/app/components/CsvPublishActionsRentLease'
+
 type CsvStagingModalProps = {
   csvListings: any[]
   setCsvListings: (value: any[]) => void
   setShowCsvStaging: (value: boolean) => void
+  isRentLease?: boolean
 }
 
 export default function CsvStagingModal({
   csvListings,
   setCsvListings,
-  setShowCsvStaging
+  setShowCsvStaging,
+  isRentLease = false
 }: CsvStagingModalProps) {
 
   return (
@@ -33,6 +39,28 @@ export default function CsvStagingModal({
             </p>
 
           </div>
+<CsvListingsGrid
+            csvListings={csvListings}
+            setCsvListings={setCsvListings}
+          />
+
+          {isRentLease ? (
+
+<CsvPublishActionsRentLease
+            csvListings={csvListings}
+            setCsvListings={setCsvListings}
+            setShowCsvStaging={setShowCsvStaging}
+          />
+
+        ) : (
+
+<CsvPublishActions
+            csvListings={csvListings}
+            setCsvListings={setCsvListings}
+            setShowCsvStaging={setShowCsvStaging}
+          />
+
+        )}
 
           <button
             onClick={() => setShowCsvStaging(false)}

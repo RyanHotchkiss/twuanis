@@ -7,18 +7,12 @@ export default function LanguageButtonES() {
     <button
       onClick={() => {
         sessionStorage.setItem(
-        'skipIntro',
-        'true'
-      )
+            'skipIntro',
+            'true'
+            )
 
-      sessionStorage.setItem(
-          'skipIntro',
-          'true'
-        )
-
-        window.location.href =
-          '/es/'
-          
+            window.location.href =
+            '/en/'
       }}
       style={{
         background:'#ffffff00',
@@ -45,7 +39,7 @@ export default function LanguageButtonES() {
         textTransform:'uppercase'
       }}
     >
-      ES
+      EN
     </button>
 
   )

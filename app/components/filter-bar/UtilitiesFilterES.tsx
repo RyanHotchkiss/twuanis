@@ -8,6 +8,10 @@ type UtilitiesFilterProps = {
   showutilityOptions: boolean
   setShowutilityOptions: (value: boolean) => void
 
+  setShowenvironmentOptions: (
+    value: boolean
+  ) => void
+
   setShowProvinceOptions: (
   value: boolean
   ) => void
@@ -19,6 +23,7 @@ type UtilitiesFilterProps = {
   setShowDistrictOptions: (
     value: boolean
   ) => void
+   
 
 }
 
@@ -29,6 +34,8 @@ export default function UtilitiesFilter({
 
       showutilityOptions,
       setShowutilityOptions,
+
+      setShowenvironmentOptions,
 
       setShowProvinceOptions,
       setShowCantonOptions,
@@ -162,7 +169,7 @@ export default function UtilitiesFilter({
 const miniHeading = {
   fontSize:'1rem',
   marginBottom:'1rem',
-  color:'#ff3b00',
+  color:'#D4AF37',
   textTransform:'uppercase' as const,
   letterSpacing:'.05rem'
 }
@@ -175,7 +182,7 @@ const pillWrap = {
 
 const pill = {
   background:'#181818',
-  border:'1px solid #2a2a2a',
+  border:'1px solid #D4AF3750',
   color:'#fff',
   padding:'.85rem 1rem',
   borderRadius:'999rem',
@@ -186,7 +193,7 @@ const pill = {
 const activePill = {
   ...pill,
   background:'#00ff9970',
-  border:'1px solid #00ff99',
+  border:'1px solid #D4AF3750',
   color:'#fff'
 }
 
@@ -195,7 +202,7 @@ const summaryCard = {
   justifyContent:'space-between',
   alignItems:'flex-start',
   background:'#181818',
-  border:'1px solid #00ff9950',
+  border:'1px solid #D4AF3750',
   borderRadius:'1rem',
   padding:'1rem',
   marginTop:'1rem'

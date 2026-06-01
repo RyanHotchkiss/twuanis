@@ -41,31 +41,30 @@ export default function FilterButton({
 
         <polygon
           points="15,10 85,10 75,22 25,22"
-          fill="#00ff99"
+          fill="#D4AF37"
         />
 
         <polygon
           points="22,30 78,30 70,40 30,40"
-          fill="#00dd88"
+          fill="#D4AF37"
         />
 
         <polygon
           points="30,48 70,48 64,56 36,56"
-          fill="#00bb77"
+          fill="#D4AF37"
         />
 
         <polygon
           points="38,64 62,64 58,70 42,70"
-          fill="#009966"
+          fill="#D4AF37"
         />
 
         <polygon
           points="44,78 56,78 54,82 46,82"
-          fill="#007755"
+          fill="#D4AF37"
         />
 
       </svg>
-
     </button>
 
   )

@@ -14,6 +14,10 @@ type EnvironmentFilterProps = {
     value: boolean
   ) => void
 
+  setShowAccessibilityOptions: (
+  value: boolean
+) => void
+
 }
 
 export default function EnvironmentFilter({
@@ -44,11 +48,11 @@ export default function EnvironmentFilter({
 
     <div>
 
-      <h3 style={filterHeading}>
+      <p style={miniHeading}>
 
         ENTORNO
 
-      </h3>
+      </p>
 
       {showenvironmentOptions && (
 
@@ -161,59 +165,38 @@ selectedenvironment.length > 0 && (
               )}
 
     </div>
+  
+  )}
 
-  )
-
-}
-
-const filterHeading = {
-
+const miniHeading = {
   fontSize:'1rem',
-
   marginBottom:'1rem',
-
-  color:'#ff3b00'
-
+  color:'#D4AF37',
+  textTransform:'uppercase' as const,
+  letterSpacing:'.05rem'
 }
 
 const pillWrap = {
-
   display:'flex',
-
   flexWrap:'wrap' as const,
-
   gap:'.5rem'
-
 }
 
 const pill = {
-
   background:'#181818',
-
-  border:'1px solid #2a2a2a',
-
+  border:'1px solid #D4AF3750',
   color:'#fff',
-
   padding:'.85rem 1rem',
-
   borderRadius:'999rem',
-
   cursor:'pointer',
-
   transition:'all .2s ease'
-
 }
 
 const activePill = {
-
   ...pill,
-
   background:'#00ff9970',
-
-  border:'1px solid #00ff99',
-
+  border:'1px solid #D4AF3750',
   color:'#fff'
-
 }
 
 const summaryCard = {
@@ -221,14 +204,14 @@ const summaryCard = {
   justifyContent:'space-between',
   alignItems:'flex-start',
   background:'#181818',
-  border:'1px solid #00ff9950',
+  border:'1px solid #D4AF3750',
   borderRadius:'1rem',
   padding:'1rem',
   marginTop:'1rem'
 }
 
 const breadcrumbText = {
-  color:'#00ff99',
+  color:'#D4AF37',
   fontSize:'.85rem'
 }
 

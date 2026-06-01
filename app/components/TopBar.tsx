@@ -46,9 +46,7 @@ export default function TopBar({
             }}
           >
 
-      <HomeButton
-        href="/en"
-      />
+      <HomeButton href="/en?skipintro=true" />
 
       <SearchButton
         onClick={() => {

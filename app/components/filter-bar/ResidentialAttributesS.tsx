@@ -668,7 +668,7 @@ export default function ResidentialAttributesS({
 const sectionHeading = {
   fontSize:'1rem',
   marginBottom:'1rem',
-  color:'#ff3b00'
+  color:'#D4AF37'
 }
 
 const pillWrap = {
@@ -679,7 +679,7 @@ const pillWrap = {
 
 const pill = {
   background:'#181818',
-  border:'1px solid #2a2a2a',
+  border:'1px solid #D4AF37',
   color:'#fff',
   padding:'.85rem 1rem',
   borderRadius:'999rem',
@@ -690,7 +690,7 @@ const pill = {
 const activePill = {
   ...pill,
   background:'#00ff9970',
-  border:'1px solid #00ff99',
+  border:'1px solid #D4AF37',
   color:'#fff'
 }
 
@@ -699,7 +699,7 @@ const summaryCard = {
       justifyContent:'space-between',
       alignItems:'center',
       background:'#181818',
-      border:'1px solid #222',
+      border:'1px solid #D4AF37',
       borderRadius:'1rem',
       padding:'1rem'
     }

@@ -43,17 +43,17 @@ export default function CreateListingButtonSXL({
 
         <polygon
           points="45,48 75,40 75,80 45,72"
-          fill="#00ff99"
+          fill="#D4AF37"
         />
 
         <polygon
           points="85,36 125,22 125,98 85,84"
-          fill="#00ff99"
+          fill="#D4AF37"
         />
 
         <polygon
           points="135,22 185,4 185,116 135,98"
-          fill="#00ff99"
+          fill="#D4AF37"
         />
 
         <line
@@ -61,7 +61,7 @@ export default function CreateListingButtonSXL({
           y1="26"
           x2="214"
           y2="18"
-          stroke="#00ff99"
+          stroke="#D4AF37"
           strokeWidth="10"
           strokeLinecap="round"
         />
@@ -71,7 +71,7 @@ export default function CreateListingButtonSXL({
           y1="60"
           x2="218"
           y2="60"
-          stroke="#00ff99"
+          stroke="#D4AF37"
           strokeWidth="10"
           strokeLinecap="round"
         />
@@ -81,7 +81,7 @@ export default function CreateListingButtonSXL({
           y1="94"
           x2="214"
           y2="102"
-          stroke="#00ff99"
+          stroke="#D4AF37"
           strokeWidth="10"
           strokeLinecap="round"
         />

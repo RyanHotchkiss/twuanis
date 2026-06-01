@@ -8,7 +8,6 @@ import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 
 
-
 function HomePageContent() {
 
   const [properties, setProperties] = useState<any[]>([])
@@ -28,7 +27,12 @@ function HomePageContent() {
   const [showadvanced_filters, setShowadvanced_filters] = useState(false)
   const [showMobileFilters, setShowMobileFilters] = useState(false)
   
-  const [showIntroOverlay, setShowIntroOverlay] = useState(true)
+ const [showIntroOverlay, setShowIntroOverlay] = useState(
+          searchParams.get('skipintro')
+            ? false
+            : true
+        )
+
   const [countdown, setCountdown] = useState(12)
 
 
@@ -121,6 +125,22 @@ function HomePageContent() {
             fetchListings()
 
           }, [])
+
+          useEffect(() => {
+
+              if (
+                sessionStorage.getItem('skipIntro')
+              ) {
+
+                setShowIntroOverlay(false)
+
+                sessionStorage.removeItem(
+                  'skipIntro'
+                )
+
+              }
+
+            }, [])
 
           useEffect(() => {
 

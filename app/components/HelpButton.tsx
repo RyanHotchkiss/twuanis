@@ -45,7 +45,7 @@ export default function HelpButton({
             C138 88, 130 96, 118 104
             C108 110, 102 116, 102 126
           "
-          stroke="#ff3b30"
+          stroke="#ffffff"
           strokeWidth="14"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -56,7 +56,7 @@ export default function HelpButton({
           cx="102"
           cy="148"
           r="9"
-          fill="#ff3b30"
+          fill="#ffffff"
         />
 
       </svg>

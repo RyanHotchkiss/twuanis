@@ -42,7 +42,7 @@ export default function SearchButton({
           cx="78"
           cy="78"
           r="52"
-          stroke="#00ff99"
+          stroke="#D4AF37"
           strokeWidth="12"
         />
 
@@ -50,7 +50,7 @@ export default function SearchButton({
           cx="78"
           cy="78"
           r="38"
-          stroke="#00ff99"
+          stroke="#D4AF37"
           strokeWidth="4"
           opacity="0.65"
         />
@@ -63,7 +63,7 @@ export default function SearchButton({
           height="72"
           rx="8"
           transform="rotate(-45 112 112)"
-          fill="#00ff99"
+          fill="#D4AF37"
         />
 
         {/* HANDLE END */}
@@ -71,7 +71,7 @@ export default function SearchButton({
           cx="152"
           cy="152"
           r="10"
-          fill="#00ff99"
+          fill="#D4AF37"
         />
 
       </svg>

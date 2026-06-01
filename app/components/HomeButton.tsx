@@ -68,7 +68,7 @@ export default function HomeButton({
             L40 112
             Z
           "
-          fill="#00ff99"
+          fill="#D4AF37"
         />
 
         <path
@@ -77,7 +77,7 @@ export default function HomeButton({
             L100 32
             L175 95
           "
-          stroke="#00ff99"
+          stroke="#D4AF37"
           strokeWidth="14"
           strokeLinecap="round"
           strokeLinejoin="round"

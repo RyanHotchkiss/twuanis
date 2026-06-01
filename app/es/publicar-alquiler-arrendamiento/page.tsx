@@ -830,6 +830,7 @@ export default function SellPage() {
                         csvListings={csvListings}
                         setCsvListings={setCsvListings}
                         setShowCsvStaging={setShowCsvStaging}
+                        isRentLease={true}
                     />
 
                     )}

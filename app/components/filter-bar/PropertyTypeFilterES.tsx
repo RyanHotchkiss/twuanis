@@ -59,21 +59,24 @@ export default function PropertyTypeFilter({
 
 }: PropertyTypeFilterProps) {
 
-  const propertyTypes = [
-    'House',
-    'Condo',
-    'Land',
-    'Farm',
-    'Cabin',
-    'Commercial Property',
-  ]
+const propertyTypes = [
+  { label:'Casa', value:'house' },
+  { label:'Condominio', value:'condo' },
+  { label:'Terreno', value:'land' },
+  { label:'Finca', value:'farm' },
+  { label:'Cabaña', value:'cabin' },
+  {
+    label:'Propiedad Comercial',
+    value:'commercial'
+  }
+]
 
   return (
 
     <div>
 
       <h3 style={filterHeading}>
-        PROPERTY TYPE
+        TIPO DE PROPIEDAD
       </h3>
 
       {showproperty_typeOptions && (
@@ -83,10 +86,10 @@ export default function PropertyTypeFilter({
                 {propertyTypes.map((type) => (
 
                   <button
-                    key={type}
+                    key={type.value}
                     onClick={() => {
 
-                      setSelectedproperty_type(type)
+                      setSelectedproperty_type(type.value)
 
                       setShowproperty_typeOptions(false)
 
@@ -100,12 +103,12 @@ export default function PropertyTypeFilter({
 
                     }}
                     style={
-                      selectedproperty_type === type
+                      selectedproperty_type === type.value
                         ? activePill
                         : pill
                     }
                   >
-                    {type}
+                    {type.label}
                   </button>
 
                 ))}
@@ -197,7 +200,7 @@ export default function PropertyTypeFilter({
 const filterHeading = {
   fontSize:'1rem',
   marginBottom:'1rem',
-  color:'#ff3b00'
+  color:'#D4AF37'
 }
 
 const pillWrap = {
@@ -208,7 +211,7 @@ const pillWrap = {
 
 const pill = {
   background:'#181818',
-  border:'1px solid #2a2a2a',
+  border:'1px solid #D4AF3750',
   color:'#fff',
   padding:'.85rem 1rem',
   borderRadius:'999rem',
@@ -219,7 +222,7 @@ const pill = {
 const activePill = {
   ...pill,
   background:'#00ff9970',
-  border:'1px solid #00ff99',
+  border:'1px solid #D4AF3750',
   color:'#fff'
 }
 
@@ -228,7 +231,7 @@ const summaryCard = {
   justifyContent:'space-between',
   alignItems:'flex-start',
   background:'#181818',
-  border:'1px solid #00ff9950',
+  border:'1px solid #D4AF3750',
   borderRadius:'1rem',
   padding:'1rem',
   marginTop:'1rem'

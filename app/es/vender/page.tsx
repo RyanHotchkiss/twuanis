@@ -314,7 +314,16 @@ export default function SellPage() {
 
                                     complete: async (results) => {
 
-                                        const formattedData = results.data.map((row: any) => ({
+                                        
+
+                                        const formattedData = results.data
+                                            .filter((row: any) =>
+                                                row.province ||
+                                                row.canton ||
+                                                row.district ||
+                                                row.property_type
+                                            )
+                                            .map((row: any) => ({
 
                                         ...row,
 
@@ -352,7 +361,48 @@ export default function SellPage() {
 
                                         }))
 
-                                        console.log(formattedData)
+                                    
+console.log(
+  'CSV LENGTH:',
+  formattedData.length
+)
+
+console.log(
+  'SECOND RECORD:',
+  formattedData[1]
+)
+
+console.log(formattedData)
+
+console.log(
+  'UTILITY:',
+  formattedData[0]?.utility
+)
+
+console.log(
+  'ENVIRONMENT:',
+  formattedData[0]?.environment
+)
+
+console.log(
+  'ACCESSIBILITY:',
+  formattedData[0]?.accessibility
+)
+
+console.log(
+  'TERRAIN:',
+  formattedData[0]?.terrain
+)
+
+console.log(
+  'FIRST CSV RECORD:',
+  formattedData[0]
+)
+
+console.log(
+'FORMATTED DATA:',
+formattedData
+)
 
                                         setCsvListings(formattedData)
 

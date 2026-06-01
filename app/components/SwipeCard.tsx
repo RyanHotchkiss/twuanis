@@ -43,34 +43,34 @@ export default function SwipeCard({
       }}>
 
         <svg
-          width="25"
-          height="25"
-          viewBox="0 0 200 200"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+            width="25"
+            height="25"
+            viewBox="0 0 200 200"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
 
-                  <path
-                    d="
-                      M20 100
-                      L75 45
-                      L75 75
-                      L125 75
-                      L125 45
-                      L180 100
-                      L125 155
-                      L125 125
-                      L75 125
-                      L75 155
-                      Z
-                    "
-                    
-                    stroke="#00ff99"
-                    strokeWidth="6"
-                    strokeLinejoin="round"
-                  />
+            <path
+              d="
+                M20 100
+                L75 45
+                L75 75
+                L125 75
+                L125 45
+                L180 100
+                L125 155
+                L125 125
+                L75 125
+                L75 155
+                Z
+              "
+              fill="#ffffff"
+              stroke="#D4AF37"
+              strokeWidth="12"
+              strokeLinejoin="round"
+            />
 
-      </svg>
+          </svg>
 
       </span>
 

@@ -1,12 +1,36 @@
 import { supabase } from '@/lib/supabase'
 
-export async function publishCsvListings(
+export async function publishRentLeaseCsvListings(
   csvListings: any[],
   setShowCsvStaging: (value: boolean) => void,
   setCsvListings: (value: any[]) => void
 ) {
 
-  for (const listing of csvListings) {
+    
+ for (const listing of csvListings) {
+
+  if (
+    !listing.province &&
+    !listing.canton &&
+    !listing.district &&
+    !listing.property_type
+  ) {
+    continue
+  }
+
+  console.log(
+    'RENT CSV RECORD:',
+    listing,
+    'MONTHLY:',
+    listing.monthly_price
+  )
+  
+    console.log(
+        'RENT CSV RECORD:',
+        listing,
+        'MONTHLY:',
+        listing.monthly_price
+)
 
     const uploadedImageUrls = []
 
@@ -97,8 +121,8 @@ export async function publishCsvListings(
       legal_status:
         listing.legal_status,
 
-      price_millions:
-        Number(listing.price_millions),
+      monthly_price:
+        Number(listing.monthly_price),
 
       whatsapp:
         listing.whatsapp,
@@ -120,7 +144,7 @@ console.log(
 )
 
     const response = await supabase
-      .from('listings')
+      .from('rent_lease_listings')
       .insert([finalListing])
 
 console.log(

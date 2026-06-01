@@ -67,7 +67,7 @@ return (
                     alignItems:'center',
 
                     background:'#181818',
-                    border:'1px solid #222',
+                    border:'1px solid #D4AF3750',
 
                     borderRadius:'1rem',
 
@@ -95,7 +95,7 @@ return (
                     Ubicación
                     <br />
 
-                    <span style={{ color:'#00ff99' }}>
+                    <span style={{ color:'#D4AF37' }}>
                       {selectedprovince}
                       {' → '}
                       {selectedcanton}
@@ -387,7 +387,7 @@ return (
                                   margin-bottom: 35px;
                               }
                               .location-scroll-panel::-webkit-scrollbar-thumb {
-                                  background: #00ff9970;
+                                  background: #D4AF3770;
                                   border-radius: 999px;
                               }
                           `}</style>
@@ -402,13 +402,13 @@ return (
 const filterHeading = {
   fontSize:'1rem',
   marginBottom:'1rem',
-  color:'#ff3b00'
+  color:'#D4AF37' // gold
 }
 
 const sectionHeading0 = {
   fontSize:'.8rem',
   marginBottom:'1rem',
-  color:'#00ff99'
+  color:'#ffffff' // white
 }
 
 const scrollPanel = {
@@ -421,12 +421,12 @@ const scrollPanel = {
   maskImage:'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 72%, rgba(0,0,0,.25) 92%, rgba(0,0,0,0) 100%)',
   WebkitMaskImage:'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 72%, rgba(0,0,0,.25) 92%, rgba(0,0,0,0) 100%)',
   scrollbarWidth:'thin' as const,
-  scrollbarColor:'#00ff9970 #111'
+  scrollbarColor:'#D4AF3770 #111'
 }
 
 const listButton = {
   background:'#181818',
-  border:'1px solid #2a2a2a',
+  border:'1px solid #D4AF3750',
   color:'#fff',
   padding:'1rem 1rem',
   borderRadius:'.75rem',
@@ -438,7 +438,7 @@ const listButton = {
 
 const activeListButton = {
   ...listButton,
-  background:'#00ff9970',
+  background:'#D4AF3770',
   color:'#000',
   fontWeight:'bold'
 }
@@ -451,14 +451,14 @@ const breadcrumbBar = {
 }
 
 const breadcrumbText = {
-  color:'#00ff99',
+  color:'#D4AF37',
   fontSize:'.85rem'
 }
 
 const backButton = {
   background:'transparent',
   border:'none',
-  color:'#00ff9970',
+  color:'#D4AF3770',
   cursor:'pointer',
   fontSize:'.85rem'
 }
@@ -468,7 +468,7 @@ const summaryCard = {
   justifyContent:'space-between',
   alignItems:'flex-start',
   background:'#181818',
-  border:'1px solid #00ff9950',
+  border:'1px solid #D4AF3750',
   borderRadius:'1rem',
   padding:'1rem',
   marginTop:'1rem'
