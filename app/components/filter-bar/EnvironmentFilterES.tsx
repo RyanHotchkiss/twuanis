@@ -2,11 +2,11 @@
 
 type EnvironmentFilterProps = {
 
-    selectedenvironment: string[]
+  selectedenvironment: string[]
 
-    setSelectedenvironment: (
-      value: string[]
-    ) => void
+  setSelectedenvironment: (
+    value: string[]
+  ) => void
 
   showenvironmentOptions: boolean
 
@@ -15,8 +15,20 @@ type EnvironmentFilterProps = {
   ) => void
 
   setShowAccessibilityOptions: (
-  value: boolean
-) => void
+    value: boolean
+  ) => void
+
+  setShowProvinceOptions: (
+    value: boolean
+  ) => void
+
+  setShowCantonOptions: (
+    value: boolean
+  ) => void
+
+  setShowDistrictOptions: (
+    value: boolean
+  ) => void
 
 }
 
@@ -28,7 +40,15 @@ export default function EnvironmentFilter({
 
   showenvironmentOptions,
 
-  setShowenvironmentOptions
+  setShowenvironmentOptions,
+
+  setShowAccessibilityOptions,
+
+  setShowProvinceOptions,
+
+  setShowCantonOptions,
+
+  setShowDistrictOptions
 
 }: EnvironmentFilterProps) {
 
@@ -67,24 +87,29 @@ export default function EnvironmentFilter({
               onClick={() => {
 
                 if (
-                  selectedenvironment.includes(environment)
-                ) {
+                    selectedenvironment.includes(environment)
+                  ) {
 
-                  setSelectedenvironment(
-                    selectedenvironment.filter(
-                      (item) => item !== environment
+                    setSelectedenvironment(
+                      selectedenvironment.filter(
+                        (item) => item !== environment
+                      )
                     )
-                  )
 
-                } else {
+                  } else {
 
-                  setSelectedenvironment([
-                    ...selectedenvironment,
-                    environment
-                  ])
+                    setSelectedenvironment([
+                      ...selectedenvironment,
+                      environment
+                    ])
 
-                }
+                  }
 
+                  setShowProvinceOptions(false)
+                  setShowCantonOptions(false)
+                  setShowDistrictOptions(false)
+                  setShowenvironmentOptions(false)
+                  setShowAccessibilityOptions(true)
               }}
 
               style={
