@@ -5,17 +5,7 @@ type AccessibilityFilterProps = {
   setSelectedaccessibility: (value: string) => void
 
   showAccessibilityOptions: boolean
-  setshowAccessibilityOptions: (value: boolean) => void
-
-  setShowenvironmentOptions: (value: boolean) => void
-
-  setShowTerrainOptions: (value: boolean) => void
-
-  setShowProvinceOptions: (value: boolean) => void
-
-  setShowCantonOptions: (value: boolean) => void
-
-  setShowDistrictOptions: (value: boolean) => void
+  setShowAccessibilityOptions: (value: boolean) => void
   
 }
 
@@ -24,14 +14,8 @@ export default function AccessibilityFilter({
   setSelectedaccessibility,
 
   showAccessibilityOptions,
-  setshowAccessibilityOptions,
+  setShowAccessibilityOptions,
 
-  setShowProvinceOptions,
-  setShowCantonOptions,
-  setShowDistrictOptions,
-
-  setShowenvironmentOptions,
-  setShowTerrainOptions
   }: AccessibilityFilterProps) 
 {
 
@@ -63,18 +47,6 @@ export default function AccessibilityFilter({
 
                 setSelectedaccessibility(option)
 
-                setShowProvinceOptions(false)
-
-                setShowCantonOptions(false)
-
-                setShowDistrictOptions(false)
-
-                setShowenvironmentOptions(false)
-
-                setshowAccessibilityOptions(false)
-                
-                setShowTerrainOptions(true)
-
               }}
               style={
                 selectedaccessibility === option
@@ -98,7 +70,7 @@ export default function AccessibilityFilter({
 
           <span
             onClick={() =>
-              setshowAccessibilityOptions(true)
+              setShowAccessibilityOptions(true)
             }
             style={{
               ...breadcrumbText,
@@ -114,7 +86,7 @@ export default function AccessibilityFilter({
 
               setSelectedaccessibility('')
 
-              setshowAccessibilityOptions(true)
+              setShowAccessibilityOptions(true)
 
             }}
             style={resetButton}
