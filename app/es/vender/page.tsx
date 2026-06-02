@@ -34,14 +34,14 @@ import {
   formatWhatsAppNumber
 } from '@/app/utils/listing-utils'
 
-import AccessibilityFilters from '@/app/components/filter-bar/AccessibilityFilterS'
-import EnvironmentFilterS from '@/app/components/filter-bar/EnvironmentFilterS'
-import LegalStatusFilterS from '@/app/components/filter-bar/LegalStatusFilterS'
-import PropertyAreaFilterS from '@/app/components/filter-bar/PropertyAreaFilterS'
-import UtilitiesFilterS from '@/app/components/filter-bar/UtilitiesFilterS'
-import ResidentialAttributesS from '@/app/components/filter-bar/ResidentialAttributesS'
+import AccessibilityFilterES from '@/app/components/filter-bar/AccessibilityFilterES'
+import EnvironmentFilterSES from '@/app/components/filter-bar/EnvironmentFilterSES'
+import LegalStatusFilterSES from '@/app/components/filter-bar/LegalStatusFilterSES'
+import PropertyAreaFilterES from '@/app/components/filter-bar/PropertyAreaFilterES'
+import UtilitiesFilterES from '@/app/components/filter-bar/UtilitiesFilterES'
+import ResidentialAttributesSES from '@/app/components/filter-bar/ResidentialAttributesSES'
 import LocationSelectorS from '@/app/components/filter-bar/LocationSelectorS'
-import TerrainFilterS from '@/app/components/filter-bar/TerrainFilterS'
+import TerrainFilterES from '@/app/components/filter-bar/TerrainFilterES'
 import PriceSelectorS from '@/app/components/filter-bar/PriceSelectorS'
 import ImagePreviewGridS from '@/app/components/ImagePreviewGridS'
 import ImageUploaderS from '@/app/components/ImageUploaderS'
@@ -50,7 +50,7 @@ import CreateListingButtonS from '@/app/components/CreateListingButtonS'
 import { createListing } from '@/app/utils/createListing'
 import CsvStagingModal from '@/app/components/CsvStagingModal'
 import PropertyDefinitionPanel from '@/app/components/PropertyDefinitionPanel'
-import PropertyTypeFilterS from '@/app/components/filter-bar/PropertyTypeFilterS'
+import PropertyTypeFilterES from '@/app/components/filter-bar/PropertyTypeFilterES'
 import TopBarES from '@/app/components/TopBarES'
 import CreateListingButtonSXL from '@/app/components/CreateListingButtonSXL'
 import AuthOverlay
@@ -99,7 +99,7 @@ export default function SellPage() {
     legal_status: '',
     connectivity: '',
     environment: '',
-    accessibility: [] as string[],
+    accessibility: '',
     terrain: [] as string[],
     priceMillions: 0,
     images: [] as {
@@ -195,7 +195,7 @@ export default function SellPage() {
                     <main style={{
                         background: '#000',
                         minHeight: '100vh',
-                        color: '#FFFFFF',
+                        color: '#D4AF37',
                         padding: '1rem'
                     }}>
 
@@ -414,7 +414,7 @@ formattedData
 
                                 }}
                                 style={{
-                                    background: '#FFFFFF',
+                                    background: '#D4AF37',
                                     color: '#000',
                                     border: 'none',
                                     borderRadius: '999px',
@@ -509,95 +509,58 @@ formattedData
 
 {/* PROPERTY TYPE */}
 
-                    <PropertyTypeFilterS
+                    <PropertyTypeFilterES
 
-                    bedrooms={propertyData.bedrooms}
+                        bedrooms={propertyData.bedrooms}
+                        bathrooms={propertyData.bathrooms}
+                        parking={propertyData.parking}
 
-                    bathrooms={propertyData.bathrooms}
+                        yearBuiltRange={
+                            propertyData.year_built_range
+                        }
 
-                    parking={propertyData.parking}
+                        constructionArea={
+                            propertyData.construction_area
+                        }
 
-                    yearBuiltRange={
-                    propertyData.year_built_range
-                    }
+                        selectedproperty_type={
+                            propertyData.property_type
+                        }
 
-                    constructionArea={
-                    propertyData.construction_area
-                    }
-                    
-                    setShowPropertyAreaOptions={
-                    setShowproperty_areaOptions
-                    }
+                        setSelectedproperty_type={(value) =>
+                            setPropertyData({
+                                ...propertyData,
+                                property_type: value
+                            })
+                        }
 
-                    setShowBedroomOptions={
-                    setShow_bedroom_options
-                    }
+                        showproperty_typeOptions={
+                            showproperty_typeOptions
+                        }
 
-                    setShowProvinceOptions={
-                    setShow_province_options
-                    }
+                        setShowproperty_typeOptions={
+                            setShowproperty_typeOptions
+                        }
 
-                    setShowCantonOptions={
-                    setShow_canton_options
-                    }
+                        setShowproperty_areaOptions={
+                            setShowproperty_areaOptions
+                        }
 
-                    setShowDistrictOptions={
-                    setShow_district_options
-                    }
+                        setShowBedroomOptions={
+                            setShow_bedroom_options
+                        }
 
-                    selectedPropertyType={
-                        propertyData.property_type
-                    }
+                        setShowProvinceOptions={
+                            setShow_province_options
+                        }
 
-                    setSelectedPropertyType={(value) =>
-                        setPropertyData({
-                        ...propertyData,
-                        property_type: value
-                        })
-                    }
+                        setShowCantonOptions={
+                            setShow_canton_options
+                        }
 
-                    propertyTypes={property_types}
-
-                    residentialPropertyTypes={
-                        residential_property_types
-                    }
-
-                    showPropertyTypeOptions={
-                        showproperty_typeOptions
-                    }
-
-                    setShowPropertyTypeOptions={
-                        setShowproperty_typeOptions
-                    }
-
-                    resetResidentialFields={() => {
-
-                        setPropertyData(prev => ({
-                        ...prev,
-                        bedrooms:'',
-                        bathrooms:'',
-                        parking:'',
-                        year_built_range:'',
-                        construction_area:''
-                        }))
-
-                        setShow_bedroom_options(true)
-                        setShow_bathroom_options(false)
-                        setShow_parking_options(false)
-                        setShow_year_built_options(false)
-                        setShow_construction_area_options(false)
-
-                    }}
-
-                    enableResidentialFlow={() => {
-
-                        setShow_bedroom_options(true)
-                        setShow_bathroom_options(false)
-                        setShow_parking_options(false)
-                        setShow_year_built_options(false)
-                        setShow_construction_area_options(false)
-
-                    }}
+                        setShowDistrictOptions={
+                            setShow_district_options
+                        }
 
                     />
 
@@ -608,7 +571,7 @@ formattedData
                     {show_residential_fields &&
                         !propertyData.construction_area && (
 
-<ResidentialAttributesS
+<ResidentialAttributesSES
 
                         showResidentialSummary={false}
                         setShowResidentialSummary={() => {}}
@@ -692,55 +655,78 @@ formattedData
 
 {/* PROPERTY AREA */}
                     
-                    <PropertyAreaFilterS
-                        selectedPropertyArea={
+                    <PropertyAreaFilterES
+                        selectedproperty_area={
                             propertyData.property_area
                         }
-                        setSelectedPropertyArea={(value) =>
+                        setSelectedproperty_area={(value) =>
                             setPropertyData({
                             ...propertyData,
                             property_area: value
                             })
                         }
-                        showPropertyAreaOptions={
+                        showproperty_areaOptions={
                             showproperty_areaOptions
                         }
-                        setShowPropertyAreaOptions={
-                            setShowproperty_areaOptions
+
+                        setShowproperty_areaOptions={
+                        setShowproperty_areaOptions
                         }
                         
-                        setShowUtilityOptions={
+                        setShowutilityOptions={
                             setShowutilityOptions
                         }
-                        propertyAreas={property_areas}
+
+                        setShowProvinceOptions={
+                            setShow_province_options
+                        }
+
+                        setShowCantonOptions={
+                            setShow_canton_options
+                        }
+
+                        setShowDistrictOptions={
+                            setShow_district_options
+                        }
+                       
                     />
 
-{/* UTILITIES */}
-                   <UtilitiesFilterS
-                    selectedUtilities={
-                        propertyData.utility
-                    }
-                    setSelectedUtilities={(value) =>
-                        setPropertyData({
-                        ...propertyData,
-                        utility: value
-                        })
-                    }
-                    showUtilityOptions={
-                        showutilityOptions
-                    }
-                    setShowUtilityOptions={
-                        setShowutilityOptions
-                    }
-                    setShowEnvironmentOptions={
-                        setShowenvironmentOptions
-                    }
-                    utilities={utilities}
-                />
+<UtilitiesFilterES
+                        selectedutility={propertyData.utility}
+
+                        setSelectedutility={(value) =>
+                            setPropertyData({
+                                ...propertyData,
+                                utility: value
+                            })
+                        }
+
+                        showutilityOptions={showutilityOptions}
+
+                        setShowutilityOptions={
+                            setShowutilityOptions
+                        }
+
+                        setShowenvironmentOptions={
+                            setShowenvironmentOptions
+                        }
+
+                        setShowProvinceOptions={
+                            setShow_province_options
+                        }
+
+                        setShowCantonOptions={
+                            setShow_canton_options
+                        }
+
+                        setShowDistrictOptions={
+                            setShow_district_options
+                        }
+                    />
                 
 
 {/* environment */}
-                  <EnvironmentFilterS
+                  <EnvironmentFilterSES
                     selectedEnvironment={propertyData.environment}
                     setSelectedEnvironment={(value) =>
                         setPropertyData({
@@ -761,9 +747,9 @@ formattedData
 
 {/* accessibility */}
 
-                    <AccessibilityFilters
-                        selectedAccessibility={propertyData.accessibility}
-                        setSelectedAccessibility={(value) =>
+                    <AccessibilityFilterES
+                        selectedaccessibility={propertyData.accessibility}
+                        setSelectedaccessibility={(value) =>
                             setPropertyData({
                             ...propertyData,
                             accessibility: value
@@ -777,36 +763,29 @@ formattedData
                         />
 
 {/* TERRAIN */}
-                   <TerrainFilterS
-                        selectedTerrain={
-                            propertyData.terrain
-                        }
-                        setSelectedTerrain={(value) =>
-                            setPropertyData({
-                            ...propertyData,
-                            terrain: value
-                            })
-                        }
-                        showTerrainOptions={
-                            showTerrainOptions
-                        }
-                        setShowTerrainOptions={
-                            setShowTerrainOptions
-                        }
+                        <TerrainFilterES
 
-                        setShowAccessibilityOptions={
-                        setShowAccessibilityOptions
-                        }
+                            selectedterrain={propertyData.terrain}
 
-                        setShowLegalStatusOptions={
-                        setShowlegal_statusOptions
-                        }
-                        terrainOptions={terrainOptions}
+                            setSelectedterrain={(value) =>
+                                setPropertyData({
+                                    ...propertyData,
+                                    terrain: value
+                                })
+                            }
+
+                            showTerrainOptions={
+                                showTerrainOptions
+                            }
+
+                            setShowTerrainOptions={
+                                setShowTerrainOptions
+                            }
+
                         />
-
                     
 {/* LEGAL STATUS */}
-                    <LegalStatusFilterS
+                    <LegalStatusFilterSES
                         selectedLegalStatus={propertyData.legal_status}
                         setSelectedLegalStatus={(value) =>
                             setPropertyData({

@@ -27,7 +27,7 @@ export default function AccessibilityFilters({
 
   return (
 <div>
-
+  
   {/* HEADER */}
             <div style={{
               display:'flex',

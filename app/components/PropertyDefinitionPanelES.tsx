@@ -28,10 +28,10 @@ export default function RentalPropertyDefinitionPanel({
 
   const show_residential_fields =
     [
-      'House',
-      'Condo',
-      'Apartment',
-      'Cabin',
+      'Casa',
+      'Condominio',
+      'Apartamento',
+      'Cabaña',
       'Villa'
     ].includes(propertyData.property_type)
 
@@ -40,19 +40,19 @@ export default function RentalPropertyDefinitionPanel({
     <div style={panel}>
 
       <h2 style={heading}>
-        Property Definition
+        Definición de la Propiedad
       </h2>
 
       <div style={generatedTitleCard}>
 
         <p style={generatedTitleLabel}>
-          Generated Listing Title
+          Título Generado del Anuncio
         </p>
 
         <h2 style={generatedTitleValue}>
           {
             generateListingTitle(propertyData)
-            || 'Begin Defining Property'
+            || 'Comience a Definir la Propiedad'
           }
         </h2>
 
@@ -61,13 +61,13 @@ export default function RentalPropertyDefinitionPanel({
       <div style={generatedDescriptionCard}>
 
         <p style={generatedTitleLabel}>
-          Generated Listing Description
+          Descripción Generada del Anuncio
         </p>
 
         <p style={generatedDescriptionValue}>
           {
             generateListingDescription(propertyData)
-            || 'Property description will generate automatically.'
+            || 'La descripción de la propiedad se generará automáticamente.'
           }
         </p>
 
@@ -76,32 +76,32 @@ export default function RentalPropertyDefinitionPanel({
       <div style={definitionGrid}>
 
         <DefinitionCard
-          label="Location"
+          label="Ubicación"
           value={
             propertyData.province
-            ? `${propertyData.province} → ${propertyData.canton || 'Select canton'}`
-            : 'Select province'
+            ? `${propertyData.province} → ${propertyData.canton || 'Seleccione cantón'}`
+            : 'Seleccione provincia'
           }
         />
 
         <DefinitionCard
-          label="District"
+          label="Distrito"
           value={
-            propertyData.district || 'Not Yet Defined'
+            propertyData.district || 'Aún No Definido'
           }
         />
 
         <DefinitionCard
-          label="Property Type"
+          label="Tipo de Propiedad"
           value={
-            propertyData.property_type || 'Not Yet Defined'
+            propertyData.property_type || 'Aún No Definido'
           }
         />
 
         <DefinitionCard
-          label="Property Area"
+          label="Área de la Propiedad"
           value={
-            propertyData.property_area || 'Not Yet Defined'
+            propertyData.property_area || 'Aún No Definido'
           }
         />
 
@@ -109,38 +109,38 @@ export default function RentalPropertyDefinitionPanel({
 
           <>
 
-            <DefinitionCard
-              label="Bedrooms"
+                      <DefinitionCard
+              label="Habitaciones"
               value={
-                propertyData.bedrooms || 'Not Yet Defined'
+                propertyData.bedrooms || 'Aún No Definido'
               }
             />
 
             <DefinitionCard
-              label="Bathrooms"
+              label="Baños"
               value={
-                propertyData.bathrooms || 'Not Yet Defined'
+                propertyData.bathrooms || 'Aún No Definido'
               }
             />
 
             <DefinitionCard
-              label="Parking"
+              label="Parqueos"
               value={
-                propertyData.parking || 'Not Yet Defined'
+                propertyData.parking || 'Aún No Definido'
               }
             />
 
             <DefinitionCard
-              label="Year Built"
+              label="Año de Construcción"
               value={
-                propertyData.year_built_range || 'Not Yet Defined'
+                propertyData.year_built_range || 'Aún No Definido'
               }
             />
 
             <DefinitionCard
-              label="Construction Area"
+              label="Área de Construcción"
               value={
-                propertyData.construction_area || 'Not Yet Defined'
+                propertyData.construction_area || 'Aún No Definido'
               }
             />
 
@@ -149,48 +149,56 @@ export default function RentalPropertyDefinitionPanel({
         )}
 
         <DefinitionCard
-          label="Utility"
+          label="Servicios"
           value={
+            Array.isArray(propertyData.utility) &&
             propertyData.utility.length > 0
             ? propertyData.utility.join(', ')
-            : 'Not Yet Defined'
+            : 'Aún No Definido'
           }
         />
 
         <DefinitionCard
-          label="Environment"
+          label="Entorno"
           value={
-            propertyData.environment || 'Not Yet Defined'
+            propertyData.environment || 'Aún No Definido'
           }
         />
 
         <DefinitionCard
-          label="Accessibility"
+          label="Accesibilidad"
           value={
-            propertyData.accessibility.length > 0
-            ? propertyData.accessibility.join(', ')
-            : 'Not Yet Defined'
+            Array.isArray(propertyData.accessibility)
+            ? (
+                propertyData.accessibility.length > 0
+                ? propertyData.accessibility.join(', ')
+                : 'Aún No Definido'
+              )
+            : (
+                propertyData.accessibility || 'Aún No Definido'
+              )
           }
         />
 
         <DefinitionCard
-          label="Terrain"
+          label="Terreno"
           value={
+            Array.isArray(propertyData.terrain) &&
             propertyData.terrain.length > 0
             ? propertyData.terrain.join(', ')
-            : 'Not Yet Defined'
+            : 'Aún No Definido'
           }
         />
 
         <DefinitionCard
-          label="Legal Status"
+          label="Estado Legal"
           value={
-            propertyData.legal_status || 'Not Yet Defined'
+            propertyData.legal_status || 'Aún No Definido'
           }
         />
 
         <DefinitionCard
-          label="Monthly Price"
+          label="Alquiler Mensual"
           value={
             propertyData.monthly_price
             ? (
@@ -206,16 +214,16 @@ export default function RentalPropertyDefinitionPanel({
                 ).toLocaleString()} USD
               </>
             )
-            : 'Not Yet Defined'
+            : 'Aún No Definido'
           }
         />
 
-        <DefinitionCard
-          label="Images"
+                <DefinitionCard
+          label="Imágenes"
           value={
             propertyData.images.length > 0
-            ? `${propertyData.images.length} Uploaded`
-            : 'No Images Uploaded'
+            ? `${propertyData.images.length} Cargadas`
+            : 'No Hay Imágenes Cargadas'
           }
         />
 
@@ -224,7 +232,7 @@ export default function RentalPropertyDefinitionPanel({
           value={
             propertyData.whatsapp
             ? `+506 ${formatWhatsAppNumber(propertyData.whatsapp)}`
-            : 'Not Yet Defined'
+            : 'Aún No Definido'
           }
         />
 

@@ -1,7 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { supabase } from '@/lib/supabase'
 import Papa from 'papaparse'
+import Link from 'next/link'
 import {
                     collapseButton,
                     summaryCard,
@@ -27,27 +29,34 @@ import {
 import {
   generateListingTitle,
   generateListingDescription,
+  formatColones,
+  convertToUSD,
   formatWhatsAppNumber
 } from '@/app/utils/listing-utils'
 
-import AccessibilityFilterS from '@/app/components/filter-bar/AccessibilityFilterS'
-import EnvironmentFilterS from '@/app/components/filter-bar/EnvironmentFilterS'
-import LegalStatusFilterS from '@/app/components/filter-bar/LegalStatusFilterS'
-import PropertyAreaFilterS from '@/app/components/filter-bar/PropertyAreaFilterS'
-import UtilitiesFilterS from '@/app/components/filter-bar/UtilitiesFilterS'
-import ResidentialAttributesS from '@/app/components/filter-bar/ResidentialAttributesS'
+import AccessibilityFilterES from '@/app/components/filter-bar/AccessibilityFilterES'
+import EnvironmentFilterSES from '@/app/components/filter-bar/EnvironmentFilterSES'
+import LegalStatusFilterSES from '@/app/components/filter-bar/LegalStatusFilterSES'
+import PropertyAreaFilterES from '@/app/components/filter-bar/PropertyAreaFilterES'
+import UtilitiesFilterES from '@/app/components/filter-bar/UtilitiesFilterES'
+import ResidentialAttributesSES from '@/app/components/filter-bar/ResidentialAttributesSES'
 import LocationSelectorS from '@/app/components/filter-bar/LocationSelectorS'
-import TerrainFilterS from '@/app/components/filter-bar/TerrainFilterS'
+import TerrainFilterES from '@/app/components/filter-bar/TerrainFilterES'
+import MonthlyRentSelectorS from '@/app/components/filter-bar/MonthlyRentSelectorS'
 import ImagePreviewGridS from '@/app/components/ImagePreviewGridS'
 import ImageUploaderS from '@/app/components/ImageUploaderS'
 import WhatsAppInputS from '@/app/components/WhatsAppInputS'
+import CreateListingButtonS from '@/app/components/CreateListingButtonS'
 import { createRentalListing } from '@/app/utils/createRentalListing'
 import CsvStagingModal from '@/app/components/CsvStagingModal'
-import RentalPropertyDefinitionPanel from '@/app/components/RentalPropertyDefinitionPanel'
-import PropertyTypeFilterS from '@/app/components/filter-bar/PropertyTypeFilterS'
+import RentalPropertyDefinitionPanelES from '@/app/components/RentalPropertyDefinitionPanelES'
+import PropertyTypeFilterES from '@/app/components/filter-bar/PropertyTypeFilterES'
 import TopBarES from '@/app/components/TopBarES'
-import MonthlyRentSelectorS from '@/app/components/filter-bar/MonthlyRentSelectorS'
 import CreateListingButtonSXL from '@/app/components/CreateListingButtonSXL'
+import AuthOverlay
+from '@/app/AuthOverlay'
+
+
 export default function SellPage() {
 
     const [showLocationOptions, setShowLocationOptions] = useState(true)
@@ -70,112 +79,124 @@ export default function SellPage() {
     const [showCsvStaging, setShowCsvStaging] = useState(false)
     const [showTerrainOptions, setShowTerrainOptions] = useState(true)
     const [isMobile, setIsMobile] = useState(false)
-    
-        const [propertyData, setPropertyData] = useState({
-            province: '',
-            canton: '',
-            district: '',
-            property_type: '',
-            property_area: '',
-            bedrooms: '',
-            bathrooms: '',
-            parking: '',
-            year_built_range: '',
-            construction_area: '',
-            utility: [] as string[],
-            use_type: '',
-            legal_status: '',
-            connectivity: '',
-            environment: '',
-            accessibility: [] as string[],
-            terrain: [] as string[],
-            monthly_price: '',
-            images: [] as {
-                preview: string
-                file: File
-                uploadedUrl: string
-                }[],
-            whatsapp: '',
-        })
+    const [showMobileFilters, setShowMobileFilters] = useState(false)
+    const [showAuthOverlay, setShowAuthOverlay] = useState(false)
+    const [showMonthlyRentOptions, setShowMonthlyRentOptions] = useState(true)
+
+  const [propertyData, setPropertyData] = useState({
+    province: '',
+    canton: '',
+    district: '',
+    property_type: '',
+    property_area: '',
+    bedrooms: '',
+    bathrooms: '',
+    parking: '',
+    year_built_range: '',
+    construction_area: '',
+    utility: [] as string[],
+    use_type: '',
+    legal_status: '',
+    connectivity: '',
+    environment: '',
+    accessibility: '',
+    terrain: [] as string[],
+    monthly_price: '',
+    images: [] as {
+        preview: string
+        file: File
+        uploadedUrl: string
+        }[],
+    whatsapp: '',
+  })
+
+           const show_residential_fields =
+                residential_property_types.includes(
+                    propertyData.property_type
+                )
             
-        const show_residential_fields =
-            residential_property_types.includes(
-                propertyData.property_type
-            )
+            const handleImageUpload = (
+            event: React.ChangeEvent<HTMLInputElement>
+            ) => {
 
-        const [showMonthlyRentOptions, setShowMonthlyRentOptions] = useState(true)
+            const files = event.target.files
 
-        const [showMobileFilters, setShowMobileFilters] =
-        useState(false)
+            if (!files) return
 
-        const handleImageUpload = (
-                    event: React.ChangeEvent<HTMLInputElement>
-                    ) => {
+            const imageObjects = Array.from(files).map(file => ({
+                preview: URL.createObjectURL(file),
+                file,
+                uploadedUrl: ''
+                }))
 
-                    const files = event.target.files
+            setPropertyData({
+                ...propertyData,
+                images: [
+                    ...propertyData.images,
+                    ...imageObjects
+                    ]
+            })
 
-                    if (!files) return
+            }
 
-        const imageObjects = Array.from(files).map(file => ({
-                        preview: URL.createObjectURL(file),
-                        file,
-                        uploadedUrl: ''
-                        }))
+            function addWhatsAppDigit(digit: string) {
+            if (propertyData.whatsapp.length >= 8) return
+            setPropertyData({
+                ...propertyData,
+                whatsapp: propertyData.whatsapp + digit
+            })
+            }
 
-                    setPropertyData({
-                        ...propertyData,
-                        images: [
-                            ...propertyData.images,
-                            ...imageObjects
-                            ]
-                    })
-
-                    }
-
-        function addWhatsAppDigit(digit: string) {
-                    if (propertyData.whatsapp.length >= 8) return
-                    setPropertyData({
-                        ...propertyData,
-                        whatsapp: propertyData.whatsapp + digit
-                    })
-                    }
-
-        function deleteWhatsAppDigit() {
+           function deleteWhatsAppDigit() {
                     setPropertyData({
                         ...propertyData,
                         whatsapp: propertyData.whatsapp.slice(0, -1)
                     })
                     }
-        
-        useEffect(() => {
+
+                    /* PUT IT HERE */
+                    useEffect(() => {
+
                     function handleResize() {
+
                         setIsMobile(window.innerWidth <= 768)
+
                     }
+
                     handleResize()
+
                     window.addEventListener(
                         'resize',
                         handleResize
                     )
+
                     return () => {
+
                         window.removeEventListener(
                         'resize',
                         handleResize
                         )
+
                     }
+
                     }, [])
 
-                        return (
-                        <main style={{
-                            background: '#000',
-                            minHeight: '100vh',
-                            color: '#fff',
-                            padding: '1rem'
-                        }}>
+                    /* THEN YOUR RETURN */
+                    return (
 
-                            <div style={{
-                        maxWidth: '90rem',
-                        margin: '0 auto'
-                        }}>
+                    <main style={{
+                        background: '#000',
+                        minHeight: '100vh',
+                        color: '#D4AF37',
+                        padding: '1rem'
+                    }}>
+
+                <div style={{
+                maxWidth: '90rem',
+                margin: '0 auto',
+                width: '100%',
+                overflowX: 'hidden'
+                }}>
 
 
     {/* HEADER */}
@@ -195,14 +216,13 @@ export default function SellPage() {
                                             }
                                         />
 
-                    
                     <div>
 
                         <h1 style={{
                         fontSize: '4rem',
                         marginBottom: '.5rem'
                         }}>
-                        Define Tu Propiedad de Alquiler
+                        Define Tu Propiedad
                         </h1>
 
                         <p style={{
@@ -211,10 +231,10 @@ export default function SellPage() {
                         maxWidth: '50rem',
                         lineHeight: '1.7'
                         }}>
-                        Define progresivamente las características
+                       Define progresivamente las características
                         ambientales, logísticas, legales y contextuales
                         de tu propiedad para crear una entidad estructurada
-                        dentro del marketplace de alquileres.
+                        dentro del marketplace.
                         </p>
 
                     </div>
@@ -276,7 +296,7 @@ export default function SellPage() {
                                 onClick={() => {
 
                                     if (!csvFile) {
-                                    alert('Por favor selecciona primero un archivo CSV')
+                                    alert('Please select a CSV file first')
                                     return
                                     }
 
@@ -286,7 +306,16 @@ export default function SellPage() {
 
                                     complete: async (results) => {
 
-                                        const formattedData = results.data.map((row: any) => ({
+                                        
+
+                                        const formattedData = results.data
+                                            .filter((row: any) =>
+                                                row.province ||
+                                                row.canton ||
+                                                row.district ||
+                                                row.property_type
+                                            )
+                                            .map((row: any) => ({
 
                                         ...row,
 
@@ -324,7 +353,48 @@ export default function SellPage() {
 
                                         }))
 
-                                        console.log(formattedData)
+                                    
+console.log(
+  'CSV LENGTH:',
+  formattedData.length
+)
+
+console.log(
+  'SECOND RECORD:',
+  formattedData[1]
+)
+
+console.log(formattedData)
+
+console.log(
+  'UTILITY:',
+  formattedData[0]?.utility
+)
+
+console.log(
+  'ENVIRONMENT:',
+  formattedData[0]?.environment
+)
+
+console.log(
+  'ACCESSIBILITY:',
+  formattedData[0]?.accessibility
+)
+
+console.log(
+  'TERRAIN:',
+  formattedData[0]?.terrain
+)
+
+console.log(
+  'FIRST CSV RECORD:',
+  formattedData[0]
+)
+
+console.log(
+'FORMATTED DATA:',
+formattedData
+)
 
                                         setCsvListings(formattedData)
 
@@ -336,7 +406,7 @@ export default function SellPage() {
 
                                 }}
                                 style={{
-                                    background: '#FFFFFF',
+                                    background: '#D4AF37',
                                     color: '#000',
                                     border: 'none',
                                     borderRadius: '999px',
@@ -354,14 +424,17 @@ export default function SellPage() {
 
 
 {/* MAIN GRID */}
-                <div style={{
-                display: 'grid',
-                    gridTemplateColumns: isMobile
-                    ? '1fr'
-                    : '1fr 1fr',
-                    gap: '2rem',
-                    alignItems: 'start'
-                }}>
+        <div style={{
+            display: 'grid',
+
+            gridTemplateColumns: isMobile
+                ? '1fr'
+                : '1fr 1fr',
+
+            gap: '2rem',
+
+            alignItems: 'start'
+            }}>
                 {/* LEFT SIDE */}
                 <div style={{
                     background: '#111',
@@ -428,93 +501,58 @@ export default function SellPage() {
 
 {/* PROPERTY TYPE */}
 
-<PropertyTypeFilterS
+                    <PropertyTypeFilterES
 
-                    
+                        bedrooms={propertyData.bedrooms}
+                        bathrooms={propertyData.bathrooms}
+                        parking={propertyData.parking}
 
-                    bedrooms={propertyData.bedrooms}
+                        yearBuiltRange={
+                            propertyData.year_built_range
+                        }
 
-                    bathrooms={propertyData.bathrooms}
+                        constructionArea={
+                            propertyData.construction_area
+                        }
 
-                    parking={propertyData.parking}
+                        selectedproperty_type={
+                            propertyData.property_type
+                        }
 
-                    yearBuiltRange={propertyData.year_built_range}
+                        setSelectedproperty_type={(value) =>
+                            setPropertyData({
+                                ...propertyData,
+                                property_type: value
+                            })
+                        }
 
-                    constructionArea={propertyData.construction_area}
+                        showproperty_typeOptions={
+                            showproperty_typeOptions
+                        }
 
-                    propertyTypes={property_types}
+                        setShowproperty_typeOptions={
+                            setShowproperty_typeOptions
+                        }
 
-                    residentialPropertyTypes={
-                        residential_property_types
-                    }
+                        setShowproperty_areaOptions={
+                            setShowproperty_areaOptions
+                        }
 
-                    showPropertyTypeOptions={
-                        showproperty_typeOptions
-                    }
+                        setShowBedroomOptions={
+                            setShow_bedroom_options
+                        }
 
-                     setShowPropertyAreaOptions={
-                    setShowproperty_areaOptions
-                    }
+                        setShowProvinceOptions={
+                            setShow_province_options
+                        }
 
-                    setShowBedroomOptions={
-                        setShow_bedroom_options
-                    }
+                        setShowCantonOptions={
+                            setShow_canton_options
+                        }
 
-                    setShowProvinceOptions={
-                        setShow_province_options
-                    }
-
-                    setShowCantonOptions={
-                        setShow_canton_options
-                    }
-
-                    setShowDistrictOptions={
-                        setShow_district_options
-                    }
-
-                    selectedPropertyType={
-                        propertyData.property_type
-                    }
-
-                    setSelectedPropertyType={(value) =>
-                        setPropertyData({
-                        ...propertyData,
-                        property_type: value
-                        })
-                    }
-
-                    setShowPropertyTypeOptions={
-                        setShowproperty_typeOptions
-                    }
-
-                    resetResidentialFields={() => {
-
-                        setPropertyData(prev => ({
-                        ...prev,
-                        bedrooms:'',
-                        bathrooms:'',
-                        parking:'',
-                        year_built_range:'',
-                        construction_area:''
-                        }))
-
-                        setShow_bedroom_options(true)
-                        setShow_bathroom_options(false)
-                        setShow_parking_options(false)
-                        setShow_year_built_options(false)
-                        setShow_construction_area_options(false)
-
-                    }}
-
-                    enableResidentialFlow={() => {
-
-                        setShow_bedroom_options(true)
-                        setShow_bathroom_options(false)
-                        setShow_parking_options(false)
-                        setShow_year_built_options(false)
-                        setShow_construction_area_options(false)
-
-                    }}
+                        setShowDistrictOptions={
+                            setShow_district_options
+                        }
 
                     />
 
@@ -522,20 +560,13 @@ export default function SellPage() {
 
 {/* RESIDENTIAL STRUCTURE ATTRIBUTES */}
 
-                    {show_residential_fields && (
+                    {show_residential_fields &&
+                        !propertyData.construction_area && (
 
-                    <ResidentialAttributesS
+<ResidentialAttributesSES
 
                         showResidentialSummary={false}
                         setShowResidentialSummary={() => {}}
-
-                        setShowproperty_typeOptions={
-                        setShowproperty_typeOptions
-                        }
-
-                        setShowproperty_areaOptions={
-                        setShowproperty_areaOptions
-                        }
 
                         bedrooms={propertyData.bedrooms}
                         setBedrooms={(value) =>
@@ -602,60 +633,92 @@ export default function SellPage() {
                         setShow_construction_area_options
                         }
 
+                        setShowproperty_typeOptions={
+                        setShowproperty_typeOptions
+                        }
+
+                        setShowproperty_areaOptions={
+                        setShowproperty_areaOptions
+                        }
+
                     />
 
                     )}
 
 {/* PROPERTY AREA */}
                     
-                    <PropertyAreaFilterS
-                        selectedPropertyArea={
+                    <PropertyAreaFilterES
+                        selectedproperty_area={
                             propertyData.property_area
                         }
-                        setSelectedPropertyArea={(value) =>
+                        setSelectedproperty_area={(value) =>
                             setPropertyData({
                             ...propertyData,
                             property_area: value
                             })
                         }
-                        showPropertyAreaOptions={
+                        showproperty_areaOptions={
                             showproperty_areaOptions
                         }
-                        setShowPropertyAreaOptions={
-                            setShowproperty_areaOptions
+
+                        setShowproperty_areaOptions={
+                        setShowproperty_areaOptions
                         }
-                        setShowUtilityOptions={
+                        
+                        setShowutilityOptions={
                             setShowutilityOptions
                         }
-                        propertyAreas={property_areas}
+
+                        setShowProvinceOptions={
+                            setShow_province_options
+                        }
+
+                        setShowCantonOptions={
+                            setShow_canton_options
+                        }
+
+                        setShowDistrictOptions={
+                            setShow_district_options
+                        }
+                       
                     />
 
-{/* UTILITIES */}
-                   <UtilitiesFilterS
-                    selectedUtilities={
-                        propertyData.utility
-                    }
-                    setSelectedUtilities={(value) =>
-                        setPropertyData({
-                        ...propertyData,
-                        utility: value
-                        })
-                    }
-                    showUtilityOptions={
-                        showutilityOptions
-                    }
-                    setShowUtilityOptions={
-                        setShowutilityOptions
-                    }
-                    setShowEnvironmentOptions={
-                        setShowenvironmentOptions
-                    }
-                    utilities={utilities}
-                />
+<UtilitiesFilterES
+                        selectedutility={propertyData.utility}
+
+                        setSelectedutility={(value) =>
+                            setPropertyData({
+                                ...propertyData,
+                                utility: value
+                            })
+                        }
+
+                        showutilityOptions={showutilityOptions}
+
+                        setShowutilityOptions={
+                            setShowutilityOptions
+                        }
+
+                        setShowenvironmentOptions={
+                            setShowenvironmentOptions
+                        }
+
+                        setShowProvinceOptions={
+                            setShow_province_options
+                        }
+
+                        setShowCantonOptions={
+                            setShow_canton_options
+                        }
+
+                        setShowDistrictOptions={
+                            setShow_district_options
+                        }
+                    />
                 
 
 {/* environment */}
-                  <EnvironmentFilterS
+                  <EnvironmentFilterSES
                     selectedEnvironment={propertyData.environment}
                     setSelectedEnvironment={(value) =>
                         setPropertyData({
@@ -676,9 +739,9 @@ export default function SellPage() {
 
 {/* accessibility */}
 
-                    <AccessibilityFilterS
-                        selectedAccessibility={propertyData.accessibility}
-                        setSelectedAccessibility={(value) =>
+                    <AccessibilityFilterES
+                        selectedaccessibility={propertyData.accessibility}
+                        setSelectedaccessibility={(value) =>
                             setPropertyData({
                             ...propertyData,
                             accessibility: value
@@ -692,36 +755,52 @@ export default function SellPage() {
                         />
 
 {/* TERRAIN */}
-                   <TerrainFilterS
-                        selectedTerrain={
-                            propertyData.terrain
-                        }
-                        setSelectedTerrain={(value) =>
+                        <TerrainFilterES
+
+                            selectedterrain={propertyData.terrain}
+
+                            setSelectedterrain={(value) =>
+                                setPropertyData({
+                                    ...propertyData,
+                                    terrain: value
+                                })
+                            }
+
+                            showTerrainOptions={
+                                showTerrainOptions
+                            }
+
+                            setShowTerrainOptions={
+                                setShowTerrainOptions
+                            }
+
+                        />
+                    
+{/* LEGAL STATUS */}
+                    <LegalStatusFilterSES
+                        selectedLegalStatus={propertyData.legal_status}
+                        setSelectedLegalStatus={(value) =>
                             setPropertyData({
                             ...propertyData,
-                            terrain: value
+                            legal_status: value
                             })
                         }
-                        showTerrainOptions={
-                            showTerrainOptions
+                        showLegalStatusOptions={
+                            showlegal_statusOptions
+                        }
+                        setShowLegalStatusOptions={
+                            setShowlegal_statusOptions
                         }
                         setShowTerrainOptions={
+
                             setShowTerrainOptions
-                        }
 
-                        setShowAccessibilityOptions={
-                        setShowAccessibilityOptions
                         }
-
-                        setShowLegalStatusOptions={
-                        setShowlegal_statusOptions
-                        }
-                        terrainOptions={terrainOptions}
                         />
                     
 
-{/* Monthly Price */}
-                        <MonthlyRentSelectorS
+{/* price */}
+                       <MonthlyRentSelectorS
 
                             monthlyPrice={propertyData.monthly_price}
 
@@ -754,7 +833,6 @@ export default function SellPage() {
 
                         />
 
-
 {/* IMAGE UPLOADER */}
                     <ImageUploaderS
                         handleImageUpload={handleImageUpload}
@@ -785,58 +863,128 @@ export default function SellPage() {
                     }
                     />
 
+{/* CREATE LISTING BUTTON */}
+                          
+              <CreateListingButtonSXL
+                    onCreateListing={() => {
 
+                        console.log(
+                        'CREATE LISTING BUTTON CLICKED'
+                        )
+
+                        console.log(
+                        'WHATSAPP BEFORE AUTH:',
+                        propertyData.whatsapp
+                        )
+
+                        if (!propertyData.whatsapp) {
+                        alert(
+                            'Please enter your WhatsApp number'
+                        )
+                        return
+                        }
+
+                        setShowAuthOverlay(true)
+
+                    }}
+                    />
 
 </div> {/* LEFT SIDE */}
 
 {/* RIGHT SIDE */}
 
-                    <div style={{
+        <div style={{
                     background: '#0d0d0d',
                     border: '.0625rem solid #222',
                     borderRadius: '1.5rem',
                     padding: '2rem',
 
                     position: isMobile
-                        ? 'relative'
-                        : 'sticky',
-                        top: isMobile
-                        ? '0'
-                        : '1rem',
-                        height: 'fit-content',
-                        width: '100%'
+                    ? 'relative'
+                    : 'sticky',
+
+                    top: isMobile
+                    ? '0'
+                    : '1rem',
+
+                    height: 'fit-content',
+
+                    width: '100%'
                     }}>
 
-                    <RentalPropertyDefinitionPanel
-                            propertyData={propertyData}
-                        />
-                    <CreateListingButtonSXL
-                        onCreateListing={() =>
-                            createRentalListing(
-                            propertyData,
-                            generateListingTitle,
-                            generateListingDescription
-                            )
+                    <RentalPropertyDefinitionPanelES
+                        propertyData={propertyData}
+                    />
+
+            </div>
+        </div>
+    </div> 
+            
+            {/* MAIN GRID */}
+
+                {/* CSV STAGING MODAL */}
+                {showCsvStaging && (
+
+                <CsvStagingModal
+                    csvListings={csvListings}
+                    setCsvListings={setCsvListings}
+                    setShowCsvStaging={setShowCsvStaging}
+                    isRentLease={true}
+                />
+
+                )}
+
+               {/* AUTH OVERLAY */}
+                    {showAuthOverlay && (
+
+                        console.log(
+                            'AUTH OVERLAY OPENING WITH WHATSAPP:',
+                            propertyData.whatsapp
+                        ),
+
+                    <AuthOverlay
+                        whatsapp={propertyData.whatsapp}
+
+                        formatWhatsAppNumber={
+                        formatWhatsAppNumber
                         }
-                        />
-                    </div>
-                </div>
-            </div> {/* MAIN GRID */}
 
-{/* CSV STAGING MODAL */}
-                    {showCsvStaging && (
+                        onVerify={async () => {
 
-                    <CsvStagingModal
-                        csvListings={csvListings}
-                        setCsvListings={setCsvListings}
-                        setShowCsvStaging={setShowCsvStaging}
-                        isRentLease={true}
+                                console.log(
+                                    'ON VERIFY CALLBACK FIRED'
+                                )
+
+                                console.log(
+                                    'PROPERTY DATA:',
+                                    propertyData
+                                )
+
+                                const result = await createRentalListing(
+                                    propertyData,
+                                    generateListingTitle,
+                                    generateListingDescription
+                                )
+
+                                console.log(
+                                    'CREATE LISTING RESULT:',
+                                    result
+                                )
+
+                                setShowAuthOverlay(false)
+
+                                }}
+
+                        onClose={() =>
+                        setShowAuthOverlay(false)
+                        }
+
                     />
 
                     )}
-              
-    </main>
 
-  )
+                    </main>
 
-}
+                    )
+
+                    }
