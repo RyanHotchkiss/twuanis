@@ -2,15 +2,15 @@
 
 type EnvironmentFilterProps = {
 
-    selectedenvironment: string[]
-
-    setSelectedenvironment: (
-      value: string[]
-    ) => void
-
+  selectedenvironment: string[]
+  setSelectedenvironment: (
+    value: string[]
+  ) => void
   showenvironmentOptions: boolean
-
   setShowenvironmentOptions: (
+    value: boolean
+  ) => void
+  setShowAccessibilityOptions: (
     value: boolean
   ) => void
 
@@ -19,12 +19,12 @@ type EnvironmentFilterProps = {
 export default function EnvironmentFilter({
 
   selectedenvironment,
-
   setSelectedenvironment,
 
   showenvironmentOptions,
+  setShowenvironmentOptions,
 
-  setShowenvironmentOptions
+  setShowAccessibilityOptions
 
 }: EnvironmentFilterProps) {
 
@@ -178,7 +178,7 @@ const filterHeading = {
 
   marginBottom:'1rem',
 
-  color:'#ff3b00'
+  color:'#D4AF37'
 
 }
 
@@ -196,7 +196,7 @@ const pill = {
 
   background:'#181818',
 
-  border:'1px solid #2a2a2a',
+  border:'1px solid #D4AF37',
 
   color:'#fff',
 
@@ -214,9 +214,9 @@ const activePill = {
 
   ...pill,
 
-  background:'#00ff9970',
+  background:'#D4AF37',
 
-  border:'1px solid #00ff99',
+  border:'1px solid #FFFFFF',
 
   color:'#fff'
 
@@ -227,14 +227,14 @@ const summaryCard = {
   justifyContent:'space-between',
   alignItems:'flex-start',
   background:'#181818',
-  border:'1px solid #00ff9950',
+  border:'1px solid #FFFFFF50',
   borderRadius:'1rem',
   padding:'1rem',
   marginTop:'1rem'
 }
 
 const breadcrumbText = {
-  color:'#00ff99',
+  color:'#FFFFFF',
   fontSize:'.85rem'
 }
 

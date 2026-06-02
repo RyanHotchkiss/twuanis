@@ -5,17 +5,6 @@ import Link from 'next/link'
 import { createListingId } from '@/lib/createListingId'
 import { supabase } from '@/lib/supabase'
 
-import LocationFilter from '@/app/components/filter-bar/LocationFilterES'
-import PriceFilter from '@/app/components/filter-bar/PriceFilterES'
-import PropertyTypeFilter from '@/app/components/filter-bar/PropertyTypeFilterES'
-import UtilitiesFilter from '@/app/components/filter-bar/UtilitiesFilterES'
-import AdvancedFiltersToggle from '@/app/components/filter-bar/AdvancedFiltersToggleES'
-import AccessibilityFilter from '@/app/components/filter-bar/AccessibilityFilterES'
-import EnvironmentFilter from '@/app/components/filter-bar/EnvironmentFilterES'
-import LegalStatusFilter from '@/app/components/filter-bar/LegalStatusFilterES'
-import TerrainFilter from '@/app/components/filter-bar/TerrainFilterES'
-import PropertyAreaFilter from '@/app/components/filter-bar/PropertyAreaFilterES'
-import ResidentialAttributesS from '@/app/components/filter-bar/ResidentialAttributesS'
 import TopBarES from '@/app/components/TopBarES'
 import BuyHeaderES from '@/app/components/BuyHeaderES'
 import BuySidebarES from '@/app/components/BuySidebarES'
@@ -31,7 +20,7 @@ import {
 export default function HomePage() {
 
 const navButton = {
-            background:'#00ff9950',
+            background:'#FFFFFF50',
             border:'.0625rem solid #ffffff50',
             color:'#fff',
             borderRadius:'999rem',
@@ -950,8 +939,8 @@ const pill = {
 }
 
 const activePill = {
-  background: '#00ff99',
-  border: '1px solid #00ff99',
+  background: '#FFFFFF',
+  border: '1px solid #FFFFFF',
   color: '#000',
   padding: '10px 14px',
   borderRadius: '999px',
@@ -1009,8 +998,8 @@ const listButton = {
 }
 
 const activeListButton = {
-  background: '#00ff99',
-  border: '1px solid #00ff99',
+  background: '#FFFFFF',
+  border: '1px solid #FFFFFF',
   color: '#000',
   padding: '14px 16px',
   borderRadius: '14px',
@@ -1035,7 +1024,7 @@ const breadcrumbText = {
 const backButton = {
   background: 'transparent',
   border: 'none',
-  color: '#00ff99',
+  color: '#FFFFFF',
   cursor: 'pointer',
   padding: 0,
   fontSize: '14px',
@@ -1070,7 +1059,7 @@ const navButton0 = {
 }
 
 const sellButton = {
-  background: '#00ff9950',
+  background: '#FFFFFF50',
   color: '#fff',
   border:'.0625rem solid #ffffff50',
   textDecoration: 'none',

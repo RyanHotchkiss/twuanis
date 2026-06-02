@@ -70,7 +70,7 @@ export default function AuthOverlay({
 
         <h2 style={{
           fontSize:'2rem',
-          color:'#ff3b00',
+          color:'#D4AF37',
           margin:0
         }}>
           Verify Your WhatsApp
@@ -86,7 +86,7 @@ export default function AuthOverlay({
 
         <div style={{
           fontSize:'2rem',
-          color:'#00ff99',
+          color:'#FFFFFF',
           fontWeight:'bold'
         }}>
           +506 {
@@ -117,7 +117,7 @@ export default function AuthOverlay({
 
             fontSize:'2rem',
 
-            color:'#00ff99',
+            color:'#FFFFFF',
 
             fontWeight:'bold'
           }}>
@@ -130,6 +130,14 @@ export default function AuthOverlay({
 
                   <button
                     onClick={async () => {
+
+console.log(
+    'SEND OTP CLICKED'
+  )
+  console.log(
+    'WHATSAPP:',
+    whatsapp
+  )
 
                       setLoading(true)
 
@@ -145,6 +153,11 @@ export default function AuthOverlay({
 
                       const data = await response.json()
 
+console.log(
+  'SEND OTP RESPONSE:',
+  data
+)
+
                       setLoading(false)
 
                       if (!data.success) {
@@ -156,7 +169,7 @@ export default function AuthOverlay({
                     }}
 
                     style={{
-                      background:'#00ff99',
+                      background:'#FFFFFF',
                       color:'#000',
                       border:'none',
                       borderRadius:'999rem',
@@ -240,7 +253,7 @@ export default function AuthOverlay({
                       }}
 
                       style={{
-                        background:'#00ff99',
+                        background:'#FFFFFF',
                         color:'#000',
                         border:'none',
                         borderRadius:'999rem',

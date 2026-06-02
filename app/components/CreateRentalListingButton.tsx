@@ -25,7 +25,7 @@ export default function CreateRentalListingButton() {
 
 const createListingButton = {
   width:'auto',
-  background:'#00ff9950',
+  background:'#FFFFFF50',
   color:'#fff',
   border:'.0625rem solid #ffffff50',
   borderRadius:'1.5rem',

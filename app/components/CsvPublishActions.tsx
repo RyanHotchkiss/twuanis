@@ -45,7 +45,7 @@ const container = {
 
 const publishButton = {
   width:'100%',
-  background:'#00ff99',
+  background:'#FFFFFF',
   color:'#000',
   border:'none',
   borderRadius:'1.5rem',

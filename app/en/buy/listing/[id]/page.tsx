@@ -5,15 +5,15 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 
 import { supabase } from '@/lib/supabase'
-
+import { createListingId } from '@/lib/createListingId'
 import TopBar from '@/app/components/TopBar'
 
 
 export default function ListingPage() {
 
   const navButton = {
-            background:'#00ff99',
-            border:'.0625rem solid #00ff99',
+            background:'#FFFFFF',
+            border:'.0625rem solid #FFFFFF',
             color:'#000',
             borderRadius:'999rem',
             padding:'.85rem 1.25rem',
@@ -29,11 +29,12 @@ export default function ListingPage() {
 
   const [loading, setLoading] = useState(true)
 
+  const [showMobileFilters, setShowMobileFilters] =
+  useState(false)
+
   useEffect(() => {
 
     async function fetchListing() {
-
-
 
       // SEARCH SUPABASE FIRST
       const { data, error } = await supabase
@@ -58,15 +59,14 @@ export default function ListingPage() {
 
         })
 
-      } else {
+        setLoading(false)
 
-        console.error('Listing Not Found')
+        return
 
       }
 
+
       setLoading(false)
-
-
 
     }
 
@@ -87,7 +87,7 @@ export default function ListingPage() {
         padding: '2rem'
       }}>
 
-        Loading Listing...
+        Loading Property...
 
       </main>
 
@@ -106,7 +106,7 @@ export default function ListingPage() {
         padding: '2rem'
       }}>
 
-        Listing Not Found
+        Property Not Found
 
       </main>
 
@@ -124,9 +124,9 @@ export default function ListingPage() {
     }}>
 
             <TopBar
-
-              onFilterClick={() => {}}
-
+              onFilterClick={() =>
+                setShowMobileFilters(true)
+              }
             />
 
         {/* MAIN LAYOUT */}
@@ -299,7 +299,7 @@ export default function ListingPage() {
             <div>
 
             <span style={label}>
-                Year Built
+                Year Constructed
             </span>
 
             <div style={entityCard}>
@@ -357,7 +357,7 @@ export default function ListingPage() {
 
             </div>
 
-            {/* ACCESSIBILITY */}
+            {/* ACCSIBILITY */}
             <div>
 
             <span style={label}>
@@ -368,8 +368,10 @@ export default function ListingPage() {
 
                 {(Array.isArray(listing.accessibility)
                 ? listing.accessibility
+                : Array.isArray(listing.accessibility)
+                ? listing.accessibility
                 : typeof listing.accessibility === 'string'
-                ? JSON.parse(listing.accessibility)
+                ? [listing.accessibility]
                 : []
                 ).map((item: string) => (
 
@@ -415,7 +417,7 @@ export default function ListingPage() {
 
             </div>
 
-            {/* UTILITIES */}
+            {/* UTILITI */}
             <div>
 
             <span style={label}>
@@ -476,7 +478,7 @@ export default function ListingPage() {
                     ? `₡${Number(
                         listing.price_millions
                         ).toLocaleString()}M`
-                    : 'Price Unavailable'}
+                    : 'Precio No Disponible'}
 
             </div>
 
@@ -507,7 +509,7 @@ export default function ListingPage() {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                background: '#00ff99',
+                background: '#FFFFFF',
                 color: '#000',
                 textDecoration: 'none',
                 padding: '1rem',
@@ -515,7 +517,7 @@ export default function ListingPage() {
                 fontWeight: 'bold'
               }}
             >
-              Contact Seller On WhatsApp
+              Contact Seller on WhatsApp
             </a>
 
           </div>
@@ -565,7 +567,7 @@ const pillEntity = {
 }
 
 const priceCard = {
-  background: '#00ff99',
+  background: '#FFFFFF',
   color: '#000',
   borderRadius: '1rem',
   padding: '1.25rem',

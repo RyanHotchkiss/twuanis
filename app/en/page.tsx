@@ -27,21 +27,84 @@ function HomePageContent() {
   const [showadvanced_filters, setShowadvanced_filters] = useState(false)
   const [showMobileFilters, setShowMobileFilters] = useState(false)
   
- const [showIntroOverlay, setShowIntroOverlay] = useState(
-          searchParams.get('skipintro')
-            ? false
-            : true
-        )
+    const [showIntroOverlay, setShowIntroOverlay] = useState(
+      searchParams.get('overlay') === 'initial' ||
+      searchParams.get('overlay') === 'looking' ||
+      searchParams.get('overlay') === 'posting'
+        ? false
+        : true
+    )
 
   const [countdown, setCountdown] = useState(12)
 
+  const [isMobile, setIsMobile] =
+            useState(false)
+          useEffect(() => {
+            function handleResize() {
+              setIsMobile(
+                window.innerWidth <= 768
+              )
+            }
+            handleResize()
+            window.addEventListener(
+              'resize',
+              handleResize
+            )
+            return () => {
+              window.removeEventListener(
+                'resize',
+                handleResize
+              )
+            }
+          }, [])
 
-  const isMobile =
-  typeof window !== 'undefined' &&
-  window.innerWidth <= 768
+          
+          useEffect(() => {
+
+              if (
+                sessionStorage.getItem('skipIntro')
+              ) {
+
+                setShowIntroOverlay(false)
+
+                sessionStorage.removeItem(
+                  'skipIntro'
+                )
+
+              }
+
+            }, [])
+
+    useEffect(() => {
+
+        if (!showIntroOverlay) return
+
+        const interval = setInterval(() => {
+
+          setCountdown(prev => {
+
+            if (prev <= 1) {
+
+              clearInterval(interval)
+
+              setShowIntroOverlay(false)
+
+              return 0
+
+            }
+
+            return prev - 1
+
+          })
+
+        }, 1000)
+
+        return () => clearInterval(interval)
+
+      }, [showIntroOverlay])
 
   const overlayBackButton = {
-    background:'#00ff9940',
+    background:'#FFFFFF40',
     border:'.0625rem solid #ffffff50',
     color:'#fff',
     borderRadius:'999rem',
@@ -62,12 +125,14 @@ function HomePageContent() {
   const [selectedterrain, setSelectedterrain] = useState('')
   
 
-  const initialOverlayState =  
-    searchParams.get('overlay') === 'looking'
-      ? 'looking'
-      : searchParams.get('overlay') === 'posting'
-      ? 'posting'
-      : 'initial'
+    const initialOverlayState =  
+      searchParams.get('overlay') === 'looking'
+        ? 'looking'
+        : searchParams.get('overlay') === 'posting'
+        ? 'posting'
+        : searchParams.get('overlay') === 'initial'
+        ? 'initial'
+        : 'initial'
 
   const [overlayState, setOverlayState] =
   useState<'initial' | 'looking' | 'posting' | null>(
@@ -708,13 +773,13 @@ function HomePageContent() {
     marginBottom:'1.5rem'
   }}
 >
-  <span style={{ color:'#ff3b00' }}>
+  <span style={{ color:'#D4AF37' }}>
     Do
   </span>
 
   {' '}exponentially{' '}
 
-  <span style={{ color:'#ff3b00' }}>
+  <span style={{ color:'#D4AF37' }}>
     more with Twuanis
   </span>
 
@@ -748,7 +813,7 @@ function HomePageContent() {
 
                     <p
                       style={{
-                        color:'#00ff99',
+                        color:'#FFFFFF',
                         fontWeight:'bold',
                         fontSize:'1.2rem',
                         marginBottom:'1rem'
@@ -799,7 +864,7 @@ function HomePageContent() {
 
                       <p
                       style={{
-                        color:'#00ff99',
+                        color:'#FFFFFF',
                         fontWeight:'bold',
                         fontSize:'1.2rem',
                         marginBottom:'1rem'
@@ -828,7 +893,7 @@ function HomePageContent() {
                   >
                     <p
                       style={{
-                        color:'#00ff99',
+                        color:'#FFFFFF',
                         fontWeight:'bold',
                         fontSize:'1.2rem',
                         marginBottom:'1rem'
@@ -857,7 +922,7 @@ function HomePageContent() {
                 <p
                   style={{
                     marginTop:'2rem',
-                    color:'#ff3b00',
+                    color:'#D4AF37',
                     fontWeight:'bold',
                     fontSize:isMobile
                       ? '1rem'
@@ -900,7 +965,7 @@ function HomePageContent() {
 
                             borderRadius:'999rem',
 
-                            color:'#00ff99',
+                            color:'#FFFFFF',
 
                             fontWeight:'bold'
                           }}
@@ -938,87 +1003,110 @@ function HomePageContent() {
         )}
 
 
-      {/* OVERLAY */}
-          {overlayState && (
+{/* OVERLAY */}
+    {!showIntroOverlay && overlayState && (
 
-            <div style={{
-              position: 'fixed',
-              inset: 0,
-              background: 'rgba(0,0,0,.34)',
-              backdropFilter: 'blur(18px)',
-              WebkitBackdropFilter: 'blur(9px)',
-              zIndex: 9999,
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              transition: 'all .45s ease'
-            }}>
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          background: 'rgba(0,0,0,.34)',
+          backdropFilter: 'blur(18px)',
+          WebkitBackdropFilter: 'blur(9px)',
+          zIndex: 9999,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          transition: 'all .45s ease'
+        }}>
 
-              <div style={{
-                width: '100%',
-                maxWidth: '32rem',
-                padding: '2rem',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '1rem',
-                alignItems: 'center',
-                transition: 'all .45s ease',
-                opacity: 1,
-                transform: 'translateY(0px) scale(1)'
-              }}>
+          <div style={{
+            width: '100%',
+            maxWidth: '32rem',
+            padding: '2rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem',
+            alignItems: 'center',
+            transition: 'all .45s ease',
+            opacity: 1,
+            transform: 'translateY(0px) scale(1)'
+          }}>
 
-                {/* STATE 1 */}
-                {overlayState === 'initial' && (
+{/* STATE 1 */}
+{overlayState === 'initial' && (
 
-                  <>
+                <>
 
-                    <div style={{
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    marginBottom: '1rem'
-                    }}>
+                  <h2
+                    style={{
+                      fontSize:'3rem',
+                      marginBottom:'.75rem',
+                      textAlign:'center',
+                      color:'#fff',
+                      fontWeight:'700',
+                      letterSpacing:'.05em',
+                      textShadow:
+                        '-1px -1px 0 #C9A86A, ' +
+                        '1px -1px 0 #C9A86A, ' +
+                        '-1px 1px 0 #C9A86A, ' +
+                        '1px 1px 0 #C9A86A'
+                    }}
+                  >
+                    Twuanis
+                  </h2>
 
-                    </div>
+                  <p
+                    style={{
+                      color:'#C9A86A',
+                      marginBottom:'2rem',
+                      textAlign:'center',
+                      lineHeight:1.7,
+                      fontSize:'1.05rem',
+                      fontWeight:'600'
+                    }}
+                  >
+                    What would you like to do?
+                  </p>
 
-                    <h2 style={{
-                      fontSize: '2.8rem',
-                      marginBottom: '.5rem',
-                      textAlign: 'center'
-                    }}>
-                      Twuanis
-                    </h2>
+                  <button
+                    onClick={() => setOverlayState('looking')}
+                    style={{
+                      width:'100%',
+                      background:'#fff',
+                      color:'#162A45',
+                      border:'3px solid #C9A86A',
+                      borderRadius:'999px',
+                      padding:'1.15rem 1.5rem',
+                      fontSize:'1rem',
+                      fontWeight:'bold',
+                      cursor:'pointer',
+                      boxShadow:'0 4px 16px rgba(0,0,0,.15)'
+                    }}
+                  >
+                    Buy, Rent, or Lease
+                  </button>
 
-                    <p style={{
-                      color: '#ff3b00',
-                      marginBottom: '2rem',
-                      textAlign: 'center',
-                      lineHeight: 1.7
-                    }}>
-                      What would you like to do?
-                    </p>
+                  <button
+                    onClick={() => setOverlayState('posting')}
+                    style={{
+                      width:'100%',
+                      background:'#fff',
+                      color:'#162A45',
+                      border:'3px solid #C9A86A',
+                      borderRadius:'999px',
+                      padding:'1.15rem 1.5rem',
+                      fontSize:'1rem',
+                      fontWeight:'bold',
+                      cursor:'pointer',
+                      boxShadow:'0 4px 16px rgba(0,0,0,.15)'
+                    }}
+                  >
+                    Sell, Rent, or Lease Out
+                  </button>
 
-                    <button
-                      onClick={() =>
-                        setOverlayState('looking')
-                      }
-                      style={overlayPrimaryButton}
-                    >
-                      Buy, Rent, or Lease
-                    </button>
+                </>
 
-                    <button
-                      onClick={() =>
-                        setOverlayState('posting')
-                      }
-                      style={overlaySecondaryButton}
-                    >
-                      Sell, Rent, or Lease Out
-                    </button>
-
-                  </>
-
-                )}
+              )}
 
                 {/* STATE 2 — LOOKING */}
                 {overlayState === 'looking' && (
@@ -1026,26 +1114,46 @@ function HomePageContent() {
                   <>
 
                     <button
-                      onClick={() =>
-                        setOverlayState('initial')
-                      }
-                      style={overlayBackButton}
+                      onClick={() => setOverlayState('initial')}
+                      style={{
+                        background:'#fff',
+                        color:'#162A45',
+                        border:'3px solid #C9A86A',
+                        borderRadius:'999px',
+                        padding:'.75rem 1.25rem',
+                        fontWeight:'bold',
+                        cursor:'pointer',
+                        alignSelf:'flex-start'
+                      }}
                     >
                       ← Back
                     </button>
 
-                    <h2 style={{
-                      fontSize: '2.2rem',
-                      marginBottom: '1.5rem'
-                    }}>
-                      Looking For?
+                    <h2
+                      style={{
+                        fontSize:'2.2rem',
+                        marginBottom:'1.5rem',
+                        color:'#C9A86A'
+                      }}
+                    >
+                      What are you looking for?
                     </h2>
 
                     <button
                       onClick={() =>
                         window.location.href = '/en/buy'
                       }
-                      style={overlayPrimaryButton}
+                      style={{
+                        width:'100%',
+                        background:'#fff',
+                        color:'#162A45',
+                        border:'3px solid #C9A86A',
+                        borderRadius:'999px',
+                        padding:'1.15rem 1.5rem',
+                        fontSize:'1rem',
+                        fontWeight:'bold',
+                        cursor:'pointer'
+                      }}
                     >
                       Buy
                     </button>
@@ -1055,7 +1163,17 @@ function HomePageContent() {
                         window.location.href =
                           '/en/rent-lease'
                       }
-                      style={overlaySecondaryButton}
+                      style={{
+                        width:'100%',
+                        background:'#fff',
+                        color:'#162A45',
+                        border:'3px solid #C9A86A',
+                        borderRadius:'999px',
+                        padding:'1.15rem 1.5rem',
+                        fontSize:'1rem',
+                        fontWeight:'bold',
+                        cursor:'pointer'
+                      }}
                     >
                       Rent / Lease
                     </button>
@@ -1070,50 +1188,79 @@ function HomePageContent() {
                   <>
 
                     <button
-                      onClick={() =>
-                        setOverlayState('initial')
-                      }
-                      style={overlayBackButton}
-                    >
-                      ← Back
-                    </button>
+                        onClick={() => setOverlayState('initial')}
+                        style={{
+                          background:'#fff',
+                          color:'#162A45',
+                          border:'3px solid #C9A86A',
+                          borderRadius:'999px',
+                          padding:'.75rem 1.25rem',
+                          fontWeight:'bold',
+                          cursor:'pointer',
+                          alignSelf:'flex-start'
+                        }}
+                      >
+                        ← Back
+                      </button>
 
-                    <h2 style={{
-                      fontSize: '2.2rem',
-                      marginBottom: '1.5rem'
-                    }}>
-                      Posting A Property?
-                    </h2>
+                      <h2
+                        style={{
+                          fontSize:'2.2rem',
+                          marginBottom:'1.5rem',
+                          color:'#C9A86A'
+                        }}
+                      >
+                        Posting a Property?
+                      </h2>
 
-                    <button
-                      onClick={() =>
-                        window.location.href =
-                          '/en/sell'
-                      }
-                      style={overlayPrimaryButton}
-                    >
-                      Sell
-                    </button>
+                      <button
+                        onClick={() =>
+                          window.location.href =
+                            '/en/sell'
+                        }
+                        style={{
+                          width:'100%',
+                          background:'#fff',
+                          color:'#162A45',
+                          border:'3px solid #C9A86A',
+                          borderRadius:'999px',
+                          padding:'1.15rem 1.5rem',
+                          fontSize:'1rem',
+                          fontWeight:'bold',
+                          cursor:'pointer'
+                        }}
+                      >
+                        Sell
+                      </button>
 
-                    <button
-                      onClick={() =>
-                        window.location.href =
-                          '/en/rent-out-lease-out'
-                      }
-                      style={overlaySecondaryButton}
-                    >
-                      Rent Out, Lease Out
-                    </button>
+                      <button
+                        onClick={() =>
+                          window.location.href =
+                            '/en/rent-out-lease-out'
+                        }
+                        style={{
+                          width:'100%',
+                          background:'#fff',
+                          color:'#162A45',
+                          border:'3px solid #C9A86A',
+                          borderRadius:'999px',
+                          padding:'1.15rem 1.5rem',
+                          fontSize:'1rem',
+                          fontWeight:'bold',
+                          cursor:'pointer'
+                        }}
+                      >
+                        Rent Out / Lease Out
+                      </button>
 
                   </>
 
                 )}
+          </div>
+        </div>
 
-              </div>
-
-            </div>
-
-          )}
+      )}
+          
 
           <div style={{
             width: '100%',
@@ -1158,14 +1305,14 @@ function HomePageContent() {
                   onClick={() => window.location.href = '/favorites'}
                   style={navButton}
                 >
-                  Favorite Properties <span style={{ color: '#ff3b30' }}>♥</span>
+                  Favorite Properties <span style={{ color: '#D4AF37' }}>♥</span>
                 </button>
 
                 <button
                   onClick={() => window.location.href = '/swipe'}
                   style={navButton}
                 >
-                  Swipe View <span style={{ color: '#00ff99' }}>⇄</span>
+                  Swipe View <span style={{ color: '#FFFFFF' }}>⇄</span>
                 </button>
                
 
@@ -1217,7 +1364,7 @@ function HomePageContent() {
               right: '20px',
               zIndex: 1000,
 
-              background: '#00ff99',
+              background: '#FFFFFF',
               color: '#000',
 
               border: 'none',
@@ -1949,7 +2096,7 @@ function HomePageContent() {
                         style={{
                           background: 'transparent',
                           border: 'none',
-                          color: '#00ff99',
+                          color: '#FFFFFF',
                           fontSize: '13px',
                           cursor: 'pointer'
                         }}
@@ -2653,7 +2800,7 @@ function HomePageContent() {
                                           color: JSON.parse(
                                             localStorage.getItem('favorites') || '[]'
                                           ).includes(property.id)
-                                            ? '#ff3b30'
+                                            ? '#D4AF37'
                                             : '#fff',
                                           transition: 'all .2s ease'
                                         }}>
@@ -2771,7 +2918,7 @@ function HomePageContent() {
 
 const overlayPrimaryButton = {
   width: '100%',
-  background: '#00ff9950',
+  background: '#FFFFFF50',
   color: '#fff',
   border: 'none',
   borderRadius: '999px',
@@ -2785,7 +2932,7 @@ const overlayPrimaryButton = {
 const overlaySecondaryButton = {
   width: '100%',
   background: 'rgba(255,255,255,.06)',
-  color: '#00ff99',
+  color: '#FFFFFF',
   border: '1px solid rgba(255,255,255,.12)',
   borderRadius: '999px',
   padding: '1.15rem 1.5rem',
@@ -2799,7 +2946,7 @@ const overlaySecondaryButton = {
 const overlayBackButton = {
   background: 'transparent',
   border: 'none',
-  color: '#00ff99',
+  color: '#FFFFFF',
   cursor: 'pointer',
   marginBottom: '1rem',
   alignSelf: 'flex-start' as const,
@@ -2837,8 +2984,8 @@ const pill = {
 }
 
 const activePill = {
-  background: '#00ff99',
-  border: '1px solid #00ff99',
+  background: '#FFFFFF',
+  border: '1px solid #FFFFFF',
   color: '#000',
   padding: '10px 14px',
   borderRadius: '999px',
@@ -2896,8 +3043,8 @@ const listButton = {
 }
 
 const activeListButton = {
-  background: '#00ff99',
-  border: '1px solid #00ff99',
+  background: '#FFFFFF',
+  border: '1px solid #FFFFFF',
   color: '#000',
   padding: '14px 16px',
   borderRadius: '14px',
@@ -2922,7 +3069,7 @@ const breadcrumbText = {
 const backButton = {
   background: 'transparent',
   border: 'none',
-  color: '#00ff99',
+  color: '#FFFFFF',
   cursor: 'pointer',
   padding: 0,
   fontSize: '14px',
@@ -2947,7 +3094,7 @@ const navButton = {
 }
 
 const sellButton = {
-  background: '#00ff99',
+  background: '#FFFFFF',
   color: '#000',
   textDecoration: 'none',
   padding: '.75rem 1.125rem',

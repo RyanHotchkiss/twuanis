@@ -34,7 +34,7 @@ export default function SwipeCard({
       {label}
 
       <span style={{
-        color:'#00ff99',
+        color:'#FFFFFF',
         display:'inline-flex',
         flexDirection:'column',
         alignItems:'center',

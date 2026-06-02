@@ -11,7 +11,7 @@ export default function BackButton({
     <button
       onClick={() => window.history.back()}
       style={{
-        background:'#00ff9940',
+        background:'#FFFFFF40',
         border:'.0625rem solid #ffffff50',
         color:'#fff',
         borderRadius:'999rem',

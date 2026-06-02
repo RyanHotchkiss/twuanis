@@ -140,7 +140,7 @@ export default function ResidentialAttributesS({
                   >
 
                     <span style={{
-                            color:'#00ff99',
+                            color:'#FFFFFF',
                             lineHeight:'1.7',
                             wordBreak:'break-word',
                             paddingRight:'1rem',
@@ -689,7 +689,7 @@ const pill = {
 
 const activePill = {
   ...pill,
-  background:'#00ff9970',
+  background:'#D4AF37',
   border:'1px solid #D4AF37',
   color:'#fff'
 }

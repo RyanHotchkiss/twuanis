@@ -132,7 +132,7 @@ const pillWrap = {
 
 const pill = {
   background:'#181818',
-  border:'1px solid #2a2a2a',
+  border:'1px solid #D4AF37',
   color:'#bbb',
   padding:'10px 14px',
   borderRadius:'999px',
@@ -141,8 +141,8 @@ const pill = {
 }
 
 const activePill = {
-  background:'#00ff99',
-  border:'1px solid #00ff99',
+  background:'#FFFFFF',
+  border:'1px solid #FFFFFF',
   color:'#000',
   padding:'10px 14px',
   borderRadius:'999px',
@@ -162,7 +162,7 @@ const summaryCard = {
 }
 
 const summaryText = {
-  color:'#00ff99',
+  color:'#FFFFFF',
   fontSize:'.85rem'
 }
 

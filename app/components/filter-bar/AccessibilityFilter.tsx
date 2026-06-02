@@ -4,30 +4,21 @@ type AccessibilityFilterProps = {
   selectedaccessibility: string
   setSelectedaccessibility: (value: string) => void
 
-  showaccessibilityOptions: boolean
-  setShowaccessibilityOptions: (value: boolean) => void
+  showAccessibilityOptions: boolean
+  setShowAccessibilityOptions: (value: boolean) => void
 
   setShowenvironmentOptions: (value: boolean) => void
 
   setShowTerrainOptions: (value: boolean) => void
 
-  setShowProvinceOptions: (value: boolean) => void
-
-  setShowCantonOptions: (value: boolean) => void
-
-  setShowDistrictOptions: (value: boolean) => void
 }
 
 export default function AccessibilityFilter({
   selectedaccessibility,
   setSelectedaccessibility,
 
-  showaccessibilityOptions,
-  setShowaccessibilityOptions,
-
-  setShowProvinceOptions,
-  setShowCantonOptions,
-  setShowDistrictOptions,
+  showAccessibilityOptions,
+  setShowAccessibilityOptions,
 
   setShowenvironmentOptions,
   setShowTerrainOptions
@@ -50,7 +41,7 @@ export default function AccessibilityFilter({
         ACCESSIBILITY
       </h3>
 
-      {showaccessibilityOptions && (
+      {showAccessibilityOptions && (
 
         <div style={pillWrap}>
 
@@ -62,15 +53,9 @@ export default function AccessibilityFilter({
 
                 setSelectedaccessibility(option)
 
-                setShowProvinceOptions(false)
-
-                setShowCantonOptions(false)
-
-                setShowDistrictOptions(false)
-
                 setShowenvironmentOptions(false)
 
-                setShowaccessibilityOptions(false)
+                setShowAccessibilityOptions(false)
 
               }}
               style={
@@ -88,14 +73,14 @@ export default function AccessibilityFilter({
 
       )}
 
-      {!showaccessibilityOptions &&
+      {!showAccessibilityOptions &&
       selectedaccessibility && (
 
         <div style={summaryCard}>
 
           <span
             onClick={() =>
-              setShowaccessibilityOptions(true)
+              setShowAccessibilityOptions(true)
             }
             style={{
               ...breadcrumbText,
@@ -111,7 +96,7 @@ export default function AccessibilityFilter({
 
               setSelectedaccessibility('')
 
-              setShowaccessibilityOptions(true)
+              setShowAccessibilityOptions(true)
 
             }}
             style={resetButton}
@@ -132,7 +117,7 @@ export default function AccessibilityFilter({
 const filterHeading = {
   fontSize:'1rem',
   marginBottom:'1rem',
-  color:'#ff3b00'
+  color:'#D4AF37'
 }
 
 const pillWrap = {
@@ -143,7 +128,7 @@ const pillWrap = {
 
 const pill = {
   background:'#181818',
-  border:'1px solid #2a2a2a',
+  border:'1px solid #D4AF37',
   color:'#fff',
   padding:'.85rem 1rem',
   borderRadius:'999rem',
@@ -153,9 +138,9 @@ const pill = {
 
 const activePill = {
   ...pill,
-  background:'#00ff9970',
-  border:'1px solid #00ff99',
-  color:'#fff'
+  background:'#D4AF37',
+  border:'1px solid #FFFFFF',
+  color:'#000'
 }
 
 const summaryCard = {
@@ -163,14 +148,14 @@ const summaryCard = {
   justifyContent:'space-between',
   alignItems:'flex-start',
   background:'#181818',
-  border:'1px solid #00ff9950',
+  border:'1px solid #FFFFFF50',
   borderRadius:'1rem',
   padding:'1rem',
   marginTop:'1rem'
 }
 
 const breadcrumbText = {
-  color:'#00ff99',
+  color:'#FFFFFF',
   fontSize:'.85rem'
 }
 

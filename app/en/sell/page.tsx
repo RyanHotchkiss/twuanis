@@ -195,7 +195,7 @@ export default function SellPage() {
                     <main style={{
                         background: '#000',
                         minHeight: '100vh',
-                        color: '#00ff99',
+                        color: '#FFFFFF',
                         padding: '1rem'
                     }}>
 
@@ -363,7 +363,7 @@ export default function SellPage() {
 
                                 }}
                                 style={{
-                                    background: '#00ff99',
+                                    background: '#FFFFFF',
                                     color: '#000',
                                     border: 'none',
                                     borderRadius: '999px',

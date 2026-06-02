@@ -66,7 +66,7 @@ const uploadButton = {
   display:'inline-flex',
   alignItems:'center',
   justifyContent:'center',
-  background:'#00ff99',
+  background:'#FFFFFF',
   color:'#000',
   borderRadius:'999px',
   padding:'.85rem 1.25rem',

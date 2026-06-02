@@ -46,9 +46,9 @@ export default function Favorites({
           C17.5 3,20 5.5,20 9
           C20 14.5,12 21,12 21
         "
-        fill="#ff3b30"
-        stroke="#D4AF37"
-        strokeWidth="1.5"
+        fill="#D4AF37"
+        stroke="#FFF"
+        strokeWidth="2"
         strokeLinejoin="round"
       />
 

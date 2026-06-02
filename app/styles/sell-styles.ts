@@ -21,8 +21,8 @@ export const pill = {
 }
 
 export const activePill = {
-  background: '#00ff99',
-  border: '.0625rem solid #00ff99',
+  background: '#FFFFFF',
+  border: '.0625rem solid #FFFFFF',
   color: '#000',
   padding: '.85rem 1rem',
   borderRadius: '999rem',
@@ -60,7 +60,7 @@ export const pillWrap: CSSProperties = {
 export const collapseButton = {
   background: '#181818',
   border: '.0625rem solid #2a2a2a',
-  color: '#00ff99',
+  color: '#FFFFFF',
   width: '2rem',
   height: '2rem',
   borderRadius: '999rem',
@@ -98,7 +98,7 @@ export const priceWheelContainer = {
 export const priceDisplay = {
   fontSize: '4rem',
   fontWeight: 'bold',
-  color: '#00ff99',
+  color: '#FFFFFF',
   background: '#0f0f0f',
   border: '.0625rem solid #222',
   borderRadius: '1.5rem',
@@ -110,7 +110,7 @@ export const priceDisplay = {
 export const priceArrow = {
   background: '#181818',
   border: '.0625rem solid #2a2a2a',
-  color: '#00ff99',
+  color: '#FFFFFF',
   width: '4rem',
   height: '4rem',
   borderRadius: '999rem',
@@ -214,7 +214,7 @@ export const phoneDisplay = {
   letterSpacing:'.15rem',
   textAlign:'center' as const,
   marginBottom:'1.5rem',
-  color:'#00ff99'
+  color:'#FFFFFF'
 }
 
 export const phoneKeypad = {
@@ -248,7 +248,7 @@ export const phoneDeleteKey = {
 }
 export const createListingButton = {
   width:'100%',
-  background:'#00ff99',
+  background:'#FFFFFF',
   color:'#000',
   border:'none',
   borderRadius:'1.25rem',

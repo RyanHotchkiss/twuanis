@@ -95,14 +95,36 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    await sendWhatsApp({
-      to: phone,
-      body: `Your Twuanis verification code is: ${code}`,
-    })
+    const whatsappResult =
+            await sendWhatsApp({
+              to: phone,
+              body: `Your Twuanis verification code is: ${code}`,
+            })
 
-    return NextResponse.json({
-      success: true,
-    })
+          console.log(
+            'WHATSAPP RESULT:',
+            whatsappResult
+          )
+
+          if (!whatsappResult.success) {
+
+            return NextResponse.json(
+              {
+                success: false,
+                error: JSON.stringify(
+                  whatsappResult.error,
+                  null,
+                  2
+                )
+              },
+              { status: 500 }
+            )
+          }
+
+          return NextResponse.json({
+            success: true,
+          })
+
   } catch (error) {
     console.error(error)
 

@@ -192,24 +192,29 @@ return (
                     <div style={breadcrumbBar}>
 
                       <button
+
                         onClick={(e) => {
 
-                                e.preventDefault()
+                          e.preventDefault()
 
-                                setSelectedprovince('')
+                          setSelectedprovince('')
 
-                                setSelectedcanton('')
+                          setSelectedcanton('')
 
-                                setSelecteddistrict('')
+                          setSelecteddistrict('')
 
-                                setShowProvinceOptions(true)
+                          setShowLocationOptions(true)
 
-                                setShowCantonOptions(false)
+                          setShowProvinceOptions(true)
 
-                                setShowDistrictOptions(false)
+                          setShowCantonOptions(false)
 
-                              }}
+                          setShowDistrictOptions(false)
+
+                        }}
+
                         style={backButton}
+
                       >
                         ← provincias
                       </button>

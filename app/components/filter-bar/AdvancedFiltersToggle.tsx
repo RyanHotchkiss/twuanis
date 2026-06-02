@@ -95,13 +95,13 @@ const topBar = {
 const filterHeading = {
   fontSize:'1rem',
   marginBottom:0,
-  color:'#ff3b00'
+  color:'#D4AF37'
 }
 
 const toggleButton = {
   background:'transparent',
   border:'none',
-  color:'#00ff99',
+  color:'#FFFFFF',
   fontSize:'13px',
   cursor:'pointer'
 }

@@ -2,20 +2,14 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-
+import { createListingId } from '@/lib/createListingId'
 import { supabase } from '@/lib/supabase'
 import TopBar from '@/app/components/TopBar'
 
-import LocationFilter from '@/app/components/filter-bar/LocationFilter'
-import PriceFilterRL from '@/app/components/filter-bar/PriceFilterRL'
-import PropertyTypeFilter from '@/app/components/filter-bar/PropertyTypeFilter'
-import UtilitiesFilter from '@/app/components/filter-bar/UtilitiesFilter'
-import AdvancedFiltersToggle from '@/app/components/filter-bar/AdvancedFiltersToggle'
-import AccessibilityFilter from '@/app/components/filter-bar/AccessibilityFilter'
-import EnvironmentFilter from '@/app/components/filter-bar/EnvironmentFilter'
-import PropertyAreaFilter from '@/app/components/filter-bar/PropertyAreaFilter'
-import ResidentialAttributesS from '@/app/components/filter-bar/ResidentialAttributesS'
-import CreateRentalListingButton from '@/app/components/CreateRentalListingButton'
+import RentLeaseSidebar from '@/app/components/RentLeaseSidebar'
+import { normalizeText } from '@/lib/normalizeText' 
+
+
 import {
       provinces,
       districts
@@ -23,7 +17,7 @@ import {
 export default function HomePage() {
 
 const navButton = {
-            background:'#00ff9950',
+            background:'#FFFFFF50',
             border:'.0625rem solid #ffffff50',
             color:'#fff',
             borderRadius:'999rem',
@@ -113,13 +107,8 @@ const navButton = {
 
       async function fetchListings() {
 
-        
-          
-
-
-
         const { data, error } = await supabase
-          .from('listings')
+          .from('rent_lease_listings')
           .select('*')
           .order('id', { ascending: false })
 
@@ -137,28 +126,65 @@ const navButton = {
 
         }
 
-        const normalizedSupabaseListings = (data || []).map(
-          (listing: any) => ({
+          const normalizedSupabaseListings = (data || []).map(
+            (listing: any) => ({
 
-            ...listing,
+              ...listing,
 
-            images:
-              Array.isArray(listing.images)
-                ? listing.images
-                : typeof listing.images === 'string'
-                ? listing.images.split('|')
-                : []
+              id: createListingId(listing),
 
-          })
-        )
+              images:
+                Array.isArray(listing.images)
+                  ? listing.images
+                  : typeof listing.images === 'string'
+                  ? listing.images.split('|')
+                  : []
 
-        setProperties(normalizedSupabaseListings)
+            })
+          )
+
+            console.log(
+              'FETCHED TABLE RECORD:',
+              data?.[0]
+            )
+
+            console.log(
+              'FETCHED RENT LEASE DATA:',
+              data
+            )
+
+            console.log(
+            'FETCHED RENT LEASE DATA:',
+            data
+          )
+
+        const mergedListings = [
+          ...normalizedSupabaseListings
+        ]
+
+console.log(
+  'FIRST PROPERTY:',
+  mergedListings[0]
+)
+
+console.log(
+  'DISTRICT FIELD:',
+  mergedListings[0]?.district
+)
+
+console.log(
+  'TABLE SAMPLE:',
+  mergedListings.slice(0, 5)
+)
+
+        setProperties(mergedListings)
 
         setLoading(false)
 
       }
 
       fetchListings()
+      
 
     }, [])
 
@@ -203,101 +229,276 @@ const navButton = {
                           
 const filteredProperties = properties.filter((property) => {
 
-                  if (
+  console.log(
+    '===================================='
+  )
+
+  console.log(
+    'TITLE:',
+    property.title
+  )
+
+  console.log(
+  'PROVINCE:',
+  property.province,
+  'CANTON:',
+  property.canton,
+  'DISTRICT:',
+  property.district
+)
+
+console.log(
+  'PROVINCE FILTER:',
+  filters.province,
+  'PROPERTY PROVINCE:',
+  property.province
+)
+
+                 if (
                     filters.province &&
-                    property.province !== filters.province
+                    normalizeText(property.province) !==
+                    normalizeText(filters.province)
                   ) {
                     return false
                   }
 
-                  if (
-                    filters.canton &&
-                    property.canton !== filters.canton
-                  ) {
-                    return false
-                  }
+  console.log(
+  'CANTON FILTER:',
+  filters.canton,
+  'PROPERTY CANTON:',
+  property.canton
+)
 
-                  if (
-                    filters.district &&
-                    property.district !== filters.district
-                  ) {
-                    return false
-                  }
+console.log(
+  'NORMALIZED CANTON VALUES:',
+  normalizeText(filters.canton),
+  normalizeText(property.canton)
+)
+
+console.log(
+  normalizeText(filters.canton) ===
+  normalizeText(property.canton)
+)
+
+                if (
+                  filters.canton &&
+                  normalizeText(property.canton) !==
+                  normalizeText(filters.canton)
+                ) {
+                  return false
+                }   
+
+console.log(
+  'DISTRICT FILTER:',
+  filters.district,
+  'PROPERTY DISTRICT:',
+  property.district
+)
+
+console.log(
+  'RAW DISTRICT VALUES:',
+  JSON.stringify(filters.district),
+  JSON.stringify(property.district)
+)
+
+                if (
+                  filters.district &&
+                  normalizeText(property.district) !==
+                  normalizeText(filters.district)
+                ) {
+                  return false
+                }
+
+console.log(
+  'MONTHLY PRICE FILTER:',
+  filters.monthly_price,
+  'PROPERTY PRICE RANGE:',
+  property.price_range
+)
 
                   if (
                     filters.monthly_price &&
                     property.price_range !== filters.monthly_price
                   ) {
+
+                    console.log(
+                      'FAILED MONTHLY PRICE'
+                    )
+
                     return false
                   }
 
-                  if (
+console.log(
+  'TYPE FILTER:',
+  filters.property_type,
+  'PROPERTY TYPE:',
+  property.property_type
+)
+
+                 if (
                     filters.property_type &&
-                    property.property_type !== filters.property_type
+                    normalizeText(property.property_type) !==
+                    normalizeText(filters.property_type)
                   ) {
+
+                    console.log(
+                      'FAILED PROPERTY TYPE'
+                    )
+
                     return false
                   }
+
+                  console.log(
+                    'USE TYPE FILTER:',
+                    filters.use_type,
+                    'PROPERTY USE TYPE:',
+                    property.use_type
+                  )
 
                   if (
                     filters.use_type &&
-                    property.use_type !== filters.use_type
+                    normalizeText(property.use_type) !==
+                    normalizeText(filters.use_type)
                   ) {
+
+                    console.log(
+                      'FAILED USE TYPE'
+                    )
+
                     return false
                   }
+
+                  console.log(
+                    'PROPERTY AREA FILTER:',
+                    filters.property_area,
+                    'PROPERTY AREA:',
+                    property.property_area
+                  )
 
                   if (
                     filters.property_area &&
                     property.property_area !== filters.property_area
                   ) {
+
+                    console.log(
+                      'FAILED PROPERTY AREA'
+                    )
+
                     return false
                   }
+
+                  console.log(
+                    'UTILITY FILTER:',
+                    filters.utility,
+                    'PROPERTY UTILITY:',
+                    property.utility
+                  )
 
                   if (
                     filters.utility.length > 0 &&
                     !filters.utility.some((item) =>
                       Array.isArray(property.utility)
-                        ? property.utility.includes(item)
-                        : property.utility === item
+                        ? property.utility.some(
+                            (utility: string) =>
+                              normalizeText(utility) ===
+                              normalizeText(item)
+                          )
+                        : normalizeText(property.utility) ===
+                          normalizeText(item)
                     )
                   ) {
                     return false
                   }
 
+                  console.log(
+                    'LEGAL STATUS FILTER:',
+                    filters.legal_status,
+                    'PROPERTY LEGAL STATUS:',
+                    property.legal_status
+                  )
+
                   if (
-                    filters.legal_status &&
-                    property.legal_status !== filters.legal_status
+                    filters.use_type &&
+                    normalizeText(property.use_type) !==
+                    normalizeText(filters.use_type)
                   ) {
+
+                    console.log(
+                      'FAILED LEGAL STATUS'
+                    )
+
                     return false
                   }
+
+                  console.log(
+                    'ENVIRONMENT FILTER:',
+                    filters.environment,
+                    'PROPERTY ENVIRONMENT:',
+                    property.environment
+                  )
 
                   if (
                     filters.environment.length > 0 &&
                     !filters.environment.some((item) =>
                       Array.isArray(property.environment)
-                        ? property.environment.includes(item)
-                        : property.environment === item
+                        ? property.environment.some(
+                            (environment: string) =>
+                              normalizeText(environment) ===
+                              normalizeText(item)
+                          )
+                        : normalizeText(property.environment) ===
+                          normalizeText(item)
                     )
                   ) {
                     return false
                   }
 
+                  console.log(
+                    'ACCESSIBILITY FILTER:',
+                    filters.accessibility,
+                    'PROPERTY ACCESSIBILITY:',
+                    property.accessibility
+                  )
+
                   if (
-                      filters.accessibility &&
-                      property.accessibility !== filters.accessibility
+                    filters.accessibility &&
+                    normalizeText(property.accessibility) !==
+                    normalizeText(filters.accessibility)
+                  ) {
+
+                    console.log(
+                      'FAILED ACCESSIBILITY'
+                    )
+
+                    return false
+                  }
+
+                  console.log(
+                    'TERRAIN FILTER:',
+                    filters.terrain,
+                    'PROPERTY TERRAIN:',
+                    property.terrain
+                  )
+
+                  if (
+                      filters.terrain.length > 0 &&
+                      !filters.terrain.some((item) =>
+                        Array.isArray(property.terrain)
+                          ? property.terrain.some(
+                              (terrain: string) =>
+                                normalizeText(terrain) ===
+                                normalizeText(item)
+                            )
+                          : normalizeText(property.terrain) ===
+                            normalizeText(item)
+                      )
                     ) {
                       return false
                     }
 
-                  if (
-                    filters.terrain.length > 0 &&
-                    !filters.terrain.some((item) =>
-                      Array.isArray(property.terrain)
-                        ? property.terrain.includes(item)
-                        : property.terrain === item
-                    )
-                  ) {
-                    return false
-                  }
+                  console.log(
+                    'PASSED ALL FILTERS'
+                  )
 
                   return true
 
@@ -358,7 +559,7 @@ const filteredProperties = properties.filter((property) => {
             color: '#999',
             fontSize: '22px'
           }}>
-            Find a Rent Property or Commercial Lease
+            Find a Commercial Property to Rent or Lease
           </p>
 
         </div>
@@ -394,483 +595,78 @@ const filteredProperties = properties.filter((property) => {
           >
 
 {/* SIDEBAR LEFT */}
-            <div
-              style={{
-                background: '#000000',
-                borderRight: '1px solid #222',
-                padding: '25px',
+          <RentLeaseSidebar
 
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '28px',
+            isMobile={isMobile}
+            showMobileFilters={showMobileFilters}
+            setShowMobileFilters={setShowMobileFilters}
 
-                position: isMobile
-                  ? 'fixed'
-                  : 'relative',
+            showLocationOptions={showLocationOptions}
+            setShowLocationOptions={setShowLocationOptions}
 
-                top: 0,
+            showProvinceOptions={showProvinceOptions}
+            setShowProvinceOptions={setShowProvinceOptions}
 
-                left:
-                  isMobile && !showMobileFilters
-                    ? '-100%'
-                    : '0',
+            showCantonOptions={showCantonOptions}
+            setShowCantonOptions={setShowCantonOptions}
 
-                width: isMobile
-                  ? '85vw'
-                  : '320px',
+            showDistrictOptions={showDistrictOptions}
+            setShowDistrictOptions={setShowDistrictOptions}
 
-                height: isMobile
-                  ? '100vh'
-                  : 'auto',
+            provinces={provinces}
+            districts={districts}
 
-                zIndex: 1500,
+            showPriceOptions={showPriceOptions}
+            setShowPriceOptions={setShowPriceOptions}
 
-                transition: 'left .3s ease',
+            showproperty_typeOptions={showproperty_typeOptions}
+            setShowproperty_typeOptions={setShowproperty_typeOptions}
 
-                overflowY: 'auto'
-              }}
-            >
+            showproperty_areaOptions={showproperty_areaOptions}
+            setShowproperty_areaOptions={setShowproperty_areaOptions}
 
-                    {isMobile && (
+            showutilityOptions={showutilityOptions}
+            setShowutilityOptions={setShowutilityOptions}
 
-                      <button
-                        onClick={() =>
-                          setShowMobileFilters(false)
-                        }
-                        style={{
-                          background: '#00ff9980',
-                          border: '1px solid #333',
-                          color: '#fff',
-                          
-                          fontSize: '18px',
-                          padding: '12px',
+            showenvironmentOptions={showenvironmentOptions}
+            setShowenvironmentOptions={setShowenvironmentOptions}
 
-                          borderRadius: '12px',
+            showAccessibilityOptions={showAccessibilityOptions}
+            setShowAccessibilityOptions={setShowAccessibilityOptions}
 
-                          marginBottom: '20px',
+            showTerrainOptions={showTerrainOptions}
+            setShowTerrainOptions={setShowTerrainOptions}
 
-                          cursor: 'pointer'
-                        }}
-                      >
-                        Close Filters
-                      </button>
+            showlegal_statusOptions={showlegal_statusOptions}
+            setShowlegal_statusOptions={setShowlegal_statusOptions}
 
-                    )}
+            showBedroomOptions={showBedroomOptions}
+            setShowBedroomOptions={setShowBedroomOptions}
 
-<LocationFilter
+            showBathroomOptions={showBathroomOptions}
+            setShowBathroomOptions={setShowBathroomOptions}
 
-                    showLocationOptions={showLocationOptions}
-                    setShowLocationOptions={setShowLocationOptions}
+            showParkingOptions={showParkingOptions}
+            setShowParkingOptions={setShowParkingOptions}
 
-                    showProvinceOptions={showProvinceOptions}
-                    setShowProvinceOptions={setShowProvinceOptions}
+            showYearBuiltOptions={showYearBuiltOptions}
+            setShowYearBuiltOptions={setShowYearBuiltOptions}
 
-                    showCantonOptions={showCantonOptions}
-                    setShowCantonOptions={setShowCantonOptions}
+            showConstructionAreaOptions={showConstructionAreaOptions}
+            setShowConstructionAreaOptions={setShowConstructionAreaOptions}
 
-                    showDistrictOptions={showDistrictOptions}
-                    setShowDistrictOptions={setShowDistrictOptions}
-                    
-                    provinces={provinces}
-                    districts={districts}
+            showResidentialSummary={showResidentialSummary}
+            setShowResidentialSummary={setShowResidentialSummary}
 
-                    selectedprovince={filters.province}
-                    selectedcanton={filters.canton}
-                    selecteddistrict={filters.district}
+            bedroomOptions={bedroomOptions}
+            bathroomOptions={bathroomOptions}
+            parkingOptions={parkingOptions}
+            yearBuiltOptions={yearBuiltOptions}
+            constructionAreaOptions={constructionAreaOptions}
 
-                    setSelectedprovince={(value) => {
-
-                      setFilters(prev => ({
-                        ...prev,
-                        province: value,
-                        canton: '',
-                        district: ''
-                      }))
-
-                      setShowProvinceOptions(false)
-                      setShowCantonOptions(true)
-                      setShowDistrictOptions(false)
-
-                    }}
-
-                    setSelectedcanton={(value) => {
-
-                      setFilters(prev => ({
-                        ...prev,
-                        canton: value,
-                        district: ''
-                      }))
-
-                      setShowCantonOptions(false)
-                      setShowDistrictOptions(true)
-
-                    }}
-
-                      setSelecteddistrict={(value) => {
-
-                        setFilters(prev => ({
-                          ...prev,
-                          district: value
-                        }))
-
-                        setShowProvinceOptions(false)
-                        setShowCantonOptions(false)
-                        setShowDistrictOptions(false)
-
-                        setShowproperty_typeOptions(true)
-
-                      }}
-
-                  />
-
-<PriceFilterRL
-
-                                showPriceOptions={showPriceOptions}
-                                setShowPriceOptions={setShowPriceOptions}
-
-                                selectedmonthly_price={filters.monthly_price}
-
-                                setSelectedmonthly_price={(value) => {
-
-                                setFilters(prev => ({
-                                  ...prev,
-                                  monthly_price: value
-                                }))
-
-                                setShowPriceOptions(false)
-
-                                setShowProvinceOptions(false)
-                                setShowCantonOptions(false)
-                                setShowDistrictOptions(false)
-
-                                setShowproperty_typeOptions(true)
-
-                              }}
-
-                              />
-
-
-<PropertyTypeFilter
-
-                              showproperty_typeOptions={showproperty_typeOptions}
-                              setShowproperty_typeOptions={setShowproperty_typeOptions}
-
-                              setShowproperty_areaOptions={setShowproperty_areaOptions}
-
-                              setShowBedroomOptions={
-                                setShowBedroomOptions
-                              }
-
-                              setShowProvinceOptions={
-                                setShowProvinceOptions
-                              }
-
-                              setShowCantonOptions={
-                                setShowCantonOptions
-                              }
-
-                              setShowDistrictOptions={
-                                setShowDistrictOptions
-                              }
-
-                              selectedproperty_type={filters.property_type}
-
-                              bedrooms={filters.bedrooms}
-
-                              bathrooms={filters.bathrooms}
-
-                              parking={filters.parking}
-
-                              yearBuiltRange={filters.year_built}
-
-                              constructionArea={filters.construction_area}
-
-                              setSelectedproperty_type={(value) => {
-
-                                setFilters(prev => ({
-                                  ...prev,
-                                  property_type: value
-                                }))
-
-                              }}
-
-                            />
-
-                                        {
-                                          (
-                                            filters.property_type === 'House' ||
-                                            filters.property_type === 'Condo' ||
-                                            filters.property_type === 'Cabin'
-                                          ) && (
-
-                                            <ResidentialAttributesS
-
-                                              setShowproperty_typeOptions={
-                                                setShowproperty_typeOptions
-                                              }
-
-                                              setShowproperty_areaOptions={
-                                                setShowproperty_areaOptions
-                                              }
-
-                                              setShowResidentialSummary={
-                                                setShowResidentialSummary
-                                              }
-
-                                              bedrooms={filters.bedrooms}
-                                              setBedrooms={(value) =>
-                                                setFilters(prev => ({
-                                                  ...prev,
-                                                  bedrooms: value
-                                                }))
-                                              }
-
-                                              bathrooms={filters.bathrooms}
-                                              setBathrooms={(value) =>
-                                                setFilters(prev => ({
-                                                  ...prev,
-                                                  bathrooms: value
-                                                }))
-                                              }
-
-                                              parking={filters.parking}
-                                              setParking={(value) =>
-                                                setFilters(prev => ({
-                                                  ...prev,
-                                                  parking: value
-                                                }))
-                                              }
-
-                                              yearBuiltRange={filters.year_built}
-                                              setYearBuiltRange={(value) =>
-                                                setFilters(prev => ({
-                                                  ...prev,
-                                                  year_built: value
-                                                }))
-                                              }
-
-                                              constructionArea={filters.construction_area}
-                                              setConstructionArea={(value) =>
-                                                setFilters(prev => ({
-                                                  ...prev,
-                                                  construction_area: value
-                                                }))
-                                              }
-
-                                              bedroomOptions={bedroomOptions}
-                                              bathroomOptions={bathroomOptions}
-                                              parkingOptions={parkingOptions}
-                                              yearBuiltOptions={yearBuiltOptions}
-                                              constructionAreaOptions={constructionAreaOptions}
-
-                                              showBedroomOptions={showBedroomOptions}
-                                              setShowBedroomOptions={setShowBedroomOptions}
-
-                                              showBathroomOptions={showBathroomOptions}
-                                              setShowBathroomOptions={setShowBathroomOptions}
-
-                                              showParkingOptions={showParkingOptions}
-                                              setShowParkingOptions={setShowParkingOptions}
-
-                                              showYearBuiltOptions={showYearBuiltOptions}
-                                              setShowYearBuiltOptions={setShowYearBuiltOptions}
-
-                                              showConstructionAreaOptions={
-                                                showConstructionAreaOptions
-                                              }
-
-                                              setShowConstructionAreaOptions={
-                                                setShowConstructionAreaOptions
-                                              }
-
-                                              showResidentialSummary={showResidentialSummary}
-
-                                            />
-
-                                          )
-                                        }
-
-<PropertyAreaFilter
-
-                          showproperty_areaOptions={
-                            showproperty_areaOptions
-                          }
-
-                          setShowproperty_areaOptions={
-                            setShowproperty_areaOptions
-                          }
-
-                          setShowutilityOptions={
-                            setShowutilityOptions
-                          }
-
-                          selectedproperty_area={
-                            filters.property_area
-                          }
-
-                          setShowProvinceOptions={
-                            setShowProvinceOptions
-                          }
-
-                          setShowCantonOptions={
-                            setShowCantonOptions
-                          }
-
-                          setShowDistrictOptions={
-                            setShowDistrictOptions
-                          }
-
-                          setSelectedproperty_area={(value) => {
-
-                            setFilters(prev => ({
-                              ...prev,
-                              property_area: value
-                            }))
-
-                            setShowproperty_areaOptions(false)
-
-                            setShowutilityOptions(true)
-
-                          }}
-
-                        />
-
-<UtilitiesFilter
-
-                        showutilityOptions={
-                          showutilityOptions
-                        }
-
-                        setShowutilityOptions={
-                          setShowutilityOptions
-                        }
-
-                        selectedutility={
-                          filters.utility
-                        }
-
-                        setShowProvinceOptions={
-                        setShowProvinceOptions
-                      }
-
-                      setShowCantonOptions={
-                        setShowCantonOptions
-                      }
-
-                      setShowDistrictOptions={
-                        setShowDistrictOptions
-                      }
-
-                        setSelectedutility={(value) => {
-
-                          setFilters(prev => ({
-                            ...prev,
-                            utility: value
-                          }))
-
-                          setShowenvironmentOptions(true)
-
-                        }}
-
-                      />
-
-
-<AdvancedFiltersToggle
-  showadvanced_filters={showadvanced_filters}
-  setShowadvanced_filters={setShowadvanced_filters}
-  setShowutilityOptions={setShowutilityOptions}
-  setShowProvinceOptions={
-  setShowProvinceOptions
-    }
-
-    setShowCantonOptions={
-      setShowCantonOptions
-    }
-
-    setShowDistrictOptions={
-      setShowDistrictOptions
-    }
->
-
-<EnvironmentFilter
-
-                    showenvironmentOptions={
-                      showenvironmentOptions
-                    }
-
-                    setShowenvironmentOptions={
-                      setShowenvironmentOptions
-                    }
-
-                    selectedenvironment={
-                      filters.environment
-                    }
-
-                    setSelectedenvironment={(value) => {
-
-                        setFilters(prev => ({
-                          ...prev,
-                          environment: value
-                        }))
-
-                        setShowAccessibilityOptions(true)
-
-                      }}
-
-                  />
-
-
-
-<AccessibilityFilter
-
-                  showaccessibilityOptions={
-                    showAccessibilityOptions
-                  }
-
-                  setShowaccessibilityOptions={
-                    setShowAccessibilityOptions
-                  }
-
-                  setShowenvironmentOptions={
-                    setShowenvironmentOptions
-                  }
-
-                  setShowTerrainOptions={
-                    setShowTerrainOptions
-                  }
-
-                  setShowProvinceOptions={
-                    setShowProvinceOptions
-                  }
-
-                  setShowCantonOptions={
-                    setShowCantonOptions
-                  }
-
-                  setShowDistrictOptions={
-                    setShowDistrictOptions
-                  }
-
-                  selectedaccessibility={
-                    filters.accessibility
-                  }
-
-                  setSelectedaccessibility={(value) => {
-
-                    setFilters(prev => ({
-                      ...prev,
-                      accessibility: value
-                    }))
-
-                    setShowTerrainOptions(true)
-
-                  }}
-
-                />
-
-</AdvancedFiltersToggle>
-
-                </div>   
+            filters={filters}
+            setFilters={setFilters}
+          />
 
 {/* PROPERTY PREVIEW right-center column */}
                 <div
@@ -957,7 +753,7 @@ const filteredProperties = properties.filter((property) => {
                                             fontSize: '20px'
                                           }}
                                         >
-                                          No Image
+                                          Sin Imagen
                                         </div>
 
                                       )}
@@ -1025,7 +821,7 @@ const filteredProperties = properties.filter((property) => {
                                           color: JSON.parse(
                                             localStorage.getItem('favorites') || '[]'
                                           ).includes(property.id)
-                                            ? '#ff3b30'
+                                            ? '#D4AF37'
                                             : '#fff',
                                           transition: 'all .2s ease'
                                         }}>
@@ -1112,7 +908,7 @@ const filteredProperties = properties.filter((property) => {
                               marginBottom: '10px'
                             }}
                           >
-                            No matching properties for sale
+                            No hay propiedades que coincidan con los filtros
                           </h2>
 
                           <p
@@ -1120,7 +916,7 @@ const filteredProperties = properties.filter((property) => {
                               color: '#777'
                             }}
                           >
-                            Try adjusting your property filters.
+                            Intenta ajustar los filtros de propiedad.
                           </p>
 
                         </div>
@@ -1166,8 +962,8 @@ const pill = {
 }
 
 const activePill = {
-  background: '#00ff99',
-  border: '1px solid #00ff99',
+  background: '#FFFFFF',
+  border: '1px solid #FFFFFF',
   color: '#000',
   padding: '10px 14px',
   borderRadius: '999px',
@@ -1225,8 +1021,8 @@ const listButton = {
 }
 
 const activeListButton = {
-  background: '#00ff99',
-  border: '1px solid #00ff99',
+  background: '#FFFFFF',
+  border: '1px solid #FFFFFF',
   color: '#000',
   padding: '14px 16px',
   borderRadius: '14px',
@@ -1251,7 +1047,7 @@ const breadcrumbText = {
 const backButton = {
   background: 'transparent',
   border: 'none',
-  color: '#00ff99',
+  color: '#FFFFFF',
   cursor: 'pointer',
   padding: 0,
   fontSize: '14px',
@@ -1276,7 +1072,7 @@ const navButton = {
 }
 
 const navButton0 = {
-  background: '#ff3b0095',
+  background: '#D4AF3795',
   border: '.0625rem solid #ffffff50',
   color: '#fff',
   padding: '.75rem 1rem',
@@ -1286,7 +1082,7 @@ const navButton0 = {
 }
 
 const sellButton = {
-  background: '#00ff9950',
+  background: '#FFFFFF50',
   color: '#fff',
   border:'.0625rem solid #ffffff50',
   textDecoration: 'none',

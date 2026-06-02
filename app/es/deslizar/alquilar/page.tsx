@@ -257,7 +257,7 @@ if (!currentProperty) {
           href="/rent_lease_favorites"
           style={{
             ...navButton,
-            color: '#00ff99'
+            color: '#FFFFFF'
           }}
         >
           Propiedades Favoritas ♥
@@ -460,7 +460,7 @@ if (!currentProperty) {
 
           }}
           style={{
-            background: '#00ff99',
+            background: '#FFFFFF',
             color: '#000',
             border: 'none',
             borderRadius: '999px',
@@ -517,10 +517,10 @@ if (!currentProperty) {
           href="/rent_lease_favorites"
           style={{
             ...navButton,
-            color: '#00ff99'
+            color: '#FFFFFF'
           }}
         >
-          Propiedades Favoritas <span style={{ color: '#ff3b30' }}>♥</span>
+          Propiedades Favoritas <span style={{ color: '#D4AF37' }}>♥</span>
         </a>
 
       </div>
@@ -742,7 +742,7 @@ if (!currentProperty) {
             position: 'absolute',
             top: '1.5rem',
             right: '1.5rem',
-            color: '#00ff99',
+            color: '#FFFFFF',
             fontSize: '2rem',
             fontWeight: 'bold',
             zIndex: 5
@@ -843,7 +843,7 @@ if (!currentProperty) {
           </div>
 
           <div style={{
-            color: '#00ff99',
+            color: '#FFFFFF',
             fontSize: '2rem',
             fontWeight: 'bold',
             marginBottom: '2rem'
@@ -929,7 +929,7 @@ const rejectButton = {
 
 const saveButton = {
   flex: 1,
-  background: '#00ff99',
+  background: '#FFFFFF',
   border: 'none',
   color: '#000',
   padding: '1rem',

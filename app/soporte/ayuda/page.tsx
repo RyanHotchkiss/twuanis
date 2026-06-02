@@ -82,7 +82,7 @@ export default function HelpPage() {
             : '72px',
 
           marginBottom:'10px',
-          color:'#ff3b00'
+          color:'#D4AF37'
         }}>
           Centro de Ayuda
         </h1>
@@ -524,7 +524,7 @@ export default function HelpPage() {
 const sectionHeading = {
   fontSize:'1.5rem',
   marginBottom:'1.5rem',
-  color:'#ff3b00'
+  color:'#D4AF37'
 }
 
 const iconGrid = {
@@ -595,7 +595,7 @@ const whatsappButton = {
   alignItems:'center',
   gap:'.75rem',
 
-  background:'#00ff9950',
+  background:'#FFFFFF50',
   border:'1px solid #ffffff50',
 
   color:'#fff',

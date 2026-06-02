@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 
 import { supabase } from '@/lib/supabase'
+import { createListingId } from '@/lib/createListingId'
 
 export default function ListingPage() {
 
@@ -13,59 +14,51 @@ export default function ListingPage() {
   const [listing, setListing] = useState<any>(null)
 
   const [loading, setLoading] = useState(true)
-
+  
   useEffect(() => {
 
-    async function fetchListing() {
+          async function fetchListing() {
 
-      
-        
+            const { data, error } = await supabase
+              .from('rent_lease_listings')
+              .select('*')
+              .eq('id', String(params.id))
+              .single()
 
+            if (data) {
 
-      // SEARCH SUPABASE FIRST
-      const { data, error } = await supabase
-        .from('rent_lease_listings')
-        .select('*')
-        .eq('id', String(params.id))
-        .single()
+              setListing({
 
-      // IF SUPABASE FOUND MATCH
-      if (data) {
+                ...data,
 
-        setListing({
+                id: createListingId(data),
 
-          ...data,
+                images:
+                  Array.isArray(data.images)
+                    ? data.images
+                    : typeof data.images === 'string'
+                    ? data.images.split('|')
+                    : []
 
-          images:
-            Array.isArray(data.images)
-              ? data.images
-              : typeof data.images === 'string'
-              ? data.images.split('|')
-              : []
+              })
 
-        })
+            } else {
 
-        setLoading(false)
+              console.error('Propiedad No Encontrada')
 
-        return
+            }
 
-      }
+            setLoading(false)
 
-    if (!data) {
+          }
 
-      console.error('Listing Not Found')
+          if (params.id) {
 
-    }
+            fetchListing()
 
-    setLoading(false)
+          }
 
-    }
-
-    if (params.id) {
-      fetchListing()
-    }
-
-  }, [params.id])
+        }, [params.id])
 
   if (loading) {
 
@@ -78,7 +71,7 @@ export default function ListingPage() {
         padding: '2rem'
       }}>
 
-        Loading Listing...
+        Uploading Property
 
       </main>
 
@@ -86,24 +79,6 @@ export default function ListingPage() {
 
   }
 
-  if (!listing) {
-
-    return (
-
-      <main style={{
-        background: '#000',
-        minHeight: '100vh',
-        color: '#fff',
-        padding: '2rem'
-      }}>
-
-        Listing Not Found
-
-      </main>
-
-    )
-
-  }
 
   return (
 
@@ -120,14 +95,14 @@ export default function ListingPage() {
       }}>
 
         <Link
-          href="/en/rent-lease"
+          href="/es/alquilar-arrendar"
           style={{
-            color: '#00ff99',
+            color: '#FFFFFF',
             textDecoration: 'none',
             fontWeight: 'bold'
           }}
         >
-          ← Back To Marketplace
+          ← Return to Marketplace
         </Link>
 
       </div>
@@ -221,7 +196,7 @@ export default function ListingPage() {
                         width: '100%',
                         background: '#111',
                         border: '1px solid #333',
-                        color: '#00ff99',
+                        color: '#FFFFFF',
                         borderRadius: '999px',
                         marginBottom: '1rem',
                         padding: '.85rem',
@@ -296,7 +271,7 @@ export default function ListingPage() {
             gap: '1rem'
             }}>
 
-            {/* LOCATION */}
+            {/* Ubicación */}
             <div>
 
             <span style={label}>
@@ -311,7 +286,7 @@ export default function ListingPage() {
 
             </div>
 
-            {/* PROPERTY TYPE */}
+            {/* Tipo de Propiedad */}
             <div>
 
             <span style={label}>
@@ -381,7 +356,7 @@ export default function ListingPage() {
             <div>
 
             <span style={label}>
-                Year Built
+                Year Constructed
             </span>
 
             <div style={entityCard}>
@@ -558,7 +533,7 @@ export default function ListingPage() {
                     ? `₡${Number(
                         listing.price_millions
                         ).toLocaleString()}M`
-                    : 'Price Unavailable'}
+                    : 'Precio No Disponible'}
 
             </div>
 
@@ -589,7 +564,7 @@ export default function ListingPage() {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                background: '#00ff99',
+                background: '#FFFFFF',
                 color: '#000',
                 textDecoration: 'none',
                 padding: '1rem',
@@ -597,7 +572,7 @@ export default function ListingPage() {
                 fontWeight: 'bold'
               }}
             >
-              Contact Seller On WhatsApp
+              Contact Seller
             </a>
 
           </div>
@@ -647,7 +622,7 @@ const pillEntity = {
 }
 
 const priceCard = {
-  background: '#00ff99',
+  background: '#FFFFFF',
   color: '#000',
   borderRadius: '1rem',
   padding: '1.25rem',

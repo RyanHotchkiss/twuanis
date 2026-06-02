@@ -1,5 +1,7 @@
 'use client'
 
+import { useEffect, useState } from 'react'
+
 type HelpButtonProps = {
   onClick?: () => void
 }
@@ -8,24 +10,46 @@ export default function HelpButton({
   onClick
 }: HelpButtonProps) {
 
+    const [glow, setGlow] = useState(false)
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setGlow(true)
+          setTimeout(() => {
+            setGlow(false)
+          }, 2000)
+        }, 10000)
+        return () => clearInterval(interval)
+      }, [])
   return (
 
     <button
         onClick={onClick}
         style={{
-          background:'#ffffff00',
-          border:'none',
-          borderRadius:'999px',
-          padding:'5px 5px',
-          cursor:'pointer',
-          display:'flex',
-          alignItems:'center',
-          justifyContent:'center',
-          WebkitTapHighlightColor:'transparent',
-          appearance:'none',
-          WebkitAppearance:'none',
-          outline:'none'
-        }}
+        background:'#ffffff00',
+        border:'none',
+        borderRadius:'999px',
+        padding:'5px 5px',
+        cursor:'pointer',
+        display:'flex',
+        alignItems:'center',
+        justifyContent:'center',
+        WebkitTapHighlightColor:'transparent',
+        appearance:'none',
+        WebkitAppearance:'none',
+        outline:'none',
+
+        boxShadow: glow
+            ? `
+                0 0 12px #d4af37,
+                0 0 24px #d4af37,
+                0 0 48px #d4af37,
+                0 0 72px rgba(212,175,55,.75)
+              `
+            : 'none',
+
+          transition:
+            'box-shadow .5s ease-in-out'
+      }}
       >
 
       <svg
@@ -45,7 +69,7 @@ export default function HelpButton({
             C138 88, 130 96, 118 104
             C108 110, 102 116, 102 126
           "
-          stroke="#ffffff"
+          stroke="#FF3B00"
           strokeWidth="14"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -56,7 +80,7 @@ export default function HelpButton({
           cx="102"
           cy="148"
           r="9"
-          fill="#ffffff"
+          fill="#FF3B00"
         />
 
       </svg>

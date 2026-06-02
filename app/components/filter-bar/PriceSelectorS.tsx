@@ -122,7 +122,7 @@ export default function PriceSelectorS({
 const sectionHeading = {
   fontSize:'1rem',
   marginBottom:'1rem',
-  color:'#ff3b00'
+  color:'#D4AF37'
 }
 
 const priceWheelContainer = {
@@ -136,7 +136,7 @@ const priceWheelContainer = {
 const priceArrow = {
   background:'#181818',
   border:'1px solid #333',
-  color:'#00ff99',
+  color:'#FFFFFF',
   width:'4rem',
   height:'4rem',
   borderRadius:'1rem',

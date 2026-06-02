@@ -48,9 +48,9 @@ export default function Breadcrumbs({
             style={{
               background:
                 index === 0
-                  ? '#00ff9925'
+                  ? '#FFFFFF25'
                   : index === 1
-                  ? '#00ff9940'
+                  ? '#FFFFFF40'
                   : '#181818',
 
               border:
@@ -107,7 +107,7 @@ export default function Breadcrumbs({
 }
 
 const navButton = {
-  background:'#00ff9950',
+  background:'#FFFFFF50',
   border:'.0625rem solid #ffffff50',
   color:'#fff',
   borderRadius:'999rem',

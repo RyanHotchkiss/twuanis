@@ -54,7 +54,7 @@ export default function ImageUploaderS({
 const sectionHeading = {
   fontSize:'1rem',
   marginBottom:'1rem',
-  color:'#ff3b00'
+  color:'#D4AF37'
 }
 
 const uploadBox = {

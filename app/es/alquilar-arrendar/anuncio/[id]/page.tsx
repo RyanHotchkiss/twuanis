@@ -97,7 +97,7 @@ export default function ListingPage() {
         <Link
           href="/es/alquilar-arrendar"
           style={{
-            color: '#00ff99',
+            color: '#FFFFFF',
             textDecoration: 'none',
             fontWeight: 'bold'
           }}
@@ -196,7 +196,7 @@ export default function ListingPage() {
                         width: '100%',
                         background: '#111',
                         border: '1px solid #333',
-                        color: '#00ff99',
+                        color: '#FFFFFF',
                         borderRadius: '999px',
                         marginBottom: '1rem',
                         padding: '.85rem',
@@ -564,7 +564,7 @@ export default function ListingPage() {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                background: '#00ff99',
+                background: '#FFFFFF',
                 color: '#000',
                 textDecoration: 'none',
                 padding: '1rem',
@@ -622,7 +622,7 @@ const pillEntity = {
 }
 
 const priceCard = {
-  background: '#00ff99',
+  background: '#FFFFFF',
   color: '#000',
   borderRadius: '1rem',
   padding: '1.25rem',

@@ -91,7 +91,7 @@ export default function CreateListingButtonSXL({
       <span style={{
         marginTop: '.5rem',
 
-        color: '#ff3b00',
+        color: '#D4AF37',
 
         fontSize: '1.35rem',
 

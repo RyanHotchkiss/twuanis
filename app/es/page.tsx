@@ -102,7 +102,7 @@ function HomePageContent() {
       }, [showIntroOverlay])
 
   const overlayBackButton = {
-    background:'#00ff9940',
+    background:'#FFFFFF40',
     border:'.0625rem solid #ffffff50',
     color:'#fff',
     borderRadius:'999rem',
@@ -144,8 +144,8 @@ function HomePageContent() {
   useState<'initial' | 'looking' | 'posting' | null>(
     initialOverlayState
   )
-  const homepageBlurred =
-  overlayState !== null
+
+  const homepageBlurred = false
 
     useEffect(() => {
 
@@ -1118,14 +1118,14 @@ console.log(
                   onClick={() => window.location.href = '/favorites'}
                   style={navButton}
                 >
-                  Propiedades Favoritas <span style={{ color: '#ff3b30' }}>♥</span>
+                  Propiedades Favoritas <span style={{ color: '#D4AF37' }}>♥</span>
                 </button>
 
                 <button
                   onClick={() => window.location.href = '/swipe'}
                   style={navButton}
                 >
-                  Vista Deslizable <span style={{ color: '#00ff99' }}>⇄</span>
+                  Vista Deslizable <span style={{ color: '#FFFFFF' }}>⇄</span>
                 </button>
                
 
@@ -1177,7 +1177,7 @@ console.log(
               right: '20px',
               zIndex: 1000,
 
-              background: '#00ff99',
+              background: '#FFFFFF',
               color: '#000',
 
               border: 'none',
@@ -1909,7 +1909,7 @@ console.log(
                         style={{
                           background: 'transparent',
                           border: 'none',
-                          color: '#00ff99',
+                          color: '#FFFFFF',
                           fontSize: '13px',
                           cursor: 'pointer'
                         }}
@@ -2613,7 +2613,7 @@ console.log(
                                           color: JSON.parse(
                                             localStorage.getItem('favorites') || '[]'
                                           ).includes(property.id)
-                                            ? '#ff3b30'
+                                            ? '#D4AF37'
                                             : '#fff',
                                           transition: 'all .2s ease'
                                         }}>
@@ -2731,7 +2731,7 @@ console.log(
 
 const overlayPrimaryButton = {
   width: '100%',
-  background: '#00ff9950',
+  background: '#FFFFFF50',
   color: '#fff',
   border: 'none',
   borderRadius: '999px',
@@ -2745,7 +2745,7 @@ const overlayPrimaryButton = {
 const overlaySecondaryButton = {
   width: '100%',
   background: 'rgba(255,255,255,.06)',
-  color: '#00ff99',
+  color: '#FFFFFF',
   border: '1px solid rgba(255,255,255,.12)',
   borderRadius: '999px',
   padding: '1.15rem 1.5rem',
@@ -2759,7 +2759,7 @@ const overlaySecondaryButton = {
 const overlayBackButton = {
   background: 'transparent',
   border: 'none',
-  color: '#00ff99',
+  color: '#FFFFFF',
   cursor: 'pointer',
   marginBottom: '1rem',
   alignSelf: 'flex-start' as const,
@@ -2797,8 +2797,8 @@ const pill = {
 }
 
 const activePill = {
-  background: '#00ff99',
-  border: '1px solid #00ff99',
+  background: '#FFFFFF',
+  border: '1px solid #FFFFFF',
   color: '#000',
   padding: '10px 14px',
   borderRadius: '999px',
@@ -2856,8 +2856,8 @@ const listButton = {
 }
 
 const activeListButton = {
-  background: '#00ff99',
-  border: '1px solid #00ff99',
+  background: '#FFFFFF',
+  border: '1px solid #FFFFFF',
   color: '#000',
   padding: '14px 16px',
   borderRadius: '14px',
@@ -2882,7 +2882,7 @@ const breadcrumbText = {
 const backButton = {
   background: 'transparent',
   border: 'none',
-  color: '#00ff99',
+  color: '#FFFFFF',
   cursor: 'pointer',
   padding: 0,
   fontSize: '14px',
@@ -2907,7 +2907,7 @@ const navButton = {
 }
 
 const sellButton = {
-  background: '#00ff99',
+  background: '#FFFFFF',
   color: '#000',
   textDecoration: 'none',
   padding: '.75rem 1.125rem',

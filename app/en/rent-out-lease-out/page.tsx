@@ -335,7 +335,7 @@ export default function SellPage() {
 
                                 }}
                                 style={{
-                                    background: '#00ff99',
+                                    background: '#FFFFFF',
                                     color: '#000',
                                     border: 'none',
                                     borderRadius: '999px',

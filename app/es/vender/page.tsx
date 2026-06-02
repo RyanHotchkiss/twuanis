@@ -195,7 +195,7 @@ export default function SellPage() {
                     <main style={{
                         background: '#000',
                         minHeight: '100vh',
-                        color: '#00ff99',
+                        color: '#FFFFFF',
                         padding: '1rem'
                     }}>
 
@@ -414,7 +414,7 @@ formattedData
 
                                 }}
                                 style={{
-                                    background: '#00ff99',
+                                    background: '#FFFFFF',
                                     color: '#000',
                                     border: 'none',
                                     borderRadius: '999px',
@@ -877,17 +877,29 @@ formattedData
 
 {/* CREATE LISTING BUTTON */}
                           
-                <CreateListingButtonSXL
+              <CreateListingButtonSXL
                     onCreateListing={() => {
+
+                        console.log(
+                        'CREATE LISTING BUTTON CLICKED'
+                        )
+
+                        console.log(
+                        'WHATSAPP BEFORE AUTH:',
+                        propertyData.whatsapp
+                        )
+
                         if (!propertyData.whatsapp) {
-                            alert(
+                        alert(
                             'Please enter your WhatsApp number'
-                            )
-                            return
+                        )
+                        return
                         }
+
                         setShowAuthOverlay(true)
+
                     }}
-                />
+                    />
 
 </div> {/* LEFT SIDE */}
 
@@ -935,6 +947,11 @@ formattedData
 
                {/* AUTH OVERLAY */}
                     {showAuthOverlay && (
+
+                        console.log(
+                            'AUTH OVERLAY OPENING WITH WHATSAPP:',
+                            propertyData.whatsapp
+                        ),
 
                     <AuthOverlay
                         whatsapp={propertyData.whatsapp}

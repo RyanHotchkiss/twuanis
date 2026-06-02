@@ -30,7 +30,7 @@ import {
   formatWhatsAppNumber
 } from '@/app/utils/listing-utils'
 
-import AccessibilityFilters from '@/app/components/filter-bar/AccessibilityFilterS'
+import AccessibilityFilterS from '@/app/components/filter-bar/AccessibilityFilterS'
 import EnvironmentFilterS from '@/app/components/filter-bar/EnvironmentFilterS'
 import LegalStatusFilterS from '@/app/components/filter-bar/LegalStatusFilterS'
 import PropertyAreaFilterS from '@/app/components/filter-bar/PropertyAreaFilterS'
@@ -336,7 +336,7 @@ export default function SellPage() {
 
                                 }}
                                 style={{
-                                    background: '#00ff99',
+                                    background: '#FFFFFF',
                                     color: '#000',
                                     border: 'none',
                                     borderRadius: '999px',
@@ -676,7 +676,7 @@ export default function SellPage() {
 
 {/* accessibility */}
 
-                    <AccessibilityFilters
+                    <AccessibilityFilterS
                         selectedAccessibility={propertyData.accessibility}
                         setSelectedAccessibility={(value) =>
                             setPropertyData({

@@ -7,7 +7,7 @@ import FilterButton from '@/app/components/FilterButton'
 import SwipeCard from '@/app/components/SwipeCard'
 import Favorites from '@/app/components/Favorites'
 import HelpButton from '@/app/components/HelpButton'
-import LanguageButtonES from '@/app/components/LanguageButtonES'
+import LanguageButtonEN from '@/app/components/LanguageButtonES'
 import Link from 'next/link'
 
 type TopBarProps = {
@@ -46,7 +46,7 @@ export default function TopBar({
             }}
           >
 
-      <HomeButton href="/en?skipintro=true" />
+      <HomeButton href="/en?overlay=initial" />
 
       <SearchButton
         onClick={() => {
@@ -67,6 +67,8 @@ export default function TopBar({
             }}
         />
         </div>
+
+    
       <SwipeCard
 
         href="/en/swipe/buy"
@@ -97,7 +99,7 @@ export default function TopBar({
         <HelpButton />
         </Link>
 
-      <LanguageButtonES />
+      <LanguageButtonEN />
 
     </div>
 

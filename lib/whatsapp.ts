@@ -13,9 +13,15 @@ export async function sendWhatsApp({
   body: string
 }) {
   try {
+
+console.log(
+  'TWILIO TO:',
+  `whatsapp:+506${to}`
+)
+
     const message = await client.messages.create({
       from: process.env.TWILIO_WHATSAPP_NUMBER!,
-      to: `whatsapp:${to}`,
+      to: `whatsapp:+506${to}`,
       body,
     })
 

@@ -12,8 +12,8 @@ import TopBarES from '@/app/components/TopBarES'
 export default function ListingPage() {
 
   const navButton = {
-            background:'#00ff99',
-            border:'.0625rem solid #00ff99',
+            background:'#FFFFFF',
+            border:'.0625rem solid #FFFFFF',
             color:'#000',
             borderRadius:'999rem',
             padding:'.85rem 1.25rem',
@@ -509,7 +509,7 @@ export default function ListingPage() {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                background: '#00ff99',
+                background: '#FFFFFF',
                 color: '#000',
                 textDecoration: 'none',
                 padding: '1rem',
@@ -567,7 +567,7 @@ const pillEntity = {
 }
 
 const priceCard = {
-  background: '#00ff99',
+  background: '#FFFFFF',
   color: '#000',
   borderRadius: '1rem',
   padding: '1.25rem',

@@ -95,7 +95,7 @@ return (
                     Location
                     <br />
 
-                    <span style={{ color:'#00ff99' }}>
+                    <span style={{ color:'#FFFFFF' }}>
                       {selectedprovince}
                       {' → '}
                       {selectedcanton}
@@ -192,27 +192,25 @@ return (
                     <div style={breadcrumbBar}>
 
                       <button
-                        onClick={(e) => {
+                          onClick={(e) => {
 
-                                e.preventDefault()
+                            e.preventDefault()
 
-                                setSelectedprovince('')
+                            setSelectedprovince('')
+                            setSelectedcanton('')
+                            setSelecteddistrict('')
 
-                                setSelectedcanton('')
+                            setShowLocationOptions(true)
 
-                                setSelecteddistrict('')
+                            setShowProvinceOptions(true)
+                            setShowCantonOptions(false)
+                            setShowDistrictOptions(false)
 
-                                setShowProvinceOptions(true)
-
-                                setShowCantonOptions(false)
-
-                                setShowDistrictOptions(false)
-
-                              }}
-                        style={backButton}
-                      >
-                        ← provinces
-                      </button>
+                          }}
+                          style={backButton}
+                        >
+                          ← provinces
+                        </button>
 
                       <span style={breadcrumbText}>
                         {selectedprovince}
@@ -387,7 +385,7 @@ return (
                                   margin-bottom: 35px;
                               }
                               .location-scroll-panel::-webkit-scrollbar-thumb {
-                                  background: #00ff9970;
+                                  background: #FFFFFF70;
                                   border-radius: 999px;
                               }
                           `}</style>
@@ -402,13 +400,13 @@ return (
 const filterHeading = {
   fontSize:'1rem',
   marginBottom:'1rem',
-  color:'#ff3b00'
+  color:'#D4AF37'
 }
 
 const sectionHeading0 = {
   fontSize:'.8rem',
   marginBottom:'1rem',
-  color:'#00ff99'
+  color:'#FFFFFF'
 }
 
 const scrollPanel = {
@@ -421,12 +419,12 @@ const scrollPanel = {
   maskImage:'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 72%, rgba(0,0,0,.25) 92%, rgba(0,0,0,0) 100%)',
   WebkitMaskImage:'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 72%, rgba(0,0,0,.25) 92%, rgba(0,0,0,0) 100%)',
   scrollbarWidth:'thin' as const,
-  scrollbarColor:'#00ff9970 #111'
+  scrollbarColor:'#FFFFFF70 #111'
 }
 
 const listButton = {
   background:'#181818',
-  border:'1px solid #2a2a2a',
+  border:'1px solid #D4AF37',
   color:'#fff',
   padding:'1rem 1rem',
   borderRadius:'.75rem',
@@ -438,7 +436,7 @@ const listButton = {
 
 const activeListButton = {
   ...listButton,
-  background:'#00ff9970',
+  background:'#D4AF37',
   color:'#000',
   fontWeight:'bold'
 }
@@ -451,14 +449,14 @@ const breadcrumbBar = {
 }
 
 const breadcrumbText = {
-  color:'#00ff99',
+  color:'#FFFFFF',
   fontSize:'.85rem'
 }
 
 const backButton = {
   background:'transparent',
   border:'none',
-  color:'#00ff9970',
+  color:'#FFFFFF70',
   cursor:'pointer',
   fontSize:'.85rem'
 }
@@ -468,7 +466,7 @@ const summaryCard = {
   justifyContent:'space-between',
   alignItems:'flex-start',
   background:'#181818',
-  border:'1px solid #00ff9950',
+  border:'1px solid #FFFFFF50',
   borderRadius:'1rem',
   padding:'1rem',
   marginTop:'1rem'

@@ -130,7 +130,7 @@ const pill = {
 
 const activePill = {
   ...pill,
-  background:'#00ff9970',
+  background:'#D4AF37',
   border:'1px solid #D4AF3750',
   color:'#fff'
 }
@@ -147,7 +147,7 @@ const summaryCard = {
 }
 
 const breadcrumbText = {
-  color:'#00ff99',
+  color:'#FFFFFF',
   fontSize:'.85rem'
 }
 

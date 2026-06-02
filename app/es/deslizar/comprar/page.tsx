@@ -311,7 +311,7 @@ const filterSidebar = (
         setShowMobileFilters(false)
       }
       style={{
-        background: '#00ff9980',
+        background: '#FFFFFF80',
         border: '1px solid #333',
         color: '#fff',
 
@@ -567,7 +567,7 @@ if (!currentProperty) {
 
           }}
           style={{
-            background: '#00ff99',
+            background: '#FFFFFF',
             color: '#000',
             border: 'none',
             borderRadius: '999px',
@@ -664,7 +664,7 @@ return (
             position: 'absolute',
             top: '1.5rem',
             right: '1.5rem',
-            color: '#00ff99',
+            color: '#FFFFFF',
             fontSize: '2rem',
             fontWeight: 'bold',
             zIndex: 5
@@ -765,7 +765,7 @@ return (
           </div>
 
           <div style={{
-            color: '#00ff99',
+            color: '#FFFFFF',
             fontSize: '2rem',
             fontWeight: 'bold',
             marginBottom: '2rem'
@@ -851,7 +851,7 @@ const rejectButton = {
 
 const saveButton = {
   flex: 1,
-  background: '#00ff99',
+  background: '#FFFFFF',
   border: 'none',
   color: '#000',
   padding: '1rem',
