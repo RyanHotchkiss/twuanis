@@ -49,7 +49,7 @@ import WhatsAppInputS from '@/app/components/WhatsAppInputS'
 import CreateListingButtonS from '@/app/components/CreateListingButtonS'
 import { createListing } from '@/app/utils/createListing'
 import CsvStagingModal from '@/app/components/CsvStagingModal'
-import PropertyDefinitionPanel from '@/app/components/PropertyDefinitionPanel'
+import PropertyDefinitionPanelES from '@/app/components/PropertyDefinitionPanelES'
 import PropertyTypeFilterES from '@/app/components/filter-bar/PropertyTypeFilterES'
 import TopBarES from '@/app/components/TopBarES'
 import CreateListingButtonSXL from '@/app/components/CreateListingButtonSXL'
@@ -903,7 +903,7 @@ formattedData
                     width: '100%'
                     }}>
 
-                    <PropertyDefinitionPanel
+                    <PropertyDefinitionPanelES
                         propertyData={propertyData}
                     />
 

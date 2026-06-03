@@ -424,7 +424,7 @@ const scrollPanel = {
 
 const listButton = {
   background:'#181818',
-  border:'1px solid #D4AF37',
+  border:'1px solid #D4AF3750',
   color:'#fff',
   padding:'1rem 1rem',
   borderRadius:'.75rem',

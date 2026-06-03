@@ -151,10 +151,11 @@ const summaryCard = {
   display:'flex',
   justifyContent:'space-between',
   alignItems:'flex-start',
-  background:'#111',
-  border:'1px solid #222',
+  background:'#181818',
+  border:'1px solid #D4AF3750',
   borderRadius:'1rem',
-  padding:'1rem'
+  padding:'1rem',
+  marginTop:'1rem'
 }
 
 const resetButton = {
@@ -173,7 +174,7 @@ const pillWrap = {
 
 const pill = {
   background:'#181818',
-  border:'1px solid #D4AF37',
+  border:'.25px solid #D4AF3750',
   color:'#fff',
   padding:'.85rem 1rem',
   borderRadius:'999rem',

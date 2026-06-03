@@ -193,33 +193,21 @@ const pillWrap = {
 }
 
 const pill = {
-
   background:'#181818',
-
-  border:'1px solid #D4AF37',
-
+  border:'1px solid #D4AF3750',
   color:'#fff',
-
   padding:'.85rem 1rem',
-
   borderRadius:'999rem',
-
   cursor:'pointer',
-
   transition:'all .2s ease'
 
 }
 
 const activePill = {
-
   ...pill,
-
   background:'#D4AF37',
-
   border:'1px solid #FFFFFF',
-
   color:'#fff'
-
 }
 
 const summaryCard = {

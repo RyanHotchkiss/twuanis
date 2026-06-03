@@ -45,9 +45,11 @@ export default function AccessibilityFilter({
               key={option}
               onClick={() => {
 
-                setSelectedaccessibility(option)
+                    setSelectedaccessibility(option)
 
-              }}
+                    setShowAccessibilityOptions(false)
+
+                  }}
               style={
                 selectedaccessibility === option
                   ? activePill
