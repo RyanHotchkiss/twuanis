@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
       Date.now() - 60 * 60 * 1000
     ).toISOString()
 
-    const { data: otpAttempts } = await supabase
+   /* const { data: otpAttempts } = await supabase
       .from('whatsapp_otps')
       .select('*')
       .eq('phone', phone)
@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
         },
         { status: 429 }
       )
-    }
+    } */
 
     console.log('OTP PHONE:', phone)
 
@@ -95,36 +95,14 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const whatsappResult =
-            await sendWhatsApp({
-              to: phone,
-              body: `Your Twuanis verification code is: ${code}`,
-            })
+    await sendWhatsApp({
+      to: phone,
+      body: `Your Twuanis verification code is: ${code}`,
+    })
 
-          console.log(
-            'WHATSAPP RESULT:',
-            whatsappResult
-          )
-
-          if (!whatsappResult.success) {
-
-            return NextResponse.json(
-              {
-                success: false,
-                error: JSON.stringify(
-                  whatsappResult.error,
-                  null,
-                  2
-                )
-              },
-              { status: 500 }
-            )
-          }
-
-          return NextResponse.json({
-            success: true,
-          })
-
+    return NextResponse.json({
+      success: true,
+    })
   } catch (error) {
     console.error(error)
 
