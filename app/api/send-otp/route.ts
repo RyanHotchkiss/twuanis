@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
       )
     } */
 
-    console.log('OTP PHONE:', phone)
+    console.log('OTP PHONE:', phone) 
 
     if (!phone) {
       return NextResponse.json(
