@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
       .order('created_at', { ascending: false })
       .limit(1)
 
-    if (recentOtp && recentOtp.length > 0) {
+    /* if (recentOtp && recentOtp.length > 0) {
 
       return NextResponse.json(
         {
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
       Date.now() - 60 * 60 * 1000
     ).toISOString()
 
-   /* const { data: otpAttempts } = await supabase
+   const { data: otpAttempts } = await supabase
       .from('whatsapp_otps')
       .select('*')
       .eq('phone', phone)
