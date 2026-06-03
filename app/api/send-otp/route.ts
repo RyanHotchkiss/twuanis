@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
       .order('created_at', { ascending: false })
       .limit(1)
 
-    /* if (recentOtp && recentOtp.length > 0) {
+    /* if (recentOt. p && recentOtp.length > 0) {
 
       return NextResponse.json(
         {
