@@ -25,7 +25,7 @@ export async function POST(
 
   console.log('FROM:', from)
   console.log('BODY:', body)
-
+ 
   if (
     body.trim().toUpperCase() === 'PURA VIDA'
   ) {
