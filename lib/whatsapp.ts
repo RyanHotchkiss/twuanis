@@ -21,7 +21,7 @@ console.log('TWILIO TO:', `whatsapp:+506${to}`)
     const message = await client.messages.create({
       from: process.env.TWILIO_WHATSAPP_NUMBER!,
       to: `whatsapp:+506${to}`,
-      body,
+      contentSid: 'HXd44ff29d0da9a69ee7b9cc6d84932521',
     })
 
     console.log('WhatsApp sent:', message.sid)

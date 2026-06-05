@@ -1,0 +1,169 @@
+
+import Link from 'next/link'
+import { getEntity, EntityType } from '@/lib/entity-engine'
+
+type EntityPageProps = {
+  entityType: EntityType
+  slug: string
+}
+
+function entityPath(
+  termType: string,
+  slug: string
+) {
+  if (termType === 'province') return `/province/${slug}`
+  if (termType === 'canton') return `/canton/${slug}`
+  if (termType === 'district') return `/district/${slug}`
+  if (termType === 'property_type') return `/property-type/${slug}`
+    if (termType === 'environment')
+    return `/environment/${slug}`
+    if (termType === 'utility')
+    return `/utility/${slug}`
+    if (termType === 'terrain')
+    return `/terrain/${slug}`
+    if (termType === 'legal_status')
+    return `/legal-status/${slug}`
+    if (termType === 'accessibility')
+    return `/accessibility/${slug}`
+
+  return `/entity/${slug}`
+}
+
+export default async function EntityPage({
+  entityType,
+  slug
+}: EntityPageProps) {
+  const data = await getEntity(entityType, slug)
+
+  if (!data) {
+    return (
+      <main style={{ padding: '2rem' }}>
+        <h1>Entity not found</h1>
+      </main>
+    )
+  }
+
+  const {
+    entity,
+    parentEntity,
+    childEntities,
+    relatedEntities,
+    listings,
+    listingCount
+  } = data
+
+  return (
+    <main style={{ padding: '2rem' }}>
+      <p>{entity.term_type}</p>
+
+      <h1>
+        {entity.term_name_en || entity.term_name}
+      </h1>
+
+      {entity.description && (
+        <p>{entity.description}</p>
+      )}
+
+      <h2>Knowledge Graph Facts</h2>
+
+      <ul>
+        <li>Entity Type: {entity.term_type}</li>
+        <li>Slug: {entity.slug}</li>
+        <li>Listings Connected: {listingCount}</li>
+      </ul>
+
+      {parentEntity && (
+        <>
+          <h2>Parent Entity</h2>
+
+          <Link
+            href={entityPath(
+              parentEntity.term_type,
+              parentEntity.slug
+            )}
+          >
+            {parentEntity.term_name_en ||
+              parentEntity.term_name}
+          </Link>
+        </>
+      )}
+
+      {childEntities.length > 0 && (
+        <>
+          <h2>Child Entities</h2>
+
+          <div>
+            {childEntities.map((child) => (
+              <p key={child.id}>
+                <Link
+                  href={entityPath(
+                    child.term_type,
+                    child.slug
+                  )}
+                >
+                  {child.term_name_en ||
+                    child.term_name}
+                </Link>
+              </p>
+            ))}
+          </div>
+        </>
+      )}
+
+      {relatedEntities.length > 0 && (
+        <>
+          <h2>Related Entities</h2>
+
+          <div>
+            {relatedEntities.map((related) => (
+              <p key={related.id}>
+                <Link
+                  href={entityPath(
+                    related.term_type,
+                    related.slug
+                  )}
+                >
+                  {related.term_name_en ||
+                    related.term_name}
+                </Link>
+              </p>
+            ))}
+          </div>
+        </>
+      )}
+
+      <h2>Listings</h2>
+
+      {listings.length === 0 && (
+        <p>No listings connected to this entity yet.</p>
+      )}
+
+      <div>
+        {listings.map((listing) => (
+          <Link
+            key={listing.id}
+            href={`/en/buy/listing/${listing.id}`}
+            style={{
+              display: 'block',
+              marginBottom: '1rem',
+              padding: '1rem',
+              border: '1px solid #333',
+              borderRadius: '1rem',
+              textDecoration: 'none'
+            }}
+          >
+            <h3>{listing.title}</h3>
+
+            <p>
+              {listing.province} → {listing.canton} → {listing.district}
+            </p>
+
+            <p>
+              {listing.property_type} | ₡{listing.price_millions}M
+            </p>
+          </Link>
+        ))}
+      </div>
+    </main>
+  )
+}
