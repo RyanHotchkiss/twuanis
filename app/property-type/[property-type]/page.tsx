@@ -1,4 +1,4 @@
-cat > app/property-type/\[property-type\]/page.tsx <<'EOF'
+
 import EntityPage from '@/app/components/Entity-Page'
 
 export default async function PropertyTypePage({
@@ -15,4 +15,3 @@ export default async function PropertyTypePage({
     />
   )
 }
-EOF
