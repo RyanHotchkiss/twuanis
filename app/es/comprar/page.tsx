@@ -111,10 +111,12 @@ const navButton = {
 
       async function fetchListings() {
 
-  const { data, error } = await supabase
-    .from('listings')
-    .select('*')
-    .order('id', { ascending: false })
+const { data, error } = await supabase
+  .from('listings')
+  .select('*')
+  .eq('transaction_type', 'buy')
+  .eq('listing_status', 'active')
+  .order('id', { ascending: false })
 
 
        console.log(
@@ -150,31 +152,77 @@ console.log(
 
 
 
-  const normalizedSupabaseListings = (data || []).map(
-              (listing: any) => ({
+            const normalizedSupabaseListings = (data || []).map(
+                  (listing: any) => ({
+                    ...listing,
 
-                ...listing,
+                    id: createListingId(listing),
 
-                id: createListingId(listing),
+                    images:
+                      Array.isArray(listing.images)
+                        ? listing.images
+                        : typeof listing.images === 'string'
+                        ? (() => {
 
-                images:
-                  Array.isArray(listing.images)
-                    ? listing.images
-                    : typeof listing.images === 'string'
-                    ? listing.images
-                        .split('|')
-                        .map((img: string) => img.trim())
-                        .filter(Boolean)
-                    : []
+                            try {
 
-              })
-            )
+                              return JSON.parse(
+                                listing.images
+                              )
 
-            setProperties(normalizedSupabaseListings)
+                            } catch {
 
-            setLoading(false)
+                              return listing.images
+                                .split('|')
+                                .map((img: string) =>
+                                  img.trim()
+                                )
+                                .filter(Boolean)
 
-          }
+                            }
+
+                          })()
+                        : []
+
+                  })
+                )
+
+                const mergedListings = [
+                  ...normalizedSupabaseListings
+                ]
+
+
+                setProperties(mergedListings)
+
+                setLoading(false)
+
+
+                console.log(
+                  'NORMALIZED IMAGES:',
+                  normalizedSupabaseListings?.[0]?.images
+                )
+
+                console.log(
+                  'NORMALIZED TYPE:',
+                  typeof normalizedSupabaseListings?.[0]?.images
+                )
+
+                console.log(
+                  'FIRST IMAGE:',
+                  normalizedSupabaseListings?.[0]?.images?.[0]
+                )
+
+                console.log(
+                  'NORMALIZED RECORD:',
+                  normalizedSupabaseListings?.[0]
+                )
+
+                console.log(
+                  'NORMALIZED IMAGES:',
+                  normalizedSupabaseListings?.[0]?.images
+                )
+
+                  }
 
       fetchListings()
 

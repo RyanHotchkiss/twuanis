@@ -167,9 +167,7 @@ export default function RentalPropertyDefinitionPanel({
         <DefinitionCard
           label="Accessibility"
           value={
-            propertyData.accessibility.length > 0
-            ? propertyData.accessibility.join(', ')
-            : 'Not Yet Defined'
+            propertyData.accessibility || 'Not Yet Defined'
           }
         />
 

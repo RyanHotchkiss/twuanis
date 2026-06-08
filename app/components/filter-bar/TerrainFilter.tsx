@@ -6,18 +6,6 @@ type TerrainFilterProps = {
 
   showTerrainOptions: boolean
   setShowTerrainOptions: (value: boolean) => void
-
-  setShowProvinceOptions: (
-    value: boolean
-  ) => void
-
-  setShowCantonOptions: (
-    value: boolean
-  ) => void
-
-  setShowDistrictOptions: (
-    value: boolean
-  ) => void
 }
 
 export default function TerrainFilter({
@@ -26,9 +14,6 @@ export default function TerrainFilter({
 
   showTerrainOptions,
   setShowTerrainOptions,
-  setShowProvinceOptions,
-  setShowCantonOptions,
-  setShowDistrictOptions
 
 }: TerrainFilterProps) {
 
@@ -83,12 +68,6 @@ export default function TerrainFilter({
                             ])
 
                           }
-
-                          setShowProvinceOptions(false)
-
-                          setShowCantonOptions(false)
-
-                          setShowDistrictOptions(false)
 
                         }}
                         style={

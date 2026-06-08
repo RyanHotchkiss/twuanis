@@ -313,25 +313,14 @@ export default function SellPage() {
 
                                     complete: async (results) => {
 
-                                        const formattedData = results.data.map((row: any) => ({
-
-                                        ...row,
-
-                                        utility: row.utility
-                                            ? [row.utility]
-                                            : [],
-
-                                        accessibility: row.accessibility
-                                            ? [row.accessibility]
-                                            : [],
-
-                                        terrain: row.terrain
-                                            ? [row.terrain]
-                                            : [],
-
-                                        title: generateListingTitle(row),
-
-                                        description: generateListingDescription({
+                                        const formattedData = results.data
+                                        .filter((row: any) =>
+                                            row.province ||
+                                            row.canton ||
+                                            row.district ||
+                                            row.property_type
+                                        )
+                                        .map((row: any) => ({
 
                                             ...row,
 
@@ -339,19 +328,110 @@ export default function SellPage() {
                                             ? [row.utility]
                                             : [],
 
+                                            accessibility: row.accessibility
+                                            ? [row.accessibility]
+                                            : [],
+
                                             terrain: row.terrain
                                             ? [row.terrain]
-                                            : []
+                                            : [],
 
-                                        }),
+                                            title: generateListingTitle(row),
 
-                                        images: propertyData.images.map(
-                                            (img: any) => img.uploadedUrl
-                                            )
+                                            description: generateListingDescription({
+
+                                            ...row,
+
+                                            utility: row.utility
+                                                ? [row.utility]
+                                                : [],
+
+                                            terrain: row.terrain
+                                                ? [row.terrain]
+                                                : []
+
+                                            }),
+
+                                            images: row.images
 
                                         }))
 
-                                        console.log(formattedData)
+console.log(
+  'ROW IMAGE FIELD:',
+  formattedData[0]?.images
+)
+
+console.log(
+  'FIRST CSV RECORD:',
+  formattedData[0]
+)
+
+console.log(
+'CSV LENGTH:',
+formattedData.length
+)
+
+console.log(
+'SECOND RECORD:',
+formattedData[1]
+)
+
+console.log(formattedData)
+
+console.log(
+'UTILITY:',
+formattedData[0]?.utility
+)
+
+console.log(
+'ENVIRONMENT:',
+formattedData[0]?.environment
+)
+
+console.log(
+'ACCESSIBILITY:',
+formattedData[0]?.accessibility
+)
+
+console.log(
+'TERRAIN:',
+formattedData[0]?.terrain
+)
+
+console.log(
+'FIRST CSV RECORD:',
+formattedData[0]
+)
+
+console.log(
+'FORMATTED DATA:',
+formattedData
+)
+
+console.log(
+  'CSV LENGTH:',
+  formattedData.length
+)
+
+console.log(
+  'FIRST CSV RECORD:',
+  formattedData[0]
+)
+
+console.log(
+  'ROW IMAGE FIELD:',
+  formattedData[0]?.images
+)
+
+console.log(
+  'SECOND ROW IMAGE FIELD:',
+  formattedData[1]?.images
+)
+
+console.log(
+  'FORMATTED DATA:',
+  formattedData
+)
 
                                         setCsvListings(formattedData)
 

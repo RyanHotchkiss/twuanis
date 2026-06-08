@@ -1,4 +1,7 @@
 import { supabase } from '@/lib/supabase'
+import {
+  assignListingOntology
+} from '@/lib/assign-listing-ontology'
 
 export async function publishCsvListings(
   csvListings: any[],
@@ -8,52 +11,40 @@ export async function publishCsvListings(
 
   for (const listing of csvListings) {
 
-    const uploadedImageUrls = []
+  if (
+    !listing.province &&
+    !listing.canton &&
+    !listing.district &&
+    !listing.property_type
+  ) {
+    continue
+  }
 
-    if (listing.images?.length) {
+console.log(
+  'IMAGE STRING LENGTH:',
+  listing.images?.length
+)
 
-      for (const image of listing.images) {
-
-        const file = image.file
-
-        const fileName =
-          `${Date.now()}-${file.name}`
-
-        const {
-          data,
-          error
-        } = await supabase
-          .storage
-          .from('listings-images')
-          .upload(fileName, file)
-
-        console.log(data)
-        console.log(error)
-
-        if (error) {
-
-          console.error(
-            JSON.stringify(error, null, 2)
+const uploadedImageUrls =
+  typeof listing.images === 'string'
+    ? listing.images
+        .split('|')
+        .filter((url: string) =>
+          url.includes(
+            'photos.encuentra24.com'
           )
-
-          continue
-
-        }
-
-        const {
-          data: publicUrlData
-        } = supabase
-          .storage
-          .from('listings-images')
-          .getPublicUrl(fileName)
-
-        uploadedImageUrls.push(
-          publicUrlData.publicUrl
         )
+    : [] 
 
-      }
+console.log(
+  'FINAL IMAGE URLS:',
+  uploadedImageUrls
+)
 
-    }
+console.log(
+  'IMAGE COUNT:',
+  uploadedImageUrls.length
+)
 
     const finalListing = {
 
@@ -119,9 +110,10 @@ console.log(
   finalListing
 )
 
-    const response = await supabase
-      .from('listings')
-      .insert([finalListing])
+  const response = await supabase
+    .from('listings')
+    .insert([finalListing])
+    .select()
 
 console.log(
   'SUPABASE RESPONSE:',
@@ -146,7 +138,30 @@ console.log(
 
     }
 
+console.log(
+  'IMAGES:',
+  listing.images
+)
+
+    const insertedListing =
+      response.data?.[0]
+
+    if (insertedListing?.id) {
+
+console.log(
+  'ABOUT TO CALL ASSIGN ONTOLOGY',
+  insertedListing.id
+)
+
+      await assignListingOntology(
+        insertedListing.id,
+        finalListing
+      )
+
+    }
+
   }
+  
 
   alert('Listings Published')
 

@@ -335,21 +335,19 @@ export default function SellPage() {
 
                                         description: generateListingDescription({
 
-                                            ...row,
+                                                ...row,
 
-                                            utility: row.utility
-                                            ? [row.utility]
-                                            : [],
+                                                utility: row.utility
+                                                ? [row.utility]
+                                                : [],
 
-                                            terrain: row.terrain
-                                            ? [row.terrain]
-                                            : []
+                                                terrain: row.terrain
+                                                ? [row.terrain]
+                                                : []
 
-                                        }),
+                                            }),
 
-                                        images: propertyData.images.map(
-                                            (img: any) => img.uploadedUrl
-                                            )
+                                            images: row.images
 
                                         }))
 
@@ -448,7 +446,7 @@ formattedData
 
 {/* LOCATION */}
 
-                    <LocationSelectorS
+<LocationSelectorS
 
                     province={propertyData.province}
                     canton={propertyData.canton}
@@ -501,7 +499,7 @@ formattedData
 
 {/* PROPERTY TYPE */}
 
-                    <PropertyTypeFilterES
+<PropertyTypeFilterES
 
                         bedrooms={propertyData.bedrooms}
                         bathrooms={propertyData.bathrooms}
@@ -647,7 +645,7 @@ formattedData
 
 {/* PROPERTY AREA */}
                     
-                    <PropertyAreaFilterES
+<PropertyAreaFilterES
                         selectedproperty_area={
                             propertyData.property_area
                         }
@@ -718,7 +716,7 @@ formattedData
                 
 
 {/* environment */}
-                  <EnvironmentFilterSES
+<EnvironmentFilterSES
                     selectedEnvironment={propertyData.environment}
                     setSelectedEnvironment={(value) =>
                         setPropertyData({
@@ -739,7 +737,7 @@ formattedData
 
 {/* accessibility */}
 
-                    <AccessibilityFilterES
+<AccessibilityFilterES
                         selectedaccessibility={propertyData.accessibility}
                         setSelectedaccessibility={(value) =>
                             setPropertyData({
@@ -755,7 +753,7 @@ formattedData
                         />
 
 {/* TERRAIN */}
-                        <TerrainFilterES
+<TerrainFilterES
 
                             selectedterrain={propertyData.terrain}
 
@@ -777,7 +775,7 @@ formattedData
                         />
                     
 {/* LEGAL STATUS */}
-                    <LegalStatusFilterSES
+<LegalStatusFilterSES
                         selectedLegalStatus={propertyData.legal_status}
                         setSelectedLegalStatus={(value) =>
                             setPropertyData({
@@ -800,7 +798,7 @@ formattedData
                     
 
 {/* price */}
-                       <MonthlyRentSelectorS
+<MonthlyRentSelectorS
 
                             monthlyPrice={propertyData.monthly_price}
 
@@ -834,12 +832,12 @@ formattedData
                         />
 
 {/* IMAGE UPLOADER */}
-                    <ImageUploaderS
+<ImageUploaderS
                         handleImageUpload={handleImageUpload}
                         />
 
 {/* IMAGE PREVIEW GRID */}
-                    <ImagePreviewGridS
+<ImagePreviewGridS
                         images={propertyData.images}
                         removeImage={(index) => {
 
@@ -854,7 +852,7 @@ formattedData
                         />
 
 {/* WHATSAPP */}
-                <WhatsAppInputS
+<WhatsAppInputS
                     whatsapp={propertyData.whatsapp}
                     addWhatsAppDigit={addWhatsAppDigit}
                     deleteWhatsAppDigit={deleteWhatsAppDigit}
@@ -865,7 +863,7 @@ formattedData
 
 {/* CREATE LISTING BUTTON */}
                           
-              <CreateListingButtonSXL
+<CreateListingButtonSXL
                     onCreateListing={() => {
 
                         console.log(
@@ -912,7 +910,7 @@ formattedData
                     width: '100%'
                     }}>
 
-                    <RentalPropertyDefinitionPanelES
+<RentalPropertyDefinitionPanelES
                         propertyData={propertyData}
                     />
 
@@ -925,7 +923,7 @@ formattedData
                 {/* CSV STAGING MODAL */}
                 {showCsvStaging && (
 
-                <CsvStagingModal
+<CsvStagingModal
                     csvListings={csvListings}
                     setCsvListings={setCsvListings}
                     setShowCsvStaging={setShowCsvStaging}
@@ -942,7 +940,7 @@ formattedData
                             propertyData.whatsapp
                         ),
 
-                    <AuthOverlay
+<AuthOverlay
                         whatsapp={propertyData.whatsapp}
 
                         formatWhatsAppNumber={

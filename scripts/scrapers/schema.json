@@ -1,0 +1,36 @@
+{
+  "@context": "http://schema.org/",
+  "@type": "Product",
+  "description": "Bodega en Alquiler, Alajuela, Ciruelas. Industrial - PVV9838963<br />\n<br />\nBodega en ALQILER en Parque Industrial en la zona de Ciruelas, Alajuela. Uso industrial Z1,Z2,Z3. Ideal para fabricación de muebles, almacenamiento y producción de todo tipo, entre otros. Fachada en vidrio. Iluminación en LED. Segurida perimetral.<br />\n<br />\n.<br />\n<br />\nResumen de la Propiedad:<br />\n<br />\nÁrea de Construcción: 2500 m2<br />\n<br />\nEspacio libre<br />\n<br />\nParqueos: 26 y 2 ley 7600<br />\n<br />\nAnden: 4<br />\n<br />\nManiobra de contedores<br />\n<br />\nAltura: 11.25 metros a la cumbrera<br />\n<br />\nElectricidad: Trifásica 208/120 V<br />\n<br />\nUso de suelo: Z1, Z2 y Z3<br />\n<br />\nPrecio m2: $8.5<br />\n<br />\nCuota de mantenimiento: Incluido<br />\n<br />\nPRECIO DE ALQUILER: $21,250 + IVA + CAM INCLUIDO.<br />\n<br />\n.<br />\n<br />\nDescripcion de la Propiedad:<br />\n<br />\nBodega industrial Z1,Z2 y Z3 en condominio. Acceso vehicular con portones eléctricos con gran altura que permite el ingreso de furgones o camiones, Amplios andenes para carga y descarga de mercadería. Vidrios de seguridad con marcos de aluminio, sistema de detección de fuego, iluminación de alta tecnología y planta eléctrica para luces de emergencia.<br />\n<br />\nDescripción del Proyecto:<br />\n<br />\nExclusivo y funcional parque de Ofibodegas, el cual cuenta con 32 bodegas individuales, divididas en 5 bloques, pensados y construidos para ofrecer una perfecta distribución del espacio y facilidades en maniobrabilidad. Seguridad 24/7 y control de acceso, áreas amplias para la maniobra de contenedores. Belleza, elegancia y funcionalidad en un solo lugar. Posee fibra óptica para datos y voz, así como muchas facilidades más para el desempeño de sus actividades. El CAM incluye: mantenimiento de áreas comunes, zonas verdes, recolección de residuos y planta de tratamiento. Gabinetes contra incendio tipo III y seguridad perimetral.<br />\n<br />\n.<br />\n<br />\nDescripción de la Zona:<br />\n<br />\nPerfecta ubicación, Cercanía al Aeropuerto Internacional Juan Santamaría, a solo 5 minutos de la ruta 27 y a 5 minutos de la radial del Coyol de Alajuela",
+  "offers": {
+    "@type": "Offer",
+    "availability": "http://schema.org/InStock",
+    "availableAtOrFrom": {
+      "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "Costa Rica",
+        "streetAddress": null,
+        "addressLocality": "Alajuela provincia",
+        "postalCode": ""
+      }
+    },
+    "price": 21250,
+    "priceCurrency": "USD",
+    "url": "https://www.encuentra24.com/api.php/costa-rica-es/bienes-raices-alquiler-comercios/bodega-en-alquiler-alajuela-ciruelas-industrial-pvv9838963/32365240",
+    "seller": {
+      "@type": "Organization",
+      "name": "Parkland Consulting Group",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "San Vicente",
+        "addressRegion": "Alajuela provincia"
+      }
+    }
+  },
+  "image": {
+    "@type": "ImageObject",
+    "contentUrl": "https://photos.encuentra24.com/t_or_fh_m/f_auto/v1/cr/32/36/52/40/32365240_b7cbdf"
+  },
+  "name": "Bodega en Alquiler, Alajuela, Ciruelas. Industrial - PVV9838963"
+}

@@ -1,4 +1,7 @@
 import { supabase } from '@/lib/supabase'
+import {
+  assignListingOntology
+} from '@/lib/assign-listing-ontology'
 
 export async function createRentalListing(
   propertyData: any,
@@ -40,8 +43,8 @@ export async function createRentalListing(
   }
 
   const response = await supabase
-    .from('rent_lease_listings')
-    .insert([
+  .from('listings')
+  .insert([
 
       {
         province: propertyData.province,
@@ -78,7 +81,7 @@ export async function createRentalListing(
 
         monthly_price: Number(
         String(propertyData.monthly_price)
-            .replace(/[^\d]/g, '')
+            .replace(/[^\d]/g, ''),
         ),
 
         whatsapp:
@@ -92,25 +95,46 @@ export async function createRentalListing(
             propertyData
           ),
 
+          transaction_type: 'rent',
+          listing_status: 'active',
+          currency:
+            propertyData.currency || 'CRC',
+
         images: uploadedImageUrls
       }
 
     ])
 
+    .select()
+
   if (response.error) {
 
-    console.error(
-      JSON.stringify(response.error, null, 2)
-    )
+  console.error(
+    JSON.stringify(response.error, null, 2)
+  )
 
-    alert('SUPABASE ERROR')
+  alert('SUPABASE ERROR')
 
-    return
+  return
 
-  }
+}
 
-  console.log(response.data)
+const insertedListing =
+  response.data?.[0]
 
-  alert('Listing Created Successfully')
+if (insertedListing?.id) {
+
+  await assignListingOntology(
+    insertedListing.id,
+    {
+      ...propertyData
+    }
+  )
+
+}
+
+console.log(response.data)
+
+alert('Listing Created Successfully')
 
 }

@@ -7,7 +7,13 @@ import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { createListingId } from '@/lib/createListingId'
 import TopBarES from '@/app/components/TopBarES'
-
+import JsonLd from '@/app/components/JsonLd'
+import {
+  getGraphNeighbors,
+  getOntologyTermsByIds
+}
+from '@/lib/graph-engine'
+import { buildListingSchema } from '@/lib/schema-engine'
 
 export default function ListingPage() {
 
@@ -26,6 +32,13 @@ export default function ListingPage() {
   const params = useParams()
 
   const [listing, setListing] = useState<any>(null)
+  const [ontologyTerms, setOntologyTerms] = useState<any[]>([])
+
+  const [neighborTerms, setNeighborTerms] =
+  useState<any[]>([])
+
+  const [graphRows, setGraphRows] =
+    useState<any[]>([])
 
   const [loading, setLoading] = useState(true)
 
@@ -46,24 +59,179 @@ export default function ListingPage() {
       // IF SUPABASE FOUND MATCH
       if (data) {
 
-        setListing({
+           const normalizedListing = {
 
-          ...data,
+              ...data,
 
-          images:
-            Array.isArray(data.images)
-              ? data.images
-              : typeof data.images === 'string'
-              ? data.images.split('|')
-              : []
+            
+                images:
+                  Array.isArray(data.images)
+                    ? data.images
+                    : typeof data.images === 'string'
+                    ? (() => {
 
-        })
+                        try {
 
-        setLoading(false)
+                          return JSON.parse(
+                            data.images
+                          )
 
-        return
+                        } catch {
 
-      }
+                          return data.images
+                            .split('|')
+                            .map((img: string) =>
+                              img.trim()
+                            )
+                            .filter(Boolean)
+
+                        }
+
+                      })()
+                    : []
+
+            }
+
+            setListing(normalizedListing)
+
+            console.log(
+              JSON.stringify(
+                normalizedListing.images,
+                null,
+                2
+              )
+            )
+
+            const { data: ontologyRows } = await supabase
+              .from('listings_ontology_terms')
+              .select(`
+                ontology_terms (
+                  id,
+                  parent_id,
+                  term_name,
+                  term_type,
+                  slug,
+                  description,
+                  official_code,
+                  term_name_en,
+                  term_name_es,
+                  slug_en,
+                  slug_es
+                )
+              `)
+              .eq('listing_id', data.id)
+
+            setOntologyTerms(
+              ontologyRows
+                ?.map((row: any) => row.ontology_terms)
+                .filter(Boolean) || []
+            )
+
+            const termIds =
+              ontologyRows
+                ?.map(
+                  (row: any) =>
+                    row.ontology_terms?.id
+                )
+                .filter(Boolean) || []
+
+
+                  let graphNeighbors:any[] = []
+                  let filteredGraphNeighbors:any[] = []
+
+                  try {
+
+                    console.log('BEFORE getGraphNeighbors')
+
+
+                    
+                    graphNeighbors =
+                      await getGraphNeighbors(termIds)
+
+                  filteredGraphNeighbors =
+                    graphNeighbors.filter(
+                      (row:any) =>
+                        termIds.includes(row.source_term_id) &&
+                        termIds.includes(row.target_term_id)
+                    )
+
+                  setGraphRows(filteredGraphNeighbors)
+                    console.log('AFTER getGraphNeighbors')
+
+                    console.log(
+                      'FIRST GRAPH ROW',
+                      graphNeighbors[0]
+                    )
+
+                    console.log(
+                      'FIRST 10 GRAPH ROWS',
+                      graphNeighbors.slice(0,10)
+                    )
+
+                  console.log(
+                    'HOUSE ROWS',
+                    graphNeighbors.filter(
+                      (row:any) =>
+                        row.source_term_id === 1115
+                        ||
+                        row.target_term_id === 1115
+                    ).length
+                  )
+
+                  } catch (err) {
+
+                    console.error(
+                      'GRAPH ERROR',
+                      err
+                    )
+
+                  }
+
+                const neighborIds = [
+
+                ...new Set([
+
+                  ...filteredGraphNeighbors.map(
+                    (row:any) =>
+                      row.source_term_id
+                  ),
+
+                  ...filteredGraphNeighbors.map(
+                    (row:any) =>
+                      row.target_term_id
+                  )
+
+                ])
+
+              ]
+
+                const neighborTermsData =
+                  await getOntologyTermsByIds(
+                    neighborIds
+                  )
+
+                setNeighborTerms(
+                  neighborTermsData || []
+                )
+
+console.log(
+
+  'FILTERED GRAPH NEIGHBORS',
+
+  filteredGraphNeighbors.length
+
+)
+
+                console.log(
+                  'NEIGHBOR TERMS',
+                  neighborTermsData.length
+                )
+
+            setLoading(false)
+
+            return
+
+          }
 
 
       setLoading(false)
@@ -76,52 +244,93 @@ export default function ListingPage() {
 
   }, [params.id])
 
-  if (loading) {
+console.log(
+  'NEIGHBOR TERMS STATE',
+  neighborTerms
+)
 
-    return (
+console.log(
+  'GRAPH ROWS STATE',
+  graphRows
+)
 
-      <main style={{
-        background: '#000',
-        minHeight: '100vh',
-        color: '#fff',
-        padding: '2rem'
-      }}>
+  const schema =
+    listing
+      ? buildListingSchema({
+          listing,
+          ontologyTerms,
+          neighborTerms,
+          graphRows,
+          lang: 'es',
+          mode: 'rent'
+        })
+      : null
+
+if (loading) {
+
+  return (
+
+    <>
+      {schema && <JsonLd data={schema} />}
+
+      <main
+        style={{
+          background: '#000',
+          minHeight: '100vh',
+          color: '#fff',
+          padding: '2rem'
+        }}
+      >
 
         Cargando Propiedad...
 
       </main>
 
-    )
+    </>
 
-  }
+  )
 
-  if (!listing) {
+}
 
-    return (
+if (!listing) {
 
-      <main style={{
-        background: '#000',
-        minHeight: '100vh',
-        color: '#fff',
-        padding: '2rem'
-      }}>
+  return (
+
+    <>
+      {schema && <JsonLd data={schema} />}
+
+      <main
+        style={{
+          background: '#000',
+          minHeight: '100vh',
+          color: '#fff',
+          padding: '2rem'
+        }}
+      >
 
         Propiedad No Encontrada
 
       </main>
 
-    )
+    </>
 
-  }
+  )
 
-  return (
+}
 
-    <main style={{
-      background: '#000',
-      minHeight: '100vh',
-      color: '#fff',
-      padding: '2rem'
-    }}>
+return (
+
+  <>
+    {schema && <JsonLd data={schema} />}
+
+    <main
+      style={{
+        background: '#000',
+        minHeight: '100vh',
+        color: '#fff',
+        padding: '2rem'
+      }}
+    >
 
             <TopBarES
               onFilterClick={() =>
@@ -130,12 +339,11 @@ export default function ListingPage() {
             />
 
         {/* MAIN LAYOUT */}
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '2rem',
-          width: '100%'
-        }}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: '1.2fr .8fr',
+            gap: '2rem'
+          }}>
 
         {/* LEFT */}
         <div>
@@ -151,6 +359,7 @@ export default function ListingPage() {
             {listing.images?.[0] ? (
 
               <img
+                referrerPolicy="no-referrer"
                 src={listing.images[0]}
                 alt={listing.title}
                 style={{
@@ -175,11 +384,99 @@ export default function ListingPage() {
 
             )}
 
-          </div>
-                    
-        
+                <button
+                  onClick={(e) => {
 
+                    e.preventDefault()
+                    e.stopPropagation()
+
+                    const existingFavorites =
+                      JSON.parse(
+                        localStorage.getItem('buy_favorites') || '[]'
+                      )
+
+                    const alreadySaved =
+                      existingFavorites.includes(listing.id)
+
+                    let updatedFavorites:string[] = []
+
+                    if (alreadySaved) {
+
+                      updatedFavorites =
+                        existingFavorites.filter(
+                          (id:string) => id !== listing.id
+                        )
+
+                    } else {
+
+                      updatedFavorites = [
+                        ...existingFavorites,
+                        listing.id
+                      ]
+
+                    }
+
+                    localStorage.setItem(
+                      'buy_favorites',
+                      JSON.stringify(updatedFavorites)
+                    )
+
+                  }}
+                  style={{
+                    marginTop:'1rem',
+                    width:'100%',
+                    background:'#111',
+                    border:'1px solid #333',
+                    color:'#fff',
+                    borderRadius:'999px',
+                    marginBottom:'1rem',
+                    padding:'.85rem',
+                    cursor:'pointer',
+                    fontWeight:'bold'
+                  }}
+                >
+                  Save To Favorites
+                </button>
+
+                {/* IMAGE GRID */}
+                {listing.images?.length > 1 && (
+
+                  <div style={{
+                    display:'grid',
+                    gridTemplateColumns:'repeat(4, 1fr)',
+                    gap:'1rem'
+                  }}>
+
+                    {listing.images.slice(1).map(
+                      (image:string, index:number) => (
+
+                        <img
+                          key={index}
+                          referrerPolicy="no-referrer"
+                          src={image}
+                          alt=""
+                          style={{
+                            width:'100%',
+                            height:'8rem',
+                            objectFit:'cover',
+                            borderRadius:'1rem',
+                            border:'1px solid #222'
+                          }}
+                        />
+
+                      )
+                    )}
+
+                  </div>
+
+                )}
+console.log(listing.images)
+
+
+          </div>
         </div>
+
+
 
         {/* RIGHT */}
         <div>
@@ -366,21 +663,20 @@ export default function ListingPage() {
 
             <div style={pillContainer}>
 
-                {(Array.isArray(listing.accessibility)
-                ? listing.accessibility
-                : Array.isArray(listing.accessibility)
-                ? listing.accessibility
-                : typeof listing.accessibility === 'string'
-                ? [listing.accessibility]
-                : []
+                {(
+                  Array.isArray(listing.accessibility)
+                    ? listing.accessibility
+                    : typeof listing.accessibility === 'string'
+                    ? [listing.accessibility]
+                    : []
                 ).map((item: string) => (
 
-                <span
+                  <span
                     key={item}
                     style={pillEntity}
-                >
+                  >
                     {item}
-                </span>
+                  </span>
 
                 ))}
 
@@ -472,13 +768,15 @@ export default function ListingPage() {
 
             <div style={priceCard}>
 
-                {listing.price
-                    ? listing.price
-                    : listing.price_millions
-                    ? `₡${Number(
-                        listing.price_millions
-                        ).toLocaleString()}M`
-                    : 'Precio No Disponible'}
+                {listing.transaction_type === 'rent'
+                  ? `${listing.currency} ${Number(
+                      listing.monthly_price || 0
+                    ).toLocaleString()}`
+                  : listing.price_millions
+                  ? `₡${Number(
+                      listing.price_millions
+                    ).toLocaleString()}M`
+                  : 'Precio No Disponible'}
 
             </div>
 
@@ -501,7 +799,7 @@ export default function ListingPage() {
 
             {/* CONTACT BUTTON */}
             <a
-              href={`https://wa.me/506${listing.whatsapp}`}
+              href={`https://wa.me/${listing.whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -525,8 +823,9 @@ export default function ListingPage() {
         </div>
 
       </div>
-
     </main>
+
+  </>
 
   )
 

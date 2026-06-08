@@ -5,6 +5,8 @@ import { useState } from 'react'
 type AuthOverlayProps = {
   whatsapp: string
 
+  propertyData: any
+
   formatWhatsAppNumber: (
     value: string
   ) => string
@@ -18,13 +20,17 @@ export default function AuthOverlay({
 
   whatsapp,
 
+  propertyData,
+
   formatWhatsAppNumber,
 
   onVerify,
 
   onClose
 
-}: AuthOverlayProps) {
+}: AuthOverlayProps)
+
+{
   const [step, setStep] = useState<'send' | 'verify'>('send')
   const [code, setCode] = useState('')
   const [loading, setLoading] = useState(false)
@@ -147,8 +153,9 @@ console.log(
                           'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                          phone: whatsapp
-                        })
+                        phone: whatsapp,
+                        listingData: propertyData
+                      })
                       })
 
                       const data = await response.json()

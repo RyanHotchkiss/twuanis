@@ -108,8 +108,10 @@ const navButton = {
       async function fetchListings() {
 
         const { data, error } = await supabase
-          .from('rent_lease_listings')
+          .from('listings')
           .select('*')
+          .eq('transaction_type', 'rent')
+          .eq('listing_status', 'active')
           .order('id', { ascending: false })
 
         if (error) {
@@ -127,27 +129,73 @@ const navButton = {
         }
 
           const normalizedSupabaseListings = (data || []).map(
-            (listing: any) => ({
+              (listing: any) => ({
 
-              ...listing,
+                ...listing,
 
-              id: createListingId(listing),
+                id: createListingId(listing),
 
-              images:
-                Array.isArray(listing.images)
-                  ? listing.images
-                  : typeof listing.images === 'string'
-                  ? listing.images.split('|')
-                  : []
+                images: (() => {
 
-            })
-          )
+                  if (Array.isArray(listing.images)) {
+                    return listing.images
+                  }
+
+                  if (typeof listing.images === 'string') {
+
+                    if (
+                      !listing.images ||
+                      listing.images === '[]'
+                    ) {
+                      return []
+                    }
+
+                    try {
+
+                      return JSON.parse(listing.images)
+
+                    } catch {
+
+                      return listing.images
+                        .split('|')
+                        .filter(Boolean)
+
+                    }
+
+                  }
+
+                  return []
+
+                })()
+
+              })
+            )
 
             console.log(
               'FETCHED TABLE RECORD:',
               data?.[0]
             )
 
+            console.log(
+              'RAW IMAGES:',
+              data?.[0]?.images
+            )
+
+            console.log(
+              'RAW IMAGES TYPE:',
+              typeof data?.[0]?.images
+            )
+
+            console.log(
+              'NORMALIZED IMAGES:',
+              normalizedSupabaseListings?.[0]?.images
+            )
+
+            console.log(
+              'FIRST NORMALIZED IMAGE:',
+              normalizedSupabaseListings?.[0]?.images?.[0]
+            )
+          
             console.log(
               'FETCHED RENT LEASE DATA:',
               data
@@ -156,6 +204,16 @@ const navButton = {
             console.log(
             'FETCHED RENT LEASE DATA:',
             data
+          )
+
+          console.log(
+            'IMAGE FIELD:',
+            data?.[0]?.images
+          )
+
+          console.log(
+            'IMAGE TYPE:',
+            typeof data?.[0]?.images
           )
 
         const mergedListings = [
@@ -697,7 +755,7 @@ console.log(
                               {filteredProperties.map((property) => (
 
                                 <Link
-                                  href={`/en/buy/listing/${property.id}`}
+                                  href={`/es/alquilar-arrendar/anuncio/${property.id}`}
                                   key={property.id}
                                   style={{
                                     textDecoration: 'none',

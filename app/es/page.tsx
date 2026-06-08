@@ -155,6 +155,8 @@ function HomePageContent() {
         const { data, error } = await supabase
           .from('listings')
           .select('*')
+          .eq('transaction_type', 'buy')
+          .eq('listing_status', 'active')
           .order('id', { ascending: false })
 
         if (error) {

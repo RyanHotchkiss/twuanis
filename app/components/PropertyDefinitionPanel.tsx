@@ -165,13 +165,11 @@ export default function PropertyDefinitionPanel({
         />
 
         <DefinitionCard
-          label="Accessibility"
-          value={
-            propertyData.accessibility.length > 0
-            ? propertyData.accessibility.join(', ')
-            : 'Not Yet Defined'
-          }
-        />
+            label="Accessibility"
+            value={
+              propertyData.accessibility || 'Not Yet Defined'
+            }
+          />
 
         <DefinitionCard
           label="Terrain"

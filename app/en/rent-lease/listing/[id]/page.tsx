@@ -7,11 +7,31 @@ import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { createListingId } from '@/lib/createListingId'
 
+import JsonLd from '@/app/components/JsonLd'
+
+import {
+  getGraphNeighbors,
+  getOntologyTermsByIds
+} from '@/lib/graph-engine'
+
+import {
+  buildListingSchema
+} from '@/lib/schema-engine'
+
 export default function ListingPage() {
 
   const params = useParams()
 
   const [listing, setListing] = useState<any>(null)
+
+  const [ontologyTerms, setOntologyTerms] =
+  useState<any[]>([])
+
+  const [neighborTerms, setNeighborTerms] =
+    useState<any[]>([])
+
+  const [graphRows, setGraphRows] =
+    useState<any[]>([])
 
   const [loading, setLoading] = useState(true)
   
@@ -20,9 +40,10 @@ export default function ListingPage() {
           async function fetchListing() {
 
             const { data, error } = await supabase
-              .from('rent_lease_listings')
+              .from('listings')
               .select('*')
               .eq('id', String(params.id))
+              .eq('transaction_type', 'rent')
               .single()
 
             if (data) {
@@ -31,16 +52,145 @@ export default function ListingPage() {
 
                 ...data,
 
-                id: createListingId(data),
-
                 images:
-                  Array.isArray(data.images)
-                    ? data.images
-                    : typeof data.images === 'string'
-                    ? data.images.split('|')
-                    : []
+                    Array.isArray(data.images)
+                      ? data.images
+                      : typeof data.images === 'string'
+                      ? (() => {
+
+                          try {
+
+                            return JSON.parse(
+                              data.images
+                            )
+
+                          } catch {
+
+                            return data.images
+                              .split('|')
+                              .map((img: string) =>
+                                img.trim()
+                              )
+                              .filter(Boolean)
+
+                          }
+
+                        })()
+                      : []
 
               })
+
+console.log(
+  'RAW RENT IMAGES:',
+  data.images
+)
+
+console.log(
+  'RAW TYPE:',
+  typeof data.images
+)
+
+              const { data: ontologyRows } = await supabase
+                .from('listings_ontology_terms')
+                .select(`
+                  ontology_terms (
+                    id,
+                    parent_id,
+                    term_name,
+                    term_type,
+                    slug,
+                    description,
+                    official_code,
+                    term_name_en,
+                    term_name_es,
+                    slug_en,
+                    slug_es
+                  )
+                `)
+                .eq('listing_id', data.id)
+
+console.log(
+  'LISTING ID',
+  data.id
+)
+
+console.log(
+  'ONTOLOGY ROWS',
+  ontologyRows
+)
+
+              setOntologyTerms(
+                ontologyRows
+                  ?.map((row: any) => row.ontology_terms)
+                  .filter(Boolean) || []
+              )
+
+              const termIds =
+                ontologyRows
+                  ?.map(
+                    (row: any) =>
+                      row.ontology_terms?.id
+                  )
+                  .filter(Boolean) || []
+
+              if (termIds.length > 0) {
+
+                const graphNeighbors =
+                  await getGraphNeighbors(termIds)
+
+                setGraphRows(graphNeighbors)
+
+                const neighborIds = [
+                  ...new Set([
+                    ...graphNeighbors.map(
+                      (row: any) =>
+                        row.source_term_id
+                    ),
+                    ...graphNeighbors.map(
+                      (row: any) =>
+                        row.target_term_id
+                    )
+                  ])
+                ]
+
+                const neighborTermsData =
+                  await getOntologyTermsByIds(
+                    neighborIds
+                  )
+
+                setNeighborTerms(
+                  neighborTermsData || []
+                )
+
+              }
+
+              const graphNeighbors =
+                await getGraphNeighbors(termIds)
+
+              const filteredGraphNeighbors =
+                graphNeighbors.filter(
+                  (row: any) =>
+                    termIds.includes(row.source_term_id) &&
+                    termIds.includes(row.target_term_id)
+                )
+
+              setGraphRows(filteredGraphNeighbors)
+
+              const neighborIds = [
+                ...new Set([
+                  ...filteredGraphNeighbors.map(
+                    (row: any) => row.source_term_id
+                  ),
+                  ...filteredGraphNeighbors.map(
+                    (row: any) => row.target_term_id
+                  )
+                ])
+              ]
+
+              const neighborTermsData =
+                await getOntologyTermsByIds(neighborIds)
+
+              setNeighborTerms(neighborTermsData || [])
 
             } else {
 
@@ -59,6 +209,20 @@ export default function ListingPage() {
           }
 
         }, [params.id])
+
+console.log('RENT PAGE SCHEMA MODE')
+
+        const schema =
+          listing
+            ? buildListingSchema({
+                listing,
+                ontologyTerms,
+                neighborTerms,
+                graphRows,
+                lang: 'en',
+                mode: 'rent'
+              })
+            : null
 
   if (loading) {
 
@@ -80,7 +244,11 @@ export default function ListingPage() {
   }
 
 
-  return (
+return (
+
+  <>
+
+    {schema && <JsonLd data={schema} />}
 
     <main style={{
       background: '#000',
@@ -128,6 +296,7 @@ export default function ListingPage() {
             {listing.images?.[0] ? (
 
               <img
+                referrerPolicy="no-referrer"
                 src={listing.images[0]}
                 alt={listing.title}
                 style={{
@@ -219,6 +388,7 @@ export default function ListingPage() {
 
                 <img
                   key={index}
+                  referrerPolicy="no-referrer"
                   src={image}
                   alt=""
                   style={{
@@ -527,13 +697,11 @@ export default function ListingPage() {
 
             <div style={priceCard}>
 
-                {listing.price
-                    ? listing.price
-                    : listing.price_millions
-                    ? `₡${Number(
-                        listing.price_millions
-                        ).toLocaleString()}M`
-                    : 'Precio No Disponible'}
+                {listing.monthly_price
+                ? `${listing.currency || 'CRC'} ${Number(
+                    listing.monthly_price
+                  ).toLocaleString()} / month`
+                : 'Price Not Available'}
 
             </div>
 
@@ -582,7 +750,7 @@ export default function ListingPage() {
       </div>
 
     </main>
-
+    </>
   )
 
 }

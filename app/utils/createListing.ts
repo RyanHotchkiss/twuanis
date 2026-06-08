@@ -1,4 +1,7 @@
 import { supabase } from '@/lib/supabase'
+import {
+  assignListingOntology
+} from '@/lib/assign-listing-ontology'
 
 export async function createListing(
   propertyData: any,
@@ -114,8 +117,23 @@ export async function createListing(
 
   }
 
-  console.log(response.data)
+const insertedListing =
+  response.data?.[0]
 
-  alert('Listing Created Successfully')
+if (insertedListing?.id) {
+
+  await assignListingOntology(
+    insertedListing.id,
+    {
+      ...propertyData,
+      price_millions: propertyData.priceMillions
+    }
+  )
+
+}
+
+console.log(response.data)
+
+alert('Listing Created Successfully')
 
 }

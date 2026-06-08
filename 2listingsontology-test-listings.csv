@@ -1,0 +1,3 @@
+province,canton,district,property_type,property_area,utility,environment,accessibility,terrain,legal_status,price_millions,monthly_price,whatsapp,bedrooms,bathrooms,parking,year_built_range,construction_area,transaction_type,title,description
+Guanacaste,Santa Cruz,Tamarindo,Land,500-1000 m²,Electricity,Beachfront,Paved Road,Flat,Titled Property,275,,89992222,,,,,,buy,Tamarindo Land Test,Ontology assignment test buy listing
+San José,Escazu,San Rafael,House,500-1000 m²,Electricity,Urban,Paved Road,Flat,Titled Property,,750000,88881111,3 Bedrooms,2 Bathrooms,2 Vehicles,2020+,250 m²,rent,Escazu Rental House Test,Ontology assignment test rent listing

@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase'
+import { assignListingOntology } from '@/lib/assign-listing-ontology'
 
 export async function publishRentLeaseCsvListings(
   csvListings: any[],
@@ -32,52 +33,15 @@ export async function publishRentLeaseCsvListings(
         listing.monthly_price
 )
 
-    const uploadedImageUrls = []
+    const uploadedImageUrls =
+  typeof listing.images === 'string'
+    ? listing.images.split('|').filter(Boolean)
+    : []
 
-    if (listing.images?.length) {
-
-      for (const image of listing.images) {
-
-        const file = image.file
-
-        const fileName =
-          `${Date.now()}-${file.name}`
-
-        const {
-          data,
-          error
-        } = await supabase
-          .storage
-          .from('listings-images')
-          .upload(fileName, file)
-
-        console.log(data)
-        console.log(error)
-
-        if (error) {
-
-          console.error(
-            JSON.stringify(error, null, 2)
-          )
-
-          continue
-
-        }
-
-        const {
-          data: publicUrlData
-        } = supabase
-          .storage
-          .from('listings-images')
-          .getPublicUrl(fileName)
-
-        uploadedImageUrls.push(
-          publicUrlData.publicUrl
-        )
-
-      }
-
-    }
+console.log(
+  'CSV IMAGE FIELD:',
+  listing.images
+)
 
     const finalListing = {
 
@@ -144,8 +108,15 @@ console.log(
 )
 
     const response = await supabase
-      .from('rent_lease_listings')
-      .insert([finalListing])
+      .from('listings')
+      .insert([
+        {
+          ...finalListing,
+          transaction_type: 'rent',
+          listing_status: 'active'
+        }
+      ])
+      .select()
 
 console.log(
   'SUPABASE RESPONSE:',
@@ -166,6 +137,18 @@ console.log(
 
       console.error(
         JSON.stringify(response.error, null, 2)
+      )
+
+    }
+
+    const insertedListing =
+      response.data?.[0]
+
+    if (insertedListing?.id) {
+
+      await assignListingOntology(
+        insertedListing.id,
+        finalListing
       )
 
     }

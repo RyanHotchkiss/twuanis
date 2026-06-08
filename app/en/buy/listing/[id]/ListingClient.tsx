@@ -1,270 +1,23 @@
 'use client'
 
-
-import { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation'
-import Link from 'next/link'
-
-import { supabase } from '@/lib/supabase'
-import { createListingId } from '@/lib/createListingId'
-import TopBar from '@/app/components/TopBar'
-import JsonLd from '@/app/components/JsonLd'
-import { buildListingSchema } from '@/lib/schema-engine'
-import {
-  getGraphNeighbors,
-  getOntologyTermsByIds
-}
-from '@/lib/graph-engine'
-
-export default function ListingPage() {
-
-  const navButton = {
-            background:'#FFFFFF',
-            border:'.0625rem solid #FFFFFF',
-            color:'#000',
-            borderRadius:'999rem',
-            padding:'.85rem 1.25rem',
-            fontWeight:'bold',
-            cursor:'pointer',
-            transition:'all .2s ease',
-            backdropFilter:'blur(10px)'
-          }
-
-  const params = useParams()
-
-  const [listing, setListing] = useState<any>(null)
-  const [ontologyTerms, setOntologyTerms] = useState<any[]>([])
-
-  const [neighborTerms, setNeighborTerms] =
-  useState<any[]>([])
-
-const [graphRows, setGraphRows] =
-  useState<any[]>([])
-
-  const [loading, setLoading] = useState(true)
-  
-  const [showMobileFilters, setShowMobileFilters] =
-  useState(false)
-
-  useEffect(() => {
-
-    async function fetchListing() {
-
-      // SEARCH SUPABASE FIRST
-      const { data, error } = await supabase
-        .from('listings')
-        .select('*')
-        .eq('id', String(params.id))
-        .single()
-
-      // IF SUPABASE FOUND MATCH
-      if (data) {
-
-            const normalizedListing = {
-
-              ...data,
-
-              images:
-                    Array.isArray(data.images)
-                      ? data.images
-                      : typeof data.images === 'string'
-                      ? (() => {
-
-                          try {
-
-                            return JSON.parse(
-                              data.images
-                            )
-
-                          } catch {
-
-                            return data.images
-                              .split('|')
-                              .map((img: string) =>
-                                img.trim()
-                              )
-                              .filter(Boolean)
-
-                          }
-
-                        })()
-                      : []
-
-            }
-
-            setListing(normalizedListing)
-
-            const { data: ontologyRows } = await supabase
-              .from('listings_ontology_terms')
-              
-              .select(`
-                ontology_terms (
-                  id,
-                  parent_id,
-                  term_name,
-                  term_type,
-                  slug,
-                  description,
-                  official_code,
-                  term_name_en,
-                  term_name_es,
-                  slug_en,
-                  slug_es
-                )
-              `)
-              .eq('listing_id', data.id)
-
-console.log(
-  'LISTING ID',
-  data.id
-)
-
-console.log(
-  'ONTOLOGY ROWS',
-  ontologyRows
-)
-
-console.log(
-  'ONTOLOGY ROWS',
-  ontologyRows
-)
-
-console.log(
-  'LISTING ID',
-  data.id
-)
-
-            setOntologyTerms(
-              ontologyRows
-                ?.map((row: any) => row.ontology_terms)
-                .filter(Boolean) || []
-            )
-
-           const termIds =
-                ontologyRows
-                  ?.map(
-                    (row: any) =>
-                      row.ontology_terms?.id
-                  )
-                  .filter(Boolean) || []
-
-              if (termIds.length > 0) {
-
-                const graphNeighbors =
-                  await getGraphNeighbors(termIds)
-
-                setGraphRows(graphNeighbors)
-
-                const neighborIds = [
-                  ...new Set([
-                    ...graphNeighbors.map(
-                      (row: any) =>
-                        row.source_term_id
-                    ),
-                    ...graphNeighbors.map(
-                      (row: any) =>
-                        row.target_term_id
-                    )
-                  ])
-                ]
-
-                const neighborTermsData =
-                  await getOntologyTermsByIds(
-                    neighborIds
-                  )
-
-                setNeighborTerms(
-                  neighborTermsData || []
-                )
-
-              }
-
-            setLoading(false)
-
-            return
-
-          }
-
-
-      setLoading(false)
-
-    }
-
-    if (params.id) {
-      fetchListing()
-    }
-
-  }, [params.id])
-
-console.log(
-  'NEIGHBOR TERMS STATE',
+export default function ListingClient({
+  listing,
+  ontologyTerms,
+  graphRows,
   neighborTerms
-)
-
-console.log(
-  'GRAPH ROWS STATE',
-  graphRows
-)
-
-const schema =
-  listing
-    ? buildListingSchema({
-        listing,
-        ontologyTerms,
-        neighborTerms,
-        graphRows,
-        lang: 'en',
-        mode: 'buy'
-      })
-    : null
-
-    console.log('LISTING', listing)
-console.log('ONTOLOGY TERMS', ontologyTerms)
-console.log('SCHEMA', schema)
-
-  if (loading) {
-
-return (
-
-    <main style={{
-        background: '#000',
-        minHeight: '100vh',
-        color: '#fff',
-        padding: '2rem'
-      }}>
-
-        Loading Property...
-
-      </main>
-    
-    )
-
-  }
-
-  if (!listing) {
-
-    return (
-
-      <main style={{
-        background: '#000',
-        minHeight: '100vh',
-        color: '#fff',
-        padding: '2rem'
-      }}>
-
-        Property Not Found
-
-      </main>
-
-    )
-
-  }
+}: {
+  listing:any
+  ontologyTerms:any[]
+  graphRows:any[]
+  neighborTerms:any[]
+  schema:any
+}) {
 
   return (
 
+
     <>
 
-    {schema && <JsonLd data={schema} />}
 
     <main style={{
       background: '#000',
@@ -280,11 +33,12 @@ return (
             />
 
         {/* MAIN LAYOUT */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '1.2fr .8fr',
-            gap: '2rem'
-          }}>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '2rem',
+          width: '100%'
+        }}>
 
         {/* LEFT */}
         <div>
@@ -300,10 +54,9 @@ return (
             {listing.images?.[0] ? (
 
               <img
-                  referrerPolicy="no-referrer"
-                  src={listing.images[0]}
-                  alt={listing.title}
-                  style={{
+                src={listing.images[0]}
+                alt={listing.title}
+                style={{
                   width: '100%',
                   aspectRatio: '4 / 3',
                   objectFit: 'cover',
@@ -327,92 +80,7 @@ return (
 
           </div>
                     
-        <button
-            onClick={(e) => {
-
-              e.preventDefault()
-              e.stopPropagation()
-
-              const existingFavorites =
-                JSON.parse(
-                  localStorage.getItem('buy_favorites') || '[]'
-                )
-
-              const alreadySaved =
-                existingFavorites.includes(listing.id)
-
-              let updatedFavorites:string[] = []
-
-              if (alreadySaved) {
-
-                updatedFavorites =
-                  existingFavorites.filter(
-                    (id:string) => id !== listing.id
-                  )
-
-              } else {
-
-                updatedFavorites = [
-                  ...existingFavorites,
-                  listing.id
-                ]
-
-              }
-
-              localStorage.setItem(
-                'buy_favorites',
-                JSON.stringify(updatedFavorites)
-              )
-
-            }}
-            style={{
-              marginTop:'1rem',
-              width:'100%',
-              background:'#111',
-              border:'1px solid #333',
-              color:'#fff',
-              borderRadius:'999px',
-              marginBottom:'1rem',
-              padding:'.85rem',
-              cursor:'pointer',
-              fontWeight:'bold'
-            }}
-          >
-            Save To Favorites
-          </button>
-
-          {/* IMAGE GRID */}
-          {listing.images?.length > 1 && (
-
-            <div style={{
-              display:'grid',
-              gridTemplateColumns:'repeat(4, 1fr)',
-              gap:'1rem'
-            }}>
-
-              {listing.images.slice(1).map(
-                (image:string, index:number) => (
-
-                  <img
-                    key={index}
-                    referrerPolicy="no-referrer"
-                    src={image}
-                    alt=""
-                    style={{
-                      width:'100%',
-                      height:'8rem',
-                      objectFit:'cover',
-                      borderRadius:'1rem',
-                      border:'1px solid #222'
-                    }}
-                  />
-
-                )
-              )}
-
-            </div>
-
-          )}
+        
 
         </div>
 
@@ -799,14 +467,4 @@ const pillEntity = {
   padding: '.75rem 1rem',
   color: '#ddd',
   fontSize: '.95rem'
-}
-
-const priceCard = {
-  background: '#FFFFFF',
-  color: '#000',
-  borderRadius: '1rem',
-  padding: '1.25rem',
-  fontSize: '1.5rem',
-  fontWeight: 'bold',
-  textAlign: 'center' as const
 }

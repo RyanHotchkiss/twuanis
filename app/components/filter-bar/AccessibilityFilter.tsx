@@ -7,10 +7,6 @@ type AccessibilityFilterProps = {
   showAccessibilityOptions: boolean
   setShowAccessibilityOptions: (value: boolean) => void
 
-  setShowenvironmentOptions: (value: boolean) => void
-
-  setShowTerrainOptions: (value: boolean) => void
-
 }
 
 export default function AccessibilityFilter({
@@ -20,8 +16,6 @@ export default function AccessibilityFilter({
   showAccessibilityOptions,
   setShowAccessibilityOptions,
 
-  setShowenvironmentOptions,
-  setShowTerrainOptions
   }: AccessibilityFilterProps) 
 {
 
@@ -52,8 +46,6 @@ export default function AccessibilityFilter({
               onClick={() => {
 
                 setSelectedaccessibility(option)
-
-                setShowenvironmentOptions(false)
 
                 setShowAccessibilityOptions(false)
 

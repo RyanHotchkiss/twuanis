@@ -108,8 +108,10 @@ const navButton = {
       async function fetchListings() {
 
         const { data, error } = await supabase
-          .from('rent_lease_listings')
+          .from('listings')
           .select('*')
+          .eq('transaction_type', 'rent')
+          .eq('listing_status', 'active')
           .order('id', { ascending: false })
 
         if (error) {
@@ -126,22 +128,41 @@ const navButton = {
 
         }
 
-          const normalizedSupabaseListings = (data || []).map(
-            (listing: any) => ({
+         const normalizedSupabaseListings = (data || []).map(
+              (listing: any) => ({
 
-              ...listing,
+                ...listing,
 
-              id: createListingId(listing),
+                id: createListingId(listing),
 
-              images:
-                Array.isArray(listing.images)
-                  ? listing.images
-                  : typeof listing.images === 'string'
-                  ? listing.images.split('|')
-                  : []
+                images:
+                  Array.isArray(listing.images)
+                    ? listing.images
+                    : typeof listing.images === 'string'
+                    ? (() => {
 
-            })
-          )
+                        try {
+
+                          return JSON.parse(
+                            listing.images
+                          )
+
+                        } catch {
+
+                          return listing.images
+                            .split('|')
+                            .map((img: string) =>
+                              img.trim()
+                            )
+                            .filter(Boolean)
+
+                        }
+
+                      })()
+                    : []
+
+              })
+            )
 
             console.log(
               'FETCHED TABLE RECORD:',
@@ -697,7 +718,7 @@ console.log(
                               {filteredProperties.map((property) => (
 
                                 <Link
-                                  href={`/en/buy/listing/${property.id}`}
+                                  href={`/en/rent-lease/listing/${property.id}`}
                                   key={property.id}
                                   style={{
                                     textDecoration: 'none',
@@ -729,6 +750,7 @@ console.log(
                                       property.images[0] ? (
 
                                         <img
+                                          referrerPolicy="no-referrer"
                                           src={property.images[0]}
                                           alt={property.title}
                                           style={{

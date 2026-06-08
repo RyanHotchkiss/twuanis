@@ -111,75 +111,168 @@ const navButton = {
 
       async function fetchListings() {
 
-  const { data, error } = await supabase
-    .from('listings')
-    .select('*')
-    .order('id', { ascending: false })
+ const { data, error } = await supabase
+  .from('listings')
+  .select('*')
+  .eq('transaction_type', 'buy')
+  .eq('listing_status', 'active')
+  .order('id', { ascending: false })
+
+  console.log(
+  JSON.stringify(
+    data?.slice(0, 3),
+    null,
+    2
+  )
+)
 
 
-       console.log(
-            'SUPABASE RECORD:',
-            data?.[0]
-          )
+if (error) {
 
-        console.log(
-          'PROPERTY AREA FIELD:',
-          data?.[0]?.property_area
-        )
+  console.error(
+    'SUPABASE ERROR:',
+    error
+  )
+
+  setProperties([])
+
+  setLoading(false)
+
+  return
+
+}
 
 console.log(
-  'CONSTRUCTION AREA FIELD:',
+  'TOTAL RECORDS:',
+  data?.length
+)
+
+console.table(
+  (data || []).map(listing => ({
+    title: listing.title,
+    images: listing.images
+  }))
+)
+
+data?.forEach(listing => {
+
+  console.log(
+    'TITLE:',
+    listing.title
+  )
+
+  console.log(
+    'RAW IMAGES:',
+    listing.images
+  )
+
+})
+
+console.log(
+  'FIRST RECORD:',
+  data?.[0]
+)
+
+console.log(
+  'FIRST RECORD IMAGES:',
+  data?.[0]?.images
+)
+
+console.log(
+  'FIRST RECORD IMAGES TYPE:',
+  typeof data?.[0]?.images
+)
+
+console.log(
+  'FIRST RECORD PROPERTY AREA:',
+  data?.[0]?.property_area
+)
+
+console.log(
+  'FIRST RECORD CONSTRUCTION AREA:',
   data?.[0]?.construction_area
 )
 
 
 
-  if (error) {
+  const normalizedSupabaseListings = (data || []).map(
+  (listing: any) => ({
+    ...listing,
 
-    console.error(
-      JSON.stringify(error, null, 2)
-    )
+    id: createListingId(listing),
 
-    setProperties([])
+    images:
+      Array.isArray(listing.images)
+        ? listing.images
+        : typeof listing.images === 'string'
+        ? (() => {
 
-    setLoading(false)
+            try {
 
-    return
+              return JSON.parse(
+                listing.images
+              )
+
+            } catch {
+
+              return listing.images
+                .split('|')
+                .map((img: string) =>
+                  img.trim()
+                )
+                .filter(Boolean)
+
+            }
+
+          })()
+        : []
+
+  })
+)
+
+const mergedListings = [
+  ...normalizedSupabaseListings
+]
+
+
+setProperties(mergedListings)
+
+setLoading(false)
+
+
+console.log(
+  'NORMALIZED IMAGES:',
+  normalizedSupabaseListings?.[0]?.images
+)
+
+console.log(
+  'NORMALIZED TYPE:',
+  typeof normalizedSupabaseListings?.[0]?.images
+)
+
+console.log(
+  'FIRST IMAGE:',
+  normalizedSupabaseListings?.[0]?.images?.[0]
+)
+
+console.log(
+  'NORMALIZED RECORD:',
+  normalizedSupabaseListings?.[0]
+)
+
+console.log(
+  'NORMALIZED IMAGES:',
+  normalizedSupabaseListings?.[0]?.images
+)
 
   }
-
-
-
-  const normalizedSupabaseListings = (data || []).map(
-              (listing: any) => ({
-
-                ...listing,
-
-                id: createListingId(listing),
-
-                images:
-                  Array.isArray(listing.images)
-                    ? listing.images
-                    : typeof listing.images === 'string'
-                    ? listing.images
-                        .split('|')
-                        .map((img: string) => img.trim())
-                        .filter(Boolean)
-                    : []
-
-              })
-            )
-
-            setProperties(normalizedSupabaseListings)
-
-            setLoading(false)
-
-          }
 
       fetchListings()
 
     }, [])
 
+
+    
     const bedroomOptions = [
         '1+ Bedrooms',
         '2+ Bedrooms',
@@ -221,20 +314,6 @@ console.log(
                           
 const filteredProperties = properties.filter((property) => {
 
-console.log(
-  'PRICE_MILLIONS:',
-  property.price_millions,
-  'TITLE:',
-  property.title
-)
-
-console.log(
-  'PROPERTY AREA:',
-  property.property_area,
-  'TITLE:',
-  property.title
-)
-
 if (
   property.title?.includes('Frente al Río')
 ) {
@@ -244,15 +323,6 @@ if (
   )
 }
 
-console.log(
-  'PROVINCE FILTER:',
-  filters.province,
-  'PROPERTY PROVINCE:',
-  property.province,
-  'TITLE:',
-  property.title
-)
-
                       if (
                         filters.province &&
                         normalizeText(property.province) !==
@@ -261,14 +331,7 @@ console.log(
                         return false
                       }
 
-console.log(
-  'CANTON FILTER:',
-  filters.canton,
-  'PROPERTY CANTON:',
-  property.canton,
-  'TITLE:',
-  property.title
-)
+
 
                       if (
                         filters.canton &&
@@ -277,16 +340,7 @@ console.log(
                       ) {
                         return false
                       }
-                      
 
-console.log(
-  'DISTRICT FILTER:',
-  filters.district,
-  'PROPERTY DISTRICT:',
-  property.district,
-  'TITLE:',
-  property.title
-)
 
                     if (
                       filters.district &&
@@ -331,12 +385,6 @@ console.log(
                                 }
 
                               }
-
-console.log(
-  'TYPE FILTER:',
-  filters.property_type,
-  property.property_type
-)
 
                   if (
                     filters.property_type &&
@@ -400,14 +448,6 @@ if (
 
                                   }
 
-console.log(
-  'UTILITY FILTER:',
-  filters.utility,
-  'PROPERTY UTILITY:',
-  property.utility,
-  'TITLE:',
-  property.title
-)
 
                   if (
                     filters.utility.length > 0 &&
@@ -420,15 +460,6 @@ console.log(
                     return false
                   }
 
-console.log(
-  'LEGAL STATUS FILTER:',
-  filters.legal_status,
-  'PROPERTY LEGAL STATUS:',
-  property.legal_status,
-  'TITLE:',
-  property.title
-)
-
 
                     if (
                       filters.legal_status &&
@@ -437,15 +468,6 @@ console.log(
                     ) {
                       return false
                     }
-
-console.log(
-  'ENVIRONMENT FILTER:',
-  filters.environment,
-  'PROPERTY ENVIRONMENT:',
-  property.environment,
-  'TITLE:',
-  property.title
-)
 
                   if (
                     filters.environment.length > 0 &&
@@ -458,15 +480,6 @@ console.log(
                     return false
                   }
 
-console.log(
-  'ACCSIBILITY FILTER:',
-  filters.accessibility,
-  'PROPERTY ACCSIBILITY:',
-  property.accessibility,
-  'TITLE:',
-  property.title
-)
-
                   if (
                     filters.accessibility &&
                     normalizeText(property.accessibility) !==
@@ -474,23 +487,6 @@ console.log(
                   ) {
                     return false
                   }
-
-console.log(
-
-  'TITLE CHECK:',
-
-  property.title
-
-)
-
-console.log(
-  'TERRAIN FILTER:',
-  filters.terrain,
-  'PROPERTY TERRAIN:',
-  property.terrain,
-  'TITLE:',
-  property.title
-)
 
                   if (
                     filters.terrain.length > 0 &&
@@ -653,16 +649,24 @@ console.log(
                       }}
                     >
 
-                              {filteredProperties.map((property) => (
-
-                                <Link
-                                  href={`/en/buy/listing/${property.id}`}
-                                  key={property.id}
-                                  style={{
-                                    textDecoration: 'none',
-                                    color: 'inherit'
-                                  }}
-                                >
+                                {filteredProperties.map((property) => {
+                                  console.log(
+                                    'TITLE:',
+                                    property.title
+                                  )
+                                  console.log(
+                                    'IMAGES:',
+                                    property.images
+                                  )
+                                  return (
+                                    <Link
+                                      href={`/en/buy/listing/${property.id}`}
+                                      key={property.id}
+                                      style={{
+                                        textDecoration: 'none',
+                                        color: 'inherit'
+                                      }}
+                                    >
 
                                   <div
                                     style={{
@@ -864,7 +868,9 @@ console.log(
 
                                 </Link>
 
-                              ))}
+                              )
+
+                            })}
 
                      
 
