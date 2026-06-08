@@ -26,14 +26,24 @@ export async function POST(req: NextRequest) {
     const token = crypto.randomUUID()
 
     const tokenInsert = await supabase
-      .from('listing_publish_tokens')
-      .insert({
-        phone,
-        token,
-        listing_data: listingData,
-        verified: false
-      })
-      .select()
+            .from('listing_publish_tokens')
+            .insert({
+              phone,
+              token,
+              listing_data: listingData || {},
+              verified: false
+            })
+            .select()
+
+          console.log(
+            'TOKEN INSERT RESULT',
+            JSON.stringify(tokenInsert, null, 2)
+          )
+
+          return NextResponse.json({
+            success: false,
+            debug: tokenInsert
+          })
 
     console.log(
       'TOKEN INSERT RESULT:',
