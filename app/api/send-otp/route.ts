@@ -1,14 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
 import { sendWhatsApp } from '@/lib/whatsapp'
+import crypto from 'crypto'
 
 export async function POST(req: NextRequest) {
   try {
-    const { phone } = await req.json()
+
+
+    const {
+      phone,
+      listingData
+    } = await req.json()
 
     const oneMinuteAgo = new Date(
       Date.now() - 60 * 1000
     ).toISOString()
+
+      const token = crypto.randomUUID()
 
     const { data: recentOtp } = await supabase
       .from('whatsapp_otps')
@@ -53,6 +61,28 @@ export async function POST(req: NextRequest) {
     console.log('OTP PHONE:', phone) 
 
     if (!phone) {
+
+      const token = crypto.randomUUID()
+
+      const tokenInsert =
+        await supabase
+          .from('listing_publish_tokens')
+          .insert({
+            phone,
+            token,
+            listing_data: listingData,
+            verified: false
+          })
+
+      console.log(
+        'TOKEN INSERT:',
+        JSON.stringify(
+          tokenInsert,
+          null,
+          2
+        )
+      )
+
       return NextResponse.json(
         { success: false, error: 'Phone required' },
         { status: 400 }
@@ -97,8 +127,13 @@ export async function POST(req: NextRequest) {
 
     await sendWhatsApp({
       to: phone,
-      body: `Your Twuanis verification code is: ${code}`,
+      body: token
     })
+
+    console.log(
+      'TOKEN CREATED:',
+      token
+    )
 
     return NextResponse.json({
       success: true,
