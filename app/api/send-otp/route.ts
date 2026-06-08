@@ -65,14 +65,47 @@ export async function POST(req: NextRequest) {
       const token = crypto.randomUUID()
 
       const tokenInsert =
-        await supabase
-          .from('listing_publish_tokens')
-          .insert({
-            phone,
-            token,
-            listing_data: listingData,
-            verified: false
-          })
+            await supabase
+              .from('listing_publish_tokens')
+              .insert({
+                phone,
+                token,
+                listing_data: listingData,
+                verified: false
+              })
+              .select()
+
+          console.log(
+            'TOKEN INSERT RESULT:',
+            JSON.stringify(
+              tokenInsert,
+              null,
+              2
+            )
+          )
+
+          if (tokenInsert.error) {
+
+            console.error(
+              'TOKEN INSERT ERROR:',
+              JSON.stringify(
+                tokenInsert.error,
+                null,
+                2
+              )
+            )
+
+            return NextResponse.json(
+              {
+                success: false,
+                error: tokenInsert.error.message
+              },
+              {
+                status: 500
+              }
+            )
+
+          }
 
           console.log(
             'TOKEN INSERT RESULT:',
