@@ -694,21 +694,6 @@ formattedData
                             setShowutilityOptions
                         }
 
-                        setShowenvironmentOptions={
-                            setShowenvironmentOptions
-                        }
-
-                        setShowProvinceOptions={
-                            setShow_province_options
-                        }
-
-                        setShowCantonOptions={
-                            setShow_canton_options
-                        }
-
-                        setShowDistrictOptions={
-                            setShow_district_options
-                        }
                     />
                 
 
@@ -940,41 +925,42 @@ formattedData
                     <AuthOverlay
                         whatsapp={propertyData.whatsapp}
 
+                        propertyData={propertyData}
+
                         formatWhatsAppNumber={
-                        formatWhatsAppNumber
+                            formatWhatsAppNumber
                         }
 
                         onVerify={async () => {
 
-                                console.log(
-                                    'ON VERIFY CALLBACK FIRED'
-                                )
+                            console.log(
+                            'ON VERIFY CALLBACK FIRED'
+                            )
 
-                                console.log(
-                                    'PROPERTY DATA:',
-                                    propertyData
-                                )
+                            console.log(
+                            'PROPERTY DATA:',
+                            propertyData
+                            )
 
-                                const result = await createRentalListing(
-                                    propertyData,
-                                    generateListingTitle,
-                                    generateListingDescription
-                                )
+                            const result = await createRentalListing(
+                            propertyData,
+                            generateListingTitle,
+                            generateListingDescription
+                            )
 
-                                console.log(
-                                    'CREATE LISTING RESULT:',
-                                    result
-                                )
+                            console.log(
+                            'CREATE LISTING RESULT:',
+                            result
+                            )
 
-                                setShowAuthOverlay(false)
+                            setShowAuthOverlay(false)
 
-                                }}
+                        }}
 
                         onClose={() =>
-                        setShowAuthOverlay(false)
+                            setShowAuthOverlay(false)
                         }
-
-                    />
+                        />
 
                     )}
 

@@ -484,18 +484,6 @@ const setSelectedprovince = (value: string) => {
                     }
 
 
-                    setShowProvinceOptions={
-                        setShowProvinceOptions
-                    }
-
-                    setShowCantonOptions={
-                        setShowCantonOptions
-                    }
-
-                    setShowDistrictOptions={
-                        setShowDistrictOptions
-                    }
-
                     />
 
                 </>
@@ -549,15 +537,7 @@ const setSelectedprovince = (value: string) => {
                     setShowAccessibilityOptions
                 }
 
-                setShowenvironmentOptions={
-                    setShowenvironmentOptions
-                }
-
-                setShowTerrainOptions={
-                    setShowTerrainOptions
-                }
-
-
+                
                 />
 
 <TerrainFilter
@@ -579,18 +559,6 @@ const setSelectedprovince = (value: string) => {
 
                 setShowTerrainOptions={
                     setShowTerrainOptions
-                }
-
-                setShowProvinceOptions={
-                    setShowProvinceOptions
-                }
-
-                setShowCantonOptions={
-                    setShowCantonOptions
-                }
-
-                setShowDistrictOptions={
-                    setShowDistrictOptions
                 }
 
                 />

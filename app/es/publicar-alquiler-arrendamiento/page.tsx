@@ -943,6 +943,8 @@ formattedData
 <AuthOverlay
                         whatsapp={propertyData.whatsapp}
 
+                        propertyData={propertyData}
+
                         formatWhatsAppNumber={
                         formatWhatsAppNumber
                         }

@@ -8,18 +8,6 @@ type UtilitiesFilterProps = {
   showutilityOptions: boolean
   setShowutilityOptions: (value: boolean) => void
 
-  setShowProvinceOptions: (
-  value: boolean
-  ) => void
-
-  setShowCantonOptions: (
-    value: boolean
-  ) => void
-
-  setShowDistrictOptions: (
-    value: boolean
-  ) => void
-
 }
 
 export default function UtilitiesFilter({
@@ -29,10 +17,6 @@ export default function UtilitiesFilter({
 
       showutilityOptions,
       setShowutilityOptions,
-
-      setShowProvinceOptions,
-      setShowCantonOptions,
-      setShowDistrictOptions
 
     }: UtilitiesFilterProps) {
 
@@ -78,12 +62,6 @@ export default function UtilitiesFilter({
                             ...selectedutility,
                             utility
                           ])
-
-                          setShowProvinceOptions(false)
-
-                          setShowCantonOptions(false)
-
-                          setShowDistrictOptions(false)
 
                         }
 
