@@ -25,7 +25,6 @@ console.log(
   })
 )
 
-
     const message = await client.messages.create({
       from: process.env.TWILIO_WHATSAPP_NUMBER!,
       to: `whatsapp:+506${to}`,
