@@ -158,7 +158,15 @@ console.log(
                       })
                       })
 
-                      const data = await response.json()
+const data = await response.json()
+
+alert(
+  JSON.stringify(
+    data,
+    null,
+    2
+  )
+)
 
 console.log(
   'SEND OTP RESPONSE:',
