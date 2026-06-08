@@ -26,11 +26,25 @@ export default async function PublishPage({
 }) {
   const { token } = await params
 
-  const { data: tokenData } = await supabase
-    .from('listing_publish_tokens')
-    .select('*')
-    .eq('token', token)
-    .single()
+  console.log('TOKEN FROM URL:', token)
+
+  const { data: tokenData, error: tokenError } = await supabase
+      .from('listing_publish_tokens')
+      .select('*')
+      .eq('token', token)
+      .single()
+
+    console.log(
+      'TOKEN LOOKUP RESULT:',
+      JSON.stringify(
+        {
+          tokenData,
+          tokenError
+        },
+        null,
+        2
+      )
+    )
 
   if (!tokenData) {
     return (
