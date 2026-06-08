@@ -74,6 +74,15 @@ export async function POST(req: NextRequest) {
             verified: false
           })
 
+          console.log(
+            'TOKEN INSERT RESULT:',
+            JSON.stringify(
+              tokenInsert,
+              null,
+              2
+            )
+          )
+
       console.log(
         'TOKEN INSERT:',
         JSON.stringify(
@@ -82,6 +91,19 @@ export async function POST(req: NextRequest) {
           2
         )
       )
+
+      if (tokenInsert.error) {
+
+        console.error(
+          'TOKEN INSERT ERROR:',
+          JSON.stringify(
+            tokenInsert.error,
+            null,
+            2
+          )
+        )
+
+      }
 
       return NextResponse.json(
         { success: false, error: 'Phone required' },
