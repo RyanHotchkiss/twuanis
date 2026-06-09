@@ -47,7 +47,7 @@ import ImagePreviewGridS from '@/app/components/ImagePreviewGridS'
 import ImageUploaderS from '@/app/components/ImageUploaderS'
 import WhatsAppInputS from '@/app/components/WhatsAppInputS'
 import CreateListingButtonS from '@/app/components/CreateListingButtonS'
-import { createListing } from '@/app/utils/createListing'
+
 import CsvStagingModal from '@/app/components/CsvStagingModal'
 import PropertyDefinitionPanelES from '@/app/components/PropertyDefinitionPanelES'
 import PropertyTypeFilterES from '@/app/components/filter-bar/PropertyTypeFilterES'
@@ -940,36 +940,9 @@ formattedData
                         formatWhatsAppNumber
                         }
 
-                        onVerify={async () => {
-
-                                console.log(
-                                    'ON VERIFY CALLBACK FIRED'
-                                )
-
-                                console.log(
-                                    'PROPERTY DATA:',
-                                    propertyData
-                                )
-
-                                const result = await createListing(
-                                    propertyData,
-                                    generateListingTitle,
-                                    generateListingDescription
-                                )
-
-                                console.log(
-                                    'CREATE LISTING RESULT:',
-                                    result
-                                )
-
-                                setShowAuthOverlay(false)
-
-                                }}
-
                         onClose={() =>
                         setShowAuthOverlay(false)
                         }
-
                     />
 
                     )}

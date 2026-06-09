@@ -1,5 +1,4 @@
 'use client'
-import { supabase } from '@/lib/supabase'
 import { useState } from 'react'
 
 type AuthOverlayProps = {
@@ -11,7 +10,6 @@ type AuthOverlayProps = {
     value: string
   ) => string
 
-  onVerify: () => void
 
   onClose: () => void
 }
@@ -24,15 +22,12 @@ export default function AuthOverlay({
 
   formatWhatsAppNumber,
 
-  onVerify,
-
   onClose
 
 }: AuthOverlayProps)
 
 {
-  const [step, setStep] = useState<'send' | 'verify'>('send')
-  const [code, setCode] = useState('')
+  
   const [loading, setLoading] = useState(false)
 
   return (
@@ -116,7 +111,7 @@ export default function AuthOverlay({
           lineHeight:'1.8'
         }}>
 
-          Open WhatsApp and tap:
+          A secure publishing link will be sent to:
 
           <div style={{
             marginTop:'1rem',
@@ -127,165 +122,59 @@ export default function AuthOverlay({
 
             fontWeight:'bold'
           }}>
-            “Pura Vida!”
+            “Tuanis!”
           </div>
 
         </div>
 
-      {step === 'send' && (
+      <button
+  onClick={async () => {
 
-                  <button
-                    onClick={async () => {
+    setLoading(true)
 
-console.log(
-    'SEND OTP CLICKED'
-  )
-  console.log(
-    'WHATSAPP:',
-    whatsapp
-  )
+    const response = await fetch(
+      '/api/send-otp',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          phone: whatsapp,
+          listingData: propertyData
+        })
+      }
+    )
 
-                      setLoading(true)
+    const data = await response.json()
 
-                      const response = await fetch('/api/send-otp', {
-                        method: 'POST',
-                        headers: {
-                          'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                        phone: whatsapp,
-                        listingData: propertyData
-                      })
-                      })
+    setLoading(false)
 
-const data = await response.json()
+    if (!data.success) {
+      alert(data.error)
+      return
+    }
 
-alert(
-  JSON.stringify(
-    data,
-    null,
-    2
-  )
-)
+    alert('Tuanis!')
 
-console.log(
-  'SEND OTP RESPONSE:',
-  data
-)
+    onClose()
 
-                      setLoading(false)
-
-                      if (!data.success) {
-                        alert(data.error)
-                        return
-                      }
-
-                      setStep('verify')
-                    }}
-
-                    style={{
-                      background:'#FFFFFF',
-                      color:'#000',
-                      border:'none',
-                      borderRadius:'999rem',
-                      padding:'1rem',
-                      fontWeight:'bold',
-                      cursor:'pointer',
-                      fontSize:'1rem'
-                    }}
-                  >
-                    {loading
-                      ? 'Sending...'
-                      : 'Send Verification Code'}
-                  </button>
-
-                )}
-
-                {step === 'verify' && (
-
-                  <div
-                    style={{
-                      display:'flex',
-                      flexDirection:'column',
-                      gap:'1rem'
-                    }}
-                  >
-
-                    <input
-                      type="text"
-                      placeholder="Enter 6-digit code"
-                      value={code}
-                      onChange={(e) =>
-                        setCode(e.target.value)
-                      }
-
-                      style={{
-                        background:'#181818',
-                        border:'1px solid #333',
-                        borderRadius:'1rem',
-                        padding:'1rem',
-                        color:'#fff',
-                        textAlign:'center',
-                        fontSize:'1.25rem',
-                        letterSpacing:'.3rem'
-                      }}
-                    />
-
-                    <button
-                      onClick={async () => {
-
-                        setLoading(true)
-
-                        const response = await fetch(
-                          '/api/verify-otp',
-                          {
-                            method:'POST',
-                            headers:{
-                              'Content-Type':'application/json'
-                            },
-                            body: JSON.stringify({
-                              phone: whatsapp,
-                              code
-                            })
-                          }
-                        )
-
-                        const data = await response.json()
-
-                        setLoading(false)
-
-                        if (!data.success) {
-                          alert(data.error)
-                          return
-                        }
-
-                        localStorage.setItem(
-                          'twuanis_verified_phone',
-                          whatsapp
-                        )
-
-                        onVerify()
-                      }}
-
-                      style={{
-                        background:'#FFFFFF',
-                        color:'#000',
-                        border:'none',
-                        borderRadius:'999rem',
-                        padding:'1rem',
-                        fontWeight:'bold',
-                        cursor:'pointer',
-                        fontSize:'1rem'
-                      }}
-                    >
-                      {loading
-                        ? 'Verifying...'
-                        : 'Verify & Publish Listing'}
-                    </button>
-
-                  </div>
-
-                )}
+  }}
+  style={{
+    background:'#FFFFFF',
+    color:'#000',
+    border:'none',
+    borderRadius:'999rem',
+    padding:'1rem',
+    fontWeight:'bold',
+    cursor:'pointer',
+    fontSize:'1rem'
+  }}
+>
+  {loading
+    ? 'Sending...'
+    : 'Send WhatsApp Link'}
+</button>
 
       </div>
 
