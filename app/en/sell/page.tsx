@@ -966,49 +966,19 @@ console.log(
 
                     <AuthOverlay
                         whatsapp={propertyData.whatsapp}
-
                         propertyData={propertyData}
-
                         formatWhatsAppNumber={
                         formatWhatsAppNumber
                         }
-
-                        onVerify={async () => {
-
-                                console.log(
-                                    'ON VERIFY CALLBACK FIRED'
-                                )
-
-                                console.log(
-                                    'PROPERTY DATA:',
-                                    propertyData
-                                )
-
-                                const result = await createListing(
-                                    propertyData,
-                                    generateListingTitle,
-                                    generateListingDescription
-                                )
-
-                                console.log(
-                                    'CREATE LISTING RESULT:',
-                                    result
-                                )
-
-                                setShowAuthOverlay(false)
-
-                                }}
-
                         onClose={() =>
                         setShowAuthOverlay(false)
                         }
-
                     />
 
                     )}
 
-                    </main>
+                </main>
 
-                    )
+            )
 
-                    }
+        }

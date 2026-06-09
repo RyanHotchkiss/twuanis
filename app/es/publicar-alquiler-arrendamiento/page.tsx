@@ -949,32 +949,6 @@ formattedData
                         formatWhatsAppNumber
                         }
 
-                        onVerify={async () => {
-
-                                console.log(
-                                    'ON VERIFY CALLBACK FIRED'
-                                )
-
-                                console.log(
-                                    'PROPERTY DATA:',
-                                    propertyData
-                                )
-
-                                const result = await createRentalListing(
-                                    propertyData,
-                                    generateListingTitle,
-                                    generateListingDescription
-                                )
-
-                                console.log(
-                                    'CREATE LISTING RESULT:',
-                                    result
-                                )
-
-                                setShowAuthOverlay(false)
-
-                                }}
-
                         onClose={() =>
                         setShowAuthOverlay(false)
                         }
@@ -983,8 +957,8 @@ formattedData
 
                     )}
 
-                    </main>
+                </main>
 
-                    )
+            )
 
-                    }
+        }

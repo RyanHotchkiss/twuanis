@@ -46,8 +46,6 @@ import MonthlyRentSelectorS from '@/app/components/filter-bar/MonthlyRentSelecto
 import ImagePreviewGridS from '@/app/components/ImagePreviewGridS'
 import ImageUploaderS from '@/app/components/ImageUploaderS'
 import WhatsAppInputS from '@/app/components/WhatsAppInputS'
-import CreateListingButtonS from '@/app/components/CreateListingButtonS'
-import { createRentalListing } from '@/app/utils/createRentalListing'
 import CsvStagingModal from '@/app/components/CsvStagingModal'
 import RentalPropertyDefinitionPanel from '@/app/components/RentalPropertyDefinitionPanel'
 import PropertyTypeFilter from '@/app/components/filter-bar/PropertyTypeFilter'
@@ -915,57 +913,23 @@ formattedData
                 )}
 
                {/* AUTH OVERLAY */}
-                    {showAuthOverlay && (
+                {showAuthOverlay && (
 
-                        console.log(
-                            'AUTH OVERLAY OPENING WITH WHATSAPP:',
-                            propertyData.whatsapp
-                        ),
-
-                    <AuthOverlay
-                        whatsapp={propertyData.whatsapp}
-
-                        propertyData={propertyData}
-
-                        formatWhatsAppNumber={
-                            formatWhatsAppNumber
-                        }
-
-                        onVerify={async () => {
-
-                            console.log(
-                            'ON VERIFY CALLBACK FIRED'
-                            )
-
-                            console.log(
-                            'PROPERTY DATA:',
-                            propertyData
-                            )
-
-                            const result = await createRentalListing(
-                            propertyData,
-                            generateListingTitle,
-                            generateListingDescription
-                            )
-
-                            console.log(
-                            'CREATE LISTING RESULT:',
-                            result
-                            )
-
-                            setShowAuthOverlay(false)
-
-                        }}
-
-                        onClose={() =>
-                            setShowAuthOverlay(false)
-                        }
-                        />
-
-                    )}
-
-                    </main>
-
-                    )
-
+                <AuthOverlay
+                    whatsapp={propertyData.whatsapp}
+                    propertyData={propertyData}
+                    formatWhatsAppNumber={
+                    formatWhatsAppNumber
                     }
+                    onClose={() =>
+                    setShowAuthOverlay(false)
+                    }
+                />
+
+                )}
+
+            </main>
+
+        )
+
+    }
