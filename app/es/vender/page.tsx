@@ -331,8 +331,8 @@ export default function SellPage() {
                                             : [],
 
                                         accessibility: row.accessibility
-                                            ? [row.accessibility]
-                                            : [],
+                                            ? row.accessibility
+                                            : '',
 
                                         terrain: row.terrain
                                             ? [row.terrain]

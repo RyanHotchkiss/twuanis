@@ -1,8 +1,8 @@
 'use client'
 
 type AccessibilityFiltersProps = {
-  selectedAccessibility: string[]
-  setSelectedAccessibility: (value: string[]) => void
+  selectedAccessibility: string
+  setSelectedAccessibility: (value: string) => void
 
   showAccessibilityOptions: boolean
   setShowAccessibilityOptions: (value: boolean) => void
@@ -60,16 +60,14 @@ export default function AccessibilityFilters({
               <div style={summaryCard}>
 
                 <span>
-                  {selectedAccessibility.length > 0
-                    ? selectedAccessibility.join(', ')
-                    : 'None Selected'}
+                  {selectedAccessibility || 'None Selected'}
                 </span>
 
                 <button
                   type="button"
                   onClick={() => {
 
-                    setSelectedAccessibility([])
+                    setSelectedAccessibility('')
                     setShowAccessibilityOptions(true)
 
                   }}
@@ -90,7 +88,7 @@ export default function AccessibilityFilters({
                 {accessibilityOptions.map((option) => {
 
                   const alreadySelected =
-                    selectedAccessibility.includes(option)
+                    selectedAccessibility === option
 
                   return (
 
@@ -99,16 +97,7 @@ export default function AccessibilityFilters({
                       key={option}
                       onClick={() => {
 
-                        setSelectedAccessibility(
-                          alreadySelected
-                            ? selectedAccessibility.filter(
-                                item => item !== option
-                              )
-                            : [
-                                ...selectedAccessibility,
-                                option
-                              ]
-                        )
+                        setSelectedAccessibility(option)
 
                       }}
                       style={

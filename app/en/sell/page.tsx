@@ -99,7 +99,7 @@ export default function SellPage() {
     legal_status: '',
     connectivity: '',
     environment: '',
-    accessibility: [] as string[],
+    accessibility: '',
     terrain: [] as string[],
     priceMillions: 0,
     images: [] as {
