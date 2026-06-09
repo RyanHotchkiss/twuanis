@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { supabase } from '@/lib/supabase'
+
 import Papa from 'papaparse'
 import Link from 'next/link'
 import {
@@ -46,8 +46,8 @@ import PriceSelectorS from '@/app/components/filter-bar/PriceSelectorS'
 import ImagePreviewGridS from '@/app/components/ImagePreviewGridS'
 import ImageUploaderS from '@/app/components/ImageUploaderS'
 import WhatsAppInputS from '@/app/components/WhatsAppInputS'
-import CreateListingButtonS from '@/app/components/CreateListingButtonS'
-import { createListing } from '@/app/utils/createListing'
+
+
 import CsvStagingModal from '@/app/components/CsvStagingModal'
 import PropertyDefinitionPanel from '@/app/components/PropertyDefinitionPanel'
 import PropertyTypeFilterS from '@/app/components/filter-bar/PropertyTypeFilterS'
@@ -109,9 +109,6 @@ export default function SellPage() {
         }[],
     whatsapp: '',
   })
-
-  const [priceInterval, setpriceInterval] =
-  useState<NodeJS.Timeout | null>(null)
 
            const show_residential_fields =
                 residential_property_types.includes(
