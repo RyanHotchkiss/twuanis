@@ -1,8 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { supabase } from '@/lib/supabase'
+
 import Papa from 'papaparse'
+
 import Link from 'next/link'
 import {
                     collapseButton,
@@ -50,7 +51,8 @@ import CreateListingButtonS from '@/app/components/CreateListingButtonS'
 
 import CsvStagingModal from '@/app/components/CsvStagingModal'
 import PropertyDefinitionPanelES from '@/app/components/PropertyDefinitionPanelES'
-import PropertyTypeFilterES from '@/app/components/filter-bar/PropertyTypeFilterES'
+import PropertyTypeFilterSES from
+'@/app/components/filter-bar/PropertyTypeFilterSES'
 import TopBarES from '@/app/components/TopBarES'
 import CreateListingButtonSXL from '@/app/components/CreateListingButtonSXL'
 import AuthOverlay
@@ -109,9 +111,6 @@ export default function SellPage() {
         }[],
     whatsapp: '',
   })
-
-  const [priceInterval, setpriceInterval] =
-  useState<NodeJS.Timeout | null>(null)
 
            const show_residential_fields =
                 residential_property_types.includes(
@@ -355,9 +354,7 @@ export default function SellPage() {
 
                                         }),
 
-                                        images: propertyData.images.map(
-                                            (img: any) => img.uploadedUrl
-                                            )
+                                        images: row.images
 
                                         }))
 
@@ -509,60 +506,52 @@ formattedData
 
 {/* PROPERTY TYPE */}
 
-                    <PropertyTypeFilterES
+<PropertyTypeFilterSES
+                    bedrooms={propertyData.bedrooms}
+                    bathrooms={propertyData.bathrooms}
+                    parking={propertyData.parking}
+                    yearBuiltRange={propertyData.year_built_range}
+                    constructionArea={propertyData.construction_area}
+                    selectedproperty_type={propertyData.property_type}
+                    setselectedproperty_type={(value: string) =>
+                        setPropertyData({
+                            ...propertyData,
+                            property_type: value
+                        })
+                    }
+                    showproperty_typeOptions={showproperty_typeOptions}
+                    setShowproperty_typeOptions={setShowproperty_typeOptions}
+                    setShowproperty_areaOptions={setShowproperty_areaOptions}
+                    setShowBedroomOptions={setShow_bedroom_options}
+                    setShowProvinceOptions={setShow_province_options}
+                    setShowCantonOptions={setShow_canton_options}
+                    setShowDistrictOptions={setShow_district_options}
+                    propertyTypes={property_types}
+                    residentialPropertyTypes={residential_property_types}
+                    resetResidentialFields={() => {
+                        setPropertyData(prev => ({
+                            ...prev,
+                            bedrooms: '',
+                            bathrooms: '',
+                            parking: '',
+                            year_built_range: '',
+                            construction_area: ''
+                        }))
 
-                        bedrooms={propertyData.bedrooms}
-                        bathrooms={propertyData.bathrooms}
-                        parking={propertyData.parking}
-
-                        yearBuiltRange={
-                            propertyData.year_built_range
-                        }
-
-                        constructionArea={
-                            propertyData.construction_area
-                        }
-
-                        selectedproperty_type={
-                            propertyData.property_type
-                        }
-
-                        setSelectedproperty_type={(value) =>
-                            setPropertyData({
-                                ...propertyData,
-                                property_type: value
-                            })
-                        }
-
-                        showproperty_typeOptions={
-                            showproperty_typeOptions
-                        }
-
-                        setShowproperty_typeOptions={
-                            setShowproperty_typeOptions
-                        }
-
-                        setShowproperty_areaOptions={
-                            setShowproperty_areaOptions
-                        }
-
-                        setShowBedroomOptions={
-                            setShow_bedroom_options
-                        }
-
-                        setShowProvinceOptions={
-                            setShow_province_options
-                        }
-
-                        setShowCantonOptions={
-                            setShow_canton_options
-                        }
-
-                        setShowDistrictOptions={
-                            setShow_district_options
-                        }
-
-                    />
+                        setShow_bedroom_options(true)
+                        setShow_bathroom_options(false)
+                        setShow_parking_options(false)
+                        setShow_year_built_options(false)
+                        setShow_construction_area_options(false)
+                    }}
+                    enableResidentialFlow={() => {
+                        setShow_bedroom_options(true)
+                        setShow_bathroom_options(false)
+                        setShow_parking_options(false)
+                        setShow_year_built_options(false)
+                        setShow_construction_area_options(false)
+                    }}
+                />
 
 
 
@@ -744,45 +733,33 @@ formattedData
                     />
 
 
-
-{/* accessibility */}
-
-                    <AccessibilityFilterES
+<AccessibilityFilterES
                         selectedaccessibility={propertyData.accessibility}
-                        setSelectedaccessibility={(value) =>
+                        setSelectedaccessibility={(value: string) =>
                             setPropertyData({
-                            ...propertyData,
-                            accessibility: value
+                                ...propertyData,
+                                accessibility: value
                             })
                         }
-
                         showAccessibilityOptions={showAccessibilityOptions}
                         setShowAccessibilityOptions={
                             setShowAccessibilityOptions
                         }
-                        />
+                    />
 
 {/* TERRAIN */}
-                        <TerrainFilterES
 
-                            selectedterrain={propertyData.terrain}
-
-                            setSelectedterrain={(value) =>
-                                setPropertyData({
-                                    ...propertyData,
-                                    terrain: value
-                                })
-                            }
-
-                            showTerrainOptions={
-                                showTerrainOptions
-                            }
-
-                            setShowTerrainOptions={
-                                setShowTerrainOptions
-                            }
-
-                        />
+<TerrainFilterES
+                selectedterrain={propertyData.terrain}
+                setSelectedterrain={(value) =>
+                    setPropertyData({
+                        ...propertyData,
+                        terrain: value
+                    })
+                }
+                showTerrainOptions={showTerrainOptions}
+                setShowTerrainOptions={setShowTerrainOptions}
+            />
                     
 {/* LEGAL STATUS */}
                     <LegalStatusFilterSES
@@ -911,44 +888,37 @@ formattedData
         </div>
     </div> 
             
-            {/* MAIN GRID */}
-
-                {/* CSV STAGING MODAL */}
-                {showCsvStaging && (
-
-                <CsvStagingModal
-                    csvListings={csvListings}
-                    setCsvListings={setCsvListings}
-                    setShowCsvStaging={setShowCsvStaging}
-                />
-
-                )}
-
-               {/* AUTH OVERLAY */}
-                    {showAuthOverlay && (
-
-                        console.log(
-                            'AUTH OVERLAY OPENING WITH WHATSAPP:',
-                            propertyData.whatsapp
-                        ),
-
-                    <AuthOverlay
-                        whatsapp={propertyData.whatsapp}
-                        propertyData={propertyData}
-
-                        formatWhatsAppNumber={
-                        formatWhatsAppNumber
-                        }
-
-                        onClose={() =>
-                        setShowAuthOverlay(false)
-                        }
-                    />
-
-                    )}
-
-                    </main>
-
-                    )
-
+             {/* MAIN GRID */}
+            
+                            {/* CSV STAGING MODAL */}
+                            {showCsvStaging && (
+            
+                            <CsvStagingModal
+                                csvListings={csvListings}
+                                setCsvListings={setCsvListings}
+                                setShowCsvStaging={setShowCsvStaging}
+                            />
+            
+                            )}
+            
+                           {/* AUTH OVERLAY */}
+                                {showAuthOverlay && (
+            
+                                <AuthOverlay
+                                    whatsapp={propertyData.whatsapp}
+                                    propertyData={propertyData}
+                                    formatWhatsAppNumber={
+                                    formatWhatsAppNumber
+                                    }
+                                    onClose={() =>
+                                    setShowAuthOverlay(false)
+                                    }
+                                />
+            
+                                )}
+            
+                            </main>
+            
+                        )
+            
                     }

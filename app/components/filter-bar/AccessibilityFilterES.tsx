@@ -6,19 +6,14 @@ type AccessibilityFilterProps = {
 
   showAccessibilityOptions: boolean
   setShowAccessibilityOptions: (value: boolean) => void
-  
 }
 
-export default function AccessibilityFilter({
+export default function AccessibilityFilterES({
   selectedaccessibility,
   setSelectedaccessibility,
-
   showAccessibilityOptions,
-  setShowAccessibilityOptions,
-
-  }: AccessibilityFilterProps) 
-{
-
+  setShowAccessibilityOptions
+}: AccessibilityFilterProps) {
   const accessibilityOptions = [
     'Accesible en 2WD',
     'Carretera Pavimentada',
@@ -28,28 +23,20 @@ export default function AccessibilityFilter({
   ]
 
   return (
-
     <div>
-
       <p style={miniHeading}>
         ACCESIBILIDAD
       </p>
 
       {showAccessibilityOptions && (
-
         <div style={pillWrap}>
-
           {accessibilityOptions.map((option) => (
-
             <button
               key={option}
               onClick={() => {
-
-                    setSelectedaccessibility(option)
-
-                    setShowAccessibilityOptions(false)
-
-                  }}
+                setSelectedaccessibility(option)
+                setShowAccessibilityOptions(false)
+              }}
               style={
                 selectedaccessibility === option
                   ? activePill
@@ -58,105 +45,92 @@ export default function AccessibilityFilter({
             >
               {option}
             </button>
-
           ))}
-
         </div>
-
       )}
 
       {!showAccessibilityOptions &&
-      selectedaccessibility && (
+        selectedaccessibility && (
+          <div style={summaryCard}>
+            <span
+              onClick={() =>
+                setShowAccessibilityOptions(true)
+              }
+              style={{
+                ...breadcrumbText,
+                cursor: 'pointer'
+              }}
+            >
+              {selectedaccessibility}
+            </span>
 
-        <div style={summaryCard}>
-
-          <span
-            onClick={() =>
-              setShowAccessibilityOptions(true)
-            }
-            style={{
-              ...breadcrumbText,
-              cursor:'pointer'
-            }}
-          >
-            {selectedaccessibility}
-          </span>
-
-          <button
-            type="button"
-            onClick={() => {
-
-              setSelectedaccessibility('')
-
-              setShowAccessibilityOptions(true)
-
-            }}
-            style={resetButton}
-          >
-            ✕
-          </button>
-
-        </div>
-
-      )}
-
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedaccessibility('')
+                setShowAccessibilityOptions(true)
+              }}
+              style={resetButton}
+            >
+              ✕
+            </button>
+          </div>
+        )}
     </div>
-
   )
-
 }
 
 const miniHeading = {
-  fontSize:'1rem',
-  marginBottom:'1rem',
-  color:'#D4AF37',
-  textTransform:'uppercase' as const,
-  letterSpacing:'.05rem'
+  fontSize: '1rem',
+  marginBottom: '1rem',
+  color: '#D4AF37',
+  textTransform: 'uppercase' as const,
+  letterSpacing: '.05rem'
 }
 
 const pillWrap = {
-  display:'flex',
-  flexWrap:'wrap' as const,
-  gap:'.5rem'
+  display: 'flex',
+  flexWrap: 'wrap' as const,
+  gap: '.5rem'
 }
 
 const pill = {
-  background:'#181818',
-  border:'1px solid #D4AF3750',
-  color:'#fff',
-  padding:'.85rem 1rem',
-  borderRadius:'999rem',
-  cursor:'pointer',
-  transition:'all .2s ease'
+  background: '#181818',
+  border: '1px solid #D4AF3750',
+  color: '#fff',
+  padding: '.85rem 1rem',
+  borderRadius: '999rem',
+  cursor: 'pointer',
+  transition: 'all .2s ease'
 }
 
 const activePill = {
   ...pill,
-  background:'#D4AF37',
-  border:'1px solid #D4AF3750',
-  color:'#fff'
+  background: '#D4AF37',
+  border: '1px solid #D4AF3750',
+  color: '#fff'
 }
 
 const summaryCard = {
-  display:'flex',
-  justifyContent:'space-between',
-  alignItems:'flex-start',
-  background:'#181818',
-  border:'1px solid #D4AF3750',
-  borderRadius:'1rem',
-  padding:'1rem',
-  marginTop:'1rem'
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'flex-start',
+  background: '#181818',
+  border: '1px solid #D4AF3750',
+  borderRadius: '1rem',
+  padding: '1rem',
+  marginTop: '1rem'
 }
 
 const breadcrumbText = {
-  color:'#FFFFFF',
-  fontSize:'.85rem'
+  color: '#FFFFFF',
+  fontSize: '.85rem'
 }
 
 const resetButton = {
-  background:'transparent',
-  border:'none',
-  color:'#ff6666',
-  cursor:'pointer',
-  fontSize:'1rem'
+  background: 'transparent',
+  border: 'none',
+  color: '#ff6666',
+  cursor: 'pointer',
+  fontSize: '1rem'
 }

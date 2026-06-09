@@ -9,6 +9,9 @@ import EnvironmentFilter from '@/app/components/filter-bar/EnvironmentFilter'
 import AccessibilityFilter from '@/app/components/filter-bar/AccessibilityFilter'
 import TerrainFilter from '@/app/components/filter-bar/TerrainFilter'
 import LegalStatusFilter from '@/app/components/filter-bar/LegalStatusFilter'
+import {
+  residential_property_types
+} from '@/data/property-data'
 
 export default function BuySidebar(props: any) {
 
@@ -314,10 +317,8 @@ const setSelectedprovince = (value: string) => {
                 />
 
                 {
-                (
-                    filters.property_type === 'House' ||
-                    filters.property_type === 'Condominium' ||
-                    filters.property_type === 'Cabin'
+                residential_property_types.includes(
+                    filters.property_type
                 ) && (
 
 <ResidentialAttributesS
@@ -410,11 +411,9 @@ const setSelectedprovince = (value: string) => {
                 }
 
                {
-                        (
-                        filters.property_type !== 'House' &&
-                    filters.property_type !== 'Condominium' &&
-                    filters.property_type !== 'Cabin'
-                        ) && (
+                    !residential_property_types.includes(
+                        filters.property_type
+                    ) && (
 
                         <>
 
@@ -524,12 +523,10 @@ const setSelectedprovince = (value: string) => {
                 selectedaccessibility={filters.accessibility}
 
                 setSelectedaccessibility={(value: string) => {
-
                     setFilters((prev: any) => ({
-                    ...prev,
-                    accessibility: value
+                        ...prev,
+                        accessibility: value
                     }))
-
                 }}
 
                 showAccessibilityOptions={

@@ -44,6 +44,7 @@ import CsvStagingModal from '@/app/components/CsvStagingModal'
 import RentalPropertyDefinitionPanel from '@/app/components/RentalPropertyDefinitionPanel'
 import PropertyTypeFilter from '@/app/components/filter-bar/PropertyTypeFilter'
 import TopBar from '@/app/components/TopBar'
+import CreateListingButtonSXL from '@/app/components/CreateListingButtonSXL'
 import AuthOverlay
 from '@/app/AuthOverlay'
 

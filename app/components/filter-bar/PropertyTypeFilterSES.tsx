@@ -1,57 +1,38 @@
 'use client'
 
 type PropertyTypeFilterProps = {
-
   propertyTypes: string[]
-
   residentialPropertyTypes: string[]
-
-  selectedPropertyType: string
-
-  setSelectedPropertyType: (
+  selectedproperty_type: string
+  setselectedproperty_type: (
     value: string
   ) => void
-
   bedrooms: string
-
-  bathrooms: string
-
+  bathrooms?: string
   parking: string
-
   yearBuiltRange: string
-
   constructionArea: string
-
-  showPropertyTypeOptions: boolean
-
-  setShowPropertyTypeOptions: (
+  showproperty_typeOptions: boolean
+  setShowproperty_typeOptions: (
     value: boolean
   ) => void
-
-  setShowPropertyAreaOptions: (
+  setShowproperty_areaOptions: (
     value: boolean
   ) => void
-
   setShowBedroomOptions: (
     value: boolean
   ) => void
-
   setShowProvinceOptions: (
     value: boolean
   ) => void
-
   setShowCantonOptions: (
     value: boolean
   ) => void
-
   setShowDistrictOptions: (
     value: boolean
   ) => void
-
   resetResidentialFields: () => void
-
   enableResidentialFlow: () => void
-
 }
 
 export default function PropertyTypeFilterSES({
@@ -60,9 +41,9 @@ export default function PropertyTypeFilterSES({
 
   residentialPropertyTypes,
 
-  selectedPropertyType,
+  selectedproperty_type,
 
-  setSelectedPropertyType,
+  setselectedproperty_type,
 
   bedrooms,
 
@@ -74,11 +55,11 @@ export default function PropertyTypeFilterSES({
 
   constructionArea,
 
-  showPropertyTypeOptions,
+  showproperty_typeOptions,
 
-  setShowPropertyTypeOptions,
+  setShowproperty_typeOptions,
 
-  setShowPropertyAreaOptions,
+  setShowproperty_areaOptions,
 
   setShowBedroomOptions,
 
@@ -102,7 +83,7 @@ export default function PropertyTypeFilterSES({
         TIPO DE PROPIEDAD
       </h3>
 
-      {showPropertyTypeOptions && (
+      {showproperty_typeOptions && (
 
         <div style={pillWrap}>
 
@@ -112,9 +93,9 @@ export default function PropertyTypeFilterSES({
               key={type}
               onClick={() => {
 
-                setSelectedPropertyType(type)
+                setselectedproperty_type(type)
 
-                setShowPropertyTypeOptions(false)
+                setShowproperty_typeOptions(false)
 
                 setShowBedroomOptions(true)
 
@@ -134,7 +115,7 @@ export default function PropertyTypeFilterSES({
 
               }}
               style={
-                selectedPropertyType === type
+                selectedproperty_type === type
                   ? activePill
                   : pill
               }
@@ -148,15 +129,15 @@ export default function PropertyTypeFilterSES({
 
       )}
 
-      {!showPropertyTypeOptions &&
-      selectedPropertyType && (
+      {!showproperty_typeOptions &&
+      selectedproperty_type && (
 
         <div style={summaryCard}>
 
           <span
             onClick={() => {
 
-              setShowPropertyTypeOptions(true)
+              setShowproperty_typeOptions(true)
 
             }}
             style={{
@@ -165,7 +146,7 @@ export default function PropertyTypeFilterSES({
             }}
           >
 
-            {selectedPropertyType}
+            {selectedproperty_type}
 
             {bedrooms && (
               <>
@@ -223,11 +204,11 @@ export default function PropertyTypeFilterSES({
             type="button"
             onClick={() => {
 
-              setSelectedPropertyType('')
+              setselectedproperty_type('')
 
-              setShowPropertyTypeOptions(true)
+              setShowproperty_typeOptions(true)
 
-              setShowPropertyAreaOptions(false)
+              setShowproperty_areaOptions(false)
 
               resetResidentialFields()
 
