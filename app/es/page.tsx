@@ -642,9 +642,13 @@ const [showMainOverlay, setShowMainOverlay] =
                       backgroundImage:
                         'url(/images/twuanis-intro-es.png)',
 
-                      backgroundSize:'35rem auto',
-                        backgroundPosition:'center center',
-                        backgroundRepeat:'no-repeat',
+                      backgroundSize:
+                            isMobile
+                              ? '22rem auto'
+                              : '35rem auto',
+
+                          backgroundPosition:'center center',
+                          backgroundRepeat:'no-repeat',
 
                       opacity: showPoster ? 1 : .15,
 
