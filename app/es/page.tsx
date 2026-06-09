@@ -1115,36 +1115,7 @@ const [showMainOverlay, setShowMainOverlay] =
 
         </div>
 
-        {isMobile && (
-
-          <button
-            onClick={() =>
-              setShowMobileFilters(true)
-            }
-            style={{
-              position: 'fixed',
-              bottom: '20px',
-              right: '20px',
-              zIndex: 1000,
-
-              background: '#FFFFFF',
-              color: '#000',
-
-              border: 'none',
-              borderRadius: '999px',
-
-              padding: '16px 22px',
-
-              fontWeight: 'bold',
-              fontSize: '16px',
-
-              boxShadow: '0 10px 30px rgba(0,0,0,.45)'
-            }}
-          >
-            Filtros
-          </button>
-
-        )}
+      
 
         {/* MAIN GRID */}
           <div style={{
@@ -1168,28 +1139,6 @@ const [showMainOverlay, setShowMainOverlay] =
               minHeight: '620px'
             }}
           >
-
-            {/* SIDEBAR */}
-            {isMobile && (
-
-                <button
-                  onClick={() =>
-                    setShowMobileFilters(false)
-                  }
-                  style={{
-                    background: '#181818',
-                    border: '1px solid #333',
-                    color: '#fff',
-                    padding: '12px',
-                    borderRadius: '12px',
-                    marginBottom: '20px',
-                    cursor: 'pointer'
-                  }}
-                >
-                  Cerrar Filtros
-                </button>
-
-              )}
 
               <div
                 style={{
