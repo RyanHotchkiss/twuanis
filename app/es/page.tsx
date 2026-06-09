@@ -746,6 +746,7 @@ const [showMainOverlay, setShowMainOverlay] =
                             maxWidth: '32rem',
                             padding: '2rem',
                             display: 'flex',
+                            background:'rgba(0,0,0,0)',
                             flexDirection: 'column',
                             gap: '1rem',
                             alignItems: 'center',
@@ -1152,12 +1153,12 @@ const [showMainOverlay, setShowMainOverlay] =
           {/* BUY EXPERIENCE */}
           <div
             style={{
-              background: '#111',
+              background: '#11111100',
               borderRadius: '28px',
               overflow: 'hidden',
               textDecoration: 'none',
-              color: '#fff',
-              border: '1px solid #222',
+              color: '#ffffff00',
+              border: '1px solid #',
               display: 'grid',
               gridTemplateColumns: '320px 1fr',
               minHeight: '620px'
