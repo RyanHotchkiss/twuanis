@@ -26,7 +26,25 @@ export async function POST(req: NextRequest) {
 console.log(
   'FIRST IMAGE:',
   JSON.stringify(
-    listingData.images?.[0],
+    listingData?.images?.[0],
+    null,
+    2
+  )
+)
+
+console.log(
+  'ALL IMAGES:',
+  JSON.stringify(
+    listingData?.images,
+    null,
+    2
+  )
+)
+
+console.log(
+  'LISTING DATA:',
+  JSON.stringify(
+    listingData,
     null,
     2
   )
