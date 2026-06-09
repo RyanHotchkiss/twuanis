@@ -105,9 +105,7 @@ export default async function PublishPage({
           generateFallbackDescription(propertyData),
 
         images:
-          propertyData.uploadedImageUrls ||
-          propertyData.images ||
-          []
+          propertyData.images || []
       }
     ])
     .select()

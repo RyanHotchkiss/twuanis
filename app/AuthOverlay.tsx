@@ -1,6 +1,10 @@
 'use client'
 import { useState } from 'react'
 
+import {
+  uploadListingImages
+} from '@/app/utils/uploadListingImages'
+
 type AuthOverlayProps = {
   whatsapp: string
 
@@ -132,19 +136,28 @@ export default function AuthOverlay({
 
     setLoading(true)
 
-    const response = await fetch(
-      '/api/send-otp',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          phone: whatsapp,
-          listingData: propertyData
-        })
-      }
-    )
+   const uploadedImageUrls =
+          await uploadListingImages(
+            propertyData.images
+          )
+        const updatedPropertyData = {
+          ...propertyData,
+          images: uploadedImageUrls
+        }
+        const response = await fetch(
+          '/api/send-otp',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              phone: whatsapp,
+              listingData:
+                updatedPropertyData
+            })
+          }
+        )
 
     const data = await response.json()
 
