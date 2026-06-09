@@ -1,5 +1,15 @@
 import { supabase } from '@/lib/supabase'
 
+function normalize(value: any): string {
+  return String(value || '')
+    .toLowerCase()
+    .trim()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9 ]/g, '')
+    .replace(/\s+/g, ' ')
+}
+
 export async function assignListingOntology(
   listingId: string,
   listingData: any
@@ -8,11 +18,6 @@ export async function assignListingOntology(
   console.log(
     'ASSIGN ONTOLOGY CALLED',
     listingId
-  )
-
-  console.log(
-    'LISTING DATA',
-    listingData
   )
 
   const valuesToMatch = [
@@ -42,43 +47,98 @@ export async function assignListingOntology(
   ].filter(Boolean)
 
   console.log(
-  'VALUES TO MATCH:',
-  valuesToMatch
-)
+    'VALUES TO MATCH:',
+    valuesToMatch
+  )
 
   if (valuesToMatch.length === 0) {
     return
   }
 
-  const { data: ontologyTerms } =
+  const { data: ontologyTerms, error } =
     await supabase
       .from('ontology_terms')
-      .select('id, term_name_en')
+      .select(`
+        id,
+        parent_id,
+        term_type,
+        term_name,
+        term_name_en,
+        term_name_es,
+        slug,
+        slug_en,
+        slug_es
+      `)
 
-      console.log(
-        'ONTOLOGY TERMS FOUND',
-        ontologyTerms?.length
-        )
+  if (error) {
 
-  if (!ontologyTerms) {
+    console.error(
+      'ONTOLOGY QUERY ERROR',
+      error
+    )
+
+    return
+
+  }
+
+  if (!ontologyTerms?.length) {
     return
   }
 
-console.log(
-  'ONTOLOGY TERM COUNT:',
-  ontologyTerms?.length
-)
+  console.log(
+    'ONTOLOGY TERMS FOUND',
+    ontologyTerms.length
+  )
 
-  const inserts = ontologyTerms
-    .filter(term =>
-      valuesToMatch.includes(term.term_name_en)
-    )
-    .map(term => ({
-      listing_id: listingId,
-      ontology_term_id: term.id
-    }))
+  const termMap = new Map()
 
-  if (inserts.length === 0) {
+  for (const term of ontologyTerms) {
+
+    const aliases = [
+
+      term.term_name,
+      term.term_name_en,
+      term.term_name_es,
+      term.slug,
+      term.slug_en,
+      term.slug_es
+
+    ]
+
+    for (const alias of aliases) {
+
+      if (!alias) continue
+
+      termMap.set(
+        normalize(alias),
+        term
+      )
+
+    }
+
+  }
+
+  const matchedTerms = new Map()
+
+  for (const value of valuesToMatch) {
+
+    const match =
+      termMap.get(
+        normalize(value)
+      )
+
+    if (match) {
+
+      matchedTerms.set(
+        match.id,
+        match
+      )
+
+    }
+
+  }
+
+  if (matchedTerms.size === 0) {
 
     console.log(
       'NO ONTOLOGY TERMS FOUND',
@@ -86,26 +146,109 @@ console.log(
     )
 
     return
+
   }
 
-console.log(
-  'INSERTS',
-  inserts
-)
+  /*
+    Parent Expansion
+    Example:
+
+    Santa Ana
+      -> San José
+      -> Costa Rica
+
+    Condo
+      -> Property Types
+
+    Beachfront
+      -> Environment
+  */
+
+  const ontologyById =
+    new Map(
+      ontologyTerms.map(
+        term => [term.id, term]
+      )
+    )
+
+  const expandedTerms =
+    new Map(matchedTerms)
+
+  for (const term of matchedTerms.values()) {
+
+    let currentParentId =
+      term.parent_id
+
+    while (
+      currentParentId
+    ) {
+
+      const parent =
+        ontologyById.get(
+          currentParentId
+        )
+
+      if (!parent) {
+        break
+      }
+
+      expandedTerms.set(
+        parent.id,
+        parent
+      )
+
+      currentParentId =
+        parent.parent_id
+
+    }
+
+  }
+
+  const inserts =
+    Array.from(
+      expandedTerms.values()
+    )
+    .map(term => ({
+      listing_id: listingId,
+      ontology_term_id: term.id
+    }))
+
+  console.log(
+    'MATCHED TERMS',
+    Array.from(
+      expandedTerms.values()
+    )
+  )
+
+  console.log(
+    'INSERT COUNT',
+    inserts.length
+  )
 
   const response =
     await supabase
       .from('listings_ontology_terms')
-      .insert(inserts)
+      .upsert(
+        inserts,
+        {
+          onConflict:
+            'listing_id,ontology_term_id',
+          ignoreDuplicates: true
+        }
+      )
 
   console.log(
-  'ONTOLOGY INSERT FULL:',
-  JSON.stringify(response, null, 2)
-)
+    'ONTOLOGY INSERT RESPONSE',
+    response
+  )
 
-console.log(
-  'ONTOLOGY ERROR:',
-  response.error
-)
+  if (response.error) {
+
+    console.error(
+      'ONTOLOGY INSERT ERROR',
+      response.error
+    )
+
+  }
 
 }
