@@ -1,15 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { supabase } from '@/lib/supabase'
+
 import Papa from 'papaparse'
-import Link from 'next/link'
-import {
-                    collapseButton,
-                    summaryCard,
-                    resetButton,
-                    
-                    } from '@/app/styles/sell-styles'
+
 import {
   provinces,
   districts,
@@ -50,7 +44,6 @@ import CsvStagingModal from '@/app/components/CsvStagingModal'
 import RentalPropertyDefinitionPanel from '@/app/components/RentalPropertyDefinitionPanel'
 import PropertyTypeFilter from '@/app/components/filter-bar/PropertyTypeFilter'
 import TopBar from '@/app/components/TopBar'
-import CreateListingButtonSXL from '@/app/components/CreateListingButtonSXL'
 import AuthOverlay
 from '@/app/AuthOverlay'
 

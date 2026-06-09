@@ -1,15 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { supabase } from '@/lib/supabase'
+
 import Papa from 'papaparse'
-import Link from 'next/link'
-import {
-                    collapseButton,
-                    summaryCard,
-                    resetButton,
-                    
-                    } from '@/app/styles/sell-styles'
+
 import {
   provinces,
   districts,
@@ -46,8 +40,6 @@ import MonthlyRentSelectorS from '@/app/components/filter-bar/MonthlyRentSelecto
 import ImagePreviewGridS from '@/app/components/ImagePreviewGridS'
 import ImageUploaderS from '@/app/components/ImageUploaderS'
 import WhatsAppInputS from '@/app/components/WhatsAppInputS'
-import CreateListingButtonS from '@/app/components/CreateListingButtonS'
-import { createRentalListing } from '@/app/utils/createRentalListing'
 import CsvStagingModal from '@/app/components/CsvStagingModal'
 import RentalPropertyDefinitionPanelES from '@/app/components/RentalPropertyDefinitionPanelES'
 import PropertyTypeFilterES from '@/app/components/filter-bar/PropertyTypeFilterES'
@@ -866,15 +858,6 @@ formattedData
 <CreateListingButtonSXL
                     onCreateListing={() => {
 
-                        console.log(
-                        'CREATE LISTING BUTTON CLICKED'
-                        )
-
-                        console.log(
-                        'WHATSAPP BEFORE AUTH:',
-                        propertyData.whatsapp
-                        )
-
                         if (!propertyData.whatsapp) {
                         alert(
                             'Please enter your WhatsApp number'
@@ -935,24 +918,15 @@ formattedData
                {/* AUTH OVERLAY */}
                     {showAuthOverlay && (
 
-                        console.log(
-                            'AUTH OVERLAY OPENING WITH WHATSAPP:',
-                            propertyData.whatsapp
-                        ),
-
-<AuthOverlay
+                    <AuthOverlay
                         whatsapp={propertyData.whatsapp}
-
                         propertyData={propertyData}
-
                         formatWhatsAppNumber={
                         formatWhatsAppNumber
                         }
-
                         onClose={() =>
                         setShowAuthOverlay(false)
                         }
-
                     />
 
                     )}
