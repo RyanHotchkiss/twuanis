@@ -32,6 +32,11 @@ function HomePageContent() {
 
   const [countdown, setCountdown] = useState(12)
 
+  const [showPoster, setShowPoster] = useState(true)
+
+const [showMainOverlay, setShowMainOverlay] =
+  useState(false)
+
   const [isMobile, setIsMobile] =
             useState(false)
           useEffect(() => {
@@ -52,6 +57,23 @@ function HomePageContent() {
               )
             }
           }, [])
+
+          useEffect(() => {
+                if (
+                  searchParams.get('overlay')
+                ) {
+                  setShowPoster(false)
+                  setShowMainOverlay(true)
+                  return
+                }
+                const timer = setTimeout(() => {
+                  setShowPoster(false)
+                  setTimeout(() => {
+                    setShowMainOverlay(true)
+                  }, 600)
+                }, 8000)
+                return () => clearTimeout(timer)
+              }, [searchParams])
     
   const overlayBackButton = {
     background:'#FFFFFF40',
@@ -97,7 +119,8 @@ function HomePageContent() {
     initialOverlayState
   )
 
-  const homepageBlurred = false
+  const homepageBlurred =
+  showPoster || showMainOverlay
 
     useEffect(() => {
 
@@ -593,360 +616,443 @@ function HomePageContent() {
     setSelecteddistrict(district)
   }
 
-  {/* OVERLAY over OVERLAY */}
-  return (
-      <main style={{        
-        background: '#000',
-        minHeight: '100vh',
-        color: '#fff',
-        padding: '20px',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-
-      
-
-
-      {/* OVERLAY */}
-
-
-console.log(
-  'SHOW INTRO OVERLAY:',
-  showIntroOverlay
-)
-
-console.log(
-  'OVERLAY STATE:',
-  overlayState
-)
-
-{overlayState && (
-
-            <div style={{
-              position: 'fixed',
-              inset: 0,
-              background: 'rgba(0,0,0,.34)',
-              backdropFilter: 'blur(18px)',
-              WebkitBackdropFilter: 'blur(9px)',
-              zIndex: 9999,
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              transition: 'all .45s ease'
+  /* OVERLAY over OVERLAY */
+        return (
+            <main style={{        
+              background: '#000',
+              minHeight: '100vh',
+              color: '#fff',
+              padding: '20px',
+              position: 'relative',
+              overflow: 'hidden'
             }}>
+            {/* OVERLAY */}
 
-              <div style={{
-                width: '100%',
-                maxWidth: '32rem',
-                padding: '2rem',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '1rem',
-                alignItems: 'center',
-                transition: 'all .45s ease',
-                opacity: 1,
-                transform: 'translateY(0px) scale(1)'
-              }}>
+              {/*
+              -----------------------------------
+              POSTER
+              -----------------------------------
+              */}
+                  <div
+                    style={{
+                      position:'fixed',
+                      inset:0,
+                      zIndex:9998,
+
+                      backgroundImage:
+                        'url(/images/twuanis-intro-es.png)',
+
+                      backgroundSize:'35rem auto',
+                        backgroundPosition:'center center',
+                        backgroundRepeat:'no-repeat',
+
+                      opacity: showPoster ? 1 : .15,
+
+                      filter:
+                        showPoster
+                          ? 'blur(0px)'
+                          : 'blur(12px)',
+
+                      transform:
+                        showPoster
+                          ? 'scale(1)'
+                          : 'scale(1.03)',
+
+                      transition:
+                        'all .9s ease',
+
+                      pointerEvents:
+                        showPoster
+                          ? 'auto'
+                          : 'none'
+                    }}
+                  >
+
+  {/* TOP RIGHT BUTTONS */}
+
+              {showPoster && (
+
+                <div
+                  style={{
+                    position:'absolute',
+                    top:'1rem',
+                    right:'1rem',
+                    display:'flex',
+                    gap:'.5rem'
+                  }}
+                >
+
+                  <Link
+                    href="/en"
+                    style={{
+                      background:'#000',
+                      color:'#fff',
+                      border:'2px solid #C9A86A',
+                      borderRadius:'999px',
+                      padding:'.45rem .9rem',
+                      fontSize:'.8rem',
+                      fontWeight:'bold',
+                      textDecoration:'none'
+                    }}
+                  >
+                    English
+                  </Link>
+
+                  <button
+                    onClick={() => {
+                          setShowPoster(false)
+                          setTimeout(() => {
+                            setShowMainOverlay(true)
+                          }, 600)
+                        }}
+                    
+                    style={{
+                      background:'#000',
+                      color:'#fff',
+                      border:'2px solid #C9A86A',
+                      borderRadius:'999px',
+                      padding:'.45rem .9rem',
+                      fontSize:'.8rem',
+                      fontWeight:'bold',
+                      cursor:'pointer'
+                    }}
+                  >
+                    Omitir →
+                  </button>
+
+                </div>
+
+              )}
+
+            </div>
+
+            {showMainOverlay && overlayState && (
+
+                        <div style={{
+                          position: 'fixed',
+                          inset: 0,
+                          background: 'rgba(0,0,0,.12)',
+                          backdropFilter: 'blur(18px)',
+                          WebkitBackdropFilter: 'blur(9px)',
+                          zIndex: 9999,
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          transition: 'all .45s ease'
+                        }}>
+
+                          <div style={{
+                            width: '100%',
+                            maxWidth: '32rem',
+                            padding: '2rem',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '1rem',
+                            alignItems: 'center',
+                            transition: 'all .45s ease',
+                            opacity: 1,
+                            transform: 'translateY(0px) scale(1)'
+                          }}>
 
                 {/* STATE 1 */}
-{overlayState === 'initial' && (
+                    {overlayState === 'initial' && (
 
-   <>
+                      <>
 
-  <div
-    style={{
-      width:'100%',
-      display:'flex',
-      justifyContent:'flex-end'
-    }}
-  >
-    <Link
-      href="/en"
-      style={{
-        background:'#000',
-        color:'#fff',
-        border:'2px solid #C9A86A',
-        borderRadius:'999px',
-        padding:'.45rem .9rem',
-        fontSize:'.8rem',
-        fontWeight:'bold',
-        textDecoration:'none',
-        boxShadow:'0 4px 12px rgba(0,0,0,.15)'
-      }}
-    >
-      English
-    </Link>
-  </div>
+                      <div
+                        style={{
+                          width:'100%',
+                          display:'flex',
+                          justifyContent:'flex-end'
+                        }}
+                      >
+                        <Link
+                          href="/en"
+                          style={{
+                            background:'#000',
+                            color:'#fff',
+                            border:'2px solid #C9A86A',
+                            borderRadius:'999px',
+                            padding:'.45rem .9rem',
+                            fontSize:'.8rem',
+                            fontWeight:'bold',
+                            textDecoration:'none',
+                            boxShadow:'0 4px 12px rgba(0,0,0,.15)'
+                          }}
+                        >
+                          English
+                        </Link>
+                      </div>
 
-    <h2
-      style={{
-        fontSize:'3rem',
-        marginBottom:'.75rem',
-        textAlign:'center',
-        color:'#fff',
-        fontWeight:'700',
-        letterSpacing:'.05em',
-        textShadow:
-          '-1px -1px 0 #C9A86A, ' +
-          '1px -1px 0 #C9A86A, ' +
-          '-1px 1px 0 #C9A86A, ' +
-          '1px 1px 0 #C9A86A'
-      }}
-    >
-      Twuanis
-    </h2>
+                        <h2
+                          style={{
+                            fontSize:'3rem',
+                            marginBottom:'.75rem',
+                            textAlign:'center',
+                            color:'#fff',
+                            fontWeight:'700',
+                            letterSpacing:'.05em',
+                            textShadow:
+                              '-1px -1px 0 #C9A86A, ' +
+                              '1px -1px 0 #C9A86A, ' +
+                              '-1px 1px 0 #C9A86A, ' +
+                              '1px 1px 0 #C9A86A'
+                          }}
+                        >
+                          Twuanis
+                        </h2>
 
-    <p
-      style={{
-        color:'#C9A86A',
-        marginBottom:'2rem',
-        textAlign:'center',
-        lineHeight:1.7,
-        fontSize:'1.05rem',
-        fontWeight:'600'
-      }}
-    >
-      ¿Qué te gustaría hacer?
-    </p>
+                        <p
+                          style={{
+                            color:'#C9A86A',
+                            marginBottom:'2rem',
+                            textAlign:'center',
+                            lineHeight:1.7,
+                            fontSize:'1.05rem',
+                            fontWeight:'600'
+                          }}
+                        >
+                          ¿Qué te gustaría hacer?
+                        </p>
 
-    <button
-      onClick={() => setOverlayState('looking')}
-      style={{
-        width:'100%',
-        background:'#fff',
-        color:'#162A45',
-        border:'3px solid #C9A86A',
-        borderRadius:'999px',
-        padding:'1.15rem 1.5rem',
-        fontSize:'1rem',
-        fontWeight:'bold',
-        cursor:'pointer',
-        boxShadow:'0 4px 16px rgba(0,0,0,.15)'
-      }}
-    >
-      Comprar, Alquilar o Arrendar
-    </button>
+                        <button
+                          onClick={() => setOverlayState('looking')}
+                          style={{
+                            width:'100%',
+                            background:'#fff',
+                            color:'#162A45',
+                            border:'3px solid #C9A86A',
+                            borderRadius:'999px',
+                            padding:'1.15rem 1.5rem',
+                            fontSize:'1rem',
+                            fontWeight:'bold',
+                            cursor:'pointer',
+                            boxShadow:'0 4px 16px rgba(0,0,0,.15)'
+                          }}
+                        >
+                          Comprar, Alquilar o Arrendar
+                        </button>
 
-    <button
-      onClick={() => setOverlayState('posting')}
-      style={{
-        width:'100%',
-        background:'#fff',
-        color:'#162A45',
-        border:'3px solid #C9A86A',
-        borderRadius:'999px',
-        padding:'1.15rem 1.5rem',
-        fontSize:'1rem',
-        fontWeight:'bold',
-        cursor:'pointer',
-        boxShadow:'0 4px 16px rgba(0,0,0,.15)'
-      }}
-    >
-      Vender, Alquilar o Arrendar
-    </button>
+                        <button
+                          onClick={() => setOverlayState('posting')}
+                          style={{
+                            width:'100%',
+                            background:'#fff',
+                            color:'#162A45',
+                            border:'3px solid #C9A86A',
+                            borderRadius:'999px',
+                            padding:'1.15rem 1.5rem',
+                            fontSize:'1rem',
+                            fontWeight:'bold',
+                            cursor:'pointer',
+                            boxShadow:'0 4px 16px rgba(0,0,0,.15)'
+                          }}
+                        >
+                          Vender, Alquilar o Arrendar
+                        </button>
 
-  </>
+                      </>
 
-)}
+                    )}
 
 {/* STATE 2 — LOOKING */}
-{overlayState === 'looking' && (
+                  {overlayState === 'looking' && (
 
-  <>
+                    <>
 
-  <div
-    style={{
-      width:'100%',
-      display:'flex',
-      justifyContent:'flex-end'
-    }}
-  >
-    <Link
-      href="/en"
-      style={{
-        background:'#000',
-        color:'#fff',
-        border:'2px solid #C9A86A',
-        borderRadius:'999px',
-        padding:'.45rem .9rem',
-        fontSize:'.8rem',
-        fontWeight:'bold',
-        textDecoration:'none',
-        boxShadow:'0 4px 12px rgba(0,0,0,.15)'
-      }}
-    >
-      English
-    </Link>
-  </div>
+                    <div
+                      style={{
+                        width:'100%',
+                        display:'flex',
+                        justifyContent:'flex-end'
+                      }}
+                    >
+                      <Link
+                        href="/en"
+                        style={{
+                          background:'#000',
+                          color:'#fff',
+                          border:'2px solid #C9A86A',
+                          borderRadius:'999px',
+                          padding:'.45rem .9rem',
+                          fontSize:'.8rem',
+                          fontWeight:'bold',
+                          textDecoration:'none',
+                          boxShadow:'0 4px 12px rgba(0,0,0,.15)'
+                        }}
+                      >
+                        English
+                      </Link>
+                    </div>
 
-    <button
-      onClick={() => setOverlayState('initial')}
-      style={{
-        background:'#fff',
-        color:'#162A45',
-        border:'3px solid #C9A86A',
-        borderRadius:'999px',
-        padding:'.75rem 1.25rem',
-        fontWeight:'bold',
-        cursor:'pointer',
-        alignSelf:'flex-start'
-      }}
-    >
-      ← Volver
-    </button>
+                      <button
+                        onClick={() => setOverlayState('initial')}
+                        style={{
+                          background:'#fff',
+                          color:'#162A45',
+                          border:'3px solid #C9A86A',
+                          borderRadius:'999px',
+                          padding:'.75rem 1.25rem',
+                          fontWeight:'bold',
+                          cursor:'pointer',
+                          alignSelf:'flex-start'
+                        }}
+                      >
+                        ← Volver
+                      </button>
 
-    <h2
-      style={{
-        fontSize:'2.2rem',
-        marginBottom:'1.5rem',
-        color:'#C9A86A'
-      }}
-    >
-      ¿Qué estás buscando?
-    </h2>
+                      <h2
+                        style={{
+                          fontSize:'2.2rem',
+                          marginBottom:'1.5rem',
+                          color:'#C9A86A'
+                        }}
+                      >
+                        ¿Qué estás buscando?
+                      </h2>
 
-    <button
-      onClick={() =>
-        window.location.href = '/es/comprar'
-      }
-      style={{
-        width:'100%',
-        background:'#fff',
-        color:'#162A45',
-        border:'3px solid #C9A86A',
-        borderRadius:'999px',
-        padding:'1.15rem 1.5rem',
-        fontSize:'1rem',
-        fontWeight:'bold',
-        cursor:'pointer'
-      }}
-    >
-      Comprar
-    </button>
+                      <button
+                        onClick={() =>
+                          window.location.href = '/es/comprar'
+                        }
+                        style={{
+                          width:'100%',
+                          background:'#fff',
+                          color:'#162A45',
+                          border:'3px solid #C9A86A',
+                          borderRadius:'999px',
+                          padding:'1.15rem 1.5rem',
+                          fontSize:'1rem',
+                          fontWeight:'bold',
+                          cursor:'pointer'
+                        }}
+                      >
+                        Comprar
+                      </button>
 
-    <button
-      onClick={() =>
-        window.location.href =
-          '/es/alquilar-arrendar'
-      }
-      style={{
-        width:'100%',
-        background:'#fff',
-        color:'#162A45',
-        border:'3px solid #C9A86A',
-        borderRadius:'999px',
-        padding:'1.15rem 1.5rem',
-        fontSize:'1rem',
-        fontWeight:'bold',
-        cursor:'pointer'
-      }}
-    >
-      Alquilar / Arrendar
-    </button>
+                      <button
+                        onClick={() =>
+                          window.location.href =
+                            '/es/alquilar-arrendar'
+                        }
+                        style={{
+                          width:'100%',
+                          background:'#fff',
+                          color:'#162A45',
+                          border:'3px solid #C9A86A',
+                          borderRadius:'999px',
+                          padding:'1.15rem 1.5rem',
+                          fontSize:'1rem',
+                          fontWeight:'bold',
+                          cursor:'pointer'
+                        }}
+                      >
+                        Alquilar / Arrendar
+                      </button>
 
-  </>
+                    </>
 
-)}
+                  )}
 
 {/* STATE 1 (was state 2) — POSTING */}
-{overlayState === 'posting' && (
+                    {overlayState === 'posting' && (
 
-  <>
+                      <>
 
-  <div
-    style={{
-      width:'100%',
-      display:'flex',
-      justifyContent:'flex-end'
-    }}
-  >
-    <Link
-      href="/en"
-      style={{
-        background:'#000',
-        color:'#fff',
-        border:'2px solid #C9A86A',
-        borderRadius:'999px',
-        padding:'.45rem .9rem',
-        fontSize:'.8rem',
-        fontWeight:'bold',
-        textDecoration:'none',
-        boxShadow:'0 4px 12px rgba(0,0,0,.15)'
-      }}
-    >
-      English
-    </Link>
-  </div>
+                      <div
+                        style={{
+                          width:'100%',
+                          display:'flex',
+                          justifyContent:'flex-end'
+                        }}
+                      >
+                        <Link
+                          href="/en"
+                          style={{
+                            background:'#000',
+                            color:'#fff',
+                            border:'2px solid #C9A86A',
+                            borderRadius:'999px',
+                            padding:'.45rem .9rem',
+                            fontSize:'.8rem',
+                            fontWeight:'bold',
+                            textDecoration:'none',
+                            boxShadow:'0 4px 12px rgba(0,0,0,.15)'
+                          }}
+                        >
+                          English
+                        </Link>
+                      </div>
 
-    <button
-      onClick={() => setOverlayState('initial')}
-      style={{
-        background:'#fff',
-        color:'#162A45',
-        border:'3px solid #C9A86A',
-        borderRadius:'999px',
-        padding:'.75rem 1.25rem',
-        fontWeight:'bold',
-        cursor:'pointer',
-        alignSelf:'flex-start'
-      }}
-    >
-      ← Volver
-    </button>
+                        <button
+                          onClick={() => setOverlayState('initial')}
+                          style={{
+                            background:'#fff',
+                            color:'#162A45',
+                            border:'3px solid #C9A86A',
+                            borderRadius:'999px',
+                            padding:'.75rem 1.25rem',
+                            fontWeight:'bold',
+                            cursor:'pointer',
+                            alignSelf:'flex-start'
+                          }}
+                        >
+                          ← Volver
+                        </button>
 
-    <h2
-      style={{
-        fontSize:'2.2rem',
-        marginBottom:'1.5rem',
-        color:'#C9A86A'
-      }}
-    >
-      ¿Publicando una propiedad?
-    </h2>
+                        <h2
+                          style={{
+                            fontSize:'2.2rem',
+                            marginBottom:'1.5rem',
+                            color:'#C9A86A'
+                          }}
+                        >
+                          ¿Publicando una propiedad?
+                        </h2>
 
-    <button
-      onClick={() =>
-        window.location.href =
-          '/es/vender'
-      }
-      style={{
-        width:'100%',
-        background:'#fff',
-        color:'#162A45',
-        border:'3px solid #C9A86A',
-        borderRadius:'999px',
-        padding:'1.15rem 1.5rem',
-        fontSize:'1rem',
-        fontWeight:'bold',
-        cursor:'pointer'
-      }}
-    >
-      Vender
-    </button>
+                        <button
+                          onClick={() =>
+                            window.location.href =
+                              '/es/vender'
+                          }
+                          style={{
+                            width:'100%',
+                            background:'#fff',
+                            color:'#162A45',
+                            border:'3px solid #C9A86A',
+                            borderRadius:'999px',
+                            padding:'1.15rem 1.5rem',
+                            fontSize:'1rem',
+                            fontWeight:'bold',
+                            cursor:'pointer'
+                          }}
+                        >
+                          Vender
+                        </button>
 
-    <button
-      onClick={() =>
-        window.location.href =
-          '/es/publicar-alquiler-arrendamiento'
-      }
-      style={{
-        width:'100%',
-        background:'#fff',
-        color:'#162A45',
-        border:'3px solid #C9A86A',
-        borderRadius:'999px',
-        padding:'1.15rem 1.5rem',
-        fontSize:'1rem',
-        fontWeight:'bold',
-        cursor:'pointer'
-      }}
-    >
-      Poner en Alquiler o Arrendamiento
-    </button>
+                        <button
+                          onClick={() =>
+                            window.location.href =
+                              '/es/publicar-alquiler-arrendamiento'
+                          }
+                          style={{
+                            width:'100%',
+                            background:'#fff',
+                            color:'#162A45',
+                            border:'3px solid #C9A86A',
+                            borderRadius:'999px',
+                            padding:'1.15rem 1.5rem',
+                            fontSize:'1rem',
+                            fontWeight:'bold',
+                            cursor:'pointer'
+                          }}
+                        >
+                          Poner en Alquiler o Arrendamiento
+                        </button>
 
-  </>
+                      </>
 
-)}
+                    )}
 
               </div>
 
@@ -993,54 +1099,14 @@ console.log(
                 gap: '18px'
               }}>
 
-               <button
-                  onClick={() => window.location.href = '/favorites'}
-                  style={navButton}
-                >
-                  Propiedades Favoritas <span style={{ color: '#D4AF37' }}>♥</span>
-                </button>
-
-                <button
-                  onClick={() => window.location.href = '/swipe'}
-                  style={navButton}
-                >
-                  Vista Deslizable <span style={{ color: '#FFFFFF' }}>⇄</span>
-                </button>
+               
                
 
               </div>
 
 
 {/* RIGHT */}
-              <a
-                href="/vender"
-                style={sellButton}
-              >
-                + Vender Propiedad
-              </a>
-
-            </div>
-
-            {/* HEADER */}
-            <div style={{
-              textAlign: 'center',
-              marginBottom: '40px'
-            }}>
-
-          <h1 style={{
-            fontSize: '72px',
-            marginBottom: '10px',
-            fontWeight: 'bold'
-          }}>
-            Twuanis
-          </h1>
-
-          <p style={{
-            color: '#999',
-            fontSize: '22px'
-          }}>
-            Descubrimiento y Comercialización de Propiedades
-          </p>
+            
 
         </div>
 
@@ -2559,38 +2625,6 @@ console.log(
                       </Link>
 
                       ))}
-
-                      {filteredProperties.length === 0 && (
-
-                        <div
-                          style={{
-                            background: '#181818',
-                            border: '1px solid #222',
-                            borderRadius: '22px',
-                            padding: '40px',
-                            textAlign: 'center'
-                          }}
-                        >
-
-                          <h2
-                            style={{
-                              marginBottom: '10px'
-                            }}
-                          >
-                            No matching properties
-                          </h2>
-
-                          <p
-                            style={{
-                              color: '#777'
-                            }}
-                          >
-                            Intenta ajustar tus filtros.
-                          </p>
-
-                        </div>
-
-                      )}
 
                     </div>
 
