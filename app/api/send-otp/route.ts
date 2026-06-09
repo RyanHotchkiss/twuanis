@@ -25,6 +25,12 @@ export async function POST(req: NextRequest) {
 
     const token = crypto.randomUUID()
 
+    const uploadedImageUrls = []
+          listingData: {
+        ...listingData,
+        uploadedImageUrls
+      }
+
     const tokenInsert = await supabase
       .from('listing_publish_tokens')
       .insert({
