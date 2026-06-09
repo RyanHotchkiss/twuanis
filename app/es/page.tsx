@@ -52,23 +52,6 @@ function HomePageContent() {
               )
             }
           }, [])
-
-          useEffect(() => {
-
-              if (
-                sessionStorage.getItem('skipIntro')
-              ) {
-
-                setShowIntroOverlay(false)
-
-                sessionStorage.removeItem(
-                  'skipIntro'
-                )
-
-              }
-
-            }, [])
-
     
   const overlayBackButton = {
     background:'#FFFFFF40',
