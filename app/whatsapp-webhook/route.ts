@@ -1,7 +1,10 @@
+
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
 
 export async function POST(req: NextRequest) {
+
+  console.log('WEBHOOK HIT')
 
   const formData = await req.formData()
 
@@ -25,7 +28,7 @@ export async function POST(req: NextRequest) {
       .replace('whatsapp:+', '')
 
     await supabase
-      .from('verified_whatsapp_numbers')
+      .from('verified_whatsapp_numbers') 
       .upsert({
         phone,
         verified: true
@@ -35,6 +38,18 @@ export async function POST(req: NextRequest) {
       'VERIFIED PHONE:',
       phone
     )
+
+    const result = await supabase
+        .from('verified_whatsapp_numbers')
+        .upsert({
+          phone,
+          verified: true
+        })
+
+      console.log(
+        'VERIFICATION RESULT:',
+        JSON.stringify(result, null, 2)
+      )
 
   }
 
