@@ -28,11 +28,7 @@ function HomePageContent() {
   const [showadvanced_filters, setShowadvanced_filters] = useState(false)
   const [showMobileFilters, setShowMobileFilters] = useState(false)
 
-  const [showIntroOverlay, setShowIntroOverlay] = useState(
-          searchParams.get('overlay')
-            ? false
-            : true
-        )
+
 
   const [countdown, setCountdown] = useState(12)
 
@@ -73,34 +69,7 @@ function HomePageContent() {
 
             }, [])
 
-    useEffect(() => {
-
-        if (!showIntroOverlay) return
-
-        const interval = setInterval(() => {
-
-          setCountdown(prev => {
-
-            if (prev <= 1) {
-
-              clearInterval(interval)
-
-              setShowIntroOverlay(false)
-
-              return 0
-
-            }
-
-            return prev - 1
-
-          })
-
-        }, 1000)
-
-        return () => clearInterval(interval)
-
-      }, [showIntroOverlay])
-
+    
   const overlayBackButton = {
     background:'#FFFFFF40',
     border:'.0625rem solid #ffffff50',
@@ -652,157 +621,7 @@ function HomePageContent() {
         overflow: 'hidden'
       }}>
 
-      {showIntroOverlay && (
-
-
-
-          <div
-            style={{
-              position:'fixed',
-              inset:0,
-
-              background:'rgba(0,0,0,.88)',
-
-              backdropFilter:'blur(20px)',
-
-              zIndex:10000,
-
-              display:'flex',
-              justifyContent:'center',
-              alignItems:'flex-start',
-              overflowY:'auto',
-
-              paddingTop:'3rem',
-              paddingBottom:'3rem',
-            }}
-          >
-              <div
-  style={{
-    position:'fixed',
-
-    top:isMobile ? '1rem' : 'auto',
-    bottom:isMobile ? 'auto' : '8rem',
-
-    left:isMobile ? '1rem' : '50%',
-
-    transform:isMobile
-      ? 'none'
-      : 'translateX(-50%)',
-
-    display:'flex',
-    alignItems:'center',
-    gap:'.75rem',
-
-    zIndex:10050,
-
-    pointerEvents:'auto'
-  }}
->
-
-
-  
-</div>
-         
-
-            <div
-                style={{
-                  maxWidth:'1200px',
-                  width:'100%',
-                  height:'calc(100vh - 2rem)',
-                  display:'flex',
-                  flexDirection:'column',
-                  justifyContent:'flex-start',
-                  alignItems:'center',
-                  position:'relative'
-                }}
-              >
-
-                {/* TOP CONTROLS */}
-                <div
-                  style={{
-                    width:'100%',
-                    display:'flex',
-                    justifyContent:'space-between',
-                    alignItems:'center',
-                    marginBottom:'1rem',
-                    padding:'0 1rem'
-                  }}
-                >
-
-                  <div
-                    style={{
-                      background:'#fff',
-                      border:'2px solid #C9A86A',
-                      padding:'.75rem 1.25rem',
-                      borderRadius:'999rem',
-                      color:'#162A45',
-                      fontWeight:'bold',
-                      boxShadow:'0 4px 16px rgba(0,0,0,.15)'
-                    }}
-                  >
-                    Continuar en {countdown}s
-                  </div>
-                  <Link
-                      href="/en"
-                      style={{
-                        background:'#fff',
-                        border:'2px solid #C9A86A',
-                        padding:'.75rem 1.25rem',
-                        borderRadius:'999rem',
-                        color:'#162A45',
-                        textDecoration:'none',
-                        fontWeight:'bold',
-                        boxShadow:'0 4px 16px rgba(0,0,0,.15)'
-                      }}
-                    >
-                      English
-                    </Link>
-
-                  <button
-                    onClick={() => setShowIntroOverlay(false)}
-                    style={{
-                      width:'3rem',
-                      height:'3rem',
-                      borderRadius:'999rem',
-                      background:'#fff',
-                      border:'2px solid #C9A86A',
-                      color:'#162A45',
-                      fontSize:'1.5rem',
-                      fontWeight:'bold',
-                      cursor:'pointer',
-                      display:'flex',
-                      justifyContent:'center',
-                      alignItems:'center',
-                      boxShadow:'0 4px 16px rgba(0,0,0,.15)'
-                    }}
-                  >
-                    ✕
-                  </button>
-
-                </div>
-
-                {/* IMAGE */}
-                <img
-                  src="/images/twuanis-intro-es.webp"
-                  alt="Twuanis"
-                  style={{
-                    maxWidth:'100%',
-                    maxHeight:'calc(100vh - 8rem)',
-                    width:'auto',
-                    height:'auto',
-                    objectFit:'contain',
-                    borderRadius:'1.5rem',
-                    display:'block',
-                    boxShadow:'0 0 40px rgba(0,0,0,.45)'
-                  }}
-                />
-
-              </div>
-
-          </div>
-
-        )}
-
+      
 
 
       {/* OVERLAY */}
@@ -818,7 +637,7 @@ console.log(
   overlayState
 )
 
-{!showIntroOverlay && overlayState && (
+{overlayState && (
 
             <div style={{
               position: 'fixed',
@@ -849,7 +668,32 @@ console.log(
                 {/* STATE 1 */}
 {overlayState === 'initial' && (
 
-  <>
+   <>
+
+  <div
+    style={{
+      width:'100%',
+      display:'flex',
+      justifyContent:'flex-end'
+    }}
+  >
+    <Link
+      href="/en"
+      style={{
+        background:'#000',
+        color:'#fff',
+        border:'2px solid #C9A86A',
+        borderRadius:'999px',
+        padding:'.45rem .9rem',
+        fontSize:'.8rem',
+        fontWeight:'bold',
+        textDecoration:'none',
+        boxShadow:'0 4px 12px rgba(0,0,0,.15)'
+      }}
+    >
+      English
+    </Link>
+  </div>
 
     <h2
       style={{
@@ -927,6 +771,31 @@ console.log(
 
   <>
 
+  <div
+    style={{
+      width:'100%',
+      display:'flex',
+      justifyContent:'flex-end'
+    }}
+  >
+    <Link
+      href="/en"
+      style={{
+        background:'#000',
+        color:'#fff',
+        border:'2px solid #C9A86A',
+        borderRadius:'999px',
+        padding:'.45rem .9rem',
+        fontSize:'.8rem',
+        fontWeight:'bold',
+        textDecoration:'none',
+        boxShadow:'0 4px 12px rgba(0,0,0,.15)'
+      }}
+    >
+      English
+    </Link>
+  </div>
+
     <button
       onClick={() => setOverlayState('initial')}
       style={{
@@ -996,10 +865,35 @@ console.log(
 
 )}
 
-{/* STATE 2 — POSTING */}
+{/* STATE 1 (was state 2) — POSTING */}
 {overlayState === 'posting' && (
 
   <>
+
+  <div
+    style={{
+      width:'100%',
+      display:'flex',
+      justifyContent:'flex-end'
+    }}
+  >
+    <Link
+      href="/en"
+      style={{
+        background:'#000',
+        color:'#fff',
+        border:'2px solid #C9A86A',
+        borderRadius:'999px',
+        padding:'.45rem .9rem',
+        fontSize:'.8rem',
+        fontWeight:'bold',
+        textDecoration:'none',
+        boxShadow:'0 4px 12px rgba(0,0,0,.15)'
+      }}
+    >
+      English
+    </Link>
+  </div>
 
     <button
       onClick={() => setOverlayState('initial')}

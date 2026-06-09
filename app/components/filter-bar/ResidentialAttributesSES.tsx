@@ -63,6 +63,40 @@ type ResidentialAttributesSProps = {
 
 }
 
+const residentialLabels: Record<string, string> = {
+  Studio: 'Estudio',
+  '1 Bedroom': '1 Habitación',
+  '2 Bedrooms': '2 Habitaciones',
+  '3 Bedrooms': '3 Habitaciones',
+  '4 Bedrooms': '4 Habitaciones',
+  '5+ Bedrooms': '5+ Habitaciones',
+
+  '1 Bathroom': '1 Baño',
+  '2 Bathrooms': '2 Baños',
+  '3 Bathrooms': '3 Baños',
+  '4 Bathrooms': '4 Baños',
+  '5+ Bathrooms': '5+ Baños',
+
+  'No Parking': 'Sin Estacionamiento',
+  '1 Vehicle': '1 Vehículo',
+  '2 Vehicles': '2 Vehículos',
+  '3 Vehicles': '3 Vehículos',
+  '4+ Vehicles': '4+ Vehículos',
+
+  'Pre-1980': 'Antes de 1980',
+  '1980–1999': '1980–1999',
+  '2000–2009': '2000–2009',
+  '2010–2019': '2010–2019',
+  '2020+': '2020+',
+
+  '<50m²': '<50m²',
+  '50–100m²': '50–100m²',
+  '100–200m²': '100–200m²',
+  '200–400m²': '200–400m²',
+  '400–800m²': '400–800m²',
+  '800m²+': '800m²+'
+}
+
 export default function ResidentialAttributesS({
 
   bedrooms,
@@ -139,52 +173,63 @@ export default function ResidentialAttributesS({
                     }}
                   >
 
-                    <span style={{
-                            color:'#FFFFFF',
-                            lineHeight:'1.7',
-                            wordBreak:'break-word',
-                            paddingRight:'1rem',
-                            flex:'1',
-                            display:'flex',
-                            flexWrap:'wrap',
-                            alignItems:'center',
-                            gap:'.5rem'
-                          }}>
+                    <span
+                        style={{
+                          color: '#FFFFFF',
+                          lineHeight: '1.7',
+                          wordBreak: 'break-word',
+                          paddingRight: '1rem',
+                          flex: '1',
+                          display: 'flex',
+                          flexWrap: 'wrap',
+                          alignItems: 'center',
+                          gap: '.5rem'
+                        }}
+                      >
 
-                            {bedrooms && (
-                              <>
-                                <span>{bedrooms}</span>
-                                <span style={{ color:'#fff' }}>•</span>
-                              </>
-                            )}
+                        {bedrooms && (
+                          <>
+                            <span>
+                              {residentialLabels[bedrooms] || bedrooms}
+                            </span>
+                            <span style={{ color: '#fff' }}>•</span>
+                          </>
+                        )}
 
-                            {bathrooms && (
-                              <>
-                                <span>{bathrooms}</span>
-                                <span style={{ color:'#fff' }}>•</span>
-                              </>
-                            )}
+                        {bathrooms && (
+                          <>
+                            <span>
+                              {residentialLabels[bathrooms] || bathrooms}
+                            </span>
+                            <span style={{ color: '#fff' }}>•</span>
+                          </>
+                        )}
 
-                            {parking && (
-                              <>
-                                <span>{parking}</span>
-                                <span style={{ color:'#fff' }}>•</span>
-                              </>
-                            )}
+                        {parking && (
+                          <>
+                            <span>
+                              {residentialLabels[parking] || parking}
+                            </span>
+                            <span style={{ color: '#fff' }}>•</span>
+                          </>
+                        )}
 
-                            {yearBuiltRange && (
-                              <>
-                                <span>{yearBuiltRange}</span>
-                                <span style={{ color:'#fff' }}>•</span>
-                              </>
-                            )}
+                        {yearBuiltRange && (
+                          <>
+                            <span>
+                              {residentialLabels[yearBuiltRange] || yearBuiltRange}
+                            </span>
+                            <span style={{ color: '#fff' }}>•</span>
+                          </>
+                        )}
 
-                            {constructionArea && (
-                              <span>{constructionArea}</span>
-                            )}
-
+                        {constructionArea && (
+                          <span>
+                            {residentialLabels[constructionArea] || constructionArea}
                           </span>
+                        )}
 
+                      </span>
                     <button
                       type="button"
                       onClick={(e) => {
@@ -238,7 +283,7 @@ export default function ResidentialAttributesS({
                         >
 
                           <span>
-                            {bedrooms}
+                            {residentialLabels[bedrooms] || bedrooms}
                           </span>
 
                           <button
@@ -276,7 +321,7 @@ export default function ResidentialAttributesS({
 
                               <button
                                 type="button"
-                                key={option}
+                                key={residentialLabels[option] || option}
                                 onClick={() => {
 
                                   setBedrooms(option)
@@ -291,7 +336,7 @@ export default function ResidentialAttributesS({
                                     : pill
                                 }
                               >
-                                {option}
+                                {residentialLabels[option] || option}
                               </button>
 
                             ))}
@@ -323,7 +368,7 @@ export default function ResidentialAttributesS({
                         >
 
                           <span>
-                            {bathrooms}
+                            {residentialLabels[bathrooms] || bathrooms}
                           </span>
 
                           <button
@@ -361,7 +406,7 @@ export default function ResidentialAttributesS({
 
                               <button
                                 type="button"
-                                key={option}
+                                key={residentialLabels[option] || option}
                                 onClick={() => {
 
                                   setBathrooms(option)
@@ -376,7 +421,7 @@ export default function ResidentialAttributesS({
                                     : pill
                                 }
                               >
-                                {option}
+                                {residentialLabels[option] || option}
                               </button>
 
                             ))}
@@ -408,7 +453,7 @@ export default function ResidentialAttributesS({
                         >
 
                           <span>
-                            {parking}
+                            {residentialLabels[parking] || parking}
                           </span>
 
                           <button
@@ -446,7 +491,7 @@ export default function ResidentialAttributesS({
 
                               <button
                                 type="button"
-                                key={option}
+                                key={residentialLabels[option] || option}
                                 onClick={() => {
 
                                   setParking(option)
@@ -461,7 +506,7 @@ export default function ResidentialAttributesS({
                                     : pill
                                 }
                               >
-                                {option}
+                                {residentialLabels[option] || option}
                               </button>
 
                             ))}
@@ -493,7 +538,7 @@ export default function ResidentialAttributesS({
                         >
 
                           <span>
-                            {yearBuiltRange}
+                            {residentialLabels[yearBuiltRange] || yearBuiltRange}
                           </span>
 
                           <button
@@ -531,7 +576,7 @@ export default function ResidentialAttributesS({
 
                               <button
                                 type="button"
-                                key={option}
+                                key={residentialLabels[option] || option}
                                 onClick={() => {
 
                                   setYearBuiltRange(option)
@@ -546,7 +591,7 @@ export default function ResidentialAttributesS({
                                     : pill
                                 }
                               >
-                                {option}
+                                {residentialLabels[option] || option}
                               </button>
 
                             ))}
@@ -578,7 +623,7 @@ export default function ResidentialAttributesS({
                         >
 
                           <span>
-                            {constructionArea}
+                            {residentialLabels[constructionArea] || constructionArea}
                           </span>
 
                           <button
@@ -615,7 +660,7 @@ export default function ResidentialAttributesS({
 
                               <button
                                 type="button"
-                                key={option}
+                                key={residentialLabels[option] || option}
                                 onClick={() => {
 
                                   setConstructionArea(option)
@@ -640,7 +685,7 @@ export default function ResidentialAttributesS({
                                     : pill
                                 }
                               >
-                                {option}
+                                {residentialLabels[option] || option}
                               </button>
 
                             ))}

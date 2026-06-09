@@ -47,7 +47,6 @@ import PriceSelectorS from '@/app/components/filter-bar/PriceSelectorS'
 import ImagePreviewGridS from '@/app/components/ImagePreviewGridS'
 import ImageUploaderS from '@/app/components/ImageUploaderS'
 import WhatsAppInputS from '@/app/components/WhatsAppInputS'
-import CreateListingButtonS from '@/app/components/CreateListingButtonS'
 
 import CsvStagingModal from '@/app/components/CsvStagingModal'
 import PropertyDefinitionPanelES from '@/app/components/PropertyDefinitionPanelES'
@@ -358,48 +357,7 @@ export default function SellPage() {
 
                                         }))
 
-                                    
-console.log(
-  'CSV LENGTH:',
-  formattedData.length
-)
-
-console.log(
-  'SECOND RECORD:',
-  formattedData[1]
-)
-
-console.log(formattedData)
-
-console.log(
-  'UTILITY:',
-  formattedData[0]?.utility
-)
-
-console.log(
-  'ENVIRONMENT:',
-  formattedData[0]?.environment
-)
-
-console.log(
-  'ACCESSIBILITY:',
-  formattedData[0]?.accessibility
-)
-
-console.log(
-  'TERRAIN:',
-  formattedData[0]?.terrain
-)
-
-console.log(
-  'FIRST CSV RECORD:',
-  formattedData[0]
-)
-
-console.log(
-'FORMATTED DATA:',
-formattedData
-)
+                                
 
                                         setCsvListings(formattedData)
 

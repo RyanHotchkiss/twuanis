@@ -36,6 +36,36 @@ type PropertyTypeFilterProps = {
     ) => void
 }
 
+const propertyTypeLabels: Record<string, string> = {
+  house: 'Casa',
+  condo: 'Condominio',
+  land: 'Terreno',
+  farm: 'Finca',
+  cabin: 'Cabaña',
+  commercial: 'Propiedad Comercial',
+
+  Studio: 'Estudio',
+  '1 Bedroom': '1 Habitación',
+  '2 Bedrooms': '2 Habitaciones',
+  '3 Bedrooms': '3 Habitaciones',
+  '4 Bedrooms': '4 Habitaciones',
+  '5+ Bedrooms': '5+ Habitaciones',
+
+  '1 Bathroom': '1 Baño',
+  '2 Bathrooms': '2 Baños',
+  '3 Bathrooms': '3 Baños',
+  '4 Bathrooms': '4 Baños',
+  '5+ Bathrooms': '5+ Baños',
+
+  'No Parking': 'Sin Estacionamiento',
+  '1 Vehicle': '1 Vehículo',
+  '2 Vehicles': '2 Vehículos',
+  '3 Vehicles': '3 Vehículos',
+  '4+ Vehicles': '4+ Vehículos',
+
+  'Pre-1980': 'Antes de 1980'
+}
+
 export default function PropertyTypeFilter({
   selectedproperty_type,
   setSelectedproperty_type,
@@ -133,26 +163,26 @@ const propertyTypes = [
                           cursor:'pointer'
                         }}
                       >
-                       {selectedproperty_type}
+                       {propertyTypeLabels[selectedproperty_type] || selectedproperty_type}
 
                               {bedrooms && (
                                 <>
                                   <span style={{ color:'#fff' }}> • </span>
-                                  {bedrooms}
+                                  {propertyTypeLabels[bedrooms] || bedrooms}
                                 </>
                               )}
 
                               {bathrooms && (
                                 <>
                                   <span style={{ color:'#fff' }}> • </span>
-                                  {bathrooms}
+                                  {propertyTypeLabels[bathrooms] || bathrooms}
                                 </>
                               )}
 
                               {parking && (
                                 <>
                                   <span style={{ color:'#fff' }}> • </span>
-                                  {parking}
+                                  {propertyTypeLabels[parking] || parking}
                                 </>
                               )}
 
@@ -166,7 +196,7 @@ const propertyTypes = [
                               {constructionArea && (
                                 <>
                                   <span style={{ color:'#fff' }}> • </span>
-                                  {constructionArea}
+                                  {propertyTypeLabels[constructionArea] || constructionArea}
                                 </>
                               )}
                       </span>
@@ -259,7 +289,7 @@ import PropertyTypeFilter from '@/app/components/filter-bar/PropertyTypeFilter'
 USAGE:
 
 <PropertyTypeFilter
-  selectedproperty_type={selectedproperty_type}
+  selectedproperty_type={propertyTypeLabels[selectedproperty_type] || selectedproperty_type}
   setSelectedproperty_type={setSelectedproperty_type}
 />
 

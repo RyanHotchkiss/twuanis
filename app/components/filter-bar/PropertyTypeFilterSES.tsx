@@ -35,6 +35,37 @@ type PropertyTypeFilterProps = {
   enableResidentialFlow: () => void
 }
 
+const propertyTypeLabels: Record<string, string> = {
+  House: 'Casa',
+  Condo: 'Condominio',
+  Apartment: 'Apartamento',
+  Land: 'Terreno',
+  Farm: 'Finca',
+  Cabin: 'Cabaña',
+  'Commercial Property': 'Propiedad Comercial',
+
+  Studio: 'Estudio',
+  '1 Bedroom': '1 Habitación',
+  '2 Bedrooms': '2 Habitaciones',
+  '3 Bedrooms': '3 Habitaciones',
+  '4 Bedrooms': '4 Habitaciones',
+  '5+ Bedrooms': '5+ Habitaciones',
+
+  '1 Bathroom': '1 Baño',
+  '2 Bathrooms': '2 Baños',
+  '3 Bathrooms': '3 Baños',
+  '4 Bathrooms': '4 Baños',
+  '5+ Bathrooms': '5+ Baños',
+
+  'No Parking': 'Sin Estacionamiento',
+  '1 Vehicle': '1 Vehículo',
+  '2 Vehicles': '2 Vehículos',
+  '3 Vehicles': '3 Vehículos',
+  '4+ Vehicles': '4+ Vehículos',
+
+  'Pre-1980': 'Antes de 1980'
+}
+
 export default function PropertyTypeFilterSES({
 
   propertyTypes,
@@ -90,38 +121,38 @@ export default function PropertyTypeFilterSES({
           {propertyTypes.map((type) => (
 
             <button
-              key={type}
-              onClick={() => {
+                key={type}
+                onClick={() => {
 
-                setselectedproperty_type(type)
+                  setselectedproperty_type(type)
 
-                setShowproperty_typeOptions(false)
+                  setShowproperty_typeOptions(false)
 
-                setShowBedroomOptions(true)
+                  setShowBedroomOptions(true)
 
-                setShowProvinceOptions(false)
+                  setShowProvinceOptions(false)
 
-                setShowCantonOptions(false)
+                  setShowCantonOptions(false)
 
-                setShowDistrictOptions(false)
+                  setShowDistrictOptions(false)
 
-                if (
-                  residentialPropertyTypes.includes(type)
-                ) {
+                  if (
+                    residentialPropertyTypes.includes(type)
+                  ) {
 
-                  enableResidentialFlow()
+                    enableResidentialFlow()
 
+                  }
+
+                }}
+                style={
+                  selectedproperty_type === type
+                    ? activePill
+                    : pill
                 }
-
-              }}
-              style={
-                selectedproperty_type === type
-                  ? activePill
-                  : pill
-              }
-            >
-              {type}
-            </button>
+              >
+                {propertyTypeLabels[type] || type}
+              </button>
 
           ))}
 
@@ -146,7 +177,7 @@ export default function PropertyTypeFilterSES({
             }}
           >
 
-            {selectedproperty_type}
+            {propertyTypeLabels[selectedproperty_type] || selectedproperty_type}
 
             {bedrooms && (
               <>
@@ -154,7 +185,7 @@ export default function PropertyTypeFilterSES({
                   {' '}•{' '}
                 </span>
 
-                {bedrooms}
+                {propertyTypeLabels[bedrooms] || bedrooms}
               </>
             )}
 
@@ -164,7 +195,7 @@ export default function PropertyTypeFilterSES({
                   {' '}•{' '}
                 </span>
 
-                {bathrooms}
+                {propertyTypeLabels[bathrooms] || bathrooms}
               </>
             )}
 
@@ -174,7 +205,7 @@ export default function PropertyTypeFilterSES({
                   {' '}•{' '}
                 </span>
 
-                {parking}
+                {propertyTypeLabels[parking] || parking}
               </>
             )}
 
@@ -184,7 +215,7 @@ export default function PropertyTypeFilterSES({
                   {' '}•{' '}
                 </span>
 
-                {yearBuiltRange}
+                {propertyTypeLabels[yearBuiltRange] || yearBuiltRange}
               </>
             )}
 
@@ -194,7 +225,7 @@ export default function PropertyTypeFilterSES({
                   {' '}•{' '}
                 </span>
 
-                {constructionArea}
+                {propertyTypeLabels[constructionArea] || constructionArea}
               </>
             )}
 
