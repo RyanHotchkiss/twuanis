@@ -1,125 +1,21 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import { useParams } from 'next/navigation'
 import Link from 'next/link'
 
 import { supabase } from '@/lib/supabase'
-
-import JsonLd from '@/app/components/JsonLd'
+import { createListingId } from '@/lib/createListingId'
 import TopBarES from '@/app/components/TopBarES'
-
-import { buildListingSchema } from '@/lib/schema-engine'
-
+import JsonLd from '@/app/components/JsonLd'
 import {
   getGraphNeighbors,
   getOntologyTermsByIds
-} from '@/lib/graph-engine'
+}
+from '@/lib/graph-engine'
+import { buildListingSchema } from '@/lib/schema-engine'
 
-export default async function ListingPage({
-  params
-}: {
-  params: Promise<{ id: string }>
-}) {
-  const { id } = await params
-
-const { data, error } = await supabase
-                    .from('listings')
-                    .select('*')
-                    .eq('id', id)
-                    .single()
-
-                    if (error || !data) {
-                    return (
-                        <main
-                        style={{
-                            background: '#000',
-                            minHeight: '100vh',
-                            color: '#fff',
-                            padding: '2rem'
-                        }}
-                        >
-                        Propiedad No Encontrada
-                        </main>
-                    )
-                    }
-
-                    const listing = {
-                    ...data,
-                    images:
-                        Array.isArray(data.images)
-                        ? data.images
-                        : typeof data.images === 'string'
-                        ? (() => {
-                            try {
-                                return JSON.parse(data.images)
-                            } catch {
-                                return data.images
-                                .split('|')
-                                .map((img: string) => img.trim())
-                                .filter(Boolean)
-                            }
-                            })()
-                        : []
-                    }
-
-const { data: ontologyRows } = await supabase
-                    .from('listings_ontology_terms')
-                    .select(`
-                        ontology_terms (
-                        id,
-                        parent_id,
-                        term_name,
-                        term_type,
-                        slug,
-                        description,
-                        official_code,
-                        term_name_en,
-                        term_name_es,
-                        slug_en,
-                        slug_es
-                        )
-                    `)
-                    .eq('listing_id', data.id)
-
-                    const ontologyTerms =
-                    ontologyRows
-                        ?.map((row: any) => row.ontology_terms)
-                        .filter(Boolean) || []
-
-                    const termIds =
-                    ontologyTerms
-                        .map((term: any) => term.id)
-                        .filter(Boolean)
-
-let graphRows: any[] = []
-let neighborTerms: any[] = []
-
-                    if (termIds.length > 0) {
-
-                    graphRows =
-                        await getGraphNeighbors(termIds)
-
-                    const neighborIds = [
-
-                        ...new Set([
-
-                        ...graphRows.map(
-                            (row: any) =>
-                            row.source_term_id
-                        ),
-
-                        ...graphRows.map(
-                            (row: any) =>
-                            row.target_term_id
-                        )
-
-                        ])
-
-                    ]
-
-                    neighborTerms =
-                        await getOntologyTermsByIds(
-                        neighborIds
-                        ) || []
-
-                    }
+export default function ListingPage() {
 
   const navButton = {
             background:'#FFFFFF',
@@ -133,7 +29,220 @@ let neighborTerms: any[] = []
             backdropFilter:'blur(10px)'
           }
 
-  
+  const params = useParams()
+
+  const [listing, setListing] = useState<any>(null)
+  const [ontologyTerms, setOntologyTerms] = useState<any[]>([])
+
+  const [neighborTerms, setNeighborTerms] =
+  useState<any[]>([])
+
+  const [graphRows, setGraphRows] =
+    useState<any[]>([])
+
+  const [loading, setLoading] = useState(true)
+
+  const [showMobileFilters, setShowMobileFilters] =
+  useState(false)
+
+  useEffect(() => {
+
+    async function fetchListing() {
+
+      // SEARCH SUPABASE FIRST
+      const { data, error } = await supabase
+        .from('listings')
+        .select('*')
+        .eq('id', String(params.id))
+        .single()
+
+      // IF SUPABASE FOUND MATCH
+      if (data) {
+
+           const normalizedListing = {
+
+              ...data,
+
+            
+                images:
+                  Array.isArray(data.images)
+                    ? data.images
+                    : typeof data.images === 'string'
+                    ? (() => {
+
+                        try {
+
+                          return JSON.parse(
+                            data.images
+                          )
+
+                        } catch {
+
+                          return data.images
+                            .split('|')
+                            .map((img: string) =>
+                              img.trim()
+                            )
+                            .filter(Boolean)
+
+                        }
+
+                      })()
+                    : []
+
+            }
+
+            setListing(normalizedListing)
+
+            console.log(
+              JSON.stringify(
+                normalizedListing.images,
+                null,
+                2
+              )
+            )
+
+            const { data: ontologyRows } = await supabase
+              .from('listings_ontology_terms')
+              .select(`
+                ontology_terms (
+                  id,
+                  parent_id,
+                  term_name,
+                  term_type,
+                  slug,
+                  description,
+                  official_code,
+                  term_name_en,
+                  term_name_es,
+                  slug_en,
+                  slug_es
+                )
+              `)
+              .eq('listing_id', data.id)
+
+            setOntologyTerms(
+              ontologyRows
+                ?.map((row: any) => row.ontology_terms)
+                .filter(Boolean) || []
+            )
+
+            const termIds =
+              ontologyRows
+                ?.map(
+                  (row: any) =>
+                    row.ontology_terms?.id
+                )
+                .filter(Boolean) || []
+
+
+                  let graphNeighbors:any[] = []
+                  let filteredGraphNeighbors:any[] = []
+
+                  try {
+
+                    console.log('BEFORE getGraphNeighbors')
+
+
+                    
+                    graphNeighbors =
+                      await getGraphNeighbors(termIds)
+
+                  filteredGraphNeighbors =
+                    graphNeighbors.filter(
+                      (row:any) =>
+                        termIds.includes(row.source_term_id) &&
+                        termIds.includes(row.target_term_id)
+                    )
+
+                  setGraphRows(filteredGraphNeighbors)
+                    console.log('AFTER getGraphNeighbors')
+
+                    console.log(
+                      'FIRST GRAPH ROW',
+                      graphNeighbors[0]
+                    )
+
+                    console.log(
+                      'FIRST 10 GRAPH ROWS',
+                      graphNeighbors.slice(0,10)
+                    )
+
+                  console.log(
+                    'HOUSE ROWS',
+                    graphNeighbors.filter(
+                      (row:any) =>
+                        row.source_term_id === 1115
+                        ||
+                        row.target_term_id === 1115
+                    ).length
+                  )
+
+                  } catch (err) {
+
+                    console.error(
+                      'GRAPH ERROR',
+                      err
+                    )
+
+                  }
+
+                const neighborIds = [
+
+                ...new Set([
+
+                  ...filteredGraphNeighbors.map(
+                    (row:any) =>
+                      row.source_term_id
+                  ),
+
+                  ...filteredGraphNeighbors.map(
+                    (row:any) =>
+                      row.target_term_id
+                  )
+
+                ])
+
+              ]
+
+                const neighborTermsData =
+                  await getOntologyTermsByIds(
+                    neighborIds
+                  )
+
+                setNeighborTerms(
+                  neighborTermsData || []
+                )
+
+console.log(
+
+  'FILTERED GRAPH NEIGHBORS',
+
+  filteredGraphNeighbors.length
+
+)
+
+                console.log(
+                  'NEIGHBOR TERMS',
+                  neighborTermsData.length
+                )
+
+            setLoading(false)
+
+            return
+
+          }
+
+
+      setLoading(false)
+
+    }
+
+    if (params.id) {
+      fetchListing()
+    }
+
+  }, [params.id])
 
 console.log(
   'NEIGHBOR TERMS STATE',
@@ -145,14 +254,43 @@ console.log(
   graphRows
 )
 
-const schema = buildListingSchema({
-                    listing,
-                    ontologyTerms,
-                    neighborTerms,
-                    graphRows,
-                    lang: 'es',
-                    mode: 'buy'
-                    })
+  const schema =
+    listing
+      ? buildListingSchema({
+          listing,
+          ontologyTerms,
+          neighborTerms,
+          graphRows,
+          lang: 'es',
+          mode: 'rent'
+        })
+      : null
+
+if (loading) {
+
+  return (
+
+    <>
+      {schema && <JsonLd data={schema} />}
+
+      <main
+        style={{
+          background: '#000',
+          minHeight: '100vh',
+          color: '#fff',
+          padding: '2rem'
+        }}
+      >
+
+        Cargando Propiedad...
+
+      </main>
+
+    </>
+
+  )
+
+}
 
 if (!listing) {
 
@@ -194,7 +332,11 @@ return (
       }}
     >
 
-<TopBarES />
+            <TopBarES
+              onFilterClick={() =>
+                setShowMobileFilters(true)
+              }
+            />
 
         {/* MAIN LAYOUT */}
           <div style={{
@@ -242,7 +384,60 @@ return (
 
             )}
 
-                
+                <button
+                  onClick={(e) => {
+
+                    e.preventDefault()
+                    e.stopPropagation()
+
+                    const existingFavorites =
+                      JSON.parse(
+                        localStorage.getItem('buy_favorites') || '[]'
+                      )
+
+                    const alreadySaved =
+                      existingFavorites.includes(listing.id)
+
+                    let updatedFavorites:string[] = []
+
+                    if (alreadySaved) {
+
+                      updatedFavorites =
+                        existingFavorites.filter(
+                          (id:string) => id !== listing.id
+                        )
+
+                    } else {
+
+                      updatedFavorites = [
+                        ...existingFavorites,
+                        listing.id
+                      ]
+
+                    }
+
+                    localStorage.setItem(
+                      'buy_favorites',
+                      JSON.stringify(updatedFavorites)
+                    )
+
+                  }}
+                  style={{
+                    marginTop:'1rem',
+                    width:'100%',
+                    background:'#111',
+                    border:'1px solid #333',
+                    color:'#fff',
+                    borderRadius:'999px',
+                    marginBottom:'1rem',
+                    padding:'.85rem',
+                    cursor:'pointer',
+                    fontWeight:'bold'
+                  }}
+                >
+                  Save To Favorites
+                </button>
+
                 {/* IMAGE GRID */}
                 {listing.images?.length > 1 && (
 

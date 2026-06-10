@@ -1,137 +1,247 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import { useParams } from 'next/navigation'
 import Link from 'next/link'
 
 import { supabase } from '@/lib/supabase'
+import { createListingId } from '@/lib/createListingId'
 
 import JsonLd from '@/app/components/JsonLd'
-import TopBar from '@/app/components/TopBar'
-
-import { buildListingSchema } from '@/lib/schema-engine'
 
 import {
   getGraphNeighbors,
   getOntologyTermsByIds
 } from '@/lib/graph-engine'
 
-export default async function ListingPage({
-  params
-}: {
-  params: Promise<{ id: string }>
-}) {
-  const { id } = await params
+import {
+  buildListingSchema
+} from '@/lib/schema-engine'
 
-const { data, error } = await supabase
-  .from('listings')
-  .select('*')
-  .eq('id', id)
-  .single()
+export default function ListingPage() {
 
-if (error || !data) {
-  return (
-    <main
-      style={{
+  const params = useParams()
+
+  const [listing, setListing] = useState<any>(null)
+
+  const [ontologyTerms, setOntologyTerms] =
+  useState<any[]>([])
+
+  const [neighborTerms, setNeighborTerms] =
+    useState<any[]>([])
+
+  const [graphRows, setGraphRows] =
+    useState<any[]>([])
+
+  const [loading, setLoading] = useState(true)
+  
+  useEffect(() => {
+
+          async function fetchListing() {
+
+            const { data, error } = await supabase
+              .from('listings')
+              .select('*')
+              .eq('id', String(params.id))
+              .eq('transaction_type', 'rent')
+              .single()
+
+            if (data) {
+
+              setListing({
+
+                ...data,
+
+                images:
+                    Array.isArray(data.images)
+                      ? data.images
+                      : typeof data.images === 'string'
+                      ? (() => {
+
+                          try {
+
+                            return JSON.parse(
+                              data.images
+                            )
+
+                          } catch {
+
+                            return data.images
+                              .split('|')
+                              .map((img: string) =>
+                                img.trim()
+                              )
+                              .filter(Boolean)
+
+                          }
+
+                        })()
+                      : []
+
+              })
+
+console.log(
+  'RAW RENT IMAGES:',
+  data.images
+)
+
+console.log(
+  'RAW TYPE:',
+  typeof data.images
+)
+
+              const { data: ontologyRows } = await supabase
+                .from('listings_ontology_terms')
+                .select(`
+                  ontology_terms (
+                    id,
+                    parent_id,
+                    term_name,
+                    term_type,
+                    slug,
+                    description,
+                    official_code,
+                    term_name_en,
+                    term_name_es,
+                    slug_en,
+                    slug_es
+                  )
+                `)
+                .eq('listing_id', data.id)
+
+console.log(
+  'LISTING ID',
+  data.id
+)
+
+console.log(
+  'ONTOLOGY ROWS',
+  ontologyRows
+)
+
+              setOntologyTerms(
+                ontologyRows
+                  ?.map((row: any) => row.ontology_terms)
+                  .filter(Boolean) || []
+              )
+
+              const termIds =
+                ontologyRows
+                  ?.map(
+                    (row: any) =>
+                      row.ontology_terms?.id
+                  )
+                  .filter(Boolean) || []
+
+              if (termIds.length > 0) {
+
+                const graphNeighbors =
+                  await getGraphNeighbors(termIds)
+
+                setGraphRows(graphNeighbors)
+
+                const neighborIds = [
+                  ...new Set([
+                    ...graphNeighbors.map(
+                      (row: any) =>
+                        row.source_term_id
+                    ),
+                    ...graphNeighbors.map(
+                      (row: any) =>
+                        row.target_term_id
+                    )
+                  ])
+                ]
+
+                const neighborTermsData =
+                  await getOntologyTermsByIds(
+                    neighborIds
+                  )
+
+                setNeighborTerms(
+                  neighborTermsData || []
+                )
+
+              }
+
+              const graphNeighbors =
+                await getGraphNeighbors(termIds)
+
+              const filteredGraphNeighbors =
+                graphNeighbors.filter(
+                  (row: any) =>
+                    termIds.includes(row.source_term_id) &&
+                    termIds.includes(row.target_term_id)
+                )
+
+              setGraphRows(filteredGraphNeighbors)
+
+              const neighborIds = [
+                ...new Set([
+                  ...filteredGraphNeighbors.map(
+                    (row: any) => row.source_term_id
+                  ),
+                  ...filteredGraphNeighbors.map(
+                    (row: any) => row.target_term_id
+                  )
+                ])
+              ]
+
+              const neighborTermsData =
+                await getOntologyTermsByIds(neighborIds)
+
+              setNeighborTerms(neighborTermsData || [])
+
+            } else {
+
+              console.error('Propiedad No Encontrada')
+
+            }
+
+            setLoading(false)
+
+          }
+
+          if (params.id) {
+
+            fetchListing()
+
+          }
+
+        }, [params.id])
+
+console.log('RENT PAGE SCHEMA MODE')
+
+        const schema =
+          listing
+            ? buildListingSchema({
+                listing,
+                ontologyTerms,
+                neighborTerms,
+                graphRows,
+                lang: 'en',
+                mode: 'rent'
+              })
+            : null
+
+  if (loading) {
+
+    return (
+
+      <main style={{
         background: '#000',
         minHeight: '100vh',
         color: '#fff',
         padding: '2rem'
-      }}
-    >
-      Propiedad No Encontrada
-    </main>
-  )
-}
+      }}>
 
-const listing = {
-  ...data,
-  images:
-    Array.isArray(data.images)
-      ? data.images
-      : typeof data.images === 'string'
-      ? (() => {
-          try {
-            return JSON.parse(data.images)
-          } catch {
-            return data.images
-              .split('|')
-              .map((img: string) => img.trim())
-              .filter(Boolean)
-          }
-        })()
-      : []
-}
+        Uploading Property
 
-const { data: ontologyRows } = await supabase
-  .from('listings_ontology_terms')
-  .select(`
-    ontology_terms (
-      id,
-      parent_id,
-      term_name,
-      term_type,
-      slug,
-      description,
-      official_code,
-      term_name_en,
-      term_name_es,
-      slug_en,
-      slug_es
+      </main>
+
     )
-  `)
-  .eq('listing_id', data.id)
 
-const ontologyTerms =
-  ontologyRows
-    ?.map((row: any) => row.ontology_terms)
-    .filter(Boolean) || []
-
-const termIds =
-  ontologyTerms
-    .map((term: any) => term.id)
-    .filter(Boolean)
-
-
-
-let graphRows: any[] = []
-let neighborTerms: any[] = []
-
-if (termIds.length > 0) {
-
-  graphRows =
-    await getGraphNeighbors(termIds)
-
-  const neighborIds = [
-
-    ...new Set([
-
-      ...graphRows.map(
-        (row: any) =>
-          row.source_term_id
-      ),
-
-      ...graphRows.map(
-        (row: any) =>
-          row.target_term_id
-      )
-
-    ])
-
-  ]
-
-  neighborTerms =
-    await getOntologyTermsByIds(
-      neighborIds
-    ) || []
-
-}
-
-
-const schema = buildListingSchema({
-  listing,
-  ontologyTerms,
-  neighborTerms,
-  graphRows,
-  lang: 'es',
-  mode: 'rent'
-})
+  }
 
 
 return (
@@ -160,7 +270,7 @@ return (
             fontWeight: 'bold'
           }}
         >
-          ← Volver al Marketplace
+          ← Return to Marketplace
         </Link>
 
       </div>
@@ -206,13 +316,65 @@ return (
                 alignItems: 'center',
                 color: '#555'
               }}>
-                Sin Imagen
+                No Image
               </div>
 
             )}
 
           </div>
-                    
+                    <button
+                    onClick={(e) => {
+
+                        e.preventDefault()
+                        e.stopPropagation()
+
+                        const existingFavorites =
+                        JSON.parse(
+                            localStorage.getItem('rent_lease_favorites') || '[]'
+                        )
+
+                        const alreadySaved =
+                        existingFavorites.includes(listing.id)
+
+                        let updatedFavorites: string[] = []
+
+                        if (alreadySaved) {
+
+                        updatedFavorites =
+                            existingFavorites.filter(
+                            (id: string) => id !== listing.id
+                            )
+
+                        } else {
+
+                        updatedFavorites = [
+                            ...existingFavorites,
+                            listing.id
+                        ]
+
+                        }
+
+                        localStorage.setItem(
+                            'rent_lease_favorites',
+                        JSON.stringify(updatedFavorites)
+                        )
+
+                    }}
+                    style={{
+                        marginTop: '1rem',
+                        width: '100%',
+                        background: '#111',
+                        border: '1px solid #333',
+                        color: '#FFFFFF',
+                        borderRadius: '999px',
+                        marginBottom: '1rem',
+                        padding: '.85rem',
+                        cursor: 'pointer',
+                        fontWeight: 'bold'
+                    }}
+                    >
+                    Save To Favorites
+                    </button>
           {/* IMAGE GRID */}
           {listing.images?.length > 1 && (
 
@@ -226,6 +388,7 @@ return (
 
                 <img
                   key={index}
+                  referrerPolicy="no-referrer"
                   src={image}
                   alt=""
                   style={{
@@ -282,7 +445,7 @@ return (
             <div>
 
             <span style={label}>
-                Ubicación
+                Location
             </span>
 
             <div style={entityCard}>
@@ -297,7 +460,7 @@ return (
             <div>
 
             <span style={label}>
-                Tipo de Propiedad
+                Property Type
             </span>
 
             <div style={entityCard}>
@@ -312,7 +475,7 @@ return (
             <div>
 
             <span style={label}>
-                Habitaciones
+                Bedrooms
             </span>
 
             <div style={entityCard}>
@@ -329,7 +492,7 @@ return (
             <div>
 
             <span style={label}>
-                Baños
+                Bathrooms
             </span>
 
             <div style={entityCard}>
@@ -346,7 +509,7 @@ return (
             <div>
 
             <span style={label}>
-                Estacionamiento
+                Parking
             </span>
 
             <div style={entityCard}>
@@ -363,7 +526,7 @@ return (
             <div>
 
             <span style={label}>
-                Año de Construcción
+                Year Constructed
             </span>
 
             <div style={entityCard}>
@@ -380,7 +543,7 @@ return (
             <div>
 
             <span style={label}>
-                Área de Construcción
+                Construction Area
             </span>
 
             <div style={entityCard}>
@@ -395,7 +558,7 @@ return (
             <div>
 
             <span style={label}>
-                Área de la Propiedad
+                Property Area
             </span>
 
             <div style={entityCard}>
@@ -408,7 +571,7 @@ return (
             <div>
 
             <span style={label}>
-                Entorno
+                Environment
             </span>
 
             <div style={pillContainer}>
@@ -425,7 +588,7 @@ return (
             <div>
 
             <span style={label}>
-                Accesibilidad
+                Accessibility
             </span>
 
             <div style={pillContainer}>
@@ -454,7 +617,7 @@ return (
             <div>
 
             <span style={label}>
-                Terreno
+                Terrain
             </span>
 
             <div style={pillContainer}>
@@ -483,7 +646,7 @@ return (
             <div>
 
             <span style={label}>
-                Servicios
+                Utilities
             </span>
 
             <div style={pillContainer}>
@@ -512,7 +675,7 @@ return (
             <div>
 
             <span style={label}>
-                Estado Legal
+                Legal Status
             </span>
 
             <div style={pillContainer}>
@@ -529,16 +692,16 @@ return (
             <div>
 
             <span style={label}>
-                Precio
+                Price
             </span>
 
             <div style={priceCard}>
 
                 {listing.monthly_price
-                  ? `${listing.currency || 'CRC'} ${Number(
-                      listing.monthly_price
-                    ).toLocaleString()} / month`
-                  : 'Price Not Available'}
+                ? `${listing.currency || 'CRC'} ${Number(
+                    listing.monthly_price
+                  ).toLocaleString()} / month`
+                : 'Price Not Available'}
 
             </div>
 
@@ -577,7 +740,7 @@ return (
                 fontWeight: 'bold'
               }}
             >
-              Contactar Vendedor por WhatsApp
+              Contact Seller
             </a>
 
           </div>
@@ -587,7 +750,7 @@ return (
       </div>
 
     </main>
-   </>
+    </>
   )
 
 }

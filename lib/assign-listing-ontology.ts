@@ -55,35 +55,61 @@ export async function assignListingOntology(
     return
   }
 
-  const { data: ontologyTerms, error } =
-    await supabase
-      .from('ontology_terms')
-      .select(`
-        id,
-        parent_id,
-        term_type,
-        term_name,
-        term_name_en,
-        term_name_es,
-        slug,
-        slug_en,
-        slug_es
-      `)
+  const {
+          data: ontologyTerms,
+          error
+        } =
+          await supabase
+            .from('ontology_terms')
+            .select(`
+              id,
+              parent_id,
+              term_type,
+              term_name,
+              term_name_en,
+              term_name_es,
+              slug,
+              slug_en,
+              slug_es
+            `)
 
-  if (error) {
+        if (error) {
 
-    console.error(
-      'ONTOLOGY QUERY ERROR',
-      error
-    )
+          console.error(
+            'ONTOLOGY QUERY ERROR',
+            error
+          )
 
-    return
+          return
 
-  }
+        }
 
-  if (!ontologyTerms?.length) {
-    return
-  }
+        const {
+          data: relationships,
+          error: relationshipError
+        } =
+          await supabase
+            .from('ontology_relationships')
+            .select(`
+              source_term_id,
+              target_term_id,
+              relationship_type
+            `)
+
+        if (relationshipError) {
+
+          console.error(
+            'RELATIONSHIP QUERY ERROR',
+            relationshipError
+          )
+
+          return
+
+        }
+
+        if (!ontologyTerms?.length) {
+          return
+        }
 
   console.log(
     'ONTOLOGY TERMS FOUND',
@@ -120,23 +146,131 @@ export async function assignListingOntology(
 
   const matchedTerms = new Map()
 
-  for (const value of valuesToMatch) {
+                const matchedProvince =
+                  ontologyTerms.find(
+                    term =>
+                      term.term_type === 'province'
+                      &&
+                      normalize(
+                        term.term_name_en ||
+                        term.term_name
+                      ) === normalize(
+                        listingData.province
+                      )
+                  )
 
-    const match =
-      termMap.get(
-        normalize(value)
-      )
+                if (matchedProvince) {
 
-    if (match) {
+                  matchedTerms.set(
+                    matchedProvince.id,
+                    matchedProvince
+                  )
 
-      matchedTerms.set(
-        match.id,
-        match
-      )
+                }
 
-    }
 
-  }
+console.log('MATCHED PROVINCE', matchedProvince)
+
+
+                const matchedCanton =
+                  ontologyTerms.find(
+                    term =>
+                      term.term_type === 'canton'
+                      &&
+                      matchedProvince
+                      &&
+                      term.parent_id === matchedProvince.id
+                      &&
+                      normalize(
+                        term.term_name_en ||
+                        term.term_name
+                      ) === normalize(
+                        listingData.canton
+                      )
+                  )
+
+                if (matchedCanton) {
+
+                  matchedTerms.set(
+                    matchedCanton.id,
+                    matchedCanton
+                  )
+
+                }
+
+console.log('MATCHED CANTON', matchedCanton)
+
+
+                  const matchedDistrict =
+                    ontologyTerms.find(
+                      term =>
+                        term.term_type === 'district'
+                        &&
+                        matchedCanton
+                        &&
+                        term.parent_id === matchedCanton.id
+                        &&
+                        normalize(
+                          term.term_name_en ||
+                          term.term_name
+                        ) === normalize(
+                          listingData.district
+                        )
+                    )
+
+                  if (matchedDistrict) {
+
+                    matchedTerms.set(
+                      matchedDistrict.id,
+                      matchedDistrict
+                    )
+
+                  }
+
+console.log('MATCHED DISTRICT', matchedDistrict) 
+
+
+
+                for (const value of valuesToMatch) {
+
+                  if (
+                      value === listingData.province
+                      ||
+                      value === listingData.canton
+                      ||
+                      value === listingData.district
+                    ) {
+                      continue
+                    }
+
+                  const match =
+                    termMap.get(
+                      normalize(value)
+                    )
+
+                  if (
+                    match
+                    &&
+                    match.term_type !== 'province'
+                    &&
+                    match.term_type !== 'canton'
+                    &&
+                    match.term_type !== 'district'
+                  ) {
+
+                    matchedTerms.set(
+                      match.id,
+                      match
+                    )
+                    console.log(
+                      'GENERIC MATCH',
+                      value,
+                      match.id,
+                      match.term_name,
+                      match.term_type
+                    )
+                }
+            }
 
   if (matchedTerms.size === 0) {
 
@@ -171,6 +305,19 @@ export async function assignListingOntology(
       )
     )
 
+console.log(
+  'MATCHED TERM IDS BEFORE EXPANSION',
+  Array.from(
+    matchedTerms.values()
+  ).map(
+    term => ({
+      id: term.id,
+      name: term.term_name,
+      type: term.term_type
+    })
+  )
+)
+
   const expandedTerms =
     new Map(matchedTerms)
 
@@ -204,6 +351,74 @@ export async function assignListingOntology(
 
   }
 
+    let changed = true
+
+      while (changed) {
+
+        changed = false
+
+        const currentIds =
+          Array.from(
+            expandedTerms.keys()
+          )
+
+        for (
+          const relationship
+          of (relationships || [])
+        ) {
+
+          if (
+              relationship.relationship_type === 'is_part_of'
+              &&
+              currentIds.includes(
+                relationship.source_term_id
+              )
+            ) {
+
+            const relatedTerm =
+              ontologyById.get(
+                relationship.target_term_id
+              )
+
+            if (
+              relatedTerm &&
+              !expandedTerms.has(
+                relatedTerm.id
+              )
+            ) {
+
+console.log(
+  'RELATIONSHIP EXPANSION',
+  relationship.source_term_id,
+  '->',
+  relationship.target_term_id,
+  relationship.relationship_type,
+  relatedTerm.term_name,
+  relatedTerm.term_type
+)
+
+              expandedTerms.set(
+                relatedTerm.id,
+                relatedTerm
+              )
+
+              changed = true
+
+            }
+
+          }
+
+        }
+
+      }
+
+console.log(
+  'EXPANDED TERM IDS',
+  Array.from(
+    expandedTerms.keys()
+  )
+)
+
   const inserts =
     Array.from(
       expandedTerms.values()
@@ -225,17 +440,32 @@ export async function assignListingOntology(
     inserts.length
   )
 
+  const deleteResponse =
+          await supabase
+            .from('listings_ontology_terms')
+            .delete()
+            .eq(
+              'listing_id',
+              listingId
+            )
+
+        if (deleteResponse.error) {
+
+          console.error(
+            'DELETE ERROR',
+            deleteResponse.error
+          )
+
+          return
+
+        }
+
   const response =
     await supabase
       .from('listings_ontology_terms')
-      .upsert(
-        inserts,
-        {
-          onConflict:
-            'listing_id,ontology_term_id',
-          ignoreDuplicates: true
-        }
-      )
+      .insert(
+          inserts
+        )
 
   console.log(
     'ONTOLOGY INSERT RESPONSE',
@@ -244,7 +474,7 @@ export async function assignListingOntology(
 
   if (response.error) {
 
-    console.error(
+    console.error(    
       'ONTOLOGY INSERT ERROR',
       response.error
     )

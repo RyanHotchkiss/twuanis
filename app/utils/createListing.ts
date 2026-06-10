@@ -122,6 +122,8 @@ const insertedListing =
 
 if (insertedListing?.id) {
 
+console.log('CREATE LISTING CALLING ASSIGN ONTOLOGY')
+
   await assignListingOntology(
     insertedListing.id,
     {

@@ -11,7 +11,7 @@ import LanguageButtonEN from '@/app/components/LanguageButtonES'
 import Link from 'next/link'
 
 type TopBarProps = {
-  onFilterClick: () => void
+  onFilterClick?: () => void
 }
 
 export default function TopBar({
@@ -56,7 +56,7 @@ export default function TopBar({
       />
 
       <FilterButton
-        onClick={onFilterClick}
+        onClick={onFilterClick || (() => {})}
       />
 
       <div style={{ marginRight: '.5rem' }}>
