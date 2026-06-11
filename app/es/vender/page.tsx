@@ -63,29 +63,33 @@ from '@/app/AuthOverlay'
 
 
 export default function SellPage() {
+const [showLocationOptions, setShowLocationOptions] = useState(true)
 
-    const [showLocationOptions, setShowLocationOptions] = useState(true)
-    const [show_province_options, setShow_province_options] = useState(true)
-    const [show_canton_options, setShow_canton_options] = useState(false)
-    const [show_district_options, setShow_district_options] = useState(false)
-    const [showproperty_typeOptions, setShowproperty_typeOptions] = useState(true)
-    const [showproperty_areaOptions, setShowproperty_areaOptions] = useState(true)
-    const [showutilityOptions, setShowutilityOptions] = useState(true)
-    const [showenvironmentOptions, setShowenvironmentOptions] = useState(true)
-    const [showAccessibilityOptions, setShowAccessibilityOptions] = useState(true)
-    const [showlegal_statusOptions, setShowlegal_statusOptions] = useState(true)
-    const [csvFile, setCsvFile] = useState<File | null>(null)
-    const [csvListings, setCsvListings] = useState<any[]>([])
-    const [showCsvStaging, setShowCsvStaging] = useState(false)
-    const [showTerrainOptions, setShowTerrainOptions] = useState(true)
-    const [isMobile, setIsMobile] = useState(false)
-    const [showMobileFilters, setShowMobileFilters] = useState(false)
-    const [showAuthOverlay, setShowAuthOverlay] = useState(false)
-  const [show_bedroom_options, setShow_bedroom_options] = useState(true)
-    const [show_bathroom_options, setShow_bathroom_options] = useState(true)
-    const [show_parking_options, setShow_parking_options] = useState(true)
-    const [show_year_built_options, setShow_year_built_options] = useState(true)
-    const [show_construction_area_options, setShow_construction_area_options] = useState(true)
+const [show_province_options, setShow_province_options] = useState(true)
+const [show_canton_options, setShow_canton_options] = useState(true)
+const [show_district_options, setShow_district_options] = useState(true)
+
+const [showproperty_typeOptions, setShowproperty_typeOptions] = useState(true)
+const [showproperty_areaOptions, setShowproperty_areaOptions] = useState(true)
+const [showutilityOptions, setShowutilityOptions] = useState(true)
+const [showenvironmentOptions, setShowenvironmentOptions] = useState(true)
+const [showAccessibilityOptions, setShowAccessibilityOptions] = useState(true)
+const [showlegal_statusOptions, setShowlegal_statusOptions] = useState(true)
+const [showTerrainOptions, setShowTerrainOptions] = useState(true)
+
+const [show_bedroom_options, setShow_bedroom_options] = useState(true)
+const [show_bathroom_options, setShow_bathroom_options] = useState(true)
+const [show_parking_options, setShow_parking_options] = useState(true)
+const [show_year_built_options, setShow_year_built_options] = useState(true)
+const [show_construction_area_options, setShow_construction_area_options] = useState(true)
+
+const [csvFile, setCsvFile] = useState<File | null>(null)
+const [csvListings, setCsvListings] = useState<any[]>([])
+const [showCsvStaging, setShowCsvStaging] = useState(false)
+
+const [isMobile, setIsMobile] = useState(false)
+const [showMobileFilters, setShowMobileFilters] = useState(false)
+const [showAuthOverlay, setShowAuthOverlay] = useState(false)
 
   const [propertyData, setPropertyData] = useState({
     province: '',

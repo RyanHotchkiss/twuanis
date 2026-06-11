@@ -78,8 +78,6 @@ export default function BathroomFilterS({
 
               setSelectedBathrooms('')
 
-              setShowBathroomOptions(true)
-
             }}
             style={resetButton}
           >

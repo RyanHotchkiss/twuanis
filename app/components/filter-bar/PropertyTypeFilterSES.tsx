@@ -143,8 +143,6 @@ export default function PropertyTypeFilterSES({
 
                 setShowproperty_typeOptions(false)
 
-                setShowBedroomOptions(true)
-
                 setShowProvinceOptions(false)
 
                 setShowCantonOptions(false)
