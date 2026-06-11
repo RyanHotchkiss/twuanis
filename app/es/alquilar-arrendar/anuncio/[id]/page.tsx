@@ -43,20 +43,20 @@ if (error || !data) {
 const listing = {
   ...data,
   images:
-    Array.isArray(data.images)
-      ? data.images
-      : typeof data.images === 'string'
-      ? (() => {
-          try {
-            return JSON.parse(data.images)
-          } catch {
-            return data.images
-              .split('|')
-              .map((img: string) => img.trim())
-              .filter(Boolean)
-          }
-        })()
-      : []
+  Array.isArray(data.images)
+    ? data.images
+    : typeof data.images === 'string'
+    ? (() => {
+        try {
+          return JSON.parse(data.images)
+        } catch {
+          return data.images
+            .split('|')
+            .map((img: string) => img.trim())
+            .filter(Boolean)
+        }
+      })()
+    : []
 }
 
 const { data: ontologyRows } = await supabase

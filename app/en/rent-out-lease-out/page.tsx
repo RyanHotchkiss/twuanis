@@ -80,7 +80,7 @@ export default function SellPage() {
     const [showTerrainOptions, setShowTerrainOptions] = useState(true)
     const [isMobile, setIsMobile] = useState(false)
     const [showMobileFilters, setShowMobileFilters] = useState(false)
-    const [showAuthOverlay, setShowAuthOverlay] = useState(false)
+    
     const [showMonthlyRentOptions, setShowMonthlyRentOptions] = useState(true)
 
   const [propertyData, setPropertyData] = useState({

@@ -3,6 +3,11 @@
 import { useEffect, useState } from 'react'
 
 
+import {
+  uploadListingImages
+} from '@/app/utils/uploadListingImages'
+
+
 import Papa from 'papaparse'
 
 import {
@@ -858,85 +863,146 @@ formattedData
                     />
 
 {/* CREATE LISTING BUTTON */}
-                          
-<CreateListingButtonSXL
-                    onCreateListing={() => {
-
-                        if (!propertyData.whatsapp) {
-                        alert(
-                            'Please enter your WhatsApp number'
-                        )
-                        return
-                        }
-
-                        setShowAuthOverlay(true)
-
-                    }}
-                    />
-
-</div> {/* LEFT SIDE */}
-
-{/* RIGHT SIDE */}
-
-        <div style={{
-                    background: '#0d0d0d',
-                    border: '.0625rem solid #222',
-                    borderRadius: '1.5rem',
-                    padding: '2rem',
-
-                    position: isMobile
-                    ? 'relative'
-                    : 'sticky',
-
-                    top: isMobile
-                    ? '0'
-                    : '1rem',
-
-                    height: 'fit-content',
-
-                    width: '100%'
-                    }}>
-
-<RentalPropertyDefinitionPanelES
-                        propertyData={propertyData}
-                    />
-
-            </div>
-        </div>
-    </div> 
-            
-            {/* MAIN GRID */}
-
-                {/* CSV STAGING MODAL */}
-                {showCsvStaging && (
-
-<CsvStagingModal
-                    csvListings={csvListings}
-                    setCsvListings={setCsvListings}
-                    setShowCsvStaging={setShowCsvStaging}
-                    isRentLease={true}
-                />
-
-                )}
-
-               {/* AUTH OVERLAY */}
-                    {showAuthOverlay && (
-
-                    <AuthOverlay
-                        whatsapp={propertyData.whatsapp}
-                        propertyData={propertyData}
-                        formatWhatsAppNumber={
-                        formatWhatsAppNumber
-                        }
-                        onClose={() =>
-                        setShowAuthOverlay(false)
-                        }
-                    />
-
-                    )}
-
-                </main>
-
-            )
-
-        }
+ <CreateListingButtonSXL
+                 onCreateListing={async () => {
+ 
+                     console.log(
+                     'CREATE LISTING BUTTON CLICKED'
+                     )
+ 
+                     console.log(
+                     'WHATSAPP:',
+                     propertyData.whatsapp
+                     )
+ 
+                     if (!propertyData.whatsapp) {
+ 
+                     alert(
+                         'Please enter your WhatsApp number'
+                     )
+ 
+                     return
+ 
+                     }
+ 
+                     try {
+ 
+                     const uploadedImageUrls =
+                         await uploadListingImages(
+                         propertyData.images
+                         )
+ 
+                     const updatedPropertyData = {
+                         ...propertyData,
+                         images: uploadedImageUrls
+                     }
+ 
+ console.log(
+   'SENDING LISTING DATA:',
+   updatedPropertyData
+ )
+ 
+ fetch('/api/send-otp')
+ 
+                     const response = await fetch(
+                         '/api/send-otp',
+                         {
+                         method: 'POST',
+                         headers: {
+                             'Content-Type':
+                             'application/json'
+                         },
+                         body: JSON.stringify({
+                             phone:
+                             propertyData.whatsapp,
+                             listingData:
+                             updatedPropertyData
+                         })
+                         }
+                     )
+ 
+                     const data =
+                         await response.json()
+ 
+                     if (!data.success) {
+ 
+                         alert(
+                         data.error ||
+                         'Failed to send WhatsApp link'
+                         )
+ 
+                         return
+ 
+                     }
+ 
+                     alert(
+                         'Tuanis! Check your WhatsApp.'
+                     )
+ 
+                     } catch (error) {
+ 
+                     console.error(error)
+ 
+                     alert(
+                         'Something went wrong.'
+                     )
+ 
+                     }
+ 
+                 }}
+                 />
+ 
+                 </div> {/* LEFT SIDE */}
+ 
+                 {/* RIGHT SIDE */}
+ 
+                 <div
+                 style={{
+                     background: '#0d0d0d',
+                     border: '.0625rem solid #222',
+                     borderRadius: '1.5rem',
+                     padding: '2rem',
+ 
+                     position: isMobile
+                     ? 'relative'
+                     : 'sticky',
+ 
+                     top: isMobile
+                     ? '0'
+                     : '1rem',
+ 
+                     height: 'fit-content',
+ 
+                     width: '100%'
+                 }}
+                 >
+ 
+                 <RentalPropertyDefinitionPanelES
+                     propertyData={propertyData}
+                 />
+ 
+                 </div>
+ 
+                 </div>
+ 
+                 </div>
+ 
+                 {/* MAIN GRID */}
+ 
+                 {/* CSV STAGING MODAL */}
+ 
+                 {showCsvStaging && (
+ 
+                 <CsvStagingModal
+                     csvListings={csvListings}
+                     setCsvListings={setCsvListings}
+                     setShowCsvStaging={setShowCsvStaging}
+                 />
+ 
+                 )}
+ 
+                 </main>
+ 
+                 )
+ 
+                 }
