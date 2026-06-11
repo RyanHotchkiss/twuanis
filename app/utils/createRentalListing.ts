@@ -43,69 +43,82 @@ export async function createRentalListing(
   }
 
   const response = await supabase
-  .from('listings')
-  .insert([
+            .from('listings')
+            .insert([
+              {
+                province: propertyData.province,
+                canton: propertyData.canton,
+                district: propertyData.district,
 
-      {
-        province: propertyData.province,
-        canton: propertyData.canton,
-        district: propertyData.district,
+                property_type:
+                  propertyData.property_type || '',
 
-        property_type:
-          propertyData.property_type || '',
+                bedrooms: propertyData.bedrooms,
+                bathrooms: propertyData.bathrooms,
+                parking: propertyData.parking,
 
-        bedrooms: propertyData.bedrooms,
-        bathrooms: propertyData.bathrooms,
-        parking: propertyData.parking,
-        year_built_range:
-          propertyData.year_built_range,
-        construction_area:
-          propertyData.construction_area,
+                year_built_range:
+                  propertyData.year_built_range,
 
-        utility: propertyData.utility || [],
+                construction_area:
+                  propertyData.construction_area,
 
-        property_area:
-          propertyData.property_area,
+                utility:
+                  propertyData.utility || [],
 
-        environment:
-          propertyData.environment,
+                property_area:
+                  propertyData.property_area,
 
-        accessibility:
-          propertyData.accessibility,
+                environment:
+                  propertyData.environment,
 
-        terrain:
-          propertyData.terrain || [],
+                accessibility:
+                  propertyData.accessibility,
 
-        legal_status:
-          propertyData.legal_status,
+                terrain:
+                  propertyData.terrain || [],
 
-        monthly_price: Number(
-        String(propertyData.monthly_price)
-            .replace(/[^\d]/g, ''),
-        ),
+                legal_status:
+                  propertyData.legal_status,
 
-        whatsapp:
-          propertyData.whatsapp,
+                price_millions: null,
 
-        title:
-          generateListingTitle(propertyData),
+                monthly_price: Number(
+                  String(
+                    propertyData.monthly_price || ''
+                  ).replace(/[^\d]/g, '')
+                ),
 
-        description:
-          generateListingDescription(
-            propertyData
-          ),
+                transaction_type: 'rent',
 
-          transaction_type: 'rent',
-          listing_status: 'active',
-          currency:
-            propertyData.currency || 'CRC',
+                listing_status: 'active',
 
-        images: uploadedImageUrls
-      }
+                currency:
+                  propertyData.currency || 'CRC',
 
-    ])
+                whatsapp:
+                  propertyData.whatsapp,
 
-    .select()
+                title:
+                  generateListingTitle(
+                    propertyData
+                  ),
+
+                description:
+                  generateListingDescription(
+                    propertyData
+                  ),
+
+                images:
+                  uploadedImageUrls
+              }
+            ])
+            .select()
+
+    console.log(
+  'FULL RENTAL INSERT RESPONSE:',
+  JSON.stringify(response, null, 2)
+)
 
   if (response.error) {
 

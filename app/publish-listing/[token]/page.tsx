@@ -29,22 +29,22 @@ export default async function PublishPage({
   console.log('TOKEN FROM URL:', token)
 
   const { data: tokenData, error: tokenError } = await supabase
-      .from('listing_publish_tokens')
-      .select('*')
-      .eq('token', token)
-      .single()
+    .from('listing_publish_tokens')
+    .select('*')
+    .eq('token', token)
+    .single()
 
-    console.log(
-      'TOKEN LOOKUP RESULT:',
-      JSON.stringify(
-        {
-          tokenData,
-          tokenError
-        },
-        null,
-        2
-      )
+  console.log(
+    'TOKEN LOOKUP RESULT:',
+    JSON.stringify(
+      {
+        tokenData,
+        tokenError
+      },
+      null,
+      2
     )
+  )
 
   if (!tokenData) {
     return (
@@ -66,6 +66,32 @@ export default async function PublishPage({
 
   const propertyData = tokenData.listing_data
 
+  console.log(
+    'PROPERTY DATA FROM TOKEN:',
+    JSON.stringify(
+      propertyData,
+      null,
+      2
+    )
+  )
+
+  console.log(
+    'TOKEN TRANSACTION TYPE:',
+    propertyData.transaction_type
+  )
+
+  const resolvedTransactionType =
+    propertyData.transaction_type === 'rent'
+      ? 'rent'
+      : propertyData.transaction_type === 'buy'
+      ? 'buy'
+      : 'buy'
+
+  console.log(
+    'RESOLVED TRANSACTION TYPE:',
+    resolvedTransactionType
+  )
+
   const { data: listingData, error: listingError } = await supabase
     .from('listings')
     .insert([
@@ -74,27 +100,64 @@ export default async function PublishPage({
         canton: propertyData.canton,
         district: propertyData.district,
 
-        property_type: propertyData.property_type || '',
+        property_type:
+          propertyData.property_type || '',
 
-        bedrooms: propertyData.bedrooms,
-        bathrooms: propertyData.bathrooms,
-        parking: propertyData.parking,
+        bedrooms:
+          propertyData.bedrooms,
 
-        year_built_range: propertyData.year_built_range,
-        construction_area: propertyData.construction_area,
+        bathrooms:
+          propertyData.bathrooms,
 
-        utility: propertyData.utility || [],
-        property_area: propertyData.property_area,
+        parking:
+          propertyData.parking,
 
-        environment: propertyData.environment,
-        accessibility: propertyData.accessibility,
+        year_built_range:
+          propertyData.year_built_range,
 
-        terrain: propertyData.terrain || [],
-        legal_status: propertyData.legal_status,
+        construction_area:
+          propertyData.construction_area,
 
-        price_millions: propertyData.priceMillions,
+        utility:
+          propertyData.utility || [],
 
-        whatsapp: tokenData.phone,
+        property_area:
+          propertyData.property_area,
+
+        environment:
+          propertyData.environment,
+
+        accessibility:
+          propertyData.accessibility,
+
+        terrain:
+          propertyData.terrain || [],
+
+        legal_status:
+          propertyData.legal_status,
+
+        price_millions:
+          propertyData.priceMillions || null,
+
+        monthly_price:
+          propertyData.monthly_price
+            ? Number(
+                String(propertyData.monthly_price)
+                  .replace(/[^\d]/g, '')
+              )
+            : null,
+
+        transaction_type:
+          resolvedTransactionType,
+
+        listing_status:
+          propertyData.listing_status || 'active',
+
+        currency:
+          propertyData.currency || 'CRC',
+
+        whatsapp:
+          tokenData.phone,
 
         title:
           propertyData.title ||
@@ -110,6 +173,15 @@ export default async function PublishPage({
     ])
     .select()
     .single()
+
+  console.log(
+    'PUBLISHED LISTING ROW:',
+    JSON.stringify(
+      listingData,
+      null,
+      2
+    )
+  )
 
   if (listingError || !listingData) {
     console.error(

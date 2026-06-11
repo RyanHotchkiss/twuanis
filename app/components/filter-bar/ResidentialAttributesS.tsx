@@ -134,7 +134,7 @@ export default function ResidentialAttributesS({
 
                       setShowResidentialSummary(false)
 
-                      setShowBedroomOptions(true)
+                      
 
                     }}
                   >
@@ -199,7 +199,7 @@ export default function ResidentialAttributesS({
 
                         setShowResidentialSummary(false)
 
-                        setShowBedroomOptions(true)
+                        
                         setShowBathroomOptions(false)
                         setShowParkingOptions(false)
                         setShowYearBuiltOptions(false)
@@ -232,7 +232,7 @@ export default function ResidentialAttributesS({
                           }}
                           onClick={() => {
 
-                            setShowBedroomOptions(true)
+                            
 
                           }}
                         >
@@ -249,7 +249,7 @@ export default function ResidentialAttributesS({
 
                               setBedrooms('')
 
-                              setShowBedroomOptions(true)
+                              
                               setShowBathroomOptions(false)
 
                             }}
@@ -281,7 +281,7 @@ export default function ResidentialAttributesS({
 
                                   setBedrooms(option)
 
-                                  setShowBedroomOptions(false)
+                                  
                                   setShowBathroomOptions(true)
 
                                 }}
@@ -622,7 +622,7 @@ export default function ResidentialAttributesS({
 
                                   setShowConstructionAreaOptions(false)
 
-                                  setShowBedroomOptions(false)
+                                  
                                   setShowBathroomOptions(false)
                                   setShowParkingOptions(false)
                                   setShowYearBuiltOptions(false)

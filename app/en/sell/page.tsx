@@ -2,6 +2,10 @@
 
 import { useEffect, useState } from 'react'
 
+import {
+  uploadListingImages
+} from '@/app/utils/uploadListingImages'
+
 import Papa from 'papaparse'
 import Link from 'next/link'
 import {
@@ -810,24 +814,102 @@ console.log('BedroomFilterS', BedroomFilterS)
                     />
 
 {/* CREATE LISTING BUTTON */}
-                          
-                <CreateListingButtonSXL
-                    onCreateListing={() => {
-                        if (!propertyData.whatsapp) {
-                            alert(
-                            'Please enter your WhatsApp number'
-                            )
-                            return
+
+<CreateListingButtonSXL
+                onCreateListing={async () => {
+
+                    console.log(
+                    'CREATE LISTING BUTTON CLICKED'
+                    )
+
+                    console.log(
+                    'WHATSAPP:',
+                    propertyData.whatsapp
+                    )
+
+                    if (!propertyData.whatsapp) {
+
+                    alert(
+                        'Please enter your WhatsApp number'
+                    )
+
+                    return
+
+                    }
+
+                    try {
+
+                    const uploadedImageUrls =
+                        await uploadListingImages(
+                        propertyData.images
+                        )
+
+                    const updatedPropertyData = {
+                        ...propertyData,
+                        images: uploadedImageUrls
+                    }
+
+console.log(
+  'SENDING LISTING DATA:',
+  updatedPropertyData
+)
+
+fetch('/api/send-otp')
+
+                    const response = await fetch(
+                        '/api/send-otp',
+                        {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type':
+                            'application/json'
+                        },
+                        body: JSON.stringify({
+                            phone:
+                            propertyData.whatsapp,
+                            listingData:
+                            updatedPropertyData
+                        })
                         }
-                        setShowAuthOverlay(true)
-                    }}
+                    )
+
+                    const data =
+                        await response.json()
+
+                    if (!data.success) {
+
+                        alert(
+                        data.error ||
+                        'Failed to send WhatsApp link'
+                        )
+
+                        return
+
+                    }
+
+                    alert(
+                        'Tuanis! Check your WhatsApp.'
+                    )
+
+                    } catch (error) {
+
+                    console.error(error)
+
+                    alert(
+                        'Something went wrong.'
+                    )
+
+                    }
+
+                }}
                 />
 
-</div> {/* LEFT SIDE */}
+                </div> {/* LEFT SIDE */}
 
-{/* RIGHT SIDE */}
+                {/* RIGHT SIDE */}
 
-        <div style={{
+                <div
+                style={{
                     background: '#0d0d0d',
                     border: '.0625rem solid #222',
                     borderRadius: '1.5rem',
@@ -844,19 +926,23 @@ console.log('BedroomFilterS', BedroomFilterS)
                     height: 'fit-content',
 
                     width: '100%'
-                    }}>
+                }}
+                >
 
-                    <PropertyDefinitionPanel
-                        propertyData={propertyData}
-                    />
+                <PropertyDefinitionPanel
+                    propertyData={propertyData}
+                />
 
-            </div>
-        </div>
-    </div> 
-            
-            {/* MAIN GRID */}
+                </div>
+
+                </div>
+
+                </div>
+
+                {/* MAIN GRID */}
 
                 {/* CSV STAGING MODAL */}
+
                 {showCsvStaging && (
 
                 <CsvStagingModal
@@ -867,24 +953,8 @@ console.log('BedroomFilterS', BedroomFilterS)
 
                 )}
 
-               {/* AUTH OVERLAY */}
-                    {showAuthOverlay && (
-
-                    <AuthOverlay
-                        whatsapp={propertyData.whatsapp}
-                        propertyData={propertyData}
-                        formatWhatsAppNumber={
-                        formatWhatsAppNumber
-                        }
-                        onClose={() =>
-                        setShowAuthOverlay(false)
-                        }
-                    />
-
-                    )}
-
                 </main>
 
-            )
+                )
 
-        }
+                }

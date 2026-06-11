@@ -112,7 +112,7 @@ const navButton = {
           .select('*')
           .eq('transaction_type', 'rent')
           .eq('listing_status', 'active')
-          .order('id', { ascending: false })
+          .order('created_at', { ascending: false })
 
         if (error) {
 
@@ -184,6 +184,24 @@ const navButton = {
         ]
 
 console.log(
+  'RENT LISTING IDS:',
+  mergedListings.map(x => ({
+    id: x.id,
+    title: x.title,
+    transaction_type: x.transaction_type,
+    monthly_price: x.monthly_price
+  }))
+)
+
+console.log(
+  'FOUND TEST LISTING:',
+  mergedListings.find(
+    p => p.id ===
+    '868ec0b0-5b93-4987-9e87-806d627afa61'
+  )
+)
+
+console.log(
   'FIRST PROPERTY:',
   mergedListings[0]
 )
@@ -250,6 +268,15 @@ console.log(
                           
 const filteredProperties = properties.filter((property) => {
 
+if (
+  property.id ===
+  '868ec0b0-5b93-4987-9e87-806d627afa61'
+) {
+  console.log(
+    'TEST LISTING REACHED FILTER'
+  )
+}
+
   console.log(
     '===================================='
   )
@@ -280,6 +307,16 @@ console.log(
                     normalizeText(property.province) !==
                     normalizeText(filters.province)
                   ) {
+
+if (
+  property.id ===
+  '868ec0b0-5b93-4987-9e87-806d627afa61'
+) {
+  console.log(
+    'FAILED HERE'
+  )
+}
+
                     return false
                   }
 
@@ -306,6 +343,16 @@ console.log(
                   normalizeText(property.canton) !==
                   normalizeText(filters.canton)
                 ) {
+
+if (
+  property.id ===
+  '868ec0b0-5b93-4987-9e87-806d627afa61'
+) {
+  console.log(
+    'FAILED HERE'
+  )
+}
+
                   return false
                 }   
 
@@ -327,6 +374,16 @@ console.log(
                   normalizeText(property.district) !==
                   normalizeText(filters.district)
                 ) {
+
+if (
+  property.id ===
+  '868ec0b0-5b93-4987-9e87-806d627afa61'
+) {
+  console.log(
+    'FAILED HERE'
+  )
+}
+
                   return false
                 }
 
@@ -345,6 +402,15 @@ console.log(
                     console.log(
                       'FAILED MONTHLY PRICE'
                     )
+
+if (
+  property.id ===
+  '868ec0b0-5b93-4987-9e87-806d627afa61'
+) {
+  console.log(
+    'FAILED HERE'
+  )
+}
 
                     return false
                   }
@@ -366,6 +432,15 @@ console.log(
                       'FAILED PROPERTY TYPE'
                     )
 
+if (
+  property.id ===
+  '868ec0b0-5b93-4987-9e87-806d627afa61'
+) {
+  console.log(
+    'FAILED HERE'
+  )
+}
+
                     return false
                   }
 
@@ -386,6 +461,15 @@ console.log(
                       'FAILED USE TYPE'
                     )
 
+if (
+  property.id ===
+  '868ec0b0-5b93-4987-9e87-806d627afa61'
+) {
+  console.log(
+    'FAILED HERE'
+  )
+}
+
                     return false
                   }
 
@@ -404,6 +488,15 @@ console.log(
                     console.log(
                       'FAILED PROPERTY AREA'
                     )
+
+if (
+  property.id ===
+  '868ec0b0-5b93-4987-9e87-806d627afa61'
+) {
+  console.log(
+    'FAILED HERE'
+  )
+}
 
                     return false
                   }
@@ -428,6 +521,16 @@ console.log(
                           normalizeText(item)
                     )
                   ) {
+
+if (
+  property.id ===
+  '868ec0b0-5b93-4987-9e87-806d627afa61'
+) {
+  console.log(
+    'FAILED HERE'
+  )
+}
+
                     return false
                   }
 
@@ -447,6 +550,15 @@ console.log(
                     console.log(
                       'FAILED LEGAL STATUS'
                     )
+
+if (
+  property.id ===
+  '868ec0b0-5b93-4987-9e87-806d627afa61'
+) {
+  console.log(
+    'FAILED HERE'
+  )
+}
 
                     return false
                   }
@@ -471,6 +583,15 @@ console.log(
                           normalizeText(item)
                     )
                   ) {
+if (
+  property.id ===
+  '868ec0b0-5b93-4987-9e87-806d627afa61'
+) {
+  console.log(
+    'FAILED HERE'
+  )
+}
+
                     return false
                   }
 
@@ -490,6 +611,15 @@ console.log(
                     console.log(
                       'FAILED ACCESSIBILITY'
                     )
+
+if (
+  property.id ===
+  '868ec0b0-5b93-4987-9e87-806d627afa61'
+) {
+  console.log(
+    'FAILED HERE'
+  )
+}
 
                     return false
                   }
@@ -514,6 +644,16 @@ console.log(
                             normalizeText(item)
                       )
                     ) {
+
+if (
+  property.id ===
+  '868ec0b0-5b93-4987-9e87-806d627afa61'
+) {
+  console.log(
+    'FAILED HERE'
+  )
+}
+
                       return false
                     }
 
@@ -716,6 +856,9 @@ console.log(
                     >
 
                               {filteredProperties.map((property) => (
+
+
+
 
                                 <Link
                                   href={`/en/rent-lease/listing/${property.id}`}

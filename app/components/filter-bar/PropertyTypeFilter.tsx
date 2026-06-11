@@ -90,8 +90,6 @@ export default function PropertyTypeFilter({
 
                       setShowproperty_typeOptions(false)
 
-                      setShowBedroomOptions(true)
-
                       setShowProvinceOptions(false)
 
                       setShowCantonOptions(false)
@@ -122,7 +120,7 @@ export default function PropertyTypeFilter({
                       <span
                         onClick={() => {
 
-                          setShowproperty_typeOptions(true)
+                         
 
                         }}
                         style={{

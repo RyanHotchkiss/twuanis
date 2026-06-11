@@ -1,6 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import {
+  uploadListingImages
+} from '@/app/utils/uploadListingImages'
 
 import Papa from 'papaparse'
 
@@ -21,9 +24,6 @@ import {
   parking_options,
   year_built_options,
   construction_area_options,
-  property_areas,
-  utilities,
-  terrainOptions,
 
 } from '@/data/property-data'
 
@@ -779,36 +779,95 @@ const [showAuthOverlay, setShowAuthOverlay] = useState(false)
                     />
 
 {/* CREATE LISTING BUTTON */}
-                          
-              <CreateListingButtonSXL
-                    onCreateListing={() => {
 
-                        console.log(
-                        'CREATE LISTING BUTTON CLICKED'
+<CreateListingButtonSXL
+                onCreateListing={async () => {
+
+                    console.log(
+                    'CREATE LISTING BUTTON CLICKED'
+                    )
+
+                    console.log(
+                    'WHATSAPP:',
+                    propertyData.whatsapp
+                    )
+
+                    if (!propertyData.whatsapp) {
+
+                    alert(
+                        'Please enter your WhatsApp number'
+                    )
+
+                    return
+
+                    }
+
+                    try {
+
+                    const uploadedImageUrls =
+                        await uploadListingImages(
+                        propertyData.images
                         )
 
-                        console.log(
-                        'WHATSAPP BEFORE AUTH:',
-                        propertyData.whatsapp
-                        )
+                    const updatedPropertyData = {
+                        ...propertyData,
+                        images: uploadedImageUrls
+                    }
 
-                        if (!propertyData.whatsapp) {
-                        alert(
-                            'Please enter your WhatsApp number'
-                        )
-                        return
+                    const response = await fetch(
+                        '/api/send-otp',
+                        {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type':
+                            'application/json'
+                        },
+                        body: JSON.stringify({
+                            phone:
+                            propertyData.whatsapp,
+                            listingData:
+                            updatedPropertyData
+                        })
                         }
+                    )
 
-                        setShowAuthOverlay(true)
+                    const data =
+                        await response.json()
 
-                    }}
-                    />
+                    if (!data.success) {
 
-</div> {/* LEFT SIDE */}
+                        alert(
+                        data.error ||
+                        'Failed to send WhatsApp link'
+                        )
 
-{/* RIGHT SIDE */}
+                        return
 
-        <div style={{
+                    }
+
+                    alert(
+                        'Tuanis! Check your WhatsApp.'
+                    )
+
+                    } catch (error) {
+
+                    console.error(error)
+
+                    alert(
+                        'Something went wrong.'
+                    )
+
+                    }
+
+                }}
+                />
+
+                </div> {/* LEFT SIDE */}
+
+                {/* RIGHT SIDE */}
+
+                <div
+                style={{
                     background: '#0d0d0d',
                     border: '.0625rem solid #222',
                     borderRadius: '1.5rem',
@@ -825,47 +884,35 @@ const [showAuthOverlay, setShowAuthOverlay] = useState(false)
                     height: 'fit-content',
 
                     width: '100%'
-                    }}>
+                }}
+                >
 
-                    <PropertyDefinitionPanelES
-                        propertyData={propertyData}
-                    />
+                <PropertyDefinitionPanelES
+                    propertyData={propertyData}
+                />
 
-            </div>
-        </div>
-    </div> 
-            
-             {/* MAIN GRID */}
-            
-                            {/* CSV STAGING MODAL */}
-                            {showCsvStaging && (
-            
-                            <CsvStagingModal
-                                csvListings={csvListings}
-                                setCsvListings={setCsvListings}
-                                setShowCsvStaging={setShowCsvStaging}
-                            />
-            
-                            )}
-            
-                           {/* AUTH OVERLAY */}
-                                {showAuthOverlay && (
-            
-                                <AuthOverlay
-                                    whatsapp={propertyData.whatsapp}
-                                    propertyData={propertyData}
-                                    formatWhatsAppNumber={
-                                    formatWhatsAppNumber
-                                    }
-                                    onClose={() =>
-                                    setShowAuthOverlay(false)
-                                    }
-                                />
-            
-                                )}
-            
-                            </main>
-            
-                        )
-            
-                    }
+                </div>
+
+                </div>
+
+                </div>
+
+                {/* MAIN GRID */}
+
+                {/* CSV STAGING MODAL */}
+
+                {showCsvStaging && (
+
+                <CsvStagingModal
+                    csvListings={csvListings}
+                    setCsvListings={setCsvListings}
+                    setShowCsvStaging={setShowCsvStaging}
+                />
+
+                )}
+
+                </main>
+
+                )
+
+                }
