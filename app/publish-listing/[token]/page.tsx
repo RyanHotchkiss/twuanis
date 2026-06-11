@@ -1,5 +1,6 @@
 import { supabase } from '@/lib/supabase'
 import { assignListingOntology } from '@/lib/assign-listing-ontology'
+import { redirect } from 'next/navigation'
 
 function generateFallbackTitle(data: any) {
   const environment = data.environment || ''
@@ -212,18 +213,10 @@ export default async function PublishPage({
     })
     .eq('token', token)
 
-  return (
-    <div
-      style={{
-        padding: '3rem',
-        textAlign: 'center'
-      }}
-    >
-      <h1>Listing Published</h1>
-
-      <p>
-        Your listing has been published successfully on Twuanis.
-      </p>
-    </div>
-  )
+  
+redirect(
+  listingData.transaction_type === 'rent'
+    ? `/en/rent-lease/listing/${listingData.id}`
+    : `/en/buy/listing/${listingData.id}`
+)
 }
