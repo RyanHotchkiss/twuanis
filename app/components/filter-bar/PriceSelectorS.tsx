@@ -26,7 +26,7 @@ export default function PriceSelectorS({
     const interval = setInterval(() => {
 
       setPriceMillions(prev =>
-        Math.min(500, prev + 1)
+        Math.min(500, prev + 5)
       )
 
     }, 75)
@@ -40,7 +40,7 @@ export default function PriceSelectorS({
     const interval = setInterval(() => {
 
       setPriceMillions(prev =>
-        Math.max(1, prev - 1)
+        Math.max(5, prev - 5)
       )
 
     }, 75)
@@ -129,26 +129,32 @@ const priceWheelContainer = {
   display:'flex',
   alignItems:'center',
   justifyContent:'center',
-  gap:'1rem',
-  marginBottom:'1rem'
+  gap:'.5rem',
+  marginBottom:'1rem',
+  width:'100%'
 }
 
 const priceArrow = {
   background:'#181818',
   border:'1px solid #333',
   color:'#FFFFFF',
-  width:'4rem',
-  height:'4rem',
-  borderRadius:'1rem',
+  width:'3rem',
+  height:'3rem',
+  borderRadius:'.75rem',
   cursor:'pointer',
-  fontSize:'1.5rem'
+  fontSize:'1.25rem',
+  flexShrink:0
 }
 
 const priceDisplay = {
-  fontSize:'3rem',
+  fontSize:'clamp(1.5rem, 6vw, 3rem)',
   fontWeight:'bold',
-  minWidth:'12rem',
-  textAlign:'center' as const
+  minWidth:'0',
+  flex:'1',
+  textAlign:'center' as const,
+  overflow:'hidden',
+  textOverflow:'ellipsis',
+  whiteSpace:'nowrap' as const
 }
 
 const priceConversion = {
