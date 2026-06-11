@@ -1,38 +1,53 @@
 'use client'
 
+type PropertyType = {
+  en: string
+  es: string
+}
+
 type PropertyTypeFilterProps = {
-  propertyTypes: string[]
-  residentialPropertyTypes: string[]
+  propertyTypes: PropertyType[]
+  residentialPropertyTypes: PropertyType[]
   selectedproperty_type: string
   setselectedproperty_type: (
     value: string
   ) => void
+
   bedrooms: string
   bathrooms?: string
   parking: string
   yearBuiltRange: string
   constructionArea: string
+
   showproperty_typeOptions: boolean
+
   setShowproperty_typeOptions: (
     value: boolean
   ) => void
+
   setShowproperty_areaOptions: (
     value: boolean
   ) => void
+
   setShowBedroomOptions: (
     value: boolean
   ) => void
+
   setShowProvinceOptions: (
     value: boolean
   ) => void
+
   setShowCantonOptions: (
     value: boolean
   ) => void
+
   setShowDistrictOptions: (
     value: boolean
   ) => void
+
   resetResidentialFields: () => void
-  enableResidentialFlow: () => void
+
+  
 }
 
 const propertyTypeLabels: Record<string, string> = {
@@ -102,7 +117,7 @@ export default function PropertyTypeFilterSES({
 
   resetResidentialFields,
 
-  enableResidentialFlow
+ 
 
 }: PropertyTypeFilterProps) {
 
@@ -118,41 +133,44 @@ export default function PropertyTypeFilterSES({
 
         <div style={pillWrap}>
 
-          {propertyTypes.map((type) => (
+{propertyTypes.map((type) => (
 
             <button
-                key={type}
-                onClick={() => {
+              key={type.en}
+              onClick={() => {
 
-                  setselectedproperty_type(type)
+                setselectedproperty_type(type.en)
 
-                  setShowproperty_typeOptions(false)
+                setShowproperty_typeOptions(false)
 
-                  setShowBedroomOptions(true)
+                setShowBedroomOptions(true)
 
-                  setShowProvinceOptions(false)
+                setShowProvinceOptions(false)
 
-                  setShowCantonOptions(false)
+                setShowCantonOptions(false)
 
-                  setShowDistrictOptions(false)
+                setShowDistrictOptions(false)
 
-                  if (
-                    residentialPropertyTypes.includes(type)
-                  ) {
+                if (
+                  residentialPropertyTypes.some(
+                    residentialType =>
+                      residentialType.en === type.en
+                  )
+                ) {
 
-                    enableResidentialFlow()
+                 
 
-                  }
-
-                }}
-                style={
-                  selectedproperty_type === type
-                    ? activePill
-                    : pill
                 }
-              >
-                {propertyTypeLabels[type] || type}
-              </button>
+
+              }}
+              style={
+                selectedproperty_type === type.en
+                  ? activePill
+                  : pill
+              }
+            >
+              {type.es}
+            </button>
 
           ))}
 
@@ -177,7 +195,11 @@ export default function PropertyTypeFilterSES({
             }}
           >
 
-            {propertyTypeLabels[selectedproperty_type] || selectedproperty_type}
+            {
+  propertyTypes.find(
+    type => type.en === selectedproperty_type
+  )?.es || selectedproperty_type
+}
 
             {bedrooms && (
               <>

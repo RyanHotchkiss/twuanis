@@ -1,136 +1,125 @@
-export const property_types = [
-            'House',
-            'Condo',
-            'Land',
-            'Farm',
-            'Cabin',
-            'Commercial Property'
-            ]
+        export const property_types = [
+                { en: 'House', es: 'Casa' },
+                { en: 'Condo', es: 'Condominio' },
+                { en: 'Land', es: 'Terreno' },
+                { en: 'Farm', es: 'Finca' },
+                { en: 'Cabin', es: 'Cabaña' },
+                { en: 'Commercial Property', es: 'Propiedad Comercial' }
+                ]
 
-            export const residential_property_types = [
-            'House',
-            'Condo',
-            'Cabin'
-            ]
+                export const residential_property_types = [
+                { en: 'House', es: 'Casa' },
+                { en: 'Condo', es: 'Condominio' },
+                { en: 'Cabin', es: 'Cabaña' }
+                ]
 
-            export const bedroom_options = [
-            'Studio',
-            '1 Bedroom',
-            '2 Bedrooms',
-            '3 Bedrooms',
-            '4 Bedrooms',
-            '5+ Bedrooms'
-            ]
+                export const bedroom_options = [
+                { en: 'Studio', es: 'Estudio' },
+                { en: '1 Bedroom', es: '1 Habitación' },
+                { en: '2 Bedrooms', es: '2 Habitaciones' },
+                { en: '3 Bedrooms', es: '3 Habitaciones' },
+                { en: '4 Bedrooms', es: '4 Habitaciones' },
+                { en: '5+ Bedrooms', es: '5+ Habitaciones' }
+                ]
 
-            export const bathroom_options = [
-            '1 Bathroom',
-            '2 Bathrooms',
-            '3 Bathrooms',
-            '4 Bathrooms',
-            '5+ Bathrooms'
-            ]
+                export const bathroom_options = [
+                { en: '1 Bathroom', es: '1 Baño' },
+                { en: '2 Bathrooms', es: '2 Baños' },
+                { en: '3 Bathrooms', es: '3 Baños' },
+                { en: '4 Bathrooms', es: '4 Baños' },
+                { en: '5+ Bathrooms', es: '5+ Baños' }
+                ]
 
-            export const parking_options = [
-            'No Parking',
-            '1 Vehicle',
-            '2 Vehicles',
-            '3 Vehicles',
-            '4+ Vehicles'
-            ]
+                export const parking_options = [
+                { en: 'No Parking', es: 'Sin Estacionamiento' },
+                { en: '1 Vehicle', es: '1 Vehículo' },
+                { en: '2 Vehicles', es: '2 Vehículos' },
+                { en: '3 Vehicles', es: '3 Vehículos' },
+                { en: '4+ Vehicles', es: '4+ Vehículos' }
+                ]
 
-            export const year_built_options = [
-            'Pre-1980',
-            '1980s',
-            '1990s',
-            '2000s',
-            '2010s',
-            '2020+'
-            ]
+                export const year_built_options = [
+                { en: 'Pre-1980', es: 'Antes de 1980' },
+                { en: '1980s', es: 'Década de 1980' },
+                { en: '1990s', es: 'Década de 1990' },
+                { en: '2000s', es: 'Década de 2000' },
+                { en: '2010s', es: 'Década de 2010' },
+                { en: '2020+', es: '2020+' }
+                ]
 
-            export const construction_area_options = [
-            '<50m²',
-            '50–100m²',
-            '100–200m²',
-            '200–400m²',
-            '400–800m²',
-            '800m²+'
-            ]
+                export const construction_area_options = [
+                { en: '<50m²', es: '<50m²' },
+                { en: '50–100m²', es: '50–100m²' },
+                { en: '100–200m²', es: '100–200m²' },
+                { en: '200–400m²', es: '200–400m²' },
+                { en: '400–800m²', es: '400–800m²' },
+                { en: '800m²+', es: '800m²+' }
+                ]
 
-            export const property_areas = [
-            '<100m²',
-            '100–500m²',
-            '500–1,000m²',
-            '1,000–5,000m²',
-            '5,000m²–1 Hectare',
-            '1–5 Hectares',
-            '>5 Hectares'
-            ]
+                export const property_areas = [
+                { en: '<100m²', es: '<100m²' },
+                { en: '100–500m²', es: '100–500m²' },
+                { en: '500–1,000m²', es: '500–1,000m²' },
+                { en: '1,000–5,000m²', es: '1,000–5,000m²' },
+                { en: '5,000m²–1 Hectare', es: '5,000m²–1 Hectárea' },
+                { en: '1–5 Hectares', es: '1–5 Hectáreas' },
+                { en: '>5 Hectares', es: '>5 Hectáreas' }
+                ]
 
-             export const utilities = [
-            'Water',
-            'Electricity',
-            'Fiber Internet',
-            'Cell Signal',
-            'Septic',
-            'Sewer',
-            'Well Water',
-            'Solar Power',
-            'Municipal Water'
-            ]
+                export const utilities = [
+                { en: 'Water', es: 'Agua' },
+                { en: 'Electricity', es: 'Electricidad' },
+                { en: 'Fiber Internet', es: 'Internet por Fibra' },
+                { en: 'Cell Signal', es: 'Señal Celular' },
+                { en: 'Septic', es: 'Séptico' },
+                { en: 'Sewer', es: 'Alcantarillado' },
+                { en: 'Well Water', es: 'Pozo de Agua' },
+                { en: 'Solar Power', es: 'Energía Solar' },
+                { en: 'Municipal Water', es: 'Agua Municipal' }
+                ]
 
-            export const environments = [
-            'Urban',
-            'Suburban',
-            'Rural',
-            'Mountain',
-            'Forest',
-            'Jungle',
-            'Riverfront',
-            'Ocean View',
-            'Beachfront',
-            'Agricultural',
-            'Eco Reserve',
-            'Tourism Zone'
-            ]
+                export const environments = [
+                { en: 'Urban', es: 'Urbano' },
+                { en: 'Riverfront', es: 'Frente al Río' },
+                { en: 'Beachfront', es: 'Frente a la Playa' },
+                { en: 'Mountain View', es: 'Vista a la Montaña' },
+                { en: 'Jungle', es: 'Selva' },
+                { en: 'Rural', es: 'Rural' },
+                { en: 'Lakefront', es: 'Frente al Lago' }
+                ]
 
-            export const accessibilityOptions = [
-            'Paved Road Access',
-            'Gravel Road Access',
-            '4x4 Recommended',
-            'Walk-In Access Only',
-            'River Crossing Required',
-            'Year-Round Access',
-            'Seasonal Access',
-            'Gated Entry'
-            ]
+                export const accessibilityOptions = [
+                { en: '2WD Accessible', es: 'Accesible en 2WD' },
+                { en: 'Paved Road', es: 'Carretera Pavimentada' },
+                { en: '4x4 Required', es: 'Requiere 4x4' },
+                { en: 'Walkable', es: 'Caminable' },
+                { en: 'Boat Access Only', es: 'Acceso Solo por Bote' }
+                ]
 
-            export const terrainOptions = [
-            'Flat',
-            'Mostly Flat',
-            'Rolling Hills',
-            'Steep Slope',
-            'Mountainous',
-            'Rocky',
-            'Forested',
-            'River Valley',
-            'Cleared Land',
-            'Jungle Terrain',
-            'Build Ready',
-            'Agricultural Terrain'
-            ]
+                export const terrainOptions = [
+                { en: 'Flat', es: 'Plano' },
+                { en: 'Mostly Flat', es: 'Mayormente Plano' },
+                { en: 'Rolling Hills', es: 'Colinas Onduladas' },
+                { en: 'Steep Slope', es: 'Pendiente Pronunciada' },
+                { en: 'Mountainous', es: 'Montañoso' },
+                { en: 'Rocky', es: 'Rocoso' },
+                { en: 'Forested', es: 'Boscoso' },
+                { en: 'River Valley', es: 'Valle del Río' },
+                { en: 'Cleared Land', es: 'Terreno Despejado' },
+                { en: 'Jungle Terrain', es: 'Terreno Selvático' },
+                { en: 'Build Ready', es: 'Listo para Construir' },
+                { en: 'Agricultural Terrain', es: 'Terreno Agrícola' }
+                ]
 
-            export const legal_statuses = [
-            'Titled Property',
-            'Concession Land',
-            'Rights of Possession',
-            'Corporation Owned',
-            'Trust Owned',
-            'Subdivision Ready',
-            'Financing Available'
-            ]
+                export const legal_statuses = [
+                { en: 'Titled Property', es: 'Propiedad Titulada' },
+                { en: 'Survey Available', es: 'Plano Disponible' },
+                { en: 'Concession Property', es: 'Propiedad en Concesión' },
+                { en: 'Financing Available', es: 'Financiamiento Disponible' }
+                ]
             
 
-            export const provinces: Record<string, string[]> = {
+        export const provinces: Record<string, string[]> = {
 
         'San José': [
             'Central San José',

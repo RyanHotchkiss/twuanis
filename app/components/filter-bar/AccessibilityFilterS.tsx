@@ -98,6 +98,7 @@ export default function AccessibilityFilters({
                       onClick={() => {
 
                         setSelectedAccessibility(option)
+                        setShowAccessibilityOptions(false)
 
                       }}
                       style={

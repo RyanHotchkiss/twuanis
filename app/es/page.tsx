@@ -1,4 +1,7 @@
 'use client'
+import { buildHomePageSchema }
+from '@/lib/schema/buildHomePageSchema'
+import JsonLd from '@/app/components/JsonLd'
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
@@ -7,9 +10,28 @@ import { supabase } from '@/lib/supabase'
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 
+import {
+  provinces,
+  districts,
+  property_types,
+  property_areas,
+  utilities,
+  environments,
+  accessibilityOptions,
+  terrainOptions,
+  legal_statuses
+} from '@/data/property-data'
+
 
 
 function HomePageContent() {
+  const [ontologyTerms, setOntologyTerms] =
+  useState<any[]>([])
+
+  const [
+    ontologyRelationships,
+    setOntologyRelationships
+  ] = useState<any[]>([])
 
   const [properties, setProperties] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -21,17 +43,12 @@ function HomePageContent() {
 
   const [selectedprice, setSelectedprice] = useState('')
   const [selectedproperty_type, setSelectedproperty_type] = useState('')
-  const [selecteduse_type, setSelecteduse_type] = useState('')
+  
   const [selectedproperty_area, setSelectedproperty_area] = useState('')
   const [selectedutility, setSelectedutility] = useState('')
 
-  const [showadvanced_filters, setShowadvanced_filters] = useState(false)
   const [showMobileFilters, setShowMobileFilters] = useState(false)
-
-
-
   const [countdown, setCountdown] = useState(12)
-
   const [showPoster, setShowPoster] = useState(true)
 
 const [showMainOverlay, setShowMainOverlay] =
@@ -75,22 +92,7 @@ const [showMainOverlay, setShowMainOverlay] =
                 return () => clearTimeout(timer)
               }, [searchParams])
     
-  const overlayBackButton = {
-    background:'#FFFFFF40',
-    border:'.0625rem solid #ffffff50',
-    color:'#fff',
-    borderRadius:'999rem',
-    padding:'.55rem 1rem',
-    cursor:'pointer',
-    transition:'all .2s ease',
-    backdropFilter:'blur(10px)',
-    fontSize:'.85rem',
-    fontWeight:'bold',
-    marginBottom:'1.25rem',
-    display:'inline-flex',
-    alignItems:'center',
-    justifyContent:'center'
-  }
+
   const [selectedlegal_status, setSelectedlegal_status] = useState('')
   const [selectedenvironment, setSelectedenvironment] = useState('')
   const [selectedaccessibility, setSelectedaccessibility] = useState('')
@@ -126,6 +128,23 @@ const [showMainOverlay, setShowMainOverlay] =
 
       async function fetchListings() {
 
+        const { data: ontologyData }
+            = await supabase
+                .from('ontology_terms')
+                .select('*')
+
+          setOntologyTerms(
+            ontologyData || []
+          )
+
+          const { data: relationshipData }
+              = await supabase
+                  .from('ontology_relationships')
+                  .select('*')
+
+            setOntologyRelationships(
+              relationshipData || []
+            )
 
         const { data, error } = await supabase
           .from('listings')
@@ -183,326 +202,7 @@ const [showMainOverlay, setShowMainOverlay] =
 
     }, [])
 
-      const provinces: Record<string, string[]> = {
-
-        'San José': [
-          'Central San José',
-          'Escazú',
-          'Desamparados',
-          'Puriscal',
-          'Tarrazú',
-          'Aserrí',
-          'Mora',
-          'Goicoechea',
-          'Santa Ana',
-          'Alajuelita',
-          'Vásquez de Coronado',
-          'Acosta',
-          'Tibás',
-          'Moravia',
-          'Montes de Oca',
-          'Turrubares',
-          'Dota',
-          'Curridabat',
-          'Pérez Zeledón',
-          'León Cortés'
-        ],
-
-        Alajuela: [
-          'Central Alajuela',
-          'San Ramón',
-          'Grecia',
-          'San Mateo',
-          'Atenas',
-          'Naranjo',
-          'Palmares',
-          'Poás',
-          'Orotina',
-          'San Carlos',
-          'Zarcero',
-          'Valverde Vega',
-          'Upala',
-          'Los Chiles',
-          'Guatuso',
-          'Río Cuarto'
-        ],
-
-        Cartago: [
-          'Central Cartago',
-          'Paraíso',
-          'La Unión',
-          'Jiménez',
-          'Turrialba',
-          'Alvarado',
-          'Oreamuno',
-          'El Guarco'
-        ],
-
-        Heredia: [
-          'Central Heredia',
-          'Barva',
-          'Santo Domingo',
-          'Santa Bárbara',
-          'San Rafael',
-          'San Isidro',
-          'Belén',
-          'Flores',
-          'San Pablo',
-          'Sarapiquí'
-        ],
-
-        Guanacaste: [
-          'Liberia',
-          'Nicoya',
-          'Santa Cruz',
-          'Bagaces',
-          'Carrillo',
-          'Cañas',
-          'Abangares',
-          'Tilarán',
-          'Nandayure',
-          'La Cruz',
-          'Hojancha'
-        ],
-
-        Puntarenas: [
-          'Central Puntarenas',
-          'Esparza',
-          'Buenos Aires',
-          'Montes de Oro',
-          'Osa',
-          'Quepos',
-          'Golfito',
-          'Coto Brus',
-          'Parrita',
-          'Corredores',
-          'Garabito'
-        ],
-
-        Limón: [
-          'Central Limón',
-          'Pococí',
-          'Siquirres',
-          'Talamanca',
-          'Matina',
-          'Guácimo'
-        ]
-
-      }
-
-        const districts: Record<string, string[]> = {
-
-        // SAN JOSÉ
-        'Central San José': [
-          'Carmen',
-          'Merced',
-          'Hospital',
-          'Catedral',
-          'Zapote',
-          'San Francisco de Dos Ríos'
-        ],
-
-        Escazú: [
-          'Escazú Centro',
-          'San Rafael',
-          'San Antonio'
-        ],
-
-        Desamparados: [
-          'Desamparados Centro',
-          'San Miguel',
-          'San Juan de Dios',
-          'San Rafael Arriba',
-          'San Antonio',
-          'Frailes'
-        ],
-
-        'Santa Ana': [
-          'Santa Ana Centro',
-          'Pozos',
-          'Uruca',
-          'Piedades',
-          'Brasil'
-        ],
-
-        Curridabat: [
-          'Curridabat Centro',
-          'Granadilla',
-          'Sánchez',
-          'Tirrases'
-        ],
-
-        // ALAJUELA
-        'Central Alajuela': [
-          'Alajuela Centro',
-          'San José',
-          'Carrizal',
-          'San Antonio'
-        ],
-
-        'San Ramón': [
-          'San Ramón Centro',
-          'Santiago',
-          'San Juan',
-          'Piedades Norte'
-        ],
-
-        Grecia: [
-          'Grecia Centro',
-          'San Isidro',
-          'San José',
-          'Tacares'
-        ],
-
-        'San Carlos': [
-          'Quesada',
-          'Florencia',
-          'Aguas Zarcas',
-          'Venecia',
-          'Pital',
-          'La Fortuna'
-        ],
-
-        // CARTAGO
-        'Central Cartago': [
-          'Oriental',
-          'Occidental',
-          'Carmen',
-          'San Nicolás',
-          'Aguacaliente'
-        ],
-
-        Paraíso: [
-          'Paraíso Centro',
-          'Santiago',
-          'Orosi',
-          'Cachí'
-        ],
-
-        'La Unión': [
-          'Tres Ríos',
-          'San Diego',
-          'San Juan',
-          'Concepción'
-        ],
-
-        Jiménez: [
-          'Juan Viñas',
-          'Tucurrique',
-          'Pejivalle'
-        ],
-
-        Turrialba: [
-          'Turrialba Centro',
-          'La Suiza',
-          'Peralta',
-          'Santa Cruz',
-          'Santa Teresita',
-          'Pavones',
-          'Tayutic'
-        ],
-
-        // HEREDIA
-        'Central Heredia': [
-          'Heredia Centro',
-          'Mercedes',
-          'San Francisco',
-          'Ulloa'
-        ],
-
-        Barva: [
-          'Barva Centro',
-          'San Pedro',
-          'San Pablo'
-        ],
-
-        Sarapiquí: [
-          'Puerto Viejo',
-          'La Virgen',
-          'Horquetas'
-        ],
-
-        // GUANACASTE
-        Liberia: [
-          'Liberia Centro',
-          'Cañas Dulces',
-          'Mayorga'
-        ],
-
-        Nicoya: [
-          'Nicoya Centro',
-          'Sámara',
-          'Nosara'
-        ],
-
-        'Santa Cruz': [
-          'Santa Cruz Centro',
-          'Tamarindo',
-          'Brasilito',
-          'Potrero'
-        ],
-
-        Carrillo: [
-          'Filadelfia',
-          'Palmira',
-          'Sardinal'
-        ],
-
-        // PUNTARENAS
-        'Central Puntarenas': [
-          'Puntarenas Centro',
-          'Pitahaya',
-          'Chomes',
-          'Lepanto'
-        ],
-
-        Osa: [
-          'Puerto Cortés',
-          'Palmar',
-          'Sierpe',
-          'Bahía Ballena'
-        ],
-
-        Quepos: [
-          'Quepos Centro',
-          'Savegre',
-          'Naranjito'
-        ],
-
-        Garabito: [
-          'Jacó',
-          'Tárcoles'
-        ],
-
-        // LIMÓN
-        'Central Limón': [
-          'Limón Centro',
-          'Valle La Estrella',
-          'Río Blanco'
-        ],
-
-        Pococí: [
-          'Guápiles',
-          'Jiménez',
-          'La Rita',
-          'Cariari'
-        ],
-
-        Siquirres: [
-          'Siquirres Centro',
-          'Pacuarito',
-          'Florida'
-        ],
-
-        Talamanca: [
-          'Bratsi',
-          'Sixaola',
-          'Cahuita'
-        ]
-
-      }
-
- 
+     
                           
                 const filteredProperties = properties.filter((property) => {
 
@@ -541,12 +241,6 @@ const [showMainOverlay, setShowMainOverlay] =
                       return false
                     }
 
-                    if (
-                      selecteduse_type &&
-                      property.use_type !== selecteduse_type
-                    ) {
-                      return false
-                    }
 
                     if (
                       selectedproperty_area &&
@@ -616,9 +310,21 @@ const [showMainOverlay, setShowMainOverlay] =
     setSelecteddistrict(district)
   }
 
+  const homePageSchema =
+                    buildHomePageSchema({
+                      lang: 'es',
+                      ontologyTerms,
+                      ontologyRelationships
+                    })
+
   /* OVERLAY over OVERLAY */
         return (
-            <main style={{        
+  <>
+    <JsonLd
+      data={homePageSchema}
+    />
+
+    <main style={{        
               background: '#000',
               minHeight: '100vh',
               color: '#fff',
@@ -1105,7 +811,7 @@ const [showMainOverlay, setShowMainOverlay] =
               }}>
 
                
-               
+               </div>
 
               </div>
 
@@ -1390,977 +1096,253 @@ const [showMainOverlay, setShowMainOverlay] =
 
                   </div>
 
-                  {/* PROPERTY TYPE */}
-                  <div>
+{/* PROPERTY TYPE */}
+                <div>
 
-                    <h3 style={filterHeading}>
-                      Tipo de Propiedad
-                    </h3>
+                  <h3 style={filterHeading}>
+                    Tipo de Propiedad
+                  </h3>
 
-                    <div style={pillWrap}>
+                  <div style={pillWrap}>
 
-
-                        <button
-                          onClick={() =>
-                            setSelectedproperty_type(
-                              selectedproperty_type === 'House'
-                                ? ''
-                                : 'House'
-                            )
-                          }
-                          style={
-                            selectedproperty_type === 'House'
-                              ? activePill
-                              : pill
-                          }
-                        >
-                          casa
-                        </button>
-
-                        <button
-                          onClick={() =>
-                            setSelectedproperty_type(
-                              selectedproperty_type === 'Condo'
-                                ? ''
-                                : 'Condo'
-                            )
-                          }
-                          style={
-                            selectedproperty_type === 'Condo'
-                              ? activePill
-                              : pill
-                          }
-                        >
-                          Condo
-                        </button>
+                    {property_types.map((propertyType) => (
 
                       <button
+                        key={propertyType.en}
                         onClick={() =>
                           setSelectedproperty_type(
-                            selectedproperty_type === 'Land'
+                            selectedproperty_type === propertyType.en
                               ? ''
-                              : 'Land'
+                              : propertyType.en
                           )
                         }
                         style={
-                          selectedproperty_type === 'Land'
+                          selectedproperty_type === propertyType.en
                             ? activePill
                             : pill
                         }
                       >
-                        Terreno
+                        {propertyType.es}
                       </button>
 
-                      
-
-                        <button
-                          onClick={() =>
-                            setSelectedproperty_type(
-                              selectedproperty_type === 'Farm'
-                                ? ''
-                                : 'Farm'
-                            )
-                          }
-                          style={
-                            selectedproperty_type === 'Farm'
-                              ? activePill
-                              : pill
-                          }
-                        >
-                          Finca
-                        </button>
-
-                        <button
-                          onClick={() =>
-                            setSelectedproperty_type(
-                              selectedproperty_type === 'Cabin'
-                                ? ''
-                                : 'Cabin'
-                            )
-                          }
-                          style={
-                            selectedproperty_type === 'Cabin'
-                              ? activePill
-                              : pill
-                          }
-                        >
-                          Cabaña
-                        </button>
-
-                        <button
-                          onClick={() =>
-                            setSelectedproperty_type(
-                              selectedproperty_type === 'Commercial Property'
-                                ? ''
-                                : 'Commercial Property'
-                            )
-                          }
-                          style={
-                            selectedproperty_type === 'Commercial Property'
-                              ? activePill
-                              : pill
-                          }
-                        >
-                          Propiedad Comercial
-                        </button>
-
-                    </div>
+                    ))}
 
                   </div>
 
-                  {/* USE TYPE */}
-                  <div>
+                </div>
 
-                    <h3 style={filterHeading}>
-                      Tipo de Uso
-                    </h3>
 
-                    <div style={pillWrap}>
+{/* PROPERTY AREA */}
+              <div>
 
-                      <button
-                        onClick={() =>
-                          setSelecteduse_type(
-                            selecteduse_type === 'Residential'
-                              ? ''
-                              : 'Residential'
-                          )
-                        }
-                        style={
-                          selecteduse_type === 'Residential'
-                            ? activePill
-                            : pill
-                        }
-                      >
-                        Residencial
-                      </button>
+                <p style={miniHeading}>
+                  Área de la Propiedad
+                </p>
 
-                      <button
-                        onClick={() =>
-                          setSelecteduse_type(
-                            selecteduse_type === 'Commercial'
-                              ? ''
-                              : 'Commercial'
-                          )
-                        }
-                        style={
-                          selecteduse_type === 'Commercial'
-                            ? activePill
-                            : pill
-                        }
-                      >
-                        Commercial
-                      </button>
+                <div style={pillWrap}>
 
-                      <button
-                        onClick={() =>
-                          setSelecteduse_type(
-                            selecteduse_type === 'Agricultural'
-                              ? ''
-                              : 'Agricultural'
-                          )
-                        }
-                        style={
-                          selecteduse_type === 'Agricultural'
-                            ? activePill
-                            : pill
-                        }
-                      >
-                        Agrícola
-                      </button>
+                  {property_areas.map((area) => (
 
-                      <button
-                        onClick={() =>
-                          setSelecteduse_type(
-                            selecteduse_type === 'Tourism Commercial'
-                              ? ''
-                              : 'Tourism Commercial'
-                          )
-                        }
-                        style={
-                          selecteduse_type === 'Tourism Commercial'
-                            ? activePill
-                            : pill
-                        }
-                      >
-                        Turismo Comercial
-                      </button>
+                    <button
+                      key={area.en}
+                      onClick={() =>
+                        setSelectedproperty_area(
+                          selectedproperty_area === area.en
+                            ? ''
+                            : area.en
+                        )
+                      }
+                      style={
+                        selectedproperty_area === area.en
+                          ? activePill
+                          : pill
+                      }
+                    >
+                      {area.es}
+                    </button>
 
-                      <button
-                        onClick={() =>
-                          setSelecteduse_type(
-                            selecteduse_type === 'Mixed Use'
-                              ? ''
-                              : 'Mixed Use'
-                          )
-                        }
-                        style={
-                          selecteduse_type === 'Mixed Use'
-                            ? activePill
-                            : pill
-                        }
-                      >
-                        Uso Mixto
-                      </button>
+                  ))}
 
-                    </div>
+                </div>
 
-                  </div>
-
-{/* LOT SIZE */}
-                      <div>
-
-                        <p style={miniHeading}>
-                          Tamaño del Terreno
-                        </p>
-
-                        <div style={pillWrap}>
-
-                          <button
-                              onClick={() =>
-                                setSelectedproperty_area(
-                                  selectedproperty_area === '<1,000m²'
-                                    ? ''
-                                    : '<1,000m²'
-                                )
-                              }
-                              style={
-                                selectedproperty_area === '<1,000m²'
-                                  ? activePill
-                                  : pill
-                              }
-                            >
-                              {'<1,000m²'}
-                            </button>
-
-                            <button
-                              onClick={() =>
-                                setSelectedproperty_area(
-                                  selectedproperty_area === '1,000–10,000m²'
-                                    ? ''
-                                    : '1,000–10,000m²'
-                                )
-                              }
-                              style={
-                                selectedproperty_area === '1,000–10,000m²'
-                                  ? activePill
-                                  : pill
-                              }
-                            >
-                              1,000–10,000m²
-                            </button>
-
-                            <button
-                              onClick={() =>
-                                setSelectedproperty_area(
-                                  selectedproperty_area === '10,000–50,000m²'
-                                    ? ''
-                                    : '10,000–50,000m²'
-                                )
-                              }
-                              style={
-                                selectedproperty_area === '10,000–50,000m²'
-                                  ? activePill
-                                  : pill
-                              }
-                            >
-                              10,000–50,000m²
-                            </button>
-
-                            <button
-                              onClick={() =>
-                                setSelectedproperty_area(
-                                  selectedproperty_area === '50,000m²+'
-                                    ? ''
-                                    : '50,000m²+'
-                                )
-                              }
-                              style={
-                                selectedproperty_area === '50,000m²+'
-                                  ? activePill
-                                  : pill
-                              }
-                            >
-                              50,000m²+
-                            </button>
-
-                        </div>
-
-                      </div>
+              </div>
 
 {/* UTILITIES */}
-                      <div>
+            <div>
 
-                        <p style={miniHeading}>
-                          Servicios
-                        </p>
+              <p style={miniHeading}>
+                Servicios
+              </p>
 
-                        <div style={pillWrap}>
+              <div style={pillWrap}>
 
-                          <button
-                              onClick={() =>
-                                setSelectedutility(
-                                  selectedutility === 'Water'
-                                    ? ''
-                                    : 'Water'
-                                )
-                              }
-                              style={
-                                selectedutility === 'Water'
-                                  ? activePill
-                                  : pill
-                              }
-                            >
-                              Agua
-                            </button>
+                {utilities.map((utility) => (
 
-                            <button
-                              onClick={() =>
-                                setSelectedutility(
-                                  selectedutility === 'Electricity'
-                                    ? ''
-                                    : 'Electricity'
-                                )
-                              }
-                              style={
-                                selectedutility === 'Electricity'
-                                  ? activePill
-                                  : pill
-                              }
-                            >
-                              Electricidad
-                            </button>
+                  <button
+                    key={utility.en}
+                    onClick={() =>
+                      setSelectedutility(
+                        selectedutility === utility.en
+                          ? ''
+                          : utility.en
+                      )
+                    }
+                    style={
+                      selectedutility === utility.en
+                        ? activePill
+                        : pill
+                    }
+                  >
+                    {utility.es}
+                  </button>
 
-                            <button
-                              onClick={() =>
-                                setSelectedutility(
-                                  selectedutility === 'Fiber Internet'
-                                    ? ''
-                                    : 'Fiber Internet'
-                                )
-                              }
-                              style={
-                                selectedutility === 'Fiber Internet'
-                                  ? activePill
-                                  : pill
-                              }
-                            >
-                              Internet Fibra Óptica
-                            </button>
+                ))}
 
-                            <button
-                              onClick={() =>
-                                setSelectedutility(
-                                  selectedutility === 'Septic'
-                                    ? ''
-                                    : 'Septic'
-                                )
-                              }
-                              style={
-                                selectedutility === 'Septic'
-                                  ? activePill
-                                  : pill
-                              }
-                            >
-                              Septic
-                            </button>
+              </div>
 
-                            <button
-                              onClick={() =>
-                                setSelectedutility(
-                                  selectedutility === 'Municipal Sewer'
-                                    ? ''
-                                    : 'Municipal Sewer'
-                                )
-                              }
-                              style={
-                                selectedutility === 'Municipal Sewer'
-                                  ? activePill
-                                  : pill
-                              }
-                            >
-                              Alcantarillado Municipal
-                            </button>
-
-                        </div>
-
-                      </div>
+            </div>
 
                   
-{/* ADVANCED FILTERS */}
-                  <div>
-
-                    <div style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      marginBottom: '16px'
-                    }}>
-
-                      <h3 style={filterHeading}>
-                        Filtros Avanzados
-                      </h3>
-
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault()
-                          setShowadvanced_filters(!showadvanced_filters)
-                        }}
-                        style={{
-                          background: 'transparent',
-                          border: 'none',
-                          color: '#FFFFFF',
-                          fontSize: '13px',
-                          cursor: 'pointer'
-                        }}
-                      >
-                        {showadvanced_filters ? 'Colapsar' : 'Expandir'}
-                      </button>
-
-                    </div>
-
-                    {showadvanced_filters && (
-
-                      <div style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '24px'
-                      }}>
 
 {/* LEGAL STATUS */}
-                      <div>
+                <div>
 
-                        <p style={miniHeading}>
-                          Estado Legal
-                        </p>
+                  <p style={miniHeading}>
+                    Estado Legal
+                  </p>
 
-                        <div style={pillWrap}>
+                  <div style={pillWrap}>
 
-                         <button
-                              onClick={() =>
-                                setSelectedlegal_status(
-                                  selectedlegal_status === 'Titled Property'
-                                    ? ''
-                                    : 'Titled Property'
-                                )
-                              }
-                              style={
-                                selectedlegal_status === 'Titled Property'
-                                  ? activePill
-                                  : pill
-                              }
-                            >
-                              Propiedad Titulada
-                            </button>
+                    {legal_statuses.map((status) => (
 
-                            <button
-                              onClick={() =>
-                                setSelectedlegal_status(
-                                  selectedlegal_status === 'Survey Available'
-                                    ? ''
-                                    : 'Survey Available'
-                                )
-                              }
-                              style={
-                                selectedlegal_status === 'Survey Available'
-                                  ? activePill
-                                  : pill
-                              }
-                            >
-                              Plano Disponible
-                            </button>
+                      <button
+                        key={status.en}
+                        onClick={() =>
+                          setSelectedlegal_status(
+                            selectedlegal_status === status.en
+                              ? ''
+                              : status.en
+                          )
+                        }
+                        style={
+                          selectedlegal_status === status.en
+                            ? activePill
+                            : pill
+                        }
+                      >
+                        {status.es}
+                      </button>
 
-                            <button
-                              onClick={() =>
-                                setSelectedlegal_status(
-                                  selectedlegal_status === 'Concession Property'
-                                    ? ''
-                                    : 'Concession Property'
-                                )
-                              }
-                              style={
-                                selectedlegal_status === 'Concession Property'
-                                  ? activePill
-                                  : pill
-                              }
-                            >
-                              Propiedad en Concesión
-                            </button>
-
-                            <button
-                              onClick={() =>
-                                setSelectedlegal_status(
-                                  selectedlegal_status === 'Financing Available'
-                                    ? ''
-                                    : 'Financing Available'
-                                )
-                              }
-                              style={
-                                selectedlegal_status === 'Financing Available'
-                                  ? activePill
-                                  : pill
-                              }
-                            >
-                              Financiamiento Disponible
-                            </button>
-
-                        </div>
-
-                      </div>
-
-{/* environment */}
-                      <div>
-
-                        <h3 style={filterHeading}>
-                         entorno
-                        </h3>
-
-                        <div style={pillWrap}>
-
-                          <button
-                            onClick={() =>
-                              setSelectedenvironment(
-                                selectedenvironment === 'Urban'
-                                  ? ''
-                                  : 'Urban'
-                              )
-                            }
-                            style={
-                              selectedenvironment === 'Urban'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Urbano
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedenvironment(
-                                selectedenvironment === 'Riverfront'
-                                  ? ''
-                                  : 'Riverfront'
-                              )
-                            }
-                            style={
-                              selectedenvironment === 'Riverfront'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Frente al Río
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedenvironment(
-                                selectedenvironment === 'Beachfront'
-                                  ? ''
-                                  : 'Beachfront'
-                              )
-                            }
-                            style={
-                              selectedenvironment === 'Beachfront'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Frente a la Playa
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedenvironment(
-                                selectedenvironment === 'Mountain View'
-                                  ? ''
-                                  : 'Mountain View'
-                              )
-                            }
-                            style={
-                              selectedenvironment === 'Mountain View'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Vista a la Montaña
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedenvironment(
-                                selectedenvironment === 'Jungle'
-                                  ? ''
-                                  : 'Jungle'
-                              )
-                            }
-                            style={
-                              selectedenvironment === 'Jungle'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Selva
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedenvironment(
-                                selectedenvironment === 'Rural'
-                                  ? ''
-                                  : 'Rural'
-                              )
-                            }
-                            style={
-                              selectedenvironment === 'Rural'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Rural
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedenvironment(
-                                selectedenvironment === 'Lakefront'
-                                  ? ''
-                                  : 'Lakefront'
-                              )
-                            }
-                            style={
-                              selectedenvironment === 'Lakefront'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Frente al Lago
-                          </button>
-
-                        </div>
-
-                      </div>
-
- {/* accessibility */}
-                      <div>
-
-                        <h3 style={filterHeading}>
-                          accesibilidad
-                        </h3>
-
-                        <div style={pillWrap}>
-
-                         <button
-                            onClick={() =>
-                              setSelectedaccessibility(
-                                selectedaccessibility === '2WD Accessible'
-                                  ? ''
-                                  : '2WD Accessible'
-                              )
-                            }
-                            style={
-                              selectedaccessibility === '2WD Accessible'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Acceso para 2WD
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedaccessibility(
-                                selectedaccessibility === 'Paved Road'
-                                  ? ''
-                                  : 'Paved Road'
-                              )
-                            }
-                            style={
-                              selectedaccessibility === 'Paved Road'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Carretera Pavimentada
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedaccessibility(
-                                selectedaccessibility === '4x4 Required'
-                                  ? ''
-                                  : '4x4 Required'
-                              )
-                            }
-                            style={
-                              selectedaccessibility === '4x4 Required'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Requiere 4x4
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedaccessibility(
-                                selectedaccessibility === 'Walkable'
-                                  ? ''
-                                  : 'Walkable'
-                              )
-                            }
-                            style={
-                              selectedaccessibility === 'Walkable'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Caminable
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedaccessibility(
-                                selectedaccessibility === 'Boat Access Only'
-                                  ? ''
-                                  : 'Boat Access Only'
-                              )
-                            }
-                            style={
-                              selectedaccessibility === 'Boat Access Only'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Acceso Solo por Bote
-                          </button>
-
-                        </div>
-
-                      </div>
-{/* Terrain */}
-                      <div>
-
-                        <p style={miniHeading}>
-                          Terreno
-                        </p>
-
-                        <div style={pillWrap}>
-
-                          <button
-                            onClick={() =>
-                              setSelectedterrain(
-                                selectedterrain === 'Build Ready'
-                                  ? ''
-                                  : 'Build Ready'
-                              )
-                            }
-                            style={
-                              selectedterrain === 'Build Ready'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Listo para Construir
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedterrain(
-                                selectedterrain === 'Cleared Land'
-                                  ? ''
-                                  : 'Cleared Land'
-                              )
-                            }
-                            style={
-                              selectedterrain === 'Cleared Land'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Terreno Despejado
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedterrain(
-                                selectedterrain === 'Flat'
-                                  ? ''
-                                  : 'Flat'
-                              )
-                            }
-                            style={
-                              selectedterrain === 'Flat'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Plano
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedterrain(
-                                selectedterrain === 'Mostly Flat'
-                                  ? ''
-                                  : 'Mostly Flat'
-                              )
-                            }
-                            style={
-                              selectedterrain === 'Mostly Flat'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Mayormente Plano
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedterrain(
-                                selectedterrain === 'Rolling Hills'
-                                  ? ''
-                                  : 'Rolling Hills'
-                              )
-                            }
-                            style={
-                              selectedterrain === 'Rolling Hills'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Colinas Onduladas
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedterrain(
-                                selectedterrain === 'Steep Slope'
-                                  ? ''
-                                  : 'Steep Slope'
-                              )
-                            }
-                            style={
-                              selectedterrain === 'Steep Slope'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Pendiente Pronunciada
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedterrain(
-                                selectedterrain === 'Mountainous'
-                                  ? ''
-                                  : 'Mountainous'
-                              )
-                            }
-                            style={
-                              selectedterrain === 'Mountainous'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Montañoso
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedterrain(
-                                selectedterrain === 'Rocky'
-                                  ? ''
-                                  : 'Rocky'
-                              )
-                            }
-                            style={
-                              selectedterrain === 'Rocky'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Rocoso
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedterrain(
-                                selectedterrain === 'Forested'
-                                  ? ''
-                                  : 'Forested'
-                              )
-                            }
-                            style={
-                              selectedterrain === 'Forested'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Boscoso
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedterrain(
-                                selectedterrain === 'River Valley'
-                                  ? ''
-                                  : 'River Valley'
-                              )
-                            }
-                            style={
-                              selectedterrain === 'River Valley'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Valle del Río
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedterrain(
-                                selectedterrain === 'Jungle Terrain'
-                                  ? ''
-                                  : 'Jungle Terrain'
-                              )
-                            }
-                            style={
-                              selectedterrain === 'Jungle Terrain'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Terreno Selvático
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedterrain(
-                                selectedterrain === 'Agricultural Terrain'
-                                  ? ''
-                                  : 'Agricultural Terrain'
-                              )
-                            }
-                            style={
-                              selectedterrain === 'Agricultural Terrain'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Terreno Agrícola
-                          </button>
-
-                        </div>
-
-                      </div>
-
-
-                    </div>
-
-                  )}
+                    ))}
 
                   </div>
 
-                </div>   
+                </div>
+
+{/* ENVIRONMENT */}
+                <div>
+
+                  <h3 style={filterHeading}>
+                    Entorno
+                  </h3>
+
+                  <div style={pillWrap}>
+
+                    {environments.map((environment) => (
+
+                      <button
+                        key={environment.en}
+                        onClick={() =>
+                          setSelectedenvironment(
+                            selectedenvironment === environment.en
+                              ? ''
+                              : environment.en
+                          )
+                        }
+                        style={
+                          selectedenvironment === environment.en
+                            ? activePill
+                            : pill
+                        }
+                      >
+                        {environment.es}
+                      </button>
+
+                    ))}
+
+                  </div>
+
+                </div>
+
+{/* ACCESSIBILITY */}
+                <div>
+
+                  <h3 style={filterHeading}>
+                    Accesibilidad
+                  </h3>
+
+                  <div style={pillWrap}>
+
+                    {accessibilityOptions.map((accessibility) => (
+
+                      <button
+                        key={accessibility.en}
+                        onClick={() =>
+                          setSelectedaccessibility(
+                            selectedaccessibility === accessibility.en
+                              ? ''
+                              : accessibility.en
+                          )
+                        }
+                        style={
+                          selectedaccessibility === accessibility.en
+                            ? activePill
+                            : pill
+                        }
+                      >
+                        {accessibility.es}
+                      </button>
+
+                    ))}
+
+                  </div>
+
+                </div>
+
+{/* TERRAIN */}
+                <div>
+
+                  <p style={miniHeading}>
+                    Terreno
+                  </p>
+
+                  <div style={pillWrap}>
+
+                    {terrainOptions.map((terrain) => (
+
+                      <button
+                        key={terrain.en}
+                        onClick={() =>
+                          setSelectedterrain(
+                            selectedterrain === terrain.en
+                              ? ''
+                              : terrain.en
+                          )
+                        }
+                        style={
+                          selectedterrain === terrain.en
+                            ? activePill
+                            : pill
+                        }
+                      >
+                        {terrain.es}
+                      </button>
+
+                    ))}
+
+                  </div>
+
+                </div>
 
 {/* PROPERTY PREVIEW right-center column */}
                 <div
@@ -2407,7 +1389,7 @@ const [showMainOverlay, setShowMainOverlay] =
                             }}
                           >
 
-                          {/* PROPERTY IMAGE */}
+{/* PROPERTY IMAGE */}
                           <div
                             style={{
                               aspectRatio: '4 / 3',
@@ -2522,7 +1504,7 @@ const [showMainOverlay, setShowMainOverlay] =
                                       </button>
                           </div>
 
-                          {/* CONTENT */}
+{/* CONTENT */}
                           <div
                             style={{
                               padding: '1.25rem'
@@ -2592,7 +1574,8 @@ const [showMainOverlay, setShowMainOverlay] =
 
         </div>
 
-    </main>
+        </main>
+    </>
   )
 }
 

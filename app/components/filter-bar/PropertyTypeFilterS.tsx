@@ -1,10 +1,15 @@
 'use client'
 
+type PropertyType = {
+  en: string
+  es: string
+}
+
 type PropertyTypeFilterProps = {
 
-  propertyTypes: string[]
+  propertyTypes: PropertyType[]
 
-  residentialPropertyTypes: string[]
+  residentialPropertyTypes: PropertyType[]
 
   selectedPropertyType: string
 
@@ -50,7 +55,6 @@ type PropertyTypeFilterProps = {
 
   resetResidentialFields: () => void
 
-  enableResidentialFlow: () => void
 
 }
 
@@ -90,8 +94,6 @@ export default function PropertyTypeFilterS({
 
   resetResidentialFields,
 
-  enableResidentialFlow
-
 }: PropertyTypeFilterProps) {
 
   return (
@@ -106,17 +108,15 @@ export default function PropertyTypeFilterS({
 
         <div style={pillWrap}>
 
-          {propertyTypes.map((type) => (
+{propertyTypes.map((type) => (
 
             <button
-              key={type}
+              key={type.en}
               onClick={() => {
 
-                setSelectedPropertyType(type)
+                setSelectedPropertyType(type.en)
 
                 setShowPropertyTypeOptions(false)
-
-                setShowBedroomOptions(true)
 
                 setShowProvinceOptions(false)
 
@@ -125,21 +125,24 @@ export default function PropertyTypeFilterS({
                 setShowDistrictOptions(false)
 
                 if (
-                  residentialPropertyTypes.includes(type)
+                  residentialPropertyTypes.some(
+                    residentialType =>
+                      residentialType.en === type.en
+                  )
                 ) {
 
-                  enableResidentialFlow()
+               
 
                 }
 
               }}
               style={
-                selectedPropertyType === type
+                selectedPropertyType === type.en
                   ? activePill
                   : pill
               }
             >
-              {type}
+              {type.en}
             </button>
 
           ))}

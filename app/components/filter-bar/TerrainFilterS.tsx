@@ -1,5 +1,10 @@
 'use client'
 
+type TerrainOption = {
+  en: string
+  es: string
+}
+
 type TerrainFilterSProps = {
   selectedTerrain: string[]
   setSelectedTerrain: (value: string[]) => void
@@ -11,12 +16,13 @@ type TerrainFilterSProps = {
 
   setShowLegalStatusOptions: (value: boolean) => void
 
-  terrainOptions: string[]
+  terrainOptions: TerrainOption[]
 }
 
 export default function TerrainFilterS({
   selectedTerrain,
   setSelectedTerrain,
+
   showTerrainOptions,
   setShowTerrainOptions,
 
@@ -25,13 +31,12 @@ export default function TerrainFilterS({
   setShowLegalStatusOptions,
 
   terrainOptions
-  }: TerrainFilterSProps) {
+}: TerrainFilterSProps) {
 
   return (
 
     <div>
 
-      {/* HEADER */}
       <div style={{
         display:'flex',
         justifyContent:'space-between',
@@ -56,7 +61,6 @@ export default function TerrainFilterS({
 
       </div>
 
-      {/* COLLAPSED SUMMARY */}
       {!showTerrainOptions && (
 
         <div style={summaryCard}>
@@ -73,6 +77,7 @@ export default function TerrainFilterS({
               setSelectedTerrain([])
               setShowTerrainOptions(true)
               setShowAccessibilityOptions(false)
+
             }}
             style={resetButton}
           >
@@ -83,7 +88,6 @@ export default function TerrainFilterS({
 
       )}
 
-      {/* OPTIONS */}
       {showTerrainOptions && (
 
         <div style={pillWrap}>
@@ -91,40 +95,53 @@ export default function TerrainFilterS({
           {terrainOptions.map((terrain) => (
 
             <button
-              key={terrain}
+              key={terrain.en}
               onClick={() => {
 
                 const alreadySelected =
-                  selectedTerrain.includes(terrain)
+                  selectedTerrain.includes(
+                    terrain.en
+                  )
 
-               const updatedTerrain =
+                const updatedTerrain =
                   alreadySelected
                     ? selectedTerrain.filter(
-                        (item) => item !== terrain
+                        (item) =>
+                          item !== terrain.en
                       )
                     : [
                         ...selectedTerrain,
-                        terrain
+                        terrain.en
                       ]
 
-                setSelectedTerrain(updatedTerrain)
+                setSelectedTerrain(
+                  updatedTerrain
+                )
 
-                  if (updatedTerrain.length > 0) {
+                if (
+                  updatedTerrain.length > 0
+                ) {
 
-                    setShowAccessibilityOptions(false)
+                  setShowAccessibilityOptions(
+                    false
+                  )
 
-                    setShowLegalStatusOptions(true)
+                  setShowLegalStatusOptions(
+                    true
+                  )
 
-                  }
+                }
 
               }}
               style={
-                selectedTerrain.includes(terrain)
+                selectedTerrain.includes(
+                  terrain.en
+                )
                   ? activePill
                   : pill
               }
             >
-              {terrain}
+              {terrain.en}
             </button>
 
           ))}

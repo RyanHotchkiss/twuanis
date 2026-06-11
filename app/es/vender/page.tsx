@@ -40,7 +40,11 @@ import EnvironmentFilterSES from '@/app/components/filter-bar/EnvironmentFilterS
 import LegalStatusFilterSES from '@/app/components/filter-bar/LegalStatusFilterSES'
 import PropertyAreaFilterES from '@/app/components/filter-bar/PropertyAreaFilterES'
 import UtilitiesFilterES from '@/app/components/filter-bar/UtilitiesFilterES'
-import ResidentialAttributesSES from '@/app/components/filter-bar/ResidentialAttributesSES'
+import BedroomFilterSES from '@/app/components/filter-bar/BedroomFilterSES'
+import BathroomFilterSES from '@/app/components/filter-bar/BathroomFilterSES'
+import ParkingFilterSES from '@/app/components/filter-bar/ParkingFilterSES'
+import YearBuiltFilterSES from '@/app/components/filter-bar/YearBuiltFilterSES'
+import ConstructionAreaFilterSES from '@/app/components/filter-bar/ConstructionAreaFilterSES'
 import LocationSelectorS from '@/app/components/filter-bar/LocationSelectorS'
 import TerrainFilterES from '@/app/components/filter-bar/TerrainFilterES'
 import PriceSelectorS from '@/app/components/filter-bar/PriceSelectorS'
@@ -72,17 +76,16 @@ export default function SellPage() {
     const [showlegal_statusOptions, setShowlegal_statusOptions] = useState(true)
     const [csvFile, setCsvFile] = useState<File | null>(null)
     const [csvListings, setCsvListings] = useState<any[]>([])
-    const [show_bedroom_options, setShow_bedroom_options] = useState(true)
-    const [show_bathroom_options, setShow_bathroom_options] = useState(false)
-    const [show_parking_options, setShow_parking_options] = useState(false)
-    const [show_year_built_options, setShow_year_built_options] = useState(false)
-    const [show_construction_area_options, setShow_construction_area_options] = useState(false)
     const [showCsvStaging, setShowCsvStaging] = useState(false)
     const [showTerrainOptions, setShowTerrainOptions] = useState(true)
     const [isMobile, setIsMobile] = useState(false)
     const [showMobileFilters, setShowMobileFilters] = useState(false)
     const [showAuthOverlay, setShowAuthOverlay] = useState(false)
-    
+  const [show_bedroom_options, setShow_bedroom_options] = useState(true)
+    const [show_bathroom_options, setShow_bathroom_options] = useState(true)
+    const [show_parking_options, setShow_parking_options] = useState(true)
+    const [show_year_built_options, setShow_year_built_options] = useState(true)
+    const [show_construction_area_options, setShow_construction_area_options] = useState(true)
 
   const [propertyData, setPropertyData] = useState({
     province: '',
@@ -112,8 +115,8 @@ export default function SellPage() {
   })
 
            const show_residential_fields =
-                residential_property_types.includes(
-                    propertyData.property_type
+                residential_property_types.some(
+                    (type) => type.en === propertyData.property_type
                 )
                 
             const priceOptions = Array.from(
@@ -496,109 +499,91 @@ export default function SellPage() {
                             construction_area: ''
                         }))
 
-                        setShow_bedroom_options(true)
-                        setShow_bathroom_options(false)
-                        setShow_parking_options(false)
-                        setShow_year_built_options(false)
-                        setShow_construction_area_options(false)
-                    }}
-                    enableResidentialFlow={() => {
-                        setShow_bedroom_options(true)
-                        setShow_bathroom_options(false)
-                        setShow_parking_options(false)
-                        setShow_year_built_options(false)
-                        setShow_construction_area_options(false)
-                    }}
+                         }}
+                    
                 />
 
 
 
 {/* RESIDENTIAL STRUCTURE ATTRIBUTES */}
 
-                    {show_residential_fields &&
-                        !propertyData.construction_area && (
-
-<ResidentialAttributesSES
-
-                        showResidentialSummary={false}
-                        setShowResidentialSummary={() => {}}
-
-                        bedrooms={propertyData.bedrooms}
-                        setBedrooms={(value) =>
-                        setPropertyData({
+                    <BedroomFilterSES
+                        selectedBedrooms={propertyData.bedrooms}
+                        setSelectedBedrooms={(value) =>
+                            setPropertyData({
                             ...propertyData,
                             bedrooms: value
-                        })
+                            })
                         }
-
-                        bathrooms={propertyData.bathrooms}
-                        setBathrooms={(value) =>
-                        setPropertyData({
-                            ...propertyData,
-                            bathrooms: value
-                        })
-                        }
-
-                        parking={propertyData.parking}
-                        setParking={(value) =>
-                        setPropertyData({
-                            ...propertyData,
-                            parking: value
-                        })
-                        }
-
-                        yearBuiltRange={propertyData.year_built_range}
-                        setYearBuiltRange={(value) =>
-                        setPropertyData({
-                            ...propertyData,
-                            year_built_range: value
-                        })
-                        }
-
-                        constructionArea={propertyData.construction_area}
-                        setConstructionArea={(value) =>
-                        setPropertyData({
-                            ...propertyData,
-                            construction_area: value
-                        })
-                        }
-
                         bedroomOptions={bedroom_options}
-                        bathroomOptions={bathroom_options}
-                        parkingOptions={parking_options}
-                        yearBuiltOptions={year_built_options}
-                        constructionAreaOptions={construction_area_options}
-
                         showBedroomOptions={show_bedroom_options}
                         setShowBedroomOptions={setShow_bedroom_options}
+                        setShowBathroomOptions={setShow_bathroom_options}
+                        />
 
+                    <BathroomFilterSES
+                        selectedBathrooms={propertyData.bathrooms}
+                        setSelectedBathrooms={(value) =>
+                            setPropertyData({
+                            ...propertyData,
+                            bathrooms: value
+                            })
+                        }
+                        bathroomOptions={bathroom_options}
                         showBathroomOptions={show_bathroom_options}
                         setShowBathroomOptions={setShow_bathroom_options}
+                        setShowParkingOptions={setShow_parking_options}
+                        />
 
+                    <ParkingFilterSES
+                        selectedParking={propertyData.parking}
+                        setSelectedParking={(value) =>
+                            setPropertyData({
+                            ...propertyData,
+                            parking: value
+                            })
+                        }
+                        parkingOptions={parking_options}
                         showParkingOptions={show_parking_options}
                         setShowParkingOptions={setShow_parking_options}
+                        setShowYearBuiltOptions={setShow_year_built_options}
+                        />
 
+                    <YearBuiltFilterSES
+                        selectedYearBuilt={propertyData.year_built_range}
+                        setSelectedYearBuilt={(value) =>
+                            setPropertyData({
+                            ...propertyData,
+                            year_built_range: value
+                            })
+                        }
+                        yearBuiltOptions={year_built_options}
                         showYearBuiltOptions={show_year_built_options}
                         setShowYearBuiltOptions={setShow_year_built_options}
+                        setShowConstructionAreaOptions={
+                            setShow_construction_area_options
+                        }
+                        />
 
+                    <ConstructionAreaFilterSES
+                        selectedConstructionArea={propertyData.construction_area}
+                        setSelectedConstructionArea={(value) =>
+                            setPropertyData({
+                            ...propertyData,
+                            construction_area: value
+                            })
+                        }
+                        constructionAreaOptions={construction_area_options}
                         showConstructionAreaOptions={
-                        show_construction_area_options
+                            show_construction_area_options
                         }
                         setShowConstructionAreaOptions={
-                        setShow_construction_area_options
+                            setShow_construction_area_options
                         }
-
-                        setShowproperty_typeOptions={
-                        setShowproperty_typeOptions
+                        setShowPropertyAreaOptions={
+                            setShowproperty_areaOptions
                         }
-
-                        setShowproperty_areaOptions={
-                        setShowproperty_areaOptions
-                        }
-
-                    />
-
-                    )}
+                        />
 
 {/* PROPERTY AREA */}
                     

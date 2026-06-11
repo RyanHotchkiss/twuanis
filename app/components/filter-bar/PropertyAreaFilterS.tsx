@@ -1,16 +1,21 @@
 'use client'
 
-type PropertyAreaFilterSProps = {
-  selectedPropertyArea: string
-  setSelectedPropertyArea: (value: string) => void
+type PropertyArea = {
+        en: string
+        es: string
+      }
 
-  showPropertyAreaOptions: boolean
-  setShowPropertyAreaOptions: (value: boolean) => void
+      type PropertyAreaFilterSProps = {
+        selectedPropertyArea: string
+        setSelectedPropertyArea: (value: string) => void
 
-  setShowUtilityOptions: (value: boolean) => void
+        showPropertyAreaOptions: boolean
+        setShowPropertyAreaOptions: (value: boolean) => void
 
-  propertyAreas: string[]
-}
+        setShowUtilityOptions: (value: boolean) => void
+
+        propertyAreas: PropertyArea[]
+      }
 
 export default function PropertyAreaFilterS({
   selectedPropertyArea,
@@ -89,10 +94,10 @@ export default function PropertyAreaFilterS({
 
       <button
         type="button"
-        key={area}
+        key={area.en}
         onClick={() => {
 
-          setSelectedPropertyArea(area)
+          setSelectedPropertyArea(area.en)
 
           setShowPropertyAreaOptions(false)
 
@@ -100,12 +105,12 @@ export default function PropertyAreaFilterS({
 
         }}
         style={
-          selectedPropertyArea === area
+          selectedPropertyArea === area.en
             ? activePill
             : pill
         }
       >
-        {area}
+        {area.en}
       </button>
 
     ))}

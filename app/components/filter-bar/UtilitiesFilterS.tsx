@@ -1,5 +1,10 @@
 'use client'
 
+type Utility = {
+  en: string
+  es: string
+}
+
 type UtilitiesFilterSProps = {
   selectedUtilities: string[]
   setSelectedUtilities: (value: string[]) => void
@@ -9,7 +14,7 @@ type UtilitiesFilterSProps = {
 
   setShowEnvironmentOptions: (value: boolean) => void
 
-  utilities: string[]
+  utilities: Utility[]
 }
 
 export default function UtilitiesFilterS({
@@ -28,7 +33,6 @@ export default function UtilitiesFilterS({
 
     <div>
 
-      {/* HEADER */}
       <div style={{
         display:'flex',
         justifyContent:'space-between',
@@ -53,15 +57,14 @@ export default function UtilitiesFilterS({
 
       </div>
 
-      {/* COLLAPSED SUMMARY */}
       {!showUtilityOptions && (
 
         <div style={summaryCard}>
 
           <span>
             {selectedUtilities.length > 0
-            ? `${selectedUtilities.join(', ')}`
-            : 'None Selected'}
+              ? selectedUtilities.join(', ')
+              : 'None Selected'}
           </span>
 
           <button
@@ -80,50 +83,56 @@ export default function UtilitiesFilterS({
 
       )}
 
-{/* OPTIONS */}
-          {showUtilityOptions && (
+      {showUtilityOptions && (
 
-            <div style={pillWrap}>
+        <div style={pillWrap}>
 
-              {utilities.map((utility) => (
+          {utilities.map((utility) => (
 
-                <button
-                  type="button"
-                  key={utility}
-                  onClick={() => {
+            <button
+              type="button"
+              key={utility.en}
+              onClick={() => {
 
-                    const alreadySelected =
-                      selectedUtilities.includes(utility)
+                const alreadySelected =
+                  selectedUtilities.includes(
+                    utility.en
+                  )
 
-                    const updatedUtilities =
-                      alreadySelected
-                        ? selectedUtilities.filter(
-                            (item) => item !== utility
-                          )
-                        : [
-                            ...selectedUtilities,
-                            utility
-                          ]
+                const updatedUtilities =
+                  alreadySelected
+                    ? selectedUtilities.filter(
+                        (item) =>
+                          item !== utility.en
+                      )
+                    : [
+                        ...selectedUtilities,
+                        utility.en
+                      ]
 
-                    setSelectedUtilities(updatedUtilities)
+                setSelectedUtilities(
+                  updatedUtilities
+                )
 
-                    setShowEnvironmentOptions(true)
+                setShowEnvironmentOptions(true)
 
-                  }}
-                  style={
-                    selectedUtilities.includes(utility)
-                      ? activePill
-                      : pill
-                  }
-                >
-                  {utility}
-                </button>
+              }}
+              style={
+                selectedUtilities.includes(
+                  utility.en
+                )
+                  ? activePill
+                  : pill
+              }
+            >
+              {utility.en}
+            </button>
 
-              ))}
+          ))}
 
-            </div>
+        </div>
 
-          )}
+      )}
 
     </div>
 
