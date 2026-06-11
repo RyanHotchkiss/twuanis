@@ -432,23 +432,29 @@ return (
 
             <div style={pillContainer}>
 
-                {(Array.isArray(listing.accessibility)
-                ? listing.accessibility
-                : typeof listing.accessibility === 'string'
-                ? JSON.parse(listing.accessibility)
-                : []
-                ).map((item: string) => (
+                  {(Array.isArray(listing.accessibility)
+                    ? listing.accessibility
+                    : typeof listing.accessibility === 'string'
+                    ? (() => {
+                        try {
+                          return JSON.parse(listing.accessibility)
+                        } catch {
+                          return [listing.accessibility]
+                        }
+                      })()
+                    : []
+                  ).map((item: string) => (
 
-                <span
-                    key={item}
-                    style={pillEntity}
-                >
-                    {item}
-                </span>
+                    <span
+                      key={item}
+                      style={pillEntity}
+                    >
+                      {item}
+                    </span>
 
-                ))}
+                  ))}
 
-            </div>
+                </div>
 
             </div>
 
@@ -461,23 +467,29 @@ return (
 
             <div style={pillContainer}>
 
-                {(Array.isArray(listing.terrain)
-                ? listing.terrain
-                : typeof listing.terrain === 'string'
-                ? JSON.parse(listing.terrain)
-                : []
-                ).map((item: string) => (
+                  {(Array.isArray(listing.terrain)
+                    ? listing.terrain
+                    : typeof listing.terrain === 'string'
+                    ? (() => {
+                        try {
+                          return JSON.parse(listing.terrain)
+                        } catch {
+                          return [listing.terrain]
+                        }
+                      })()
+                    : []
+                  ).map((item: string) => (
 
-                <span
-                    key={item}
-                    style={pillEntity}
-                >
-                    {item}
-                </span>
+                    <span
+                      key={item}
+                      style={pillEntity}
+                    >
+                      {item}
+                    </span>
 
-                ))}
+                  ))}
 
-            </div>
+                </div>
 
             </div>
 
@@ -490,23 +502,29 @@ return (
 
             <div style={pillContainer}>
 
-                {(Array.isArray(listing.utility)
-                ? listing.utility
-                : typeof listing.utility === 'string'
-                ? JSON.parse(listing.utility)
-                : []
-                ).map((item: string) => (
+                  {(Array.isArray(listing.utility)
+                    ? listing.utility
+                    : typeof listing.utility === 'string'
+                    ? (() => {
+                        try {
+                          return JSON.parse(listing.utility)
+                        } catch {
+                          return [listing.utility]
+                        }
+                      })()
+                    : []
+                  ).map((item: string) => (
 
-                <span
-                    key={item}
-                    style={pillEntity}
-                >
-                    {item}
-                </span>
+                    <span
+                      key={item}
+                      style={pillEntity}
+                    >
+                      {item}
+                    </span>
 
-                ))}
+                  ))}
 
-            </div>
+                </div>
 
             </div>
 
