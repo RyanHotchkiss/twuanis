@@ -53,7 +53,14 @@ export default async function ExplorePage({
     : null
 
   return (
-    <main style={{ padding: '2rem' }}>
+    <main
+        style={{
+          minHeight: '100vh',
+          padding: '2rem',
+          background: '#0a0a0a',
+          color: '#ededed'
+        }}
+      >
       <TopBarES />
 
       <GraphExplorer />
