@@ -47,7 +47,7 @@ function getPrimaryEntity(filters: ExplorerFilters) {
     if (String(value).includes(',')) {
       continue
     }
-
+    
     return {
       entityType: key as EntityType,
       slug: value

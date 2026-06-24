@@ -11,17 +11,19 @@ export default function CreateListingButtonS({
   return (
 
   <button
-    onClick={onCreateListing}
-    style={createListingButton}
+  className="create-listing-button"
+  onClick={onCreateListing}
+  style={createListingButton}
   >
 
     <svg
-        width="25"
-        height="25"
-        viewBox="0 0 220 120"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+      width="30"
+      height="30"
+      className="create-listing-icon"
+      viewBox="0 0 230 200"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
 
         <polygon
           points="20,60 32,54 32,66"
@@ -82,24 +84,14 @@ export default function CreateListingButtonS({
 }
 
 const createListingButton = {
-
-  display:'flex',
-
-  alignItems:'center',
-  justifyContent:'center',
-
-  flexShrink:0,
-
-  width:'35px',
-  height:'35px',
-
-  background:'#ffffff00',
-
-  border:'none',
-
-  borderRadius:'999px',
-
-  padding:'5px 5px',
-
-  cursor:'pointer'
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexShrink: 0,
+  background: '#ffffff00',
+  border: 'none',
+  borderRadius: '999px',
+  padding: '5px',
+  marginTop: '12px',
+  cursor: 'pointer'
 }

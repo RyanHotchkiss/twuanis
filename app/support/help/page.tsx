@@ -178,7 +178,7 @@ export default function HelpPage() {
               <div style={iconCard}>
                 <div style={icon}>
 
-                  <FilterButton
+                  <CreateListingButtonS
                     onClick={() => {}}
                   />
 

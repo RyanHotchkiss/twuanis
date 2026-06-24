@@ -39,13 +39,8 @@ export default function HelpButton({
         outline:'none',
 
         boxShadow: glow
-            ? `
-                0 0 12px #d4af37,
-                0 0 24px #d4af37,
-                0 0 48px #d4af37,
-                0 0 72px rgba(212,175,55,.75)
-              `
-            : 'none',
+          ? '0 0 8px rgba(212,175,55,.9)'
+          : 'none',
 
           transition:
             'box-shadow .5s ease-in-out'
@@ -53,12 +48,13 @@ export default function HelpButton({
       >
 
       <svg
-        width="25"
-        height="25"
-        viewBox="0 0 200 200"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+          width="20"
+          height="20"
+          className="help-icon"
+          viewBox="0 0 200 200"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
 
         {/* QUESTION MARK */}
         <path

@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { createListingId } from '@/lib/createListingId'
 import { supabase } from '@/lib/supabase'
 import TopBar from '@/app/components/TopBar'
-
+import FilterButton from '@/app/components/FilterButton'
 import RentLeaseSidebar from '@/app/components/RentLeaseSidebar'
 import { normalizeText } from '@/lib/normalizeText' 
 
@@ -694,6 +694,12 @@ if (
                             setShowMobileFilters(true)
                           }
                         />
+
+                        <div className="floating-filter-button">
+                          <FilterButton
+                            onClick={() => setShowMobileFilters(true)}
+                          />
+                        </div>
 
 
 {/* TOP RIGHT NAV */}

@@ -12,31 +12,17 @@ export default function FilterButton({
 
     <button
       onClick={onClick}
-     style={{
-
-  background: '#ffffff00',
-
-  border: 'none',
-
-  borderRadius: '9px',
-
-  padding: '5px 5px',
-
-  boxShadow:
-
-    '0 10px 30px rgba(0,0,0,.45)',
-
-  cursor: 'pointer'
-
-}}
+      style={filterButton}
     >
 
       <svg
         width="20"
         height="20"
+        className="filter-icon"
         viewBox="0 0 100 100"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        overflow="visible"
       >
 
         <polygon
@@ -65,8 +51,31 @@ export default function FilterButton({
         />
 
       </svg>
+
     </button>
 
   )
 
+}
+
+const filterButton = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+
+  flexShrink: 0,
+
+  background: '#ffffff00',
+
+  border: 'none',
+
+  borderRadius: '999px',
+
+  padding: '5px',
+
+  marginTop: '5px',
+
+  boxShadow: '0 10px 30px rgba(0,0,0,.45)',
+
+  cursor: 'pointer'
 }

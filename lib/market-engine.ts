@@ -50,7 +50,7 @@ export function createMarketTitle(filters: MarketFilters) {
     filters.canton ||
     filters.province
 
-  if (location) parts.push(`in ${location}`)
+  if (location) parts.push(`${location}`)
 
   if (!parts.length) return 'Costa Rica Real Estate Market'
 

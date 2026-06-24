@@ -181,6 +181,7 @@ export default function ExploreFilters({
         marginBottom: '2rem'
       }}
     >
+      <MultiSelectFilter label="Transaction" filterKey="transaction_type" options={transactionOptions} filters={filters} />
       <ExploreLocationFilter options={options} filters={filters} />
       <MultiSelectFilter label="Property Type" filterKey="property_type" options={options.property_type} filters={filters} />
       <MultiSelectFilter label="Bedrooms" filterKey="bedrooms" options={options.bedrooms} filters={filters} />

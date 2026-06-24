@@ -40,7 +40,7 @@ function buildExploreUrl(
     params.delete('district')
   }
 
-  return `/explore?${params.toString()}`
+  return `/es/explora?${params.toString()}`
 }
 
 function findDisplayNameFromSlug(values: string[], slug: string) {
@@ -102,15 +102,20 @@ function displayDistrictsFromSlugs(
 
       const code = match.official_code
 
-      if (code && !String(match.slug).includes(String(code))) {
-        return `${match.slug}-${code}`
-      }
+      const districtName =
+            match.term_name_es ||
+            match.term_name_en ||
+            match.term_name
 
-      return match.slug
+            if (code) {
+            return `${districtName} • ${code}`
+            }
+
+            return districtName
+
     })
     .join(', ')
 }
-
 export default function ExploreLocationFilter({
   options,
   filters
@@ -149,7 +154,7 @@ export default function ExploreLocationFilter({
 
   return (
     <div>
-      <h3 style={filterHeading}>LOCATION</h3>
+      <h3 style={filterHeading}>UBICACIÓN</h3>
 
       <div style={summaryCard}>
         <span style={breadcrumbText}>
@@ -171,7 +176,7 @@ export default function ExploreLocationFilter({
         </span>
 
         {(selectedProvince || selectedCanton || selectedDistrict) && (
-          <a href="/explore" style={resetButton}>
+          <a href="/es/explora" style={resetButton}>
             ✕
           </a>
         )}
@@ -179,7 +184,7 @@ export default function ExploreLocationFilter({
 
       {!selectedProvince && (
         <div style={sectionBlock}>
-          <h2 style={sectionHeading}>Province</h2>
+          <h2 style={sectionHeading}>Provincia</h2>
 
           <div style={pillWrap}>
             {provinceOptions.map((province: string) => (
@@ -209,7 +214,7 @@ export default function ExploreLocationFilter({
               href={buildExploreUrl(filters, 'province', '')}
               style={backButton}
             >
-              ← provinces
+              ← provincias
             </a>
 
             <span style={breadcrumbText}>
@@ -217,7 +222,7 @@ export default function ExploreLocationFilter({
             </span>
           </div>
 
-          <h2 style={sectionHeading}>Canton</h2>
+          <h2 style={sectionHeading}>Cantón</h2>
 
           <div style={pillWrap}>
             {cantonOptions.map((canton: string) => (
@@ -247,7 +252,7 @@ export default function ExploreLocationFilter({
               href={buildExploreUrl(filters, 'canton', '')}
               style={backButton}
             >
-              ← cantons
+              ← cantones
             </a>
 
             <span style={breadcrumbText}>
@@ -257,7 +262,7 @@ export default function ExploreLocationFilter({
             </span>
           </div>
 
-          <h2 style={sectionHeading}>District</h2>
+          <h2 style={sectionHeading}>Distrito</h2>
 
           <div style={pillWrap}>
             {districtOptions.map((district: string) => {

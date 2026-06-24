@@ -3,7 +3,7 @@
 import HomeButton from '@/app/components/HomeButton'
 import SearchButton from '@/app/components/SearchButton'
 import CreateListingButtonS from '@/app/components/CreateListingButtonS'
-import FilterButton from '@/app/components/FilterButton'
+import Explore from '@/app/components/Explore'
 import SwipeCard from '@/app/components/SwipeCard'
 import Favorites from '@/app/components/Favorites'
 import HelpButton from '@/app/components/HelpButton'
@@ -54,27 +54,21 @@ export default function TopBar({
             '/en?overlay=looking'
         }}
       />
-
-      <FilterButton
-        onClick={onFilterClick || (() => {})}
+        <CreateListingButtonS
+          onCreateListing={() => {
+            window.location.href =
+              '/en?overlay=posting'
+          }}
+        />
+      
+      <Explore
+        href="/explore"
+        label=""
       />
 
-      <div style={{ marginRight: '.5rem' }}>
-        <CreateListingButtonS
-            onCreateListing={() => {
-            window.location.href =
-                '/en?overlay=posting'
-            }}
-        />
-        </div>
-
-    
       <SwipeCard
-
         href="/en/swipe/buy"
-
         label=""
-
       />
 
       <Favorites

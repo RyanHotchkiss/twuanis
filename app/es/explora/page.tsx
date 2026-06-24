@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import { exploreMarket } from '@/lib/explorer-engine'
 import { getExplorerOptions } from '@/lib/explorer-options-engine'
-import ExploreFilters from './ExploreFilters'
-import ExploreResults from './ExploreResults'
-import TopBar from '@/app/components/TopBar'
+import ExploreFilters from './FiltrosExplora'
+import ExploreResults from './ResultadosExplora'
+import TopBarES from '@/app/components/TopBarES'
 import GraphExplorer from '@/app/components/GraphExplorer'
 
 type ExplorePageProps = {
@@ -53,47 +53,40 @@ export default async function ExplorePage({
     : null
 
   return (
-    <main
-        style={{
-          minHeight: '100vh',
-          padding: '2rem',
-          background: '#0a0a0a',
-          color: '#ededed'
-        }}
-      >
-
-      <TopBar />
+    <main style={{ padding: '2rem' }}>
+      <TopBarES />
 
       <GraphExplorer />
 
       <p style={introText}>
-        Build custom Costa Rica real estate market queries by combining location,
-        property type, pricing signals, inventory attributes, environmental context,
-        infrastructure, accessibility, and legal status into one structured market
-        intelligence report.
+        Construya consultas personalizadas del mercado inmobiliario de Costa Rica
+        combinando ubicación, tipo de propiedad, señales de precio, atributos de
+        inventario, contexto ambiental, infraestructura, accesibilidad y estado
+        legal en un informe estructurado de inteligencia de mercado.
       </p>
 
-      <br></br>
+      <br />
 
       <ExploreFilters
         options={options}
         filters={filters}
       />
 
-      
       <Link
-        href="/explore"
+        href="/es/explora"
         style={{
           ...explorerPill,
           color: '#DC143C',
           marginTop: '1rem'
         }}
       >
-        Reset Explorer
+        Restablecer Explorador
       </Link>
 
       {!result && (
-        <p>Select a market combination to begin exploring.</p>
+        <p>
+          Seleccione una combinación de mercado para comenzar a explorar.
+        </p>
       )}
 
       {result && (
@@ -102,6 +95,7 @@ export default async function ExplorePage({
     </main>
   )
 }
+
 const introText = {
   maxWidth: '80%',
   margin: '0 auto 2rem',

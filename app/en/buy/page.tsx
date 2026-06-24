@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { createListingId } from '@/lib/createListingId'
 import { supabase } from '@/lib/supabase'
-
+import FilterButton from '@/app/components/FilterButton'
 import TopBar from '@/app/components/TopBar'
 import BuyHeader from '@/app/components/BuyHeader'
 import BuySidebar from '@/app/components/BuySidebar'
@@ -528,6 +528,12 @@ if (
                         setShowMobileFilters(true)
                       }
                     />
+
+                    <div className="floating-filter-button">
+                      <FilterButton
+                        onClick={() => setShowMobileFilters(true)}
+                      />
+                    </div>
 
             </div>
 

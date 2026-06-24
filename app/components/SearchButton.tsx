@@ -12,32 +12,18 @@ export default function SearchButton({
 
     <button
       onClick={onClick}
-      style={{
-        background:'#ffffff00',
-
-        border:'none',
-
-        borderRadius:'999px',
-
-        padding:'5px 5px',
-
-        cursor:'pointer',
-
-        display:'flex',
-        alignItems:'center',
-        justifyContent:'center'
-      }}
+      style={searchButton}
     >
 
       <svg
         width="20"
         height="20"
+        className="search-icon"
         viewBox="0 0 200 200"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
 
-        {/* LENS */}
         <circle
           cx="78"
           cy="78"
@@ -55,7 +41,6 @@ export default function SearchButton({
           opacity="0.65"
         />
 
-        {/* HANDLE */}
         <rect
           x="112"
           y="112"
@@ -66,7 +51,6 @@ export default function SearchButton({
           fill="#D4AF37"
         />
 
-        {/* HANDLE END */}
         <circle
           cx="152"
           cy="152"
@@ -80,4 +64,17 @@ export default function SearchButton({
 
   )
 
+}
+
+const searchButton = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexShrink: 0,
+  background: '#ffffff00',
+  border: 'none',
+  borderRadius: '999px',
+  padding: '5px',
+  marginTop: '5px',
+  cursor: 'pointer'
 }

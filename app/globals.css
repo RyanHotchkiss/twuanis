@@ -33,3 +33,116 @@ a {
   font-family: var(--font-cinzel), serif;
 }
 
+.home-icon {
+  width: 20px;
+  height: 20px;
+}
+
+@media (min-width: 768px) {
+  .home-icon {
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
+
+.create-listing-icon {
+  width: 30px;
+  height: 30px;
+}
+
+@media (min-width: 768px) {
+  .create-listing-icon {
+    width: 50px !important;
+    height: 50px !important;
+  }
+}
+
+.filter-icon {
+  width: 40px;
+  height: 40px;
+}
+
+@media (min-width: 768px) {
+  .filter-icon {
+    width: 37px !important;
+    height: 37px !important;
+  }
+}
+
+.help-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.search-icon {
+  width: 20px;
+  height: 20px;
+}
+
+@media (min-width: 768px) {
+  .search-icon {
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .help-icon {
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
+
+.swipe-icon {
+  width: 25px;
+  height: 25px;
+}
+
+@media (min-width: 768px) {
+
+  .swipe-icon {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+}
+
+
+.favorites-icon {
+  width: 25px;
+  height: 25px;
+}
+
+@media (min-width: 768px) {
+
+  .favorites-icon {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+}
+
+.explore-icon {
+  width: 25px;
+  height: 25px;
+}
+
+@media (min-width: 768px) {
+  .explore-icon {
+    width: 50px !important;
+    height: 50px !important;
+  }
+}
+
+.floating-filter-button {
+  position: fixed;
+  right: 1rem;
+  bottom: 1.25rem;
+  z-index: 9999;
+}
+
+@media (min-width: 768px) {
+  .floating-filter-button {
+    display: none;
+  }
+}
