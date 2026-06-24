@@ -179,7 +179,7 @@ export default function HelpPage() {
                 <div style={icon}>
 
                   <CreateListingButtonS
-                    onClick={() => {}}
+                    onCreateListing={() => {}}
                   />
 
                 </div>
