@@ -2,6 +2,8 @@
 import Link from 'next/link'
 import { getEntity, EntityType } from '@/lib/entity-engine'
 
+import { getCachedMarketStatistics } from '@/lib/statistics-engine'
+
 type EntityPageProps = {
   entityType: EntityType
   slug: string
@@ -43,6 +45,11 @@ export default async function EntityPage({
     )
   }
 
+  const marketData = await getCachedMarketStatistics(
+    entityType,
+    slug
+  ).catch(() => null)
+
   const {
     entity,
     parentEntity,
@@ -71,6 +78,31 @@ export default async function EntityPage({
         <li>Slug: {entity.slug}</li>
         <li>Listings Connected: {listingCount}</li>
       </ul>
+
+      {marketData && (
+        <>
+          <h2>Market Intelligence</h2>
+
+          <ul>
+            <li>Total Listings: {marketData.statistics.total_listings}</li>
+            <li>Sale Listings: {marketData.statistics.sale_listings}</li>
+            <li>Rental Listings: {marketData.statistics.rental_listings}</li>
+            <li>Average Rent CRC: ₡{marketData.statistics.average_rent_crc ?? 'Not enough data'}</li>
+            <li>Median Rent CRC: ₡{marketData.statistics.median_rent_crc ?? 'Not enough data'}</li>
+            <li>Average Rent USD: ${marketData.statistics.average_rent_usd ?? 'Not enough data'}</li>
+            <li>Median Rent USD: ${marketData.statistics.median_rent_usd ?? 'Not enough data'}</li>
+            <li>Recent Listings: {marketData.statistics.recent_listing_count}</li>
+          </ul>
+
+          <h2>Market Distributions</h2>
+
+          {marketData.distributions.map((row) => (
+            <p key={row.id}>
+              {row.distribution_type}: {row.value} — {row.percentage}%
+            </p>
+          ))}
+        </>
+      )}
 
       {parentEntity && (
         <>

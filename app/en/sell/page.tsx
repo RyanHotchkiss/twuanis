@@ -227,11 +227,11 @@ console.log('BedroomFilterS', BedroomFilterS)
                     flexWrap: 'wrap'
                     }}>
 
-                                        <TopBar
-                                            onFilterClick={() =>
-                                                setShowMobileFilters(true)
-                                            }
-                                        />
+                    <TopBar
+                        onFilterClick={() =>
+                            setShowMobileFilters(true)
+                        }
+                    />
 
                     <div>
 

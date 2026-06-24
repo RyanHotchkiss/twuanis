@@ -1,14 +1,14 @@
 'use client'
 
-type BuyHeaderProps = {
+type GraphExplorerProps = {
   title?: string
   subtitle?: string
 }
 
-export default function BuyHeader({
+export default function GraphExplorer({
   title = 'Twuanis',
-  subtitle = 'Find Properties for Sale'
-}: BuyHeaderProps) {
+  subtitle = 'Graph Explorer'
+}: GraphExplorerProps) {
 
   return (
 

@@ -41,23 +41,45 @@ if (error || !data) {
 }
 
 const listing = {
-  ...data,
-  images:
-  Array.isArray(data.images)
-    ? data.images
-    : typeof data.images === 'string'
-    ? (() => {
-        try {
-          return JSON.parse(data.images)
-        } catch {
-          return data.images
-            .split('|')
-            .map((img: string) => img.trim())
-            .filter(Boolean)
-        }
-      })()
-    : []
-}
+            ...data,
+
+            images:
+              Array.isArray(data.images)
+                ? data.images
+                : typeof data.images === 'string'
+                ? (() => {
+                    try {
+                      return JSON.parse(data.images)
+                    } catch {
+                      return data.images
+                        .split('|')
+                        .map((img: string) => img.trim())
+                        .filter(Boolean)
+                    }
+                  })()
+                : [],
+
+            utility:
+              Array.isArray(data.utility)
+                ? data.utility
+                : typeof data.utility === 'string'
+                ? [data.utility]
+                : [],
+
+            terrain:
+              Array.isArray(data.terrain)
+                ? data.terrain
+                : typeof data.terrain === 'string'
+                ? [data.terrain]
+                : [],
+
+            accessibility:
+              Array.isArray(data.accessibility)
+                ? data.accessibility
+                : typeof data.accessibility === 'string'
+                ? [data.accessibility]
+                : []
+          }
 
 const { data: ontologyRows } = await supabase
   .from('listings_ontology_terms')

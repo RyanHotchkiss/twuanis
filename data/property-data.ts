@@ -122,7 +122,7 @@
         export const provinces: Record<string, string[]> = {
 
         'San José': [
-            'Central San José',
+            'San José',
             'Escazú',
             'Desamparados',
             'Puriscal',
@@ -145,7 +145,7 @@
         ],
 
         Alajuela: [
-            'Central Alajuela',
+            'Alajuela',
             'San Ramón',
             'Grecia',
             'San Mateo',
@@ -164,7 +164,7 @@
         ],
 
         Cartago: [
-            'Central Cartago',
+            'Cartago',
             'Paraíso',
             'La Unión',
             'Jiménez',
@@ -175,7 +175,7 @@
         ],
 
         Heredia: [
-            'Central Heredia',
+            'Heredia',
             'Barva',
             'Santo Domingo',
             'Santa Bárbara',
@@ -202,7 +202,7 @@
         ],
 
         Puntarenas: [
-            'Central Puntarenas',
+            'Puntarenas',
             'Esparza',
             'Buenos Aires',
             'Montes de Oro',
@@ -216,7 +216,7 @@
         ],
 
         Limón: [
-            'Central Limón',
+            'Limón',
             'Pococí',
             'Siquirres',
             'Talamanca',
@@ -229,7 +229,7 @@
   export const districts: Record<string, string[]> = {
 
     // SAN JOSÉ
-            'Central San José': [
+            'San José': [
             'Carmen',
             'Merced',
             'Hospital',
@@ -366,7 +366,7 @@
 
             // CARTAGO
 
-            'Central Cartago': [
+            'Cartago': [
             'Oriental',
             'Occidental',
             'Carmen',
@@ -443,7 +443,7 @@
 
         // ALAJUELA
 
-            'Central Alajuela': [
+            'Alajuela': [
             'Alajuela Centro',
             'San José',
             'Carrizal',
@@ -596,7 +596,7 @@
 
             // HEREDIA
 
-            'Central Heredia': [
+            'Heredia': [
             'Heredia',
             'Mercedes',
             'San Francisco',
@@ -769,7 +769,7 @@
 
             // LIMÓN
 
-            'Central Limón': [
+            'Limón': [
             'Limón',
             'Valle La Estrella',
             'Río Blanco',
