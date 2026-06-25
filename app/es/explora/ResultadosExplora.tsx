@@ -142,6 +142,20 @@ function getFirstImage(images: any) {
   }
 }
 
+function translateListingTitle(title: string = '') {
+  return title
+    .replace(/^House in /i, 'Casa en ')
+    .replace(/^Condo in /i, 'Condominio en ')
+    .replace(/^Land in /i, 'Terreno en ')
+    .replace(/^Farm in /i, 'Finca en ')
+    .replace(/^Commercial Property in /i, 'Propiedad Comercial en ')
+    .replace(/^Beachfront House in /i, 'Casa Frente al Mar en ')
+    .replace(/^Beachfront Condo in /i, 'Condominio Frente al Mar en ')
+    .replace(/^Beachfront Land in /i, 'Terreno Frente al Mar en ')
+    .replace(/^Riverfront Land in /i, 'Terreno Frente al Río en ')
+    .replace(/^Urban Condo in /i, 'Condominio Urbano en ')
+}
+
 function buildRefinementUrl(
   filters: Record<string, any>,
   filterType: string,
@@ -598,7 +612,7 @@ export default function ExploreResults({
               {getFirstImage(listing.images) && (
                 <img
                   src={getFirstImage(listing.images) || ''}
-                  alt={listing.title || 'Imagen de la propiedad'}
+                  alt={translateListingTitle(listing.title) || 'Imagen de la propiedad'}
                   style={{
                     width: '100%',
                     height: '180px',
@@ -607,10 +621,14 @@ export default function ExploreResults({
                 />
               )}
 
-                <h3>{listing.title || 'Propiedad sin título'}</h3>
+                <h3>{translateListingTitle(listing.title) || 'Propiedad sin título'}</h3>
 
                 <p style={{ color: '#888' }}>
-                  {listing.transaction_type}
+                  {listing.transaction_type === 'buy'
+                    ? 'Comprar'
+                    : listing.transaction_type === 'rent'
+                      ? 'Alquilar'
+                      : listing.transaction_type}
                 </p>
               </Link>
             ))}
