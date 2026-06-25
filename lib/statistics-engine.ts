@@ -226,131 +226,142 @@ function average(values: number[]) {
             return listings
           }
 
-export async function getMatchingListings(
-            filters: MarketFilters
-          ) {
-            const {
-              transaction_type,
-              province,
-              canton,
-              district,
-              ...ontologyFilters
-            } = filters
+          export async function getMatchingListings(
+                filters: MarketFilters
+              ) {
+                const {
+                  transaction_type,
+                  province,
+                  canton,
+                  district,
+                  ...ontologyFilters
+                } = filters
 
-            const terms = await resolveFilterTerms(ontologyFilters)
+                const listingSelect = `
+                  id,
+                  title,
+                  images,
+                  transaction_type,
+                  currency,
+                  price_millions,
+                  monthly_price,
+                  property_area,
+                  construction_area,
+                  province,
+                  canton,
+                  district,
+                  property_type,
+                  created_at
+                `
 
-            let listings: Listing[] = []
+                const terms = await resolveFilterTerms(ontologyFilters)
 
-            if (!terms.length) {
-              const { data, error } = await supabase
-                .from('listings')
-                .select(
-                  'id, transaction_type, currency, price_millions, monthly_price, property_area, construction_area, province, canton, district, created_at'
-                )
-                .eq('listing_status', 'active')
+                let listings: Listing[] = []
 
-              if (error) throw error
+                if (!terms.length) {
+                  const { data, error } = await supabase
+                    .from('listings')
+                    .select(listingSelect)
+                    .eq('listing_status', 'active')
 
-              listings = data || []
-            } else {
-              const termsByType = new Map<string, number[]>()
+                  if (error) throw error
 
-              for (const term of terms) {
-                const existing =
-                  termsByType.get(term.term_type) || []
+                  listings = data || []
+                } else {
+                  const termsByType = new Map<string, number[]>()
 
-                existing.push(term.id)
+                  for (const term of terms) {
+                    const existing =
+                      termsByType.get(term.term_type) || []
 
-                termsByType.set(term.term_type, existing)
-              }
+                    existing.push(term.id)
 
-              const termIds = terms.map(term => term.id)
+                    termsByType.set(term.term_type, existing)
+                  }
 
-              const { data: assignedRows, error: assignmentError } =
-                await supabase
-                  .from('listings_ontology_terms')
-                  .select('listing_id, ontology_term_id')
-                  .in('ontology_term_id', termIds)
+                  const termIds = terms.map(term => term.id)
 
-              if (assignmentError) throw assignmentError
+                  const { data: assignedRows, error: assignmentError } =
+                    await supabase
+                      .from('listings_ontology_terms')
+                      .select('listing_id, ontology_term_id')
+                      .in('ontology_term_id', termIds)
 
-              const listingsByType = new Map<string, Set<string>>()
+                  if (assignmentError) throw assignmentError
 
-              for (const [termType, ids] of termsByType) {
-                const matchingRows = (assignedRows || []).filter(row =>
-                  ids.includes(row.ontology_term_id)
-                )
+                  const listingsByType = new Map<string, Set<string>>()
 
-                listingsByType.set(
-                  termType,
-                  new Set(
-                    matchingRows.map(row => row.listing_id)
+                  for (const [termType, ids] of termsByType) {
+                    const matchingRows = (assignedRows || []).filter(row =>
+                      ids.includes(row.ontology_term_id)
+                    )
+
+                    listingsByType.set(
+                      termType,
+                      new Set(
+                        matchingRows.map(row => row.listing_id)
+                      )
+                    )
+                  }
+
+                  const listingSets =
+                    Array.from(listingsByType.values())
+
+                  if (!listingSets.length) return []
+
+                  let matchingListingIds =
+                    Array.from(listingSets[0])
+
+                  for (let i = 1; i < listingSets.length; i++) {
+                    matchingListingIds =
+                      matchingListingIds.filter(id =>
+                        listingSets[i].has(id)
+                      )
+                  }
+
+                  if (!matchingListingIds.length) return []
+
+                  const { data, error } = await supabase
+                    .from('listings')
+                    .select(listingSelect)
+                    .in('id', matchingListingIds)
+                    .eq('listing_status', 'active')
+
+                  if (error) throw error
+
+                  listings = data || []
+                }
+
+                if (province) {
+                  listings = listings.filter(listing =>
+                    slugify(listing.province || '') === province
                   )
-                )
-              }
+                }
 
-              const listingSets =
-                Array.from(listingsByType.values())
-
-              if (!listingSets.length) return []
-
-              let matchingListingIds =
-                Array.from(listingSets[0])
-
-              for (let i = 1; i < listingSets.length; i++) {
-                matchingListingIds =
-                  matchingListingIds.filter(id =>
-                    listingSets[i].has(id)
+                if (canton) {
+                  listings = listings.filter(listing =>
+                    slugify(listing.canton || '') === canton
                   )
-              }
+                }
 
-              if (!matchingListingIds.length) return []
+                if (district) {
+                  const selectedDistrictSlugs = district.split(',')
 
-              const { data, error } = await supabase
-                .from('listings')
-                .select(
-                  'id, transaction_type, currency, price_millions, monthly_price, property_area, construction_area, province, canton, district, created_at'
+                  const selectedDistrictNames =
+                    await getDistrictNamesFromSlugs(selectedDistrictSlugs)
+
+                  listings = listings.filter(listing =>
+                    selectedDistrictNames.includes(
+                      slugify(listing.district || '')
+                    )
+                  )
+                }
+
+                return applyTransactionFilter(
+                  listings,
+                  transaction_type
                 )
-                .in('id', matchingListingIds)
-                .eq('listing_status', 'active')
-
-              if (error) throw error
-
-              listings = data || []
-            }
-
-            if (province) {
-              listings = listings.filter(listing =>
-                slugify(listing.province || '') === province
-              )
-            }
-
-            if (canton) {
-              listings = listings.filter(listing =>
-                slugify(listing.canton || '') === canton
-              )
-            }
-
-            if (district) {
-              const selectedDistrictSlugs = district.split(',')
-
-              const selectedDistrictNames =
-                await getDistrictNamesFromSlugs(selectedDistrictSlugs)
-
-              listings = listings.filter(listing =>
-                selectedDistrictNames.includes(
-                  slugify(listing.district || '')
-                )
-              )
-            }
-
-            return applyTransactionFilter(
-              listings,
-              transaction_type
-            )
           }
-
-
 
 export function calculateStatistics(listings: Listing[]) {
   const saleListings = listings.filter(listing => {

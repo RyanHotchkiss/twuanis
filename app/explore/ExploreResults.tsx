@@ -104,6 +104,26 @@ function formatLabel(value: string) {
             )
             }
 
+            function getFirstImage(images: any) {
+            if (!images) return null
+
+            if (Array.isArray(images)) {
+                return images[0]
+            }
+
+            try {
+                const parsed = JSON.parse(images)
+
+                if (Array.isArray(parsed)) {
+                return parsed[0]
+                }
+
+                return null
+            } catch {
+                return null
+            }
+            }
+
             function buildRefinementUrl(
             filters: Record<string, any>,
             filterType: string,
@@ -138,6 +158,7 @@ export default function ExploreResults({
         }: {
         result: any
         }) {
+
         const statistics = result.statistics || {}
 
         const transactionType =
@@ -156,11 +177,6 @@ export default function ExploreResults({
             result.distributions && !Array.isArray(result.distributions)
                 ? result.distributions
                 : groupByType(result.distributions || [])
-
-console.log(
-  'DISTRIBUTIONS:',
-  result.distributions
-)
 
         const suggestionGroups =
             groupByType(result.graphNeighbors || [])
@@ -701,47 +717,73 @@ console.log(
         </>
       )}
 
-            
+           
 
       {result.listings?.length > 0 && (
-        <>
-          <h2 style={{
-            color: '#ff3B00',
-            fontSize: '2rem',
-            marginBottom: '1rem'
-          }}>
-            Matching Listings
-          </h2>
+                    <>
+                        <h2
+                        style={{
+                            color: '#ff3B00',
+                            fontSize: '2rem',
+                            marginBottom: '1rem'
+                        }}
+                        >
+                        Matching Listings
+                        </h2>
 
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '2rem'
-          }}>
-            {result.listings.map((listing: any) => (
-              <Link
-                key={listing.id}
-                href={`/en/buy/listing/${listing.id}`}
-                style={{
-                  display: 'block',
-                  background: '#111',
-                  color: '#fff',
-                  padding: '1rem',
-                  border: '1px solid #222',
-                  borderRadius: '1rem',
-                  textDecoration: 'none'
-                }}
-              >
-                <h3>{listing.title || 'Untitled Listing'}</h3>
+                        <div
+                        style={{
+                            display: 'grid',
+                            gridTemplateColumns:
+                            'repeat(auto-fit, minmax(280px, 1fr))',
+                            gap: '2rem'
+                        }}
+                        >
 
-                <p style={{ color: '#888' }}>
-                  {listing.transaction_type}
-                </p>
-              </Link>
-            ))}
-          </div>
-        </>
-      )}
+                        {result.listings.map((listing: any) => {
+                        console.log(
+                            listing.title,
+                            listing.images
+                        )
+                        return (
+                            <Link
+                            key={listing.id}
+                            href={`/en/buy/listing/${listing.id}`}
+                            style={{
+                                display: 'block',
+                                background: '#111',
+                                color: '#fff',
+                                border: '1px solid #222',
+                                borderRadius: '1rem',
+                                overflow: 'hidden',
+                                textDecoration: 'none'
+                            }}
+                            >
+                            {getFirstImage(listing.images) && (
+                            <img
+                                src={getFirstImage(listing.images) || ''}
+                                alt={listing.title || 'Listing image'}
+                                style={{
+                                    width: '100%',
+                                    height: '180px',
+                                    objectFit: 'cover'
+                                }}
+                                />
+                            )}
+                            <div style={{ padding: '1rem' }}>
+                                <h3 style={{ marginTop: 0, marginBottom: '.5rem' }}>
+                                {listing.title || 'Untitled Listing'}
+                                </h3>
+                                <p style={{ margin: 0, color: '#888' }}>
+                                {listing.transaction_type}
+                                </p>
+                            </div>
+                            </Link>
+                        )
+                        })}
+                        </div>
+                    </>
+                    )}
     </section>
   )
 }

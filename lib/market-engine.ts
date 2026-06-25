@@ -223,18 +223,25 @@ export async function getMarketIntelligence(filters: MarketFilters) {
     const [entityType, entitySlug] = entityEntries[0]
 
     try {
-      const cached = await getCachedMarketStatistics(
-        entityType,
-        String(entitySlug)
-      )
 
-      return {
-        title: createMarketTitle(filters),
-        filters,
-        cacheHit: true,
-        mode: 'cached-entity',
-        data: cached
-      }
+      const cached = await getCachedMarketStatistics(
+          entityType,
+          String(entitySlug)
+        )
+
+        const live = await getMarketStatistics(filters)
+
+        return {
+          title: createMarketTitle(filters),
+          filters,
+          cacheHit: true,
+          mode: 'cached-entity',
+          data: {
+            ...cached,
+            listings: live.listings
+          }
+        }
+
     } catch {
       const live = await getMarketStatistics(filters)
 
@@ -252,15 +259,20 @@ console.log('ABOUT TO READ COMBO CACHE')
 const cachedCombination = await getCachedCombination(filters)
 console.log('READ COMBO CACHE DONE')
 
-if (cachedCombination) {
-  return {
-    title: createMarketTitle(filters),
-    filters,
-    cacheHit: true,
-    mode: 'cached-combination',
-    data: cachedCombination
-  }
-}
+    if (cachedCombination) {
+      const live = await getMarketStatistics(filters)
+
+      return {
+        title: createMarketTitle(filters),
+        filters,
+        cacheHit: true,
+        mode: 'cached-combination',
+        data: {
+          ...cachedCombination,
+          listings: live.listings
+        }
+      }
+    }
 
 console.log('ABOUT TO GET LIVE STATS')
 const live = await getMarketStatistics(filters)
