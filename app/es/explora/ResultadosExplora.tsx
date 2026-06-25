@@ -122,6 +122,26 @@ function StatCard({
   )
 }
 
+function getFirstImage(images: any) {
+  if (!images) return null
+
+  if (Array.isArray(images)) {
+    return images[0]
+  }
+
+  try {
+    const parsed = JSON.parse(images)
+
+    if (Array.isArray(parsed)) {
+      return parsed[0]
+    }
+
+    return null
+  } catch {
+    return null
+  }
+}
+
 function buildRefinementUrl(
   filters: Record<string, any>,
   filterType: string,
@@ -574,6 +594,19 @@ export default function ExploreResults({
                   textDecoration: 'none'
                 }}
               >
+
+              {getFirstImage(listing.images) && (
+                <img
+                  src={getFirstImage(listing.images) || ''}
+                  alt={listing.title || 'Imagen de la propiedad'}
+                  style={{
+                    width: '100%',
+                    height: '180px',
+                    objectFit: 'cover'
+                  }}
+                />
+              )}
+
                 <h3>{listing.title || 'Propiedad sin título'}</h3>
 
                 <p style={{ color: '#888' }}>
