@@ -60,10 +60,11 @@ function findOntologyOptionByName(options: any[], name: string) {
 
   return options.find((option) => {
     const optionName =
-      option.term_name_en ||
-      option.term_name ||
-      option.label ||
-      ''
+        option.term_name_es ||
+        option.term_name_en ||
+        option.term_name ||
+        option.label ||
+        ''
 
     return slugify(optionName) === normalizedName
   })
@@ -78,10 +79,11 @@ function findDistrictOptionByNameAndCanton(
 
   return districtOptions.find((option) => {
     const optionName =
-      option.term_name_en ||
-      option.term_name ||
-      option.label ||
-      ''
+        option.term_name_es ||
+        option.term_name_en ||
+        option.term_name ||
+        option.label ||
+        ''
 
     return (
       slugify(optionName) === normalizedDistrictName &&
@@ -117,7 +119,7 @@ function displayDistrictsFromSlugs(
 export default function ExploreLocationFilter({
   options,
   filters,
-  basePath = '/explore'
+  basePath = '/es/valoracion'
 }: ExploreLocationFilterProps) {
   const selectedProvince = filters.province
   const selectedCanton = filters.canton
@@ -153,7 +155,7 @@ export default function ExploreLocationFilter({
 
   return (
     <div>
-      <h3 style={filterHeading}>LOCATION</h3>
+      <h3 style={filterHeading}>UBICACIÓN</h3>
 
       <div style={summaryCard}>
         <span style={breadcrumbText}>
@@ -183,25 +185,35 @@ export default function ExploreLocationFilter({
 
       {!selectedProvince && (
         <div style={sectionBlock}>
-          <h2 style={sectionHeading}>Province</h2>
+          <h2 style={sectionHeading}>Provincia</h2>
 
           <div style={pillWrap}>
             {provinceOptions.map((province: string) => (
               <a
                 key={province}
                 href={buildExploreUrl(
-                filters,
-                'province',
-                findOntologyOptionByName(
-                  options.province || [],
-                  province
-                )?.slug || slugify(province),
-                basePath
-              )}
+                    filters,
+                    'province',
+                    findOntologyOptionByName(
+                    options.province || [],
+                    province
+                    )?.slug || slugify(province),
+                    basePath
+                )}
                 style={pill}
-              >
-                {province}
-              </a>
+                >
+                {
+                    findOntologyOptionByName(
+                    options.province || [],
+                    province
+                    )?.term_name_es ||
+                    findOntologyOptionByName(
+                    options.province || [],
+                    province
+                    )?.term_name ||
+                    province
+                }
+                </a>
             ))}
           </div>
         </div>
@@ -214,7 +226,7 @@ export default function ExploreLocationFilter({
               href={buildExploreUrl(filters, 'province', '', basePath)}
               style={backButton}
             >
-              ← provinces
+              ← provincias
             </a>
 
             <span style={breadcrumbText}>
@@ -222,7 +234,7 @@ export default function ExploreLocationFilter({
             </span>
           </div>
 
-          <h2 style={sectionHeading}>Canton</h2>
+          <h2 style={sectionHeading}>Cantón</h2>
 
           <div style={pillWrap}>
             {cantonOptions.map((canton: string) => (
@@ -253,7 +265,7 @@ export default function ExploreLocationFilter({
               href={buildExploreUrl(filters, 'canton', '', basePath)}
               style={backButton}
             >
-              ← cantons
+              ← cantones
             </a>
 
             <span style={breadcrumbText}>
@@ -263,16 +275,16 @@ export default function ExploreLocationFilter({
             </span>
           </div>
 
-          <h2 style={sectionHeading}>District</h2>
+          <h2 style={sectionHeading}>Distrito</h2>
 
           <div style={pillWrap}>
             {districtOptions.map((district: string) => {
               const districtMatch =
                 findDistrictOptionByNameAndCanton(
-                  options.district || [],
-                  district,
-                  selectedCantonOption
-                )
+                    options.district || [],
+                    district,
+                    selectedCantonOption
+                    )
 
               if (!districtMatch) return null
 

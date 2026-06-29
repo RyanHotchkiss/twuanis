@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { exploreMarket } from '@/lib/explorer-engine'
 import { getExplorerOptions } from '@/lib/explorer-options-engine'
-import ExploreFilters from './ExploreFilters'
+import MarketFilters from '@/app/components/MarketFilters'
 import ExploreResults from './ExploreResults'
 import TopBar from '@/app/components/TopBar'
 import GraphExplorer from '@/app/components/GraphExplorer'
@@ -75,7 +75,7 @@ export default async function ExplorePage({
 
       <br></br>
 
-      <ExploreFilters
+      <MarketFilters
         options={options}
         filters={filters}
       />
