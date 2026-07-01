@@ -1,39 +1,64 @@
 'use client'
 
-import { useRouter, useSearchParams } from 'next/navigation'
-import ExploreLocationFilter from '@/app/explore/ExploreLocationFilter'
+import { useMemo } from 'react'
+import { useRouter } from 'next/navigation'
 
 const transactionOptions = [
-  { id: 'sale', slug: 'sale', term_name: 'For Sale' },
-  { id: 'rent', slug: 'rent', term_name: 'For Rent' }
+  { slug: 'sale', term_name: 'For Sale' },
+  { slug: 'rent', term_name: 'For Rent' }
 ]
 
-function buildExploreUrl(
-  currentFilters: Record<string, string | undefined>,
+const priceRangeOptions = [
+  { slug: '0-25000000', term_name: '₡0 – ₡25M' },
+  { slug: '25000000-50000000', term_name: '₡25M – ₡50M' },
+  { slug: '50000000-100000000', term_name: '₡50M – ₡100M' },
+  { slug: '100000000-250000000', term_name: '₡100M – ₡250M' },
+  { slug: '250000000+', term_name: '₡250M+' }
+]
+
+function getLabel(option: any) {
+  if (typeof option === 'string') return option
+  return option.term_name_en || option.term_name || option.slug
+}
+
+function getValue(option: any) {
+  if (typeof option === 'string') return option
+  return option.slug
+}
+
+function buildUrl(
+  filters: Record<string, string | undefined>,
   key: string,
   value: string,
   basePath: string
 ) {
   const params = new URLSearchParams()
 
-  Object.entries(currentFilters).forEach(
-    ([filterKey, filterValue]) => {
-      if (filterValue) {
-        params.set(filterKey, filterValue)
-      }
-    }
-  )
+  Object.entries(filters).forEach(([filterKey, filterValue]) => {
+    if (filterValue) params.set(filterKey, filterValue)
+  })
 
-  if (value && value.length > 0) {
+  if (value) {
     params.set(key, value)
   } else {
     params.delete(key)
   }
 
-  return `${basePath}?${params.toString()}`
+  if (key === 'province') {
+    params.delete('canton')
+    params.delete('district')
+  }
+
+  if (key === 'canton') {
+    params.delete('district')
+  }
+
+  const query = params.toString()
+
+  return query ? `${basePath}?${query}` : basePath
 }
 
-function MultiSelectFilter({
+function FilterSelect({
   label,
   filterKey,
   options,
@@ -46,130 +71,38 @@ function MultiSelectFilter({
   filters: Record<string, string | undefined>
   basePath: string
 }) {
-
-  const selectedValues =
-    filters[filterKey]
-      ? filters[filterKey]!.split(',')
-      : []
-
-  return (
-    <div style={filterCard}>
-      <div
-        style={{
-            color: '#FFD700',
-            fontSize: '1rem',
-            fontWeight: 400,
-            marginBottom: '1rem'
-        }}
-        >
-        {label.toUpperCase()}
-        </div>
-
-      <div style={pillWrap}>
-                    {options.map((option) => {
-                        const checked =
-                        selectedValues.includes(option.slug)
-
-                        return (
-                        <button
-                            type="button"
-                            key={`${filterKey}-${option.slug}`}
-                            onClick={() => {
-                            let nextValues = [...selectedValues]
-
-                            if (checked) {
-                                nextValues = nextValues.filter(
-                                value => value !== option.slug
-                                )
-                            } else {
-                                nextValues.push(option.slug)
-                            }
-
-                            window.location.href =
-                                buildExploreUrl(
-                                    filters,
-                                    filterKey,
-                                    nextValues.join(','),
-                                    basePath
-                                )
-                            }}
-                            style={checked ? activePill : pill}
-                        >
-                            {option.term_name_en || option.term_name}
-                        </button>
-                        )
-                    })}
-                    </div>
-    </div>
-
-    
-  )
-}
-
-function FilterSelect({
-  label,
-  filterKey,
-  options
-}: {
-  label: string
-  filterKey: string
-  options: any[]
-}) {
   const router = useRouter()
-  const searchParams = useSearchParams()
-
-  const currentValue =
-    searchParams.get(filterKey) || ''
-
-  function updateFilter(value: string) {
-    const params =
-      new URLSearchParams(searchParams.toString())
-
-    if (value && value.length > 0) {
-        params.set(filterKey, value)
-    } else {
-        params.delete(filterKey)
-    }
-
-    router.push(`/explore?${params.toString()}`)
-  }
 
   return (
-    <div style={filterCard}>
-      <label>
-        <strong>{label}</strong>
-      </label>
-
-      <br />
+    <div style={assetSection}>
+      <h3 style={assetHeading}>{label}</h3>
 
       <select
-        value={currentValue}
+        value={filters[filterKey] || ''}
         onChange={(event) =>
-          updateFilter(event.target.value)
+          router.push(
+            buildUrl(
+              filters,
+              filterKey,
+              event.target.value,
+              basePath
+            )
+          )
         }
-        style={{
-          width: '100%',
-          maxWidth: '420px',
-          padding: '0.75rem',
-          marginTop: '0.25rem'
-        }}
+        style={select}
       >
-        <option value="">
-          Any {label}
-        </option>
+        <option value="">{label}</option>
 
-        {options.map((option) => (
+        {options?.map((option: any) => (
           <option
-            key={`${filterKey}-${option.slug}`}
-            value={option.slug}
+            key={`${filterKey}-${getValue(option)}`}
+            value={getValue(option)}
           >
-            {option.term_name_en || option.term_name}
+            {getLabel(option)}
           </option>
         ))}
       </select>
     </div>
-
-    
   )
 }
 
@@ -182,154 +115,141 @@ export default function MarketFilters({
   filters: Record<string, string | undefined>
   basePath?: string
 }) {
+  const leftCantons = useMemo(() => {
+    if (!filters.province) return []
+
+    return (
+      options.canton?.filter(
+        (c: any) => c.province === filters.province
+      ) || []
+    )
+  }, [filters.province, options.canton])
+
+  const leftDistricts = useMemo(() => {
+    if (!filters.canton) return []
+
+    return (
+      options.district?.filter(
+        (d: any) => d.canton === filters.canton
+      ) || []
+    )
+  }, [filters.canton, options.district])
 
   return (
-      <>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            marginBottom: '1rem'
-          }}
-        >
-          <a
-            href={basePath}
-            style={{
-              color: '#ff3b00',
-              textDecoration: 'none',
-              fontWeight: 600
-            }}
-          >
-            Reset Explorer
-          </a>
+    <>
+      <div style={resetWrap}>
+        <a href={basePath} style={resetLink}>
+          Reset Explorer
+        </a>
+      </div>
+
+        <div style={locationSection}>
+        <h3 style={assetHeading}>Location</h3>
+
+        <div style={locationGrid}>
+          <FilterSelect
+            label="Province"
+            filterKey="province"
+            options={options.province}
+            filters={filters}
+            basePath={basePath}
+          />
+
+          <FilterSelect
+            label="Canton"
+            filterKey="canton"
+            options={leftCantons}
+            filters={filters}
+            basePath={basePath}
+          />
+
+          <FilterSelect
+            label="District"
+            filterKey="district"
+            options={leftDistricts}
+            filters={filters}
+            basePath={basePath}
+          />
         </div>
+      </div>
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns:
-              'repeat(auto-fit, minmax(260px, 1fr))',
-            gap: '1rem',
-            marginBottom: '2rem'
-          }}
-        >
-            <MultiSelectFilter
-        label="Transaction"
-        filterKey="transaction_type"
-        options={transactionOptions}
-        filters={filters}
-        basePath={basePath}
-      />
-
-      <ExploreLocationFilter
-        options={options}
-        filters={filters}
-        basePath={basePath}
-      />
-
-      <MultiSelectFilter
-        label="Property Type"
-        filterKey="property_type"
-        options={options.property_type}
-        filters={filters}
-        basePath={basePath}
-      />
-
-      <MultiSelectFilter
-        label="Bedrooms"
-        filterKey="bedrooms"
-        options={options.bedrooms}
-        filters={filters}
-        basePath={basePath}
-      />
-
-      <MultiSelectFilter
-        label="Bathrooms"
-        filterKey="bathrooms"
-        options={options.bathrooms}
-        filters={filters}
-        basePath={basePath}
-      />
-
-      <MultiSelectFilter
-        label="Parking"
-        filterKey="parking"
-        options={options.parking}
-        filters={filters}
-        basePath={basePath}
-      />
-
-      <MultiSelectFilter
-        label="Environment"
-        filterKey="environment"
-        options={options.environment}
-        filters={filters}
-        basePath={basePath}
-      />
-
-      <MultiSelectFilter
-        label="Terrain"
-        filterKey="terrain"
-        options={options.terrain}
-        filters={filters}
-        basePath={basePath}
-      />
-
-      <MultiSelectFilter
-        label="Utilities"
-        filterKey="utility"
-        options={options.utility}
-        filters={filters}
-        basePath={basePath}
-      />
-
-      <MultiSelectFilter
-        label="Accessibility"
-        filterKey="accessibility"
-        options={options.accessibility}
-        filters={filters}
-        basePath={basePath}
-      />
-
-      <MultiSelectFilter
-        label="Legal Status"
-        filterKey="legal_status"
-        options={options.legal_status}
-        filters={filters}
-        basePath={basePath}
-      />
-        </div>
-      </>
+      <div style={wrapper}>
+        <FilterSelect label="Transaction" filterKey="transaction_type" options={transactionOptions} filters={filters} basePath={basePath} />
+        <FilterSelect label="Property Type" filterKey="property_type" options={options.property_type} filters={filters} basePath={basePath} />
+        <FilterSelect label="Bedrooms" filterKey="bedrooms" options={options.bedrooms} filters={filters} basePath={basePath} />
+        <FilterSelect label="Bathrooms" filterKey="bathrooms" options={options.bathrooms} filters={filters} basePath={basePath} />
+        <FilterSelect label="Parking" filterKey="parking" options={options.parking} filters={filters} basePath={basePath} />
+        <FilterSelect label="Price Range" filterKey="price_range" options={priceRangeOptions} filters={filters} basePath={basePath} />
+        <FilterSelect label="Property Area" filterKey="property_area" options={options.property_area} filters={filters} basePath={basePath} />
+        <FilterSelect label="Construction Area" filterKey="construction_area" options={options.construction_area} filters={filters} basePath={basePath} />
+        <FilterSelect label="Year Built" filterKey="year_built" options={options.year_built} filters={filters} basePath={basePath} />
+        <FilterSelect label="Environment" filterKey="environment" options={options.environment} filters={filters} basePath={basePath} />
+        <FilterSelect label="Terrain" filterKey="terrain" options={options.terrain} filters={filters} basePath={basePath} />
+        <FilterSelect label="Utilities" filterKey="utility" options={options.utility} filters={filters} basePath={basePath} />
+        <FilterSelect label="Accessibility" filterKey="accessibility" options={options.accessibility} filters={filters} basePath={basePath} />
+        <FilterSelect label="Legal Status" filterKey="legal_status" options={options.legal_status} filters={filters} basePath={basePath} />
+      </div>
+    </>
   )
 }
 
-const pillWrap = {
+const resetWrap = {
   display: 'flex',
-  flexWrap: 'wrap' as const,
-  gap: '.5rem'
+  justifyContent: 'flex-end',
+  marginBottom: '1rem'
 }
 
-const pill = {
-  background: '#181818',
-  border: '.25px solid #D4AF3750',
+const resetLink = {
+  color: '#ff3b00',
+  textDecoration: 'none',
+  fontWeight: 600
+}
+
+const wrapper = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+  gap: '1rem',
+  marginBottom: '2rem'
+}
+
+const assetSection = {
+  background: '#0d0d0d',
+  border: '1px solid #222',
+  borderRadius: '1rem',
+  padding: '1.25rem',
+  display: 'flex',
+  flexDirection: 'column' as const,
+  gap: '.6rem'
+}
+
+const assetHeading = {
+  color: '#FFD700',
+  fontSize: '.9rem',
+  textTransform: 'uppercase' as const,
+  letterSpacing: '.08rem',
+  margin: '0 0 .25rem 0'
+}
+
+const select = {
+  background: '#111',
   color: '#fff',
-  padding: '.85rem 1rem',
-  borderRadius: '999rem',
-  cursor: 'pointer',
-  transition: 'all .2s ease'
+  border: '1px solid #333',
+  borderRadius: '.5rem',
+  padding: '.75rem',
+  fontSize: '1rem',
+  width: '100%'
 }
 
-const activePill = {
-  ...pill,
-  background: '#D4AF37',
-  border: '1px solid #FFFFFF',
-  color: '#000'
-}
-
-const filterCard = {
+const locationSection = {
   background: '#0d0d0d',
   border: '1px solid #222',
   borderRadius: '1rem',
   padding: '1.25rem',
   marginBottom: '1rem'
+}
+
+const locationGrid = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+  gap: '1rem'
 }
