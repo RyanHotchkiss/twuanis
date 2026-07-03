@@ -492,6 +492,9 @@ const setSelectedprovince = (value: string) => {
                 }
 
 <EnvironmentFilter
+                    setShowutilityOptions={
+                    setShowutilityOptions
+                    }
 
                     selectedenvironment={filters.environment}
 

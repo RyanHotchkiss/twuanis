@@ -508,6 +508,11 @@ const setSelectedprovince = (value: string) => {
 
 <EnvironmentFilterES
 
+
+                    setShowutilityOptions={
+                    setShowutilityOptions
+                    }
+
                     selectedenvironment={filters.environment}
 
                     setSelectedenvironment={(value: string[]) => {
@@ -529,17 +534,6 @@ const setSelectedprovince = (value: string) => {
                         setShowAccessibilityOptions
                     }
 
-                    setShowProvinceOptions={
-                        setShowProvinceOptions
-                    }
-
-                    setShowCantonOptions={
-                        setShowCantonOptions
-                    }
-
-                    setShowDistrictOptions={
-                        setShowDistrictOptions
-                    }
 
                     />
 
