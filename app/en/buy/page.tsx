@@ -114,7 +114,7 @@ const navButton = {
  const { data, error } = await supabase
   .from('listings')
   .select('*')
-  .eq('transaction_type', 'buy')
+  .eq('transaction_type', 'sale')
   .eq('listing_status', 'active')
   .order('id', { ascending: false })
 
@@ -314,6 +314,15 @@ console.log(
                           
 const filteredProperties = properties.filter((property) => {
 
+console.log('FILTERS:', filters)
+
+console.log({
+  title: property.title,
+  province: property.province,
+  canton: property.canton,
+  district: property.district
+})
+
 if (
   property.title?.includes('Frente al Río')
 ) {
@@ -324,22 +333,34 @@ if (
 }
 
                       if (
-                        filters.province &&
-                        normalizeText(property.province) !==
-                        normalizeText(filters.province)
-                      ) {
-                        return false
-                      }
+                            filters.province &&
+                            normalizeText(property.province)
+                              .replace(' provincia', '') !==
+                            normalizeText(filters.province)
+                          ) {
+                            return false
+                          }
 
 
 
-                      if (
-                        filters.canton &&
-                        normalizeText(property.canton) !==
-                        normalizeText(filters.canton)
-                      ) {
-                        return false
-                      }
+                      if (filters.canton) {
+                          const propertyCanton =
+                            normalizeText(property.canton)
+
+                          const selectedCanton =
+                            normalizeText(filters.canton)
+
+                          const cantonMatches =
+                            propertyCanton === selectedCanton ||
+                            (
+                              selectedCanton === 'san jose' &&
+                              propertyCanton.includes('san jo')
+                            )
+
+                          if (!cantonMatches) {
+                            return false
+                          }
+                        }
 
 
                     if (
@@ -351,41 +372,46 @@ if (
                     }
 
                   if (filters.price_range) {
+                    const exchangeRate = 500
 
-                                const price = Number(
-                                  property.price_millions
-                                )
+                    const rawPrice =
+                      Number(property.current_price)
 
-                                if (
-                                  filters.price_range === '₡0 - ₡25 millones' &&
-                                  price > 25
-                                ) {
-                                  return false
-                                }
+                    const priceInColones =
+                      property.currency === 'USD' ||
+                      property.title?.toUpperCase().includes('USD')
+                        ? rawPrice * exchangeRate
+                        : rawPrice
 
-                                if (
-                                  filters.price_range === '₡25M - ₡50M' &&
-                                  (price < 25 || price > 50)
-                                ) {
-                                  return false
-                                }
+                    if (
+                          filters.price_range === '₡0 - ₡25M' &&
+                          priceInColones > 25000000
+                        ) return false
 
-                                if (
-                                  filters.price_range === '₡50M - ₡100M' &&
-                                  (price < 50 || price > 100)
-                                ) {
-                                  return false
-                                }
+                        if (
+                          filters.price_range === '₡25M - ₡75M' &&
+                          (priceInColones < 25000000 ||
+                          priceInColones > 75000000)
+                        ) return false
 
-                                if (
-                                  filters.price_range === '₡100 millones+' &&
-                                  price < 100
-                                ) {
-                                  return false
-                                }
+                        if (
+                          filters.price_range === '₡75M - ₡150M' &&
+                          (priceInColones < 75000000 ||
+                          priceInColones > 150000000)
+                        ) return false
 
-                              }
+                        if (
+                          filters.price_range === '₡150M - ₡250M' &&
+                          (priceInColones < 150000000 ||
+                          priceInColones > 250000000)
+                        ) return false
 
+                        if (
+                          filters.price_range === '₡250M+' &&
+                          priceInColones < 250000000
+                        ) return false
+                      }
+                      
                   if (
                     filters.property_type &&
                     normalizeText(property.property_type) !==
@@ -839,13 +865,20 @@ if (
                                         {property.property_type}
                                       </span>
 
-                                      <span style={pill}>
-                                        ₡{property.price_millions}M
-                                      </span>
+                                      {property.current_price && (
+                                        <span style={pill}>
+                                          {property.currency === 'USD' ||
+                                          property.title?.toUpperCase().includes('USD')
+                                            ? `$${Number(property.current_price).toLocaleString()}`
+                                            : `₡${Number(property.current_price).toLocaleString()}`}
+                                        </span>
+                                      )}
 
-                                      <span style={pill}>
-                                        {property.property_area}m²
-                                      </span>
+                                      {property.property_area && (
+                                        <span style={pill}>
+                                          {property.property_area}
+                                        </span>
+                                      )}
 
                                       {property.bedrooms && (
                                         <span style={pill}>

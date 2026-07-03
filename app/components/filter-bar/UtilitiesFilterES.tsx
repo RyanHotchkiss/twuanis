@@ -85,13 +85,7 @@ export default function UtilitiesFilter({
                             ...selectedutility,
                             utility
                           ])
-
-                          setShowProvinceOptions(false)
-
-                          setShowCantonOptions(false)
-
-                          setShowDistrictOptions(false)
-
+                          setShowutilityOptions(false)
                         }
 
                       }}

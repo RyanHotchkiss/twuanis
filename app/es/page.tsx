@@ -19,7 +19,7 @@ export default async function HomePage() {
     = await supabase
         .from('listings')
         .select('*')
-        .eq('transaction_type', 'buy')
+        .eq('transaction_type', 'sale')
         .eq('listing_status', 'active')
 
   const homePageSchema =

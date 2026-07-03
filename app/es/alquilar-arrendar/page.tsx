@@ -112,7 +112,7 @@ const navButton = {
           .select('*')
           .eq('transaction_type', 'rent')
           .eq('listing_status', 'active')
-          .order('id', { ascending: false })
+          .order('created_at', { ascending: false })
 
         if (error) {
 
@@ -287,77 +287,38 @@ console.log(
                           
 const filteredProperties = properties.filter((property) => {
 
-  console.log(
-    '===================================='
-  )
-
-  console.log(
-    'TITLE:',
-    property.title
-  )
-
-  console.log(
-  'PROVINCE:',
-  property.province,
-  'CANTON:',
-  property.canton,
-  'DISTRICT:',
-  property.district
-)
-
-console.log(
-  'PROVINCE FILTER:',
-  filters.province,
-  'PROPERTY PROVINCE:',
-  property.province
-)
+  
 
                  if (
                     filters.province &&
-                    normalizeText(property.province) !==
+                    normalizeText(property.province)
+                      .replace(' provincia', '') !==
                     normalizeText(filters.province)
                   ) {
                     return false
                   }
 
-  console.log(
-  'CANTON FILTER:',
-  filters.canton,
-  'PROPERTY CANTON:',
-  property.canton
-)
+  
 
-console.log(
-  'NORMALIZED CANTON VALUES:',
-  normalizeText(filters.canton),
-  normalizeText(property.canton)
-)
+                if (filters.canton) {
+                  const propertyCanton =
+                    normalizeText(property.canton)
 
-console.log(
-  normalizeText(filters.canton) ===
-  normalizeText(property.canton)
-)
+                  const selectedCanton =
+                    normalizeText(filters.canton)
 
-                if (
-                  filters.canton &&
-                  normalizeText(property.canton) !==
-                  normalizeText(filters.canton)
-                ) {
-                  return false
-                }   
+                  const cantonMatches =
+                    propertyCanton === selectedCanton ||
+                    (
+                      selectedCanton === 'san jose' &&
+                      propertyCanton.includes('san jo')
+                    )
 
-console.log(
-  'DISTRICT FILTER:',
-  filters.district,
-  'PROPERTY DISTRICT:',
-  property.district
-)
+                  if (!cantonMatches) {
+                    return false
+                  }
+                }
 
-console.log(
-  'RAW DISTRICT VALUES:',
-  JSON.stringify(filters.district),
-  JSON.stringify(property.district)
-)
 
                 if (
                   filters.district &&
@@ -367,16 +328,9 @@ console.log(
                   return false
                 }
 
-console.log(
-  'MONTHLY PRICE FILTER:',
-  filters.monthly_price,
-  'PROPERTY PRICE RANGE:',
-  property.price_range
-)
-
                   if (
                     filters.monthly_price &&
-                    property.price_range !== filters.monthly_price
+                    String(property.monthly_price) !== String(filters.monthly_price)
                   ) {
 
                     console.log(
@@ -386,12 +340,6 @@ console.log(
                     return false
                   }
 
-console.log(
-  'TYPE FILTER:',
-  filters.property_type,
-  'PROPERTY TYPE:',
-  property.property_type
-)
 
                  if (
                     filters.property_type &&
@@ -406,12 +354,7 @@ console.log(
                     return false
                   }
 
-                  console.log(
-                    'USE TYPE FILTER:',
-                    filters.use_type,
-                    'PROPERTY USE TYPE:',
-                    property.use_type
-                  )
+                  
 
                   if (
                     filters.use_type &&
@@ -419,38 +362,17 @@ console.log(
                     normalizeText(filters.use_type)
                   ) {
 
-                    console.log(
-                      'FAILED USE TYPE'
-                    )
-
                     return false
                   }
-
-                  console.log(
-                    'PROPERTY AREA FILTER:',
-                    filters.property_area,
-                    'PROPERTY AREA:',
-                    property.property_area
-                  )
 
                   if (
                     filters.property_area &&
                     property.property_area !== filters.property_area
                   ) {
 
-                    console.log(
-                      'FAILED PROPERTY AREA'
-                    )
-
                     return false
                   }
 
-                  console.log(
-                    'UTILITY FILTER:',
-                    filters.utility,
-                    'PROPERTY UTILITY:',
-                    property.utility
-                  )
 
                   if (
                     filters.utility.length > 0 &&
@@ -468,12 +390,6 @@ console.log(
                     return false
                   }
 
-                  console.log(
-                    'LEGAL STATUS FILTER:',
-                    filters.legal_status,
-                    'PROPERTY LEGAL STATUS:',
-                    property.legal_status
-                  )
 
                   if (
                     filters.use_type &&
@@ -481,19 +397,9 @@ console.log(
                     normalizeText(filters.use_type)
                   ) {
 
-                    console.log(
-                      'FAILED LEGAL STATUS'
-                    )
-
                     return false
                   }
 
-                  console.log(
-                    'ENVIRONMENT FILTER:',
-                    filters.environment,
-                    'PROPERTY ENVIRONMENT:',
-                    property.environment
-                  )
 
                   if (
                     filters.environment.length > 0 &&
@@ -511,13 +417,6 @@ console.log(
                     return false
                   }
 
-                  console.log(
-                    'ACCESSIBILITY FILTER:',
-                    filters.accessibility,
-                    'PROPERTY ACCESSIBILITY:',
-                    property.accessibility
-                  )
-
                   if (
                     filters.accessibility &&
                     normalizeText(property.accessibility) !==
@@ -530,13 +429,6 @@ console.log(
 
                     return false
                   }
-
-                  console.log(
-                    'TERRAIN FILTER:',
-                    filters.terrain,
-                    'PROPERTY TERRAIN:',
-                    property.terrain
-                  )
 
                   if (
                       filters.terrain.length > 0 &&
@@ -553,10 +445,6 @@ console.log(
                     ) {
                       return false
                     }
-
-                  console.log(
-                    'PASSED ALL FILTERS'
-                  )
 
                   return true
 
@@ -923,19 +811,42 @@ console.log(
                                         }}
                                       >
 
-                                        <span style={pill}>
+                                       <span style={pill}>
                                           {property.property_type}
                                         </span>
 
-                                        <span style={pill}>
-                                          {property.environment}
-                                        </span>
+                                        {property.monthly_price && (
+                                          <span style={pill}>
+                                            {property.currency === 'USD'
+                                              ? `$${Number(property.monthly_price).toLocaleString()}`
+                                              : `₡${Number(property.monthly_price).toLocaleString()}`}
+                                            /mes
+                                          </span>
+                                        )}
 
-                                        <span style={pill}>
-                                          {Array.isArray(property.terrain)
-                                            ? property.terrain.join(', ')
-                                            : property.terrain}
-                                        </span>
+                                        {property.property_area && (
+                                          <span style={pill}>
+                                            {property.property_area}
+                                          </span>
+                                        )}
+
+                                        {property.bedrooms && (
+                                          <span style={pill}>
+                                            {property.bedrooms}
+                                          </span>
+                                        )}
+
+                                        {property.bathrooms && (
+                                          <span style={pill}>
+                                            {property.bathrooms}
+                                          </span>
+                                        )}
+
+                                        {property.parking && (
+                                          <span style={pill}>
+                                            {property.parking}
+                                          </span>
+                                        )}
 
                                       </div>
 

@@ -268,159 +268,59 @@ console.log(
                           
 const filteredProperties = properties.filter((property) => {
 
-if (
-  property.id ===
-  '868ec0b0-5b93-4987-9e87-806d627afa61'
-) {
-  console.log(
-    'TEST LISTING REACHED FILTER'
-  )
-}
 
-  console.log(
-    '===================================='
-  )
-
-  console.log(
-    'TITLE:',
-    property.title
-  )
-
-  console.log(
-  'PROVINCE:',
-  property.province,
-  'CANTON:',
-  property.canton,
-  'DISTRICT:',
-  property.district
-)
-
-console.log(
-  'PROVINCE FILTER:',
-  filters.province,
-  'PROPERTY PROVINCE:',
-  property.province
-)
 
                  if (
                     filters.province &&
-                    normalizeText(property.province) !==
+                    normalizeText(property.province)
+                      .replace(' provincia', '') !==
                     normalizeText(filters.province)
                   ) {
-
-if (
-  property.id ===
-  '868ec0b0-5b93-4987-9e87-806d627afa61'
-) {
-  console.log(
-    'FAILED HERE'
-  )
-}
-
                     return false
                   }
 
-  console.log(
-  'CANTON FILTER:',
-  filters.canton,
-  'PROPERTY CANTON:',
-  property.canton
-)
 
-console.log(
-  'NORMALIZED CANTON VALUES:',
-  normalizeText(filters.canton),
-  normalizeText(property.canton)
-)
 
-console.log(
-  normalizeText(filters.canton) ===
-  normalizeText(property.canton)
-)
+                if (filters.canton) {
+                    const propertyCanton =
+                      normalizeText(property.canton)
 
-                if (
-                  filters.canton &&
-                  normalizeText(property.canton) !==
-                  normalizeText(filters.canton)
-                ) {
+                    const selectedCanton =
+                      normalizeText(filters.canton)
 
-if (
-  property.id ===
-  '868ec0b0-5b93-4987-9e87-806d627afa61'
-) {
-  console.log(
-    'FAILED HERE'
-  )
-}
+                    const cantonMatches =
+                      propertyCanton === selectedCanton ||
+                      (
+                        selectedCanton === 'san jose' &&
+                        propertyCanton.includes('san jo')
+                      )
 
-                  return false
-                }   
+                    if (!cantonMatches) {
+                      return false
+                    }
+                  }
 
-console.log(
-  'DISTRICT FILTER:',
-  filters.district,
-  'PROPERTY DISTRICT:',
-  property.district
-)
 
-console.log(
-  'RAW DISTRICT VALUES:',
-  JSON.stringify(filters.district),
-  JSON.stringify(property.district)
-)
 
                 if (
                   filters.district &&
                   normalizeText(property.district) !==
                   normalizeText(filters.district)
                 ) {
-
-if (
-  property.id ===
-  '868ec0b0-5b93-4987-9e87-806d627afa61'
-) {
-  console.log(
-    'FAILED HERE'
-  )
-}
-
                   return false
                 }
 
-console.log(
-  'MONTHLY PRICE FILTER:',
-  filters.monthly_price,
-  'PROPERTY PRICE RANGE:',
-  property.price_range
-)
 
                   if (
                     filters.monthly_price &&
-                    property.price_range !== filters.monthly_price
+                    String(property.monthly_price) !== String(filters.monthly_price)
                   ) {
 
-                    console.log(
-                      'FAILED MONTHLY PRICE'
-                    )
-
-if (
-  property.id ===
-  '868ec0b0-5b93-4987-9e87-806d627afa61'
-) {
-  console.log(
-    'FAILED HERE'
-  )
-}
-
+                  
                     return false
                   }
 
-console.log(
-  'TYPE FILTER:',
-  filters.property_type,
-  'PROPERTY TYPE:',
-  property.property_type
-)
+
 
                  if (
                     filters.property_type &&
@@ -428,18 +328,7 @@ console.log(
                     normalizeText(filters.property_type)
                   ) {
 
-                    console.log(
-                      'FAILED PROPERTY TYPE'
-                    )
-
-if (
-  property.id ===
-  '868ec0b0-5b93-4987-9e87-806d627afa61'
-) {
-  console.log(
-    'FAILED HERE'
-  )
-}
+                    
 
                     return false
                   }
@@ -1040,15 +929,38 @@ if (
                                           {property.property_type}
                                         </span>
 
-                                        <span style={pill}>
-                                          {property.environment}
-                                        </span>
+                                        {property.monthly_price && (
+                                          <span style={pill}>
+                                            {property.currency === 'USD'
+                                              ? `$${Number(property.monthly_price).toLocaleString()}`
+                                              : `₡${Number(property.monthly_price).toLocaleString()}`}
+                                            /month
+                                          </span>
+                                        )}
 
-                                        <span style={pill}>
-                                          {Array.isArray(property.terrain)
-                                            ? property.terrain.join(', ')
-                                            : property.terrain}
-                                        </span>
+                                        {property.property_area && (
+                                          <span style={pill}>
+                                            {property.property_area}
+                                          </span>
+                                        )}
+
+                                        {property.bedrooms && (
+                                          <span style={pill}>
+                                            {property.bedrooms} Beds
+                                          </span>
+                                        )}
+
+                                        {property.bathrooms && (
+                                          <span style={pill}>
+                                            {property.bathrooms} Baths
+                                          </span>
+                                        )}
+
+                                        {property.parking && (
+                                          <span style={pill}>
+                                            {property.parking} Parking
+                                          </span>
+                                        )}
 
                                       </div>
 

@@ -62,7 +62,7 @@ export default function UtilitiesFilter({
                             ...selectedutility,
                             utility
                           ])
-
+                          setShowutilityOptions(false)
                         }
 
                       }}

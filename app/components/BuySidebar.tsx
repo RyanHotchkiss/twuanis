@@ -81,7 +81,7 @@ const {
 
                 } = props
 
-const setSelectedprovince = (value: string) => {
+          const setSelectedprovince = (value: string) => {
 
                 setFilters((prev: any) => ({
                     ...prev,
@@ -89,6 +89,14 @@ const setSelectedprovince = (value: string) => {
                     canton: '',
                     district: ''
                 }))
+
+                if (value === '') {
+                    setShowLocationOptions(true)
+                    setShowProvinceOptions(true)
+                    setShowCantonOptions(false)
+                    setShowDistrictOptions(false)
+                    return
+                }
 
                 setShowProvinceOptions(false)
                 setShowCantonOptions(true)
@@ -104,6 +112,14 @@ const setSelectedprovince = (value: string) => {
                     district: ''
                 }))
 
+                if (value === '') {
+                    setShowLocationOptions(true)
+                    setShowProvinceOptions(false)
+                    setShowCantonOptions(true)
+                    setShowDistrictOptions(false)
+                    return
+                }
+
                 setShowCantonOptions(false)
                 setShowDistrictOptions(true)
 
@@ -116,16 +132,22 @@ const setSelectedprovince = (value: string) => {
                     district: value
                 }))
 
+                if (value === '') {
+                    setShowLocationOptions(true)
+                    setShowProvinceOptions(false)
+                    setShowCantonOptions(false)
+                    setShowDistrictOptions(true)
+                    return
+                }
+
                 setShowProvinceOptions(false)
                 setShowCantonOptions(false)
                 setShowDistrictOptions(false)
 
                 setShowLocationOptions(false)
-
                 setShowproperty_typeOptions(true)
 
-                }
-
+                }      
 
   return (
 
@@ -141,32 +163,36 @@ const setSelectedprovince = (value: string) => {
         gap: '28px',
 
         position: isMobile
-          ? 'fixed'
-          : 'relative',
+            ? 'fixed'
+            : 'sticky',
 
-        top: 0,
+        top: isMobile
+            ? 0
+            : '1rem',
 
         left:
-          isMobile && !showMobileFilters
+            isMobile && !showMobileFilters
             ? '-100%'
             : '0',
 
         width:
-          isMobile
+            isMobile
             ? '85vw'
             : '320px',
 
         height:
-          isMobile
+            isMobile
             ? '100vh'
-            : 'auto',
+            : 'calc(100vh - 2rem)',
+
+        overflowY: 'auto',
+
+        alignSelf: 'flex-start',
 
         zIndex: 1500,
 
-        transition: 'left .3s ease',
-
-        overflowY: 'auto'
-      }}
+        transition: 'left .3s ease'
+        }}
     >
 
       {isMobile && (
@@ -450,15 +476,20 @@ const setSelectedprovince = (value: string) => {
                     setSelectedproperty_area={(value: string) => {
 
                         setFilters((prev: any) => ({
-                        ...prev,
-                        property_area: value
+                            ...prev,
+                            property_area: value
                         }))
 
-                        setShowproperty_areaOptions(false)
+                        if (value === '') {
+                            setShowproperty_areaOptions(true)
+                            setShowutilityOptions(true)
+                            return
+                        }
 
+                        setShowproperty_areaOptions(false)
                         setShowutilityOptions(true)
 
-                    }}
+                        }}
 
                     />
 
@@ -511,6 +542,10 @@ const setSelectedprovince = (value: string) => {
                     setShowenvironmentOptions={
                         setShowenvironmentOptions
                     }
+
+                    setShowutilityOptions={
+                        setShowutilityOptions
+                        }
 
                     setShowAccessibilityOptions={
                         setShowAccessibilityOptions

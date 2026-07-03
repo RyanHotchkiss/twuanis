@@ -14,19 +14,11 @@ type EnvironmentFilterProps = {
     value: boolean
   ) => void
 
+  setShowutilityOptions: (
+    value: boolean
+  ) => void  
+
   setShowAccessibilityOptions: (
-    value: boolean
-  ) => void
-
-  setShowProvinceOptions: (
-    value: boolean
-  ) => void
-
-  setShowCantonOptions: (
-    value: boolean
-  ) => void
-
-  setShowDistrictOptions: (
     value: boolean
   ) => void
 
@@ -39,16 +31,11 @@ export default function EnvironmentFilter({
   setSelectedenvironment,
 
   showenvironmentOptions,
-
   setShowenvironmentOptions,
 
-  setShowAccessibilityOptions,
+  setShowutilityOptions,
 
-  setShowProvinceOptions,
-
-  setShowCantonOptions,
-
-  setShowDistrictOptions
+  setShowAccessibilityOptions
 
 }: EnvironmentFilterProps) {
 
@@ -98,18 +85,18 @@ export default function EnvironmentFilter({
 
                   } else {
 
-                    setSelectedenvironment([
-                      ...selectedenvironment,
-                      environment
-                    ])
+                      setSelectedenvironment([
+                        ...selectedenvironment,
+                        environment
+                      ])
 
-                  }
+                      setShowutilityOptions(false)
 
-                  setShowProvinceOptions(false)
-                  setShowCantonOptions(false)
-                  setShowDistrictOptions(false)
-                  setShowenvironmentOptions(false)
-                  setShowAccessibilityOptions(true)
+                      setShowenvironmentOptions(false)
+
+                      setShowAccessibilityOptions(true)
+
+                    }
               }}
 
               style={
@@ -221,7 +208,7 @@ const activePill = {
   ...pill,
   background:'#D4AF37',
   border:'1px solid #D4AF3750',
-  color:'#fff'
+  color:'#000'
 }
 
 const summaryCard = {

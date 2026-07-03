@@ -116,7 +116,7 @@ export default function PropertyAreaFilter({
 
                         setShowproperty_areaOptions(true)
 
-                        setShowutilityOptions(false)
+                        setShowutilityOptions(true)
 
                       }}
                       style={resetButton}

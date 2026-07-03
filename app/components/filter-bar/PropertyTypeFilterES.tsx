@@ -209,7 +209,7 @@ const propertyTypes = [
 
                           setShowproperty_typeOptions(true)
 
-                          setShowproperty_areaOptions(false)
+                          setShowproperty_areaOptions(true)
 
                         }}
                         style={resetButton}

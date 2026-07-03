@@ -109,15 +109,19 @@ return (
                     type="button"
                     onClick={(e) => {
 
-                      e.stopPropagation()
+                        e.stopPropagation()
 
-                      setShowLocationOptions(true)
+                        setSelectedprovince('')
+                        setSelectedcanton('')
+                        setSelecteddistrict('')
 
-                      setShowProvinceOptions(true)
-                      setShowCantonOptions(false)
-                      setShowDistrictOptions(false)
+                        setShowLocationOptions(true)
 
-                    }}
+                        setShowProvinceOptions(true)
+                        setShowCantonOptions(false)
+                        setShowDistrictOptions(false)
+
+                      }}
                     style={{
                       background:'transparent',
                       border:'none',
@@ -367,6 +371,8 @@ return (
                               setSelectedcanton('')
                               setSelecteddistrict('')
 
+                              setShowLocationOptions(true)
+
                               setShowProvinceOptions(true)
                               setShowCantonOptions(false)
                               setShowDistrictOptions(false)
@@ -420,13 +426,13 @@ const scrollPanel = {
   display:'flex',
   flexDirection:'column' as const,
   gap:'.5rem',
-  maxHeight:'12.5rem',
+  maxHeight:'13.8rem',
   overflowY:'scroll' as const,
   paddingRight:'.35rem',
-  maskImage:'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 72%, rgba(0,0,0,.25) 92%, rgba(0,0,0,0) 100%)',
-  WebkitMaskImage:'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 72%, rgba(0,0,0,.25) 92%, rgba(0,0,0,0) 100%)',
   scrollbarWidth:'thin' as const,
-  scrollbarColor:'#D4AF3770 #111'
+  scrollbarColor:'#D4AF3770 #111',
+  borderBottom:'1px solid #D4AF3750',
+  paddingBottom:'1rem'
 }
 
 const listButton = {

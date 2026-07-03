@@ -29,11 +29,12 @@ export default function PriceFilter({
 }: PriceFilterProps) {
 
   const priceOptions = [
-    '₡0 - ₡25 millones',
-    '₡25M - ₡50M',
-    '₡50M - ₡100M',
-    '₡100 millones+'
-  ]
+      { label: '₡0 - ₡25M', usd: '$0 - $50K' },
+      { label: '₡25M - ₡75M', usd: '$50K - $150K' },
+      { label: '₡75M - ₡150M', usd: '$150K - $300K' },
+      { label: '₡150M - ₡250M', usd: '$300K - $500K' },
+      { label: '₡250M+', usd: '$500K+' }
+    ]
 
   return (
 
@@ -46,71 +47,68 @@ export default function PriceFilter({
 {showPriceOptions && (
 
             <div style={pillWrap}>
-
               {priceOptions.map((price) => (
-
                 <button
-                  key={price}
+                  key={price.label}
                   onClick={() => {
-
-                    setSelectedprice_range(price)
-
+                    setSelectedprice_range(price.label)
                     setShowProvinceOptions(false)
-
                     setShowCantonOptions(false)
-
                     setShowDistrictOptions(false)
-
                     setShowPriceOptions(false)
-
                   }}
                   style={
-                    selectedprice_range === price
+                    selectedprice_range === price.label
                       ? activePill
                       : pill
                   }
                 >
-                  {price}
+                  <span style={priceColones}>
+                    {price.label}
+                  </span>
+                  <span style={priceDollars}>
+                    {price.usd}
+                  </span>
                 </button>
-
               ))}
-
             </div>
 
           )}
 
 {!showPriceOptions &&
             selectedprice_range && (
+                <div style={summaryCard}>
+                  <div
+                    onClick={() => {
+                      setShowPriceOptions(true)
+                    }}
+                    style={{
+                      cursor:'pointer'
+                    }}
+                  >
+                    <div style={priceColones}>
+                      {selectedprice_range}
+                    </div>
+                    <div style={priceDollars}>
+                      {
+                        priceOptions.find(
+                          p => p.label === selectedprice_range
+                        )?.usd
+                      }
+                    </div>
+                  </div>
 
-              <div style={summaryCard}>
-
-                <span
-                  onClick={() => {
-                    setShowPriceOptions(true)
-                  }}
-                  style={{
-                    ...breadcrumbText,
-                    cursor:'pointer'
-                  }}
-                >
-                  {selectedprice_range}
-                </span>
-
-                <button
-                  type="button"
-                  onClick={() => {
-
-                    setSelectedprice_range('')
-
-                    setShowPriceOptions(true)
-
-                  }}
-                  style={resetButton}
-                >
-                  ✕
-                </button>
-
-              </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedprice_range('')
+                      setShowPriceOptions(true)
+                    }}
+                    style={resetButton}
+                  >
+                    ✕
+                  </button>
+                </div>
 
             )}
 
@@ -124,17 +122,6 @@ export default function PriceFilter({
 const breadcrumbText = {
   color:'#FFFFFF',
   fontSize:'.85rem'
-}
-
-const summaryCard = {
-  display:'flex',
-  justifyContent:'space-between',
-  alignItems:'flex-start',
-  background:'#181818',
-  border:'1px solid #D4AF3750',
-  borderRadius:'1rem',
-  padding:'1rem',
-  marginTop:'1rem'
 }
 
 const resetButton = {
@@ -151,27 +138,57 @@ const filterHeading = {
   color:'#D4AF37  '
 }
 
+const summaryCard = {
+  display:'flex',
+  flexDirection:'row' as const,
+  justifyContent:'space-between',
+  alignItems:'center',
+  background:'#181818',
+  border:'1px solid #FFFFFF50',
+  borderRadius:'1rem',
+  padding:'1rem',
+  marginTop:'1rem'
+}
+
 const pillWrap = {
   display:'flex',
+  flexDirection:'row' as const,
   flexWrap:'wrap' as const,
-  gap:'.5rem'
+  gap:'.5rem',
+  alignItems:'flex-start'
 }
 
 const pill = {
   background:'#181818',
-  border:'1px solid #D4AF3750',
+  border:'.25px solid #D4AF3750',
   color:'#fff',
   padding:'.85rem 1rem',
   borderRadius:'999rem',
   cursor:'pointer',
-  transition:'all .2s ease'
+  transition:'all .2s ease',
+  display:'flex',
+  flexDirection:'column' as const,
+  alignItems:'center',
+  justifyContent:'center',
+  gap:'.2rem'
 }
 
 const activePill = {
   ...pill,
   background:'#D4AF37',
-  border:'1px solid #D4AF3750',
-  color:'#fff'
+  border:'1px solid #FFFFFF',
+  color:'#000'
+}
+
+const priceColones = {
+  fontSize:'.8rem',
+  color:'#fff',
+  fontWeight:'500'
+}
+
+const priceDollars = {
+  fontSize:'.75rem',
+  color:'#888'
 }
 
 /*
