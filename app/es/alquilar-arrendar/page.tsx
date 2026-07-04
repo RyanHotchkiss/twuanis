@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { createListingId } from '@/lib/createListingId'
 import { supabase } from '@/lib/supabase'
 import TopBarES from '@/app/components/TopBarES'
+import FilterButton from '@/app/components/FilterButton'
 
 import RentLeaseSidebarES from '@/app/components/RentLeaseSidebarES'
 import { normalizeText } from '@/lib/normalizeText' 
@@ -328,16 +329,44 @@ const filteredProperties = properties.filter((property) => {
                   return false
                 }
 
-                  if (
-                    filters.monthly_price &&
-                    String(property.monthly_price) !== String(filters.monthly_price)
-                  ) {
+                  if (filters.monthly_price) {
+                    const exchangeRate = 500
 
-                    console.log(
-                      'FAILED MONTHLY PRICE'
-                    )
+                    const rawPrice =
+                      Number(property.monthly_price)
 
-                    return false
+                    const priceInColones =
+                      property.currency === 'USD'
+                        ? rawPrice * exchangeRate
+                        : rawPrice
+
+                    if (
+                      filters.monthly_price === '₡0 - ₡250K' &&
+                      priceInColones > 250000
+                    ) return false
+
+                    if (
+                      filters.monthly_price === '₡250K - ₡500K' &&
+                      (priceInColones < 250000 ||
+                      priceInColones > 500000)
+                    ) return false
+
+                    if (
+                      filters.monthly_price === '₡500K - ₡1M' &&
+                      (priceInColones < 500000 ||
+                      priceInColones > 1000000)
+                    ) return false
+
+                    if (
+                      filters.monthly_price === '₡1M - ₡2.5M' &&
+                      (priceInColones < 1000000 ||
+                      priceInColones > 2500000)
+                    ) return false
+
+                    if (
+                      filters.monthly_price === '₡2.5M+' &&
+                      priceInColones < 2500000
+                    ) return false
                   }
 
 
@@ -480,6 +509,11 @@ const filteredProperties = properties.filter((property) => {
                           }
                         />
 
+                          <div className="floating-filter-button">
+                            <FilterButton
+                              onClick={() => setShowMobileFilters(true)}
+                            />
+                          </div>
 
 {/* TOP RIGHT NAV */}
              

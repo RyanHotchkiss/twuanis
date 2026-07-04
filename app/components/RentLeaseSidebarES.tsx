@@ -2,15 +2,18 @@
 import LocationFilter from '@/app/components/filter-bar/LocationFilterES'
 import PriceFilterRLES from '@/app/components/filter-bar/PriceFilterRLES'
 import PropertyTypeFilter from '@/app/components/filter-bar/PropertyTypeFilterES'
-import ResidentialAttributesS from '@/app/components/filter-bar/ResidentialAttributesS'
+import ResidentialAttributesSES from '@/app/components/filter-bar/ResidentialAttributesSES'
 import PropertyAreaFilter from '@/app/components/filter-bar/PropertyAreaFilterES'
 import UtilitiesFilterES from '@/app/components/filter-bar/UtilitiesFilterES'
 import EnvironmentFilterES from '@/app/components/filter-bar/EnvironmentFilterES'
 import AccessibilityFilterES from '@/app/components/filter-bar/AccessibilityFilterES'
 import TerrainFilterES from '@/app/components/filter-bar/TerrainFilterES'
 import LegalStatusFilterES from '@/app/components/filter-bar/LegalStatusFilterES'
+import {
+  residential_property_types
+} from '@/data/property-data'
 
-export default function RentLeaseSidebarES(props: any) {
+export default function BuySidebarES(props: any) {
 
 const {
 
@@ -78,50 +81,73 @@ const {
 
                 } = props
 
-const setSelectedprovince = (value: string) => {
+                const setSelectedprovince = (value: string) => {
 
-                setFilters((prev: any) => ({
-                    ...prev,
-                    province: value,
-                    canton: '',
-                    district: ''
-                }))
+                    setFilters((prev: any) => ({
+                        ...prev,
+                        province: value,
+                        canton: '',
+                        district: ''
+                    }))
 
-                setShowProvinceOptions(false)
-                setShowCantonOptions(true)
-                setShowDistrictOptions(false)
+                    if (value === '') {
+                        setShowLocationOptions(true)
+                        setShowProvinceOptions(true)
+                        setShowCantonOptions(false)
+                        setShowDistrictOptions(false)
+                        return
+                    }
 
-                }
+                    setShowProvinceOptions(false)
+                    setShowCantonOptions(true)
+                    setShowDistrictOptions(false)
 
-                const setSelectedcanton = (value: string) => {
+                    }
 
-                setFilters((prev: any) => ({
-                    ...prev,
-                    canton: value,
-                    district: ''
-                }))
+                    const setSelectedcanton = (value: string) => {
 
-                setShowCantonOptions(false)
-                setShowDistrictOptions(true)
+                    setFilters((prev: any) => ({
+                        ...prev,
+                        canton: value,
+                        district: ''
+                    }))
 
-                }
+                    if (value === '') {
+                        setShowLocationOptions(true)
+                        setShowProvinceOptions(false)
+                        setShowCantonOptions(true)
+                        setShowDistrictOptions(false)
+                        return
+                    }
 
-                const setSelecteddistrict = (value: string) => {
+                    setShowCantonOptions(false)
+                    setShowDistrictOptions(true)
 
-                setFilters((prev: any) => ({
-                    ...prev,
-                    district: value
-                }))
+                    }
 
-                setShowProvinceOptions(false)
-                setShowCantonOptions(false)
-                setShowDistrictOptions(false)
+                    const setSelecteddistrict = (value: string) => {
 
-                setShowLocationOptions(false)
+                    setFilters((prev: any) => ({
+                        ...prev,
+                        district: value
+                    }))
 
-                setShowproperty_typeOptions(true)
+                    if (value === '') {
+                        setShowLocationOptions(true)
+                        setShowProvinceOptions(false)
+                        setShowCantonOptions(false)
+                        setShowDistrictOptions(true)
+                        return
+                    }
 
-                }
+                    setShowProvinceOptions(false)
+                    setShowCantonOptions(false)
+                    setShowDistrictOptions(false)
+
+                    setShowLocationOptions(false)
+                    setShowproperty_typeOptions(true)
+
+                    }
 
 
   return (
@@ -138,32 +164,36 @@ const setSelectedprovince = (value: string) => {
         gap: '28px',
 
         position: isMobile
-          ? 'fixed'
-          : 'relative',
+            ? 'fixed'
+            : 'sticky',
 
-        top: 0,
+        top: isMobile
+            ? 0
+            : '1rem',
 
         left:
-          isMobile && !showMobileFilters
+            isMobile && !showMobileFilters
             ? '-100%'
             : '0',
 
         width:
-          isMobile
+            isMobile
             ? '85vw'
             : '320px',
 
         height:
-          isMobile
+            isMobile
             ? '100vh'
-            : 'auto',
+            : 'calc(100vh - 2rem)',
+
+        overflowY: 'auto',
+
+        alignSelf: 'flex-start',
 
         zIndex: 1500,
 
-        transition: 'left .3s ease',
-
-        overflowY: 'auto'
-      }}
+        transition: 'left .3s ease'
+        }}
     >
 
       {isMobile && (
@@ -259,6 +289,10 @@ const setSelectedprovince = (value: string) => {
                 showPriceOptions={showPriceOptions}
                 setShowPriceOptions={setShowPriceOptions}
 
+                setShowProvinceOptions={setShowProvinceOptions}
+                setShowCantonOptions={setShowCantonOptions}
+                setShowDistrictOptions={setShowDistrictOptions}
+
                 selectedmonthly_price={filters.monthly_price}
 
                 setSelectedmonthly_price={(value: string) => {
@@ -310,13 +344,11 @@ const setSelectedprovince = (value: string) => {
                 />
 
                 {
-                (
-                    filters.property_type === 'Casa' ||
-                    filters.property_type === 'Condominio' ||
-                    filters.property_type === 'Cabaña'
-                ) && (
+                    residential_property_types.includes(
+                        filters.property_type
+                    ) && (
 
-<ResidentialAttributesS
+<ResidentialAttributesSES
 
                     setShowproperty_typeOptions={
                         setShowproperty_typeOptions
@@ -406,11 +438,9 @@ const setSelectedprovince = (value: string) => {
                 }
 
                {
-                        (
-                        filters.property_type !== 'Casa' &&
-                        filters.property_type !== 'Condominio' &&
-                        filters.property_type !== 'Cabaña'
-                        ) && (
+                    !residential_property_types.includes(
+                        filters.property_type
+                    ) && (
 
                         <>
 
@@ -447,15 +477,20 @@ const setSelectedprovince = (value: string) => {
                     setSelectedproperty_area={(value: string) => {
 
                         setFilters((prev: any) => ({
-                        ...prev,
-                        property_area: value
+                            ...prev,
+                            property_area: value
                         }))
 
-                        setShowproperty_areaOptions(false)
+                        if (value === '') {
+                            setShowproperty_areaOptions(true)
+                            setShowutilityOptions(true)
+                            return
+                        }
 
+                        setShowproperty_areaOptions(false)
                         setShowutilityOptions(true)
 
-                    }}
+                        }}
 
                     />
 
@@ -508,11 +543,6 @@ const setSelectedprovince = (value: string) => {
 
 <EnvironmentFilterES
 
-
-                    setShowutilityOptions={
-                    setShowutilityOptions
-                    }
-
                     selectedenvironment={filters.environment}
 
                     setSelectedenvironment={(value: string[]) => {
@@ -530,35 +560,29 @@ const setSelectedprovince = (value: string) => {
                         setShowenvironmentOptions
                     }
 
+                    setShowutilityOptions={
+                        setShowutilityOptions
+                        }
+
                     setShowAccessibilityOptions={
                         setShowAccessibilityOptions
                     }
 
-
                     />
 
 <AccessibilityFilterES
-
                 selectedaccessibility={filters.accessibility}
 
                 setSelectedaccessibility={(value: string) => {
-
                     setFilters((prev: any) => ({
-                    ...prev,
-                    accessibility: value
+                        ...prev,
+                        accessibility: value
                     }))
-
                 }}
+                showAccessibilityOptions={showAccessibilityOptions}
 
-                showAccessibilityOptions={
-                    showAccessibilityOptions
-                }
-
-                setShowAccessibilityOptions={
-                    setShowAccessibilityOptions
-                }
-
-                />
+                setShowAccessibilityOptions={setShowAccessibilityOptions}
+            />
 
 <TerrainFilterES
 

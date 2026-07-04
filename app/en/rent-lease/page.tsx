@@ -311,13 +311,44 @@ const filteredProperties = properties.filter((property) => {
                 }
 
 
-                  if (
-                    filters.monthly_price &&
-                    String(property.monthly_price) !== String(filters.monthly_price)
-                  ) {
+                  if (filters.monthly_price) {
+                    const exchangeRate = 500
 
-                  
-                    return false
+                    const rawPrice =
+                      Number(property.monthly_price)
+
+                    const priceInDollars =
+                      property.currency === 'CRC'
+                        ? rawPrice / exchangeRate
+                        : rawPrice
+
+                    if (
+                      filters.monthly_price === '$0 - $500/mo' &&
+                      priceInDollars > 500
+                    ) return false
+
+                    if (
+                      filters.monthly_price === '$500 - $1K/mo' &&
+                      (priceInDollars < 500 ||
+                      priceInDollars > 1000)
+                    ) return false
+
+                    if (
+                      filters.monthly_price === '$1K - $2K/mo' &&
+                      (priceInDollars < 1000 ||
+                      priceInDollars > 2000)
+                    ) return false
+
+                    if (
+                      filters.monthly_price === '$2K - $5K/mo' &&
+                      (priceInDollars < 2000 ||
+                      priceInDollars > 5000)
+                    ) return false
+
+                    if (
+                      filters.monthly_price === '$5K+/mo' &&
+                      priceInDollars < 5000
+                    ) return false
                   }
 
 

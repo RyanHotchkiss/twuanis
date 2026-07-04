@@ -9,8 +9,11 @@ import EnvironmentFilter from '@/app/components/filter-bar/EnvironmentFilter'
 import AccessibilityFilter from '@/app/components/filter-bar/AccessibilityFilter'
 import TerrainFilter from '@/app/components/filter-bar/TerrainFilter'
 import LegalStatusFilter from '@/app/components/filter-bar/LegalStatusFilter'
+import {
+  residential_property_types
+} from '@/data/property-data'
 
-export default function RentLeaseSideba(props: any) {
+export default function BuySidebar(props: any) {
 
 const {
 
@@ -78,7 +81,7 @@ const {
 
                 } = props
 
-const setSelectedprovince = (value: string) => {
+          const setSelectedprovince = (value: string) => {
 
                 setFilters((prev: any) => ({
                     ...prev,
@@ -86,6 +89,14 @@ const setSelectedprovince = (value: string) => {
                     canton: '',
                     district: ''
                 }))
+
+                if (value === '') {
+                    setShowLocationOptions(true)
+                    setShowProvinceOptions(true)
+                    setShowCantonOptions(false)
+                    setShowDistrictOptions(false)
+                    return
+                }
 
                 setShowProvinceOptions(false)
                 setShowCantonOptions(true)
@@ -101,6 +112,14 @@ const setSelectedprovince = (value: string) => {
                     district: ''
                 }))
 
+                if (value === '') {
+                    setShowLocationOptions(true)
+                    setShowProvinceOptions(false)
+                    setShowCantonOptions(true)
+                    setShowDistrictOptions(false)
+                    return
+                }
+
                 setShowCantonOptions(false)
                 setShowDistrictOptions(true)
 
@@ -113,16 +132,22 @@ const setSelectedprovince = (value: string) => {
                     district: value
                 }))
 
+                if (value === '') {
+                    setShowLocationOptions(true)
+                    setShowProvinceOptions(false)
+                    setShowCantonOptions(false)
+                    setShowDistrictOptions(true)
+                    return
+                }
+
                 setShowProvinceOptions(false)
                 setShowCantonOptions(false)
                 setShowDistrictOptions(false)
 
                 setShowLocationOptions(false)
-
                 setShowproperty_typeOptions(true)
 
-                }
-
+                }      
 
   return (
 
@@ -138,32 +163,36 @@ const setSelectedprovince = (value: string) => {
         gap: '28px',
 
         position: isMobile
-          ? 'fixed'
-          : 'relative',
+            ? 'fixed'
+            : 'sticky',
 
-        top: 0,
+        top: isMobile
+            ? 0
+            : '1rem',
 
         left:
-          isMobile && !showMobileFilters
+            isMobile && !showMobileFilters
             ? '-100%'
             : '0',
 
         width:
-          isMobile
+            isMobile
             ? '85vw'
             : '320px',
 
         height:
-          isMobile
+            isMobile
             ? '100vh'
-            : 'auto',
+            : 'calc(100vh - 2rem)',
+
+        overflowY: 'auto',
+
+        alignSelf: 'flex-start',
 
         zIndex: 1500,
 
-        transition: 'left .3s ease',
-
-        overflowY: 'auto'
-      }}
+        transition: 'left .3s ease'
+        }}
     >
 
       {isMobile && (
@@ -209,7 +238,7 @@ const setSelectedprovince = (value: string) => {
             zIndex: 9999
           }}
         >
-          Ver Propiedades
+          View Properties
         </button>
 
       )}
@@ -226,7 +255,7 @@ const setSelectedprovince = (value: string) => {
             '1px 1px 0 #D4AF37'
         }}
       >
-        Filtros
+        Filters
       </h2>
 
 <LocationFilter
@@ -259,20 +288,19 @@ const setSelectedprovince = (value: string) => {
                 showPriceOptions={showPriceOptions}
                 setShowPriceOptions={setShowPriceOptions}
 
+                setShowProvinceOptions={setShowProvinceOptions}
+                setShowCantonOptions={setShowCantonOptions}
+                setShowDistrictOptions={setShowDistrictOptions}
+
                 selectedmonthly_price={filters.monthly_price}
-
-                setSelectedmonthly_price={(value: string) => {
-
+                    setSelectedmonthly_price={(value: string) => {
                     setFilters((prev: any) => ({
-                    ...prev,
-                    monthly_price: value
+                        ...prev,
+                        monthly_price: value
                     }))
-
                     setShowPriceOptions(false)
-
                     setShowproperty_typeOptions(true)
-
-                }}
+                    }}
 
                 />
 
@@ -310,10 +338,8 @@ const setSelectedprovince = (value: string) => {
                 />
 
                 {
-                (
-                    filters.property_type === 'Casa' ||
-                    filters.property_type === 'Condominio' ||
-                    filters.property_type === 'Cabaña'
+                residential_property_types.includes(
+                    filters.property_type
                 ) && (
 
 <ResidentialAttributesS
@@ -406,11 +432,9 @@ const setSelectedprovince = (value: string) => {
                 }
 
                {
-                        (
-                        filters.property_type !== 'Casa' &&
-                        filters.property_type !== 'Condominio' &&
-                        filters.property_type !== 'Cabaña'
-                        ) && (
+                    !residential_property_types.includes(
+                        filters.property_type
+                    ) && (
 
                         <>
 
@@ -447,15 +471,20 @@ const setSelectedprovince = (value: string) => {
                     setSelectedproperty_area={(value: string) => {
 
                         setFilters((prev: any) => ({
-                        ...prev,
-                        property_area: value
+                            ...prev,
+                            property_area: value
                         }))
 
-                        setShowproperty_areaOptions(false)
+                        if (value === '') {
+                            setShowproperty_areaOptions(true)
+                            setShowutilityOptions(true)
+                            return
+                        }
 
+                        setShowproperty_areaOptions(false)
                         setShowutilityOptions(true)
 
-                    }}
+                        }}
 
                     />
 
@@ -483,7 +512,6 @@ const setSelectedprovince = (value: string) => {
                         setShowutilityOptions
                     }
 
-
                     />
 
                 </>
@@ -492,9 +520,6 @@ const setSelectedprovince = (value: string) => {
                 }
 
 <EnvironmentFilter
-                    setShowutilityOptions={
-                    setShowutilityOptions
-                    }
 
                     selectedenvironment={filters.environment}
 
@@ -513,6 +538,10 @@ const setSelectedprovince = (value: string) => {
                         setShowenvironmentOptions
                     }
 
+                    setShowutilityOptions={
+                        setShowutilityOptions
+                        }
+
                     setShowAccessibilityOptions={
                         setShowAccessibilityOptions
                     }
@@ -524,12 +553,10 @@ const setSelectedprovince = (value: string) => {
                 selectedaccessibility={filters.accessibility}
 
                 setSelectedaccessibility={(value: string) => {
-
                     setFilters((prev: any) => ({
-                    ...prev,
-                    accessibility: value
+                        ...prev,
+                        accessibility: value
                     }))
-
                 }}
 
                 showAccessibilityOptions={
@@ -540,7 +567,6 @@ const setSelectedprovince = (value: string) => {
                     setShowAccessibilityOptions
                 }
 
-                
                 />
 
 <TerrainFilter
