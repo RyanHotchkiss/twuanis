@@ -1,12 +1,5 @@
 'use client'
 
-type HomePageClientProps = {
-  ontologyTerms: any[]
-  ontologyRelationships: any[]
-  listings: any[]
-  homePageSchema: any[]
-}
-
 import { buildHomePageSchema }
 from '@/lib/schema/buildHomePageSchema'
 import JsonLd from '@/app/components/JsonLd'
@@ -18,34 +11,36 @@ import { supabase } from '@/lib/supabase'
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 
+import {
+  provinces,
+  districts,
+  property_types,
+  property_areas,
+  utilities,
+  environments,
+  accessibilityOptions,
+  terrainOptions,
+  legal_statuses
+} from '@/data/property-data'
+
+
 
 function HomePageContent({
-  ontologyTerms,
-  ontologyRelationships,
-  listings,
-  homePageSchema
-}: {
-  ontologyTerms: any[]
-  ontologyRelationships: any[]
-  listings: any[]
-  homePageSchema: any[]
-}) {
+                ontologyTerms,
+                ontologyRelationships,
+                listings,
+                homePageSchema
+                }: {
+                ontologyTerms: any[]
+                ontologyRelationships: any[]
+                listings: any[]
+                homePageSchema: any[]
+                }) {
 
-  const [properties] =
-        useState<any[]>(
-            listings.map((listing: any) => ({
-            ...listing,
-            images:
-                Array.isArray(listing.images)
-                ? listing.images
-                : typeof listing.images === 'string'
-                ? listing.images.split('|')
-                : []
-            }))
-        )
 
-  const [loading] = useState(false)
+  const [properties, setProperties] = useState(listings)
 
+  const [loading, setLoading] = useState(true)
   const searchParams = useSearchParams()
 
   const [selectedprovince, setSelectedprovince] = useState('')
@@ -54,22 +49,16 @@ function HomePageContent({
 
   const [selectedprice, setSelectedprice] = useState('')
   const [selectedproperty_type, setSelectedproperty_type] = useState('')
-  const [selecteduse_type, setSelecteduse_type] = useState('')
+  
   const [selectedproperty_area, setSelectedproperty_area] = useState('')
   const [selectedutility, setSelectedutility] = useState('')
 
-  const [showadvanced_filters, setShowadvanced_filters] = useState(false)
   const [showMobileFilters, setShowMobileFilters] = useState(false)
-  
-    const [showIntroOverlay, setShowIntroOverlay] = useState(
-      searchParams.get('overlay') === 'initial' ||
-      searchParams.get('overlay') === 'looking' ||
-      searchParams.get('overlay') === 'posting'
-        ? false
-        : true
-    )
-
   const [countdown, setCountdown] = useState(12)
+  const [showPoster, setShowPoster] = useState(true)
+
+const [showMainOverlay, setShowMainOverlay] =
+  useState(false)
 
   const [isMobile, setIsMobile] =
             useState(false)
@@ -92,457 +81,85 @@ function HomePageContent({
             }
           }, [])
 
-          
           useEffect(() => {
+                if (
+                  searchParams.get('overlay')
+                ) {
+                  setShowPoster(false)
+                  setShowMainOverlay(true)
+                  return
+                }
+                const timer = setTimeout(() => {
+                  setShowPoster(false)
+                  setTimeout(() => {
+                    setShowMainOverlay(true)
+                  }, 600)
+                }, 8000)
+                return () => clearTimeout(timer)
+              }, [searchParams])
+    
 
-              if (
-                sessionStorage.getItem('skipIntro')
-              ) {
-
-                setShowIntroOverlay(false)
-
-                sessionStorage.removeItem(
-                  'skipIntro'
-                )
-
-              }
-
-            }, [])
-
-    useEffect(() => {
-
-        if (!showIntroOverlay) return
-
-        const interval = setInterval(() => {
-
-          setCountdown(prev => {
-
-            if (prev <= 1) {
-
-              clearInterval(interval)
-
-              setShowIntroOverlay(false)
-
-              return 0
-
-            }
-
-            return prev - 1
-
-          })
-
-        }, 1000)
-
-        return () => clearInterval(interval)
-
-      }, [showIntroOverlay])
-
-  const overlayBackButton = {
-    background:'#FFFFFF40',
-    border:'.0625rem solid #ffffff50',
-    color:'#fff',
-    borderRadius:'999rem',
-    padding:'.55rem 1rem',
-    cursor:'pointer',
-    transition:'all .2s ease',
-    backdropFilter:'blur(10px)',
-    fontSize:'.85rem',
-    fontWeight:'bold',
-    marginBottom:'1.25rem',
-    display:'inline-flex',
-    alignItems:'center',
-    justifyContent:'center'
-  }
   const [selectedlegal_status, setSelectedlegal_status] = useState('')
   const [selectedenvironment, setSelectedenvironment] = useState('')
   const [selectedaccessibility, setSelectedaccessibility] = useState('')
   const [selectedterrain, setSelectedterrain] = useState('')
   
 
-    const initialOverlayState =  
-      searchParams.get('overlay') === 'looking'
-        ? 'looking'
-        : searchParams.get('overlay') === 'posting'
-        ? 'posting'
-        : searchParams.get('overlay') === 'initial'
-        ? 'initial'
-        : 'initial'
+  const initialOverlayState =  
+    searchParams.get('overlay') === 'looking'
+      ? 'looking'
+      : searchParams.get('overlay') === 'posting'
+      ? 'posting'
+      : 'initial'
+
+      console.log(
+          'OVERLAY PARAM:',
+          searchParams.get('overlay')
+        )
+
+        console.log(
+          'INITIAL OVERLAY STATE:',
+          initialOverlayState
+        )
 
   const [overlayState, setOverlayState] =
   useState<'initial' | 'looking' | 'posting' | null>(
     initialOverlayState
   )
+
   const homepageBlurred =
-  overlayState !== null
+  showPoster || showMainOverlay
 
+        useEffect(() => {
 
-          useEffect(() => {
+                const normalizedListings =
+                    listings.map(
+                    (listing: any) => ({
 
-              if (
-                sessionStorage.getItem('skipIntro')
-              ) {
+                        ...listing,
 
-                setShowIntroOverlay(false)
+                        id: createListingId(listing),
 
-                sessionStorage.removeItem(
-                  'skipIntro'
+                        images:
+                        Array.isArray(listing.images)
+                            ? listing.images
+                            : typeof listing.images === 'string'
+                            ? listing.images.split('|')
+                            : []
+
+                    })
+                    )
+
+                setProperties(
+                    normalizedListings
                 )
 
-              }
+                setLoading(false)
 
-            }, [])
-
-          useEffect(() => {
-
-            if (!showIntroOverlay) return
-
-            const interval = setInterval(() => {
-
-              setCountdown(prev => {
-
-                if (prev <= 1) {
-
-                  clearInterval(interval)
-
-                  setShowIntroOverlay(false)
-
-                  return 0
-
-                }
-
-                return prev - 1
-
-              })
-
-            }, 1000)
-
-            return () => clearInterval(interval)
-
-          }, [showIntroOverlay])
-
-      const provinces: Record<string, string[]> = {
-
-        'San José': [
-          'Central San José',
-          'Escazú',
-          'Desamparados',
-          'Puriscal',
-          'Tarrazú',
-          'Aserrí',
-          'Mora',
-          'Goicoechea',
-          'Santa Ana',
-          'Alajuelita',
-          'Vásquez de Coronado',
-          'Acosta',
-          'Tibás',
-          'Moravia',
-          'Montes de Oca',
-          'Turrubares',
-          'Dota',
-          'Curridabat',
-          'Pérez Zeledón',
-          'León Cortés'
-        ],
-
-        Alajuela: [
-          'Central Alajuela',
-          'San Ramón',
-          'Grecia',
-          'San Mateo',
-          'Atenas',
-          'Naranjo',
-          'Palmares',
-          'Poás',
-          'Orotina',
-          'San Carlos',
-          'Zarcero',
-          'Valverde Vega',
-          'Upala',
-          'Los Chiles',
-          'Guatuso',
-          'Río Cuarto'
-        ],
-
-        Cartago: [
-          'Central Cartago',
-          'Paraíso',
-          'La Unión',
-          'Jiménez',
-          'Turrialba',
-          'Alvarado',
-          'Oreamuno',
-          'El Guarco'
-        ],
-
-        Heredia: [
-          'Central Heredia',
-          'Barva',
-          'Santo Domingo',
-          'Santa Bárbara',
-          'San Rafael',
-          'San Isidro',
-          'Belén',
-          'Flores',
-          'San Pablo',
-          'Sarapiquí'
-        ],
-
-        Guanacaste: [
-          'Liberia',
-          'Nicoya',
-          'Santa Cruz',
-          'Bagaces',
-          'Carrillo',
-          'Cañas',
-          'Abangares',
-          'Tilarán',
-          'Nandayure',
-          'La Cruz',
-          'Hojancha'
-        ],
-
-        Puntarenas: [
-          'Central Puntarenas',
-          'Esparza',
-          'Buenos Aires',
-          'Montes de Oro',
-          'Osa',
-          'Quepos',
-          'Golfito',
-          'Coto Brus',
-          'Parrita',
-          'Corredores',
-          'Garabito'
-        ],
-
-        Limón: [
-          'Central Limón',
-          'Pococí',
-          'Siquirres',
-          'Talamanca',
-          'Matina',
-          'Guácimo'
-        ]
-
-      }
-
-        const districts: Record<string, string[]> = {
-
-        // SAN JOSÉ
-        'Central San José': [
-          'Carmen',
-          'Merced',
-          'Hospital',
-          'Catedral',
-          'Zapote',
-          'San Francisco de Dos Ríos'
-        ],
-
-        Escazú: [
-          'Escazú Centro',
-          'San Rafael',
-          'San Antonio'
-        ],
-
-        Desamparados: [
-          'Desamparados Centro',
-          'San Miguel',
-          'San Juan de Dios',
-          'San Rafael Arriba',
-          'San Antonio',
-          'Frailes'
-        ],
-
-        'Santa Ana': [
-          'Santa Ana Centro',
-          'Pozos',
-          'Uruca',
-          'Piedades',
-          'Brasil'
-        ],
-
-        Curridabat: [
-          'Curridabat Centro',
-          'Granadilla',
-          'Sánchez',
-          'Tirrases'
-        ],
-
-        // ALAJUELA
-        'Central Alajuela': [
-          'Alajuela Centro',
-          'San José',
-          'Carrizal',
-          'San Antonio'
-        ],
-
-        'San Ramón': [
-          'San Ramón Centro',
-          'Santiago',
-          'San Juan',
-          'Piedades Norte'
-        ],
-
-        Grecia: [
-          'Grecia Centro',
-          'San Isidro',
-          'San José',
-          'Tacares'
-        ],
-
-        'San Carlos': [
-          'Quesada',
-          'Florencia',
-          'Aguas Zarcas',
-          'Venecia',
-          'Pital',
-          'La Fortuna'
-        ],
-
-        // CARTAGO
-        'Central Cartago': [
-          'Oriental',
-          'Occidental',
-          'Carmen',
-          'San Nicolás',
-          'Aguacaliente'
-        ],
-
-        Paraíso: [
-          'Paraíso Centro',
-          'Santiago',
-          'Orosi',
-          'Cachí'
-        ],
-
-        'La Unión': [
-          'Tres Ríos',
-          'San Diego',
-          'San Juan',
-          'Concepción'
-        ],
-
-        Jiménez: [
-          'Juan Viñas',
-          'Tucurrique',
-          'Pejivalle'
-        ],
-
-        Turrialba: [
-          'Turrialba Centro',
-          'La Suiza',
-          'Peralta',
-          'Santa Cruz',
-          'Santa Teresita',
-          'Pavones',
-          'Tayutic'
-        ],
-
-        // HEREDIA
-        'Central Heredia': [
-          'Heredia Centro',
-          'Mercedes',
-          'San Francisco',
-          'Ulloa'
-        ],
-
-        Barva: [
-          'Barva Centro',
-          'San Pedro',
-          'San Pablo'
-        ],
-
-        Sarapiquí: [
-          'Puerto Viejo',
-          'La Virgen',
-          'Horquetas'
-        ],
-
-        // GUANACASTE
-        Liberia: [
-          'Liberia Centro',
-          'Cañas Dulces',
-          'Mayorga'
-        ],
-
-        Nicoya: [
-          'Nicoya Centro',
-          'Sámara',
-          'Nosara'
-        ],
-
-        'Santa Cruz': [
-          'Santa Cruz Centro',
-          'Tamarindo',
-          'Brasilito',
-          'Potrero'
-        ],
-
-        Carrillo: [
-          'Filadelfia',
-          'Palmira',
-          'Sardinal'
-        ],
-
-        // PUNTARENAS
-        'Central Puntarenas': [
-          'Puntarenas Centro',
-          'Pitahaya',
-          'Chomes',
-          'Lepanto'
-        ],
-
-        Osa: [
-          'Puerto Cortés',
-          'Palmar',
-          'Sierpe',
-          'Bahía Ballena'
-        ],
-
-        Quepos: [
-          'Quepos Centro',
-          'Savegre',
-          'Naranjito'
-        ],
-
-        Garabito: [
-          'Jacó',
-          'Tárcoles'
-        ],
-
-        // LIMÓN
-        'Central Limón': [
-          'Limón Centro',
-          'Valle La Estrella',
-          'Río Blanco'
-        ],
-
-        Pococí: [
-          'Guápiles',
-          'Jiménez',
-          'La Rita',
-          'Cariari'
-        ],
-
-        Siquirres: [
-          'Siquirres Centro',
-          'Pacuarito',
-          'Florida'
-        ],
-
-        Talamanca: [
-          'Bratsi',
-          'Sixaola',
-          'Cahuita'
-        ]
-
-      }
-
- 
+                }, [listings])    
                           
                 const filteredProperties = properties.filter((property) => {
-                  
+
                     if (
                       selectedprovince &&
                       property.province !== selectedprovince
@@ -578,12 +195,6 @@ function HomePageContent({
                       return false
                     }
 
-                    if (
-                      selecteduse_type &&
-                      property.use_type !== selecteduse_type
-                    ) {
-                      return false
-                    }
 
                     if (
                       selectedproperty_area &&
@@ -653,540 +264,287 @@ function HomePageContent({
     setSelecteddistrict(district)
   }
 
-console.log(
-  'ontologyTerms:',
-  ontologyTerms.length
-)
 
-console.log(
-  'ontologyRelationships:',
-  ontologyRelationships.length
-)
-
-  {/* OVERLAY over OVERLAY */}
-  return (
+  /* OVERLAY over OVERLAY */
+        return (
   <>
     <JsonLd
       data={homePageSchema}
     />
 
     <main style={{        
-        background: '#000',
-        minHeight: '100vh',
-        color: '#fff',
-        padding: '20px',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
+              background: '#000',
+              minHeight: '100vh',
+              color: '#fff',
+              padding: '20px',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+            {/* OVERLAY */}
 
-      {showIntroOverlay && (
+              {/*
+              -----------------------------------
+              POSTER
+              -----------------------------------
+              */}
+                  <div
+                    style={{
+                      position:'fixed',
+                      inset:0,
+                      zIndex:9998,
 
-          <div
-            style={{
-              position:'fixed',
-              inset:0,
+                      backgroundImage:
+                        'url(/images/twuanis-intro-es.png)',
 
-              background:'rgba(0,0,0,.88)',
+                      backgroundSize:
+                            isMobile
+                              ? '22rem auto'
+                              : '35rem auto',
 
-              backdropFilter:'blur(20px)',
+                          backgroundPosition:'center center',
+                          backgroundRepeat:'no-repeat',
 
-              zIndex:10000,
+                      opacity: showPoster ? 1 : .15,
 
-              display:'flex',
-              justifyContent:'center',
-              alignItems:'flex-start',
-              overflowY:'auto',
+                      filter:
+                        showPoster
+                          ? 'blur(0px)'
+                          : 'blur(12px)',
 
-              paddingTop:'3rem',
-              paddingBottom:'3rem',
-            }}
-          >
+                      transform:
+                        showPoster
+                          ? 'scale(1)'
+                          : 'scale(1.03)',
 
-         <button
-            onClick={() =>
-              setShowIntroOverlay(false)
-            }
-            style={{
-              position:'fixed',
+                      transition:
+                        'all .9s ease',
 
-              top:'1rem',
-              right:'1rem',
+                      pointerEvents:
+                        showPoster
+                          ? 'auto'
+                          : 'none'
+                    }}
+                  >
 
-              width:'3rem',
-              height:'3rem',
+  {/* TOP RIGHT BUTTONS */}
 
-              borderRadius:'999rem',
+              {showPoster && (
 
-              background:'rgba(0,0,0,.6)',
-              border:'1px solid rgba(255,255,255,.15)',
-
-              backdropFilter:'blur(10px)',
-
-              color:'#fff',
-
-              fontSize:'1.5rem',
-
-              cursor:'pointer',
-
-              zIndex:10051,
-
-              pointerEvents:'auto'
-            }}
-          >
-            ✕
-          </button>
-
-            <div
-              style={{
-                maxWidth:'74rem',
-                width:'100%',
-
-                paddingTop:isMobile
-                  ? '2rem'
-                  : '5rem',
-
-                paddingBottom:isMobile
-                  ? '2rem'
-                  : '5rem',
-
-                paddingLeft:isMobile
-                  ? '1rem'
-                  : '2rem',
-
-                paddingRight:isMobile
-                  ? '1rem'
-                  : '2rem',
-
-                textAlign:'center'
-              }}
-            >
-
-              <h1
-  style={{
-    fontSize:isMobile
-      ? '2rem'
-      : '3.5rem',
-
-    lineHeight:'1.15',
-
-    marginBottom:'1.5rem'
-  }}
->
-  <span style={{ color:'#D4AF37' }}>
-    Do
-  </span>
-
-  {' '}exponentially{' '}
-
-  <span style={{ color:'#D4AF37' }}>
-    more with Twuanis
-  </span>
-
-  {' '}than any other real estate website.
-</h1>
-
-              <div
+                <div
                   style={{
+                    position:'absolute',
+                    top:'1rem',
+                    right:'1rem',
                     display:'flex',
-                    flexWrap:'wrap',
-                    justifyContent:'center',
-                    alignItems:'flex-start',
-
-                    gap:isMobile
-                      ? '2rem'
-                      : '4rem',
-
-                    marginTop:'3rem',
-                    marginBottom:'3rem'
+                    gap:'.5rem'
                   }}
                 >
 
-                  {/* LEFT */}
-                  <div
+                  <Link
+                    href="/es"
                     style={{
-                      flex:'1 1 18rem',
-                      minWidth:'16rem',
-                      maxWidth:'22rem'
+                      background:'#000',
+                      color:'#fff',
+                      border:'2px solid #C9A86A',
+                      borderRadius:'999px',
+                      padding:'.45rem .9rem',
+                      fontSize:'.8rem',
+                      fontWeight:'bold',
+                      textDecoration:'none'
                     }}
                   >
+                    Español
+                  </Link>
 
-                    <p
-                      style={{
-                        color:'#FFFFFF',
-                        fontWeight:'bold',
-                        fontSize:'1.2rem',
-                        marginBottom:'1rem'
-                      }}
-                    >
-                      Without typing a single letter.
-                    </p>
-
-                    <p
-                      style={{
-                        fontWeight:'bold',
-                        fontSize:'1.4rem',
-                        marginBottom:'2rem'
-                      }}
-                    >
-                      Not. One. Word.
-                    </p>
-
-                    <div
-                      style={{
-                        color:'#cccccc',
-                        lineHeight:'2'
-                      }}
-                    >
-                      No titles.<br />
-                      No descriptions.<br />
-                      No endless forms.<br />
-                      No wasted time.
-                    </div>
-
-                  </div>
-
-                  {/* CENTER */}
-                  <div
+                  <button
+                    onClick={() => {
+                          setShowPoster(false)
+                          setTimeout(() => {
+                            setShowMainOverlay(true)
+                          }, 600)
+                        }}
+                    
                     style={{
-                      flex:'1 1 18rem',
-                      minWidth:'16rem',
-                      maxWidth:'22rem'
+                      background:'#000',
+                      color:'#fff',
+                      border:'2px solid #C9A86A',
+                      borderRadius:'999px',
+                      padding:'.45rem .9rem',
+                      fontSize:'.8rem',
+                      fontWeight:'bold',
+                      cursor:'pointer'
                     }}
                   >
-
-                    <div
-                      style={{
-                        color:'#ffffff',
-                        lineHeight:'2'
-                      }}
-                    >
-
-                      <p
-                      style={{
-                        color:'#FFFFFF',
-                        fontWeight:'bold',
-                        fontSize:'1.2rem',
-                        marginBottom:'1rem'
-                      }}
-                    >
-                      Describe any property in under a minute.
-                    </p>
-
-                      Buying.<br />
-                      Selling.<br />
-                      Renting.<br />
-                      Leasing.
-
-                      
-                    </div>
-
-                  </div>
-
-                  {/* RIGHT */}
-                  <div
-                    style={{
-                      flex:'1 1 18rem',
-                      minWidth:'16rem',
-                      maxWidth:'22rem'
-                    }}
-                  >
-                    <p
-                      style={{
-                        color:'#FFFFFF',
-                        fontWeight:'bold',
-                        fontSize:'1.2rem',
-                        marginBottom:'1rem'
-                      }}
-                    >
-                      Simply select the options that match the property.
-                    </p>
-
-                    <div
-                      style={{
-                        color:'#bbbbbb',
-                        lineHeight:'2'
-                      }}
-                    >
-                      • Property titles<br />
-                      • Property descriptions<br />
-                      • Property categorization<br />
-                      • Keyword-rich search signals<br />
-                      • Contact information
-                    </div>
-
-                  </div>
+                    Skip →
+                  </button>
 
                 </div>
 
-                <p
-                  style={{
-                    marginTop:'2rem',
-                    color:'#D4AF37',
-                    fontWeight:'bold',
-                    fontSize:isMobile
-                      ? '1rem'
-                      : '1.15rem'
-                  }}
-                >
-                  What normally takes 15–30 minutes can be completed in under 80 seconds.
-                </p>
-
-                <div
-                        style={{
-                          position:'fixed',
-
-                          top:isMobile ? '1rem' : 'auto',
-                          bottom:isMobile ? 'auto' : '8rem',
-
-                          left:isMobile ? '1rem' : '50%',
-
-                          transform:isMobile
-                            ? 'none'
-                            : 'translateX(-50%)',
-
-                          display:'flex',
-                          alignItems:'center',
-                          gap:'.75rem',
-
-                          zIndex:10050,
-
-                          pointerEvents:'auto'
-                        }}
-                      >
-
-                        <div
-                          style={{
-                            background:'rgba(0,0,0,.6)',
-                            border:'1px solid rgba(255,255,255,.15)',
-                            backdropFilter:'blur(10px)',
-
-                            padding:'.75rem 1.25rem',
-
-                            borderRadius:'999rem',
-
-                            color:'#FFFFFF',
-
-                            fontWeight:'bold'
-                          }}
-                        >
-                          Continue in {countdown}s
-                        </div>
-
-                        <Link
-                          href="/es"
-                          style={{
-                            background:'rgba(0,0,0,.6)',
-                            border:'1px solid rgba(255,255,255,.15)',
-                            backdropFilter:'blur(10px)',
-
-                            padding:'.75rem 1.25rem',
-
-                            borderRadius:'999rem',
-
-                            color:'#fff',
-
-                            textDecoration:'none',
-
-                            fontWeight:'bold'
-                          }}
-                        >
-                          Español
-                        </Link>
-
-                      </div>
+              )}
 
             </div>
 
-          </div>
+            {showMainOverlay && overlayState && (
 
-        )}
+                        <div style={{
+                          position: 'fixed',
+                          inset: 0,
+                          background: 'rgba(0,0,0,.12)',
+                          backdropFilter: 'blur(18px)',
+                          WebkitBackdropFilter: 'blur(9px)',
+                          zIndex: 9999,
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          transition: 'all .45s ease'
+                        }}>
 
+                          <div style={{
+                            width: '100%',
+                            maxWidth: '32rem',
+                            padding: '2rem',
+                            display: 'flex',
+                            background:'rgba(0,0,0,0)',
+                            flexDirection: 'column',
+                            gap: '1rem',
+                            alignItems: 'center',
+                            transition: 'all .45s ease',
+                            opacity: 1,
+                            transform: 'translateY(0px) scale(1)'
+                          }}>
 
-{/* OVERLAY */}
-    {!showIntroOverlay && overlayState && (
+                {/* STATE 1 */}
+                    {overlayState === 'initial' && (
 
-        <div style={{
-          position: 'fixed',
-          inset: 0,
-          background: 'rgba(0,0,0,.34)',
-          backdropFilter: 'blur(18px)',
-          WebkitBackdropFilter: 'blur(9px)',
-          zIndex: 9999,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          transition: 'all .45s ease'
-        }}>
+                      <>
 
-          <div style={{
-            width: '100%',
-            maxWidth: '32rem',
-            padding: '2rem',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '1rem',
-            alignItems: 'center',
-            transition: 'all .45s ease',
-            opacity: 1,
-            transform: 'translateY(0px) scale(1)'
-          }}>
+                      <div
+                        style={{
+                          width:'100%',
+                          display:'flex',
+                          justifyContent:'flex-end'
+                        }}
+                      >
+                        <Link
+                          href="/en"
+                          style={{
+                            background:'#000',
+                            color:'#fff',
+                            border:'2px solid #C9A86A',
+                            borderRadius:'999px',
+                            padding:'.45rem .9rem',
+                            fontSize:'.8rem',
+                            fontWeight:'bold',
+                            textDecoration:'none',
+                            boxShadow:'0 4px 12px rgba(0,0,0,.15)'
+                          }}
+                        >
+                          English
+                        </Link>
+                      </div>
 
-{/* STATE 1 */}
-{overlayState === 'initial' && (
+                        <h2
+                          style={{
+                            fontSize:'3rem',
+                            marginBottom:'.75rem',
+                            textAlign:'center',
+                            color:'#fff',
+                            fontWeight:'700',
+                            letterSpacing:'.05em',
+                            textShadow:
+                              '-1px -1px 0 #C9A86A, ' +
+                              '1px -1px 0 #C9A86A, ' +
+                              '-1px 1px 0 #C9A86A, ' +
+                              '1px 1px 0 #C9A86A'
+                          }}
+                        >
+                          Twuanis
+                        </h2>
 
-                <>
+                        <p
+                          style={{
+                            color:'#C9A86A',
+                            marginBottom:'2rem',
+                            textAlign:'center',
+                            lineHeight:1.7,
+                            fontSize:'1.05rem',
+                            fontWeight:'600'
+                          }}
+                        >
+                          What would you like to do?
+                        </p>
 
-                  <h2
-                    style={{
-                      fontSize:'3rem',
-                      marginBottom:'.75rem',
-                      textAlign:'center',
-                      color:'#fff',
-                      fontWeight:'700',
-                      letterSpacing:'.05em',
-                      textShadow:
-                        '-1px -1px 0 #C9A86A, ' +
-                        '1px -1px 0 #C9A86A, ' +
-                        '-1px 1px 0 #C9A86A, ' +
-                        '1px 1px 0 #C9A86A'
-                    }}
-                  >
-                    Twuanis
-                  </h2>
+                        <button
+                          onClick={() => setOverlayState('looking')}
+                          style={{
+                            width:'100%',
+                            background:'#fff',
+                            color:'#162A45',
+                            border:'3px solid #C9A86A',
+                            borderRadius:'999px',
+                            padding:'1.15rem 1.5rem',
+                            fontSize:'1rem',
+                            fontWeight:'bold',
+                            cursor:'pointer',
+                            boxShadow:'0 4px 16px rgba(0,0,0,.15)'
+                          }}
+                        >
+                          Buy, Rent, or Lease
+                        </button>
 
-                  <p
-                    style={{
-                      color:'#C9A86A',
-                      marginBottom:'2rem',
-                      textAlign:'center',
-                      lineHeight:1.7,
-                      fontSize:'1.05rem',
-                      fontWeight:'600'
-                    }}
-                  >
-                    What would you like to do?
-                  </p>
+                        <button
+                          onClick={() => setOverlayState('posting')}
+                          style={{
+                            width:'100%',
+                            background:'#fff',
+                            color:'#162A45',
+                            border:'3px solid #C9A86A',
+                            borderRadius:'999px',
+                            padding:'1.15rem 1.5rem',
+                            fontSize:'1rem',
+                            fontWeight:'bold',
+                            cursor:'pointer',
+                            boxShadow:'0 4px 16px rgba(0,0,0,.15)'
+                          }}
+                        >
+                          Sell, Rent Out, or Lease Out
+                        </button>
 
-                  <button
-                    onClick={() => setOverlayState('looking')}
-                    style={{
-                      width:'100%',
-                      background:'#fff',
-                      color:'#162A45',
-                      border:'3px solid #C9A86A',
-                      borderRadius:'999px',
-                      padding:'1.15rem 1.5rem',
-                      fontSize:'1rem',
-                      fontWeight:'bold',
-                      cursor:'pointer',
-                      boxShadow:'0 4px 16px rgba(0,0,0,.15)'
-                    }}
-                  >
-                    Buy, Rent, or Lease
-                  </button>
+                      </>
 
-                  <button
-                    onClick={() => setOverlayState('posting')}
-                    style={{
-                      width:'100%',
-                      background:'#fff',
-                      color:'#162A45',
-                      border:'3px solid #C9A86A',
-                      borderRadius:'999px',
-                      padding:'1.15rem 1.5rem',
-                      fontSize:'1rem',
-                      fontWeight:'bold',
-                      cursor:'pointer',
-                      boxShadow:'0 4px 16px rgba(0,0,0,.15)'
-                    }}
-                  >
-                    Sell, Rent, or Lease Out
-                  </button>
+                    )}
 
-                </>
+{/* STATE 2 — LOOKING */}
+                  {overlayState === 'looking' && (
 
-              )}
+                    <>
 
-                {/* STATE 2 — LOOKING */}
-                {overlayState === 'looking' && (
-
-                  <>
-
-                    <button
-                      onClick={() => setOverlayState('initial')}
-                      style={{
-                        background:'#fff',
-                        color:'#162A45',
-                        border:'3px solid #C9A86A',
-                        borderRadius:'999px',
-                        padding:'.75rem 1.25rem',
-                        fontWeight:'bold',
-                        cursor:'pointer',
-                        alignSelf:'flex-start'
-                      }}
-                    >
-                      ← Back
-                    </button>
-
-                    <h2
-                      style={{
-                        fontSize:'2.2rem',
-                        marginBottom:'1.5rem',
-                        color:'#C9A86A'
-                      }}
-                    >
-                      What are you looking for?
-                    </h2>
-
-                    <button
-                      onClick={() =>
-                        window.location.href = '/en/buy'
-                      }
+                    <div
                       style={{
                         width:'100%',
-                        background:'#fff',
-                        color:'#162A45',
-                        border:'3px solid #C9A86A',
-                        borderRadius:'999px',
-                        padding:'1.15rem 1.5rem',
-                        fontSize:'1rem',
-                        fontWeight:'bold',
-                        cursor:'pointer'
+                        display:'flex',
+                        justifyContent:'flex-end'
                       }}
                     >
-                      Buy
-                    </button>
+                      <Link
+                        href="/en"
+                        style={{
+                          background:'#000',
+                          color:'#fff',
+                          border:'2px solid #C9A86A',
+                          borderRadius:'999px',
+                          padding:'.45rem .9rem',
+                          fontSize:'.8rem',
+                          fontWeight:'bold',
+                          textDecoration:'none',
+                          boxShadow:'0 4px 12px rgba(0,0,0,.15)'
+                        }}
+                      >
+                        English
+                      </Link>
+                    </div>
 
-                    <button
-                      onClick={() =>
-                        window.location.href =
-                          '/en/rent-lease'
-                      }
-                      style={{
-                        width:'100%',
-                        background:'#fff',
-                        color:'#162A45',
-                        border:'3px solid #C9A86A',
-                        borderRadius:'999px',
-                        padding:'1.15rem 1.5rem',
-                        fontSize:'1rem',
-                        fontWeight:'bold',
-                        cursor:'pointer'
-                      }}
-                    >
-                      Rent / Lease
-                    </button>
-
-                  </>
-
-                )}
-
-                {/* STATE 2 — POSTING */}
-                {overlayState === 'posting' && (
-
-                  <>
-
-                    <button
+                      <button
                         onClick={() => setOverlayState('initial')}
                         style={{
                           background:'#fff',
@@ -1209,13 +567,12 @@ console.log(
                           color:'#C9A86A'
                         }}
                       >
-                        Posting a Property?
+                        What are you looking for?
                       </h2>
 
                       <button
                         onClick={() =>
-                          window.location.href =
-                            '/en/sell'
+                          window.location.href = '/en/buy'
                         }
                         style={{
                           width:'100%',
@@ -1229,13 +586,13 @@ console.log(
                           cursor:'pointer'
                         }}
                       >
-                        Sell
+                        Buy
                       </button>
 
                       <button
                         onClick={() =>
                           window.location.href =
-                            '/en/rent-out-lease-out'
+                            '/en/rent-lease'
                         }
                         style={{
                           width:'100%',
@@ -1249,17 +606,118 @@ console.log(
                           cursor:'pointer'
                         }}
                       >
-                        Rent Out / Lease Out
+                        Rent / Lease
                       </button>
 
-                  </>
+                    </>
 
-                )}
-          </div>
-        </div>
+                  )}
 
-      )}
-          
+{/* STATE 1 (was state 2) — POSTING */}
+                    {overlayState === 'posting' && (
+
+                      <>
+
+                      <div
+                        style={{
+                          width:'100%',
+                          display:'flex',
+                          justifyContent:'flex-end'
+                        }}
+                      >
+                        <Link
+                          href="/en"
+                          style={{
+                            background:'#000',
+                            color:'#fff',
+                            border:'2px solid #C9A86A',
+                            borderRadius:'999px',
+                            padding:'.45rem .9rem',
+                            fontSize:'.8rem',
+                            fontWeight:'bold',
+                            textDecoration:'none',
+                            boxShadow:'0 4px 12px rgba(0,0,0,.15)'
+                          }}
+                        >
+                          English
+                        </Link>
+                      </div>
+
+                        <button
+                          onClick={() => setOverlayState('initial')}
+                          style={{
+                            background:'#fff',
+                            color:'#162A45',
+                            border:'3px solid #C9A86A',
+                            borderRadius:'999px',
+                            padding:'.75rem 1.25rem',
+                            fontWeight:'bold',
+                            cursor:'pointer',
+                            alignSelf:'flex-start'
+                          }}
+                        >
+                          ← Back
+                        </button>
+
+                        <h2
+                          style={{
+                            fontSize:'2.2rem',
+                            marginBottom:'1.5rem',
+                            color:'#C9A86A'
+                          }}
+                        >
+                          Publishing a Property?
+                        </h2>
+
+                        <button
+                          onClick={() =>
+                            window.location.href =
+                              '/en/sell'
+                          }
+                          style={{
+                            width:'100%',
+                            background:'#fff',
+                            color:'#162A45',
+                            border:'3px solid #C9A86A',
+                            borderRadius:'999px',
+                            padding:'1.15rem 1.5rem',
+                            fontSize:'1rem',
+                            fontWeight:'bold',
+                            cursor:'pointer'
+                          }}
+                        >
+                          Sell
+                        </button>
+
+                        <button
+                          onClick={() =>
+                            window.location.href =
+                              '/en/rent-out-lease-out'
+                          }
+                          style={{
+                            width:'100%',
+                            background:'#fff',
+                            color:'#162A45',
+                            border:'3px solid #C9A86A',
+                            borderRadius:'999px',
+                            padding:'1.15rem 1.5rem',
+                            fontSize:'1rem',
+                            fontWeight:'bold',
+                            cursor:'pointer'
+                          }}
+                        >
+                          Rent Out or Lease Out
+                        </button>
+
+                      </>
+
+                    )}
+
+              </div>
+
+            </div>
+
+          )}
 
           <div style={{
             width: '100%',
@@ -1300,87 +758,18 @@ console.log(
                 gap: '18px'
               }}>
 
-               <button
-                  onClick={() => window.location.href = '/favorites'}
-                  style={navButton}
-                >
-                  Favorite Properties <span style={{ color: '#D4AF37' }}>♥</span>
-                </button>
-
-                <button
-                  onClick={() => window.location.href = '/swipe'}
-                  style={navButton}
-                >
-                  Swipe View <span style={{ color: '#FFFFFF' }}>⇄</span>
-                </button>
                
+               </div>
 
               </div>
 
 
 {/* RIGHT */}
-              <a
-                href="/sell"
-                style={sellButton}
-              >
-                + Sell Property
-              </a>
-
-            </div>
-
-            {/* HEADER */}
-            <div style={{
-              textAlign: 'center',
-              marginBottom: '40px'
-            }}>
-
-          <h1 style={{
-            fontSize: '72px',
-            marginBottom: '10px',
-            fontWeight: 'bold'
-          }}>
-            Twuanis
-          </h1>
-
-          <p style={{
-            color: '#999',
-            fontSize: '22px'
-          }}>
-            Property Marketing and Discovery
-          </p>
+            
 
         </div>
 
-        {isMobile && (
-
-          <button
-            onClick={() =>
-              setShowMobileFilters(true)
-            }
-            style={{
-              position: 'fixed',
-              bottom: '20px',
-              right: '20px',
-              zIndex: 1000,
-
-              background: '#FFFFFF',
-              color: '#000',
-
-              border: 'none',
-              borderRadius: '999px',
-
-              padding: '16px 22px',
-
-              fontWeight: 'bold',
-              fontSize: '16px',
-
-              boxShadow: '0 10px 30px rgba(0,0,0,.45)'
-            }}
-          >
-            Filters
-          </button>
-
-        )}
+      
 
         {/* MAIN GRID */}
           <div style={{
@@ -1393,39 +782,17 @@ console.log(
           {/* BUY EXPERIENCE */}
           <div
             style={{
-              background: '#111',
+              background: '#11111100',
               borderRadius: '28px',
               overflow: 'hidden',
               textDecoration: 'none',
-              color: '#fff',
-              border: '1px solid #222',
+              color: '#ffffff00',
+              border: '1px solid #',
               display: 'grid',
               gridTemplateColumns: '320px 1fr',
               minHeight: '620px'
             }}
           >
-
-            {/* SIDEBAR */}
-            {isMobile && (
-
-                <button
-                  onClick={() =>
-                    setShowMobileFilters(false)
-                  }
-                  style={{
-                    background: '#181818',
-                    border: '1px solid #333',
-                    color: '#fff',
-                    padding: '12px',
-                    borderRadius: '12px',
-                    marginBottom: '20px',
-                    cursor: 'pointer'
-                  }}
-                >
-                  Close Filters
-                </button>
-
-              )}
 
               <div
                 style={{
@@ -1509,7 +876,7 @@ console.log(
                         }}
                         style={backButton}
                       >
-                        ← provinces
+                        ← Provinces
                       </button>
 
                       <span style={breadcrumbText}>
@@ -1557,7 +924,7 @@ console.log(
                         }}
                         style={backButton}
                       >
-                        ← cantons
+                        ← cantones
                       </button>
 
                       <span style={breadcrumbText}>
@@ -1600,7 +967,7 @@ console.log(
                   <div>
 
                     <h3 style={filterHeading}>
-                      price
+                      Price
                     </h3>
 
                     <div style={pillWrap}>
@@ -1677,977 +1044,253 @@ console.log(
 
                   </div>
 
-                  {/* PROPERTY TYPE */}
-                  <div>
+{/* PROPERTY TYPE */}
+                <div>
 
-                    <h3 style={filterHeading}>
-                      Property Type
-                    </h3>
+                  <h3 style={filterHeading}>
+                    Property Type
+                  </h3>
 
-                    <div style={pillWrap}>
+                  <div style={pillWrap}>
 
-
-                        <button
-                          onClick={() =>
-                            setSelectedproperty_type(
-                              selectedproperty_type === 'House'
-                                ? ''
-                                : 'House'
-                            )
-                          }
-                          style={
-                            selectedproperty_type === 'House'
-                              ? activePill
-                              : pill
-                          }
-                        >
-                          House
-                        </button>
-
-                        <button
-                          onClick={() =>
-                            setSelectedproperty_type(
-                              selectedproperty_type === 'Condo'
-                                ? ''
-                                : 'Condo'
-                            )
-                          }
-                          style={
-                            selectedproperty_type === 'Condo'
-                              ? activePill
-                              : pill
-                          }
-                        >
-                          Condo
-                        </button>
+                    {property_types.map((propertyType) => (
 
                       <button
+                        key={propertyType.en}
                         onClick={() =>
                           setSelectedproperty_type(
-                            selectedproperty_type === 'Land'
+                            selectedproperty_type === propertyType.en
                               ? ''
-                              : 'Land'
+                              : propertyType.en
                           )
                         }
                         style={
-                          selectedproperty_type === 'Land'
+                          selectedproperty_type === propertyType.en
                             ? activePill
                             : pill
                         }
                       >
-                        Land
+                        {propertyType.es}
                       </button>
 
-                      
-
-                        <button
-                          onClick={() =>
-                            setSelectedproperty_type(
-                              selectedproperty_type === 'Farm'
-                                ? ''
-                                : 'Farm'
-                            )
-                          }
-                          style={
-                            selectedproperty_type === 'Farm'
-                              ? activePill
-                              : pill
-                          }
-                        >
-                          Farm
-                        </button>
-
-                        <button
-                          onClick={() =>
-                            setSelectedproperty_type(
-                              selectedproperty_type === 'Cabin'
-                                ? ''
-                                : 'Cabin'
-                            )
-                          }
-                          style={
-                            selectedproperty_type === 'Cabin'
-                              ? activePill
-                              : pill
-                          }
-                        >
-                          Cabin
-                        </button>
-
-                        <button
-                          onClick={() =>
-                            setSelectedproperty_type(
-                              selectedproperty_type === 'Commercial Property'
-                                ? ''
-                                : 'Commercial Property'
-                            )
-                          }
-                          style={
-                            selectedproperty_type === 'Commercial Property'
-                              ? activePill
-                              : pill
-                          }
-                        >
-                          Commercial Property
-                        </button>
-
-                    </div>
+                    ))}
 
                   </div>
 
-                  {/* USE TYPE */}
-                  <div>
+                </div>
 
-                    <h3 style={filterHeading}>
-                      Use Type
-                    </h3>
 
-                    <div style={pillWrap}>
+{/* PROPERTY AREA */}
+              <div>
 
-                      <button
-                        onClick={() =>
-                          setSelecteduse_type(
-                            selecteduse_type === 'Residential'
-                              ? ''
-                              : 'Residential'
-                          )
-                        }
-                        style={
-                          selecteduse_type === 'Residential'
-                            ? activePill
-                            : pill
-                        }
-                      >
-                        Residential
-                      </button>
+                <p style={miniHeading}>
+                  Property Area
+                </p>
 
-                      <button
-                        onClick={() =>
-                          setSelecteduse_type(
-                            selecteduse_type === 'Commercial'
-                              ? ''
-                              : 'Commercial'
-                          )
-                        }
-                        style={
-                          selecteduse_type === 'Commercial'
-                            ? activePill
-                            : pill
-                        }
-                      >
-                        Commercial
-                      </button>
+                <div style={pillWrap}>
 
-                      <button
-                        onClick={() =>
-                          setSelecteduse_type(
-                            selecteduse_type === 'Agricultural'
-                              ? ''
-                              : 'Agricultural'
-                          )
-                        }
-                        style={
-                          selecteduse_type === 'Agricultural'
-                            ? activePill
-                            : pill
-                        }
-                      >
-                        Agricultural
-                      </button>
+                  {property_areas.map((area) => (
 
-                      <button
-                        onClick={() =>
-                          setSelecteduse_type(
-                            selecteduse_type === 'Tourism Commercial'
-                              ? ''
-                              : 'Tourism Commercial'
-                          )
-                        }
-                        style={
-                          selecteduse_type === 'Tourism Commercial'
-                            ? activePill
-                            : pill
-                        }
-                      >
-                        Tourism Commercial
-                      </button>
+                    <button
+                      key={area.en}
+                      onClick={() =>
+                        setSelectedproperty_area(
+                          selectedproperty_area === area.en
+                            ? ''
+                            : area.en
+                        )
+                      }
+                      style={
+                        selectedproperty_area === area.en
+                          ? activePill
+                          : pill
+                      }
+                    >
+                      {area.es}
+                    </button>
 
-                      <button
-                        onClick={() =>
-                          setSelecteduse_type(
-                            selecteduse_type === 'Mixed Use'
-                              ? ''
-                              : 'Mixed Use'
-                          )
-                        }
-                        style={
-                          selecteduse_type === 'Mixed Use'
-                            ? activePill
-                            : pill
-                        }
-                      >
-                        Mixed Use
-                      </button>
+                  ))}
 
-                    </div>
+                </div>
 
-                  </div>
-
-{/* LOT SIZE */}
-                      <div>
-
-                        <p style={miniHeading}>
-                          Lot Size
-                        </p>
-
-                        <div style={pillWrap}>
-
-                          <button
-                              onClick={() =>
-                                setSelectedproperty_area(
-                                  selectedproperty_area === '<1,000m²'
-                                    ? ''
-                                    : '<1,000m²'
-                                )
-                              }
-                              style={
-                                selectedproperty_area === '<1,000m²'
-                                  ? activePill
-                                  : pill
-                              }
-                            >
-                              {'<1,000m²'}
-                            </button>
-
-                            <button
-                              onClick={() =>
-                                setSelectedproperty_area(
-                                  selectedproperty_area === '1,000–10,000m²'
-                                    ? ''
-                                    : '1,000–10,000m²'
-                                )
-                              }
-                              style={
-                                selectedproperty_area === '1,000–10,000m²'
-                                  ? activePill
-                                  : pill
-                              }
-                            >
-                              1,000–10,000m²
-                            </button>
-
-                            <button
-                              onClick={() =>
-                                setSelectedproperty_area(
-                                  selectedproperty_area === '10,000–50,000m²'
-                                    ? ''
-                                    : '10,000–50,000m²'
-                                )
-                              }
-                              style={
-                                selectedproperty_area === '10,000–50,000m²'
-                                  ? activePill
-                                  : pill
-                              }
-                            >
-                              10,000–50,000m²
-                            </button>
-
-                            <button
-                              onClick={() =>
-                                setSelectedproperty_area(
-                                  selectedproperty_area === '50,000m²+'
-                                    ? ''
-                                    : '50,000m²+'
-                                )
-                              }
-                              style={
-                                selectedproperty_area === '50,000m²+'
-                                  ? activePill
-                                  : pill
-                              }
-                            >
-                              50,000m²+
-                            </button>
-
-                        </div>
-
-                      </div>
+              </div>
 
 {/* UTILITIES */}
-                      <div>
+            <div>
 
-                        <p style={miniHeading}>
-                          Utilities
-                        </p>
+              <p style={miniHeading}>
+                Utilities
+              </p>
 
-                        <div style={pillWrap}>
+              <div style={pillWrap}>
 
-                          <button
-                              onClick={() =>
-                                setSelectedutility(
-                                  selectedutility === 'Water'
-                                    ? ''
-                                    : 'Water'
-                                )
-                              }
-                              style={
-                                selectedutility === 'Water'
-                                  ? activePill
-                                  : pill
-                              }
-                            >
-                              Water
-                            </button>
+                {utilities.map((utility) => (
 
-                            <button
-                              onClick={() =>
-                                setSelectedutility(
-                                  selectedutility === 'Electricity'
-                                    ? ''
-                                    : 'Electricity'
-                                )
-                              }
-                              style={
-                                selectedutility === 'Electricity'
-                                  ? activePill
-                                  : pill
-                              }
-                            >
-                              Electricity
-                            </button>
+                  <button
+                    key={utility.en}
+                    onClick={() =>
+                      setSelectedutility(
+                        selectedutility === utility.en
+                          ? ''
+                          : utility.en
+                      )
+                    }
+                    style={
+                      selectedutility === utility.en
+                        ? activePill
+                        : pill
+                    }
+                  >
+                    {utility.es}
+                  </button>
 
-                            <button
-                              onClick={() =>
-                                setSelectedutility(
-                                  selectedutility === 'Fiber Internet'
-                                    ? ''
-                                    : 'Fiber Internet'
-                                )
-                              }
-                              style={
-                                selectedutility === 'Fiber Internet'
-                                  ? activePill
-                                  : pill
-                              }
-                            >
-                              Fiber Internet
-                            </button>
+                ))}
 
-                            <button
-                              onClick={() =>
-                                setSelectedutility(
-                                  selectedutility === 'Septic'
-                                    ? ''
-                                    : 'Septic'
-                                )
-                              }
-                              style={
-                                selectedutility === 'Septic'
-                                  ? activePill
-                                  : pill
-                              }
-                            >
-                              Septic
-                            </button>
+              </div>
 
-                            <button
-                              onClick={() =>
-                                setSelectedutility(
-                                  selectedutility === 'Municipal Sewer'
-                                    ? ''
-                                    : 'Municipal Sewer'
-                                )
-                              }
-                              style={
-                                selectedutility === 'Municipal Sewer'
-                                  ? activePill
-                                  : pill
-                              }
-                            >
-                              Municipal Sewer
-                            </button>
-
-                        </div>
-
-                      </div>
+            </div>
 
                   
-{/* ADVANCED FILTERS */}
-                  <div>
-
-                    <div style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      marginBottom: '16px'
-                    }}>
-
-                      <h3 style={filterHeading}>
-                        Advanced Filters
-                      </h3>
-
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault()
-                          setShowadvanced_filters(!showadvanced_filters)
-                        }}
-                        style={{
-                          background: 'transparent',
-                          border: 'none',
-                          color: '#FFFFFF',
-                          fontSize: '13px',
-                          cursor: 'pointer'
-                        }}
-                      >
-                        {showadvanced_filters ? 'Collapse' : 'Expand'}
-                      </button>
-
-                    </div>
-
-                    {showadvanced_filters && (
-
-                      <div style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '24px'
-                      }}>
 
 {/* LEGAL STATUS */}
-                      <div>
+                <div>
 
-                        <p style={miniHeading}>
-                          Legal Status
-                        </p>
+                  <p style={miniHeading}>
+                    Legal Status
+                  </p>
 
-                        <div style={pillWrap}>
+                  <div style={pillWrap}>
 
-                         <button
-                              onClick={() =>
-                                setSelectedlegal_status(
-                                  selectedlegal_status === 'Titled Property'
-                                    ? ''
-                                    : 'Titled Property'
-                                )
-                              }
-                              style={
-                                selectedlegal_status === 'Titled Property'
-                                  ? activePill
-                                  : pill
-                              }
-                            >
-                              Titled Property
-                            </button>
+                    {legal_statuses.map((status) => (
 
-                            <button
-                              onClick={() =>
-                                setSelectedlegal_status(
-                                  selectedlegal_status === 'Survey Available'
-                                    ? ''
-                                    : 'Survey Available'
-                                )
-                              }
-                              style={
-                                selectedlegal_status === 'Survey Available'
-                                  ? activePill
-                                  : pill
-                              }
-                            >
-                              Survey Available
-                            </button>
+                      <button
+                        key={status.en}
+                        onClick={() =>
+                          setSelectedlegal_status(
+                            selectedlegal_status === status.en
+                              ? ''
+                              : status.en
+                          )
+                        }
+                        style={
+                          selectedlegal_status === status.en
+                            ? activePill
+                            : pill
+                        }
+                      >
+                        {status.es}
+                      </button>
 
-                            <button
-                              onClick={() =>
-                                setSelectedlegal_status(
-                                  selectedlegal_status === 'Concession Property'
-                                    ? ''
-                                    : 'Concession Property'
-                                )
-                              }
-                              style={
-                                selectedlegal_status === 'Concession Property'
-                                  ? activePill
-                                  : pill
-                              }
-                            >
-                              Concession Property
-                            </button>
-
-                            <button
-                              onClick={() =>
-                                setSelectedlegal_status(
-                                  selectedlegal_status === 'Financing Available'
-                                    ? ''
-                                    : 'Financing Available'
-                                )
-                              }
-                              style={
-                                selectedlegal_status === 'Financing Available'
-                                  ? activePill
-                                  : pill
-                              }
-                            >
-                              Financing Available
-                            </button>
-
-                        </div>
-
-                      </div>
-
-{/* environment */}
-                      <div>
-
-                        <h3 style={filterHeading}>
-                          environment
-                        </h3>
-
-                        <div style={pillWrap}>
-
-                          <button
-                            onClick={() =>
-                              setSelectedenvironment(
-                                selectedenvironment === 'Urban'
-                                  ? ''
-                                  : 'Urban'
-                              )
-                            }
-                            style={
-                              selectedenvironment === 'Urban'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Urban
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedenvironment(
-                                selectedenvironment === 'Riverfront'
-                                  ? ''
-                                  : 'Riverfront'
-                              )
-                            }
-                            style={
-                              selectedenvironment === 'Riverfront'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Riverfront
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedenvironment(
-                                selectedenvironment === 'Beachfront'
-                                  ? ''
-                                  : 'Beachfront'
-                              )
-                            }
-                            style={
-                              selectedenvironment === 'Beachfront'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Beachfront
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedenvironment(
-                                selectedenvironment === 'Mountain View'
-                                  ? ''
-                                  : 'Mountain View'
-                              )
-                            }
-                            style={
-                              selectedenvironment === 'Mountain View'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Mountain View
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedenvironment(
-                                selectedenvironment === 'Jungle'
-                                  ? ''
-                                  : 'Jungle'
-                              )
-                            }
-                            style={
-                              selectedenvironment === 'Jungle'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Jungle
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedenvironment(
-                                selectedenvironment === 'Rural'
-                                  ? ''
-                                  : 'Rural'
-                              )
-                            }
-                            style={
-                              selectedenvironment === 'Rural'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Rural
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedenvironment(
-                                selectedenvironment === 'Lakefront'
-                                  ? ''
-                                  : 'Lakefront'
-                              )
-                            }
-                            style={
-                              selectedenvironment === 'Lakefront'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Lakefront
-                          </button>
-
-                        </div>
-
-                      </div>
-
- {/* accessibility */}
-                      <div>
-
-                        <h3 style={filterHeading}>
-                          accessibility
-                        </h3>
-
-                        <div style={pillWrap}>
-
-                         <button
-                            onClick={() =>
-                              setSelectedaccessibility(
-                                selectedaccessibility === '2WD Accessible'
-                                  ? ''
-                                  : '2WD Accessible'
-                              )
-                            }
-                            style={
-                              selectedaccessibility === '2WD Accessible'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            2WD Accessible
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedaccessibility(
-                                selectedaccessibility === 'Paved Road'
-                                  ? ''
-                                  : 'Paved Road'
-                              )
-                            }
-                            style={
-                              selectedaccessibility === 'Paved Road'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Paved Road
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedaccessibility(
-                                selectedaccessibility === '4x4 Required'
-                                  ? ''
-                                  : '4x4 Required'
-                              )
-                            }
-                            style={
-                              selectedaccessibility === '4x4 Required'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            4x4 Required
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedaccessibility(
-                                selectedaccessibility === 'Walkable'
-                                  ? ''
-                                  : 'Walkable'
-                              )
-                            }
-                            style={
-                              selectedaccessibility === 'Walkable'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Walkable
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedaccessibility(
-                                selectedaccessibility === 'Boat Access Only'
-                                  ? ''
-                                  : 'Boat Access Only'
-                              )
-                            }
-                            style={
-                              selectedaccessibility === 'Boat Access Only'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Boat Access Only
-                          </button>
-
-                        </div>
-
-                      </div>
-{/* Terrain */}
-                      <div>
-
-                        <p style={miniHeading}>
-                          Terrain
-                        </p>
-
-                        <div style={pillWrap}>
-
-                          <button
-                            onClick={() =>
-                              setSelectedterrain(
-                                selectedterrain === 'Build Ready'
-                                  ? ''
-                                  : 'Build Ready'
-                              )
-                            }
-                            style={
-                              selectedterrain === 'Build Ready'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Build Ready
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedterrain(
-                                selectedterrain === 'Cleared Land'
-                                  ? ''
-                                  : 'Cleared Land'
-                              )
-                            }
-                            style={
-                              selectedterrain === 'Cleared Land'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Cleared Land
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedterrain(
-                                selectedterrain === 'Flat'
-                                  ? ''
-                                  : 'Flat'
-                              )
-                            }
-                            style={
-                              selectedterrain === 'Flat'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Flat
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedterrain(
-                                selectedterrain === 'Mostly Flat'
-                                  ? ''
-                                  : 'Mostly Flat'
-                              )
-                            }
-                            style={
-                              selectedterrain === 'Mostly Flat'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Mostly Flat
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedterrain(
-                                selectedterrain === 'Rolling Hills'
-                                  ? ''
-                                  : 'Rolling Hills'
-                              )
-                            }
-                            style={
-                              selectedterrain === 'Rolling Hills'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Rolling Hills
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedterrain(
-                                selectedterrain === 'Steep Slope'
-                                  ? ''
-                                  : 'Steep Slope'
-                              )
-                            }
-                            style={
-                              selectedterrain === 'Steep Slope'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Steep Slope
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedterrain(
-                                selectedterrain === 'Mountainous'
-                                  ? ''
-                                  : 'Mountainous'
-                              )
-                            }
-                            style={
-                              selectedterrain === 'Mountainous'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Mountainous
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedterrain(
-                                selectedterrain === 'Rocky'
-                                  ? ''
-                                  : 'Rocky'
-                              )
-                            }
-                            style={
-                              selectedterrain === 'Rocky'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Rocky
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedterrain(
-                                selectedterrain === 'Forested'
-                                  ? ''
-                                  : 'Forested'
-                              )
-                            }
-                            style={
-                              selectedterrain === 'Forested'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Forested
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedterrain(
-                                selectedterrain === 'River Valley'
-                                  ? ''
-                                  : 'River Valley'
-                              )
-                            }
-                            style={
-                              selectedterrain === 'River Valley'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            River Valley
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedterrain(
-                                selectedterrain === 'Jungle Terrain'
-                                  ? ''
-                                  : 'Jungle Terrain'
-                              )
-                            }
-                            style={
-                              selectedterrain === 'Jungle Terrain'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Jungle Terrain
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              setSelectedterrain(
-                                selectedterrain === 'Agricultural Terrain'
-                                  ? ''
-                                  : 'Agricultural Terrain'
-                              )
-                            }
-                            style={
-                              selectedterrain === 'Agricultural Terrain'
-                                ? activePill
-                                : pill
-                            }
-                          >
-                            Agricultural Terrain
-                          </button>
-
-                        </div>
-
-                      </div>
-
-
-                    </div>
-
-                  )}
+                    ))}
 
                   </div>
 
-                </div>   
+                </div>
+
+{/* ENVIRONMENT */}
+                <div>
+
+                  <h3 style={filterHeading}>
+                    Environment
+                  </h3>
+
+                  <div style={pillWrap}>
+
+                    {environments.map((environment) => (
+
+                      <button
+                        key={environment.en}
+                        onClick={() =>
+                          setSelectedenvironment(
+                            selectedenvironment === environment.en
+                              ? ''
+                              : environment.en
+                          )
+                        }
+                        style={
+                          selectedenvironment === environment.en
+                            ? activePill
+                            : pill
+                        }
+                      >
+                        {environment.es}
+                      </button>
+
+                    ))}
+
+                  </div>
+
+                </div>
+
+{/* ACCESSIBILITY */}
+                <div>
+
+                  <h3 style={filterHeading}>
+                    Accessibility
+                  </h3>
+
+                  <div style={pillWrap}>
+
+                    {accessibilityOptions.map((accessibility) => (
+
+                      <button
+                        key={accessibility.en}
+                        onClick={() =>
+                          setSelectedaccessibility(
+                            selectedaccessibility === accessibility.en
+                              ? ''
+                              : accessibility.en
+                          )
+                        }
+                        style={
+                          selectedaccessibility === accessibility.en
+                            ? activePill
+                            : pill
+                        }
+                      >
+                        {accessibility.es}
+                      </button>
+
+                    ))}
+
+                  </div>
+
+                </div>
+
+{/* TERRAIN */}
+                <div>
+
+                  <p style={miniHeading}>
+                    Terrain
+                  </p>
+
+                  <div style={pillWrap}>
+
+                    {terrainOptions.map((terrain) => (
+
+                      <button
+                        key={terrain.en}
+                        onClick={() =>
+                          setSelectedterrain(
+                            selectedterrain === terrain.en
+                              ? ''
+                              : terrain.en
+                          )
+                        }
+                        style={
+                          selectedterrain === terrain.en
+                            ? activePill
+                            : pill
+                        }
+                      >
+                        {terrain.es}
+                      </button>
+
+                    ))}
+
+                  </div>
+
+                </div>
 
 {/* PROPERTY PREVIEW right-center column */}
                 <div
@@ -2694,7 +1337,7 @@ console.log(
                             }}
                           >
 
-                          {/* PROPERTY IMAGE */}
+{/* PROPERTY IMAGE */}
                           <div
                             style={{
                               aspectRatio: '4 / 3',
@@ -2732,7 +1375,7 @@ console.log(
                                   fontSize: '20px'
                                 }}
                               >
-                                No Image
+                                Sin Imagen
                               </div>
 
                             )}
@@ -2799,13 +1442,13 @@ console.log(
                                             color: '#fff',
                                             transition: 'all .2s ease'
                                             }}>
-                                            ♥
-                                            </span>
+                                          ♥
+                                        </span>
 
                                       </button>
                           </div>
 
-                          {/* CONTENT */}
+{/* CONTENT */}
                           <div
                             style={{
                               padding: '1.25rem'
@@ -2862,38 +1505,6 @@ console.log(
                       </Link>
 
                       ))}
-
-                      {filteredProperties.length === 0 && (
-
-                        <div
-                          style={{
-                            background: '#181818',
-                            border: '1px solid #222',
-                            borderRadius: '22px',
-                            padding: '40px',
-                            textAlign: 'center'
-                          }}
-                        >
-
-                          <h2
-                            style={{
-                              marginBottom: '10px'
-                            }}
-                          >
-                            No matching properties
-                          </h2>
-
-                          <p
-                            style={{
-                              color: '#777'
-                            }}
-                          >
-                            Try adjusting your filters.
-                          </p>
-
-                        </div>
-
-                      )}
 
                     </div>
 
@@ -3099,20 +1710,27 @@ const sellButton = {
   fontSize: '.875rem'
 }
 
-export default function HomePageClient({
-  ontologyTerms,
-  ontologyRelationships,
-  listings,
-  homePageSchema
-}: HomePageClientProps) {
+        type HomePageClientProps = {
+                    ontologyTerms: any[]
+                    ontologyRelationships: any[]
+                    listings: any[]
+                    homePageSchema: any[]
+                    }
+
+                    export default function HomePageClient(
+                    props: HomePageClientProps
+                    ) {
+
   return (
+
     <Suspense fallback={null}>
-  <HomePageContent
-    ontologyTerms={ontologyTerms}
-    ontologyRelationships={ontologyRelationships}
-    listings={listings}
-    homePageSchema={homePageSchema}
-  />
-</Suspense>
+
+      <HomePageContent
+  {...props}
+/>
+
+    </Suspense>
+
   )
+
 }
