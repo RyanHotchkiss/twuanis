@@ -572,7 +572,7 @@ return (
             </span>
 
             <div style={entityCard}>
-                +506 {listing.whatsapp}
+                + {listing.whatsapp}
             </div>
 
             </div>
@@ -581,7 +581,7 @@ return (
 
             {/* CONTACT BUTTON */}
             <a
-              href={`https://wa.me/506${listing.whatsapp}`}
+              href={`https://wa.me/${listing.whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
               style={{

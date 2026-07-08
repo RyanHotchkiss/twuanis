@@ -216,6 +216,7 @@ export async function getMarketIntelligence(filters: MarketFilters) {
   }
 
   if (
+      false &&
       !filters.transaction_type &&
       entityEntries.length === 1 &&
       entries.length === 1
@@ -259,7 +260,7 @@ console.log('ABOUT TO READ COMBO CACHE')
 const cachedCombination = await getCachedCombination(filters)
 console.log('READ COMBO CACHE DONE')
 
-    if (cachedCombination) {
+    if (false && cachedCombination) {
       const live = await getMarketStatistics(filters)
 
       return {

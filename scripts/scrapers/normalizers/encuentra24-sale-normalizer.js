@@ -189,7 +189,7 @@ function inferPropertyType(row) {
   const text =
     normalizeText(
       [
-        row.raw_property_type,
+        row.property_type,
         row.title,
         row.description,
         row.source_url
@@ -578,14 +578,12 @@ function normalizeRow(row) {
     year_built_range: normalizeYearBuilt(row.raw_year_built),
 
     construction_area:
-      areaBucket(
-        row.raw_construction_area,
-        'construction'
-      ),
+      areaBucket(row.raw_construction_area, 'construction'),
 
     property_area:
       areaBucket(
-        row.raw_property_area,
+        row.raw_property_area ||
+        row.raw_construction_area,
         'property'
       ),
 

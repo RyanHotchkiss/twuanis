@@ -48,10 +48,6 @@ function formatLabel(value: string) {
         if (value === null || value === undefined) return null
         return `$${Number(value).toLocaleString()}`
         }
-        function saleMillionsToCRC(value: any) {
-        if (value === null || value === undefined) return null
-        return Number(value) * 1000000
-        }
         function crcToUSD(value: any) {
         if (value === null || value === undefined) return null
         return Math.round(Number(value) / CRC_PER_USD)
@@ -292,138 +288,80 @@ export default function ExploreResults({
       </div>
 
       <h2 style={{
-        color: '#ff3B00',
-        fontSize: '2rem',
-        marginBottom: '1rem'
-      }}>
-        Pricing Signals
-      </h2>
+  color: '#ff3B00',
+  fontSize: '2rem',
+  marginBottom: '1rem'
+}}>
+  Pricing Signals
+</h2>
 
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-        gap: '1rem',
-        marginBottom: '2rem'
-      }}>
-        {(isSale || isAll) && (
-                    <>
-                        <StatCard
-                            label="Average Sale Price CRC"
-                            value={
-                            getStat(statistics, 'average_sale_price', 'averageSalePrice')
-                                ? (
-                                <>
-                                    <div>
-                                    {formatFullCRC(
-                                        saleMillionsToCRC(
-                                        getStat(statistics, 'average_sale_price', 'averageSalePrice')
-                                        )
-                                    )}
-                                    </div>
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+  gap: '1rem',
+  marginBottom: '2rem'
+}}>
+  {(isSale || isAll) && (() => {
+    const averageSale =
+      getStat(statistics, 'average_sale_price', 'averageSalePrice')
 
-                                    <div style={{ color: '#888', fontSize: '1rem' }}>
-                                    {formatFullUSD(
-                                        crcToUSD(
-                                        saleMillionsToCRC(
-                                            getStat(statistics, 'average_sale_price', 'averageSalePrice')
-                                        )
-                                        )
-                                    )}
-                                    </div>
-                                </>
-                                )
-                                : null
-                            }
-                        />
+    const medianSale =
+      getStat(statistics, 'median_sale_price', 'medianSalePrice')
 
-                        <StatCard
-                            label="Average Sale Price USD"
-                            value={
-                            getStat(statistics, 'average_sale_price', 'averageSalePrice')
-                                ? (
-                                <>
-                                    <div>
-                                    {formatFullUSD(
-                                        crcToUSD(
-                                        saleMillionsToCRC(
-                                            getStat(statistics, 'average_sale_price', 'averageSalePrice')
-                                        )
-                                        )
-                                    )}
-                                    </div>
+    return (
+      <>
+        <StatCard
+          label="Average Sale Price CRC"
+          value={averageSale ? (
+            <>
+              <div>{formatFullCRC(averageSale)}</div>
+              <div style={{ color: '#888', fontSize: '1rem' }}>
+                {formatFullUSD(crcToUSD(averageSale))}
+              </div>
+            </>
+          ) : null}
+        />
 
-                                    <div style={{ color: '#888', fontSize: '1rem' }}>
-                                    {formatFullCRC(
-                                        saleMillionsToCRC(
-                                        getStat(statistics, 'average_sale_price', 'averageSalePrice')
-                                        )
-                                    )}
-                                    </div>
-                                </>
-                                )
-                                : null
-                            }
-                        />
+        <StatCard
+          label="Average Sale Price USD"
+          value={averageSale ? (
+            <>
+              <div>{formatFullUSD(crcToUSD(averageSale))}</div>
+              <div style={{ color: '#888', fontSize: '1rem' }}>
+                {formatFullCRC(averageSale)}
+              </div>
+            </>
+          ) : null}
+        />
 
-                        <StatCard
-                            label="Median Sale Price CRC"
-                            value={
-                            getStat(statistics, 'median_sale_price', 'medianSalePrice')
-                                ? (
-                                <>
-                                    <div>
-                                    {formatFullCRC(
-                                        saleMillionsToCRC(
-                                        getStat(statistics, 'median_sale_price', 'medianSalePrice')
-                                        )
-                                    )}
-                                    </div>
+        <StatCard
+          label="Median Sale Price CRC"
+          value={medianSale ? (
+            <>
+              <div>{formatFullCRC(medianSale)}</div>
+              <div style={{ color: '#888', fontSize: '1rem' }}>
+                {formatFullUSD(crcToUSD(medianSale))}
+              </div>
+            </>
+          ) : null}
+        />
 
-                                    <div style={{ color: '#888', fontSize: '1rem' }}>
-                                    {formatFullUSD(
-                                        crcToUSD(
-                                        saleMillionsToCRC(
-                                            getStat(statistics, 'median_sale_price', 'medianSalePrice')
-                                        )
-                                        )
-                                    )}
-                                    </div>
-                                </>
-                                )
-                                : null
-                            }
-                        />
+        <StatCard
+          label="Median Sale Price USD"
+          value={medianSale ? (
+            <>
+              <div>{formatFullUSD(crcToUSD(medianSale))}</div>
+              <div style={{ color: '#888', fontSize: '1rem' }}>
+                {formatFullCRC(medianSale)}
+              </div>
+            </>
+          ) : null}
+        />
+      </>
+    )
+  })()}
 
-                        <StatCard
-                            label="Median Sale Price USD"
-                            value={
-                            getStat(statistics, 'median_sale_price', 'medianSalePrice')
-                                ? (
-                                <>
-                                    <div>
-                                    {formatFullUSD(
-                                        crcToUSD(
-                                        saleMillionsToCRC(
-                                            getStat(statistics, 'median_sale_price', 'medianSalePrice')
-                                        )
-                                        )
-                                    )}
-                                    </div>
-
-                                    <div style={{ color: '#888', fontSize: '1rem' }}>
-                                    {formatFullCRC(
-                                        saleMillionsToCRC(
-                                        getStat(statistics, 'median_sale_price', 'medianSalePrice')
-                                        )
-                                    )}
-                                    </div>
-                                </>
-                                )
-                                : null
-                            }
-                        />
-                      </>
-                    )}
+  
 
                     {(isRent || isAll) && (
                     <>
@@ -741,10 +679,7 @@ export default function ExploreResults({
                         >
 
                         {result.listings.map((listing: any) => {
-                        console.log(
-                            listing.title,
-                            listing.images
-                        )
+                        
                         return (
                             <Link
                             key={listing.id}

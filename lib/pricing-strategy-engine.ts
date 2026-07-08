@@ -110,37 +110,21 @@ function getCopy(language: PricingStrategyLanguage) {
 }
 
 function getListingPrice(listing: any) {
-  if (listing.transaction_type === 'rent') {
-    return listing.monthly_price
-      ? Number(listing.monthly_price)
-      : null
-  }
+      const price =
+        listing.transaction_type === 'rent'
+          ? Number(listing.monthly_price)
+          : Number(listing.current_price)
 
-  if (
-    listing.price_millions === null ||
-    listing.price_millions === undefined
-  ) {
-    return null
-  }
+      if (!price || Number.isNaN(price)) {
+        return null
+      }
 
-  const priceMillions = Number(listing.price_millions)
+      if (listing.currency === 'USD') {
+        return price * CRC_TO_USD
+      }
 
-  if (!priceMillions || Number.isNaN(priceMillions)) {
-    return null
-  }
-
-  if (listing.currency === 'USD') {
-    return priceMillions * 1000000 * CRC_TO_USD
-  }
-
-  const priceCRC = priceMillions * 1000000
-
-  if (priceCRC < 10000000) {
-    return null
-  }
-
-  return priceCRC
-}
+      return price
+    }
 
 function parseImages(value: any) {
   if (!value) return []
@@ -193,7 +177,11 @@ function decorateListing(listing: any) {
       parseImages(listing.images),
 
     formattedPrice:
-      price ? formatCRC(price) : null
+      price
+        ? listing.currency === 'USD'
+          ? formatUSD(price)
+          : formatCRC(price)
+        : null
   }
 }
 

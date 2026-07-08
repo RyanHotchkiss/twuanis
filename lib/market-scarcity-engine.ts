@@ -26,9 +26,11 @@ type ScarcityCombination = {
     category: string
     value: string
   }[]
+  title: string
   matchingCount: number
   marketSize: number
   marketShare: string
+  scarcityScore: number
   scarcityLevel: string
   explanation: string
 }
@@ -195,6 +197,21 @@ function countMatchingListings(
   ).length
 }
 
+function getScarcityScore(
+  matchingCount: number,
+  marketSize: number
+) {
+  if (!marketSize) return 0
+
+  const share =
+    matchingCount / marketSize
+
+  return Math.max(
+    0,
+    Math.round((1 - share) * 100)
+  )
+}
+
 function buildScarcityCombination({
   attributes,
   matchingCount,
@@ -220,20 +237,50 @@ function buildScarcityCombination({
       language
     )
 
+    const title =
+  attributes
+    .map(attribute => attribute.value)
+    .join(' • ')
+
   return {
-    attributes,
-    matchingCount,
-    marketSize,
-    marketShare:
-      marketShare || 'No data',
+  attributes,
+  title,
 
-    scarcityLevel,
+  matchingCount,
+  marketSize,
 
-    explanation:
-  language === 'es'
-    ? `Esta combinación representa ${marketShare || '0%'} del inventario seleccionado.`
-    : `This combination represents ${marketShare || '0%'} of the selected inventory.`
-  }
+  marketShare:
+    marketShare || 'No data',
+
+  scarcityScore:
+    getScarcityScore(
+      matchingCount,
+      marketSize
+    ),
+
+  scarcityLevel,
+
+  explanation:
+    language === 'es'
+      ? (
+          matchingCount === 1
+            ? 'Solo una propiedad coincide actualmente con esta combinación. Los compradores tienen muy pocas opciones comparables.'
+            : matchingCount <= 3
+              ? 'Muy pocas propiedades comparables están disponibles, lo que hace que esta combinación sea relativamente escasa.'
+              : matchingCount <= 10
+                ? 'Existe un número limitado de propiedades comparables disponibles.'
+                : 'Esta combinación está ampliamente disponible dentro del mercado seleccionado.'
+        )
+      : (
+          matchingCount === 1
+            ? 'Only one listing currently matches this combination. Buyers have very few comparable options.'
+            : matchingCount <= 3
+              ? 'Very few comparable listings are available, making this combination relatively scarce.'
+              : matchingCount <= 10
+                ? 'A limited number of comparable listings are available.'
+                : 'This combination is widely available within the selected market.'
+        )
+}
 }
 function generateSelectedCombination(
   listings: any[],

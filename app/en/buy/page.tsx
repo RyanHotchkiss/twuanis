@@ -431,10 +431,6 @@ if (
   property.title?.includes('Frente al Río')
 ) {
 
-  console.log(
-    'FOUND TT LISTING AT START:',
-    property.title
-  )
 
 }
 

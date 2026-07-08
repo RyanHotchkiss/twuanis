@@ -354,7 +354,9 @@ console.log(listing.images)
             </span>
 
             <div style={entityCard}>
-                {listing.bedrooms}
+                {listing.bedrooms
+                  ?.replace('Bedroom', 'Habitación')
+                  .replace('Bedrooms', 'Habitaciones')}
             </div>
 
             </div>
@@ -371,7 +373,9 @@ console.log(listing.images)
             </span>
 
             <div style={entityCard}>
-                {listing.bathrooms}
+                {listing.bathrooms
+                  ?.replace('Bathroom', 'Baño')
+                  .replace('Bathrooms', 'Baños')}
             </div>
 
             </div>
@@ -388,7 +392,9 @@ console.log(listing.images)
             </span>
 
             <div style={entityCard}>
-                {listing.parking}
+                {listing.parking
+                  ?.replace('Vehicle', 'Vehículo')
+                  .replace('Vehicles', 'Vehículos')}
             </div>
 
             </div>
@@ -573,14 +579,13 @@ console.log(listing.images)
 
             <div style={priceCard}>
 
-                {listing.transaction_type === 'rent'
-                  ? `${listing.currency} ${Number(
-                      listing.monthly_price || 0
-                    ).toLocaleString()}`
+                {listing.current_price
+                  ? listing.currency === 'USD' ||
+                    listing.title?.toUpperCase().includes('USD')
+                    ? `$${Number(listing.current_price).toLocaleString()}`
+                    : `₡${Number(listing.current_price).toLocaleString()}`
                   : listing.price_millions
-                  ? `₡${Number(
-                      listing.price_millions
-                    ).toLocaleString()}M`
+                  ? `₡${Number(listing.price_millions).toLocaleString()}M`
                   : 'Precio No Disponible'}
 
             </div>
@@ -595,7 +600,7 @@ console.log(listing.images)
             </span>
 
             <div style={entityCard}>
-                +506 {listing.whatsapp}
+                {listing.whatsapp}
             </div>
 
             </div>

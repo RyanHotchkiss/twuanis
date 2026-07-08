@@ -359,17 +359,8 @@ const filteredProperties = properties.filter((property) => {
                     normalizeText(filters.property_type)
                   ) {
 
-                    
-
                     return false
                   }
-
-                  console.log(
-                    'USE TYPE FILTER:',
-                    filters.use_type,
-                    'PROPERTY USE TYPE:',
-                    property.use_type
-                  )
 
                   if (
                     filters.use_type &&
@@ -377,56 +368,40 @@ const filteredProperties = properties.filter((property) => {
                     normalizeText(filters.use_type)
                   ) {
 
-                    console.log(
-                      'FAILED USE TYPE'
-                    )
-
-if (
-  property.id ===
-  '868ec0b0-5b93-4987-9e87-806d627afa61'
-) {
-  console.log(
-    'FAILED HERE'
-  )
-}
-
                     return false
                   }
 
-                  console.log(
-                    'PROPERTY AREA FILTER:',
-                    filters.property_area,
-                    'PROPERTY AREA:',
-                    property.property_area
-                  )
+                  if (filters.property_area) {
+                  const area = Number(property.property_area)
 
                   if (
-                    filters.property_area &&
-                    property.property_area !== filters.property_area
+                    filters.property_area === '<1,000m²' &&
+                    area >= 1000
                   ) {
-
-                    console.log(
-                      'FAILED PROPERTY AREA'
-                    )
-
-if (
-  property.id ===
-  '868ec0b0-5b93-4987-9e87-806d627afa61'
-) {
-  console.log(
-    'FAILED HERE'
-  )
-}
-
                     return false
                   }
 
-                  console.log(
-                    'UTILITY FILTER:',
-                    filters.utility,
-                    'PROPERTY UTILITY:',
-                    property.utility
-                  )
+                  if (
+                    filters.property_area === '1,000–10,000m²' &&
+                    (area < 1000 || area > 10000)
+                  ) {
+                    return false
+                  }
+
+                  if (
+                    filters.property_area === '10,000–50,000m²' &&
+                    (area < 10000 || area > 50000)
+                  ) {
+                    return false
+                  }
+
+                  if (
+                    filters.property_area === 'Más de 50,000m²' &&
+                    area <= 50000
+                  ) {
+                    return false
+                  }
+                }
 
                   if (
                     filters.utility.length > 0 &&
@@ -972,6 +947,12 @@ if (
                                         {property.property_area && (
                                           <span style={pill}>
                                             {property.property_area}
+                                          </span>
+                                        )}
+
+                                        {property.construction_area && (
+                                          <span style={pill}>
+                                            {property.construction_area} Construction
                                           </span>
                                         )}
 

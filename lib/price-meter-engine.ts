@@ -139,51 +139,46 @@ function parseImages(value: any) {
 }
 
 function getListingPrice(listing: any) {
-  if (listing.transaction_type === 'rent') {
-    return listing.monthly_price
-      ? Number(listing.monthly_price)
-      : null
-  }
+      const price =
+        listing.transaction_type === 'rent'
+          ? Number(listing.monthly_price)
+          : Number(listing.current_price)
 
-  if (
-    listing.price_millions === null ||
-    listing.price_millions === undefined
-  ) {
-    return null
-  }
+      if (!price || Number.isNaN(price)) return null
 
-  const priceMillions = Number(listing.price_millions)
+      if (listing.currency === 'USD') {
+        return price * CRC_TO_USD
+      }
 
-  if (!priceMillions || Number.isNaN(priceMillions)) {
-    return null
-  }
+      return price
+    }
 
-  if (listing.currency === 'USD') {
-    return priceMillions * 1000000 * CRC_TO_USD
-  }
+    function parseArea(value: any) {
+            if (!value) return null
 
-  const priceCRC = priceMillions * 1000000
+            const text = String(value)
+              .replace(/,/g, '')
+              .trim()
 
-if (priceCRC < 10000000) {
-  return null
-}
+            const isHectares = /hect/i.test(text)
 
-return priceCRC
-}
+            const numbers =
+              text.match(/\d+(\.\d+)?/g)
 
-function parseArea(value: any) {
-  if (value === null || value === undefined) return null
+            if (!numbers?.length) return null
 
-  const cleaned = String(value)
-    .replace(/,/g, '')
-    .replace(/[^\d.]/g, '')
+            const area =
+              numbers.length === 1
+                ? Number(numbers[0])
+                : (
+                    Number(numbers[0]) +
+                    Number(numbers[1])
+                  ) / 2
 
-  const number = Number(cleaned)
-
-  if (!number || Number.isNaN(number)) return null
-
-  return number
-}
+            return isHectares
+              ? area * 10000
+              : area
+          }
 
 function decorateListing(listing: any) {
   const price = getListingPrice(listing)
@@ -209,8 +204,12 @@ function decorateListing(listing: any) {
 
     parseImages(listing.images),
 
-    formattedPrice:
-      price ? formatCRC(price) : null,
+   formattedPrice:
+      price
+        ? listing.currency === 'USD'
+          ? formatUSD(price)
+          : formatCRC(price)
+        : null,
 
     pricePerLandM2:
       formatCRC(pricePerLandM2, ' / m²'),
@@ -237,56 +236,75 @@ export async function getPriceMeterAnalysis(
   const decoratedListings =
     listings.map(decorateListing)
 
-  const landPrices =
-    decoratedListings
-      .map((listing: any) => {
-        const price = getListingPrice(listing)
-        const area = parseArea(listing.property_area)
+ const landOnlyPrices: number[] = []
+  const constructionOnlyPrices: number[] = []
+  const mixedLandPrices: number[] = []
+  const mixedConstructionPrices: number[] = []
+  const mixedConstructionToLandRatios: number[] = []
 
-        return price && area ? price / area : null
-      })
-      .filter((value: number | null): value is number => Boolean(value))
+  for (const listing of decoratedListings) {
+    const price = getListingPrice(listing)
+    const landArea = parseArea(listing.property_area)
+    const constructionArea = parseArea(listing.construction_area)
 
-  const constructionPrices =
-    decoratedListings
-      .map((listing: any) => {
-        const price = getListingPrice(listing)
-        const area = parseArea(listing.construction_area)
+    if (!price) continue
 
-        return price && area ? price / area : null
-      })
-      .filter((value: number | null): value is number => Boolean(value))
+    if (landArea && !constructionArea) {
+      landOnlyPrices.push(price / landArea)
+    }
 
-  const averageLandM2 = average(landPrices)
-  const medianLandM2 = median(landPrices)
+    if (constructionArea && !landArea) {
+      constructionOnlyPrices.push(price / constructionArea)
+    }
 
-  const averageConstructionM2 =
-    average(constructionPrices)
+    if (landArea && constructionArea) {
+      mixedLandPrices.push(price / landArea)
+      mixedConstructionPrices.push(price / constructionArea)
+      mixedConstructionToLandRatios.push(constructionArea / landArea)
+    }
+  }
 
-  const medianConstructionM2 =
-    median(constructionPrices)
+  const averageLandM2 = average(landOnlyPrices)
+  const medianLandM2 = median(landOnlyPrices)
 
-  const lowestLandM2 = lowest(landPrices)
-  const highestLandM2 = highest(landPrices)
+  const averageConstructionM2 = average(constructionOnlyPrices)
+  const medianConstructionM2 = median(constructionOnlyPrices)
 
-  const lowestConstructionM2 =
-    lowest(constructionPrices)
+  const averageMixedLandM2 = average(mixedLandPrices)
+  const medianMixedLandM2 = median(mixedLandPrices)
 
-  const highestConstructionM2 =
-    highest(constructionPrices)
+  const averageMixedConstructionM2 = average(mixedConstructionPrices)
+  const medianMixedConstructionM2 = median(mixedConstructionPrices)
+
+  const averageMixedConstructionToLandRatio =
+    average(mixedConstructionToLandRatios)
+
+  const medianMixedConstructionToLandRatio =
+    median(mixedConstructionToLandRatios)
+
+  const lowestLandM2 = lowest(landOnlyPrices)
+  const highestLandM2 = highest(landOnlyPrices)
+
+  const lowestConstructionM2 = lowest(constructionOnlyPrices)
+  const highestConstructionM2 = highest(constructionOnlyPrices)
+
+  const lowestMixedLandM2 = lowest(mixedLandPrices)
+  const highestMixedLandM2 = highest(mixedLandPrices)
+
+  const lowestMixedConstructionM2 = lowest(mixedConstructionPrices)
+  const highestMixedConstructionM2 = highest(mixedConstructionPrices)
 
   const sampleSize =
-    Math.max(
-      landPrices.length,
-      constructionPrices.length
-    )
+    landOnlyPrices.length +
+    constructionOnlyPrices.length +
+    mixedLandPrices.length
 
 console.log(
   'PRICE METER DEBUG',
   listings.slice(0, 5).map((listing: any) => ({
     title: listing.title,
     transaction_type: listing.transaction_type,
-    price_millions: listing.price_millions,
+    current_price: listing.current_price,
     monthly_price: listing.monthly_price,
     property_area: listing.property_area,
     construction_area: listing.construction_area,
@@ -321,7 +339,50 @@ console.log(
         formatCRC(medianConstructionM2, ' / m²'),
 
       medianPricePerConstructionFt2:
-        formatCRC(pricePerFt2(medianConstructionM2), ' / ft²')
+        formatCRC(pricePerFt2(medianConstructionM2), ' / ft²'),
+
+      averageMixedPricePerLandM2:
+        formatCRC(averageMixedLandM2, ' / m²'),
+
+      averageMixedPricePerLandFt2:
+        formatCRC(pricePerFt2(averageMixedLandM2), ' / ft²'),
+
+      medianMixedPricePerLandM2:
+        formatCRC(medianMixedLandM2, ' / m²'),
+
+      medianMixedPricePerLandFt2:
+        formatCRC(pricePerFt2(medianMixedLandM2), ' / ft²'),
+
+      averageMixedPricePerConstructionM2:
+        formatCRC(averageMixedConstructionM2, ' / m²'),
+
+      averageMixedPricePerConstructionFt2:
+        formatCRC(pricePerFt2(averageMixedConstructionM2), ' / ft²'),
+
+      medianMixedPricePerConstructionM2:
+        formatCRC(medianMixedConstructionM2, ' / m²'),
+
+      medianMixedPricePerConstructionFt2:
+        formatCRC(pricePerFt2(medianMixedConstructionM2), ' / ft²'),
+
+      averageMixedConstructionToLandRatio:
+        averageMixedConstructionToLandRatio === null
+          ? null
+          : `${Math.round(averageMixedConstructionToLandRatio * 100)}%`,
+
+      medianMixedConstructionToLandRatio:
+        medianMixedConstructionToLandRatio === null
+          ? null
+          : `${Math.round(medianMixedConstructionToLandRatio * 100)}%`,
+
+      landOnlySampleSize:
+        landOnlyPrices.length,
+
+      constructionOnlySampleSize:
+        constructionOnlyPrices.length,
+
+      mixedSampleSize:
+        mixedLandPrices.length
     },
 
     breakdown: {
@@ -347,7 +408,31 @@ console.log(
         formatCRC(highestConstructionM2, ' / m²'),
 
       highestPricePerConstructionFt2:
-        formatCRC(pricePerFt2(highestConstructionM2), ' / ft²')
+        formatCRC(pricePerFt2(highestConstructionM2), ' / ft²'),
+
+      lowestMixedPricePerLandM2:
+        formatCRC(lowestMixedLandM2, ' / m²'),
+
+      lowestMixedPricePerLandFt2:
+        formatCRC(pricePerFt2(lowestMixedLandM2), ' / ft²'),
+
+      highestMixedPricePerLandM2:
+        formatCRC(highestMixedLandM2, ' / m²'),
+
+      highestMixedPricePerLandFt2:
+        formatCRC(pricePerFt2(highestMixedLandM2), ' / ft²'),
+
+      lowestMixedPricePerConstructionM2:
+        formatCRC(lowestMixedConstructionM2, ' / m²'),
+
+      lowestMixedPricePerConstructionFt2:
+        formatCRC(pricePerFt2(lowestMixedConstructionM2), ' / ft²'),
+
+      highestMixedPricePerConstructionM2:
+        formatCRC(highestMixedConstructionM2, ' / m²'),
+
+      highestMixedPricePerConstructionFt2:
+        formatCRC(pricePerFt2(highestMixedConstructionM2), ' / ft²')
     },
 
     confidence:

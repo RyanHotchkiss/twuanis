@@ -338,7 +338,9 @@ return (
             </span>
 
             <div style={entityCard}>
-                {listing.bedrooms}
+                {listing.bedrooms
+                  ?.replace('Bedroom', 'Habitación')
+                  .replace('Bedrooms', 'Habitaciones')}
             </div>
 
             </div>
@@ -355,7 +357,9 @@ return (
             </span>
 
             <div style={entityCard}>
-                {listing.bathrooms}
+                {listing.bathrooms
+                  ?.replace('Bathroom', 'Baño')
+                  .replace('Bathrooms', 'Baños')}
             </div>
 
             </div>
@@ -372,7 +376,9 @@ return (
             </span>
 
             <div style={entityCard}>
-                {listing.parking}
+                {listing.parking
+                  ?.replace('Vehicle', 'Vehículo')
+                  .replace('Vehicles', 'Vehículos')}
             </div>
 
             </div>
@@ -575,10 +581,10 @@ return (
             <div style={priceCard}>
 
                 {listing.monthly_price
-                  ? `${listing.currency || 'CRC'} ${Number(
-                      listing.monthly_price
-                    ).toLocaleString()} / month`
-                  : 'Price Not Available'}
+                  ? listing.currency === 'USD'
+                    ? `$${Number(listing.monthly_price).toLocaleString()} / mes`
+                    : `₡${Number(listing.monthly_price).toLocaleString()} / mes`
+                  : 'Precio No Disponible'}
 
             </div>
 
@@ -592,7 +598,7 @@ return (
             </span>
 
             <div style={entityCard}>
-                +506 {listing.whatsapp}
+                 {listing.whatsapp}
             </div>
 
             </div>
@@ -601,7 +607,7 @@ return (
 
             {/* CONTACT BUTTON */}
             <a
-              href={`https://wa.me/506${listing.whatsapp}`}
+              href={`https://wa.me/${listing.whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
               style={{

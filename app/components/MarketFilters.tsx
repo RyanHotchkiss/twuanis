@@ -55,7 +55,12 @@ function buildUrl(
 
   const query = params.toString()
 
-  return query ? `${basePath}?${query}` : basePath
+    const separator =
+      basePath.includes('?') ? '&' : '?'
+
+    return query
+      ? `${basePath}${separator}${query}`
+      : basePath
 }
 
 function FilterSelect({
@@ -106,6 +111,14 @@ function FilterSelect({
   )
 }
 
+function normalizeOption(value: any) {
+  return String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim()
+}
+
 export default function MarketFilters({
   options,
   filters,
@@ -115,25 +128,42 @@ export default function MarketFilters({
   filters: Record<string, string | undefined>
   basePath?: string
 }) {
-  const leftCantons = useMemo(() => {
-    if (!filters.province) return []
 
-    return (
-      options.canton?.filter(
-        (c: any) => c.province === filters.province
-      ) || []
-    )
-  }, [filters.province, options.canton])
+  const leftCantons = useMemo(() => {
+            if (!filters.province) return []
+
+            const selectedProvince =
+              options.province?.find((province: any) =>
+                normalizeOption(getValue(province)) ===
+                normalizeOption(filters.province)
+              )
+
+            if (!selectedProvince) return []
+
+            return (
+              options.canton?.filter(
+                (c: any) => c.parent_id === selectedProvince.id
+              ) || []
+            )
+          }, [filters.province, options.province, options.canton])
 
   const leftDistricts = useMemo(() => {
-    if (!filters.canton) return []
+            if (!filters.canton) return []
 
-    return (
-      options.district?.filter(
-        (d: any) => d.canton === filters.canton
-      ) || []
-    )
-  }, [filters.canton, options.district])
+            const selectedCanton =
+              options.canton?.find((canton: any) =>
+                normalizeOption(getValue(canton)) ===
+                normalizeOption(filters.canton)
+              )
+
+            if (!selectedCanton) return []
+
+            return (
+              options.district?.filter(
+                (d: any) => d.parent_id === selectedCanton.id
+              ) || []
+            )
+          }, [filters.canton, options.canton, options.district])
 
   return (
     <>

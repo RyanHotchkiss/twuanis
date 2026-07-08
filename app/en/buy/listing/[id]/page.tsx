@@ -506,13 +506,14 @@ const schema = buildListingSchema({
 
             <div style={priceCard}>
 
-                {listing.price
-                    ? listing.price
-                    : listing.price_millions
-                    ? `₡${Number(
-                        listing.price_millions
-                        ).toLocaleString()}M`
-                    : 'Precio No Disponible'}
+                {listing.current_price
+                  ? listing.currency === 'USD' ||
+                    listing.title?.toUpperCase().includes('USD')
+                    ? `$${Number(listing.current_price).toLocaleString()}`
+                    : `₡${Number(listing.current_price).toLocaleString()}`
+                  : listing.price_millions
+                  ? `₡${Number(listing.price_millions).toLocaleString()}M`
+                  : 'Precio No Disponible'}
 
             </div>
 
@@ -526,7 +527,7 @@ const schema = buildListingSchema({
             </span>
 
             <div style={entityCard}>
-                +506 {listing.whatsapp}
+               {listing.whatsapp}
             </div>
 
             </div>
@@ -535,7 +536,7 @@ const schema = buildListingSchema({
 
             {/* CONTACT BUTTON */}
             <a
-              href={`https://wa.me/506${listing.whatsapp}`}
+              href={`https://wa.me/${listing.whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
               style={{

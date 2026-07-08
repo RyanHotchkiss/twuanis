@@ -394,13 +394,29 @@ const filteredProperties = properties.filter((property) => {
                     return false
                   }
 
-                  if (
-                    filters.property_area &&
-                    property.property_area !== filters.property_area
-                  ) {
+                  if (filters.property_area) {
+                  const area = Number(property.property_area)
 
-                    return false
-                  }
+                  if (
+                    filters.property_area === '<1,000m²' &&
+                    area >= 1000
+                  ) return false
+
+                  if (
+                    filters.property_area === '1,000–10,000m²' &&
+                    (area < 1000 || area > 10000)
+                  ) return false
+
+                  if (
+                    filters.property_area === '10,000–50,000m²' &&
+                    (area < 10000 || area > 50000)
+                  ) return false
+
+                  if (
+                    filters.property_area === 'Más de 50,000m²' &&
+                    area <= 50000
+                  ) return false
+                }
 
 
                   if (
@@ -864,21 +880,33 @@ const filteredProperties = properties.filter((property) => {
                                           </span>
                                         )}
 
+                                        {property.construction_area && (
+                                          <span style={pill}>
+                                            {property.construction_area} Construcción
+                                          </span>
+                                        )}
+
                                         {property.bedrooms && (
                                           <span style={pill}>
-                                            {property.bedrooms}
+                                            {property.bedrooms
+                                              ?.replace('Bedroom', 'Habitación')
+                                              .replace('Bedrooms', 'Habitaciones')}
                                           </span>
                                         )}
 
                                         {property.bathrooms && (
                                           <span style={pill}>
-                                            {property.bathrooms}
+                                            {property.bathrooms
+                                              ?.replace('Bathroom', 'Baño')
+                                              .replace('Bathrooms', 'Baños')}
                                           </span>
                                         )}
 
                                         {property.parking && (
                                           <span style={pill}>
-                                            {property.parking}
+                                            {property.parking
+                                              ?.replace('Vehicle', 'Vehículo')
+                                              .replace('Vehicles', 'Vehículos')}
                                           </span>
                                         )}
 

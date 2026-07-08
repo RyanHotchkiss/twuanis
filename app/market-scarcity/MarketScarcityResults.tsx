@@ -39,10 +39,10 @@ export default function MarketScarcityResults({
 
       {scarcity.combinations?.length > 0 ? (
         <div style={scarcityGrid}>
-          {scarcity.combinations.map((item: any) => (
-            <div
-              key={item.combination}
-              style={scarcityCard}
+          {scarcity.combinations.map((item: any, index: number) => (
+        <div
+          key={`${item.category}-${item.combination}-${index}`}
+          style={scarcityCard}
             >
               <div style={scarcityHeader}>
                 <p style={scarcityCategory}>
@@ -50,12 +50,12 @@ export default function MarketScarcityResults({
                 </p>
 
                 <div style={scarcityBadge}>
-                  {item.scarcityLevel}
+                  {item.scarcityScore}/100
                 </div>
               </div>
 
               <h3 style={scarcityTitle}>
-                {item.combination}
+                {item.title}
               </h3>
 
               <div style={scarcityStats}>
@@ -67,6 +67,11 @@ export default function MarketScarcityResults({
                 <p>
                   Market share:{' '}
                   <strong>{item.marketShare}</strong>
+                </p>
+
+                <p>
+                  Scarcity score:{' '}
+                  <strong>{item.scarcityScore}/100</strong>
                 </p>
 
                 <p>

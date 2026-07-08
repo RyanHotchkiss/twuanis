@@ -148,7 +148,8 @@ function scoreListing(
     const matched =
         requestedValues.some(requested =>
             listingValues.some((listingValue: any) =>
-            normalize(listingValue) === normalize(requested)
+            normalize(listingValue).includes(normalize(requested)) ||
+            normalize(requested).includes(normalize(listingValue))
             )
         )
 

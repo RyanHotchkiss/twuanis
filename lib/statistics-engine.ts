@@ -48,6 +48,7 @@ type Listing = {
   transaction_type: string | null
   currency: string | null
   price_millions: number | null
+  current_price: number | null
   monthly_price: number | null
   property_area: string | null
   construction_area: string | null
@@ -85,6 +86,14 @@ function slugify(value: string) {
     .replace(/^-|-$/g, '')
 }
 
+function normalizeText(value: any) {
+  return String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim()
+}
+
 async function getDistrictNamesFromSlugs(districtSlugs: string[]) {
   const { data, error } = await supabase
     .from('ontology_terms')
@@ -95,7 +104,7 @@ async function getDistrictNamesFromSlugs(districtSlugs: string[]) {
   if (error) throw error
 
   return (data || []).map(term =>
-    slugify(term.term_name_en || term.term_name || term.slug)
+    term.term_name_en || term.term_name || term.slug
   )
 }
 
@@ -238,21 +247,25 @@ function average(values: number[]) {
                 } = filters
 
                 const listingSelect = `
-                  id,
-                  title,
-                  images,
-                  transaction_type,
-                  currency,
-                  price_millions,
-                  monthly_price,
-                  property_area,
-                  construction_area,
-                  province,
-                  canton,
-                  district,
-                  property_type,
-                  created_at
-                `
+                    id,
+                    title,
+                    images,
+                    transaction_type,
+                    currency,
+                    monthly_price,
+                    property_area,
+                    construction_area,
+                    province,
+                    canton,
+                    district,
+                    property_type,
+                    bedrooms,
+                    bathrooms,
+                    parking,
+                    price_millions,
+                    current_price,
+                    created_at
+                  `
 
                 const terms = await resolveFilterTerms(ontologyFilters)
 
@@ -333,29 +346,44 @@ function average(values: number[]) {
                 }
 
                 if (province) {
-                  listings = listings.filter(listing =>
-                    slugify(listing.province || '') === province
-                  )
-                }
-
-                if (canton) {
-                  listings = listings.filter(listing =>
-                    slugify(listing.canton || '') === canton
-                  )
-                }
-
-                if (district) {
-                  const selectedDistrictSlugs = district.split(',')
-
-                  const selectedDistrictNames =
-                    await getDistrictNamesFromSlugs(selectedDistrictSlugs)
-
-                  listings = listings.filter(listing =>
-                    selectedDistrictNames.includes(
-                      slugify(listing.district || '')
+                    listings = listings.filter(listing =>
+                      slugify(listing.province || '') === province ||
+                      slugify(listing.province || '').includes(province)
                     )
-                  )
-                }
+                  }
+
+                  if (canton) {
+                    listings = listings.filter(listing =>
+                      slugify(listing.canton || '') === canton ||
+                      slugify(listing.canton || '').includes(canton)
+                    )
+                  }
+
+                  if (district) {
+                    const selectedDistrictSlugs =
+                      district.split(',')
+
+                    const selectedDistrictNames =
+                      await getDistrictNamesFromSlugs(selectedDistrictSlugs)
+
+                    listings = listings.filter(listing => {
+                      const listingDistrictSlug =
+                        slugify(listing.district || '')
+
+                      const listingDistrictName =
+                        normalizeText(listing.district || '')
+
+                      return (
+                        listingDistrictSlug.length > 0 &&
+                          selectedDistrictSlugs.some(selectedSlug =>
+                            selectedSlug.startsWith(listingDistrictSlug)
+                          ) ||
+                        selectedDistrictNames.some(selectedName =>
+                          normalizeText(selectedName) === listingDistrictName
+                        )
+                      )
+                    })
+                  }
 
                 return applyTransactionFilter(
                   listings,
@@ -373,10 +401,17 @@ export function calculateStatistics(listings: Listing[]) {
   })
 
   const salePrices = validNumbers(
-    saleListings
-      .map(listing => listing.price_millions)
-      .filter(value => value !== null && value > 1)
-  )
+      saleListings.map(listing => {
+        const price =
+          listing.current_price
+
+        if (!price || price <= 1) return null
+
+        return listing.currency === 'CRC'
+          ? price
+          : usdToCRC(price)
+      })
+    )
 
   const rentValuesCRC = validNumbers(
       rentalListings.map(listing => {
@@ -405,17 +440,25 @@ export function calculateStatistics(listings: Listing[]) {
   )
 
   const pricePerM2Values = saleListings
-    .map(listing => {
-      const price = listing.price_millions
-      const area = numericArea(listing.property_area)
+      .map(listing => {
+        const price =
+          listing.current_price
 
-      if (!price || !area) return null
+        const area =
+          numericArea(listing.property_area)
 
-      return price / area
-    })
-    .filter((value): value is number => {
-      return typeof value === 'number' && Number.isFinite(value)
-    })
+        if (!price || !area) return null
+
+        const priceCRC =
+          listing.currency === 'CRC'
+            ? price
+            : usdToCRC(price)
+
+        return priceCRC / area
+      })
+      .filter((value): value is number => {
+        return typeof value === 'number' && Number.isFinite(value)
+      })
 
   const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000
 
@@ -424,6 +467,15 @@ export function calculateStatistics(listings: Listing[]) {
 
     return new Date(listing.created_at).getTime() >= thirtyDaysAgo
   }).length
+
+  console.log(
+  'SALE PRICE DEBUG:',
+  saleListings.slice(0, 10).map(l => ({
+    currency: l.currency,
+    current_price: l.current_price,
+    price_millions: l.price_millions
+  }))
+)
 
   return {
     totalListings: listings.length,

@@ -120,23 +120,6 @@ const { data, error } = await supabase
   .order('id', { ascending: false })
 
 
-       console.log(
-            'SUPABASE RECORD:',
-            data?.[0]
-          )
-
-        console.log(
-          'PROPERTY AREA FIELD:',
-          data?.[0]?.property_area
-        )
-
-console.log(
-  'CONSTRUCTION AREA FIELD:',
-  data?.[0]?.construction_area
-)
-
-
-
   if (error) {
 
     console.error(
@@ -198,31 +181,6 @@ console.log(
                 setLoading(false)
 
 
-                console.log(
-                  'NORMALIZED IMAGES:',
-                  normalizedSupabaseListings?.[0]?.images
-                )
-
-                console.log(
-                  'NORMALIZED TYPE:',
-                  typeof normalizedSupabaseListings?.[0]?.images
-                )
-
-                console.log(
-                  'FIRST IMAGE:',
-                  normalizedSupabaseListings?.[0]?.images?.[0]
-                )
-
-                console.log(
-                  'NORMALIZED RECORD:',
-                  normalizedSupabaseListings?.[0]
-                )
-
-                console.log(
-                  'NORMALIZED IMAGES:',
-                  normalizedSupabaseListings?.[0]?.images
-                )
-
                   }
 
       fetchListings()
@@ -270,38 +228,6 @@ console.log(
                           
 const filteredProperties = properties.filter((property) => {
 
-console.log(
-  'PRICE_MILLIONS:',
-  property.price_millions,
-  'TITLE:',
-  property.title
-)
-
-console.log(
-  'PROPERTY AREA:',
-  property.property_area,
-  'TITLE:',
-  property.title
-)
-
-if (
-  property.title?.includes('Frente al Río')
-) {
-  console.log(
-    'ENTERING FILTER CHAIN:',
-    property.title
-  )
-}
-
-console.log(
-  'PROVINCE FILTER:',
-  filters.province,
-  'PROPERTY PROVINCE:',
-  property.province,
-  'TITLE:',
-  property.title
-)
-
                       if (
                         filters.province &&
                         normalizeText(property.province)
@@ -310,15 +236,6 @@ console.log(
                       ) {
                         return false
                       }
-
-console.log(
-  'CANTON FILTER:',
-  filters.canton,
-  'PROPERTY CANTON:',
-  property.canton,
-  'TITLE:',
-  property.title
-)
 
                       if (filters.canton) {
                           const propertyCanton =
@@ -339,16 +256,6 @@ console.log(
                           }
                         }
                       
-
-console.log(
-  'DISTRICT FILTER:',
-  filters.district,
-  'PROPERTY DISTRICT:',
-  property.district,
-  'TITLE:',
-  property.title
-)
-
                     if (
                       filters.district &&
                       normalizeText(property.district) !==
@@ -418,11 +325,6 @@ if (
   property.title?.includes('Frente al Río')
 ) {
 
-  console.log(
-    'FOUND TEST LISTING AT START:',
-    property.title
-  )
-
 }
 
                   if (filters.property_area) {
@@ -461,14 +363,7 @@ if (
 
                                   }
 
-console.log(
-  'UTILITY FILTER:',
-  filters.utility,
-  'PROPERTY UTILITY:',
-  property.utility,
-  'TITLE:',
-  property.title
-)
+
 
                   if (
                     filters.utility.length > 0 &&
@@ -481,14 +376,6 @@ console.log(
                     return false
                   }
 
-console.log(
-  'LEGAL STATUS FILTER:',
-  filters.legal_status,
-  'PROPERTY LEGAL STATUS:',
-  property.legal_status,
-  'TITLE:',
-  property.title
-)
 
 
                     if (
@@ -498,15 +385,6 @@ console.log(
                     ) {
                       return false
                     }
-
-console.log(
-  'ENVIRONMENT FILTER:',
-  filters.environment,
-  'PROPERTY ENVIRONMENT:',
-  property.environment,
-  'TITLE:',
-  property.title
-)
 
                   if (
                     filters.environment.length > 0 &&
@@ -519,15 +397,6 @@ console.log(
                     return false
                   }
 
-console.log(
-  'ACCESSIBILITY FILTER:',
-  filters.accessibility,
-  'PROPERTY ACCESSIBILITY:',
-  property.accessibility,
-  'TITLE:',
-  property.title
-)
-
                   if (
                     filters.accessibility &&
                     normalizeText(property.accessibility) !==
@@ -536,22 +405,6 @@ console.log(
                     return false
                   }
 
-console.log(
-
-  'TITLE CHECK:',
-
-  property.title
-
-)
-
-console.log(
-  'TERRAIN FILTER:',
-  filters.terrain,
-  'PROPERTY TERRAIN:',
-  property.terrain,
-  'TITLE:',
-  property.title
-)
 
                   if (
                     filters.terrain.length > 0 &&
@@ -911,21 +764,36 @@ console.log(
                                         </span>
                                       )}
 
+                                      {property.construction_area && (
+                                        <span style={pill}>
+                                          {property.construction_area} Construcción
+                                        </span>
+                                      )}
+
                                       {property.bedrooms && (
                                         <span style={pill}>
-                                          {property.bedrooms} Hab
+                                          {property.bedrooms
+                                            ?.replace('Bedroom', '')
+                                            .replace('Bedrooms', '')
+                                            .trim()} Habitaciones
                                         </span>
                                       )}
 
                                       {property.bathrooms && (
                                         <span style={pill}>
-                                          {property.bathrooms} Baños
+                                          {property.bathrooms
+                                            ?.replace('Bathroom', '')
+                                            .replace('Bathrooms', '')
+                                            .trim()} Baños
                                         </span>
                                       )}
 
                                       {property.parking && (
                                         <span style={pill}>
-                                          {property.parking} Parqueos
+                                          {property.parking
+                                            ?.replace('Vehicle', '')
+                                            .replace('Vehicles', '')
+                                            .trim()} Parqueos
                                         </span>
                                       )}
 

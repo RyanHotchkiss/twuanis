@@ -1,6 +1,7 @@
 const axios = require('axios')
 const cheerio = require('cheerio')
 const puppeteer = require('puppeteer')
+
 const fs = require('fs')
 const crypto = require('crypto')
 
@@ -8,7 +9,7 @@ const { isObservationValid } = require('./quality/isObservationValid')
 const SOURCE_NAME = 'encuentra24'
 const TRANSACTION_TYPE = 'sale'
 const MAX_LISTINGS = 100
-const MAX_PAGES = 5
+const MAX_PAGES = 20
 
 const USER_AGENT =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
@@ -125,8 +126,31 @@ function getListingUrl($, card) {
 function isSaleListing(url) {
   return (
     url.includes('/real-estate-for-sale-') ||
-    url.includes('/bienes-raices-venta-')
+    url.includes('/bienes-raices-venta-') ||
+    url.includes('/bienes-raices-proyectos-nuevos/')
   )
+}
+
+function extractFromBodyText(bodyText, patterns) {
+  for (const pattern of patterns) {
+    const match = bodyText.match(pattern)
+    if (match?.[1]) return clean(match[1])
+  }
+
+  return ''
+}
+
+function extractLabeledValue($, label) {
+  const value =
+    $('p')
+      .filter((_, el) =>
+        clean($(el).text()) === label
+      )
+      .next('p')
+      .first()
+      .text()
+
+  return clean(value)
 }
 
 function extractJsonLd($) {
@@ -383,27 +407,6 @@ async function extractImages(page) {
   return [...new Set(images)]
 }
 
-async function extractWhatsapp(page) {
-  try {
-    const whatsappLink =
-      await page.evaluate(() => {
-        const links =
-          Array.from(document.querySelectorAll('a'))
-
-        const whatsappAnchor =
-          links.find(link =>
-            link.href.includes('api.whatsapp.com') ||
-            link.href.includes('wa.me')
-          )
-
-        return whatsappAnchor ? whatsappAnchor.href : ''
-      })
-
-    return whatsappLink.match(/\d+/)?.[0] || ''
-  } catch (error) {
-    return ''
-  }
-}
 
 function parsePriceValue(value) {
       const text = String(value || '')
@@ -421,6 +424,77 @@ function parsePriceValue(value) {
       return Number.isFinite(price) && price > 0
         ? price
         : ''
+    }
+
+    function extractVisiblePrice($) {
+      const bodyText =
+        clean($('body').text())
+
+      const desdeMatch =
+        bodyText.match(/Desde\s*\$?\s*([\d,.]+)/i)
+
+      if (desdeMatch?.[1]) {
+        return parsePriceValue(desdeMatch[1])
+      }
+
+      const priceMatch =
+        bodyText.match(/\$\s*([\d,.]+)/)
+
+      if (priceMatch?.[1]) {
+        return parsePriceValue(priceMatch[1])
+      }
+
+      return ''
+    }
+
+    function extractTablePrice($) {
+      const cells =
+        $('td')
+          .map((_, el) => clean($(el).text()))
+          .get()
+
+      const price =
+        cells.find(text =>
+          /^(₡|\$)\s?[\d,.]+$/.test(text)
+        )
+
+      return parsePriceValue(price)
+    }
+
+    function extractVisiblePrice($) {
+      const bodyText =
+        clean($('body').text())
+
+      const desdePrice =
+        bodyText.match(/Desde\s*(₡|\$)\s*([\d,.]+)/i)
+
+      if (desdePrice?.[2]) {
+        return parsePriceValue(desdePrice[2])
+      }
+
+      return ''
+    }
+
+    function extractVisibleCurrency($) {
+      const bodyText =
+        clean($('body').text())
+
+      const desdePrice =
+        bodyText.match(/Desde\s*(₡|\$)\s*[\d,.]+/i)
+
+      if (desdePrice?.[1] === '₡') return 'CRC'
+      if (desdePrice?.[1] === '$') return 'USD'
+
+      const tablePrice =
+        $('td')
+          .map((_, el) => clean($(el).text()))
+          .get()
+          .find(text => /^(₡|\$)\s?[\d,.]+$/.test(text))
+
+      if (tablePrice?.startsWith('₡')) return 'CRC'
+      if (tablePrice?.startsWith('$')) return 'USD'
+
+      return ''
     }
 
 function extractPrice(offer, insightAttributes = {}, detailAttributes = {}, title = '', description = '') {
@@ -482,30 +556,62 @@ function extractCurrency(
               return clean(offer?.priceCurrency || '')
             }
 
+function extractFlightAd(html) {
+  const match = html.match(/"ad":(\{.*?\}),"googleMapsApiKey"/s)
+  if (!match) return null
+
+  try {
+    return JSON.parse(
+      match[1]
+        .replace(/\\"/g, '"')
+        .replace(/\\u0026/g, '&')
+    )
+  } catch {
+    return null
+  }
+}
+            
 async function scrapeListing({
   browser,
   listingUrl,
   baseUrl
-})
-{
+}) {
   console.log('Scraping:', listingUrl)
+
   const html =
     await fetchHtml(
       listingUrl,
       baseUrl
     )
+
+const flightAd = extractFlightAd(html)
+
+  fs.writeFileSync('debug-listing.html', html)
+
   const $ =
     cheerio.load(html)
+
+  const scripts = $('script')
+        .map((_, el) => $(el).html() || '')
+        .get()
+        .filter(text => text.includes('self.__next_f.push'))
+
+      fs.writeFileSync(
+        'flight.txt',
+        scripts.join('\n\n')
+      )
+
   const jsonLd =
     extractJsonLd($)
+
   const schema =
     findProductSchema(jsonLd)
 
-const offer =
-  extractOffer(schema)
+  const offer =
+    extractOffer(schema)
 
-console.log('OFFER:', JSON.stringify(offer, null, 2))
-
+  const bodyText =
+  clean($('body').text())
   const location =
     extractLocation($)
   const title =
@@ -516,16 +622,40 @@ console.log('OFFER:', JSON.stringify(offer, null, 2))
     extractInsightAttributes($)
   const detailAttributes =
     extractDetailAttributes($)
+
+
   const rawBedrooms =
-    extractRawBedrooms(insightAttributes)
+  extractRawBedrooms(insightAttributes) ||
+  extractFromBodyText(bodyText, [
+    /Desde\s*([\d.]+)\s*rec[áa]maras/i,
+    /([\d.]+)\s*rec[áa]maras/i
+  ])
   const rawBathrooms =
-    extractRawBathrooms(insightAttributes)
+  extractRawBathrooms(insightAttributes) ||
+  extractFromBodyText(bodyText, [
+    /Desde\s*([\d.]+)\s*ba[ñn]os/i,
+    /([\d.]+)\s*ba[ñn]os/i
+  ])
   const rawParking =
-    extractRawParking(insightAttributes)
+  extractRawParking(insightAttributes) ||
+  extractFromBodyText(bodyText, [
+    /([\d.]+)\s*parking/i,
+    /parking\s*([\d.]+)/i
+  ])
   const rawConstructionArea =
-    extractRawConstructionArea(insightAttributes)
+  extractRawConstructionArea(insightAttributes) ||
+  extractLabeledValue($, 'Área construida') ||
+  $('td').filter((_, el) =>
+    /m²/i.test(clean($(el).text()))
+  ).first().text() ||
+  extractFromBodyText(bodyText, [
+    /Desde\s*([\d,.]+)\s*m²\s*[áa]rea construida/i,
+    /([\d,.]+)\s*m²\s*[áa]rea construida/i
+  ])
+
   const rawPropertyArea =
-    extractRawPropertyArea(detailAttributes)
+  extractRawPropertyArea(detailAttributes) ||
+  extractLabeledValue($, 'Área total')
   const rawYearBuilt =
     extractRawYearBuilt(detailAttributes)
   const page =
@@ -548,72 +678,90 @@ console.log('OFFER:', JSON.stringify(offer, null, 2))
   } catch (error) {}
   const images =
     await extractImages(page)
-  const whatsapp =
-    await extractWhatsapp(page)
-  await page.close()
+    await page.close()
+
+
   return {
-  source_name:
-    SOURCE_NAME,
-  source_listing_id:
-    createSourceListingId(listingUrl),
-  source_url:
-    listingUrl,
-    transaction_type:
-      TRANSACTION_TYPE,
-    listing_status:
-      'active',
-    province:
-      location.province,
-    canton:
-      location.canton,
-    district:
-      location.district,
-    raw_breadcrumbs:
-      location.raw_breadcrumbs,
-    title,
-    description,
-    raw_property_type:
+  source_name: SOURCE_NAME,
+  source_listing_id: createSourceListingId(listingUrl),
+  source_url: listingUrl,
+  transaction_type: TRANSACTION_TYPE,
+  listing_status: 'active',
+
+  province: location.province,
+  canton: location.canton,
+  district: location.district,
+  raw_breadcrumbs: location.raw_breadcrumbs,
+
+  title,
+  description: clean(flightAd?.description || description),
+
+  raw_property_type: title,
+
+  raw_bedrooms:
+    flightAd?.rooms || rawBedrooms,
+
+  raw_bathrooms:
+    flightAd?.bathrooms || rawBathrooms,
+
+  raw_parking:
+    flightAd?.parking || rawParking,
+
+  raw_year_built:
+    flightAd?.age || rawYearBuilt,
+
+  raw_property_area:
+    flightAd?.lotSize || rawPropertyArea,
+
+  raw_construction_area:
+    flightAd?.square || rawConstructionArea,
+
+  current_price:
+    flightAd?.price?.amount?.value ||
+    flightAd?.price_value ||
+    extractPrice(
+      offer,
+      insightAttributes,
+      detailAttributes,
+      title
+    ) ||
+    extractTablePrice($) ||
+    extractVisiblePrice($),
+
+  currency:
+    extractVisibleCurrency($) ||
+    flightAd?.price?.currency?.symbol ||
+    extractCurrency(
+      offer,
+      insightAttributes,
+      detailAttributes,
       title,
-    raw_bedrooms:
-      rawBedrooms,
-    raw_bathrooms:
-      rawBathrooms,
-    raw_parking:
-      rawParking,
-    raw_year_built:
-      rawYearBuilt,
-    raw_property_area:
-      rawPropertyArea,
-    raw_construction_area:
-      rawConstructionArea,
-    current_price:
-      extractPrice(
-        offer,
-        insightAttributes,
-        detailAttributes,
-        title
-      ),
-    currency:
-      extractCurrency(
-        offer,
-        insightAttributes,
-        detailAttributes,
-        title,
-        description
-      ),
-    monthly_price:
-      '',
-    whatsapp,
-    images:
-      images.join('|'),
-    raw_insight_attributes:
-      JSON.stringify(insightAttributes),
-    raw_detail_attributes:
-      JSON.stringify(detailAttributes),
-    raw_jsonld:
-      JSON.stringify(jsonLd)
-  }
+      description
+    ),
+
+  monthly_price: '',
+
+  whatsapp:
+  flightAd?.user?.contact?.whatsapp ||
+  flightAd?.user?.contact?.phone1?.number ||
+  flightAd?.user?.contact?.phone2?.number ||
+  '',
+
+  images:
+    images.join('|'),
+
+  raw_insight_attributes:
+    JSON.stringify(insightAttributes),
+
+  raw_detail_attributes:
+    JSON.stringify(detailAttributes),
+
+  raw_jsonld:
+    JSON.stringify(jsonLd)
+ }
 }
+
+
 function getCsvHeaders() {
   return [
     'source_name',
@@ -667,6 +815,8 @@ function writeCsv({
     csvRows.join('\n')
   )
 }
+
+    
 
 async function scrapeEncuentra24Sale() {
   const regionSlug =
@@ -768,7 +918,11 @@ if (pageNumber === 1 && pageCards[0]) {
         'UNIQUE LISTING URLS:',
         listingItems.length
       )
-    for (const item of listingItems.slice(0, MAX_LISTINGS)) {
+
+      
+
+    for (const [index, item] of listingItems.slice(0, MAX_LISTINGS).entries()) {
+
   const listingUrl =
     item.listingUrl
       if (!createSourceListingId(listingUrl)) continue
@@ -776,12 +930,16 @@ if (pageNumber === 1 && pageCards[0]) {
       if (!isSaleListing(listingUrl)) continue
       if (rows.length >= MAX_LISTINGS) break
       try {
+
+console.log('START LISTING:', listingUrl)
+
         const row =
           await scrapeListing({
             browser,
             listingUrl,
             baseUrl: item.pageUrl
           })
+
           if (!isObservationValid(row)) {
 console.log(
 'SKIPPED LOW QUALITY OBSERVATION:',
@@ -791,6 +949,9 @@ row.source_url
           }
 
           rows.push(row)
+
+console.log('FINISHED LISTING:', listingUrl)
+
       } catch (error) {
         console.error(
           'LISTING ERROR:',
@@ -799,12 +960,21 @@ row.source_url
         )
       }
     }
+
+    
+
     const fileName =
       `${regionSlug}-sale-raw.csv`
+
+console.log('ROWS COLLECTED:', rows.length)
+      
     writeCsv({
       rows,
       fileName
     })
+    
+console.log('WRITECSV COMPLETE')
+
     console.log(
       JSON.stringify(
         rows,
