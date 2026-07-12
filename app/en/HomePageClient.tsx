@@ -94,7 +94,7 @@ const [showMainOverlay, setShowMainOverlay] =
                   setTimeout(() => {
                     setShowMainOverlay(true)
                   }, 600)
-                }, 8000)
+                }, 20000)
                 return () => clearTimeout(timer)
               }, [searchParams])
     
@@ -294,7 +294,7 @@ const [showMainOverlay, setShowMainOverlay] =
                       zIndex:9998,
 
                       backgroundImage:
-                        'url(/images/twuanis-intro-es.png)',
+                        'url(/images/twuanis-intro-en.png)',
 
                       backgroundSize:
                             isMobile

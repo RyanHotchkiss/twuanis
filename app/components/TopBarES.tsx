@@ -1,23 +1,43 @@
 'use client'
 
-import HomeButton from '@/app/components/HomeButton'
-import SearchButton from '@/app/components/SearchButton'
-import CreateListingButtonS from '@/app/components/CreateListingButtonS'
-import Explore from '@/app/components/Explore'
-import SwipeCard from '@/app/components/SwipeCard'
-import Favorites from '@/app/components/Favorites'
-import HelpButton from '@/app/components/HelpButton'
-import LanguageButtonEN from '@/app/components/LanguageButtonEN'
 import Link from 'next/link'
+
+import {
+  House,
+  Search,
+  Megaphone,
+  Compass,
+  ArrowLeftRight,
+  Heart,
+  CircleHelp
+} from 'lucide-react'
 
 type TopBarProps = {
   onFilterClick?: () => void
 }
 
+const navIcon = {
+  size: 34,
+  strokeWidth: 0.5,
+  color: '#C7A44B'
+}
+
+const linkStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  textDecoration: 'none',
+  background: 'transparent',
+  WebkitTapHighlightColor: 'transparent',
+  transition: 'opacity .2s ease'
+} as const
+
 export default function TopBar({
   onFilterClick
 }: TopBarProps) {
+
   return (
+
     <div
       style={{
         display: 'flex',
@@ -34,50 +54,90 @@ export default function TopBar({
         msOverflowStyle: 'none'
       }}
     >
-      <HomeButton href="/es?skipintro=true" />
 
-      <SearchButton
-        onClick={() => {
-          window.location.href = '/es?overlay=looking'
-        }}
-      />
+      <Link
+        href="/es?skipintro=true"
+        style={linkStyle}
+        onMouseEnter={e => (e.currentTarget.style.opacity = '.7')}
+        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+      >
+        <House {...navIcon} />
+      </Link>
 
-      <CreateListingButtonS
-        onCreateListing={() => {
-          window.location.href = '/es?overlay=posting'
-        }}
-      />
+      <Link
+        href="/es?overlay=looking"
+        style={linkStyle}
+        onMouseEnter={e => (e.currentTarget.style.opacity = '.7')}
+        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+      >
+        <Search {...navIcon} />
+      </Link>
 
-      <Explore
+      <Link
+        href="/es?overlay=posting"
+        style={linkStyle}
+        onMouseEnter={e => (e.currentTarget.style.opacity = '.7')}
+        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+      >
+        <Megaphone {...navIcon} />
+      </Link>
+
+      <Link
         href="/es/explora"
-        label=""
-      />
+        style={linkStyle}
+        onMouseEnter={e => (e.currentTarget.style.opacity = '.7')}
+        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+      >
+        <Compass {...navIcon} />
+      </Link>
 
-      <SwipeCard
+      <Link
         href="/es/deslizar/comprar"
-        label=""
-      />
+        style={linkStyle}
+        onMouseEnter={e => (e.currentTarget.style.opacity = '.7')}
+        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+      >
+        <ArrowLeftRight {...navIcon} />
+      </Link>
 
-      <Favorites
+      <Link
         href="/es/favoritos"
-        label="Propiedades Favoritas"
-        icon="♥"
-      />
+        style={linkStyle}
+        onMouseEnter={e => (e.currentTarget.style.opacity = '.7')}
+        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+      >
+        <Heart {...navIcon} />
+      </Link>
 
       <Link
         href="/soporte/ayuda"
-        style={{
-          textDecoration: 'none',
-          display: 'flex',
-          alignItems: 'center',
-          background: 'transparent',
-          WebkitTapHighlightColor: 'transparent'
-        }}
+        style={linkStyle}
+        onMouseEnter={e => (e.currentTarget.style.opacity = '.7')}
+        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
       >
-        <HelpButton />
+        <CircleHelp {...navIcon} />
       </Link>
 
-      <LanguageButtonEN />
+      <Link
+        href="/en"
+        style={linkStyle}
+        onMouseEnter={e => (e.currentTarget.style.opacity = '.7')}
+        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+      >
+        <span
+          style={{
+            color: '#C7A44B',
+            fontSize: '1.5rem',
+            fontWeight: 100,
+            letterSpacing: '.05em'
+          }}
+        >
+          EN
+        </span>
+      </Link>
+
     </div>
+
   )
+
 }

@@ -5,6 +5,9 @@ export default function ValuationResults({
   filters: any
   valuation: any
 }) {
+  const isRent =
+    filters.transaction_type === 'rent'
+
   return (
     <section>
       <h2 style={sectionTitle}>
@@ -33,6 +36,7 @@ export default function ValuationResults({
           value={`${valuation.summary.confidenceScore} · ${valuation.summary.confidenceLabel}`}
         />
 
+        {!isRent && (
         <StatCard
           label="Estimated Sale Price"
           value={
@@ -48,22 +52,25 @@ export default function ValuationResults({
             )
           }
         />
+      )}
 
-        <StatCard
-          label="Estimated Rental Value"
-          value={
-            valuation.summary.estimatedRentalValueCRC ? (
-              <>
-                <div>{valuation.summary.estimatedRentalValueCRC}</div>
-                <div style={secondaryValue}>
-                  {valuation.summary.estimatedRentalValueUSD}
-                </div>
-              </>
-            ) : (
-              'Not enough data'
-            )
-          }
-        />
+        {isRent && (
+          <StatCard
+            label="Estimated Rental Value"
+            value={
+              valuation.summary.estimatedRentalValueCRC ? (
+                <>
+                  <div>{valuation.summary.estimatedRentalValueCRC}</div>
+                  <div style={secondaryValue}>
+                    {valuation.summary.estimatedRentalValueUSD}
+                  </div>
+                </>
+              ) : (
+                'Not enough data'
+              )
+            }
+          />
+        )}
       </div>
 
       <h2 style={sectionTitle}>
@@ -94,31 +101,7 @@ export default function ValuationResults({
         )}
       </div>
 
-      <h2 style={sectionTitle}>
-        Pricing Signals
-      </h2>
-
-      <div style={cardGrid}>
-        <StatCard
-          label="Price per m²"
-          value={valuation.pricingSignals.pricePerM2 || 'Coming soon'}
-        />
-
-        <StatCard
-          label="Market Percentile"
-          value={valuation.pricingSignals.marketPercentile || 'Coming soon'}
-        />
-
-        <StatCard
-          label="Days on Market Estimate"
-          value={valuation.pricingSignals.daysOnMarketEstimate || 'Coming soon'}
-        />
-
-        <StatCard
-          label="Overpriced / Underpriced"
-          value={valuation.pricingSignals.pricePosition || 'Coming soon'}
-        />
-      </div>
+      
 
       <h2 style={sectionTitle}>
         Recommended Price Range

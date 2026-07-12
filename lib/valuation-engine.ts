@@ -1,5 +1,6 @@
 import { getMarketStatistics } from '@/lib/statistics-engine'
 import { getComparableListings } from '@/lib/comparables-engine'
+import { getPriceMeterAnalysis } from '@/lib/price-meter-engine'
 
 import {
   getValuationConfidenceScore,
@@ -29,6 +30,9 @@ type ValuationFilters = {
   terrain?: string
   accessibility?: string
   legal_status?: string
+
+  current_price?: string
+  monthly_price?: string
 }
 
 const valuationCopy = {
@@ -133,26 +137,98 @@ export async function getValuation(
 ) {
   const copy = valuationCopy[language]
 
-  const market = await getMarketStatistics(filters)
+const marketFilters = {
+  transaction_type: filters.transaction_type,
+  province: filters.province,
+  canton: filters.canton,
+  district: filters.district,
+  property_type: filters.property_type,
+  bedrooms: filters.bedrooms,
+  bathrooms: filters.bathrooms,
+  parking: filters.parking,
+  year_built: filters.year_built,
+  property_area: filters.property_area,
+  construction_area: filters.construction_area,
+  utility: filters.utility,
+  environment: filters.environment,
+  terrain: filters.terrain,
+  accessibility: filters.accessibility,
+  legal_status: filters.legal_status,
+}
+
+  const marketCandidates = [
+    marketFilters,
+
+    {
+      transaction_type: filters.transaction_type,
+      province: filters.province,
+      canton: filters.canton,
+      property_type: filters.property_type
+    },
+
+    {
+      transaction_type: filters.transaction_type,
+      province: filters.province,
+      property_type: filters.property_type
+    },
+
+    {
+      transaction_type: filters.transaction_type,
+      province: filters.province,
+      canton: filters.canton
+    },
+
+    {
+      transaction_type: filters.transaction_type,
+      province: filters.province
+    },
+
+    {
+      transaction_type: filters.transaction_type
+    }
+  ]
+
+  const markets =
+    await Promise.all(
+      marketCandidates.map(candidate =>
+        getMarketStatistics(candidate)
+      )
+    )
+
+  const market =
+    markets.find(candidate =>
+      candidate.listings?.length > 0 &&
+      (
+        candidate.statistics.averageSalePrice ||
+        candidate.statistics.medianSalePrice ||
+        candidate.statistics.averageRentCRC ||
+        candidate.statistics.medianRentCRC
+      )
+    ) || markets[0]
+
+  const priceMeterAnalysis =
+  await getPriceMeterAnalysis(marketFilters, language)
 
   const stats = market.statistics
   const listings = market.listings || []
 
+  const isRent =
+  filters.transaction_type === 'rent'
+
   const averageSalePrice = stats.averageSalePrice
-    ? Number(stats.averageSalePrice) * 1000000
+    ? Number(stats.averageSalePrice)
     : null
 
   const medianSalePrice = stats.medianSalePrice
-    ? Number(stats.medianSalePrice) * 1000000
+    ? Number(stats.medianSalePrice)
     : null
 
-  const estimatedMarketValue =
-    medianSalePrice || averageSalePrice || null
+    const estimatedMarketValue =
+      medianSalePrice ||
+      averageSalePrice ||
+      null
 
-  const saleRange =
-    calculateRange(estimatedMarketValue)
-
-  const estimatedRentalValue =
+      const estimatedRentalValue =
     stats.medianRentCRC ||
     stats.averageRentCRC ||
     null
@@ -163,6 +239,79 @@ export async function getValuation(
         ? Number(estimatedRentalValue)
         : null
     )
+    
+    const marketDifference =
+      estimatedMarketValue && medianSalePrice
+        ? (
+            (estimatedMarketValue - medianSalePrice) /
+            medianSalePrice
+          ) * 100
+        : null
+
+    const constructionArea =
+      filters.construction_area
+        ? Number(filters.construction_area)
+        : null
+
+    const propertyArea =
+      filters.property_area
+        ? Number(filters.property_area)
+        : null
+
+    const area =
+      constructionArea || propertyArea
+
+    const pricePerM2 =
+      estimatedMarketValue && area
+        ? estimatedMarketValue / area
+        : null    
+
+   const comparisonPrice =
+      filters.transaction_type === 'rent'
+        ? Number(filters.monthly_price)
+        : Number(filters.current_price)
+        
+
+    const comparisonTarget =
+      isRent
+        ? Number(estimatedRentalValue)
+        : estimatedMarketValue
+
+    const comparisonDifference =
+      comparisonPrice && comparisonTarget
+        ? ((comparisonPrice - comparisonTarget) / comparisonTarget) * 100
+        : marketDifference
+
+    const pricePosition =
+      comparisonDifference === null
+        ? null
+        : language === 'es'
+          ? comparisonDifference < -10
+            ? 'Por Debajo del Mercado'
+            : comparisonDifference > 10
+              ? 'Por Encima del Mercado'
+              : 'Valor Justo'
+          : comparisonDifference < -10
+            ? 'Underpriced'
+            : comparisonDifference > 10
+              ? 'Overpriced'
+              : 'Fair Value'
+
+    const marketPercentile =
+      marketDifference === null
+        ? null
+        : marketDifference < -20
+          ? '25th Percentile'
+          : marketDifference < -10
+            ? '40th Percentile'
+            : marketDifference < 10
+              ? '50th Percentile'
+              : marketDifference < 20
+                ? '75th Percentile'
+                : '90th Percentile'
+
+  const saleRange =
+    calculateRange(estimatedMarketValue)
 
   const sampleSize =
     listings.length || 0
@@ -184,17 +333,26 @@ export async function getValuation(
   const confidenceLabel =
     getConfidenceLabel(confidenceScore, language)
 
+      const activeRange =
+  isRent
+    ? rentalRange
+    : saleRange
+
   return {
     filters,
 
     summary: {
       estimatedMarketValueCRC:
-        formatCRC(estimatedMarketValue),
+        isRent
+          ? formatCRC(Number(estimatedRentalValue))
+          : formatCRC(estimatedMarketValue),
 
       estimatedMarketValueUSD:
-        estimatedMarketValue
-          ? formatUSD(estimatedMarketValue / 500)
-          : null,
+        isRent && estimatedRentalValue
+          ? formatUSD(Number(estimatedRentalValue) / 500)
+          : estimatedMarketValue
+            ? formatUSD(estimatedMarketValue / 500)
+            : null,
 
       confidenceScore:
         `${confidenceScore}%`,
@@ -221,46 +379,45 @@ export async function getValuation(
     },
 
     pricingSignals: {
-      pricePerM2:
-        stats.averagePricePerM2
-          ? formatCRC(Number(stats.averagePricePerM2))
-          : null,
+        pricePerM2: pricePerM2
+        ? formatCRC(pricePerM2)
+        : null,
 
-      marketPercentile:
-        copy.comingSoon,
+        marketPercentile:
+          marketPercentile,
 
-      daysOnMarketEstimate:
-        copy.comingSoon,
+        daysOnMarketEstimate:
+          'Requires Twuanis historical listing data',
 
-      pricePosition:
-        copy.comingSoon
-    },
+        pricePosition:
+          pricePosition
+      },
 
     recommendedRange: {
-      lowCRC:
-        formatCRC(saleRange.low),
+        lowCRC:
+          formatCRC(activeRange.low),
 
-      likelyCRC:
-        formatCRC(saleRange.likely),
+        likelyCRC:
+          formatCRC(activeRange.likely),
 
-      highCRC:
-        formatCRC(saleRange.high),
+        highCRC:
+          formatCRC(activeRange.high),
 
-      lowUSD:
-        saleRange.low
-          ? formatUSD(saleRange.low / 500)
-          : null,
+        lowUSD:
+          activeRange.low
+            ? formatUSD(activeRange.low / 500)
+            : null,
 
-      likelyUSD:
-        saleRange.likely
-          ? formatUSD(saleRange.likely / 500)
-          : null,
+        likelyUSD:
+          activeRange.likely
+            ? formatUSD(activeRange.likely / 500)
+            : null,
 
-      highUSD:
-        saleRange.high
-          ? formatUSD(saleRange.high / 500)
-          : null
-    },
+        highUSD:
+          activeRange.high
+            ? formatUSD(activeRange.high / 500)
+            : null
+      },
 
     rentalRange: {
       lowCRC:

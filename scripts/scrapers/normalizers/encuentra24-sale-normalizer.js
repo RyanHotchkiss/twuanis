@@ -54,11 +54,9 @@ function parsePriceMillions(value) {
 }
 
 function normalizeAreaValue(value) {
-  const text =
-    normalizeText(value)
+  const text = normalizeText(value)
 
-  const number =
-    parseNumber(value)
+  let number = parseNumber(value)
 
   if (!number) return ''
 
@@ -66,10 +64,10 @@ function normalizeAreaValue(value) {
     text.includes('hectarea') ||
     text.includes('ha')
   ) {
-    return `${number * 10000} m²`
+    number = number * 10000
   }
 
-  return `${number} m²`
+  return number
 }
 
 function areaBucket(value, type) {
@@ -578,13 +576,12 @@ function normalizeRow(row) {
     year_built_range: normalizeYearBuilt(row.raw_year_built),
 
     construction_area:
-      areaBucket(row.raw_construction_area, 'construction'),
+      normalizeAreaValue(row.raw_construction_area),
 
     property_area:
-      areaBucket(
+      normalizeAreaValue(
         row.raw_property_area ||
-        row.raw_construction_area,
-        'property'
+        row.raw_construction_area
       ),
 
     utility: toPostgresArray(inferUtilities(row)),

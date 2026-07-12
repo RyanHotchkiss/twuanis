@@ -6,7 +6,7 @@ import JsonLd from '@/app/components/JsonLd'
 import TopBar from '@/app/components/TopBar'
 
 import { buildListingSchema } from '@/lib/schema-engine'
-
+import { getValuation } from '@/lib/valuation-engine'
 import {
   getGraphNeighbors,
   getOntologyTermsByIds
@@ -19,7 +19,41 @@ export default async function ListingPage({
 }) {
   const { id } = await params
 
+function StatCard({
+          label,
+          value
+        }: {
+          label: string
+          value: any
+        }) {
+          return (
+            <div style={statCard}>
+              <p style={statLabel}>{label}</p>
+              <div style={statValue}>{value}</div>
+            </div>
+          )
+        }
 
+  function MoneyValue({
+      usd,
+      crc
+    }: {
+      usd: number | null
+      crc: number | null
+    }) {
+      return (
+        <>
+          <div style={{ color: '#fff', fontSize: '1.6rem', fontWeight: 'bold' }}>
+            {usd ? `$${Math.round(usd).toLocaleString()}` : 'Not enough data'}
+          </div>
+          {crc && (
+            <div style={{ color: '#888', fontSize: '1rem', marginTop: '.35rem' }}>
+              ₡{Math.round(crc).toLocaleString()}
+            </div>
+          )}
+        </>
+      )
+    }
 
 const { data, error } = await supabase
   .from('listings')
@@ -41,23 +75,43 @@ if (error || !data) {
 }
 
 const listing = {
-  ...data,
-  images:
-    Array.isArray(data.images)
-      ? data.images
-      : typeof data.images === 'string'
-      ? (() => {
-          try {
-            return JSON.parse(data.images)
-          } catch {
-            return data.images
-              .split('|')
-              .map((img: string) => img.trim())
-              .filter(Boolean)
-          }
-        })()
-      : []
-}
+      ...data,
+      images:
+        Array.isArray(data.images)
+          ? data.images
+          : typeof data.images === 'string'
+          ? (() => {
+              try {
+                return JSON.parse(data.images)
+              } catch {
+                return data.images
+                  .split('|')
+                  .map((img: string) => img.trim())
+                  .filter(Boolean)
+              }
+            })()
+          : []
+    }
+
+    const listingPricePerM2 =
+      listing.current_price && listing.property_area
+        ? Number(listing.current_price) / Number(listing.property_area)
+        : null
+
+    const valuation = await getValuation(
+      {
+        transaction_type:
+          listing.transaction_type === 'buy'
+            ? 'sale'
+            : listing.transaction_type,
+
+        province: listing.province,
+        canton: listing.canton,
+        district: listing.district,
+        property_type: listing.property_type,
+      },
+      'en'
+    )
 
 const { data: ontologyRows } = await supabase
   .from('listings_ontology_terms')
@@ -114,6 +168,27 @@ const schema = buildListingSchema({
         mode: 'buy'
         })
   
+        const USD_TO_CRC = 500
+
+          const listingPriceUSD =
+            listing.currency === 'USD'
+              ? Number(listing.current_price)
+              : Number(listing.current_price) / USD_TO_CRC
+
+          const listingPriceCRC =
+            listing.currency === 'USD'
+              ? Number(listing.current_price) * USD_TO_CRC
+              : Number(listing.current_price)
+
+          const listingPricePerM2USD =
+            listing.current_price && listing.property_area
+              ? listingPriceUSD / Number(listing.property_area)
+              : null
+
+          const listingPricePerM2CRC =
+            listing.current_price && listing.property_area
+              ? listingPriceCRC / Number(listing.property_area)
+              : null
 
   return (
 
@@ -354,7 +429,9 @@ const schema = buildListingSchema({
             </span>
 
             <div style={entityCard}>
-                {listing.construction_area}
+                {listing.construction_area
+                ? `${Number(listing.construction_area).toLocaleString()} m²`
+                : ''}
             </div>
 
             </div>
@@ -369,7 +446,9 @@ const schema = buildListingSchema({
             </span>
 
             <div style={entityCard}>
-                {listing.property_area}
+                {listing.property_area
+                ? `${Number(listing.property_area).toLocaleString()} m²`
+                : ''}
             </div>
 
             </div>
@@ -561,6 +640,89 @@ const schema = buildListingSchema({
 
       </div>
 
+      <h2
+            style={{
+              color: '#ff3B00',
+              fontSize: '2rem',
+              marginTop: '3rem',
+              marginBottom: '1rem'
+            }}
+          >
+            Twuanis Listing Intelligence
+          </h2>
+
+          <div style={cardGrid}>
+            <StatCard
+                  label="Estimated Market Value"
+                  value={
+                    valuation.summary.estimatedMarketValueUSD ? (
+                      <>
+                        <div>
+                          {valuation.summary.estimatedMarketValueUSD}
+                        </div>
+
+                        <div style={secondaryValue}>
+                          {valuation.summary.estimatedMarketValueCRC}
+                        </div>
+                      </>
+                    ) : (
+                      'Not enough data'
+                    )
+                  }
+                />
+
+            <StatCard
+              label="Listing Price"
+              value={
+                listing.current_price ? (
+                  <>
+                    <div>
+                      ${Math.round(listingPriceUSD).toLocaleString()}
+                    </div>
+
+                    <div style={secondaryValue}>
+                      ₡{Math.round(listingPriceCRC).toLocaleString()}
+                    </div>
+                  </>
+                ) : (
+                  'Not available'
+                )
+              }
+            />
+
+            <StatCard
+              label="Price Position"
+              value={
+                valuation.pricingSignals.pricePosition ||
+                'Not enough data'
+              }
+            />
+
+            <StatCard
+                label="Price per m²"
+                value={
+                  listingPricePerM2USD && listingPricePerM2CRC ? (
+                    <>
+                      <div>
+                        ${Math.round(listingPricePerM2USD).toLocaleString()}/m²
+                      </div>
+
+                      <div style={secondaryValue}>
+                        ₡{Math.round(listingPricePerM2CRC).toLocaleString()}/m²
+                      </div>
+                    </>
+                  ) : (
+                    'Not enough data'
+                  )
+                }
+              />
+
+            <StatCard
+              label="Confidence"
+              value={`${valuation.summary.confidenceScore} · ${valuation.summary.confidenceLabel}`}
+            />
+          </div>
+
     </main>
 </>
   )
@@ -609,4 +771,36 @@ const priceCard = {
   fontSize: '1.5rem',
   fontWeight: 'bold',
   textAlign: 'center' as const
+}
+
+const cardGrid = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(250px,1fr))',
+  gap: '1rem',
+  marginTop: '1rem'
+}
+
+const statCard = {
+  background: '#111',
+  border: '1px solid #222',
+  borderRadius: '1rem',
+  padding: '1.5rem'
+}
+
+const statLabel = {
+  color: '#888',
+  fontSize: '.9rem',
+  marginBottom: '.5rem'
+}
+
+const statValue = {
+  fontSize: '1.6rem',
+  fontWeight: 'bold'
+}
+
+const secondaryValue = {
+  marginTop: '.35rem',
+  color: '#888',
+  fontSize: '1rem',
+  fontWeight: 400
 }

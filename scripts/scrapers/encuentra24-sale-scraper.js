@@ -8,8 +8,8 @@ const crypto = require('crypto')
 const { isObservationValid } = require('./quality/isObservationValid')
 const SOURCE_NAME = 'encuentra24'
 const TRANSACTION_TYPE = 'sale'
-const MAX_LISTINGS = 100
-const MAX_PAGES = 20
+const MAX_LISTINGS = 10
+const MAX_PAGES = 2
 
 const USER_AGENT =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
@@ -81,21 +81,6 @@ async function fetchHtml(url, referer = '') {
     })
 
   return response.data
-}
-
-function getListingCards($) {
-  const cards = $('.d3-ad-tile').toArray()
-
-  if (cards.length > 0) {
-    return cards
-  }
-
-  return $('a[href*="/costa-rica-"][href*="/bienes-raices-"]')
-    .filter((i, el) => {
-      const href = $(el).attr('href') || ''
-      return /\/\d{7,}$/.test(href)
-    })
-    .toArray()
 }
 
 function getListingCards($) {
@@ -348,23 +333,53 @@ function extractRawParking(insightAttributes) {
   )
 }
 
-function extractRawConstructionArea(insightAttributes) {
-  return findAttributeValue(
-    insightAttributes,
-    [
-      'M² of construction',
-      'm² de construcción',
-      'Construcción',
-      'Construccion',
-      'Construction'
-    ]
-  )
-}
+function extractAreaFromDescription(description, patterns) {
+      for (const pattern of patterns) {
+        const match = String(description || '').match(pattern)
+
+        if (match?.[1]) {
+          return cleanAreaNumber(match[1])
+        }
+      }
+
+      return ''
+    }
+
+function extractRawConstructionArea(
+      insightAttributes,
+      detailAttributes
+    ) {
+      return (
+        findAttributeValue(
+          insightAttributes,
+          [
+            'M² of construction',
+            'm² de construcción',
+            'Construcción',
+            'Construccion',
+            'Construction',
+            'Área construida',
+            'Area construida'
+          ]
+        ) ||
+        findAttributeValue(
+          detailAttributes,
+          [
+            'Área construida',
+            'Area construida',
+            'Construcción',
+            'Construccion'
+          ]
+        )
+      )
+    }
 
 function extractRawPropertyArea(detailAttributes) {
   return findAttributeValue(
     detailAttributes,
     [
+      'Área total',
+      'Area total',
       'Lot Size',
       'Tamaño del lote',
       'Tamano del lote',
@@ -381,10 +396,39 @@ function extractRawYearBuilt(detailAttributes) {
       'Year of construction',
       'Año de construcción',
       'Ano de construccion',
+      'Año de contrucción',
+      'Ano de contruccion',
       'Year Built'
     ]
   )
 }
+
+function extractYearFromDescription(description) {
+      const patterns = [
+        /Estrenada en\s*(\d{4})/i,
+        /Construida en\s*(\d{4})/i,
+        /Año de construcci[oó]n\s*(\d{4})/i,
+        /Año de contrucci[oó]n\s*(\d{4})/i,
+        /Ano de construccion\s*(\d{4})/i
+      ]
+
+      for (const pattern of patterns) {
+        const match = String(description || '').match(pattern)
+
+        if (match?.[1]) {
+          const year = Number(match[1])
+
+          if (
+            year >= 1900 &&
+            year <= new Date().getFullYear()
+          ) {
+            return String(year)
+          }
+        }
+      }
+
+      return ''
+    }
 
 async function extractImages(page) {
   let images =
@@ -570,7 +614,63 @@ function extractFlightAd(html) {
     return null
   }
 }
-            
+
+function extractProjectSquareFromHtml(html) {
+      const matches = [
+        html.match(/"projectModels":\{"square":\{"from":(\d+)/),
+        html.match(/"square":\{"from":(\d+)/),
+        html.match(/projectModels.*?"from":(\d+)/s)
+      ]
+
+      for (const match of matches) {
+        if (match?.[1]) return `${match[1]} m²`
+      }
+
+      return ''
+    }
+
+function cleanAreaNumber(value) {
+    return String(value || '')
+      .replace(/\s*m²?/gi, '')
+      .replace(/\./g, '')
+      .replace(/,/g, '')
+      .replace(/[^\d]/g, '')
+  }
+
+function extractProjectLotSizeFromHtml(html) {
+      const match =
+        html.match(
+          /"projectModels"\s*:\s*\{.*?"lotSize"\s*:\s*\{.*?"from"\s*:\s*([\d.]+)/s
+        )
+      return match?.[1]
+        ? `${match[1]} m²`
+        : ''
+    }
+
+function extractJsonArea(html, patterns) {
+      for (const pattern of patterns) {
+        const match = String(html || '').match(pattern)
+
+        if (match?.[1]) {
+          return cleanAreaNumber(match[1])
+        }
+      }
+
+      return ''
+    }
+
+function extractJsonArea(html, patterns) {
+      for (const pattern of patterns) {
+        const match = String(html || '').match(pattern)
+
+        if (match?.[1]) {
+          return `${match[1]} m²`
+        }
+      }
+
+      return ''
+    }
+
 async function scrapeListing({
   browser,
   listingUrl,
@@ -642,22 +742,68 @@ const flightAd = extractFlightAd(html)
     /([\d.]+)\s*parking/i,
     /parking\s*([\d.]+)/i
   ])
+
   const rawConstructionArea =
-  extractRawConstructionArea(insightAttributes) ||
-  extractLabeledValue($, 'Área construida') ||
-  $('td').filter((_, el) =>
-    /m²/i.test(clean($(el).text()))
-  ).first().text() ||
-  extractFromBodyText(bodyText, [
-    /Desde\s*([\d,.]+)\s*m²\s*[áa]rea construida/i,
-    /([\d,.]+)\s*m²\s*[áa]rea construida/i
-  ])
+      flightAd?.square
+        ? cleanAreaNumber(flightAd.square)
+        : extractJsonArea(html, [
+            /"projectModels"\s*:\s*\{.*?"square"\s*:\s*\{.*?"from"\s*:\s*"?([\d.,]+)"?/s,
+            /\\"projectModels\\"\s*:\s*\{.*?\\"square\\"\s*:\s*\{.*?\\"from\\"\s*:\s*"?([\d.,]+)"?/s,
+            /"square"\s*:\s*"([\d.,]+)"/,
+            /\\"square\\"\s*:\s*\\"([\d.,]+)\\"/
+          ]) ||
+      extractRawConstructionArea(
+        {},
+        detailAttributes
+      ) ||
+      extractRawConstructionArea(
+        insightAttributes,
+        {}
+      ) ||
+      extractAreaFromDescription(description, [
+        /Construcción:\s*([\d,.]+)\s*m²?/i,
+        /Construccion:\s*([\d,.]+)\s*m²?/i,
+        /Construcci[oó]n:\s*([\d,.]+)\s*m2/i,
+        /Área construida\s*([\d,.]+)\s*m²/i,
+        /Area construida\s*([\d,.]+)\s*m²/i,
+        /Area de Construcci[oó]n,\s*m2:\s*([\d,.]+)/i,
+        /Construcci[oó]n\s+\d{4}\s*[–-]\s*([\d,.]+)\s*m²?/i,
+      ]) ||
+      extractFromBodyText(bodyText, [
+        /Área construida\s*([\d,.]+)\s*m²/i,
+        /Area construida\s*([\d,.]+)\s*m²/i
+      ])
 
   const rawPropertyArea =
-  extractRawPropertyArea(detailAttributes) ||
-  extractLabeledValue($, 'Área total')
+      flightAd?.lotSize
+        ? cleanAreaNumber(flightAd.lotSize)
+        : extractJsonArea(html, [
+            /"lotSize"\s*:\s*"([\d.,]+)"/,
+            /\\"lotSize\\"\s*:\s*\\"([\d.,]+)\\"/,
+            /"lotSize"\s*:\s*([\d.,]+)/,
+            /\\"lotSize\\"\s*:\s*([\d.,]+)/
+          ]) ||
+      extractRawPropertyArea(detailAttributes) ||
+      extractAreaFromDescription(description, [
+        /Área total[:\s]*([\d.,]+)\s*m²?/i,
+        /Area total[:\s]*([\d.,]+)\s*m²?/i,
+        /^(?:Lote|Área total|Area total)[:\s]*([\d.,]+)\s*m²?/im,
+        /Área[:\s]*([\d.,]+)\s*m²?/i,
+        /Area[:\s]*([\d.,]+)\s*m²?/i,
+        /Area de lote,\s*m2:\s*([\d,.]+)/i
+      ]) ||
+      extractFromBodyText(bodyText, [
+        /Área total[:\s]*([\d.,]+)\s*m²?/i,
+        /Area total[:\s]*([\d.,]+)\s*m²?/i,
+        /Lote[:\s]*([\d.,]+)\s*m²?/i
+      ])
+
   const rawYearBuilt =
-    extractRawYearBuilt(detailAttributes)
+      flightAd?.age ||
+      extractRawYearBuilt(detailAttributes) ||
+      extractYearFromDescription(description) ||
+      extractYearFromDescription(bodyText)
+
   const page =
     await browser.newPage()
   await page.setUserAgent(USER_AGENT)
@@ -708,13 +854,11 @@ const flightAd = extractFlightAd(html)
     flightAd?.parking || rawParking,
 
   raw_year_built:
-    flightAd?.age || rawYearBuilt,
+      rawYearBuilt,
 
-  raw_property_area:
-    flightAd?.lotSize || rawPropertyArea,
+  raw_property_area: rawPropertyArea,
 
-  raw_construction_area:
-    flightAd?.square || rawConstructionArea,
+  raw_construction_area: rawConstructionArea,
 
   current_price:
     flightAd?.price?.amount?.value ||

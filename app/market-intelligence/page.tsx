@@ -8,6 +8,8 @@ import { getMarketScarcity } from '@/lib/market-scarcity-engine'
 import { getBuyerDemand } from '@/lib/buyer-demand-engine'
 import { getMarketMatches } from '@/lib/market-matching-engine'
 import { getValuation } from '@/lib/valuation-engine'
+import { getMarketComparison } from '@/lib/market-comparison-engine'
+
 
 import TopBar from '@/app/components/TopBar'
 import MarketIntelligenceTabs from './MarketIntelligenceTabs'
@@ -31,6 +33,41 @@ type PageProps = {
     accessibility?: string
     legal_status?: string
     tab?: string
+    a_transaction_type?: string
+    a_province?: string
+    a_canton?: string
+    a_district?: string
+    a_property_type?: string
+    a_bedrooms?: string
+    a_bathrooms?: string
+    a_parking?: string
+    a_price_range?: string
+    a_year_built?: string
+    a_property_area?: string
+    a_construction_area?: string
+    a_utility?: string
+    a_environment?: string
+    a_terrain?: string
+    a_accessibility?: string
+    a_legal_status?: string
+
+    b_transaction_type?: string
+    b_province?: string
+    b_canton?: string
+    b_district?: string
+    b_property_type?: string
+    b_bedrooms?: string
+    b_bathrooms?: string
+    b_parking?: string
+    b_price_range?: string
+    b_year_built?: string
+    b_property_area?: string
+    b_construction_area?: string
+    b_utility?: string
+    b_environment?: string
+    b_terrain?: string
+    b_accessibility?: string
+    b_legal_status?: string    
   }>
 }
 
@@ -57,6 +94,44 @@ export default async function MarketIntelligencePage({
     terrain: params.terrain,
     accessibility: params.accessibility,
     legal_status: params.legal_status
+  }
+
+  const comparisonFilters = {
+    a_transaction_type: params.a_transaction_type,
+    a_province: params.a_province,
+    a_canton: params.a_canton,
+    a_district: params.a_district,
+    a_property_type: params.a_property_type,
+    a_bedrooms: params.a_bedrooms,
+    a_bathrooms: params.a_bathrooms,
+    a_parking: params.a_parking,
+    a_price_range: params.a_price_range,
+    a_year_built: params.a_year_built,
+    a_property_area: params.a_property_area,
+    a_construction_area: params.a_construction_area,
+    a_utility: params.a_utility,
+    a_environment: params.a_environment,
+    a_terrain: params.a_terrain,
+    a_accessibility: params.a_accessibility,
+    a_legal_status: params.a_legal_status,
+
+    b_transaction_type: params.b_transaction_type,
+    b_province: params.b_province,
+    b_canton: params.b_canton,
+    b_district: params.b_district,
+    b_property_type: params.b_property_type,
+    b_bedrooms: params.b_bedrooms,
+    b_bathrooms: params.b_bathrooms,
+    b_parking: params.b_parking,
+    b_price_range: params.b_price_range,
+    b_year_built: params.b_year_built,
+    b_property_area: params.b_property_area,
+    b_construction_area: params.b_construction_area,
+    b_utility: params.b_utility,
+    b_environment: params.b_environment,
+    b_terrain: params.b_terrain,
+    b_accessibility: params.b_accessibility,
+    b_legal_status: params.b_legal_status
   }
 
   function resolveFilterValue(
@@ -122,6 +197,13 @@ const engineFilters = {
         const buyerDemand =
         await getBuyerDemand(engineFilters, 'en')
 
+        const comparison =
+            await getMarketComparison(
+              comparisonFilters,
+              comparisonFilters,
+              'en'
+            )
+
 console.log('ENGINE FILTERS:', engineFilters)
 
   return (
@@ -142,7 +224,9 @@ console.log('ENGINE FILTERS:', engineFilters)
       <MarketIntelligenceTabs
         activeTab={params.tab || 'explorer'}
         options={options}
-        filters={enginefilters}
+        filters={params.tab === 'comparison'
+            ? comparisonFilters
+            : enginefilters}
         explorerResult={explorerResult}
         priceMeterAnalysis={priceMeterAnalysis}
         pricingStrategy={pricingStrategy}
@@ -150,6 +234,7 @@ console.log('ENGINE FILTERS:', engineFilters)
         marketMatches={marketMatches}
         valuation={valuation}
         buyerDemand={buyerDemand}
+        comparison={comparison}
       />
     </main>
   )

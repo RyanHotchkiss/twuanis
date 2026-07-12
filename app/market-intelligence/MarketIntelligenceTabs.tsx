@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-
 import ExploreResults from '@/app/explore/ExploreResults'
 import PriceMeterResults from '@/app/price-per-square-meter/PriceMeterResults'
 import PricingStrategyResults from '@/app/pricing-strategy/PricingStrategyResults'
@@ -10,6 +9,17 @@ import BuyerDemandResults from '@/app/buyer-demand/BuyerDemandResults'
 import MarketMatchingResults from '@/app/market-matching/MarketMatchingResults'
 import ValuationResults from '@/app/valuation/ValuationResults'
 import MarketFilters from '@/app/components/MarketFilters'
+import MarketComparisonResults from '@/app/market-comparison/MarketComparisonResults'
+import {
+  Compass,
+  BadgeDollarSign,
+  Target,
+  HeartHandshake,
+  Scale,
+  Ruler,
+  ChartColumnIncreasing,
+  Flame
+} from 'lucide-react'
 
 type Props = {
   activeTab: string
@@ -21,34 +31,84 @@ type Props = {
   buyerDemand: any
   marketMatches: any
   valuation: any
+  comparison: any
   options: any
 }
 
 const tabs = [
-  { id: 'explorer', label: 'Market Explorer' },
-  { id: 'price-meter', label: 'Price / m²' },
-  { id: 'pricing', label: 'Pricing Strategy' },
-  { id: 'scarcity', label: 'Market Scarcity' },
-  { id: 'matching', label: 'Property Matching' },
-  { id: 'valuation', label: 'Valuation' },
-  { id: 'comparison', label: 'Market Comparison' },
-  { id: 'buyer-demand', label: ( <>
-              <div>Buyer Demand</div>
-              <div
-                style={{
-                  fontSize: '.65rem',
-                  color: '#88888850',
-                  marginTop: '.15rem',
-                  textAlign: 'center',
-                  fontWeight: 400
-                }}
-              >
-                Coming in 2027
-              </div>
-            </>
-          )
-        }
-      ]
+      {
+        id: 'explorer',
+        package: 'Free',
+        color: '#2ecc71',
+        icon: Compass,
+        label: 'Market Explorer',
+        description: 'Explore listings and market characteristics.'
+      },
+
+      {
+        id: 'valuation',
+        package: 'Market Valuator',
+        color: '#0066cc',
+        icon: BadgeDollarSign,
+        label: 'Valuation',
+        description: 'Estimate what a property is worth.'
+      },
+
+      {
+        id: 'pricing',
+        package: 'Market Valuator',
+        color: '#0066cc',
+        icon: Target,
+        label: 'Pricing Strategy',
+        description: 'Choose a competitive listing price.'
+      },
+
+      {
+        id: 'matching',
+        package: 'Market Valuator',
+        color: '#0066cc',
+        icon: HeartHandshake,
+        label: 'Property Matching',
+        description: 'Find better matching properties.'
+      },
+
+      {
+        id: 'comparison',
+        package: 'Market Analyzer',
+        color: '#ff3b00',
+        icon: Scale,
+        label: 'Market Comparison',
+        description: 'Compare two real estate markets.'
+      },
+
+      {
+        id: 'price-meter',
+        package: 'Market Analyzer',
+        color: '#ff3b00',
+        icon: Ruler,
+        label: 'Price / m²',
+        description: 'Analyze pricing efficiency.'
+      },
+
+      {
+        id: 'scarcity',
+        package: 'Market Analyzer',
+        color: '#ff3b00',
+        icon: ChartColumnIncreasing,
+        label: 'Market Frequency',
+        description: 'Measure rarity of property characteristics.'
+      },
+
+      {
+        id: 'buyer-demand',
+        package: 'Market Predictor',
+        color: '#dc143c',
+        icon: Flame,
+        label: 'Buyer Demand',
+        description: 'Coming in 2027',
+        disabled: true
+      }
+    ]
 
 export default function MarketIntelligenceTabs({
   activeTab,
@@ -60,7 +120,8 @@ export default function MarketIntelligenceTabs({
   marketScarcity,
   buyerDemand,
   marketMatches,
-  valuation 
+  valuation,
+  comparison
 }: Props) {
 
   const query =
@@ -81,20 +142,72 @@ export default function MarketIntelligenceTabs({
     <>
       <div style={tabBar}>
 
-        {tabs.map(tab => (
-          <Link
-            key={tab.id}
-            href={`/market-intelligence?${query.toString()}&tab=${tab.id}`}
-            style={{
-              ...tabButton,
-              ...(activeTab === tab.id
-                ? activeTabStyle
-                : {})
-            }}
-          >
-            {tab.label}
-          </Link>
-        ))}
+       {tabs.map(tab => {
+            const Icon = tab.icon
+
+            return (
+              <Link
+                key={tab.id}
+                href={`/market-intelligence?${query.toString()}&tab=${tab.id}`}
+                style={{
+                  ...card,
+                  borderColor:
+                    activeTab === tab.id
+                      ? tab.color
+                      : '#333',
+                  opacity:
+                    tab.disabled ? .45 : 1,
+                  pointerEvents:
+                    tab.disabled ? 'none' : 'auto'
+                }}
+              >
+                <div
+                  style={{
+                    marginBottom: '.6rem'
+                  }}
+                >
+                  <Icon
+                    size={42}
+                    strokeWidth={0.5}
+                    color="#C7A44B"
+                  />
+                </div>
+
+                <div
+                  style={{
+                    color: tab.color,
+                    fontWeight: 700,
+                    fontSize: '.75rem',
+                    textTransform: 'uppercase',
+                    letterSpacing: '.08em',
+                    marginBottom: '.35rem'
+                  }}
+                >
+                  {tab.package}
+                </div>
+
+                <div
+                  style={{
+                    color: '#fff',
+                    fontSize: '1.15rem',
+                    marginBottom: '.45rem'
+                  }}
+                >
+                  {tab.label}
+                </div>
+
+                <div
+                  style={{
+                    color: '#9a9a9a',
+                    fontSize: '.85rem',
+                    lineHeight: 1.35
+                  }}
+                >
+                  {tab.description}
+                </div>
+              </Link>
+            )
+          })}
 
       </div>
 
@@ -104,6 +217,11 @@ export default function MarketIntelligenceTabs({
         </h2>
 
         <MarketFilters
+          mode={
+            activeTab === 'comparison'
+              ? 'comparison'
+              : 'single'
+          }
           options={options}
           filters={filters}
           basePath={`/market-intelligence?tab=${activeTab}`}
@@ -161,6 +279,12 @@ export default function MarketIntelligenceTabs({
           />
         )}
 
+        {activeTab === 'comparison' && (
+          <MarketComparisonResults
+            comparison={comparison}
+          />
+        )}
+
         {activeTab === 'buyer-demand' && (
           <BuyerDemandResults
             filters={filters}
@@ -182,11 +306,25 @@ function EmptyState() {
 }
 
 const tabBar = {
-  display: 'flex',
-  gap: '.75rem',
-  flexWrap: 'wrap' as const,
+  display: 'grid',
+  gridTemplateColumns:
+    'repeat(auto-fit,minmax(220px,1fr))',
+  gap: '1rem',
   marginTop: '2rem',
-  marginBottom: '2rem'
+  marginBottom: '2.5rem'
+}
+
+const card = {
+  background: '#181818',
+  border: '2px solid',
+  borderRadius: '16px',
+  padding: '1.25rem',
+  textDecoration: 'none',
+  transition: '.2s',
+  minHeight: '170px',
+  display: 'flex',
+  flexDirection: 'column' as const,
+  justifyContent: 'flex-start'
 }
 
 const tabButton = {

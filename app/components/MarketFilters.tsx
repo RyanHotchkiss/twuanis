@@ -44,14 +44,26 @@ function buildUrl(
     params.delete(key)
   }
 
-  if (key === 'province') {
-    params.delete('canton')
-    params.delete('district')
-  }
+  const prefix =
+      key.startsWith('a_')
+        ? 'a_'
+        : key.startsWith('b_')
+          ? 'b_'
+          : ''
 
-  if (key === 'canton') {
-    params.delete('district')
-  }
+    const plainKey =
+      prefix
+        ? key.slice(2)
+        : key
+
+    if (plainKey === 'province') {
+      params.delete(`${prefix}canton`)
+      params.delete(`${prefix}district`)
+    }
+
+    if (plainKey === 'canton') {
+      params.delete(`${prefix}district`)
+    }
 
   const query = params.toString()
 
@@ -119,109 +131,186 @@ function normalizeOption(value: any) {
     .trim()
 }
 
+function FilterColumn({
+      title,
+      prefix,
+      options,
+      filters,
+      basePath
+    }: {
+      title?: string
+      prefix: '' | 'a_' | 'b_'
+      options: any
+      filters: Record<string, string | undefined>
+      basePath: string
+    }) {
+      const provinceKey = `${prefix}province`
+      const cantonKey = `${prefix}canton`
+      const districtKey = `${prefix}district`
+
+      const cantons = useMemo(() => {
+        const selectedProvinceValue =
+          filters[provinceKey]
+
+        if (!selectedProvinceValue) return []
+
+        const selectedProvince =
+          options.province?.find((province: any) =>
+            normalizeOption(getValue(province)) ===
+            normalizeOption(selectedProvinceValue)
+          )
+
+        if (!selectedProvince) return []
+
+        return (
+          options.canton?.filter(
+            (canton: any) =>
+              canton.parent_id === selectedProvince.id
+          ) || []
+        )
+      }, [
+        filters,
+        provinceKey,
+        options.province,
+        options.canton
+      ])
+
+      const districts = useMemo(() => {
+        const selectedCantonValue =
+          filters[cantonKey]
+
+        if (!selectedCantonValue) return []
+
+        const selectedCanton =
+          options.canton?.find((canton: any) =>
+            normalizeOption(getValue(canton)) ===
+            normalizeOption(selectedCantonValue)
+          )
+
+        if (!selectedCanton) return []
+
+        return (
+          options.district?.filter(
+            (district: any) =>
+              district.parent_id === selectedCanton.id
+          ) || []
+        )
+      }, [
+        filters,
+        cantonKey,
+        options.canton,
+        options.district
+      ])
+
+      return (
+        <div>
+          {title && (
+            <h3 style={marketHeading}>
+              {title}
+            </h3>
+          )}
+
+          <div style={locationSection}>
+            <h3 style={assetHeading}>Location</h3>
+
+            <div style={locationGrid}>
+              <FilterSelect
+                label="Province"
+                filterKey={provinceKey}
+                options={options.province}
+                filters={filters}
+                basePath={basePath}
+              />
+
+              <FilterSelect
+                label="Canton"
+                filterKey={cantonKey}
+                options={cantons}
+                filters={filters}
+                basePath={basePath}
+              />
+
+              <FilterSelect
+                label="District"
+                filterKey={districtKey}
+                options={districts}
+                filters={filters}
+                basePath={basePath}
+              />
+            </div>
+          </div>
+
+          <div style={wrapper}>
+            <FilterSelect label="Transaction" filterKey={`${prefix}transaction_type`} options={transactionOptions} filters={filters} basePath={basePath} />
+            <FilterSelect label="Property Type" filterKey={`${prefix}property_type`} options={options.property_type} filters={filters} basePath={basePath} />
+            <FilterSelect label="Bedrooms" filterKey={`${prefix}bedrooms`} options={options.bedrooms} filters={filters} basePath={basePath} />
+            <FilterSelect label="Bathrooms" filterKey={`${prefix}bathrooms`} options={options.bathrooms} filters={filters} basePath={basePath} />
+            <FilterSelect label="Parking" filterKey={`${prefix}parking`} options={options.parking} filters={filters} basePath={basePath} />
+            <FilterSelect label="Price Range" filterKey={`${prefix}price_range`} options={priceRangeOptions} filters={filters} basePath={basePath} />
+            <FilterSelect label="Property Area" filterKey={`${prefix}property_area`} options={options.property_area} filters={filters} basePath={basePath} />
+            <FilterSelect label="Construction Area" filterKey={`${prefix}construction_area`} options={options.construction_area} filters={filters} basePath={basePath} />
+            <FilterSelect label="Year Built" filterKey={`${prefix}year_built`} options={options.year_built} filters={filters} basePath={basePath} />
+            <FilterSelect label="Environment" filterKey={`${prefix}environment`} options={options.environment} filters={filters} basePath={basePath} />
+            <FilterSelect label="Terrain" filterKey={`${prefix}terrain`} options={options.terrain} filters={filters} basePath={basePath} />
+            <FilterSelect label="Utilities" filterKey={`${prefix}utility`} options={options.utility} filters={filters} basePath={basePath} />
+            <FilterSelect label="Accessibility" filterKey={`${prefix}accessibility`} options={options.accessibility} filters={filters} basePath={basePath} />
+            <FilterSelect label="Legal Status" filterKey={`${prefix}legal_status`} options={options.legal_status} filters={filters} basePath={basePath} />
+          </div>
+        </div>
+      )
+    }
+
 export default function MarketFilters({
-  options,
-  filters,
-  basePath = '/explore'
-}: {
-  options: any
-  filters: Record<string, string | undefined>
-  basePath?: string
-}) {
-
-  const leftCantons = useMemo(() => {
-            if (!filters.province) return []
-
-            const selectedProvince =
-              options.province?.find((province: any) =>
-                normalizeOption(getValue(province)) ===
-                normalizeOption(filters.province)
-              )
-
-            if (!selectedProvince) return []
-
-            return (
-              options.canton?.filter(
-                (c: any) => c.parent_id === selectedProvince.id
-              ) || []
-            )
-          }, [filters.province, options.province, options.canton])
-
-  const leftDistricts = useMemo(() => {
-            if (!filters.canton) return []
-
-            const selectedCanton =
-              options.canton?.find((canton: any) =>
-                normalizeOption(getValue(canton)) ===
-                normalizeOption(filters.canton)
-              )
-
-            if (!selectedCanton) return []
-
-            return (
-              options.district?.filter(
-                (d: any) => d.parent_id === selectedCanton.id
-              ) || []
-            )
-          }, [filters.canton, options.canton, options.district])
+      options,
+      filters,
+      basePath = '/explore',
+      mode = 'single'
+    }: {
+      options: any
+      filters: Record<string, string | undefined>
+      basePath?: string
+      mode?: 'single' | 'comparison'
+    }) {
 
   return (
-    <>
-      <div style={resetWrap}>
-        <a href={basePath} style={resetLink}>
-          Reset Explorer
-        </a>
-      </div>
-
-        <div style={locationSection}>
-        <h3 style={assetHeading}>Location</h3>
-
-        <div style={locationGrid}>
-          <FilterSelect
-            label="Province"
-            filterKey="province"
-            options={options.province}
-            filters={filters}
-            basePath={basePath}
-          />
-
-          <FilterSelect
-            label="Canton"
-            filterKey="canton"
-            options={leftCantons}
-            filters={filters}
-            basePath={basePath}
-          />
-
-          <FilterSelect
-            label="District"
-            filterKey="district"
-            options={leftDistricts}
-            filters={filters}
-            basePath={basePath}
-          />
+      <>
+        <div style={resetWrap}>
+          <a href={basePath} style={resetLink}>
+            {mode === 'comparison'
+              ? 'Reset Comparison'
+              : 'Reset Explorer'}
+          </a>
         </div>
-      </div>
 
-      <div style={wrapper}>
-        <FilterSelect label="Transaction" filterKey="transaction_type" options={transactionOptions} filters={filters} basePath={basePath} />
-        <FilterSelect label="Property Type" filterKey="property_type" options={options.property_type} filters={filters} basePath={basePath} />
-        <FilterSelect label="Bedrooms" filterKey="bedrooms" options={options.bedrooms} filters={filters} basePath={basePath} />
-        <FilterSelect label="Bathrooms" filterKey="bathrooms" options={options.bathrooms} filters={filters} basePath={basePath} />
-        <FilterSelect label="Parking" filterKey="parking" options={options.parking} filters={filters} basePath={basePath} />
-        <FilterSelect label="Price Range" filterKey="price_range" options={priceRangeOptions} filters={filters} basePath={basePath} />
-        <FilterSelect label="Property Area" filterKey="property_area" options={options.property_area} filters={filters} basePath={basePath} />
-        <FilterSelect label="Construction Area" filterKey="construction_area" options={options.construction_area} filters={filters} basePath={basePath} />
-        <FilterSelect label="Year Built" filterKey="year_built" options={options.year_built} filters={filters} basePath={basePath} />
-        <FilterSelect label="Environment" filterKey="environment" options={options.environment} filters={filters} basePath={basePath} />
-        <FilterSelect label="Terrain" filterKey="terrain" options={options.terrain} filters={filters} basePath={basePath} />
-        <FilterSelect label="Utilities" filterKey="utility" options={options.utility} filters={filters} basePath={basePath} />
-        <FilterSelect label="Accessibility" filterKey="accessibility" options={options.accessibility} filters={filters} basePath={basePath} />
-        <FilterSelect label="Legal Status" filterKey="legal_status" options={options.legal_status} filters={filters} basePath={basePath} />
-      </div>
-    </>
-  )
-}
+        {mode === 'comparison' ? (
+          <div style={comparisonGrid}>
+            <FilterColumn
+              title="Market A"
+              prefix="a_"
+              options={options}
+              filters={filters}
+              basePath={basePath}
+            />
+
+            <FilterColumn
+              title="Market B"
+              prefix="b_"
+              options={options}
+              filters={filters}
+              basePath={basePath}
+            />
+          </div>
+        ) : (
+          <FilterColumn
+            prefix=""
+            options={options}
+            filters={filters}
+            basePath={basePath}
+          />
+        )}
+      </>
+    )
+  }
 
 const resetWrap = {
   display: 'flex',
@@ -282,4 +371,17 @@ const locationGrid = {
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
   gap: '1rem'
+}
+
+const comparisonGrid = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+  gap: '2rem',
+  alignItems: 'start'
+}
+
+const marketHeading = {
+  color: '#D4AF37',
+  fontSize: '1.5rem',
+  margin: '0 0 1rem'
 }

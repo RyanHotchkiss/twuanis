@@ -1,18 +1,37 @@
 'use client'
 
-import HomeButton from '@/app/components/HomeButton'
-import SearchButton from '@/app/components/SearchButton'
-import CreateListingButtonS from '@/app/components/CreateListingButtonS'
-import Explore from '@/app/components/Explore'
-import SwipeCard from '@/app/components/SwipeCard'
-import Favorites from '@/app/components/Favorites'
-import HelpButton from '@/app/components/HelpButton'
-import LanguageButtonEN from '@/app/components/LanguageButtonES'
 import Link from 'next/link'
+
+import {
+  House,
+  Search,
+  Megaphone,
+  Compass,
+  ArrowLeftRight,
+  Heart,
+  CircleHelp,
+  Languages
+} from 'lucide-react'
 
 type TopBarProps = {
   onFilterClick?: () => void
 }
+
+const navIcon = {
+  size: 34,
+  strokeWidth: 0.5,
+  color: '#C7A44B'
+}
+
+const linkStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  textDecoration: 'none',
+  background: 'transparent',
+  WebkitTapHighlightColor: 'transparent',
+  transition: 'opacity .2s ease'
+} as const
 
 export default function TopBar({
   onFilterClick
@@ -20,80 +39,98 @@ export default function TopBar({
 
   return (
 
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: '.5rem',
+        flexWrap: 'nowrap',
+        overflowX: 'auto',
+        width: '100%',
+        maxWidth: '52rem',
+        margin: '0 auto',
+        paddingBottom: '.5rem',
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none'
+      }}
+    >
 
-              justifyContent: 'space-between',
+      <Link
+        href="/en?overlay=initial"
+        style={linkStyle}
+        onMouseEnter={e => (e.currentTarget.style.opacity = '.7')}
+        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+      >
+        <House {...navIcon} />
+      </Link>
 
-              gap: '.5rem',
+      <Link
+        href="/en?overlay=looking"
+        style={linkStyle}
+        onMouseEnter={e => (e.currentTarget.style.opacity = '.7')}
+        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+      >
+        <Search {...navIcon} />
+      </Link>
 
-              flexWrap: 'nowrap',
+      <Link
+        href="/en?overlay=posting"
+        style={linkStyle}
+        onMouseEnter={e => (e.currentTarget.style.opacity = '.7')}
+        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+      >
+        <Megaphone {...navIcon} />
+      </Link>
 
-              overflowX: 'auto',
+      <Link
+        href="/market-intelligence"
+        style={linkStyle}
+        onMouseEnter={e => (e.currentTarget.style.opacity = '.7')}
+        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+      >
+        <Compass {...navIcon} />
+      </Link>
 
-              width: '100%',
-              maxWidth: '52rem',
-
-              margin: '0 auto',
-
-              paddingBottom: '.5rem',
-
-              scrollbarWidth: 'none',
-
-              msOverflowStyle: 'none'
-            }}
-          >
-
-      <HomeButton href="/en?overlay=initial" />
-
-      <SearchButton
-        onClick={() => {
-          window.location.href =
-            '/en?overlay=looking'
-        }}
-      />
-        <CreateListingButtonS
-          onCreateListing={() => {
-            window.location.href =
-              '/en?overlay=posting'
-          }}
-        />
-      
-      <Explore
-        href="/explore"
-        label=""
-      />
-
-      <SwipeCard
+      <Link
         href="/en/swipe/buy"
-        label=""
-      />
+        style={linkStyle}
+        onMouseEnter={e => (e.currentTarget.style.opacity = '.7')}
+        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+      >
+        <ArrowLeftRight {...navIcon} />
+      </Link>
 
-      <Favorites
+      <Link
         href="/en/favorites"
-        label="Favorite Properties"
-        icon="♥"
-      />
+        style={linkStyle}
+        onMouseEnter={e => (e.currentTarget.style.opacity = '.7')}
+        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+      >
+        <Heart {...navIcon} />
+      </Link>
 
-     <Link
-          href="/support/help"
+      <Link
+        href="/support/help"
+        style={linkStyle}
+        onMouseEnter={e => (e.currentTarget.style.opacity = '.7')}
+        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+      >
+        <CircleHelp {...navIcon} />
+      </Link>
+
+      <Link href="/es" style={linkStyle}>
+        <span
           style={{
-            textDecoration: 'none',
-
-            display: 'flex',
-            alignItems: 'center',
-
-            background: 'transparent',
-
-            WebkitTapHighlightColor: 'transparent'
+            color: '#C7A44B',
+            fontSize: '1.5rem',
+            fontWeight: 100,
+            letterSpacing: '.05em'
           }}
         >
-        <HelpButton />
-        </Link>
-
-      <LanguageButtonEN />
+          ES
+        </span>
+      </Link>
 
     </div>
 

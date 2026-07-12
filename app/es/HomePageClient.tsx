@@ -94,7 +94,7 @@ const [showMainOverlay, setShowMainOverlay] =
                   setTimeout(() => {
                     setShowMainOverlay(true)
                   }, 600)
-                }, 8000)
+                }, 20000)
                 return () => clearTimeout(timer)
               }, [searchParams])
     

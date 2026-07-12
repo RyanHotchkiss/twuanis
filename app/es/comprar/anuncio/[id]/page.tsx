@@ -1,16 +1,22 @@
 import Link from 'next/link'
-
 import { supabase } from '@/lib/supabase'
-
 import JsonLd from '@/app/components/JsonLd'
 import TopBarES from '@/app/components/TopBarES'
-
 import { buildListingSchema } from '@/lib/schema-engine'
-
+import { getValuation } from '@/lib/valuation-engine'
 import {
   getGraphNeighbors,
   getOntologyTermsByIds
 } from '@/lib/graph-engine'
+
+function StatCard({ label, value }: { label: string; value: any }) {
+  return (
+    <div style={statCard}>
+      <p style={statLabel}>{label}</p>
+      <div style={statValue}>{value}</div>
+    </div>
+  )
+}
 
 export default async function ListingPage({
   params
@@ -58,6 +64,48 @@ const { data, error } = await supabase
                             })()
                         : []
                     }
+
+                    const listingPricePerM2 =
+                    listing.current_price && listing.property_area
+                      ? Number(listing.current_price) / Number(listing.property_area)
+                      : null
+
+                  const valuation = await getValuation(
+                    {
+                      transaction_type:
+                        listing.transaction_type === 'buy'
+                          ? 'sale'
+                          : listing.transaction_type,
+
+                      province: listing.province,
+                      canton: listing.canton,
+                      district: listing.district,
+                      property_type: listing.property_type,
+                    },
+                    'es'
+                  )
+
+                  const USD_TO_CRC = 500
+
+                  const listingPriceUSD =
+                    listing.currency === 'USD'
+                      ? Number(listing.current_price)
+                      : Number(listing.current_price) / USD_TO_CRC
+
+                  const listingPriceCRC =
+                    listing.currency === 'USD'
+                      ? Number(listing.current_price) * USD_TO_CRC
+                      : Number(listing.current_price)
+
+                  const listingPricePerM2USD =
+                    listing.current_price && listing.property_area
+                      ? listingPriceUSD / Number(listing.property_area)
+                      : null
+
+                  const listingPricePerM2CRC =
+                    listing.current_price && listing.property_area
+                      ? listingPriceCRC / Number(listing.property_area)
+                      : null
 
 const { data: ontologyRows } = await supabase
                     .from('listings_ontology_terms')
@@ -275,7 +323,7 @@ return (
                   </div>
 
                 )}
-console.log(listing.images)
+
 
 
           </div>
@@ -428,7 +476,9 @@ console.log(listing.images)
             </span>
 
             <div style={entityCard}>
-                {listing.construction_area}
+                {listing.construction_area
+                ? `${Number(listing.construction_area).toLocaleString()} m²`
+                : ''}
             </div>
 
             </div>
@@ -443,7 +493,9 @@ console.log(listing.images)
             </span>
 
             <div style={entityCard}>
-                {listing.property_area}
+                {listing.property_area
+                ? `${Number(listing.property_area).toLocaleString()} m²`
+                : ''}
             </div>
 
             </div>
@@ -579,14 +631,21 @@ console.log(listing.images)
 
             <div style={priceCard}>
 
-                {listing.current_price
-                  ? listing.currency === 'USD' ||
-                    listing.title?.toUpperCase().includes('USD')
-                    ? `$${Number(listing.current_price).toLocaleString()}`
-                    : `₡${Number(listing.current_price).toLocaleString()}`
-                  : listing.price_millions
-                  ? `₡${Number(listing.price_millions).toLocaleString()}M`
-                  : 'Precio No Disponible'}
+                {listing.current_price ? (
+                    <>
+                      <div>
+                        ₡{Math.round(listingPriceCRC).toLocaleString()}
+                      </div>
+
+                      <div style={secondaryValue}>
+                        ${Math.round(listingPriceUSD).toLocaleString()}
+                      </div>
+                    </>
+                  ) : listing.price_millions ? (
+                    `₡${Number(listing.price_millions).toLocaleString()}M`
+                  ) : (
+                    'Precio No Disponible'
+                  )}
 
             </div>
 
@@ -633,6 +692,88 @@ console.log(listing.images)
         </div>
 
       </div>
+
+              <h2 style={{
+                color: '#ff3B00',
+                fontSize: '2rem',
+                marginTop: '3rem',
+                marginBottom: '1rem'
+              }}>
+                Inteligencia de la Propiedad Twuanis
+              </h2>
+
+              <div style={cardGrid}>
+                <StatCard
+                  label="Valor Estimado de Mercado"
+                  value={
+                    valuation.summary.estimatedMarketValueCRC ? (
+                      <>
+                        <div>
+                          {valuation.summary.estimatedMarketValueCRC}
+                        </div>
+
+                        <div style={secondaryValue}>
+                          {valuation.summary.estimatedMarketValueUSD}
+                        </div>
+                      </>
+                    ) : (
+                      'Datos insuficientes'
+                    )
+                  }
+                />
+
+                <StatCard
+                  label="Precio Publicado"
+                  value={
+                    listing.current_price ? (
+                      <>
+                        <div>
+                          ₡{Math.round(listingPriceCRC).toLocaleString()}
+                        </div>
+
+                        <div style={secondaryValue}>
+                          ${Math.round(listingPriceUSD).toLocaleString()}
+                        </div>
+                      </>
+                    ) : (
+                      'No disponible'
+                    )
+                  }
+                />
+
+                <StatCard
+                  label="Posición de Precio"
+                  value={
+                    valuation.pricingSignals.pricePosition ||
+                    'Datos insuficientes'
+                  }
+                />
+
+                <StatCard
+                  label="Precio por m²"
+                  value={
+                    listingPricePerM2USD && listingPricePerM2CRC ? (
+                      <>
+                        <div>
+                          ₡{Math.round(listingPricePerM2CRC).toLocaleString()}/m²
+                        </div>
+
+                        <div style={secondaryValue}>
+                          ${Math.round(listingPricePerM2USD).toLocaleString()}/m²
+                        </div>
+                      </>
+                    ) : (
+                      'Datos insuficientes'
+                    )
+                  }
+                />
+
+                <StatCard
+                  label="Confianza"
+                  value={`${valuation.summary.confidenceScore} · ${valuation.summary.confidenceLabel}`}
+                />
+              </div>
+
     </main>
 
   </>
@@ -640,6 +781,8 @@ console.log(listing.images)
   )
 
 }
+
+
 
 const label = {
   color: '#777',
@@ -683,4 +826,36 @@ const priceCard = {
   fontSize: '1.5rem',
   fontWeight: 'bold',
   textAlign: 'center' as const
+}
+
+const cardGrid = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(250px,1fr))',
+  gap: '1rem',
+  marginTop: '1rem'
+}
+
+const statCard = {
+  background: '#111',
+  border: '1px solid #222',
+  borderRadius: '1rem',
+  padding: '1.5rem'
+}
+
+const statLabel = {
+  color: '#888',
+  fontSize: '.9rem',
+  marginBottom: '.5rem'
+}
+
+const statValue = {
+  fontSize: '1.6rem',
+  fontWeight: 'bold'
+}
+
+const secondaryValue = {
+  marginTop: '.35rem',
+  color: '#888',
+  fontSize: '1rem',
+  fontWeight: 400
 }

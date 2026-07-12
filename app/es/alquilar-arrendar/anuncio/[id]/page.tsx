@@ -1,16 +1,13 @@
 import Link from 'next/link'
-
 import { supabase } from '@/lib/supabase'
-
 import JsonLd from '@/app/components/JsonLd'
 import TopBar from '@/app/components/TopBar'
-
 import { buildListingSchema } from '@/lib/schema-engine'
-
 import {
   getGraphNeighbors,
   getOntologyTermsByIds
 } from '@/lib/graph-engine'
+import { getValuation } from '@/lib/valuation-engine'
 
 export default async function ListingPage({
   params
@@ -81,6 +78,17 @@ const listing = {
                 : []
           }
 
+    const valuation = await getValuation(
+      {
+        transaction_type: 'rent',
+        province: listing.province,
+        canton: listing.canton,
+        district: listing.district,
+        property_type: listing.property_type,
+      },
+      'es'
+    )
+
 const { data: ontologyRows } = await supabase
   .from('listings_ontology_terms')
   .select(`
@@ -146,15 +154,36 @@ if (termIds.length > 0) {
 }
 
 
-const schema = buildListingSchema({
-  listing,
-  ontologyTerms,
-  neighborTerms,
-  graphRows,
-  lang: 'es',
-  mode: 'rent'
-})
+          const schema = buildListingSchema({
+            listing,
+            ontologyTerms,
+            neighborTerms,
+            graphRows,
+            lang: 'es',
+            mode: 'rent'
+          })
 
+          const USD_TO_CRC = 500
+
+          const monthlyPriceUSD =
+            listing.currency === 'USD'
+              ? Number(listing.monthly_price)
+              : Number(listing.monthly_price) / USD_TO_CRC
+
+          const monthlyPriceCRC =
+            listing.currency === 'USD'
+              ? Number(listing.monthly_price) * USD_TO_CRC
+              : Number(listing.monthly_price)
+
+          const monthlyPricePerM2USD =
+            listing.monthly_price && listing.property_area
+              ? monthlyPriceUSD / Number(listing.property_area)
+              : null
+
+          const monthlyPricePerM2CRC =
+            listing.monthly_price && listing.property_area
+              ? monthlyPriceCRC / Number(listing.property_area)
+              : null
 
 return (
 
@@ -632,11 +661,109 @@ return (
 
       </div>
 
+<h2
+            style={{
+              color: '#ff3B00',
+              fontSize: '2rem',
+              marginTop: '3rem',
+              marginBottom: '1rem'
+            }}
+          >
+            Twuanis Listing Intelligence
+          </h2>
+
+          <div style={cardGrid}>
+            <StatCard
+                  label="Renta Estimada de Mercado"
+                  value={
+                    valuation.summary.estimatedMarketValueUSD ? (
+                      <>
+                        <div>
+                          {valuation.summary.estimatedMarketValueUSD}
+                        </div>
+
+                        <div style={secondaryValue}>
+                          {valuation.summary.estimatedMarketValueCRC}
+                        </div>
+                      </>
+                    ) : (
+                      'Not enough data'
+                    )
+                  }
+                />
+
+            <StatCard
+              label="Renta Mensual Solicitada"
+              value={listing.monthly_price ? (
+                <>
+                  <div>₡{Math.round(monthlyPriceCRC).toLocaleString()} / mes</div>
+                  <div style={secondaryValue}>
+                    ${Math.round(monthlyPriceUSD).toLocaleString()} / mes
+                  </div>
+                </>
+              ) : (
+                'Precio No Disponible'
+              )}
+            />
+
+            <StatCard
+              label="Posición de la Renta"
+              value={
+                valuation.pricingSignals.pricePosition ||
+                'Not enough data'
+              }
+            />
+
+            <StatCard
+                label="Renta Mensual por m²"
+                value={
+                  monthlyPricePerM2USD && monthlyPricePerM2CRC ? (
+                    <>
+                      <div>
+                        ${Math.round(monthlyPricePerM2USD).toLocaleString()}/m²
+                      </div>
+
+                      <div style={secondaryValue}>
+                        ₡{Math.round(monthlyPricePerM2CRC).toLocaleString()}/m²
+                      </div>
+                    </>
+                  ) : (
+                    'Not enough data'
+                  )
+                }
+              />
+
+            <StatCard
+              label="Confianza"
+              value={`${valuation.summary.confidenceScore} · ${valuation.summary.confidenceLabel}`}
+            />
+          </div>
+
     </main>
    </>
   )
 
 }
+
+  function StatCard({
+      label,
+      value
+    }: {
+      label: string
+      value: React.ReactNode
+    }) {
+      return (
+        <div style={statCard}>
+          <div style={statLabel}>
+            {label}
+          </div>
+
+          <div style={statValue}>
+            {value}
+          </div>
+        </div>
+      )
+    }
 
 const label = {
   color: '#777',
@@ -680,4 +807,37 @@ const priceCard = {
   fontSize: '1.5rem',
   fontWeight: 'bold',
   textAlign: 'center' as const
+}
+
+
+const cardGrid = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(250px,1fr))',
+  gap: '1rem',
+  marginTop: '1rem'
+}
+
+const statCard = {
+  background: '#111',
+  border: '1px solid #222',
+  borderRadius: '1rem',
+  padding: '1.5rem'
+}
+
+const statLabel = {
+  color: '#888',
+  fontSize: '.9rem',
+  marginBottom: '.5rem'
+}
+
+const statValue = {
+  fontSize: '1.6rem',
+  fontWeight: 'bold'
+}
+
+const secondaryValue = {
+  marginTop: '.35rem',
+  color: '#888',
+  fontSize: '1rem',
+  fontWeight: 400
 }
