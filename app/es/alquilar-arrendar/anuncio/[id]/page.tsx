@@ -1,7 +1,8 @@
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import JsonLd from '@/app/components/JsonLd'
-import TopBar from '@/app/components/TopBar'
+import ListingActivityTracker from '@/app/components/ListingActivityTracker'
+import ListingActions from '@/app/components/ListingActions'
 import { buildListingSchema } from '@/lib/schema-engine'
 import {
   getGraphNeighbors,
@@ -191,7 +192,19 @@ return (
 
     {schema && <JsonLd data={schema} />}
 
-    <main style={{
+        <ListingActivityTracker
+          listingId={listing.id}
+          title={listing.title}
+          province={listing.province}
+          canton={listing.canton}
+          district={listing.district}
+          propertyType={
+            listing.property_type
+          }
+          transactionType="rent"
+        />
+
+        <main style={{
       background: '#000',
       minHeight: '100vh',
       color: '#fff',
@@ -314,6 +327,17 @@ return (
             }}>
               {listing.title}
             </h1>
+
+            <ListingActions
+              listingId={listing.id}
+              title={listing.title}
+              province={listing.province}
+              canton={listing.canton}
+              district={listing.district}
+              propertyType={listing.property_type}
+              transactionType="rent"
+              language="es"
+            />
 
             <p style={{
               color: '#999',

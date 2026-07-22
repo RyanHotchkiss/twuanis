@@ -2,7 +2,9 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { supabase } from '@/lib/supabase'
-
+import {
+  saveFavorite
+} from '@/lib/favorites'
 
 export default function SwipePage() {
 
@@ -66,26 +68,13 @@ export default function SwipePage() {
 
         }
 
-  function saveProperty(propertyId: string) {
-
-    const existingFavorites =
-      JSON.parse(
-        localStorage.getItem('favorites') || '[]'
+function saveProperty(
+      propertyId: string
+    ): void {
+      saveFavorite(
+        propertyId
       )
-
-    if (!existingFavorites.includes(propertyId)) {
-
-      localStorage.setItem(
-        'favorites',
-        JSON.stringify([
-          ...existingFavorites,
-          propertyId
-        ])
-      )
-
     }
-
-  }
 
   const filteredProperties = useMemo(() => {
 

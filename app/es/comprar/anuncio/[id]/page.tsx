@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import JsonLd from '@/app/components/JsonLd'
 import TopBarES from '@/app/components/TopBarES'
+import ListingActivityTracker from '@/app/components/ListingActivityTracker'
+import ListingActions from '@/app/components/ListingActions'
 import { buildListingSchema } from '@/lib/schema-engine'
 import { getValuation } from '@/lib/valuation-engine'
 import {
@@ -181,18 +183,6 @@ let neighborTerms: any[] = []
             backdropFilter:'blur(10px)'
           }
 
-  
-
-console.log(
-  'NEIGHBOR TERMS STATE',
-  neighborTerms
-)
-
-console.log(
-  'GRAPH ROWS STATE',
-  graphRows
-)
-
 const schema = buildListingSchema({
                     listing,
                     ontologyTerms,
@@ -201,32 +191,6 @@ const schema = buildListingSchema({
                     lang: 'es',
                     mode: 'buy'
                     })
-
-if (!listing) {
-
-  return (
-
-    <>
-      {schema && <JsonLd data={schema} />}
-
-      <main
-        style={{
-          background: '#000',
-          minHeight: '100vh',
-          color: '#fff',
-          padding: '2rem'
-        }}
-      >
-
-        Propiedad No Encontrada
-
-      </main>
-
-    </>
-
-  )
-
-}
 
 return (
 
@@ -349,6 +313,17 @@ return (
             }}>
               {listing.title}
             </h1>
+
+            <ListingActions
+              listingId={listing.id}
+              title={listing.title}
+              province={listing.province}
+              canton={listing.canton}
+              district={listing.district}
+              propertyType={listing.property_type}
+              transactionType="buy"
+              language="es"
+            />
 
             <p style={{
               color: '#999',
@@ -556,11 +531,17 @@ return (
 
             <div style={pillContainer}>
 
-                {(Array.isArray(listing.terrain)
-                ? listing.terrain
-                : typeof listing.terrain === 'string'
-                ? JSON.parse(listing.terrain)
-                : []
+              {(Array.isArray(listing.terrain)
+                  ? listing.terrain
+                  : typeof listing.terrain === 'string'
+                  ? (() => {
+                      try {
+                        return JSON.parse(listing.terrain)
+                      } catch {
+                        return [listing.terrain]
+                      }
+                    })()
+                  : []
                 ).map((item: string) => (
 
                 <span
@@ -585,12 +566,18 @@ return (
 
             <div style={pillContainer}>
 
-                {(Array.isArray(listing.utility)
-                ? listing.utility
-                : typeof listing.utility === 'string'
-                ? JSON.parse(listing.utility)
-                : []
-                ).map((item: string) => (
+                  {(Array.isArray(listing.utility)
+                      ? listing.utility
+                      : typeof listing.utility === 'string'
+                      ? (() => {
+                          try {
+                            return JSON.parse(listing.utility)
+                          } catch {
+                            return [listing.utility]
+                          }
+                        })()
+                      : []
+                    ).map((item: string) => (
 
                 <span
                     key={item}

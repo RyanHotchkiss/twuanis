@@ -9,8 +9,8 @@ import {
   Compass,
   ArrowLeftRight,
   Heart,
-  CircleHelp,
-  Languages
+  Package,
+  CircleHelp
 } from 'lucide-react'
 
 type TopBarProps = {
@@ -84,7 +84,7 @@ export default function TopBar({
       </Link>
 
       <Link
-        href="/market-intelligence"
+        href="/en/market-intelligence"
         style={linkStyle}
         onMouseEnter={e => (e.currentTarget.style.opacity = '.7')}
         onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
@@ -108,6 +108,15 @@ export default function TopBar({
         onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
       >
         <Heart {...navIcon} />
+      </Link>
+
+      <Link
+        href="/en/market-intelligence/packages"
+        style={linkStyle}
+        onMouseEnter={e => (e.currentTarget.style.opacity = '.7')}
+        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+      >
+        <Package {...navIcon} />
       </Link>
 
       <Link

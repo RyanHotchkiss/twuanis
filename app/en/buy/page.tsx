@@ -9,7 +9,9 @@ import TopBar from '@/app/components/TopBar'
 import BuyHeader from '@/app/components/BuyHeader'
 import BuySidebar from '@/app/components/BuySidebar'
 import { normalizeText } from '@/lib/normalizeText' 
-
+import {
+  saveSearch
+} from '@/lib/saved-searches'
 
 import {
       provinces,
@@ -114,7 +116,7 @@ const navButton = {
  const { data, error } = await supabase
   .from('listings')
   .select('*')
-  .eq('transaction_type', 'sale')
+  .eq('transaction_type', 'buy')
   .eq('listing_status', 'active')
   .order('id', { ascending: false })
 
@@ -128,10 +130,14 @@ const navButton = {
 
 
 if (error) {
-
   console.error(
     'SUPABASE ERROR:',
-    error
+    {
+      message: error.message,
+      details: error.details,
+      hint: error.hint,
+      code: error.code
+    }
   )
 
   setProperties([])
@@ -326,10 +332,6 @@ console.log({
 if (
   property.title?.includes('Frente al Río')
 ) {
-  console.log(
-    'ENTERING FILTER CHAIN:',
-    property.title
-  )
 }
 
                       if (
@@ -563,7 +565,35 @@ if (
 
             <BuyHeader />
 
-                 
+                <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      marginBottom: '24px'
+                    }}
+                  >
+                    <button
+                      type="button"
+                      onClick={() =>
+                        saveSearch(
+                          'buy',
+                          'en',
+                          filters
+                        )
+                      }
+                      style={{
+                        background: '#fff',
+                        border: '1px solid #fff',
+                        color: '#000',
+                        padding: '12px 20px',
+                        borderRadius: '999px',
+                        cursor: 'pointer',
+                        fontWeight: 'bold'
+                      }}
+                    >
+                      Save Search
+                    </button>
+                  </div>        
 
         {/* MAIN GRID */}
           <div style={{

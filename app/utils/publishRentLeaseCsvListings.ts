@@ -1,6 +1,10 @@
 import { supabase } from '@/lib/supabase'
 import { assignListingOntology } from '@/lib/assign-listing-ontology'
 
+import {
+  recordListingCreated
+} from '@/lib/activity'
+
 export async function publishRentLeaseCsvListings(
   csvListings: any[],
   setShowCsvStaging: (value: boolean) => void,
@@ -151,8 +155,35 @@ console.log(
         finalListing
       )
 
-    }
+      try {
+        await recordListingCreated({
+          listingId: insertedListing.id,
+          metadata: {
+            title: insertedListing.title,
+            location: [
+              insertedListing.district,
+              insertedListing.canton,
+              insertedListing.province
+            ]
+              .filter(Boolean)
+              .join(', '),
+            price:
+              insertedListing.monthly_price,
+            source:
+              'publish-rent-lease-csv-listings',
+            transactionType: 'rent',
+            currency:
+              insertedListing.currency
+          }
+        })
+      } catch (activityError) {
+        console.error(
+          'Unable to record listing creation:',
+          activityError
+        )
+      }
 
+    }
   }
 
   alert('Listings Published')

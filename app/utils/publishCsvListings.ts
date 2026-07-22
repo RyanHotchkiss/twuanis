@@ -3,6 +3,10 @@ import {
   assignListingOntology
 } from '@/lib/assign-listing-ontology'
 
+import {
+  recordListingCreated
+} from '@/lib/activity'
+
 export async function publishCsvListings(
   csvListings: any[],
   setShowCsvStaging: (value: boolean) => void,
@@ -143,30 +147,52 @@ console.log(
   listing.images
 )
 
-    const insertedListing =
+        const insertedListing =
       response.data?.[0]
 
     if (insertedListing?.id) {
-
-console.log(
-  'ABOUT TO CALL ASSIGN ONTOLOGY',
-  insertedListing.id
-)
+      console.log(
+        'ABOUT TO CALL ASSIGN ONTOLOGY',
+        insertedListing.id
+      )
 
       await assignListingOntology(
         insertedListing.id,
         finalListing
       )
 
+      try {
+        await recordListingCreated({
+          listingId: insertedListing.id,
+          metadata: {
+            title: insertedListing.title,
+            location: [
+              insertedListing.district,
+              insertedListing.canton,
+              insertedListing.province
+            ]
+              .filter(Boolean)
+              .join(', '),
+            price:
+              insertedListing.price_millions,
+            source:
+              'publish-csv-listings',
+            transactionType:
+              'sale'
+          }
+        })
+      } catch (activityError) {
+        console.error(
+          'Unable to record listing creation:',
+          activityError
+        )
+      }
     }
-
   }
-  
 
   alert('Listings Published')
 
   setShowCsvStaging(false)
 
   setCsvListings([])
-
 }

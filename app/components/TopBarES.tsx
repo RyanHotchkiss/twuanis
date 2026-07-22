@@ -9,6 +9,7 @@ import {
   Compass,
   ArrowLeftRight,
   Heart,
+  Package,
   CircleHelp
 } from 'lucide-react'
 
@@ -83,7 +84,7 @@ export default function TopBar({
       </Link>
 
       <Link
-        href="/es/explora"
+        href="/es/inteligencia-de-mercado"
         style={linkStyle}
         onMouseEnter={e => (e.currentTarget.style.opacity = '.7')}
         onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
@@ -107,6 +108,15 @@ export default function TopBar({
         onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
       >
         <Heart {...navIcon} />
+      </Link>
+
+      <Link
+        href="/es/inteligencia-de-mercado/paquetes"
+        style={linkStyle}
+        onMouseEnter={e => (e.currentTarget.style.opacity = '.7')}
+        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+      >
+        <Package {...navIcon} />
       </Link>
 
       <Link

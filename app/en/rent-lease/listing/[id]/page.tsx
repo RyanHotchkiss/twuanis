@@ -1,13 +1,19 @@
 import Link from 'next/link'
+
 import { supabase } from '@/lib/supabase'
+
 import JsonLd from '@/app/components/JsonLd'
 import TopBar from '@/app/components/TopBar'
+import ListingActivityTracker from '@/app/components/ListingActivityTracker'
+import ListingActions from '@/app/components/ListingActions'
 import { buildListingSchema } from '@/lib/schema-engine'
+import { getValuation } from '@/lib/valuation-engine'
+
 import {
   getGraphNeighbors,
   getOntologyTermsByIds
 } from '@/lib/graph-engine'
-import { getValuation } from '@/lib/valuation-engine'
+
 
 export default async function ListingPage({
   params
@@ -168,7 +174,21 @@ return (
 
   <>
 
-    {schema && <JsonLd data={schema} />}
+        {schema && (
+            <JsonLd data={schema} />
+          )}
+
+          <ListingActivityTracker
+            listingId={listing.id}
+            title={listing.title}
+            province={listing.province}
+            canton={listing.canton}
+            district={listing.district}
+            propertyType={
+              listing.property_type
+            }
+            transactionType="rent"
+          />
 
     <main style={{
       background: '#000',
@@ -294,6 +314,17 @@ return (
             }}>
               {listing.title}
             </h1>
+
+            <ListingActions
+              listingId={listing.id}
+              title={listing.title}
+              province={listing.province}
+              canton={listing.canton}
+              district={listing.district}
+              propertyType={listing.property_type}
+              transactionType="rent"
+              language="en"
+            />
 
             <p style={{
               color: '#999',

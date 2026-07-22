@@ -10,7 +10,9 @@ import TopBarES from '@/app/components/TopBarES'
 import BuyHeaderES from '@/app/components/BuyHeaderES'
 import BuySidebarES from '@/app/components/BuySidebarES'
 import { normalizeText } from '@/lib/normalizeText' 
-
+import {
+  saveSearch
+} from '@/lib/saved-searches'
 
 import {
       provinces,
@@ -459,7 +461,35 @@ if (
 
             <BuyHeaderES />
 
-                 
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  marginBottom: '24px'
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={() =>
+                    saveSearch(
+                      'buy',
+                      'es',
+                      filters
+                    )
+                  }
+                  style={{
+                    background: '#fff',
+                    border: '1px solid #fff',
+                    color: '#000',
+                    padding: '12px 20px',
+                    borderRadius: '999px',
+                    cursor: 'pointer',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  Guardar búsqueda
+                </button>
+              </div>   
 
         {/* MAIN GRID */}
           <div style={{

@@ -8,7 +8,9 @@ import TopBar from '@/app/components/TopBar'
 import FilterButton from '@/app/components/FilterButton'
 import RentLeaseSidebar from '@/app/components/RentLeaseSidebar'
 import { normalizeText } from '@/lib/normalizeText' 
-
+import {
+  saveSearch
+} from '@/lib/saved-searches'
 
 import {
       provinces,
@@ -629,6 +631,37 @@ if (
                  
 
         {/* MAIN GRID */}
+
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: '24px'
+            }}
+          >
+            <button
+              type="button"
+              onClick={() =>
+                saveSearch(
+                  'rent',
+                  'en',
+                  filters
+                )
+              }
+              style={{
+                background: '#fff',
+                border: '1px solid #fff',
+                color: '#000',
+                padding: '12px 20px',
+                borderRadius: '999px',
+                cursor: 'pointer',
+                fontWeight: 'bold'
+              }}
+            >
+              Save Search
+            </button>
+          </div>
+
           <div style={{
               display: 'flex',
               gap: '1rem',

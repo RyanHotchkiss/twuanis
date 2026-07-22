@@ -1,7 +1,18 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
-import { supabase } from '@/lib/supabase'
+import {
+  useEffect,
+  useMemo,
+  useState
+} from 'react'
+
+import {
+  supabase
+} from '@/lib/supabase'
+
+import {
+  saveFavorite
+} from '@/lib/favorites'
 
 export default function SwipePage() {
 
@@ -48,26 +59,13 @@ async function fetchProperties() {
           ])
         }
 
-  function saveProperty(propertyId: string) {
-
-    const existingrent_lease_favorites =
-      JSON.parse(
-        localStorage.getItem('rent_lease_favorites') || '[]'
+function saveProperty(
+      propertyId: string
+    ): void {
+      saveFavorite(
+        propertyId
       )
-
-    if (!existingrent_lease_favorites.includes(propertyId)) {
-
-      localStorage.setItem(
-        'rent_lease_favorites',
-        JSON.stringify([
-          ...existingrent_lease_favorites,
-          propertyId
-        ])
-      )
-
     }
-
-  }
 
   const filteredProperties = useMemo(() => {
 

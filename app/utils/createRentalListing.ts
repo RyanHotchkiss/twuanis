@@ -3,6 +3,10 @@ import {
   assignListingOntology
 } from '@/lib/assign-listing-ontology'
 
+import {
+  recordListingCreated
+} from '@/lib/activity'
+
 export async function createRentalListing(
   propertyData: any,
   generateListingTitle: (data: any) => string,
@@ -136,7 +140,6 @@ const insertedListing =
   response.data?.[0]
 
 if (insertedListing?.id) {
-
   await assignListingOntology(
     insertedListing.id,
     {
@@ -144,6 +147,32 @@ if (insertedListing?.id) {
     }
   )
 
+  try {
+    await recordListingCreated({
+      listingId: insertedListing.id,
+      metadata: {
+        title: insertedListing.title,
+        location: [
+          insertedListing.district,
+          insertedListing.canton,
+          insertedListing.province
+        ]
+          .filter(Boolean)
+          .join(', '),
+        price:
+          insertedListing.monthly_price,
+        currency:
+          insertedListing.currency,
+        source: 'create-rental-listing',
+        transactionType: 'rent'
+      }
+    })
+  } catch (activityError) {
+    console.error(
+      'Unable to record listing creation:',
+      activityError
+    )
+  }
 }
 
 console.log(response.data)

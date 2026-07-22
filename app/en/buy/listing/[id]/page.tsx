@@ -4,13 +4,18 @@ import { supabase } from '@/lib/supabase'
 
 import JsonLd from '@/app/components/JsonLd'
 import TopBar from '@/app/components/TopBar'
-
+import ListingActivityTracker from '@/app/components/ListingActivityTracker'
+import ListingActions from '@/app/components/ListingActions'
 import { buildListingSchema } from '@/lib/schema-engine'
 import { getValuation } from '@/lib/valuation-engine'
+
 import {
   getGraphNeighbors,
   getOntologyTermsByIds
 } from '@/lib/graph-engine'
+
+import RecordRecentlyViewedProperty
+  from '@/app/components/RecordRecentlyViewedProperty'
 
 export default async function ListingPage({
   params
@@ -92,11 +97,6 @@ const listing = {
             })()
           : []
     }
-
-    const listingPricePerM2 =
-      listing.current_price && listing.property_area
-        ? Number(listing.current_price) / Number(listing.property_area)
-        : null
 
     const valuation = await getValuation(
       {
@@ -194,7 +194,25 @@ const schema = buildListingSchema({
 
     <>
 
-    {schema && <JsonLd data={schema} />}
+        {schema && (
+            <JsonLd data={schema} />
+          )}
+
+          <ListingActivityTracker
+            listingId={listing.id}
+            title={listing.title}
+            province={listing.province}
+            canton={listing.canton}
+            district={listing.district}
+            propertyType={
+              listing.property_type
+            }
+            transactionType="buy"
+          />
+
+          <RecordRecentlyViewedProperty
+            listing={listing}
+          />
 
     <main style={{
       background: '#000',
@@ -308,6 +326,17 @@ const schema = buildListingSchema({
             }}>
               {listing.title}
             </h1>
+
+            <ListingActions
+              listingId={listing.id}
+              title={listing.title}
+              province={listing.province}
+              canton={listing.canton}
+              district={listing.district}
+              propertyType={listing.property_type}
+              transactionType="buy"
+              language="en"
+            />
 
             <p style={{
               color: '#999',
@@ -480,12 +509,10 @@ const schema = buildListingSchema({
             <div style={pillContainer}>
 
                 {(Array.isArray(listing.accessibility)
-                ? listing.accessibility
-                : Array.isArray(listing.accessibility)
-                ? listing.accessibility
-                : typeof listing.accessibility === 'string'
-                ? [listing.accessibility]
-                : []
+                  ? listing.accessibility
+                  : typeof listing.accessibility === 'string'
+                  ? [listing.accessibility]
+                  : []
                 ).map((item: string) => (
 
                 <span
@@ -510,12 +537,18 @@ const schema = buildListingSchema({
 
             <div style={pillContainer}>
 
-                {(Array.isArray(listing.terrain)
-                ? listing.terrain
-                : typeof listing.terrain === 'string'
-                ? JSON.parse(listing.terrain)
-                : []
-                ).map((item: string) => (
+                   {(Array.isArray(listing.terrain)
+                      ? listing.terrain
+                      : typeof listing.terrain === 'string'
+                      ? (() => {
+                          try {
+                            return JSON.parse(listing.terrain)
+                          } catch {
+                            return [listing.terrain]
+                          }
+                        })()
+                      : []
+                    ).map((item: string) => (
 
                 <span
                     key={item}
@@ -540,10 +573,16 @@ const schema = buildListingSchema({
             <div style={pillContainer}>
 
                 {(Array.isArray(listing.utility)
-                ? listing.utility
-                : typeof listing.utility === 'string'
-                ? JSON.parse(listing.utility)
-                : []
+                  ? listing.utility
+                  : typeof listing.utility === 'string'
+                  ? (() => {
+                      try {
+                        return JSON.parse(listing.utility)
+                      } catch {
+                        return [listing.utility]
+                      }
+                    })()
+                  : []
                 ).map((item: string) => (
 
                 <span

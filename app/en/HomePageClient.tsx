@@ -8,6 +8,10 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { createListingId } from '@/lib/createListingId'
 import { supabase } from '@/lib/supabase'
+import {
+  isFavorite,
+  toggleFavorite
+} from '@/lib/favorites'
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 
@@ -1379,73 +1383,54 @@ const [showMainOverlay, setShowMainOverlay] =
                               </div>
 
                             )}
-                                    <button
-                                        onClick={(e) => {
+                <button
+                    onClick={e => {
+                      e.preventDefault()
+                      e.stopPropagation()
 
-                                          e.preventDefault()
-                                          e.stopPropagation()
+                      toggleFavorite(
+                        property.id
+                      )
 
-                                          const existingFavorites =
-                                            JSON.parse(
-                                              localStorage.getItem('favorites') || '[]'
-                                            )
-
-                                          const alreadySaved =
-                                            existingFavorites.includes(property.id)
-
-                                          let updatedFavorites = []
-
-                                          if (alreadySaved) {
-
-                                            updatedFavorites =
-                                              existingFavorites.filter(
-                                                (id: string) => id !== property.id
-                                              )
-
-                                          } else {
-
-                                            updatedFavorites = [
-                                              ...existingFavorites,
-                                              property.id
-                                            ]
-
-                                          }
-
-                                          localStorage.setItem(
-                                            'favorites',
-                                            JSON.stringify(updatedFavorites)
-                                          )
-
-                                          window.location.reload()
-
-                                        }}
-                                        style={{
-                                          position: 'absolute',
-                                          top: '1rem',
-                                          right: '1rem',
-                                          width: '2.75rem',
-                                          height: '2.75rem',
-                                          borderRadius: '999px',
-                                          border: '1px solid rgba(255,255,255,.15)',
-                                          background: 'rgba(0,0,0,.55)',
-                                          backdropFilter: 'blur(8px)',
-                                          display: 'flex',
-                                          justifyContent: 'center',
-                                          alignItems: 'center',
-                                          cursor: 'pointer',
-                                          zIndex: 20
-                                        }}
-                                      >
-
-                                        <span style={{
-                                            fontSize: '1.25rem',
-                                            color: '#fff',
-                                            transition: 'all .2s ease'
-                                            }}>
-                                          ♥
-                                        </span>
-
-                                      </button>
+                      window.location.reload()
+                    }}
+                    style={{
+                      position: 'absolute',
+                      top: '1rem',
+                      right: '1rem',
+                      width: '2.75rem',
+                      height: '2.75rem',
+                      borderRadius: '999px',
+                      border:
+                        '1px solid rgba(255,255,255,.15)',
+                      background:
+                        'rgba(0,0,0,.55)',
+                      backdropFilter:
+                        'blur(8px)',
+                      display: 'flex',
+                      justifyContent:
+                        'center',
+                      alignItems:
+                        'center',
+                      cursor: 'pointer',
+                      zIndex: 20
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: '1.25rem',
+                        color: isFavorite(
+                          property.id
+                        )
+                          ? '#D4AF37'
+                          : '#fff',
+                        transition:
+                          'all .2s ease'
+                      }}
+                    >
+                      ♥
+                    </span>
+                  </button>
                           </div>
 
 {/* CONTENT */}

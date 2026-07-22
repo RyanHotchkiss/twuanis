@@ -1,7 +1,23 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import {
+  useEffect,
+  useState
+} from 'react'
+
 import Link from 'next/link'
+import {
+  useSearchParams
+} from 'next/navigation'
+
+import {
+  Suspense
+} from 'react'
+import CollectionPicker from '@/app/components/CollectionPicker'
+
+import {
+  getCollectionListingIds
+} from '@/lib/collections'
 
 import TopBarES from '@/app/components/TopBarES'
 
@@ -9,6 +25,21 @@ import TopBarES from '@/app/components/TopBarES'
 import { supabase } from '@/lib/supabase'
 
 export default function FavoritesPage() {
+      return (
+        <Suspense fallback={null}>
+          <FavoritesContent />
+        </Suspense>
+      )
+    }
+
+    function FavoritesContent() {
+      const searchParams =
+        useSearchParams()
+
+  const collectionId =
+    searchParams.get(
+      'collection'
+    )
 
   const [favorites, setFavorites] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -20,10 +51,16 @@ export default function FavoritesPage() {
 
     async function fetchFavorites() {
 
-      const favoriteIds =
-        JSON.parse(
-          localStorage.getItem('favorites') || '[]'
-        )
+            const favoriteIds =
+              collectionId
+                ? await getCollectionListingIds(
+                    collectionId
+                  )
+                : JSON.parse(
+                    localStorage.getItem(
+                      'favorites'
+                    ) || '[]'
+                  )
 
       if (favoriteIds.length === 0) {
 
@@ -85,7 +122,7 @@ export default function FavoritesPage() {
 
     fetchFavorites()
 
-  }, [])
+  }, [collectionId])
 
   if (loading) {
 
@@ -134,81 +171,100 @@ export default function FavoritesPage() {
 
           {favorites.map((property) => (
 
-            <Link
+            <div
                 key={property.id}
-                href={`/listing/${property.id}`}
                 style={{
-                    textDecoration: 'none',
-                    color: '#fff'
+                  background: '#181818',
+                  border: '1px solid #222',
+                  borderRadius: '1.5rem',
+                  overflow: 'visible'
                 }}
+              >
+                <Link
+                  href={
+                          property.transaction_type ===
+                            'rent' ||
+                          property.transaction_type ===
+                            'lease'
+                            ? `/es/alquilar-arrendar/anuncio/${property.id}`
+                            : `/es/comprar/anuncio/${property.id}`
+                        }
+                  style={{
+                    display: 'block',
+                    overflow: 'hidden',
+                    color: '#fff',
+                    borderRadius: '1.5rem',
+                    textDecoration: 'none'
+                  }}
                 >
+                  <div
+                    style={{
+                      aspectRatio: '4 / 3',
+                      overflow: 'hidden',
+                      background: '#111'
+                    }}
+                  >
+                    {property.images?.[0] ? (
+                      <img
+                        src={property.images[0]}
+                        alt={property.title}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                          display: 'block'
+                        }}
+                      />
+                    ) : (
+                      <div
+                        style={{
+                          height: '100%',
+                          display: 'flex',
+                          justifyContent:
+                            'center',
+                          alignItems: 'center',
+                          color: '#555'
+                        }}
+                      >
+                        Sin Imagen
+                      </div>
+                    )}
+                  </div>
 
-              <div style={{
-                background: '#181818',
-                border: '1px solid #222',
-                borderRadius: '1.5rem',
-                overflow: 'hidden'
-              }}>
-
-                {/* IMAGE */}
-                <div style={{
-                  aspectRatio: '4 / 3',
-                  overflow: 'hidden',
-                  background: '#111'
-                }}>
-
-                  {property.images?.[0] ? (
-
-                    <img
-                      src={property.images[0]}
-                      alt={property.title}
+                  <div
+                    style={{
+                      padding: '1.25rem'
+                    }}
+                  >
+                    <h2
                       style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        display: 'block'
+                        fontSize: '1.1rem',
+                        marginBottom: '.5rem'
                       }}
-                    />
+                    >
+                      {property.title}
+                    </h2>
 
-                  ) : (
+                    <p style={{ color: '#888' }}>
+                      {property.province}
+                      {' → '}
+                      {property.canton}
+                    </p>
+                  </div>
+                </Link>
 
-                    <div style={{
-                      height: '100%',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      color: '#555'
-                    }}>
-                      Sin Imagen
-                    </div>
-
-                  )}
-
+                <div
+                  style={{
+                    padding:
+                      '0 1.25rem 1.25rem'
+                  }}
+                >
+                  <CollectionPicker
+                    listingId={property.id}
+                    language="es"
+                  />
                 </div>
-
-                {/* CONTENT */}
-                <div style={{
-                  padding: '1.25rem'
-                }}>
-
-                  <h2 style={{
-                    fontSize: '1.1rem',
-                    marginBottom: '.5rem'
-                  }}>
-                    {property.title}
-                  </h2>
-
-                  <p style={{
-                    color: '#888'
-                  }}>
-                    {property.province} → {property.canton}
-                  </p>
-
-                </div>
-
               </div>
-
-            </Link>
 
           ))}
 

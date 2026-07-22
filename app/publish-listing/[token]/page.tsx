@@ -1,6 +1,11 @@
 import { supabase } from '@/lib/supabase'
 import { assignListingOntology } from '@/lib/assign-listing-ontology'
 import { redirect } from 'next/navigation'
+import {
+  recordListingCreated,
+  recordListingPublished
+} from '@/lib/activity'
+
 
 function generateFallbackTitle(data: any) {
   const environment = data.environment || ''
@@ -197,6 +202,37 @@ export default async function PublishPage({
       </div>
     )
   }
+
+    try {
+      const metadata = {
+        title: listingData.title,
+        province: listingData.province,
+        canton: listingData.canton,
+        district: listingData.district,
+        propertyType:
+          listingData.property_type,
+        transactionType:
+          listingData.transaction_type,
+        status:
+          listingData.listing_status,
+        source: 'publish-listing-token'
+      }
+
+      await recordListingCreated({
+        listingId: listingData.id,
+        metadata
+      })
+
+      await recordListingPublished({
+        listingId: listingData.id,
+        metadata
+      })
+    } catch (activityError) {
+      console.error(
+        'Unable to record listing activity:',
+        activityError
+      )
+    }
 
   await assignListingOntology(
     listingData.id,

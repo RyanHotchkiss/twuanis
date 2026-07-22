@@ -9,7 +9,9 @@ import FilterButton from '@/app/components/FilterButton'
 
 import RentLeaseSidebarES from '@/app/components/RentLeaseSidebarES'
 import { normalizeText } from '@/lib/normalizeText' 
-
+import {
+  saveSearch
+} from '@/lib/saved-searches'
 
 import {
       provinces,
@@ -560,7 +562,35 @@ const filteredProperties = properties.filter((property) => {
 
         </div>
 
-                 
+      <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginBottom: '24px'
+          }}
+        >
+          <button
+            type="button"
+            onClick={() =>
+              saveSearch(
+                'rent',
+                'es',
+                filters
+              )
+            }
+            style={{
+              background: '#fff',
+              border: '1px solid #fff',
+              color: '#000',
+              padding: '12px 20px',
+              borderRadius: '999px',
+              cursor: 'pointer',
+              fontWeight: 'bold'
+            }}
+          >
+            Guardar búsqueda
+          </button>
+        </div>
 
         {/* MAIN GRID */}
           <div style={{
