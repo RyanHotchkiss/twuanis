@@ -54,8 +54,28 @@ import PriceSelectorS from '@/app/components/filter-bar/PriceSelectorS'
 import PropertyDefinitionPanel from '@/app/components/PropertyDefinitionPanel'
 import TopBar from '@/app/components/TopBar'
 
+import TopBarES from '@/app/components/TopBarES'
+import PropertyTypeFilterSES from '@/app/components/filter-bar/PropertyTypeFilterSES'
+import BedroomFilterSES from '@/app/components/filter-bar/BedroomFilterSES'
+import BathroomFilterSES from '@/app/components/filter-bar/BathroomFilterSES'
+import ParkingFilterSES from '@/app/components/filter-bar/ParkingFilterSES'
+import YearBuiltFilterSES from '@/app/components/filter-bar/YearBuiltFilterSES'
+import ConstructionAreaFilterSES from '@/app/components/filter-bar/ConstructionAreaFilterSES'
+import PropertyAreaFilterES from '@/app/components/filter-bar/PropertyAreaFilterES'
+import UtilitiesFilterES from '@/app/components/filter-bar/UtilitiesFilterES'
+import EnvironmentFilterSES from '@/app/components/filter-bar/EnvironmentFilterSES'
+import AccessibilityFilterES from '@/app/components/filter-bar/AccessibilityFilterES'
+import TerrainFilterES from '@/app/components/filter-bar/TerrainFilterES'
+import LegalStatusFilterSES from '@/app/components/filter-bar/LegalStatusFilterSES'
+import PropertyDefinitionPanelES from '@/app/components/PropertyDefinitionPanelES'
+
+type SupportedLanguage =
+  | 'en'
+  | 'es'
+
 type SaleListingEditFormProps = {
   listing: any
+  language?: SupportedLanguage
 }
 
 function normalizeStringArray(
@@ -63,45 +83,45 @@ function normalizeStringArray(
 ): string[] {
   if (Array.isArray(value)) {
     return value
-      .map(item =>
-        String(item)
-      )
+      .map(item => String(item))
       .filter(Boolean)
   }
 
-  if (
-    typeof value === 'string'
-  ) {
-    if (
-      !value.trim()
-    ) {
-      return []
-    }
-
-    try {
-      const parsed =
-        JSON.parse(value)
-
-      if (
-        Array.isArray(parsed)
-      ) {
-        return parsed
-          .map(item =>
-            String(item)
-          )
-          .filter(Boolean)
-      }
-    } catch {
-      return value
-        .split('|')
-        .map(item =>
-          item.trim()
-        )
-        .filter(Boolean)
-    }
+  if (typeof value !== 'string') {
+    return []
   }
 
-  return []
+  const trimmedValue = value.trim()
+
+  if (!trimmedValue) {
+    return []
+  }
+
+  try {
+    const parsed = JSON.parse(
+      trimmedValue
+    )
+
+    if (Array.isArray(parsed)) {
+      return parsed
+        .map(item => String(item))
+        .filter(Boolean)
+    }
+
+    if (
+      typeof parsed === 'string' &&
+      parsed.trim()
+    ) {
+      return [parsed.trim()]
+    }
+  } catch {
+    // Continue to delimiter parsing.
+  }
+
+  return trimmedValue
+    .split('|')
+    .map(item => item.trim())
+    .filter(Boolean)
 }
 
 function normalizeAccessibility(
@@ -121,10 +141,118 @@ function normalizeAccessibility(
 }
 
 export default function SaleListingEditForm({
-  listing
+  listing,
+  language = 'en'
 }: SaleListingEditFormProps) {
   const router =
     useRouter()
+
+  const labels =
+  language === 'es'
+    ? {
+        eyebrow:
+          'Administración de Publicaciones en Venta',
+
+        heading:
+          'Editar Publicación en Venta',
+
+        intro:
+          'Actualice la definición de la propiedad, el precio de venta, la información de contacto y la descripción de la publicación.',
+
+        titleRequired:
+          'Ingrese un título para la publicación.',
+
+        priceRequired:
+          'Ingrese un precio de venta válido.',
+
+        updateError:
+          'No se pudo actualizar la publicación en venta.',
+
+        currency:
+          'Moneda',
+
+        crc:
+          'CRC — Colón Costarricense',
+
+        usd:
+          'USD — Dólar Estadounidense',
+
+        listingTitle:
+          'Título de la Publicación',
+
+        listingDescription:
+          'Descripción de la Publicación',
+
+        whatsapp:
+          'Número de WhatsApp',
+
+        currentImages:
+          'Imágenes Actuales de la Publicación',
+
+        remove:
+          'Eliminar',
+
+        cancel:
+          'Cancelar',
+
+        saving:
+          'Guardando Cambios...',
+
+        save:
+          'Guardar Publicación en Venta'
+      }
+    : {
+        eyebrow:
+          'Sale Listing Management',
+
+        heading:
+          'Edit Sale Listing',
+
+        intro:
+          'Update the property definition, sale price, contact information, and marketplace description.',
+
+        titleRequired:
+          'Please enter a listing title.',
+
+        priceRequired:
+          'Please enter a valid sale price.',
+
+        updateError:
+          'The sale listing could not be updated.',
+
+        currency:
+          'Currency',
+
+        crc:
+          'CRC — Costa Rican Colón',
+
+        usd:
+          'USD — United States Dollar',
+
+        listingTitle:
+          'Listing Title',
+
+        listingDescription:
+          'Listing Description',
+
+        whatsapp:
+          'WhatsApp Number',
+
+        currentImages:
+          'Current Listing Images',
+
+        remove:
+          'Remove',
+
+        cancel:
+          'Cancel',
+
+        saving:
+          'Saving Changes...',
+
+        save:
+          'Save Sale Listing'
+      }
 
   const [propertyData, setPropertyData] =
     useState({
@@ -347,7 +475,7 @@ export default function SaleListingEditForm({
       !propertyData.title.trim()
     ) {
       setErrorMessage(
-        'Please enter a listing title.'
+        labels.titleRequired
       )
 
       return
@@ -358,7 +486,7 @@ export default function SaleListingEditForm({
       propertyData.priceMillions <= 0
     ) {
       setErrorMessage(
-        'Please enter a valid sale price.'
+        labels.priceRequired
       )
 
       return
@@ -458,7 +586,9 @@ export default function SaleListingEditForm({
       })
 
       router.push(
-        `/en/buy/listing/${listing.id}`
+        language === 'es'
+          ? `/es/comprar/listing/${listing.id}`
+          : `/en/buy/listing/${listing.id}`
       )
 
       router.refresh()
@@ -469,7 +599,7 @@ export default function SaleListingEditForm({
       )
 
       setErrorMessage(
-        'The sale listing could not be updated.'
+        labels.updateError
       )
 
       setSaving(false)
@@ -478,29 +608,32 @@ export default function SaleListingEditForm({
 
   function handleCancel() {
     router.push(
-      `/en/buy/listing/${listing.id}`
+  language === 'es'
+    ? `/es/comprar/listing/${listing.id}`
+        : `/en/buy/listing/${listing.id}`
     )
   }
 
   return (
     <main style={page}>
       <div style={container}>
-        <TopBar />
+        {language === 'es'
+          ? <TopBarES />
+          : <TopBar />
+        }
 
         <header style={header}>
           <div>
             <p style={eyebrow}>
-              Sale Listing Management
+              {labels.eyebrow}
             </p>
 
             <h1 style={heading}>
-              Edit Sale Listing
+              {labels.heading}
             </h1>
 
             <p style={intro}>
-              Update the property definition,
-              sale price, contact information,
-              and marketplace description.
+              {labels.intro}
             </p>
           </div>
         </header>
@@ -577,335 +710,699 @@ export default function SaleListingEditForm({
                 }
               />
 
-              <PropertyTypeFilterS
-                bedrooms={
-                  propertyData.bedrooms
-                }
-                bathrooms={
-                  propertyData.bathrooms
-                }
-                parking={
-                  propertyData.parking
-                }
-                yearBuiltRange={
-                  propertyData.year_built_range
-                }
-                constructionArea={
-                  propertyData.construction_area
-                }
-                setShowPropertyAreaOptions={
-                  setShowPropertyAreaOptions
-                }
-                setShowBedroomOptions={
-                  setShowBedroomOptions
-                }
-                setShowProvinceOptions={
-                  setShowProvinceOptions
-                }
-                setShowCantonOptions={
-                  setShowCantonOptions
-                }
-                setShowDistrictOptions={
-                  setShowDistrictOptions
-                }
-                selectedPropertyType={
-                  propertyData.property_type
-                }
-                setSelectedPropertyType={
-                  value =>
-                    setField(
-                      'property_type',
-                      value
+              {language === 'es' ? (
+                <PropertyTypeFilterSES
+                  bedrooms={
+                    propertyData.bedrooms
+                  }
+                  bathrooms={
+                    propertyData.bathrooms
+                  }
+                  parking={
+                    propertyData.parking
+                  }
+                  yearBuiltRange={
+                    propertyData.year_built_range
+                  }
+                  constructionArea={
+                    propertyData.construction_area
+                  }
+                  selectedproperty_type={
+                    propertyData.property_type
+                  }
+                  setselectedproperty_type={
+                    value =>
+                      setField(
+                        'property_type',
+                        value
+                      )
+                  }
+                  showproperty_typeOptions={
+                    showPropertyTypeOptions
+                  }
+                  setShowproperty_typeOptions={
+                    setShowPropertyTypeOptions
+                  }
+                  setShowproperty_areaOptions={
+                    setShowPropertyAreaOptions
+                  }
+                  setShowBedroomOptions={
+                    setShowBedroomOptions
+                  }
+                  setShowProvinceOptions={
+                    setShowProvinceOptions
+                  }
+                  setShowCantonOptions={
+                    setShowCantonOptions
+                  }
+                  setShowDistrictOptions={
+                    setShowDistrictOptions
+                  }
+                  propertyTypes={
+                    property_types
+                  }
+                  residentialPropertyTypes={
+                    residential_property_types
+                  }
+                  resetResidentialFields={() =>
+                    setPropertyData(
+                      previous => ({
+                        ...previous,
+                        bedrooms: '',
+                        bathrooms: '',
+                        parking: '',
+                        year_built_range: '',
+                        construction_area: ''
+                      })
                     )
-                }
-                propertyTypes={
-                  property_types
-                }
-                residentialPropertyTypes={
-                  residential_property_types
-                }
-                showPropertyTypeOptions={
-                  showPropertyTypeOptions
-                }
-                setShowPropertyTypeOptions={
-                  setShowPropertyTypeOptions
-                }
-                resetResidentialFields={() =>
-                  setPropertyData(
-                    previous => ({
-                      ...previous,
-                      bedrooms: '',
-                      bathrooms: '',
-                      parking: '',
-                      year_built_range: '',
-                      construction_area: ''
-                    })
-                  )
-                }
-              />
+                  }
+                />
+              ) : (
+                <PropertyTypeFilterS
+                  bedrooms={
+                    propertyData.bedrooms
+                  }
+                  bathrooms={
+                    propertyData.bathrooms
+                  }
+                  parking={
+                    propertyData.parking
+                  }
+                  yearBuiltRange={
+                    propertyData.year_built_range
+                  }
+                  constructionArea={
+                    propertyData.construction_area
+                  }
+                  setShowPropertyAreaOptions={
+                    setShowPropertyAreaOptions
+                  }
+                  setShowBedroomOptions={
+                    setShowBedroomOptions
+                  }
+                  setShowProvinceOptions={
+                    setShowProvinceOptions
+                  }
+                  setShowCantonOptions={
+                    setShowCantonOptions
+                  }
+                  setShowDistrictOptions={
+                    setShowDistrictOptions
+                  }
+                  selectedPropertyType={
+                    propertyData.property_type
+                  }
+                  setSelectedPropertyType={
+                    value =>
+                      setField(
+                        'property_type',
+                        value
+                      )
+                  }
+                  propertyTypes={
+                    property_types
+                  }
+                  residentialPropertyTypes={
+                    residential_property_types
+                  }
+                  showPropertyTypeOptions={
+                    showPropertyTypeOptions
+                  }
+                  setShowPropertyTypeOptions={
+                    setShowPropertyTypeOptions
+                  }
+                  resetResidentialFields={() =>
+                    setPropertyData(
+                      previous => ({
+                        ...previous,
+                        bedrooms: '',
+                        bathrooms: '',
+                        parking: '',
+                        year_built_range: '',
+                        construction_area: ''
+                      })
+                    )
+                  }
+                />
+              )}
 
-              <BedroomFilterS
-                selectedBedrooms={
-                  propertyData.bedrooms
-                }
-                setSelectedBedrooms={
-                  value =>
-                    setField(
-                      'bedrooms',
-                      value
-                    )
-                }
-                bedroomOptions={
-                  bedroom_options
-                }
-                showBedroomOptions={
-                  showBedroomOptions
-                }
-                setShowBedroomOptions={
-                  setShowBedroomOptions
-                }
-                setShowBathroomOptions={
-                  setShowBathroomOptions
-                }
-              />
+              {language === 'es' ? (
+                <BedroomFilterSES
+                  selectedBedrooms={
+                    propertyData.bedrooms
+                  }
+                  setSelectedBedrooms={
+                    value =>
+                      setField(
+                        'bedrooms',
+                        value
+                      )
+                  }
+                  bedroomOptions={
+                    bedroom_options
+                  }
+                  showBedroomOptions={
+                    showBedroomOptions
+                  }
+                  setShowBedroomOptions={
+                    setShowBedroomOptions
+                  }
+                  setShowBathroomOptions={
+                    setShowBathroomOptions
+                  }
+                />
+              ) : (
+                <BedroomFilterS
+                  selectedBedrooms={
+                    propertyData.bedrooms
+                  }
+                  setSelectedBedrooms={
+                    value =>
+                      setField(
+                        'bedrooms',
+                        value
+                      )
+                  }
+                  bedroomOptions={
+                    bedroom_options
+                  }
+                  showBedroomOptions={
+                    showBedroomOptions
+                  }
+                  setShowBedroomOptions={
+                    setShowBedroomOptions
+                  }
+                  setShowBathroomOptions={
+                    setShowBathroomOptions
+                  }
+                />
+              )}
 
-              <BathroomFilterS
-                selectedBathrooms={
-                  propertyData.bathrooms
-                }
-                setSelectedBathrooms={
-                  value =>
-                    setField(
-                      'bathrooms',
-                      value
-                    )
-                }
-                bathroomOptions={
-                  bathroom_options
-                }
-                showBathroomOptions={
-                  showBathroomOptions
-                }
-                setShowBathroomOptions={
-                  setShowBathroomOptions
-                }
-                setShowParkingOptions={
-                  setShowParkingOptions
-                }
-              />
+              {language === 'es' ? (
+                <BathroomFilterSES
+                  selectedBathrooms={
+                    propertyData.bathrooms
+                  }
+                  setSelectedBathrooms={
+                    value =>
+                      setField(
+                        'bathrooms',
+                        value
+                      )
+                  }
+                  bathroomOptions={
+                    bathroom_options
+                  }
+                  showBathroomOptions={
+                    showBathroomOptions
+                  }
+                  setShowBathroomOptions={
+                    setShowBathroomOptions
+                  }
+                  setShowParkingOptions={
+                    setShowParkingOptions
+                  }
+                />
+              ) : (
+                <BathroomFilterS
+                  selectedBathrooms={
+                    propertyData.bathrooms
+                  }
+                  setSelectedBathrooms={
+                    value =>
+                      setField(
+                        'bathrooms',
+                        value
+                      )
+                  }
+                  bathroomOptions={
+                    bathroom_options
+                  }
+                  showBathroomOptions={
+                    showBathroomOptions
+                  }
+                  setShowBathroomOptions={
+                    setShowBathroomOptions
+                  }
+                  setShowParkingOptions={
+                    setShowParkingOptions
+                  }
+                />
+              )}
 
-              <ParkingFilterS
-                selectedParking={
-                  propertyData.parking
-                }
-                setSelectedParking={
-                  value =>
-                    setField(
-                      'parking',
-                      value
-                    )
-                }
-                parkingOptions={
-                  parking_options
-                }
-                showParkingOptions={
-                  showParkingOptions
-                }
-                setShowParkingOptions={
-                  setShowParkingOptions
-                }
-                setShowYearBuiltOptions={
-                  setShowYearBuiltOptions
-                }
-              />
+              {language === 'es' ? (
+                <ParkingFilterSES
+                  selectedParking={
+                    propertyData.parking
+                  }
+                  setSelectedParking={
+                    value =>
+                      setField(
+                        'parking',
+                        value
+                      )
+                  }
+                  parkingOptions={
+                    parking_options
+                  }
+                  showParkingOptions={
+                    showParkingOptions
+                  }
+                  setShowParkingOptions={
+                    setShowParkingOptions
+                  }
+                  setShowYearBuiltOptions={
+                    setShowYearBuiltOptions
+                  }
+                />
+              ) : (
+                <ParkingFilterS
+                  selectedParking={
+                    propertyData.parking
+                  }
+                  setSelectedParking={
+                    value =>
+                      setField(
+                        'parking',
+                        value
+                      )
+                  }
+                  parkingOptions={
+                    parking_options
+                  }
+                  showParkingOptions={
+                    showParkingOptions
+                  }
+                  setShowParkingOptions={
+                    setShowParkingOptions
+                  }
+                  setShowYearBuiltOptions={
+                    setShowYearBuiltOptions
+                  }
+                />
+              )}
 
-              <YearBuiltFilterS
-                selectedYearBuilt={
-                  propertyData.year_built_range
-                }
-                setSelectedYearBuilt={
-                  value =>
-                    setField(
-                      'year_built_range',
-                      value
-                    )
-                }
-                yearBuiltOptions={
-                  year_built_options
-                }
-                showYearBuiltOptions={
-                  showYearBuiltOptions
-                }
-                setShowYearBuiltOptions={
-                  setShowYearBuiltOptions
-                }
-                setShowConstructionAreaOptions={
-                  setShowConstructionAreaOptions
-                }
-              />
+              {language === 'es' ? (
+                <YearBuiltFilterSES
+                  selectedYearBuilt={
+                    propertyData.year_built_range
+                  }
+                  setSelectedYearBuilt={
+                    value =>
+                      setField(
+                        'year_built_range',
+                        value
+                      )
+                  }
+                  yearBuiltOptions={
+                    year_built_options
+                  }
+                  showYearBuiltOptions={
+                    showYearBuiltOptions
+                  }
+                  setShowYearBuiltOptions={
+                    setShowYearBuiltOptions
+                  }
+                  setShowConstructionAreaOptions={
+                    setShowConstructionAreaOptions
+                  }
+                />
+              ) : (
+                <YearBuiltFilterS
+                  selectedYearBuilt={
+                    propertyData.year_built_range
+                  }
+                  setSelectedYearBuilt={
+                    value =>
+                      setField(
+                        'year_built_range',
+                        value
+                      )
+                  }
+                  yearBuiltOptions={
+                    year_built_options
+                  }
+                  showYearBuiltOptions={
+                    showYearBuiltOptions
+                  }
+                  setShowYearBuiltOptions={
+                    setShowYearBuiltOptions
+                  }
+                  setShowConstructionAreaOptions={
+                    setShowConstructionAreaOptions
+                  }
+                />
+              )}
 
-              <ConstructionAreaFilterS
-                selectedConstructionArea={
-                  propertyData.construction_area
-                }
-                setSelectedConstructionArea={
-                  value =>
-                    setField(
-                      'construction_area',
-                      value
-                    )
-                }
-                constructionAreaOptions={
-                  construction_area_options
-                }
-                showConstructionAreaOptions={
-                  showConstructionAreaOptions
-                }
-                setShowConstructionAreaOptions={
-                  setShowConstructionAreaOptions
-                }
-                setShowPropertyAreaOptions={
-                  setShowPropertyAreaOptions
-                }
-              />
+              {language === 'es' ? (
+                <ConstructionAreaFilterSES
+                  selectedConstructionArea={
+                    propertyData.construction_area
+                  }
+                  setSelectedConstructionArea={
+                    value =>
+                      setField(
+                        'construction_area',
+                        value
+                      )
+                  }
+                  constructionAreaOptions={
+                    construction_area_options
+                  }
+                  showConstructionAreaOptions={
+                    showConstructionAreaOptions
+                  }
+                  setShowConstructionAreaOptions={
+                    setShowConstructionAreaOptions
+                  }
+                  setShowPropertyAreaOptions={
+                    setShowPropertyAreaOptions
+                  }
+                />
+              ) : (
+                <ConstructionAreaFilterS
+                  selectedConstructionArea={
+                    propertyData.construction_area
+                  }
+                  setSelectedConstructionArea={
+                    value =>
+                      setField(
+                        'construction_area',
+                        value
+                      )
+                  }
+                  constructionAreaOptions={
+                    construction_area_options
+                  }
+                  showConstructionAreaOptions={
+                    showConstructionAreaOptions
+                  }
+                  setShowConstructionAreaOptions={
+                    setShowConstructionAreaOptions
+                  }
+                  setShowPropertyAreaOptions={
+                    setShowPropertyAreaOptions
+                  }
+                />
+              )}
 
-              <PropertyAreaFilterS
-                selectedPropertyArea={
-                  propertyData.property_area
-                }
-                setSelectedPropertyArea={
-                  value =>
-                    setField(
-                      'property_area',
-                      value
-                    )
-                }
-                showPropertyAreaOptions={
-                  showPropertyAreaOptions
-                }
-                setShowPropertyAreaOptions={
-                  setShowPropertyAreaOptions
-                }
-                setShowUtilityOptions={
-                  setShowUtilityOptions
-                }
-                propertyAreas={
-                  property_areas
-                }
-              />
+              {language === 'es' ? (
+                <PropertyAreaFilterES
+                  selectedproperty_area={
+                    propertyData.property_area
+                  }
+                  setSelectedproperty_area={
+                    (value: string) =>
+                      setField(
+                        'property_area',
+                        value
+                      )
+                  }
+                  showproperty_areaOptions={
+                    showPropertyAreaOptions
+                  }
+                  setShowproperty_areaOptions={
+                    setShowPropertyAreaOptions
+                  }
+                  setShowutilityOptions={
+                    setShowUtilityOptions
+                  }
+                  setShowProvinceOptions={
+                    setShowProvinceOptions
+                  }
+                  setShowCantonOptions={
+                    setShowCantonOptions
+                  }
+                  setShowDistrictOptions={
+                    setShowDistrictOptions
+                  }
+                />
+              ) : (
+                <PropertyAreaFilterS
+                  selectedPropertyArea={
+                    propertyData.property_area
+                  }
+                  setSelectedPropertyArea={
+                    (value: string) =>
+                      setField(
+                        'property_area',
+                        value
+                      )
+                  }
+                  propertyAreas={
+                    property_areas
+                  }
+                  showPropertyAreaOptions={
+                    showPropertyAreaOptions
+                  }
+                  setShowPropertyAreaOptions={
+                    setShowPropertyAreaOptions
+                  }
+                  setShowUtilityOptions={
+                    setShowUtilityOptions
+                  }
+                />
+              )}
 
-              <UtilitiesFilterS
-                selectedUtilities={
-                  propertyData.utility
-                }
-                setSelectedUtilities={
-                  value =>
-                    setField(
-                      'utility',
-                      value
-                    )
-                }
-                showUtilityOptions={
-                  showUtilityOptions
-                }
-                setShowUtilityOptions={
-                  setShowUtilityOptions
-                }
-                setShowEnvironmentOptions={
-                  setShowEnvironmentOptions
-                }
-                utilities={utilities}
-              />
-              <EnvironmentFilterS
-                selectedEnvironment={
-                  propertyData.environment
-                }
-                setSelectedEnvironment={
-                  value =>
-                    setField(
-                      'environment',
-                      value
-                    )
-                }
-                showEnvironmentOptions={
-                  showEnvironmentOptions
-                }
-                setShowEnvironmentOptions={
-                  setShowEnvironmentOptions
-                }
-                setShowUtilityOptions={
-                  setShowUtilityOptions
-                }
-              />
+              {language === 'es' ? (
+                <UtilitiesFilterES
+                  selectedutility={
+                    propertyData.utility
+                  }
+                  setSelectedutility={
+                    value =>
+                      setField(
+                        'utility',
+                        value
+                      )
+                  }
+                  showutilityOptions={
+                    showUtilityOptions
+                  }
+                  setShowutilityOptions={
+                    setShowUtilityOptions
+                  }
+                  setShowenvironmentOptions={
+                    setShowEnvironmentOptions
+                  }
+                  setShowProvinceOptions={
+                    setShowProvinceOptions
+                  }
+                  setShowCantonOptions={
+                    setShowCantonOptions
+                  }
+                  setShowDistrictOptions={
+                    setShowDistrictOptions
+                  }
+                />
+              ) : (
+                <UtilitiesFilterS
+                  selectedUtilities={
+                    propertyData.utility
+                  }
+                  setSelectedUtilities={
+                    value =>
+                      setField(
+                        'utility',
+                        value
+                      )
+                  }
+                  showUtilityOptions={
+                    showUtilityOptions
+                  }
+                  setShowUtilityOptions={
+                    setShowUtilityOptions
+                  }
+                  setShowEnvironmentOptions={
+                    setShowEnvironmentOptions
+                  }
+                  utilities={
+                    utilities
+                  }
+                />
+              )}
 
-              <AccessibilityFilterS
-                selectedAccessibility={
-                  propertyData.accessibility
-                }
-                setSelectedAccessibility={
-                  value =>
-                    setField(
-                      'accessibility',
-                      value
-                    )
-                }
-                showAccessibilityOptions={
-                  showAccessibilityOptions
-                }
-                setShowAccessibilityOptions={
-                  setShowAccessibilityOptions
-                }
-              />
 
-              <TerrainFilterS
-                selectedTerrain={
-                  propertyData.terrain
-                }
-                setSelectedTerrain={
-                  value =>
-                    setField(
-                      'terrain',
-                      value
-                    )
-                }
-                showTerrainOptions={
-                  showTerrainOptions
-                }
-                setShowTerrainOptions={
-                  setShowTerrainOptions
-                }
-                setShowAccessibilityOptions={
-                  setShowAccessibilityOptions
-                }
-                setShowLegalStatusOptions={
-                  setShowLegalStatusOptions
-                }
-                terrainOptions={
-                  terrainOptions
-                }
-              />
+              {language === 'es' ? (
+                <EnvironmentFilterSES
+                  selectedEnvironment={
+                    propertyData.environment
+                  }
+                  setSelectedEnvironment={
+                    (value: string) =>
+                      setField(
+                        'environment',
+                        value
+                      )
+                  }
+                  showEnvironmentOptions={
+                    showEnvironmentOptions
+                  }
+                  setShowEnvironmentOptions={
+                    setShowEnvironmentOptions
+                  }
+                  setShowUtilityOptions={
+                    setShowUtilityOptions
+                  }
+                />
+              ) : (
+                <EnvironmentFilterS
+                  selectedEnvironment={
+                    propertyData.environment
+                  }
+                  setSelectedEnvironment={
+                    (value: string) =>
+                      setField(
+                        'environment',
+                        value
+                      )
+                  }
+                  showEnvironmentOptions={
+                    showEnvironmentOptions
+                  }
+                  setShowEnvironmentOptions={
+                    setShowEnvironmentOptions
+                  }
+                  setShowUtilityOptions={
+                    setShowUtilityOptions
+                  }
+                />
+              )}
 
-              <LegalStatusFilterS
-                selectedLegalStatus={
-                  propertyData.legal_status
-                }
-                setSelectedLegalStatus={
-                  value =>
-                    setField(
-                      'legal_status',
-                      value
-                    )
-                }
-                showLegalStatusOptions={
-                  showLegalStatusOptions
-                }
-                setShowLegalStatusOptions={
-                  setShowLegalStatusOptions
-                }
-                setShowTerrainOptions={
-                  setShowTerrainOptions
-                }
-              />
+             {language === 'es' ? (
+                <AccessibilityFilterES
+                  selectedaccessibility={
+                    propertyData.accessibility
+                  }
+                  setSelectedaccessibility={
+                    (value: string) =>
+                      setField(
+                        'accessibility',
+                        value
+                      )
+                  }
+                  showAccessibilityOptions={
+                    showAccessibilityOptions
+                  }
+                  setShowAccessibilityOptions={
+                    setShowAccessibilityOptions
+                  }
+                />
+              ) : (
+                <AccessibilityFilterS
+                  selectedAccessibility={
+                    propertyData.accessibility
+                  }
+                  setSelectedAccessibility={
+                    (value: string) =>
+                      setField(
+                        'accessibility',
+                        value
+                      )
+                  }
+                  showAccessibilityOptions={
+                    showAccessibilityOptions
+                  }
+                  setShowAccessibilityOptions={
+                    setShowAccessibilityOptions
+                  }
+                />
+              )}
+
+              {language === 'es' ? (
+                <TerrainFilterES
+                  selectedterrain={
+                    propertyData.terrain
+                  }
+                  setSelectedterrain={
+                    (value: string[]) =>
+                      setField(
+                        'terrain',
+                        value
+                      )
+                  }
+                  showTerrainOptions={
+                    showTerrainOptions
+                  }
+                  setShowTerrainOptions={
+                    setShowTerrainOptions
+                  }
+                />
+              ) : (
+                <TerrainFilterS
+                  selectedTerrain={
+                    propertyData.terrain
+                  }
+                  setSelectedTerrain={
+                    (value: string[]) =>
+                      setField(
+                        'terrain',
+                        value
+                      )
+                  }
+                  showTerrainOptions={
+                    showTerrainOptions
+                  }
+                  setShowTerrainOptions={
+                    setShowTerrainOptions
+                  }
+                  setShowAccessibilityOptions={
+                    setShowAccessibilityOptions
+                  }
+                  setShowLegalStatusOptions={
+                    setShowLegalStatusOptions
+                  }
+                  terrainOptions={
+                    terrainOptions
+                  }
+                />
+              )}
+
+              {language === 'es' ? (
+                <LegalStatusFilterSES
+                  selectedLegalStatus={
+                    propertyData.legal_status
+                  }
+                  setSelectedLegalStatus={
+                    (value: string) =>
+                      setField(
+                        'legal_status',
+                        value
+                      )
+                  }
+                  showLegalStatusOptions={
+                    showLegalStatusOptions
+                  }
+                  setShowLegalStatusOptions={
+                    setShowLegalStatusOptions
+                  }
+                  setShowTerrainOptions={
+                    setShowTerrainOptions
+                  }
+                />
+              ) : (
+                <LegalStatusFilterS
+                  selectedLegalStatus={
+                    propertyData.legal_status
+                  }
+                  setSelectedLegalStatus={
+                    (value: string) =>
+                      setField(
+                        'legal_status',
+                        value
+                      )
+                  }
+                  showLegalStatusOptions={
+                    showLegalStatusOptions
+                  }
+                  setShowLegalStatusOptions={
+                    setShowLegalStatusOptions
+                  }
+                  setShowTerrainOptions={
+                    setShowTerrainOptions
+                  }
+                />
+              )}
 
               <PriceSelectorS
                 priceMillions={
@@ -933,7 +1430,7 @@ export default function SaleListingEditForm({
 
               <section style={textSection}>
                 <label style={fieldLabel}>
-                  Currency
+                  {labels.currency}
 
                   <select
                     value={
@@ -947,18 +1444,19 @@ export default function SaleListingEditForm({
                     }
                     style={input}
                   >
-                    <option value="CRC">
-                      CRC — Costa Rican Colón
+                   <option value="CRC">
+                      {labels.crc}
                     </option>
 
                     <option value="USD">
-                      USD — United States Dollar
+                      {labels.usd}
                     </option>
+
                   </select>
                 </label>
 
                 <label style={fieldLabel}>
-                  Listing Title
+                  {labels.listingTitle}
 
                   <input
                     type="text"
@@ -976,7 +1474,7 @@ export default function SaleListingEditForm({
                 </label>
 
                 <label style={fieldLabel}>
-                  Listing Description
+                  {labels.listingDescription}
 
                   <textarea
                     value={
@@ -994,7 +1492,7 @@ export default function SaleListingEditForm({
                 </label>
 
                 <label style={fieldLabel}>
-                  WhatsApp Number
+                  {labels.whatsapp}
 
                   <input
                     type="tel"
@@ -1020,7 +1518,7 @@ export default function SaleListingEditForm({
                 0 && (
                 <section style={imageSection}>
                   <h2 style={sectionHeading}>
-                    Current Listing Images
+                    {labels.currentImages}
                   </h2>
 
                   <div style={imageGrid}>
@@ -1057,7 +1555,7 @@ export default function SaleListingEditForm({
                             }
                             style={removeButton}
                           >
-                            Remove
+                            {labels.remove}
                           </button>
                         </article>
                       )
@@ -1079,7 +1577,7 @@ export default function SaleListingEditForm({
                   disabled={saving}
                   style={secondaryButton}
                 >
-                  Cancel
+                  {labels.cancel}
                 </button>
 
                 <button
@@ -1094,18 +1592,22 @@ export default function SaleListingEditForm({
                   }}
                 >
                   {saving
-                    ? 'Saving Changes...'
-                    : 'Save Sale Listing'}
+                    ? labels.saving
+                    : labels.save}
                 </button>
               </div>
             </section>
 
             <aside style={previewPanel}>
-              <PropertyDefinitionPanel
-                propertyData={
-                  propertyData
-                }
-              />
+              {language === 'es' ? (
+                <PropertyDefinitionPanelES
+                  propertyData={propertyData}
+                />
+              ) : (
+                <PropertyDefinitionPanel
+                  propertyData={propertyData}
+                />
+              )}
             </aside>
           </div>
         </form>

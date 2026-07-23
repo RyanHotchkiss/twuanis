@@ -1,5 +1,9 @@
 import { supabase } from '@/lib/supabase'
 
+import {
+  getCurrentUser
+} from '@/lib/auth/current-user'
+
 export type FavoriteCollectionRecord = {
   id: string
   name: string
@@ -9,17 +13,12 @@ export type FavoriteCollectionRecord = {
 
 export async function getFavoriteCollections():
   Promise<FavoriteCollectionRecord[]> {
-  const {
-    data: { user },
-    error: userError
-  } = await supabase.auth.getUser()
+  const user =
+  await getCurrentUser()
 
-  if (
-    userError ||
-    !user
-  ) {
-    return []
-  }
+if (!user) {
+  return []
+}
 
   const {
     data,
@@ -77,16 +76,10 @@ export async function createFavoriteCollection(
     )
   }
 
-  const {
-    data: { user },
-    error: userError
-  } = await supabase.auth.getUser()
+  const user =
+  await getCurrentUser()
 
-  if (userError) {
-    throw userError
-  }
-
-  if (!user) {
+if (!user) {
     throw new Error(
       'You must sign in to create a collection.'
     )

@@ -45,6 +45,7 @@ export default async function EditSaleListingPage({
   return (
     <SaleListingEditForm
       listing={listing}
+      language="en"
     />
   )
 }

@@ -1,5 +1,6 @@
 import TopBarES from '@/app/components/TopBarES'
-import MarketHubMyListings from '@/app/components/MarketHubMyListings'
+import MarketHubAuthGate from '@/app/components/MarketHubAuthGate'
+import MarketHubMyListingsLoader from '@/app/components/MarketHubMyListingsLoader'
 import MarketHubFavorites from '@/app/components/MarketHubFavorites'
 import MarketHubMarketIntelligence from '@/app/components/MarketHubMarketIntelligence'
 import MarketHubPackages from '@/app/components/MarketHubPackages'
@@ -7,6 +8,8 @@ import MarketHubSettings from '@/app/components/MarketHubSettings'
 import PermissionGate from '@/app/components/PermissionGate'
 import MarketHubFirstTimeExperience from '@/app/components/MarketHubFirstTimeExperience'
 import MarketHubActivityEngine from '@/app/components/MarketHubActivityEngine'
+import MarketHubComparisons from '@/app/components/MarketHubComparisons'
+import MarketHubSavedAnalyses from '@/app/components/MarketHubSavedAnalyses'
 
 import {
   MARKET_HUB_EXPLORE_ACTIONS,
@@ -21,7 +24,8 @@ const onboardingProgress =
 
 export default function CentroDeMercadoPage() {
   return (
-    <main style={main}>
+    <MarketHubAuthGate>
+      <main style={main}>
       <TopBarES />
 
       <section style={hero}>
@@ -90,9 +94,8 @@ export default function CentroDeMercadoPage() {
             />
             </div>
 
-      <MarketHubMyListings
+      <MarketHubMyListingsLoader
         language="es"
-        listings={[]}
       />
 
     <div style={cardSpacing}>
@@ -174,9 +177,20 @@ export default function CentroDeMercadoPage() {
             />
         </div>
 
+        <div style={cardSpacing}>
+          <MarketHubComparisons
+            language="es"
+          />
+        </div>
 
-            <div style={cardSpacing}>
-                <MarketHubMarketIntelligence
+        <div style={cardSpacing}>
+          <MarketHubSavedAnalyses
+              language="es"
+            />
+        </div>
+
+        <div style={cardSpacing}>
+          <MarketHubMarketIntelligence
                     language="es"
                     marketsViewedCount={22}
                     lastUpdated="Today"
@@ -631,10 +645,10 @@ export default function CentroDeMercadoPage() {
                     />
                 </div>
 
-           </main>
-            )
-         }
-
+                 </main>
+    </MarketHubAuthGate>
+  )
+}
 const main = {
   minHeight: '100vh',
   padding: '2rem',

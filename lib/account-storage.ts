@@ -1,15 +1,18 @@
 import { supabase } from '@/lib/supabase'
 
+import {
+  getCurrentUser
+} from '@/lib/auth/current-user'
+
 export async function saveFavorite(
   entityType: string,
   entityId: string,
   metadata: any = {}
 ) {
-  const {
-    data: { user }
-  } = await supabase.auth.getUser()
+  const user =
+      await getCurrentUser()
 
-  if (!user) return
+    if (!user) return
 
   await supabase
     .from('user_favorites')
@@ -27,9 +30,8 @@ export async function recordRecentActivity(
   entityId: string,
   metadata: any = {}
 ) {
-  const {
-    data: { user }
-  } = await supabase.auth.getUser()
+  const user =
+    await getCurrentUser()
 
   if (!user) return
 

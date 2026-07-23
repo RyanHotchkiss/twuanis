@@ -54,6 +54,34 @@ export async function trackListingShared({
   })
 }
 
+export async function trackListingWhatsAppClicked({
+  listingId,
+  metadata
+}: ListingActivityInput) {
+  return recordActivityEvent({
+    eventCategory: 'listing',
+    eventType:
+      'listing_whatsapp_clicked',
+    entityType: 'listing',
+    entityId: listingId,
+    metadata
+  })
+}
+
+export async function trackListingEmailInquiry({
+  listingId,
+  metadata
+}: ListingActivityInput) {
+  return recordActivityEvent({
+    eventCategory: 'listing',
+    eventType:
+      'listing_email_inquiry',
+    entityType: 'listing',
+    entityId: listingId,
+    metadata
+  })
+}
+
 export async function recordListingUnpublished({
   listingId,
   metadata = {}

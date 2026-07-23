@@ -1,14 +1,17 @@
 import { supabase } from '@/lib/supabase'
 
+import {
+  getCurrentUser
+} from '@/lib/auth/current-user'
+
 export async function saveSearch(
   transactionType: string,
   language: string,
   filters: any,
   name = 'My Search'
 ) {
-  const {
-    data: { user }
-  } = await supabase.auth.getUser()
+  const user =
+    await getCurrentUser()
 
   if (!user) return
 
@@ -24,9 +27,8 @@ export async function saveSearch(
 }
 
 export async function getSavedSearches() {
-  const {
-    data: { user }
-  } = await supabase.auth.getUser()
+  const user =
+    await getCurrentUser()
 
   if (!user) {
     return []

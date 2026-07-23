@@ -10,7 +10,6 @@ import {
   Forward,
   Heart,
   HousePlus,
-  Mail,
   MessageCircle,
   Pencil
 } from 'lucide-react'
@@ -168,7 +167,6 @@ export default function MarketHubMyListings({
             favorites: 'Favoritos',
             shares: 'Compartidos',
             whatsappClicks: 'Clics en WhatsApp',
-            emailInquiries: 'Consultas por Correo',
             daysPublished: 'Días Publicada',
             daysUpdated: 'Días desde la Actualización'
         }
@@ -198,7 +196,6 @@ export default function MarketHubMyListings({
             favorites: 'Favorites',
             shares: 'Shares',
             whatsappClicks: 'WhatsApp Clicks',
-            emailInquiries: 'Email Inquiries',
             daysPublished: 'Days Published',
             daysUpdated: 'Days Since Update'
         }
@@ -475,7 +472,6 @@ async function handleDuplicate(
         favoriteCount: 0,
         shareCount: 0,
         whatsappClickCount: 0,
-        emailInquiryCount: 0,
         daysSincePublished: 0,
         daysSinceLastUpdate: 0
       }
@@ -727,23 +723,7 @@ async function handleRenew(
                         </div>
                     </div>
 
-                    <div style={analyticsItem}>
-                        <Mail
-                        size={18}
-                        strokeWidth={1}
-                        color="#C7A44B"
-                        />
-
-                        <div>
-                        <div style={analyticsValue}>
-                            {listing.emailInquiryCount ?? 0}
-                        </div>
-
-                        <div style={analyticsLabel}>
-                            {labels.emailInquiries}
-                        </div>
-                        </div>
-                    </div>
+                    
 
                     <div style={analyticsItem}>
                         <CalendarDays

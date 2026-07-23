@@ -35,6 +35,10 @@ import {
   formatWhatsAppNumber
 } from '@/app/utils/listing-utils'
 
+import {
+  trackListingWhatsAppClicked
+} from '@/lib/activity/listings'
+
 import AccessibilityFilterES from '@/app/components/filter-bar/AccessibilityFilterES'
 import EnvironmentFilterSES from '@/app/components/filter-bar/EnvironmentFilterSES'
 import LegalStatusFilterSES from '@/app/components/filter-bar/LegalStatusFilterSES'
@@ -785,11 +789,6 @@ const [showAuthOverlay, setShowAuthOverlay] = useState(false)
 
                     console.log(
                     'CREATE LISTING BUTTON CLICKED'
-                    )
-
-                    console.log(
-                    'WHATSAPP:',
-                    propertyData.whatsapp
                     )
 
                     if (!propertyData.whatsapp) {

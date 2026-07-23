@@ -50,6 +50,7 @@ import CsvStagingModal from '@/app/components/CsvStagingModal'
 import RentalPropertyDefinitionPanelES from '@/app/components/RentalPropertyDefinitionPanelES'
 import PropertyTypeFilterES from '@/app/components/filter-bar/PropertyTypeFilterES'
 import TopBarES from '@/app/components/TopBarES'
+import MarketHubAuthGate from '@/app/components/MarketHubAuthGate'
 import CreateListingButtonSXL from '@/app/components/CreateListingButtonSXL'
 import AuthOverlay
 from '@/app/AuthOverlay'
@@ -189,9 +190,9 @@ export default function SellPage() {
 
                     }, [])
 
-                    /* THEN YOUR RETURN */
-                    return (
-
+                    
+            return (
+                <MarketHubAuthGate>
                     <main style={{
                         background: '#000',
                         minHeight: '100vh',
@@ -1001,8 +1002,7 @@ formattedData
  
                  )}
  
-                 </main>
- 
-                 )
- 
-                 }
+                     </main>
+            </MarketHubAuthGate>
+        )
+    }

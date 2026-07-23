@@ -174,6 +174,8 @@ export type ListingActivityEventType =
   | 'listing_viewed'
   | 'listing_saved'
   | 'listing_shared'
+  | 'listing_whatsapp_clicked'
+  | 'listing_email_inquiry'
   | 'listing_created'
   | 'listing_updated'
   | 'listing_published'

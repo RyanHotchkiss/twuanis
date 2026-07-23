@@ -1,5 +1,10 @@
 import { supabase } from '@/lib/supabase'
 
+import {
+  getCurrentUser,
+  requireCurrentUser
+} from '@/lib/auth/current-user'
+
 export type SavedAnalysisLanguage =
   | 'en'
   | 'es'
@@ -15,11 +20,12 @@ export type SavedAnalysisEngine =
   | 'buyer-demand'
 
 type SaveAnalysisInput = {
-  engineType: SavedAnalysisEngine
-  language: SavedAnalysisLanguage
-  name: string
-  filters: Record<string, unknown>
-  result: unknown
+    engineType: string
+    language: string
+    name: string
+    filters: unknown
+    result: unknown
+    schemaVersion?: number
 }
 
 export async function saveAnalysis({
@@ -27,24 +33,11 @@ export async function saveAnalysis({
   language,
   name,
   filters,
-  result
+  result,
+  schemaVersion = 1
 }: SaveAnalysisInput) {
-  const {
-    data: { user },
-    error: userError
-  } = await supabase.auth.getUser()
-
-  if (userError) {
-    throw userError
-  }
-
-  if (!user) {
-    throw new Error(
-      language === 'es'
-        ? 'Debes iniciar sesión para guardar un análisis.'
-        : 'You must sign in to save an analysis.'
-    )
-  }
+  const user =
+  await requireCurrentUser()
 
   const {
     data,
@@ -57,7 +50,8 @@ export async function saveAnalysis({
       language,
       name,
       filters,
-      result
+      result,
+      schema_version: schemaVersion ?? 1
     })
     .select()
     .single()
@@ -69,18 +63,12 @@ export async function saveAnalysis({
   return data
 }
 export async function getSavedAnalyses() {
-  const {
-    data: { user },
-    error: userError
-  } = await supabase.auth.getUser()
+  const user =
+  await getCurrentUser()
 
-  if (userError) {
-    throw userError
-  }
-
-  if (!user) {
-    return []
-  }
+if (!user) {
+  return []
+}
 
   const {
     data,
@@ -92,6 +80,204 @@ export async function getSavedAnalyses() {
     .order('updated_at', {
       ascending: false
     })
+
+  if (error) {
+    throw error
+  }
+
+  return data
+}
+
+export async function getSavedAnalysesByEngine(
+  engineType: SavedAnalysisEngine
+) {
+  const user =
+  await getCurrentUser()
+
+if (!user) {
+  return []
+}
+
+  const {
+    data,
+    error
+  } = await supabase
+    .from('saved_analyses')
+    .select('*')
+    .eq('user_id', user.id)
+    .eq('engine_type', engineType)
+    .order('updated_at', {
+      ascending: false
+    })
+
+  if (error) {
+    throw error
+  }
+
+  return data
+}
+
+export async function getRecentSavedAnalyses(
+  limit = 5
+) {
+  const user =
+  await getCurrentUser()
+
+if (!user) {
+  return []
+}
+
+  const {
+    data,
+    error
+  } = await supabase
+    .from('saved_analyses')
+    .select('*')
+    .eq('user_id', user.id)
+    .order('updated_at', {
+      ascending: false
+    })
+    .limit(limit)
+
+  if (error) {
+    throw error
+  }
+
+  return data
+}
+
+export async function renameSavedAnalysis(
+  id: string,
+  name: string
+) {
+  const user =
+  await requireCurrentUser()
+
+  const {
+    data,
+    error
+  } = await supabase
+    .from('saved_analyses')
+    .update({
+      name,
+      updated_at: new Date().toISOString()
+    })
+    .eq('id', id)
+    .eq('user_id', user.id)
+    .select()
+    .single()
+
+  if (error) {
+    throw error
+  }
+
+  return data
+}
+
+export async function updateSavedAnalysis(
+  id: string,
+  updates: {
+    name?: string
+    filters?: unknown
+    result?: unknown
+    schemaVersion?: number
+  }
+) {
+const user =
+  await requireCurrentUser()
+
+  const {
+    data,
+    error
+  } = await supabase
+    .from('saved_analyses')
+    .update({
+      ...(updates.name !== undefined && {
+        name: updates.name
+      }),
+      ...(updates.filters !== undefined && {
+        filters: updates.filters
+      }),
+      ...(updates.result !== undefined && {
+        result: updates.result
+      }),
+      ...(updates.schemaVersion !== undefined && {
+        schema_version: updates.schemaVersion
+      }),
+      updated_at: new Date().toISOString()
+    })
+    .eq('id', id)
+    .eq('user_id', user.id)
+    .select()
+    .single()
+
+  if (error) {
+    throw error
+  }
+
+  return data
+}
+
+export async function duplicateSavedAnalysis(
+  id: string
+) {
+const user =
+  await requireCurrentUser()
+
+  const {
+    data: analysis,
+    error: fetchError
+  } = await supabase
+    .from('saved_analyses')
+    .select('*')
+    .eq('id', id)
+    .eq('user_id', user.id)
+    .single()
+
+  if (fetchError) {
+    throw fetchError
+  }
+
+  const {
+    data,
+    error
+  } = await supabase
+    .from('saved_analyses')
+    .insert({
+      user_id: user.id,
+      engine_type: analysis.engine_type,
+      language: analysis.language,
+      name: `${analysis.name} (Copy)`,
+      filters: analysis.filters,
+      result: analysis.result,
+      schema_version: analysis.schema_version
+    })
+    .select()
+    .single()
+
+  if (error) {
+    throw error
+  }
+
+  return data
+}
+
+export async function deleteSavedAnalysis(
+  id: string
+) {
+  const user =
+  await requireCurrentUser()
+
+  const {
+    data,
+    error
+  } = await supabase
+    .from('saved_analyses')
+    .delete()
+    .eq('id', id)
+    .eq('user_id', user.id)
+    .select()
+    .single()
 
   if (error) {
     throw error

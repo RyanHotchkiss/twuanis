@@ -13,6 +13,22 @@ export async function createListing(
   generateListingDescription: (data: any) => string
 ) {
 
+  const {
+  data: {
+    user
+  },
+  error: userError
+} = await supabase.auth.getUser()
+
+if (
+  userError ||
+  !user
+) {
+  throw new Error(
+    'You must be signed in to publish a listing.'
+  )
+}
+
   const uploadedImageUrls = []
 
   for (const image of propertyData.images) {
@@ -49,8 +65,11 @@ export async function createListing(
   const response = await supabase
     .from('listings')
     .insert([
-
       {
+
+        owner_id:
+        user.id,
+
         province: propertyData.province,
         canton: propertyData.canton,
         district: propertyData.district,

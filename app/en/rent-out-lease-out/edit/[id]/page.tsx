@@ -28,6 +28,7 @@ export default async function EditRentalListingPage({
   return (
     <RentalListingEditForm
       listing={listing}
+      language="en"
     />
   )
 }

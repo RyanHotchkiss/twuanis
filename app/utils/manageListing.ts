@@ -275,13 +275,28 @@ export async function deleteListing({
 }
 
 export async function duplicateListing({
-  supabase,
-  listingId
-}: ListingLifecycleInput) {
-  const {
-    data: sourceListing,
-    error: sourceError
-  } = await supabase
+    supabase,
+    listingId
+  }: ListingLifecycleInput) {
+    const {
+      data: {
+        user
+      },
+      error: userError
+    } = await supabase.auth.getUser()
+    if (
+      userError ||
+      !user
+    ) {
+      throw new Error(
+        'You must be signed in to duplicate a listing.'
+      )
+    }
+    const {
+      data: sourceListing,
+      error: sourceError
+    } = await supabase
+
     .from('listings')
     .select(`
       province,
@@ -309,10 +324,14 @@ export async function duplicateListing({
       images
     `)
     .eq(
-      'id',
-      listingId
-    )
-    .single()
+        'id',
+        listingId
+      )
+      .eq(
+        'owner_id',
+        user.id
+      )
+      .single()
 
   if (sourceError) {
     throw new Error(
@@ -338,6 +357,9 @@ export async function duplicateListing({
     .from('listings')
     .insert([
       {
+        owner_id:
+          user.id,
+
         province:
           sourceListing.province,
 

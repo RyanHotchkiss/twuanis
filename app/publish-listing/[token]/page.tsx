@@ -1,258 +1,79 @@
+import { notFound } from 'next/navigation'
+
 import { supabase } from '@/lib/supabase'
-import { assignListingOntology } from '@/lib/assign-listing-ontology'
-import { redirect } from 'next/navigation'
-import {
-  recordListingCreated,
-  recordListingPublished
-} from '@/lib/activity'
 
-
-function generateFallbackTitle(data: any) {
-  const environment = data.environment || ''
-  const propertyType = data.property_type || 'property'
-  const district = data.district || ''
-  const canton = data.canton || ''
-
-  return `${environment} ${propertyType} in ${district} ${canton}`.trim()
-}
-
-function generateFallbackDescription(data: any) {
-  return `This property is located in ${
-    data.district ||
-    data.canton ||
-    data.province ||
-    'Costa Rica'
-  }.`
-}
+import AuthenticatedListingPublisher
+  from '@/app/components/AuthenticatedListingPublisher'
 
 export default async function PublishPage({
   params
 }: {
-  params: Promise<{ token: string }>
+  params: Promise<{
+    token: string
+  }>
 }) {
-  const { token } = await params
 
-  console.log('TOKEN FROM URL:', token)
+  const {
+    token
+  } = await params
 
-  const { data: tokenData, error: tokenError } = await supabase
+  const {
+    data: tokenData
+  } = await supabase
     .from('listing_publish_tokens')
-    .select('*')
+    .select('verified')
     .eq('token', token)
     .single()
 
-  console.log(
-    'TOKEN LOOKUP RESULT:',
-    JSON.stringify(
-      {
-        tokenData,
-        tokenError
-      },
-      null,
-      2
-    )
-  )
-
   if (!tokenData) {
-    return (
-      <div style={{ padding: '3rem', textAlign: 'center' }}>
-        <h1>Invalid token</h1>
-        <p>This publish link is invalid or expired.</p>
-      </div>
-    )
+
+    notFound()
+
   }
 
   if (tokenData.verified) {
-    return (
-      <div style={{ padding: '3rem', textAlign: 'center' }}>
-        <h1>Listing Already Published</h1>
-        <p>This listing has already been verified.</p>
-      </div>
-    )
-  }
-
-  const propertyData = tokenData.listing_data
-
-  console.log(
-    'PROPERTY DATA FROM TOKEN:',
-    JSON.stringify(
-      propertyData,
-      null,
-      2
-    )
-  )
-
-  console.log(
-    'TOKEN TRANSACTION TYPE:',
-    propertyData.transaction_type
-  )
-
-  const resolvedTransactionType =
-    propertyData.transaction_type === 'rent'
-      ? 'rent'
-      : propertyData.transaction_type === 'buy'
-      ? 'buy'
-      : 'buy'
-
-  console.log(
-    'RESOLVED TRANSACTION TYPE:',
-    resolvedTransactionType
-  )
-
-  const { data: listingData, error: listingError } = await supabase
-    .from('listings')
-    .insert([
-      {
-        province: propertyData.province,
-        canton: propertyData.canton,
-        district: propertyData.district,
-
-        property_type:
-          propertyData.property_type || '',
-
-        bedrooms:
-          propertyData.bedrooms,
-
-        bathrooms:
-          propertyData.bathrooms,
-
-        parking:
-          propertyData.parking,
-
-        year_built_range:
-          propertyData.year_built_range,
-
-        construction_area:
-          propertyData.construction_area,
-
-        utility:
-          propertyData.utility || [],
-
-        property_area:
-          propertyData.property_area,
-
-        environment:
-          propertyData.environment,
-
-        accessibility:
-          propertyData.accessibility,
-
-        terrain:
-          propertyData.terrain || [],
-
-        legal_status:
-          propertyData.legal_status,
-
-        price_millions:
-          propertyData.priceMillions || null,
-
-        monthly_price:
-          propertyData.monthly_price
-            ? Number(
-                String(propertyData.monthly_price)
-                  .replace(/[^\d]/g, '')
-              )
-            : null,
-
-        transaction_type:
-          resolvedTransactionType,
-
-        listing_status:
-          propertyData.listing_status || 'active',
-
-        currency:
-          propertyData.currency || 'CRC',
-
-        whatsapp:
-          tokenData.phone,
-
-        title:
-          propertyData.title ||
-          generateFallbackTitle(propertyData),
-
-        description:
-          propertyData.description ||
-          generateFallbackDescription(propertyData),
-
-        images:
-          propertyData.images || []
-      }
-    ])
-    .select()
-    .single()
-
-  console.log(
-    'PUBLISHED LISTING ROW:',
-    JSON.stringify(
-      listingData,
-      null,
-      2
-    )
-  )
-
-  if (listingError || !listingData) {
-    console.error(
-      'LISTING PUBLISH ERROR:',
-      listingError
-    )
 
     return (
-      <div style={{ padding: '3rem', textAlign: 'center' }}>
-        <h1>Publishing Error</h1>
-        <p>Your listing could not be published.</p>
-      </div>
+
+      <main
+        style={{
+          minHeight: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          background: '#0a0a0a',
+          color: '#fff'
+        }}
+      >
+
+        <div
+          style={{
+            textAlign: 'center'
+          }}
+        >
+
+          <h1>
+            Listing Already Published
+          </h1>
+
+          <p>
+            This listing has already been verified.
+          </p>
+
+        </div>
+
+      </main>
+
     )
+
   }
 
-    try {
-      const metadata = {
-        title: listingData.title,
-        province: listingData.province,
-        canton: listingData.canton,
-        district: listingData.district,
-        propertyType:
-          listingData.property_type,
-        transactionType:
-          listingData.transaction_type,
-        status:
-          listingData.listing_status,
-        source: 'publish-listing-token'
-      }
+  return (
 
-      await recordListingCreated({
-        listingId: listingData.id,
-        metadata
-      })
+    <AuthenticatedListingPublisher
+      token={token}
+    />
 
-      await recordListingPublished({
-        listingId: listingData.id,
-        metadata
-      })
-    } catch (activityError) {
-      console.error(
-        'Unable to record listing activity:',
-        activityError
-      )
-    }
-
-  await assignListingOntology(
-    listingData.id,
-    {
-      ...propertyData,
-      price_millions: propertyData.priceMillions
-    }
   )
 
-  await supabase
-    .from('listing_publish_tokens')
-    .update({
-      verified: true
-    })
-    .eq('token', token)
-
-  
-redirect(
-  listingData.transaction_type === 'rent'
-    ? `/en/rent-lease/listing/${listingData.id}`
-    : `/en/buy/listing/${listingData.id}`
-)
 }

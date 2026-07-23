@@ -48,6 +48,7 @@ import CsvStagingModal from '@/app/components/CsvStagingModal'
 import RentalPropertyDefinitionPanel from '@/app/components/RentalPropertyDefinitionPanel'
 import PropertyTypeFilter from '@/app/components/filter-bar/PropertyTypeFilter'
 import TopBar from '@/app/components/TopBar'
+import MarketHubAuthGate from '@/app/components/MarketHubAuthGate'
 import CreateListingButtonSXL from '@/app/components/CreateListingButtonSXL'
 import AuthOverlay
 from '@/app/AuthOverlay'
@@ -187,10 +188,10 @@ export default function SellPage() {
 
                     }, [])
 
-                    /* THEN YOUR RETURN */
-                    return (
-
-                    <main style={{
+                   
+        return (
+            <MarketHubAuthGate>
+                <main style={{
                         background: '#000',
                         minHeight: '100vh',
                         color: '#D4AF37',
@@ -980,8 +981,7 @@ fetch('/api/send-otp')
 
                 )}
 
-                </main>
-
-                )
-
-                }
+                   </main>
+                </MarketHubAuthGate>
+            )
+        }

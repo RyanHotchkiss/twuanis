@@ -12,6 +12,21 @@ export async function createRentalListing(
   generateListingTitle: (data: any) => string,
   generateListingDescription: (data: any) => string
 ) {
+  const {
+    data: {
+      user
+    },
+    error: userError
+  } = await supabase.auth.getUser()
+
+  if (
+    userError ||
+    !user
+  ) {
+    throw new Error(
+      'You must be signed in to publish a listing.'
+    )
+  }
 
   const uploadedImageUrls = []
 
@@ -50,6 +65,10 @@ export async function createRentalListing(
             .from('listings')
             .insert([
               {
+
+                owner_id:
+                user.id,
+
                 province: propertyData.province,
                 canton: propertyData.canton,
                 district: propertyData.district,

@@ -1,5 +1,6 @@
 import TopBar from '@/app/components/TopBar'
-import MarketHubMyListings from '@/app/components/MarketHubMyListings'
+import MarketHubAuthGate from '@/app/components/MarketHubAuthGate'
+import MarketHubMyListingsLoader from '@/app/components/MarketHubMyListingsLoader'
 import MarketHubFavorites from '@/app/components/MarketHubFavorites'
 import MarketHubMarketIntelligence from '@/app/components/MarketHubMarketIntelligence'
 import MarketHubPackages from '@/app/components/MarketHubPackages'
@@ -7,6 +8,8 @@ import MarketHubSettings from '@/app/components/MarketHubSettings'
 import PermissionGate from '@/app/components/PermissionGate'
 import MarketHubFirstTimeExperience from '@/app/components/MarketHubFirstTimeExperience'
 import MarketHubActivityEngine from '@/app/components/MarketHubActivityEngine'
+import MarketHubComparisons from '@/app/components/MarketHubComparisons'
+import MarketHubSavedAnalyses from '@/app/components/MarketHubSavedAnalyses'
 
 import {
   MARKET_HUB_EXPLORE_ACTIONS,
@@ -21,7 +24,8 @@ const onboardingProgress =
 
 export default function MarketHubPage() {
   return (
-    <main style={main}>
+    <MarketHubAuthGate>
+      <main style={main}>
       <TopBar />
 
       <section style={hero}>
@@ -92,9 +96,8 @@ export default function MarketHubPage() {
             />
             </div>
 
-      <MarketHubMyListings
+      <MarketHubMyListingsLoader
         language="en"
-        listings={[]}
       />
 
     <div style={cardSpacing}>
@@ -176,9 +179,20 @@ export default function MarketHubPage() {
             />
         </div>
 
+        <div style={cardSpacing}>
+          <MarketHubComparisons
+            language="en"
+          />
+        </div>
 
-            <div style={cardSpacing}>
-                <MarketHubMarketIntelligence
+        <div style={cardSpacing}>
+        <MarketHubSavedAnalyses
+        language="en"
+        />
+        </div>
+
+        <div style={cardSpacing}>
+          <MarketHubMarketIntelligence
                     language="en"
                     marketsViewedCount={22}
                     lastUpdated="Today"
@@ -627,9 +641,10 @@ export default function MarketHubPage() {
                     />
                 </div>
 
-           </main>
-            )
-         }
+                 </main>
+    </MarketHubAuthGate>
+  )
+}
 
 const main = {
   minHeight: '100vh',
