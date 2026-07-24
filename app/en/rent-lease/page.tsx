@@ -1,6 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import {
+  Suspense,
+  useEffect,
+  useState
+} from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { createListingId } from '@/lib/createListingId'
@@ -33,6 +37,14 @@ import {
 } from '@/lib/activity/listings'
 
 export default function HomePage() {
+  return (
+    <Suspense fallback={null}>
+      <RentLeasePageContent />
+    </Suspense>
+  )
+}
+
+function RentLeasePageContent() {
 
 const searchParams =
   useSearchParams()
