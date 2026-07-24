@@ -183,17 +183,6 @@ const navButton = {
     }, [savedSearchId])
 
   useEffect(() => {
-
-    function handleResize() {
-
-      setIsMobile(
-        window.innerWidth <= 768
-      )
-
-    }
-
-    useEffect(() => {
-
       function syncFavorites() {
         setFavoriteIds(
           getFavorites()
@@ -213,26 +202,29 @@ const navButton = {
           syncFavorites
         )
       }
-
     }, [])
 
-    handleResize()
+    useEffect(() => {
+      function handleResize() {
+        setIsMobile(
+          window.innerWidth <= 768
+        )
+      }
 
-    window.addEventListener(
-      'resize',
-      handleResize
-    )
+      handleResize()
 
-    return () => {
-
-      window.removeEventListener(
+      window.addEventListener(
         'resize',
         handleResize
       )
 
-    }
-
-  }, [])
+      return () => {
+        window.removeEventListener(
+          'resize',
+          handleResize
+        )
+      }
+    }, [])
 
     useEffect(() => {
 
