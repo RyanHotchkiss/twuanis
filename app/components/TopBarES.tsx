@@ -3,6 +3,7 @@
 import Link from 'next/link'
 
 import {
+  CircleUser,
   House,
   Search,
   Megaphone,
@@ -55,6 +56,15 @@ export default function TopBar({
         msOverflowStyle: 'none'
       }}
     >
+
+      <Link
+        href="/es/market-hub"
+        style={linkStyle}
+        onMouseEnter={e => (e.currentTarget.style.opacity = '.7')}
+        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+      >
+        <CircleUser {...navIcon} />
+      </Link>
 
       <Link
         href="/es?skipintro=true"

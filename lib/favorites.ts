@@ -1,6 +1,13 @@
 import {
-  saveFavorite as saveFavoriteAccount
+  saveListingFavorite
 } from '@/lib/account-storage'
+
+import {
+  getCurrentUser
+} from '@/lib/auth/current-user'
+
+import { supabase }
+from '@/lib/supabase'
 
 export const FAVORITES_STORAGE_KEY =
   'favorites'
@@ -82,7 +89,7 @@ export function isFavorite(
 
 }
 
-export function saveFavorite(
+export async function saveFavorite(
   id: string
 ) {
 
@@ -95,10 +102,7 @@ export function saveFavorite(
       id
     ])
 
-    saveFavoriteAccount(
-      'listing',
-      id
-    )
+    await saveListingFavorite(id)
 
 }
 
@@ -128,4 +132,45 @@ export function toggleFavorite(
 
   }
 
+}
+
+export async function migrateAnonymousFavorites() {
+
+  const user =
+    await getCurrentUser()
+
+  if (!user) return
+
+  const favorites =
+    getFavorites()
+
+  if (favorites.length === 0) {
+    return
+  }
+
+  const rows =
+    favorites.map(id => ({
+      user_id: user.id,
+      listing_id: id
+    }))
+
+  await supabase
+    .from('listing_favorites')
+    .upsert(
+      rows,
+      {
+        onConflict:
+          'user_id,listing_id'
+      }
+    )
+
+  localStorage.removeItem(
+    FAVORITES_STORAGE_KEY
+  )
+
+  window.dispatchEvent(
+    new Event(
+      'favorites-updated'
+    )
+  )
 }

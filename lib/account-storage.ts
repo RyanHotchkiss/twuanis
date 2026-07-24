@@ -4,24 +4,26 @@ import {
   getCurrentUser
 } from '@/lib/auth/current-user'
 
-export async function saveFavorite(
-  entityType: string,
-  entityId: string,
-  metadata: any = {}
+export async function saveListingFavorite(
+  listingId: string
 ) {
   const user =
-      await getCurrentUser()
+    await getCurrentUser()
 
-    if (!user) return
+  if (!user) return
 
   await supabase
-    .from('user_favorites')
-    .upsert({
-      user_id: user.id,
-      entity_type: entityType,
-      entity_id: entityId,
-      metadata
-    })
+    .from('listing_favorites')
+    .upsert(
+      {
+        user_id: user.id,
+        listing_id: listingId
+      },
+      {
+        onConflict:
+          'user_id,listing_id'
+      }
+    )
 }
 
 export async function recordRecentActivity(

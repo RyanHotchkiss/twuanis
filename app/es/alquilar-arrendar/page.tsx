@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { createListingId } from '@/lib/createListingId'
 import { supabase } from '@/lib/supabase'
@@ -10,6 +11,7 @@ import FilterButton from '@/app/components/FilterButton'
 import RentLeaseSidebarES from '@/app/components/RentLeaseSidebarES'
 import { normalizeText } from '@/lib/normalizeText' 
 import {
+  getSavedSearch,
   saveSearch
 } from '@/lib/saved-searches'
 
@@ -17,7 +19,27 @@ import {
       provinces,
       districts
     } from '@/data/property-data'
+
+import {
+  getFavorites,
+  toggleFavorite
+} from '@/lib/favorites'
+
+import {
+  recordListingSaved
+} from '@/lib/activity'
+
+import {
+  trackListingRemoved
+} from '@/lib/activity/listings'
+
 export default function HomePage() {
+
+const searchParams =
+  useSearchParams()
+
+const savedSearchId =
+  searchParams.get('savedSearch')
 
 const navButton = {
             background:'#FFFFFF50',
@@ -75,8 +97,79 @@ const navButton = {
 
   const [showMobileFilters, setShowMobileFilters] = useState(false)
 
+  const [favoriteIds, setFavoriteIds] =
+  useState<string[]>([])
+
   const [isMobile, setIsMobile] =
     useState(false)
+
+  useEffect(() => {
+      let active = true
+
+      async function restoreSavedSearch() {
+        if (!savedSearchId) {
+          return
+        }
+
+        const savedSearch =
+          await getSavedSearch(
+            savedSearchId
+          )
+
+        if (
+          !active ||
+          !savedSearch ||
+          savedSearch.transaction_type !== 'rent'
+        ) {
+          return
+        }
+
+        setFilters(current => ({
+          ...current,
+          ...savedSearch.filters,
+          utility:
+            Array.isArray(
+              savedSearch.filters?.utility
+            )
+              ? savedSearch.filters.utility
+              : [],
+          environment:
+            Array.isArray(
+              savedSearch.filters?.environment
+            )
+              ? savedSearch.filters.environment
+              : [],
+          terrain:
+            Array.isArray(
+              savedSearch.filters?.terrain
+            )
+              ? savedSearch.filters.terrain
+              : []
+        }))
+        if (savedSearch.filters?.district) {
+            setShowLocationOptions(false)
+            setShowProvinceOptions(false)
+            setShowCantonOptions(false)
+            setShowDistrictOptions(false)
+          } else if (savedSearch.filters?.canton) {
+            setShowLocationOptions(true)
+            setShowProvinceOptions(false)
+            setShowCantonOptions(false)
+            setShowDistrictOptions(true)
+          } else if (savedSearch.filters?.province) {
+            setShowLocationOptions(true)
+            setShowProvinceOptions(false)
+            setShowCantonOptions(true)
+            setShowDistrictOptions(false)
+          }
+      }
+
+      void restoreSavedSearch()
+
+      return () => {
+        active = false
+      }
+    }, [savedSearchId])
 
   useEffect(() => {
 
@@ -87,6 +180,30 @@ const navButton = {
       )
 
     }
+
+    useEffect(() => {
+
+      function syncFavorites() {
+        setFavoriteIds(
+          getFavorites()
+        )
+      }
+
+      syncFavorites()
+
+      window.addEventListener(
+        'favorites-updated',
+        syncFavorites
+      )
+
+      return () => {
+        window.removeEventListener(
+          'favorites-updated',
+          syncFavorites
+        )
+      }
+
+    }, [])
 
     handleResize()
 
@@ -785,45 +902,50 @@ const filteredProperties = properties.filter((property) => {
                                       )}
 
                                       <button
-                                        onClick={(e) => {
 
-                                          e.preventDefault()
-                                          e.stopPropagation()
+                                            onClick={async (e) => {
 
-                                          const existingFavorites =
-                                            JSON.parse(
-                                              localStorage.getItem('favorites') || '[]'
-                                            )
+                                                e.preventDefault()
+                                                e.stopPropagation()
 
-                                          const alreadySaved =
-                                            existingFavorites.includes(property.id)
+                                                const alreadySaved =
+                                                  favoriteIds.includes(
+                                                    property.id
+                                                  )
 
-                                          let updatedFavorites = []
+                                                toggleFavorite(
+                                                  property.id
+                                                )
 
-                                          if (alreadySaved) {
+                                                const metadata = {
+                                                  title: property.title,
+                                                  province: property.province,
+                                                  canton: property.canton,
+                                                  district: property.district,
+                                                  propertyType: property.property_type,
+                                                  transactionType: 'buy',
+                                                  pathname: window.location.pathname,
+                                                  href: window.location.href,
+                                                  source: 'search-results'
+                                                }
 
-                                            updatedFavorites =
-                                              existingFavorites.filter(
-                                                (id: string) => id !== property.id
-                                              )
+                                                if (alreadySaved) {
 
-                                          } else {
+                                                  await trackListingRemoved({
+                                                    listingId: property.id,
+                                                    metadata
+                                                  })
 
-                                            updatedFavorites = [
-                                              ...existingFavorites,
-                                              property.id
-                                            ]
+                                                } else {
 
-                                          }
+                                                  await recordListingSaved({
+                                                    listingId: property.id,
+                                                    metadata
+                                                  })
 
-                                          localStorage.setItem(
-                                            'favorites',
-                                            JSON.stringify(updatedFavorites)
-                                          )
+                                                }
 
-                                          window.location.reload()
-
-                                        }}
+                                              }}
                                         style={{
                                           position: 'absolute',
                                           top: '1rem',
@@ -844,11 +966,10 @@ const filteredProperties = properties.filter((property) => {
 
                                         <span style={{
                                           fontSize: '1.25rem',
-                                          color: JSON.parse(
-                                            localStorage.getItem('favorites') || '[]'
-                                          ).includes(property.id)
-                                            ? '#D4AF37'
-                                            : '#fff',
+                                          color:
+                                            favoriteIds.includes(property.id)
+                                              ? '#D4AF37'
+                                              : '#fff',
                                           transition: 'all .2s ease'
                                         }}>
                                           ♥

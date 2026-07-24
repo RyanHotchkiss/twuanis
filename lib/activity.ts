@@ -183,14 +183,36 @@ export type ListingActivityEventType =
   | 'listing_archived'
   | 'listing_restored'
   | 'listing_deleted'
+  | 'listing_removed'
+
+  export type SearchActivityEventType =
+  | 'search_saved'
 
 export type ActivityEventType =
   | PropertyActivityEventType
   | ListingActivityEventType
+  | SearchActivityEventType
 
 export type ActivityEntityType =
   | 'property'
   | 'listing'
+  | 'search'
+
+export function recordSearchSaved({
+  searchId,
+  metadata
+}: {
+  searchId: string
+  metadata?: ActivityEventMetadata
+}) {
+  return recordActivityEvent({
+    eventCategory: 'search',
+    eventType: 'search_saved',
+    entityType: 'search',
+    entityId: searchId,
+    metadata
+  })
+}
 
 export type ActivityEventMetadata = {
   title?: string

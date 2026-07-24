@@ -9,6 +9,11 @@ import {
   recordListingShared
 } from '@/lib/activity'
 
+import {
+  toggleFavorite,
+  isFavorite
+} from '@/lib/favorites'
+
 type ListingActionsProps = {
   listingId: string
   title?: string | null
@@ -36,7 +41,9 @@ export default function ListingActions({
   language
 }: ListingActionsProps) {
   const [saved, setSaved] =
-    useState(false)
+    useState(
+      isFavorite(listingId)
+    )
 
   const [message, setMessage] =
     useState('')
@@ -75,81 +82,96 @@ export default function ListingActions({
         }
 
   async function handleSave() {
-    try {
-      await recordListingSaved({
-        listingId,
-        metadata:
-          getMetadata()
-      })
 
-      setSaved(true)
-      setMessage('')
-    } catch (error) {
-      console.error(
-        'LISTING SAVE ERROR:',
-        error
+  toggleFavorite(listingId)
+
+  const nowSaved =
+    !saved
+
+  setSaved(nowSaved)
+
+  if (!nowSaved) {
+    return
+  }
+
+  try {
+
+    await recordListingSaved({
+      listingId,
+      metadata: getMetadata()
+    })
+
+    setMessage('')
+
+  } catch (error) {
+
+    console.error(
+      'LISTING SAVE ERROR:',
+      error
+    )
+
+    setMessage(
+      labels.error
+    )
+
+  }
+
+}
+
+async function handleShare() {
+  try {
+    const shareData = {
+      title:
+        title || 'Twuanis',
+      url:
+        window.location.href
+    }
+
+    let shareMethod =
+      'clipboard'
+
+    if (navigator.share) {
+      await navigator.share(
+        shareData
+      )
+
+      shareMethod =
+        'native'
+    } else {
+      await navigator.clipboard.writeText(
+        window.location.href
       )
 
       setMessage(
-        labels.error
+        labels.copied
       )
     }
-  }
 
-  async function handleShare() {
-    try {
-      const shareData = {
-        title:
-          title || 'Twuanis',
-        url:
-          window.location.href
+    await recordListingShared({
+      listingId,
+      metadata: {
+        ...getMetadata(),
+        shareMethod
       }
-
-      let shareMethod =
-        'clipboard'
-
-      if (navigator.share) {
-        await navigator.share(
-          shareData
-        )
-
-        shareMethod =
-          'native'
-      } else {
-        await navigator.clipboard.writeText(
-          window.location.href
-        )
-
-        setMessage(
-          labels.copied
-        )
-      }
-
-      await recordListingShared({
-        listingId,
-        metadata: {
-          ...getMetadata(),
-          shareMethod
-        }
-      })
-    } catch (error) {
-      if (
-        error instanceof DOMException &&
-        error.name === 'AbortError'
-      ) {
-        return
-      }
-
-      console.error(
-        'LISTING SHARE ERROR:',
-        error
-      )
-
-      setMessage(
-        labels.error
-      )
+    })
+  } catch (error) {
+    if (
+      error instanceof DOMException &&
+      error.name === 'AbortError'
+    ) {
+      return
     }
+
+    console.error(
+      'LISTING SHARE ERROR:',
+      error
+    )
+
+    setMessage(
+      labels.error
+    )
   }
+}
 
   return (
     <div
@@ -163,7 +185,6 @@ export default function ListingActions({
       <button
         type="button"
         onClick={handleSave}
-        disabled={saved}
         style={{
           flex: 1,
           minWidth: '8rem',

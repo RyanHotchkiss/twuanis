@@ -20,6 +20,10 @@ import {
 } from '@/lib/collections'
 
 import {
+  getSavedSearches
+} from '@/lib/saved-searches'
+
+import {
   getSavedAnalyses
 } from '@/lib/saved-analyses'
 
@@ -173,6 +177,13 @@ const [
     ] = useState<savedAnalyses[]>(
       initialSavedAnalyses
     )
+
+  const [
+    loadedSavedSearches,
+    setLoadedSavedSearches
+  ] = useState<SavedSearch[]>(
+    savedSearches
+  )
 
   const [
         loadedMarketComparisons,
@@ -353,9 +364,53 @@ const [
           )
         }
 
+        async function loadSavedSearches() {
+
+          const searches =
+            await getSavedSearches()
+
+          if (!active) {
+            return
+          }
+
+          setLoadedSavedSearches(
+            searches.map(search => ({
+              id: search.id,
+
+              title:
+                search.name,
+
+              resultCount: 0,
+
+              lastUpdated:
+                new Date(
+                  search.created_at
+                ).toLocaleDateString(
+                  language === 'es'
+                    ? 'es-CR'
+                    : 'en-US'
+                ),
+
+              href:
+                search.transaction_type === 'rent'
+                  ? `${
+                      language === 'es'
+                        ? '/es/alquilar-arrendar'
+                        : '/en/rent-lease'
+                    }?savedSearch=${search.id}`
+                  : `${
+                      language === 'es'
+                        ? '/es/comprar'
+                        : '/en/buy'
+                    }?savedSearch=${search.id}`
+            }))
+          )
+        }
+
         async function loadSavedAnalyses() {
-            const analyses =
-              await getSavedAnalyses()
+
+  const analyses =
+    await getSavedAnalyses()
 
             if (!active) {
               return
@@ -431,6 +486,7 @@ const [
 
           loadCollections()
           loadSavedAnalyses()
+          loadSavedSearches()
           loadSavedProperties()
 
           function handleFavoritesChanged(): void {
@@ -525,6 +581,9 @@ const resolvedMarketComparisons =
   const savedAnalyses =
     loadedSavedAnalyses
 
+  const resolvedSavedSearches =
+  loadedSavedSearches
+
   const labels =
     language === 'es'
       ? {
@@ -548,7 +607,7 @@ const resolvedMarketComparisons =
             savedSearchCount:
                 savedSearches.length === 1
                     ? 'Tiene 1 búsqueda guardada.'
-                    : `Tiene ${savedSearches.length} búsquedas guardadas.`,
+                    : `Tiene ${resolvedSavedSearches.length} búsquedas guardadas.`,
             viewAllSearches:
             'Ver Todas las Búsquedas',
             emptySearches:
@@ -936,7 +995,7 @@ const resolvedMarketComparisons =
             </div>
             ) : (
             <div style={searchGrid}>
-                {savedSearches.map(search => (
+                {resolvedSavedSearches.map(search => (
                 <Link
                     key={search.id}
                     href={search.href}

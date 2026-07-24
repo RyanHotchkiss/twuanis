@@ -41,6 +41,19 @@ export async function trackListingSaved({
   })
 }
 
+export async function trackListingRemoved({
+  listingId,
+  metadata
+}: ListingActivityInput) {
+  return recordActivityEvent({
+    eventCategory: 'listing',
+    eventType: 'listing_removed',
+    entityType: 'listing',
+    entityId: listingId,
+    metadata
+  })
+}
+
 export async function trackListingShared({
   listingId,
   metadata
