@@ -38,6 +38,8 @@ import {
   trackListingRemoved
 } from '@/lib/activity/listings'
 
+import EmailAuthModal from '@/app/components/EmailAuthModal'
+
 export default function HomePage() {
   return (
     <Suspense fallback={null}>
@@ -116,6 +118,11 @@ const navButton = {
 
   const [isMobile, setIsMobile] =
     useState(false)
+
+  const [
+    showSaveSearchAuth,
+    setShowSaveSearchAuth
+  ] = useState(false)
 
   useEffect(() => {
       let active = true
@@ -346,201 +353,551 @@ const { data, error } = await supabase
         '200-400m²',
         '400m²+'
       ]
+
+      async function handleSaveSearch() {
+        const {
+          data: { session }
+        } = await supabase.auth.getSession()
+
+        if (!session?.user) {
+          setShowSaveSearchAuth(true)
+          return
+        }
+
+        await saveSearch(
+          'buy',
+          'es',
+          filters
+        )
+      }
                           
 const filteredProperties = properties.filter((property) => {
 
-                      if (
-                        filters.province &&
-                        normalizeText(property.province)
-                          .replace(' provincia', '') !==
-                        normalizeText(filters.province)
-                      ) {
-                        return false
-                      }
+      const getFirstNumber = (
+        value: unknown
+      ) => {
+        const match =
+          String(value ?? '')
+            .replace(/,/g, '')
+            .match(/\d+(\.\d+)?/)
 
-                      if (filters.canton) {
-                          const propertyCanton =
-                            normalizeText(property.canton)
+        return match
+          ? Number(match[0])
+          : null
+      }
 
-                          const selectedCanton =
-                            normalizeText(filters.canton)
+      const getYear = (
+        value: unknown
+      ) => {
+        const match =
+          String(value ?? '')
+            .match(/\b(19|20)\d{2}\b/)
 
-                          const cantonMatches =
-                            propertyCanton === selectedCanton ||
-                            (
-                              selectedCanton === 'san jose' &&
-                              propertyCanton.includes('san jo')
-                            )
+        return match
+          ? Number(match[0])
+          : null
+      }
 
-                          if (!cantonMatches) {
-                            return false
-                          }
-                        }
-                      
-                    if (
-                      filters.district &&
-                      normalizeText(property.district) !==
-                      normalizeText(filters.district)
-                    ) {
-                      return false
-                    }
+      const normalizeValues = (
+        value: unknown
+      ) => {
+        if (Array.isArray(value)) {
+          return value.map(item =>
+            normalizeText(String(item))
+          )
+        }
 
-                  if (filters.price_range) {
-                    const exchangeRate = 500
+        if (
+          value === null ||
+          value === undefined ||
+          value === ''
+        ) {
+          return []
+        }
 
-                    const rawPrice =
-                      Number(property.current_price)
+        return String(value)
+          .split(/[|,;]/)
+          .map(item =>
+            normalizeText(item.trim())
+          )
+          .filter(Boolean)
+      }
 
-                    const priceInColones =
-                      property.currency === 'USD' ||
-                      property.title?.toUpperCase().includes('USD')
-                        ? rawPrice * exchangeRate
-                        : rawPrice
+      /*
+      * LOCATION
+      */
 
-                    if (
-                          filters.price_range === '₡0 - ₡25M' &&
-                          priceInColones > 25000000
-                        ) return false
+      if (
+        filters.province &&
+        normalizeText(property.province)
+          .replace(' provincia', '') !==
+        normalizeText(filters.province)
+      ) {
+        return false
+      }
 
-                        if (
-                          filters.price_range === '₡25M - ₡75M' &&
-                          (priceInColones < 25000000 ||
-                          priceInColones > 75000000)
-                        ) return false
+      if (filters.canton) {
+        const propertyCanton =
+          normalizeText(property.canton)
 
-                        if (
-                          filters.price_range === '₡75M - ₡150M' &&
-                          (priceInColones < 75000000 ||
-                          priceInColones > 150000000)
-                        ) return false
+        const selectedCanton =
+          normalizeText(filters.canton)
 
-                        if (
-                          filters.price_range === '₡150M - ₡250M' &&
-                          (priceInColones < 150000000 ||
-                          priceInColones > 250000000)
-                        ) return false
+        const cantonMatches =
+          propertyCanton === selectedCanton ||
+          (
+            selectedCanton === 'san jose' &&
+            propertyCanton.includes('san jo')
+          )
 
-                        if (
-                          filters.price_range === '₡250M+' &&
-                          priceInColones < 250000000
-                        ) return false
-                      }
+        if (!cantonMatches) {
+          return false
+        }
+      }
 
+      if (
+        filters.district &&
+        normalizeText(property.district) !==
+        normalizeText(filters.district)
+      ) {
+        return false
+      }
 
-                  if (
-                    filters.property_type &&
-                    normalizeText(property.property_type) !==
-                    normalizeText(filters.property_type)
-                  ) {
-                    return false
-                  }
+      /*
+      * PRICE
+      */
 
-                  if (
-                    filters.use_type &&
-                    property.use_type !== filters.use_type
-                  ) {
-                    return false
-                  }
+      if (filters.price_range) {
+        const exchangeRate = 500
 
-if (
-  property.title?.includes('Frente al Río')
-) {
+        const rawPrice =
+          Number(property.current_price)
 
-}
+        if (
+          !Number.isFinite(rawPrice) ||
+          rawPrice <= 0
+        ) {
+          return false
+        }
 
-                  if (filters.property_area) {
+        const priceInColones =
+          property.currency === 'USD' ||
+          property.title
+            ?.toUpperCase()
+            .includes('USD')
+            ? rawPrice * exchangeRate
+            : rawPrice
 
-                                    const area = Number(
-                                      property.property_area
-                                    )
+        if (
+          filters.price_range === '₡0 - ₡25M' &&
+          priceInColones > 25000000
+        ) {
+          return false
+        }
 
-                                    if (
-                                      filters.property_area === '<1,000m²' &&
-                                      area >= 1000
-                                    ) {
-                                      return false
-                                    }
+        if (
+          filters.price_range === '₡25M - ₡75M' &&
+          (
+            priceInColones < 25000000 ||
+            priceInColones > 75000000
+          )
+        ) {
+          return false
+        }
 
-                                    if (
-                                      filters.property_area === '1,000–10,000m²' &&
-                                      (area < 1000 || area > 10000)
-                                    ) {
-                                      return false
-                                    }
+        if (
+          filters.price_range === '₡75M - ₡150M' &&
+          (
+            priceInColones < 75000000 ||
+            priceInColones > 150000000
+          )
+        ) {
+          return false
+        }
 
-                                    if (
-                                      filters.property_area === '10,000–50,000m²' &&
-                                      (area < 10000 || area > 50000)
-                                    ) {
-                                      return false
-                                    }
+        if (
+          filters.price_range === '₡150M - ₡250M' &&
+          (
+            priceInColones < 150000000 ||
+            priceInColones > 250000000
+          )
+        ) {
+          return false
+        }
 
-                                    if (
-                                      filters.property_area === 'Más de 50,000m²' &&
-                                      area <= 50000
-                                    ) {
-                                      return false
-                                    }
+        if (
+          filters.price_range === '₡250M+' &&
+          priceInColones < 250000000
+        ) {
+          return false
+        }
+      }
 
-                                  }
+      /*
+      * PROPERTY TYPE
+      */
 
+      if (
+        filters.property_type &&
+        normalizeText(property.property_type) !==
+        normalizeText(filters.property_type)
+      ) {
+        return false
+      }
 
+      /*
+      * USE TYPE
+      */
 
-                  if (
-                    filters.utility.length > 0 &&
-                    !filters.utility.some((item) =>
-                      Array.isArray(property.utility)
-                        ? property.utility.includes(item)
-                        : property.utility === item
-                    )
-                  ) {
-                    return false
-                  }
+      if (
+        filters.use_type &&
+        normalizeText(property.use_type) !==
+        normalizeText(filters.use_type)
+      ) {
+        return false
+      }
 
+      /*
+      * BEDROOMS
+      */
 
+      if (filters.bedrooms) {
+        const requiredBedrooms =
+          getFirstNumber(filters.bedrooms)
 
-                    if (
-                      filters.legal_status &&
-                      normalizeText(property.legal_status) !==
-                      normalizeText(filters.legal_status)
-                    ) {
-                      return false
-                    }
+        const propertyBedrooms =
+          getFirstNumber(property.bedrooms)
 
-                  if (
-                    filters.environment.length > 0 &&
-                    !filters.environment.some((item) =>
-                      Array.isArray(property.environment)
-                        ? property.environment.includes(item)
-                        : property.environment === item
-                    )
-                  ) {
-                    return false
-                  }
+        if (
+          requiredBedrooms === null ||
+          propertyBedrooms === null ||
+          propertyBedrooms < requiredBedrooms
+        ) {
+          return false
+        }
+      }
 
-                  if (
-                    filters.accessibility &&
-                    normalizeText(property.accessibility) !==
-                    normalizeText(filters.accessibility)
-                  ) {
-                    return false
-                  }
+      /*
+      * BATHROOMS
+      */
 
+      if (filters.bathrooms) {
+        const requiredBathrooms =
+          getFirstNumber(filters.bathrooms)
 
-                  if (
-                    filters.terrain.length > 0 &&
-                    !filters.terrain.some((item) =>
-                      Array.isArray(property.terrain)
-                        ? property.terrain.includes(item)
-                        : property.terrain === item
-                    )
-                  ) {
-                    return false
-                  }
+        const propertyBathrooms =
+          getFirstNumber(property.bathrooms)
 
-                  return true
+        if (
+          requiredBathrooms === null ||
+          propertyBathrooms === null ||
+          propertyBathrooms < requiredBathrooms
+        ) {
+          return false
+        }
+      }
 
-                })
+      /*
+      * PARKING
+      */
+
+      if (filters.parking) {
+        const requiredParking =
+          getFirstNumber(filters.parking)
+
+        const propertyParking =
+          getFirstNumber(property.parking)
+
+        if (
+          requiredParking === null ||
+          propertyParking === null ||
+          propertyParking < requiredParking
+        ) {
+          return false
+        }
+      }
+
+      /*
+      * YEAR BUILT
+      */
+
+      if (filters.year_built) {
+        const propertyYear =
+          getYear(property.year_built) ??
+          getYear(property.year_built_range)
+
+        if (propertyYear === null) {
+          return false
+        }
+
+        if (
+          filters.year_built === 'Pre-1980' &&
+          propertyYear >= 1980
+        ) {
+          return false
+        }
+
+        if (
+          filters.year_built === '1980s' &&
+          (
+            propertyYear < 1980 ||
+            propertyYear > 1989
+          )
+        ) {
+          return false
+        }
+
+        if (
+          filters.year_built === '1990s' &&
+          (
+            propertyYear < 1990 ||
+            propertyYear > 1999
+          )
+        ) {
+          return false
+        }
+
+        if (
+          filters.year_built === '2000s' &&
+          (
+            propertyYear < 2000 ||
+            propertyYear > 2009
+          )
+        ) {
+          return false
+        }
+
+        if (
+          filters.year_built === '2010s' &&
+          (
+            propertyYear < 2010 ||
+            propertyYear > 2019
+          )
+        ) {
+          return false
+        }
+
+        if (
+          filters.year_built === '2020+' &&
+          propertyYear < 2020
+        ) {
+          return false
+        }
+      }
+
+      /*
+      * CONSTRUCTION AREA
+      */
+
+      if (filters.construction_area) {
+        const constructionArea =
+          getFirstNumber(
+            property.construction_area
+          )
+
+        if (constructionArea === null) {
+          return false
+        }
+
+        if (
+          filters.construction_area === '<50m²' &&
+          constructionArea >= 50
+        ) {
+          return false
+        }
+
+        if (
+          filters.construction_area === '50-100m²' &&
+          (
+            constructionArea < 50 ||
+            constructionArea > 100
+          )
+        ) {
+          return false
+        }
+
+        if (
+          filters.construction_area === '100-200m²' &&
+          (
+            constructionArea < 100 ||
+            constructionArea > 200
+          )
+        ) {
+          return false
+        }
+
+        if (
+          filters.construction_area === '200-400m²' &&
+          (
+            constructionArea < 200 ||
+            constructionArea > 400
+          )
+        ) {
+          return false
+        }
+
+        if (
+          filters.construction_area === '400m²+' &&
+          constructionArea < 400
+        ) {
+          return false
+        }
+      }
+
+      /*
+      * PROPERTY AREA
+      */
+
+      if (filters.property_area) {
+        const propertyArea =
+          getFirstNumber(property.property_area)
+
+        if (propertyArea === null) {
+          return false
+        }
+
+        if (
+          filters.property_area === '<1,000m²' &&
+          propertyArea >= 1000
+        ) {
+          return false
+        }
+
+        if (
+          filters.property_area ===
+            '1,000–10,000m²' &&
+          (
+            propertyArea < 1000 ||
+            propertyArea > 10000
+          )
+        ) {
+          return false
+        }
+
+        if (
+          filters.property_area ===
+            '10,000–50,000m²' &&
+          (
+            propertyArea < 10000 ||
+            propertyArea > 50000
+          )
+        ) {
+          return false
+        }
+
+        if (
+          (
+            filters.property_area ===
+              'Más de 50,000m²' ||
+            filters.property_area ===
+              '50,000m²+'
+          ) &&
+          propertyArea <= 50000
+        ) {
+          return false
+        }
+      }
+
+      /*
+      * UTILITIES
+      */
+
+      if (filters.utility.length > 0) {
+        const propertyUtilities =
+          normalizeValues(property.utility)
+
+        const utilityMatches =
+          filters.utility.some(
+            selectedUtility =>
+              propertyUtilities.includes(
+                normalizeText(selectedUtility)
+              )
+          )
+
+        if (!utilityMatches) {
+          return false
+        }
+      }
+
+      /*
+      * LEGAL STATUS
+      */
+
+      if (
+        filters.legal_status &&
+        normalizeText(property.legal_status) !==
+        normalizeText(filters.legal_status)
+      ) {
+        return false
+      }
+
+      /*
+      * ENVIRONMENT
+      */
+
+      if (filters.environment.length > 0) {
+        const propertyEnvironments =
+          normalizeValues(property.environment)
+
+        const environmentMatches =
+          filters.environment.some(
+            selectedEnvironment =>
+              propertyEnvironments.includes(
+                normalizeText(
+                  selectedEnvironment
+                )
+              )
+          )
+
+        if (!environmentMatches) {
+          return false
+        }
+      }
+
+      /*
+      * ACCESSIBILITY
+      */
+
+      if (filters.accessibility) {
+        const propertyAccessibility =
+          normalizeValues(
+            property.accessibility
+          )
+
+        if (
+          !propertyAccessibility.includes(
+            normalizeText(
+              filters.accessibility
+            )
+          )
+        ) {
+          return false
+        }
+      }
+
+      /*
+      * TERRAIN
+      */
+
+      if (filters.terrain.length > 0) {
+        const propertyTerrain =
+          normalizeValues(property.terrain)
+
+        const terrainMatches =
+          filters.terrain.some(
+            selectedTerrain =>
+              propertyTerrain.includes(
+                normalizeText(selectedTerrain)
+              )
+          )
+
+        if (!terrainMatches) {
+          return false
+        }
+      }
+
+      return true
+    })
 
   return (
       <main style={{
@@ -551,6 +908,15 @@ if (
         position: 'relative',
         overflow: 'hidden'
       }}>
+
+      {showSaveSearchAuth && (
+        <EmailAuthModal
+          onClose={() =>
+            setShowSaveSearchAuth(false)
+          }
+          redirectTo="/en/buy"
+        />
+      )}
 
         {/* TOP NAV */}
             <div style={{
@@ -589,13 +955,7 @@ if (
               >
                 <button
                   type="button"
-                  onClick={() =>
-                    saveSearch(
-                      'buy',
-                      'es',
-                      filters
-                    )
-                  }
+                  onClick={handleSaveSearch}
                   style={{
                     background: '#fff',
                     border: '1px solid #fff',

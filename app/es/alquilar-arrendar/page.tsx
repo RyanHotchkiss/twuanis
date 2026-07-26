@@ -37,6 +37,8 @@ import {
   trackListingRemoved
 } from '@/lib/activity/listings'
 
+import EmailAuthModal from '@/app/components/EmailAuthModal'
+
 export default function HomePage() {
   return (
     <Suspense fallback={null}>
@@ -114,6 +116,11 @@ const navButton = {
 
   const [isMobile, setIsMobile] =
     useState(false)
+
+  const [
+    showSaveSearchAuth,
+    setShowSaveSearchAuth
+  ] = useState(false)
 
   useEffect(() => {
       let active = true
@@ -408,215 +415,548 @@ console.log(
         '200-400m²',
         '400m²+'
       ]
-                          
+           
+      async function handleSaveSearch() {
+        const {
+          data: { session }
+        } = await supabase.auth.getSession()
+
+        if (!session?.user) {
+          setShowSaveSearchAuth(true)
+          return
+        }
+
+        await saveSearch(
+          'rent',
+          'es',
+          filters
+        )
+      }
+
 const filteredProperties = properties.filter((property) => {
 
-  
+      const getFirstNumber = (
+        value: unknown
+      ) => {
+        const match =
+          String(value ?? '')
+            .replace(/,/g, '')
+            .match(/\d+(\.\d+)?/)
 
-                 if (
-                    filters.province &&
-                    normalizeText(property.province)
-                      .replace(' provincia', '') !==
-                    normalizeText(filters.province)
-                  ) {
-                    return false
-                  }
+        return match
+          ? Number(match[0])
+          : null
+      }
 
-  
+      const getYear = (
+        value: unknown
+      ) => {
+        const match =
+          String(value ?? '')
+            .match(/\b(19|20)\d{2}\b/)
 
-                if (filters.canton) {
-                  const propertyCanton =
-                    normalizeText(property.canton)
+        return match
+          ? Number(match[0])
+          : null
+      }
 
-                  const selectedCanton =
-                    normalizeText(filters.canton)
+      const normalizeValues = (
+        value: unknown
+      ) => {
+        if (Array.isArray(value)) {
+          return value.map(item =>
+            normalizeText(String(item))
+          )
+        }
 
-                  const cantonMatches =
-                    propertyCanton === selectedCanton ||
-                    (
-                      selectedCanton === 'san jose' &&
-                      propertyCanton.includes('san jo')
-                    )
+        if (
+          value === null ||
+          value === undefined ||
+          value === ''
+        ) {
+          return []
+        }
 
-                  if (!cantonMatches) {
-                    return false
-                  }
-                }
+        return String(value)
+          .split(/[|,;]/)
+          .map(item =>
+            normalizeText(item.trim())
+          )
+          .filter(Boolean)
+      }
 
+      /*
+      * LOCATION
+      */
 
-                if (
-                  filters.district &&
-                  normalizeText(property.district) !==
-                  normalizeText(filters.district)
-                ) {
-                  return false
-                }
+      if (
+        filters.province &&
+        normalizeText(property.province)
+          .replace(' provincia', '') !==
+        normalizeText(filters.province)
+      ) {
+        return false
+      }
 
-                  if (filters.monthly_price) {
-                    const exchangeRate = 500
+      if (filters.canton) {
+        const propertyCanton =
+          normalizeText(property.canton)
 
-                    const rawPrice =
-                      Number(property.monthly_price)
+        const selectedCanton =
+          normalizeText(filters.canton)
 
-                    const priceInColones =
-                      property.currency === 'USD'
-                        ? rawPrice * exchangeRate
-                        : rawPrice
+        const cantonMatches =
+          propertyCanton === selectedCanton ||
+          (
+            selectedCanton === 'san jose' &&
+            propertyCanton.includes('san jo')
+          )
 
-                    if (
-                      filters.monthly_price === '₡0 - ₡250K' &&
-                      priceInColones > 250000
-                    ) return false
+        if (!cantonMatches) {
+          return false
+        }
+      }
 
-                    if (
-                      filters.monthly_price === '₡250K - ₡500K' &&
-                      (priceInColones < 250000 ||
-                      priceInColones > 500000)
-                    ) return false
+      if (
+        filters.district &&
+        normalizeText(property.district) !==
+        normalizeText(filters.district)
+      ) {
+        return false
+      }
 
-                    if (
-                      filters.monthly_price === '₡500K - ₡1M' &&
-                      (priceInColones < 500000 ||
-                      priceInColones > 1000000)
-                    ) return false
+      /*
+      * MONTHLY PRICE
+      */
 
-                    if (
-                      filters.monthly_price === '₡1M - ₡2.5M' &&
-                      (priceInColones < 1000000 ||
-                      priceInColones > 2500000)
-                    ) return false
+      if (filters.monthly_price) {
+        const exchangeRate = 500
 
-                    if (
-                      filters.monthly_price === '₡2.5M+' &&
-                      priceInColones < 2500000
-                    ) return false
-                  }
+        const rawPrice =
+          Number(property.monthly_price)
 
+        if (
+          !Number.isFinite(rawPrice) ||
+          rawPrice <= 0
+        ) {
+          return false
+        }
 
-                 if (
-                    filters.property_type &&
-                    normalizeText(property.property_type) !==
-                    normalizeText(filters.property_type)
-                  ) {
+        const priceInDollars =
+          property.currency === 'CRC'
+            ? rawPrice / exchangeRate
+            : rawPrice
 
-                    console.log(
-                      'FAILED PROPERTY TYPE'
-                    )
+        if (
+          filters.monthly_price === '$0 - $500/mo' &&
+          priceInDollars > 500
+        ) {
+          return false
+        }
 
-                    return false
-                  }
+        if (
+          filters.monthly_price === '$500 - $1K/mo' &&
+          (
+            priceInDollars < 500 ||
+            priceInDollars > 1000
+          )
+        ) {
+          return false
+        }
 
-                  
+        if (
+          filters.monthly_price === '$1K - $2K/mo' &&
+          (
+            priceInDollars < 1000 ||
+            priceInDollars > 2000
+          )
+        ) {
+          return false
+        }
 
-                  if (
-                    filters.use_type &&
-                    normalizeText(property.use_type) !==
-                    normalizeText(filters.use_type)
-                  ) {
+        if (
+          filters.monthly_price === '$2K - $5K/mo' &&
+          (
+            priceInDollars < 2000 ||
+            priceInDollars > 5000
+          )
+        ) {
+          return false
+        }
 
-                    return false
-                  }
+        if (
+          filters.monthly_price === '$5K+/mo' &&
+          priceInDollars < 5000
+        ) {
+          return false
+        }
+      }
 
-                  if (filters.property_area) {
-                  const area = Number(property.property_area)
+      /*
+      * PROPERTY TYPE
+      */
 
-                  if (
-                    filters.property_area === '<1,000m²' &&
-                    area >= 1000
-                  ) return false
+      if (
+        filters.property_type &&
+        normalizeText(property.property_type) !==
+        normalizeText(filters.property_type)
+      ) {
+        return false
+      }
 
-                  if (
-                    filters.property_area === '1,000–10,000m²' &&
-                    (area < 1000 || area > 10000)
-                  ) return false
+      /*
+      * USE TYPE
+      */
 
-                  if (
-                    filters.property_area === '10,000–50,000m²' &&
-                    (area < 10000 || area > 50000)
-                  ) return false
+      if (
+        filters.use_type &&
+        normalizeText(property.use_type) !==
+        normalizeText(filters.use_type)
+      ) {
+        return false
+      }
 
-                  if (
-                    filters.property_area === 'Más de 50,000m²' &&
-                    area <= 50000
-                  ) return false
-                }
+      /*
+      * BEDROOMS
+      */
 
+      if (filters.bedrooms) {
+        const requiredBedrooms =
+          getFirstNumber(filters.bedrooms)
 
-                  if (
-                    filters.utility.length > 0 &&
-                    !filters.utility.some((item) =>
-                      Array.isArray(property.utility)
-                        ? property.utility.some(
-                            (utility: string) =>
-                              normalizeText(utility) ===
-                              normalizeText(item)
-                          )
-                        : normalizeText(property.utility) ===
-                          normalizeText(item)
-                    )
-                  ) {
-                    return false
-                  }
+        const propertyBedrooms =
+          getFirstNumber(property.bedrooms)
 
+        if (
+          requiredBedrooms === null ||
+          propertyBedrooms === null ||
+          propertyBedrooms < requiredBedrooms
+        ) {
+          return false
+        }
+      }
 
-                  if (
-                    filters.use_type &&
-                    normalizeText(property.use_type) !==
-                    normalizeText(filters.use_type)
-                  ) {
+      /*
+      * BATHROOMS
+      */
 
-                    return false
-                  }
+      if (filters.bathrooms) {
+        const requiredBathrooms =
+          getFirstNumber(filters.bathrooms)
 
+        const propertyBathrooms =
+          getFirstNumber(property.bathrooms)
 
-                  if (
-                    filters.environment.length > 0 &&
-                    !filters.environment.some((item) =>
-                      Array.isArray(property.environment)
-                        ? property.environment.some(
-                            (environment: string) =>
-                              normalizeText(environment) ===
-                              normalizeText(item)
-                          )
-                        : normalizeText(property.environment) ===
-                          normalizeText(item)
-                    )
-                  ) {
-                    return false
-                  }
+        if (
+          requiredBathrooms === null ||
+          propertyBathrooms === null ||
+          propertyBathrooms < requiredBathrooms
+        ) {
+          return false
+        }
+      }
 
-                  if (
-                    filters.accessibility &&
-                    normalizeText(property.accessibility) !==
-                    normalizeText(filters.accessibility)
-                  ) {
+      /*
+      * PARKING
+      */
 
-                    console.log(
-                      'FAILED ACCESSIBILITY'
-                    )
+      if (filters.parking) {
+        const requiredParking =
+          getFirstNumber(filters.parking)
 
-                    return false
-                  }
+        const propertyParking =
+          getFirstNumber(property.parking)
 
-                  if (
-                      filters.terrain.length > 0 &&
-                      !filters.terrain.some((item) =>
-                        Array.isArray(property.terrain)
-                          ? property.terrain.some(
-                              (terrain: string) =>
-                                normalizeText(terrain) ===
-                                normalizeText(item)
-                            )
-                          : normalizeText(property.terrain) ===
-                            normalizeText(item)
-                      )
-                    ) {
-                      return false
-                    }
+        if (
+          requiredParking === null ||
+          propertyParking === null ||
+          propertyParking < requiredParking
+        ) {
+          return false
+        }
+      }
 
-                  return true
+      /*
+      * YEAR BUILT
+      */
 
-                })
+      if (filters.year_built) {
+        const propertyYear =
+          getYear(property.year_built) ??
+          getYear(property.year_built_range)
+
+        if (propertyYear === null) {
+          return false
+        }
+
+        if (
+          filters.year_built === 'Pre-1980' &&
+          propertyYear >= 1980
+        ) {
+          return false
+        }
+
+        if (
+          filters.year_built === '1980s' &&
+          (
+            propertyYear < 1980 ||
+            propertyYear > 1989
+          )
+        ) {
+          return false
+        }
+
+        if (
+          filters.year_built === '1990s' &&
+          (
+            propertyYear < 1990 ||
+            propertyYear > 1999
+          )
+        ) {
+          return false
+        }
+
+        if (
+          filters.year_built === '2000s' &&
+          (
+            propertyYear < 2000 ||
+            propertyYear > 2009
+          )
+        ) {
+          return false
+        }
+
+        if (
+          filters.year_built === '2010s' &&
+          (
+            propertyYear < 2010 ||
+            propertyYear > 2019
+          )
+        ) {
+          return false
+        }
+
+        if (
+          filters.year_built === '2020+' &&
+          propertyYear < 2020
+        ) {
+          return false
+        }
+      }
+
+      /*
+      * CONSTRUCTION AREA
+      */
+
+      if (filters.construction_area) {
+        const constructionArea =
+          getFirstNumber(
+            property.construction_area
+          )
+
+        if (constructionArea === null) {
+          return false
+        }
+
+        if (
+          filters.construction_area === '<50m²' &&
+          constructionArea >= 50
+        ) {
+          return false
+        }
+
+        if (
+          filters.construction_area === '50-100m²' &&
+          (
+            constructionArea < 50 ||
+            constructionArea > 100
+          )
+        ) {
+          return false
+        }
+
+        if (
+          filters.construction_area === '100-200m²' &&
+          (
+            constructionArea < 100 ||
+            constructionArea > 200
+          )
+        ) {
+          return false
+        }
+
+        if (
+          filters.construction_area === '200-400m²' &&
+          (
+            constructionArea < 200 ||
+            constructionArea > 400
+          )
+        ) {
+          return false
+        }
+
+        if (
+          filters.construction_area === '400m²+' &&
+          constructionArea < 400
+        ) {
+          return false
+        }
+      }
+
+      /*
+      * PROPERTY AREA
+      */
+
+      if (filters.property_area) {
+        const propertyArea =
+          getFirstNumber(property.property_area)
+
+        if (propertyArea === null) {
+          return false
+        }
+
+        if (
+          filters.property_area === '<1,000m²' &&
+          propertyArea >= 1000
+        ) {
+          return false
+        }
+
+        if (
+          filters.property_area ===
+            '1,000–10,000m²' &&
+          (
+            propertyArea < 1000 ||
+            propertyArea > 10000
+          )
+        ) {
+          return false
+        }
+
+        if (
+          filters.property_area ===
+            '10,000–50,000m²' &&
+          (
+            propertyArea < 10000 ||
+            propertyArea > 50000
+          )
+        ) {
+          return false
+        }
+
+        if (
+          (
+            filters.property_area ===
+              'Más de 50,000m²' ||
+            filters.property_area ===
+              '50,000m²+'
+          ) &&
+          propertyArea <= 50000
+        ) {
+          return false
+        }
+      }
+
+      /*
+      * UTILITIES
+      */
+
+      if (filters.utility.length > 0) {
+        const propertyUtilities =
+          normalizeValues(property.utility)
+
+        const utilityMatches =
+          filters.utility.some(
+            selectedUtility =>
+              propertyUtilities.includes(
+                normalizeText(selectedUtility)
+              )
+          )
+
+        if (!utilityMatches) {
+          return false
+        }
+      }
+
+      /*
+      * LEGAL STATUS
+      */
+
+      if (
+        filters.legal_status &&
+        normalizeText(property.legal_status) !==
+        normalizeText(filters.legal_status)
+      ) {
+        return false
+      }
+
+      /*
+      * ENVIRONMENT
+      */
+
+      if (filters.environment.length > 0) {
+        const propertyEnvironments =
+          normalizeValues(property.environment)
+
+        const environmentMatches =
+          filters.environment.some(
+            selectedEnvironment =>
+              propertyEnvironments.includes(
+                normalizeText(
+                  selectedEnvironment
+                )
+              )
+          )
+
+        if (!environmentMatches) {
+          return false
+        }
+      }
+
+      /*
+      * ACCESSIBILITY
+      */
+
+      if (filters.accessibility) {
+        const propertyAccessibility =
+          normalizeValues(
+            property.accessibility
+          )
+
+        if (
+          !propertyAccessibility.includes(
+            normalizeText(
+              filters.accessibility
+            )
+          )
+        ) {
+          return false
+        }
+      }
+
+      /*
+      * TERRAIN
+      */
+
+      if (filters.terrain.length > 0) {
+        const propertyTerrain =
+          normalizeValues(property.terrain)
+
+        const terrainMatches =
+          filters.terrain.some(
+            selectedTerrain =>
+              propertyTerrain.includes(
+                normalizeText(selectedTerrain)
+              )
+          )
+
+        if (!terrainMatches) {
+          return false
+        }
+      }
+
+      return true
+    })
 
   return (
       <main style={{
@@ -629,7 +969,14 @@ const filteredProperties = properties.filter((property) => {
       }}>
 
       
-
+      {showSaveSearchAuth && (
+        <EmailAuthModal
+          onClose={() =>
+            setShowSaveSearchAuth(false)
+          }
+          redirectTo="/en/buy"
+        />
+      )}
           
 
 {/* TOP LEFT NAV */}
@@ -692,13 +1039,7 @@ const filteredProperties = properties.filter((property) => {
         >
           <button
             type="button"
-            onClick={() =>
-              saveSearch(
-                'rent',
-                'es',
-                filters
-              )
-            }
+            onClick={handleSaveSearch}
             style={{
               background: '#fff',
               border: '1px solid #fff',

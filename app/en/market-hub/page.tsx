@@ -43,7 +43,7 @@ export default function MarketHubPage() {
       <div style={cardSpacing}>
         <MarketHubFirstTimeExperience
             language="en"
-            userName="Ryan"
+            userName=""
             progress={{
             savedFirstProperty:
                 MARKET_HUB_FIRST_ACTIONS.find(
@@ -97,85 +97,18 @@ export default function MarketHubPage() {
             </div>
 
       <MarketHubMyListingsLoader
-        language="en"
-      />
+                    language="en"
+                />
 
-    <div style={cardSpacing}>
-        <MarketHubFavorites
+                <div style={cardSpacing}>
+                <MarketHubFavorites
             language="en"
             savedProperties={undefined}
-            savedSearches={[
-                {
-                id: '1',
-                title: 'San José Houses',
-                resultCount: 23,
-                lastUpdated: 'Today',
-                href: '/en/buy'
-                },
-                {
-                id: '2',
-                title: 'Escazú Condos',
-                resultCount: 11,
-                lastUpdated: 'Yesterday',
-                href: '/en/buy'
-                }
-            ]}
-
-
-            recentlyViewedProperties={[
-                {
-                    id: 'recent-property-1',
-                    title: 'Casa en Santa Ana',
-                    location: 'Santa Ana, San José',
-                    price: '$285,000',
-                    viewedAt: 'Viewed today',
-                    href: '/en/property/recent-property-1'
-                },
-                {
-                    id: 'recent-property-2',
-                    title: 'Condo in Escazú',
-                    location: 'Escazú, San José',
-                    price: '$240,000',
-                    viewedAt: 'Viewed yesterday',
-                    href: '/en/property/recent-property-2'
-                }
-                ]}
-
-                recentlyViewedMarkets={[
-                {
-                    id: 'recent-market-1',
-                    title: 'Santa Ana',
-                    marketType: 'Canton Market',
-                    summary:
-                    '23 listings across sale and rental inventory.',
-                    viewedAt: 'Viewed today',
-                    href:
-                    '/en/market-intelligence?tab=explorer'
-                }
-                ]}
-
-
-                favoriteCollections={[
-                {
-                    id: 'collection-1',
-                    name: 'Best Santa Ana Homes',
-                    propertyCount: 8,
-                    updatedAt: 'Updated today',
-                    href: '/en/favorites'
-                }
-                ]}
-                propertyNotes={[
-                {
-                    id: 'note-1',
-                    propertyId: 'property-1',
-                    propertyTitle: 'Casa en Santa Ana',
-                    note:
-                    'Good location and strong price, but confirm the construction area.',
-                    updatedAt: 'Updated today',
-                    href: '/en/property/property-1'
-                }
-                ]}
-            
+            savedSearches={[]}
+            recentlyViewedProperties={[]}
+            recentlyViewedMarkets={[]}
+            favoriteCollections={[]}
+            propertyNotes={[]}
             />
         </div>
 
@@ -193,77 +126,8 @@ export default function MarketHubPage() {
 
         <div style={cardSpacing}>
           <MarketHubMarketIntelligence
-                    language="en"
-                    marketsViewedCount={22}
-                    lastUpdated="Today"
-                    marketExplorerActivity={[
-                    {
-                        id: 'market-explorer-1',
-                        title: 'San José Market Overview',
-                        market: 'San José Province',
-                        summary:
-                        '15 listings, median sale price $239,500, and median rent $1,300.',
-                        updatedAt: 'Updated today',
-                        href:
-                        '/en/market-intelligence?tab=explorer'
-                    },
-                    {
-                        id: 'market-explorer-2',
-                        title: 'Escazú Luxury Homes',
-                        market: 'Escazú, San José',
-                        summary:
-                        'Luxury houses filtered by price, construction area, and bedrooms.',
-                        updatedAt: 'Viewed yesterday',
-                        href:
-                        '/en/market-intelligence?tab=explorer'
-                    }
-                    ]}
-                    valuationAndPricingEngines={[
-                    {
-                        id: 'valuation',
-                        unlocked: true                        
-                    },
-                    {
-                        id: 'pricing-strategy',
-                        unlocked: false,
-                        savedAnalysisCount: 0,
-                        savedSearchCount: 0,
-                        historyCount: 0
-                    },
-                    {
-                        id: 'property-matching',
-                        unlocked: false,
-                        savedAnalysisCount: 0,
-                        savedSearchCount: 0,
-                        historyCount: 0
-                    }
-                    ]}
-                    marketIntelligenceEngines={[
-                    {
-                        id: 'price-per-square-meter',
-                        unlocked: false,
-                        savedAnalysisCount: 0,
-                        savedSearchCount: 0,
-                        historyCount: 0
-                    },
-                        
-                    {
-                        id: 'market-comparison',
-                        unlocked: true,
-                        savedAnalysisCount: 5,
-                        savedSearchCount: 2,
-                        historyCount: 18,
-                        lastUpdated: 'Today'
-                    },
-                    {
-                        id: 'market-frequency',
-                        unlocked: false,
-                        savedAnalysisCount: 0,
-                        savedSearchCount: 0,
-                        historyCount: 0
-                    }
-                    ]}
-                    />
+            language="en"
+            />
                 </div>
 
                 <div
@@ -272,10 +136,10 @@ export default function MarketHubPage() {
                     >
                     <MarketHubPackages
                         language="en"
-                        currentPlan="Market Analysis"
-                        monthlyPriceUSD="$100"
-                        monthlyPriceCRC="₡50,000"
-                        renewalDate="August 18, 2026"
+                        currentPlan="Market Discovery"
+                        monthlyPriceUSD="$0"
+                        monthlyPriceCRC="₡0"
+                        renewalDate="—"
                         billingCycle="monthly"
                         includedPackages={[
                             {
@@ -310,12 +174,12 @@ export default function MarketHubPage() {
                             },
                             ]}
                     usageSummary={{
-                            enginesUsed: 47,
-                            savedAnalyses: 16,
-                            savedSearches: 28,
-                            reportsGenerated: 9,
-                            listingsAnalyzed: 142
-                            }}
+                        enginesUsed: 0,
+                        savedAnalyses: 0,
+                        savedSearches: 0,
+                        reportsGenerated: 0,
+                        listingsAnalyzed: 0
+                        }}
                     upgradePackages={[
                                 {
                                     name: 'Market Discovery',
@@ -518,125 +382,6 @@ export default function MarketHubPage() {
                                     future: true
                                 }
                                 ]}
-
-                    />
-                </div>
-
-                <div style={cardSpacing}>
-                    <MarketHubSettings
-                        language="en"
-                        personalInformation={{
-                            name: 'Ryan Hotchkiss',
-                            profilePhoto: '',
-                            bio:
-                                'Costa Rica real estate professional using market intelligence to understand properties, pricing, and local markets.'
-                        }}
-                        contactInformation={{
-                            email: 'ryan@twuanis.com',
-                            phone: '+1 (555) 555-5555',
-                            whatsapp: '+506 8888-8888',
-                            office: 'Pejibaye, Jiménez, Cartago'
-                        }}
-
-                        professionalInformation={{
-                        professionalType: 'Individual',
-                        licenseNumber: 'CR-123456',
-                        company: 'Twuanis',
-                        website: 'https://twuanis.com'
-                    }}
-
-                    publicProfileInformation={{
-                    publicProfileUrl: 'twuanis.com/agents/ryan-hotchkiss',
-                    agentPage: 'Ryan Hotchkiss',
-                    socialLinks: 'LinkedIn, Facebook, Instagram',
-                    visibility: 'Public'
-                    }}
-
-                    languagePreferences={{
-                    language: 'English'
-                    }}
-
-                    notificationPreferences={{
-                    email: true,
-                    sms: false,
-                    push: true,
-                    marketing: false
-                    }}
-
-                    appearancePreferences={{
-                    appearance: 'System'
-                    }}
-
-                    regionalSettings={{
-                    currency: 'USD ($)',
-                    units: 'Imperial',
-                    dateFormat: 'MM/DD/YYYY',
-                    timeZone: 'America/Costa_Rica'
-                    }}
-
-                    privacySettings={{
-                    publicProfile: true,
-                    searchVisibility: true,
-                    analyticsSharing: false
-                    }}
-
-                    securitySettings={{
-                    recoveryEmail: 'ryan@twuanis.com',
-                    twoFactorEnabled: false
-                    }}
-
-                    sessionSettings={{
-
-                            loggedInDevices: 3,
-
-                            activeSessions: 2
-
-                        }}
-
-                        connectedAccounts={[
-                            {
-                                provider: 'Google',
-                                connected: true,
-                                account: 'ryan@twuanis.com'
-                            },
-                            {
-                                provider: 'Apple',
-                                connected: false
-                            },
-                            {
-                                provider: 'Facebook',
-                                connected: true,
-                                account: 'Ryan Hotchkiss'
-                            },
-                            {
-                                provider: 'Microsoft',
-                                connected: false
-                            }
-                        ]}
-
-                        exportDataSettings={{
-                        listings: true,
-                        favorites: true,
-                        savedSearches: true,
-                        marketAnalyses: true
-                        }}
-
-                        billingRecordsSettings={{
-                        invoices: 12,
-                        paymentHistory: 37,
-                        receipts: 12
-                        }}
-
-                        accountRecoverySettings={{
-                        backupCodesRemaining: 8,
-                        recoveryOptions: 3,
-                        accountRestorable: true
-                        }}
-
-                        deleteAccountSettings={{
-                        downloadDataAvailable: true,
-                        listingsToDelete: 27
-                        }}
 
                     />
                 </div>

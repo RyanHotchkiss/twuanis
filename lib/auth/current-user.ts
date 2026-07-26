@@ -2,15 +2,18 @@ import { supabase } from '@/lib/supabase'
 
 export async function getCurrentUser() {
   const {
-    data: { user },
+    data: { session },
     error
-  } = await supabase.auth.getUser()
+  } = await supabase.auth.getSession()
 
-  if (error) {
-    throw error
+  if (
+    error ||
+    !session?.user
+  ) {
+    return null
   }
 
-  return user
+  return session.user
 }
 
 export async function requireCurrentUser() {

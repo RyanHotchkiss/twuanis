@@ -20,7 +20,9 @@ import {
 } from '@/lib/collections'
 
 import {
-  getSavedSearches
+  deleteSavedSearch,
+  getSavedSearches,
+  renameSavedSearch
 } from '@/lib/saved-searches'
 
 import {
@@ -45,7 +47,9 @@ import {
   Map,
   MapPin,
   NotebookPen,
-  Search
+  Pencil,
+  Search,
+  Trash2
 } from 'lucide-react'
 
 
@@ -101,12 +105,19 @@ export type PropertyNote = {
 }
 
 export type SavedSearch = {
-    id: string
-    title: string
-    resultCount: number
-    lastUpdated: string
-    href: string
-    }
+  id: string
+  title: string
+  resultCount: number
+  createdAt: string
+  lastUpdated: string
+  href: string
+}
+
+type SavedSearchSort =
+  | 'newest'
+  | 'oldest'
+  | 'name-asc'
+  | 'name-desc'
 
 export type savedAnalyses = {
   id: string
@@ -184,6 +195,166 @@ const [
   ] = useState<SavedSearch[]>(
     savedSearches
   )
+
+  const [
+    editingSavedSearchId,
+    setEditingSavedSearchId
+  ] = useState<string | null>(
+    null
+  )
+
+  const [
+    savedSearchNameDraft,
+    setSavedSearchNameDraft
+  ] = useState('')
+
+  const [
+    savingSavedSearchName,
+    setSavingSavedSearchName
+  ] = useState(false)
+
+  const savedSearchTitleLink = {
+    color: '#fff',
+    textDecoration: 'none'
+  }
+
+  const savedSearchCardActions = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '.65rem'
+  }
+
+  const savedSearchEditButton = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '2.25rem',
+    height: '2.25rem',
+    padding: 0,
+    color: '#C7A44B',
+    background: '#161616',
+    border: '1px solid #303030',
+    borderRadius: '999px',
+    cursor: 'pointer'
+  }
+
+  const savedSearchOpenLink = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+
+  const savedSearchNameInput = {
+    width: '100%',
+    padding: '.65rem .75rem',
+    color: '#fff',
+    background: '#111',
+    border: '1px solid #C7A44B',
+    borderRadius: '8px',
+    fontFamily: 'inherit',
+    fontSize: '.95rem',
+    outline: 'none'
+  }
+
+  const savedSearchActions = {
+    display: 'flex',
+    gap: '.5rem',
+    marginTop: '.65rem'
+  }
+
+  const savedSearchSaveButton = {
+    padding: '.5rem .75rem',
+    color: '#111',
+    background: '#C7A44B',
+    border: 'none',
+    borderRadius: '8px',
+    fontFamily: 'inherit',
+    fontWeight: 600,
+    cursor: 'pointer'
+  }
+
+  const savedSearchCancelButton = {
+    padding: '.5rem .75rem',
+    color: '#aaa',
+    background: '#1b1b1b',
+    border: '1px solid #3a3a3a',
+    borderRadius: '8px',
+    fontFamily: 'inherit',
+    cursor: 'pointer'
+  }
+
+  const savedSearchDeleteButton = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '2.25rem',
+    height: '2.25rem',
+    padding: 0,
+    color: '#d66',
+    background: '#161616',
+    border: '1px solid #303030',
+    borderRadius: '999px',
+    cursor: 'pointer'
+  }
+
+  const savedSearchDeleteConfirmation = {
+    display: 'flex',
+    flexWrap: 'wrap' as const,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    gap: '.4rem'
+  }
+
+  const savedSearchDeleteText = {
+    color: '#aaa',
+    fontSize: '.78rem'
+  }
+
+  const savedSearchDeleteConfirmButton = {
+    padding: '.4rem .6rem',
+    color: '#fff',
+    background: '#8f2d2d',
+    border: '1px solid #b34747',
+    borderRadius: '7px',
+    fontFamily: 'inherit',
+    fontSize: '.75rem',
+    fontWeight: 600,
+    cursor: 'pointer'
+  }
+
+  const savedSearchDeleteCancelButton = {
+    padding: '.4rem .6rem',
+    color: '#aaa',
+    background: '#1b1b1b',
+    border: '1px solid #3a3a3a',
+    borderRadius: '7px',
+    fontFamily: 'inherit',
+    fontSize: '.75rem',
+    cursor: 'pointer'
+  }
+
+  const savedSearchSortLabel = {
+  display: 'grid',
+  gap: '.35rem'
+  }
+
+  const savedSearchSortText = {
+    color: '#777',
+    fontSize: '.75rem'
+  }
+
+  const savedSearchSortSelect = {
+    minWidth: '145px',
+    padding: '.6rem .75rem',
+    color: '#ddd',
+    background: '#191919',
+    border: '1px solid #3a3a3a',
+    borderRadius: '8px',
+    fontFamily: 'inherit',
+    fontSize: '.82rem',
+    cursor: 'pointer',
+    outline: 'none'
+  }
 
   const [
         loadedMarketComparisons,
@@ -381,6 +552,9 @@ const [
                 search.name,
 
               resultCount: 0,
+
+              createdAt:
+                search.created_at,
 
               lastUpdated:
                 new Date(
@@ -582,7 +756,62 @@ const resolvedMarketComparisons =
     loadedSavedAnalyses
 
   const resolvedSavedSearches =
-  loadedSavedSearches
+      [...loadedSavedSearches].sort(
+        (left, right) => {
+          if (
+            savedSearchSort ===
+            'oldest'
+          ) {
+            return (
+              new Date(
+                left.createdAt
+              ).getTime() -
+              new Date(
+                right.createdAt
+              ).getTime()
+            )
+          }
+
+          if (
+            savedSearchSort ===
+            'name-asc'
+          ) {
+            return left.title.localeCompare(
+              right.title,
+              language === 'es'
+                ? 'es'
+                : 'en',
+              {
+                sensitivity: 'base'
+              }
+            )
+          }
+
+          if (
+            savedSearchSort ===
+            'name-desc'
+          ) {
+            return right.title.localeCompare(
+              left.title,
+              language === 'es'
+                ? 'es'
+                : 'en',
+              {
+                sensitivity: 'base'
+              }
+            )
+          }
+
+          return (
+            new Date(
+              right.createdAt
+            ).getTime() -
+            new Date(
+              left.createdAt
+            ).getTime()
+          )
+        }
+      )
 
   const labels =
     language === 'es'
@@ -605,9 +834,9 @@ const resolvedMarketComparisons =
             savedSearches:
             'Búsquedas Guardadas',
             savedSearchCount:
-                savedSearches.length === 1
-                    ? 'Tiene 1 búsqueda guardada.'
-                    : `Tiene ${resolvedSavedSearches.length} búsquedas guardadas.`,
+              resolvedSavedSearches.length === 1
+                ? 'Tiene 1 búsqueda guardada.'
+                : `Tiene ${resolvedSavedSearches.length} búsquedas guardadas.`,
             viewAllSearches:
             'Ver Todas las Búsquedas',
             emptySearches:
@@ -680,7 +909,22 @@ const resolvedMarketComparisons =
               'Comparar Mercados',
 
             properties:
-            'propiedades'
+            'propiedades',
+
+            sortSearches:
+              'Ordenar búsquedas',
+
+            newest:
+              'Más recientes',
+
+            oldest:
+              'Más antiguas',
+
+            nameAscending:
+              'Nombre A–Z',
+
+            nameDescending:
+              'Nombre Z–A',
         }
       : {
           heading: 'Favorites',
@@ -701,9 +945,9 @@ const resolvedMarketComparisons =
              savedSearches:
             'Saved Searches',
             savedSearchCount:
-                savedSearches.length === 1
-                    ? 'You have 1 saved search.'
-                    : `You have ${savedSearches.length} saved searches.`,
+              resolvedSavedSearches.length === 1
+                ? 'You have 1 saved search.'
+                : `You have ${resolvedSavedSearches.length} saved searches.`,
             viewAllSearches:
             'View All Searches',
             emptySearches:
@@ -777,8 +1021,116 @@ const resolvedMarketComparisons =
               'Compare Markets',
 
             properties:
-            'properties'
+            'properties',
+
+            sortSearches:
+              'Sort searches',
+
+            newest:
+              'Newest',
+
+            oldest:
+              'Oldest',
+
+            nameAscending:
+              'Name A–Z',
+
+            nameDescending:
+              'Name Z–A',
         }
+
+        async function handleRenameSavedSearch(
+          savedSearchId: string
+        ) {
+          const trimmedName =
+            savedSearchNameDraft.trim()
+
+          if (
+            !trimmedName ||
+            savingSavedSearchName
+          ) {
+            return
+          }
+
+          setSavingSavedSearchName(true)
+
+          const renamed =
+            await renameSavedSearch(
+              savedSearchId,
+              trimmedName
+            )
+
+          if (renamed) {
+            setLoadedSavedSearches(
+              current =>
+                current.map(search =>
+                  search.id === savedSearchId
+                    ? {
+                        ...search,
+                        title: trimmedName
+                      }
+                    : search
+                )
+            )
+
+            setEditingSavedSearchId(null)
+            setSavedSearchNameDraft('')
+          }
+
+          setSavingSavedSearchName(false)
+        }
+
+        async function handleDeleteSavedSearch(
+          savedSearchId: string
+        ) {
+          if (deletingSavedSearch) {
+            return
+          }
+
+          setDeletingSavedSearch(true)
+
+          const deleted =
+            await deleteSavedSearch(
+              savedSearchId
+            )
+
+          if (deleted) {
+            setLoadedSavedSearches(
+              current =>
+                current.filter(
+                  search =>
+                    search.id !==
+                    savedSearchId
+                )
+            )
+
+            setDeletingSavedSearchId(
+              null
+            )
+          }
+
+          setDeletingSavedSearch(false)
+        }
+
+        const [
+          deletingSavedSearchId,
+          setDeletingSavedSearchId
+        ] = useState<string | null>(
+          null
+        )
+
+        const [
+          deletingSavedSearch,
+          setDeletingSavedSearch
+        ] = useState(false)
+
+        const [
+          savedSearchSort,
+          setSavedSearchSort
+        ] = useState<SavedSearchSort>(
+          'newest'
+        )
+
   const exploreHref =
     language === 'es'
       ? '/es/comprar'
@@ -953,28 +1305,66 @@ const resolvedMarketComparisons =
 
       <div style={subsectionDivider} />
             <div style={subsectionHeader}>
-            <div>
+              <div>
                 <h3 style={sectionHeading}>
-                <Search
+                  <Search
                     size={20}
                     strokeWidth={1}
                     color="#C7A44B"
-                />
+                  />
 
-                {labels.savedSearches}
+                  {labels.savedSearches}
 
-                <span style={count}>
-                    {savedSearches.length}
-                </span>
+                  <span style={count}>
+                    {
+                      resolvedSavedSearches.length
+                    }
+                  </span>
                 </h3>
 
                 <p style={subsectionSummary}>
-                {labels.savedSearchCount}
+                  {labels.savedSearchCount}
                 </p>
-            </div>
+              </div>
+
+              {resolvedSavedSearches.length >
+                1 && (
+                <label style={savedSearchSortLabel}>
+                  <span style={savedSearchSortText}>
+                    {labels.sortSearches}
+                  </span>
+
+                  <select
+                    value={savedSearchSort}
+                    onChange={event =>
+                      setSavedSearchSort(
+                        event.target
+                          .value as SavedSearchSort
+                      )
+                    }
+                    style={savedSearchSortSelect}
+                  >
+                    <option value="newest">
+                      {labels.newest}
+                    </option>
+
+                    <option value="oldest">
+                      {labels.oldest}
+                    </option>
+
+                    <option value="name-asc">
+                      {labels.nameAscending}
+                    </option>
+
+                    <option value="name-desc">
+                      {labels.nameDescending}
+                    </option>
+                  </select>
+                </label>
+              )}
             </div>
 
-            {savedSearches.length === 0 ? (
+            {resolvedSavedSearches.length === 0 ? (
             <div style={emptyState}>
                 <Search
                 size={36}
@@ -995,44 +1385,254 @@ const resolvedMarketComparisons =
             </div>
             ) : (
             <div style={searchGrid}>
-                {resolvedSavedSearches.map(search => (
-                <Link
-                    key={search.id}
-                    href={search.href}
-                    style={searchCard}
-                >
-                    <div style={searchIconWrap}>
-                    <Search
-                        size={26}
-                        strokeWidth={1}
-                        color="#C7A44B"
-                    />
-                    </div>
+                {resolvedSavedSearches.map(search => {
+                  const isEditing =
+                    editingSavedSearchId === search.id
 
-                    <div style={searchContent}>
-                    <h4 style={searchTitle}>
-                        {search.title}
-                    </h4>
+                  return (
+                    <div
+                      key={search.id}
+                      style={searchCard}
+                    >
+                      <div style={searchIconWrap}>
+                        <Search
+                          size={26}
+                          strokeWidth={1}
+                          color="#C7A44B"
+                        />
+                      </div>
 
-                    <div style={searchMeta}>
-                        {search.resultCount}{' '}
-                        {language === 'es'
-                        ? 'resultados'
-                        : 'results'}
-                    </div>
+                      <div style={searchContent}>
+                        {isEditing ? (
+                          <>
+                            <input
+                              value={savedSearchNameDraft}
+                              onChange={event =>
+                                setSavedSearchNameDraft(
+                                  event.target.value
+                                )
+                              }
+                              onKeyDown={event => {
+                                if (event.key === 'Enter') {
+                                  void handleRenameSavedSearch(
+                                    search.id
+                                  )
+                                }
 
-                    <div style={searchUpdated}>
-                        {search.lastUpdated}
-                    </div>
-                    </div>
+                                if (event.key === 'Escape') {
+                                  setEditingSavedSearchId(
+                                    null
+                                  )
 
-                    <ArrowRight
-                    size={20}
-                    strokeWidth={1}
-                    color="#C7A44B"
-                    />
-                </Link>
-                ))}
+                                  setSavedSearchNameDraft(
+                                    ''
+                                  )
+                                }
+                              }}
+                              autoFocus
+                              style={savedSearchNameInput}
+                            />
+
+                            <div style={savedSearchActions}>
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  void handleRenameSavedSearch(
+                                    search.id
+                                  )
+                                }
+                                disabled={
+                                  savingSavedSearchName
+                                }
+                                style={savedSearchSaveButton}
+                              >
+                                {language === 'es'
+                                  ? 'Guardar'
+                                  : 'Save'}
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setEditingSavedSearchId(
+                                    null
+                                  )
+
+                                  setSavedSearchNameDraft(
+                                    ''
+                                  )
+                                }}
+                                style={savedSearchCancelButton}
+                              >
+                                {language === 'es'
+                                  ? 'Cancelar'
+                                  : 'Cancel'}
+                              </button>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <Link
+                              href={search.href}
+                              style={savedSearchTitleLink}
+                            >
+                              <h4 style={searchTitle}>
+                                {search.title}
+                              </h4>
+                            </Link>
+
+                            <div style={searchMeta}>
+                              {search.resultCount}{' '}
+                              {language === 'es'
+                                ? 'resultados'
+                                : 'results'}
+                            </div>
+
+                            <div style={searchUpdated}>
+                              {search.lastUpdated}
+                            </div>
+                          </>
+                        )}
+                      </div>
+
+                      {isEditing ? null : (
+                        <div style={savedSearchCardActions}>
+                          {deletingSavedSearchId ===
+                          search.id ? (
+                            <div
+                              style={
+                                savedSearchDeleteConfirmation
+                              }
+                            >
+                              <span
+                                style={
+                                  savedSearchDeleteText
+                                }
+                              >
+                                {language === 'es'
+                                  ? '¿Eliminar?'
+                                  : 'Delete?'}
+                              </span>
+
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  void handleDeleteSavedSearch(
+                                    search.id
+                                  )
+                                }
+                                disabled={
+                                  deletingSavedSearch
+                                }
+                                style={
+                                  savedSearchDeleteConfirmButton
+                                }
+                              >
+                                {language === 'es'
+                                  ? 'Eliminar'
+                                  : 'Delete'}
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setDeletingSavedSearchId(
+                                    null
+                                  )
+                                }
+                                disabled={
+                                  deletingSavedSearch
+                                }
+                                style={
+                                  savedSearchDeleteCancelButton
+                                }
+                              >
+                                {language === 'es'
+                                  ? 'Cancelar'
+                                  : 'Cancel'}
+                              </button>
+                            </div>
+                          ) : (
+                            <>
+                              <button
+                                type="button"
+                                aria-label={
+                                  language === 'es'
+                                    ? 'Renombrar búsqueda'
+                                    : 'Rename search'
+                                }
+                                onClick={() => {
+                                  setEditingSavedSearchId(
+                                    search.id
+                                  )
+
+                                  setSavedSearchNameDraft(
+                                    search.title
+                                  )
+
+                                  setDeletingSavedSearchId(
+                                    null
+                                  )
+                                }}
+                                style={
+                                  savedSearchEditButton
+                                }
+                              >
+                                <Pencil
+                                  size={17}
+                                  strokeWidth={1}
+                                />
+                              </button>
+
+                              <button
+                                type="button"
+                                aria-label={
+                                  language === 'es'
+                                    ? 'Eliminar búsqueda'
+                                    : 'Delete search'
+                                }
+                                onClick={() => {
+                                  setDeletingSavedSearchId(
+                                    search.id
+                                  )
+
+                                  setEditingSavedSearchId(
+                                    null
+                                  )
+
+                                  setSavedSearchNameDraft(
+                                    ''
+                                  )
+                                }}
+                                style={
+                                  savedSearchDeleteButton
+                                }
+                              >
+                                <Trash2
+                                  size={17}
+                                  strokeWidth={1}
+                                />
+                              </button>
+
+                              <Link
+                                href={search.href}
+                                style={
+                                  savedSearchOpenLink
+                                }
+                              >
+                                <ArrowRight
+                                  size={20}
+                                  strokeWidth={1}
+                                  color="#C7A44B"
+                                />
+                              </Link>
+                            </>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )
+                })}
             </div>
             )}
             <div style={subsectionDivider} />
