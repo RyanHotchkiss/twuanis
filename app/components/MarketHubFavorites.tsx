@@ -16,7 +16,10 @@ import {
 } from '@/lib/favorites'
 
 import {
-  getFavoriteCollections
+  deleteFavoriteCollection,
+  getFavoriteCollections,
+  renameFavoriteCollection,
+  reorderFavoriteCollections
 } from '@/lib/collections'
 
 import {
@@ -36,15 +39,22 @@ import {
 
 import CollectionPicker from '@/app/components/CollectionPicker'
 import CreateCollectionButton from '@/app/components/CreateCollectionButton'
+import MarketHubNotificationFeed, {
+  type MarketHubNotification
+} from '@/app/components/MarketHubNotificationFeed'
 
 import {
+  ArrowDown,
   ArrowRight,
+  ArrowUp,
   BarChart3,
   Clock3,
   Columns3,
+  Eye,
   FolderHeart,
   Heart,
-  Map,
+  Map as MapIcon,
+  RefreshCw,
   MapPin,
   NotebookPen,
   Pencil,
@@ -52,7 +62,30 @@ import {
   Trash2
 } from 'lucide-react'
 
+import {
+  getRecentlySavedProperties,
+  getRecentlyViewedProperties,
+  type RecentlySavedProperty
+} from '@/lib/activity/listings'
 
+import {
+  getRecentlyViewedMarkets
+} from '@/lib/activity/markets'
+
+import {
+  getUserPropertyNotes
+} from '@/lib/property-notes'
+
+import DOMPurify from 'dompurify'
+
+import {
+  getPropertyComparisons,
+  type MarketHubPropertyComparison
+} from '@/lib/property-comparisons'
+
+import {
+  resolveFirstListingImage
+} from '@/app/utils/resolveListingImages'
 
 type SupportedLanguage =
   | 'en'
@@ -82,7 +115,7 @@ type MarketHubFavoritesProps = {
         RecentlyViewedMarket[]
       favoriteCollections?:
         FavoriteCollection[]
-      propertyNotes?: PropertyNote[]
+      
       marketComparisons?:
         MarketHubMarketComparison[]
     }
@@ -101,6 +134,7 @@ export type PropertyNote = {
   propertyTitle: string
   note: string
   updatedAt: string
+  timestamp: string
   href: string
 }
 
@@ -125,6 +159,7 @@ export type savedAnalyses = {
   market: string
   summary: string
   lastUpdated: string
+  timestamp: string
   href: string
 }
 
@@ -147,6 +182,23 @@ export type RecentlyViewedMarket = {
   href: string
 }
 
+  type RecentActivityType =
+      | 'property-saved'
+      | 'property-viewed'
+      | 'market-viewed'
+      | 'analysis-updated'
+      | 'property-note-updated'
+      | 'property-compared'
+      | 'market-compared'
+
+  type RecentActivityItem = {
+      id: string
+      type: RecentActivityType
+      title: string
+      description: string
+      timestamp: string
+      href: string
+    }
 
 export default function MarketHubFavorites({
       language,
@@ -159,28 +211,71 @@ export default function MarketHubFavorites({
       recentlyViewedMarkets = [],
       favoriteCollections:
         initialFavoriteCollections = [],
-      propertyNotes = [],
+      
       marketComparisons:
         initialMarketComparisons = []
     }: MarketHubFavoritesProps) {
 
-const [
-      loadedSavedProperties,
-      setLoadedSavedProperties
-    ] = useState<
-      MarketHubSavedProperty[]
-    >(
-      initialSavedProperties
-    )
+    const [
+          loadedSavedProperties,
+          setLoadedSavedProperties
+        ] = useState<
+          MarketHubSavedProperty[]
+        >(
+          initialSavedProperties
+        )
 
-const [
-      loadedFavoriteCollections,
-      setLoadedFavoriteCollections
-    ] = useState<
-      FavoriteCollection[]
-    >(
-      initialFavoriteCollections
-    )
+    const [
+            loadedPropertyNotes,
+            setLoadedPropertyNotes
+          ] = useState<PropertyNote[]>([])
+
+    const [
+          loadedRecentlyViewedProperties,
+          setLoadedRecentlyViewedProperties
+        ] = useState<RecentlyViewedProperty[]>(
+          recentlyViewedProperties
+        )
+
+    const [
+          loadedRecentlySavedProperties,
+          setLoadedRecentlySavedProperties
+        ] = useState<
+          RecentlySavedProperty[]
+        >([])
+
+    const [
+          loadedRecentlyViewedMarkets,
+          setLoadedRecentlyViewedMarkets
+        ] = useState<RecentlyViewedMarket[]>(
+          recentlyViewedMarkets
+        )
+
+    const [
+          loadedFavoriteCollections,
+          setLoadedFavoriteCollections
+        ] = useState<
+          FavoriteCollection[]
+        >(
+          initialFavoriteCollections
+        )
+
+    const [
+        deletingCollectionId,
+        setDeletingCollectionId
+      ] = useState<string | null>(
+        null
+      )
+
+    const [
+        deletingCollection,
+        setDeletingCollection
+      ] = useState(false)
+
+    const [
+        reorderingCollection,
+        setReorderingCollection
+      ] = useState(false)
 
     const [
       loadedSavedAnalyses,
@@ -197,6 +292,18 @@ const [
   )
 
   const [
+    loadedNotifications,
+    setLoadedNotifications
+  ] = useState<
+    MarketHubNotification[]
+  >([])
+
+  const [
+    notificationsLoaded,
+    setNotificationsLoaded
+  ] = useState(false)
+  
+  const [
     editingSavedSearchId,
     setEditingSavedSearchId
   ] = useState<string | null>(
@@ -212,6 +319,25 @@ const [
     savingSavedSearchName,
     setSavingSavedSearchName
   ] = useState(false)
+
+  const [
+    deletingSavedSearchId,
+    setDeletingSavedSearchId
+  ] = useState<string | null>(
+    null
+  )
+
+  const [
+    deletingSavedSearch,
+    setDeletingSavedSearch
+  ] = useState(false)
+
+  const [
+    savedSearchSort,
+    setSavedSearchSort
+  ] = useState<SavedSearchSort>(
+    'newest'
+  )
 
   const savedSearchTitleLink = {
     color: '#fff',
@@ -370,6 +496,18 @@ const [
         setMarketComparisonsLoaded
       ] = useState(false)
 
+      const [
+          loadedPropertyComparisons,
+          setLoadedPropertyComparisons
+        ] = useState<
+          MarketHubPropertyComparison[]
+        >([])
+
+        const [
+          propertyComparisonsLoaded,
+          setPropertyComparisonsLoaded
+        ] = useState(false)
+
     useEffect(() => {
       let active = true
 
@@ -457,7 +595,7 @@ const [
                 ),
 
               image:
-                getFirstImage(
+                resolveFirstListingImage(
                   listing.images
                 ),
 
@@ -501,7 +639,143 @@ const [
         }
       }
 
-  
+      async function loadPropertyNotes():
+          Promise<void> {
+          try {
+            const notes =
+              await getUserPropertyNotes()
+
+            if (!active) {
+              return
+            }
+
+            if (notes.length === 0) {
+              setLoadedPropertyNotes([])
+              return
+            }
+
+            const listingIds = [
+              ...new Set(
+                notes.map(
+                  note =>
+                    note.listingId
+                )
+              )
+            ]
+
+            const {
+              data: listings,
+              error
+            } = await supabase
+              .from('listings')
+              .select(`
+                id,
+                title,
+                transaction_type
+              `)
+              .in(
+                'id',
+                listingIds
+              )
+
+            if (error) {
+              console.error(
+                'MARKETHUB PROPERTY NOTES LISTINGS ERROR:',
+                error
+              )
+
+              return
+            }
+
+            const listingsById =
+              new Map(
+                (listings || []).map(
+                  listing => [
+                    listing.id,
+                    listing
+                  ]
+                )
+              )
+
+            setLoadedPropertyNotes(
+              notes.map(
+                note => {
+                  const listing =
+                    listingsById.get(
+                      note.listingId
+                    )
+
+                  const transactionType =
+                    listing?.transaction_type ===
+                      'rent' ||
+                    listing?.transaction_type ===
+                      'lease'
+                      ? 'rent'
+                      : 'buy'
+
+                  const href =
+                    language === 'es'
+                      ? transactionType === 'rent'
+                        ? `/es/alquilar-arrendar/anuncio/${note.listingId}`
+                        : `/es/comprar/anuncio/${note.listingId}`
+                      : transactionType === 'rent'
+                      ? `/en/rent-lease/listing/${note.listingId}`
+                      : `/en/buy/listing/${note.listingId}`
+
+                  return {
+                    id:
+                      note.id,
+
+                    propertyId:
+                      note.listingId,
+
+                    propertyTitle:
+                      listing?.title ||
+                      (
+                        language === 'es'
+                          ? 'Propiedad'
+                          : 'Property'
+                      ),
+
+                    note:
+                      propertyNoteToPlainText(
+                        note.content
+                      ),
+
+                    updatedAt:
+                      new Date(
+                        note.updatedAt
+                      ).toLocaleString(
+                        language === 'es'
+                          ? 'es-CR'
+                          : 'en-US',
+                        {
+                          dateStyle:
+                            'medium',
+                          timeStyle:
+                            'short'
+                        }
+                      ),
+
+                  timestamp:
+                      note.updatedAt,
+
+                    href
+                  }
+                }
+              )
+            )
+          } catch (error) {
+            console.error(
+              'MARKETHUB PROPERTY NOTES ERROR:',
+              error
+            )
+
+            if (active) {
+              setLoadedPropertyNotes([])
+            }
+          }
+        }
 
         async function loadCollections() {
           const collections =
@@ -630,6 +904,9 @@ const [
                           : 'en-US'
                       ),
 
+                  timestamp:
+                    analysis.updated_at,
+
             href: (() => {
                   const params = new URLSearchParams()
 
@@ -662,10 +939,44 @@ const [
           loadSavedAnalyses()
           loadSavedSearches()
           loadSavedProperties()
+          loadPropertyNotes()
 
           function handleFavoritesChanged(): void {
-            loadSavedProperties()
+            void loadSavedProperties()
           }
+
+          function handlePropertyNotesChanged():
+            void {
+            void loadPropertyNotes()
+          }
+
+          window.addEventListener(
+            'property-notes-updated',
+            handlePropertyNotesChanged
+          )
+
+          function loadRecentlyViewedProperties(): void {
+              setLoadedRecentlyViewedProperties(
+                getRecentlyViewedProperties()
+              )
+            }
+
+            function loadRecentlySavedProperties():
+                void {
+                setLoadedRecentlySavedProperties(
+                  getRecentlySavedProperties()
+                )
+              }
+
+            function loadRecentlyViewedMarkets(): void {
+              setLoadedRecentlyViewedMarkets(
+                getRecentlyViewedMarkets()
+              )
+            }
+
+            loadRecentlyViewedProperties()
+            loadRecentlySavedProperties()
+            loadRecentlyViewedMarkets()
 
           window.addEventListener(
             'collections-updated',
@@ -677,8 +988,28 @@ const [
             handleFavoritesChanged
           )
 
+          window.addEventListener(
+            'recent-properties-updated',
+            loadRecentlyViewedProperties
+          )
+
+          window.addEventListener(
+            'recent-markets-updated',
+            loadRecentlyViewedMarkets
+          )
+
+          window.addEventListener(
+            'recent-saved-properties-updated',
+            loadRecentlySavedProperties
+          )
+
           return () => {
             active = false
+
+            window.removeEventListener(
+              'property-notes-updated',
+              handlePropertyNotesChanged
+            )
 
             window.removeEventListener(
               'collections-updated',
@@ -689,354 +1020,1048 @@ const [
               'favorites-updated',
               handleFavoritesChanged
             )
+
+            window.removeEventListener(
+              'recent-properties-updated',
+              loadRecentlyViewedProperties
+            )
+
+            window.removeEventListener(
+              'recent-markets-updated',
+              loadRecentlyViewedMarkets
+            )
+
+            window.removeEventListener(
+              'recent-saved-properties-updated',
+              loadRecentlySavedProperties
+            )
+
           }
-
-
           }, [language])
 
 
-          useEffect(() => {
-  let active = true
+    useEffect(() => {
+          let active = true
 
-  async function loadMarketComparisons():
-    Promise<void> {
-    const comparisons =
-      await getMarketComparisons({
-        language
-      })
+    async function loadMarketComparisons():
+            Promise<void> {
+            const comparisons =
+              await getMarketComparisons({
+                language
+              })
 
-    if (!active) {
-      return
-    }
+            if (!active) {
+              return
+            }
 
-    setLoadedMarketComparisons(
-      comparisons
-    )
+            setLoadedMarketComparisons(
+              comparisons
+            )
 
-    setMarketComparisonsLoaded(
-      true
-    )
-  }
+            setMarketComparisonsLoaded(
+              true
+            )
+          }
 
-  void loadMarketComparisons()
+          void loadMarketComparisons()
 
-  function handleMarketComparisonsUpdated():
-    void {
-    void loadMarketComparisons()
-  }
+    function handleMarketComparisonsUpdated():
+            void {
+            void loadMarketComparisons()
+          }
 
-  window.addEventListener(
-    'market-comparisons-updated',
-    handleMarketComparisonsUpdated
-  )
+          window.addEventListener(
+            'market-comparisons-updated',
+            handleMarketComparisonsUpdated
+          )
 
-  return () => {
-    active = false
+          return () => {
+            active = false
 
-    window.removeEventListener(
-      'market-comparisons-updated',
-      handleMarketComparisonsUpdated
-    )
-  }
-}, [language])
+          window.removeEventListener(
+              'market-comparisons-updated',
+              handleMarketComparisonsUpdated
+            )
+          }
 
-const resolvedMarketComparisons =
-  marketComparisonsLoaded
-    ? loadedMarketComparisons
-    : initialMarketComparisons
+        }, [language])
 
+        useEffect(() => {
+            let active = true
 
-  const savedProperties =
-    loadedSavedProperties
+            async function loadPropertyComparisons():
+              Promise<void> {
+              try {
+                const comparisons =
+                  await getPropertyComparisons({
+                    language
+                  })
 
-  const favoriteCollections =
-  loadedFavoriteCollections
+                if (!active) {
+                  return
+                }
 
-  const savedAnalyses =
-    loadedSavedAnalyses
+                setLoadedPropertyComparisons(
+                  comparisons
+                )
 
-  const resolvedSavedSearches =
-      [...loadedSavedSearches].sort(
-        (left, right) => {
+                setPropertyComparisonsLoaded(
+                  true
+                )
+              } catch (error) {
+                console.error(
+                  'PROPERTY COMPARISONS ERROR:',
+                  error
+                )
+
+                if (active) {
+                  setLoadedPropertyComparisons([])
+                  setPropertyComparisonsLoaded(true)
+                }
+              }
+            }
+
+            void loadPropertyComparisons()
+
+            function handlePropertyComparisonsUpdated():
+              void {
+              void loadPropertyComparisons()
+            }
+
+            window.addEventListener(
+              'property-comparisons-updated',
+              handlePropertyComparisonsUpdated
+            )
+
+            return () => {
+              active = false
+
+              window.removeEventListener(
+                'property-comparisons-updated',
+                handlePropertyComparisonsUpdated
+              )
+            }
+          }, [language])
+
+      useEffect(() => {
+        let active = true
+
+        async function loadNotifications():
+          Promise<void> {
+          const {
+            data: {
+              user
+            },
+            error: userError
+          } = await supabase.auth.getUser()
+
           if (
-            savedSearchSort ===
-            'oldest'
+            userError ||
+            !user
           ) {
+            if (active) {
+              setLoadedNotifications([])
+              setNotificationsLoaded(true)
+            }
+
+            return
+          }
+
+          const {
+            data,
+            error
+          } = await supabase
+            .from('notifications')
+            .select(`
+              id,
+              type,
+              title,
+              message,
+              url,
+              is_read,
+              created_at
+            `)
+            .eq(
+              'user_id',
+              user.id
+            )
+            .eq(
+              'type',
+              'saved_search'
+            )
+            .order(
+              'created_at',
+              {
+                ascending: false
+              }
+            )
+            .limit(20)
+
+          if (error) {
+            console.error(
+              'MARKETHUB NOTIFICATIONS ERROR:',
+              error
+            )
+
+            if (active) {
+              setNotificationsLoaded(true)
+            }
+
+            return
+          }
+
+          if (!active) {
+            return
+          }
+
+          setLoadedNotifications(
+            (data ?? []).map(
+              notification => ({
+                id:
+                  notification.id,
+
+                type:
+                  notification.type,
+
+                title:
+                  notification.title,
+
+                message:
+                  notification.message,
+
+                url:
+                  notification.url,
+
+                isRead:
+                  notification.is_read,
+
+                createdAt:
+                  new Date(
+                    notification.created_at
+                  ).toLocaleString(
+                    language === 'es'
+                      ? 'es-CR'
+                      : 'en-US',
+                    {
+                      dateStyle: 'medium',
+                      timeStyle: 'short'
+                    }
+                  )
+              })
+            )
+          )
+
+          setNotificationsLoaded(true)
+        }
+
+        void loadNotifications()
+
+        return () => {
+          active = false
+        }
+      }, [language])
+
+    const resolvedMarketComparisons =
+      marketComparisonsLoaded
+        ? loadedMarketComparisons
+        : initialMarketComparisons
+
+      const resolvedPropertyComparisons =
+      propertyComparisonsLoaded
+        ? loadedPropertyComparisons
+        : []
+
+    const totalComparisonCount =
+      resolvedMarketComparisons.length +
+      resolvedPropertyComparisons.length
+
+    const savedProperties =
+      loadedSavedProperties
+
+    const propertyNotes =
+    loadedPropertyNotes
+
+    const favoriteCollections =
+    loadedFavoriteCollections
+
+    const savedAnalyses =
+      loadedSavedAnalyses
+
+    const latestAnalysis =
+      [...savedAnalyses]
+        .sort(
+          (left, right) =>
+            new Date(
+              right.timestamp
+            ).getTime() -
+            new Date(
+              left.timestamp
+            ).getTime()
+        )[0] ?? null
+
+    const resolvedSavedSearches =
+        [...loadedSavedSearches].sort(
+          (left, right) => {
+            if (
+              savedSearchSort ===
+              'oldest'
+            ) {
+              return (
+                new Date(
+                  left.createdAt
+                ).getTime() -
+                new Date(
+                  right.createdAt
+                ).getTime()
+              )
+            }
+
+            if (
+              savedSearchSort ===
+              'name-asc'
+            ) {
+              return left.title.localeCompare(
+                right.title,
+                language === 'es'
+                  ? 'es'
+                  : 'en',
+                {
+                  sensitivity: 'base'
+                }
+              )
+            }
+
+            if (
+              savedSearchSort ===
+              'name-desc'
+            ) {
+              return right.title.localeCompare(
+                left.title,
+                language === 'es'
+                  ? 'es'
+                  : 'en',
+                {
+                  sensitivity: 'base'
+                }
+              )
+            }
+
             return (
               new Date(
-                left.createdAt
+                right.createdAt
               ).getTime() -
               new Date(
-                right.createdAt
+                left.createdAt
               ).getTime()
             )
           }
+        )
 
-          if (
-            savedSearchSort ===
-            'name-asc'
-          ) {
-            return left.title.localeCompare(
-              right.title,
-              language === 'es'
-                ? 'es'
-                : 'en',
-              {
-                sensitivity: 'base'
-              }
-            )
+    const labels =
+      language === 'es'
+        ? {
+            heading: 'Favoritos',
+            dashboardSummary:
+              'Resumen de Favoritos',
+
+            summarySavedProperties:
+              'Propiedades Guardadas',
+
+            summarySavedSearches:
+              'Búsquedas Guardadas',
+
+            summarySavedAnalyses:
+              'Análisis Guardados',
+
+            summaryCollections:
+              'Colecciones',
+
+            summaryNotes:
+              'Notas de Propiedades',
+
+            summaryComparisons:
+              'Comparaciones',
+              recentActivity:
+              'Actividad Reciente',
+
+              recentActivitySummary:
+                'Sus propiedades, mercados, análisis, comparaciones y notas más recientes.',
+
+              emptyRecentActivity:
+                'Todavía no tiene actividad reciente.',
+
+              propertySaved:
+                'Propiedad Guardada',
+
+              propertyViewed:
+                'Propiedad Vista',
+
+              marketViewed:
+                'Mercado Visto',
+
+              analysisUpdated:
+                'Análisis Actualizado',
+
+              noteUpdated:
+                'Nota Actualizada',
+
+              propertyCompared:
+                'Propiedades Comparadas',
+
+              marketCompared:
+                'Mercados Comparados',
+            purpose:
+              'Recuerde y organice las propiedades, búsquedas, mercados y análisis que le importan.',
+            savedProperties:
+              'Propiedades Guardadas',
+            savedCount:
+              savedProperties.length === 1
+                ? 'Tiene 1 propiedad guardada.'
+                : `Tiene ${savedProperties.length} propiedades guardadas.`,
+              empty:
+              'Todavía no ha guardado propiedades.',
+              explore:
+              'Explorar Propiedades',
+              viewFavorites:
+              'Ver Todos los Favoritos',
+              savedSearches:
+              'Búsquedas Guardadas',
+              savedSearchCount:
+                resolvedSavedSearches.length === 1
+                  ? 'Tiene 1 búsqueda guardada.'
+                  : `Tiene ${resolvedSavedSearches.length} búsquedas guardadas.`,
+              viewAllSearches:
+              'Ver Todas las Búsquedas',
+              emptySearches:
+              'Todavía no ha guardado búsquedas.',
+              exploreMarket:
+              'Explorar el Mercado',
+              savedAnalyses:
+              'Análisis Guardados del Explorador de Mercado',
+              savedAnalysisCount:
+              savedAnalyses.length === 1
+                  ? 'Tiene 1 análisis guardado.'
+                  : `Tiene ${savedAnalyses.length} análisis guardados.`,
+              emptyAnalyses:
+              'Todavía no ha guardado análisis del Explorador de Mercado.',
+              openExplorer:
+              'Abrir Explorador de Mercado',
+              recentProperties:
+              'Propiedades Vistas Recientemente',
+              recentPropertyCount:
+              loadedRecentlyViewedProperties.length === 1
+                ? 'Ha visto recientemente 1 propiedad.'
+                : `Ha visto recientemente ${loadedRecentlyViewedProperties.length} propiedades.`,
+              emptyRecentProperties:
+              'Todavía no ha visto propiedades.',
+              recentMarkets:
+              'Mercados Vistos Recientemente',
+              recentMarketCount:
+              loadedRecentlyViewedMarkets.length === 1
+                  ? 'Ha visto recientemente 1 mercado.'
+                  : `Ha visto recientemente ${loadedRecentlyViewedMarkets.length} mercados.`,
+              emptyRecentMarkets:
+              'Todavía no ha explorado mercados.',
+              favoriteCollections:
+              'Colecciones de Favoritos',
+
+              favoriteCollectionCount:
+              favoriteCollections.length === 1
+                  ? 'Tiene 1 colección de favoritos.'
+                  : `Tiene ${favoriteCollections.length} colecciones de favoritos.`,
+
+              emptyCollections:
+              'Todavía no ha creado colecciones de favoritos.',
+
+              createCollection:
+              'Crear Colección',
+
+              notes:
+              'Notas de Propiedades',
+
+              noteCount:
+              propertyNotes.length === 1
+                  ? 'Tiene 1 nota de propiedad.'
+                  : `Tiene ${propertyNotes.length} notas de propiedades.`,
+
+              emptyNotes:
+              'Todavía no ha guardado notas sobre propiedades.',
+
+              marketComparisons:
+                'Comparaciones de Mercados',
+
+              comparisonCount:
+                resolvedMarketComparisons.length === 1
+                  ? 'Tiene 1 comparación de mercados.'
+                  : `Tiene ${resolvedMarketComparisons.length} comparaciones de mercados.`,
+
+              emptyComparisons:
+                'Todavía no ha guardado comparaciones de mercados.',
+
+              compareProperties:
+                'Comparar Mercados',
+
+              properties:
+              'propiedades',
+
+              sortSearches:
+                'Ordenar búsquedas',
+
+              newest:
+                'Más recientes',
+
+              oldest:
+                'Más antiguas',
+
+              nameAscending:
+                'Nombre A–Z',
+
+              nameDescending:
+                'Nombre Z–A',
+          }
+        : {
+            heading: 'Favorites',
+            dashboardSummary:
+              'Favorites Summary',
+
+            summarySavedProperties:
+              'Saved Properties',
+
+            summarySavedSearches:
+              'Saved Searches',
+
+            summarySavedAnalyses:
+              'Saved Analyses',
+
+            summaryCollections:
+              'Collections',
+
+            summaryNotes:
+              'Property Notes',
+
+            summaryComparisons:
+              'Comparisons',
+              recentActivity:
+
+              'Recent Activity',
+
+              recentActivitySummary:
+                'Your latest property, market, analysis, comparison, and note activity.',
+
+              emptyRecentActivity:
+                'You do not have any recent activity yet.',
+
+              propertySaved:
+                'Property Saved',
+
+              propertyViewed:
+                'Property Viewed',
+
+              marketViewed:
+                'Market Viewed',
+
+              analysisUpdated:
+                'Analysis Updated',
+
+              noteUpdated:
+                'Note Updated',
+
+              propertyCompared:
+                'Properties Compared',
+
+              marketCompared:
+                'Markets Compared',
+              purpose:
+                'Remember and organize the properties, searches, markets, and analyses that matter to you.',
+              savedProperties:
+                'Saved Properties',
+              savedCount:
+              savedProperties.length === 1
+                ? 'You have 1 saved property.'
+                : `You have ${savedProperties.length} saved properties.`,
+              empty:
+              'You have not saved any properties yet.',
+              explore:
+              'Explore Properties',
+              viewFavorites:
+              'View All Favorites',
+              savedSearches:
+              'Saved Searches',
+              savedSearchCount:
+                resolvedSavedSearches.length === 1
+                  ? 'You have 1 saved search.'
+                  : `You have ${resolvedSavedSearches.length} saved searches.`,
+              viewAllSearches:
+              'View All Searches',
+              emptySearches:
+              'You have not saved any searches yet.',
+              exploreMarket:
+              'Explore the Market',
+              savedAnalyses:
+              'Saved Analyses',
+              savedAnalysisCount:
+              savedAnalyses.length === 1
+                  ? 'You have 1 saved analysis.'
+                  : `You have ${savedAnalyses.length} saved analyses.`,
+              emptyAnalyses:
+              'You have not saved any Market Explorer analyses yet.',
+              openExplorer:
+              'Open Market Explorer',
+              recentProperties:
+              'Recently Viewed Properties',
+              recentPropertyCount:
+              loadedRecentlyViewedProperties.length === 1
+                ? 'You recently viewed 1 property.'
+                : `You recently viewed ${loadedRecentlyViewedProperties.length} properties.`,
+              emptyRecentProperties:
+              'You have not viewed any properties yet.',
+              recentMarkets:
+              'Recently Viewed Markets',
+              recentMarketCount:
+              loadedRecentlyViewedMarkets.length === 1
+                  ? 'You recently viewed 1 market.'
+                  : `You recently viewed ${loadedRecentlyViewedMarkets.length} markets.`,            
+
+              emptyRecentMarkets:
+              'You have not explored any markets yet.',
+              favoriteCollections:
+              'Favorite Collections',
+
+              favoriteCollectionCount:
+              favoriteCollections.length === 1
+                  ? 'You have 1 favorite collection.'
+                  : `You have ${favoriteCollections.length} favorite collections.`,
+
+              emptyCollections:
+              'You have not created any favorite collections yet.',
+
+              createCollection:
+              'Create Collection',
+
+              notes:
+              'Property Notes',
+
+              noteCount:
+              propertyNotes.length === 1
+                  ? 'You have 1 property note.'
+                  : `You have ${propertyNotes.length} property notes.`,
+
+              emptyNotes:
+              'You have not saved any property notes yet.',
+
+              marketComparisons:
+                'Market Comparisons',
+
+              comparisonCount:
+                resolvedMarketComparisons.length === 1
+                  ? 'You have 1 market comparison.'
+                  : `You have ${resolvedMarketComparisons.length} market comparisons.`,
+
+              emptyComparisons:
+                'You have not saved any market comparisons yet.',
+
+              compareProperties:
+                'Compare Markets',
+
+              properties:
+              'properties',
+
+              sortSearches:
+                'Sort searches',
+
+              newest:
+                'Newest',
+
+              oldest:
+                'Oldest',
+
+              nameAscending:
+                'Name A–Z',
+
+              nameDescending:
+                'Name Z–A',
           }
 
-          if (
-            savedSearchSort ===
-            'name-desc'
-          ) {
-            return right.title.localeCompare(
-              left.title,
-              language === 'es'
-                ? 'es'
-                : 'en',
-              {
-                sensitivity: 'base'
-              }
+
+  const propertyHref = (
+        property:
+          MarketHubSavedProperty
+      ) => {
+        if (
+          language === 'es'
+        ) {
+          return property.transactionType ===
+            'rent'
+            ? `/es/alquilar-arrendar/anuncio/${property.id}`
+            : `/es/comprar/anuncio/${property.id}`
+        }
+
+        return property.transactionType ===
+          'rent'
+          ? `/en/rent-lease/listing/${property.id}`
+          : `/en/buy/listing/${property.id}`
+      }
+
+          const savedPropertiesById =
+            new Map(
+              savedProperties.map(
+                property => [
+                  property.id,
+                  property
+                ]
+              )
             )
+
+          const recentActivity:
+            RecentActivityItem[] = [
+              ...loadedRecentlySavedProperties.flatMap(
+                recent => {
+                  const property =
+                    savedPropertiesById.get(
+                      recent.id
+                    )
+
+                  if (!property) {
+                    return []
+                  }
+
+                  return [{
+                    id:
+                      `property-saved-${recent.id}`,
+
+                    type:
+                      'property-saved' as const,
+
+                    title:
+                      property.title,
+
+                    description:
+                      property.location ||
+                      (
+                        language === 'es'
+                          ? 'Propiedad guardada'
+                          : 'Saved property'
+                      ),
+
+                    timestamp:
+                      recent.savedAt,
+
+                    href:
+                      propertyHref(
+                        property
+                      )
+                  }]
+                }
+              ),
+
+              ...loadedRecentlyViewedProperties.map(
+                property => ({
+                  id:
+                    `property-viewed-${property.id}`,
+
+                  type:
+                    'property-viewed' as const,
+
+                  title:
+                    property.title,
+
+                  description:
+                    property.location ||
+                    (
+                      language === 'es'
+                        ? 'Propiedad vista'
+                        : 'Viewed property'
+                    ),
+
+                  timestamp:
+                    property.viewedAt,
+
+                  href:
+                    property.href
+                })
+              ),
+
+              ...loadedRecentlyViewedMarkets.map(
+                market => ({
+                  id:
+                    `market-viewed-${market.id}`,
+
+                  type:
+                    'market-viewed' as const,
+
+                  title:
+                    market.title,
+
+                  description:
+                    market.marketType ||
+                    market.summary,
+
+                  timestamp:
+                    market.viewedAt,
+
+                  href:
+                    market.href
+                })
+              ),
+
+              ...savedAnalyses.map(
+                analysis => ({
+                  id:
+                    `analysis-${analysis.id}`,
+
+                  type:
+                    'analysis-updated' as const,
+
+                  title:
+                    analysis.title,
+
+                  description:
+                    `${analysis.summary} · ${analysis.market}`,
+
+                  timestamp:
+                    analysis.timestamp,
+
+                  href:
+                    analysis.href
+                })
+              ),
+
+              ...propertyNotes.map(
+                note => ({
+                  id:
+                    `property-note-${note.id}`,
+
+                  type:
+                    'property-note-updated' as const,
+
+                  title:
+                    note.propertyTitle,
+
+                  description:
+                    note.note ||
+                    (
+                      language === 'es'
+                        ? 'Nota de propiedad actualizada'
+                        : 'Property note updated'
+                    ),
+
+                  timestamp:
+                    note.timestamp,
+
+                  href:
+                    note.href
+                })
+              ),
+              ...resolvedPropertyComparisons.map(
+                comparison => ({
+                  id:
+                    `property-comparison-${comparison.id}`,
+
+                  type:
+                    'property-compared' as const,
+
+                  title:
+                    comparison.title,
+
+                  description:
+                    comparison.summary,
+
+                  timestamp:
+                    comparison.timestamp,
+
+                  href:
+                    comparison.href
+                })
+              ),
+              ...resolvedMarketComparisons.map(
+                comparison => ({
+                  id:
+                    `market-comparison-${comparison.id}`,
+
+                  type:
+                    'market-compared' as const,
+
+                  title:
+                    comparison.title,
+
+                  description:
+                    comparison.summary,
+
+                  timestamp:
+                    comparison.timestamp,
+
+                  href:
+                    comparison.href
+                })
+              ),
+            ]
+              .filter(
+                activity =>
+                  Boolean(
+                    activity.timestamp
+                  )
+              )
+              .sort(
+                (left, right) =>
+                  new Date(
+                    right.timestamp
+                  ).getTime() -
+                  new Date(
+                    left.timestamp
+                  ).getTime()
+              )
+              .slice(
+                0,
+                12
+              )
+
+        async function handleRenameCollection(
+          collectionId: string,
+          currentName: string
+        ) {
+          const name =
+            window.prompt(
+              language === 'es'
+                ? 'Nuevo nombre de la colección'
+                : 'New collection name',
+              currentName
+            )
+
+          if (!name?.trim()) {
+            return
           }
 
-          return (
-            new Date(
-              right.createdAt
-            ).getTime() -
-            new Date(
-              left.createdAt
-            ).getTime()
+          await renameFavoriteCollection(
+            collectionId,
+            name
+          )
+
+          setLoadedFavoriteCollections(
+            current =>
+              current.map(collection =>
+                collection.id ===
+                collectionId
+                  ? {
+                      ...collection,
+                      name: name.trim()
+                    }
+                  : collection
+              )
           )
         }
-      )
 
-  const labels =
-    language === 'es'
-      ? {
-          heading: 'Favoritos',
-          purpose:
-            'Recuerde y organice las propiedades, búsquedas, mercados y análisis que le importan.',
-          savedProperties:
-            'Propiedades Guardadas',
-          savedCount:
-            savedProperties.length === 1
-              ? 'Tiene 1 propiedad guardada.'
-              : `Tiene ${savedProperties.length} propiedades guardadas.`,
-             empty:
-            'Todavía no ha guardado propiedades.',
-             explore:
-            'Explorar Propiedades',
-            viewFavorites:
-            'Ver Todos los Favoritos',
-            savedSearches:
-            'Búsquedas Guardadas',
-            savedSearchCount:
-              resolvedSavedSearches.length === 1
-                ? 'Tiene 1 búsqueda guardada.'
-                : `Tiene ${resolvedSavedSearches.length} búsquedas guardadas.`,
-            viewAllSearches:
-            'Ver Todas las Búsquedas',
-            emptySearches:
-            'Todavía no ha guardado búsquedas.',
-            exploreMarket:
-            'Explorar el Mercado',
-            savedAnalyses:
-            'Análisis Guardados del Explorador de Mercado',
-            savedAnalysisCount:
-            savedAnalyses.length === 1
-                ? 'Tiene 1 análisis guardado.'
-                : `Tiene ${savedAnalyses.length} análisis guardados.`,
-            emptyAnalyses:
-            'Todavía no ha guardado análisis del Explorador de Mercado.',
-            openExplorer:
-            'Abrir Explorador de Mercado',
-            recentProperties:
-            'Propiedades Vistas Recientemente',
-            recentPropertyCount:
-            recentlyViewedProperties.length === 1
-                ? 'Ha visto recientemente 1 propiedad.'
-                : `Ha visto recientemente ${recentlyViewedProperties.length} propiedades.`,
-            emptyRecentProperties:
-            'Todavía no ha visto propiedades.',
-            recentMarkets:
-            'Mercados Vistos Recientemente',
-            recentMarketCount:
-            recentlyViewedMarkets.length === 1
-                ? 'Ha visto recientemente 1 mercado.'
-                : `Ha visto recientemente ${recentlyViewedMarkets.length} mercados.`,
-            emptyRecentMarkets:
-            'Todavía no ha explorado mercados.',
-            favoriteCollections:
-            'Colecciones de Favoritos',
+        async function handleDeleteCollection(
+          collectionId: string
+        ) {
+          if (deletingCollection) {
+            return
+          }
 
-            favoriteCollectionCount:
-            favoriteCollections.length === 1
-                ? 'Tiene 1 colección de favoritos.'
-                : `Tiene ${favoriteCollections.length} colecciones de favoritos.`,
+          setDeletingCollection(true)
 
-            emptyCollections:
-            'Todavía no ha creado colecciones de favoritos.',
+          try {
+            await deleteFavoriteCollection(
+              collectionId
+            )
 
-            createCollection:
-            'Crear Colección',
+            setLoadedFavoriteCollections(
+              current =>
+                current.filter(
+                  collection =>
+                    collection.id !==
+                    collectionId
+                )
+            )
 
-            notes:
-            'Notas de Propiedades',
-
-            noteCount:
-            propertyNotes.length === 1
-                ? 'Tiene 1 nota de propiedad.'
-                : `Tiene ${propertyNotes.length} notas de propiedades.`,
-
-            emptyNotes:
-            'Todavía no ha guardado notas sobre propiedades.',
-
-            marketComparisons:
-              'Comparaciones de Mercados',
-
-            comparisonCount:
-              resolvedMarketComparisons.length === 1
-                ? 'Tiene 1 comparación de mercados.'
-                : `Tiene ${resolvedMarketComparisons.length} comparaciones de mercados.`,
-
-            emptyComparisons:
-              'Todavía no ha guardado comparaciones de mercados.',
-
-            compareProperties:
-              'Comparar Mercados',
-
-            properties:
-            'propiedades',
-
-            sortSearches:
-              'Ordenar búsquedas',
-
-            newest:
-              'Más recientes',
-
-            oldest:
-              'Más antiguas',
-
-            nameAscending:
-              'Nombre A–Z',
-
-            nameDescending:
-              'Nombre Z–A',
+            setDeletingCollectionId(
+              null
+            )
+          } catch (error) {
+            console.error(
+              'DELETE COLLECTION ERROR:',
+              error
+            )
+          } finally {
+            setDeletingCollection(false)
+          }
         }
-      : {
-          heading: 'Favorites',
-          purpose:
-            'Remember and organize the properties, searches, markets, and analyses that matter to you.',
-          savedProperties:
-            'Saved Properties',
-          savedCount:
-            savedProperties.length === 1
-              ? 'You have 1 saved property.'
-              : `You have ${savedProperties.length} saved properties.`,
-             empty:
-            'You have not saved any properties yet.',
-            explore:
-            'Explore Properties',
-             viewFavorites:
-            'View All Favorites',
-             savedSearches:
-            'Saved Searches',
-            savedSearchCount:
-              resolvedSavedSearches.length === 1
-                ? 'You have 1 saved search.'
-                : `You have ${resolvedSavedSearches.length} saved searches.`,
-            viewAllSearches:
-            'View All Searches',
-            emptySearches:
-            'You have not saved any searches yet.',
-            exploreMarket:
-            'Explore the Market',
-            savedAnalyses:
-            'Saved Analyses',
-            savedAnalysisCount:
-            savedAnalyses.length === 1
-                ? 'You have 1 saved analysis.'
-                : `You have ${savedAnalyses.length} saved analyses.`,
-            emptyAnalyses:
-            'You have not saved any Market Explorer analyses yet.',
-            openExplorer:
-            'Open Market Explorer',
-            recentProperties:
-            'Recently Viewed Properties',
-            recentPropertyCount:
-            recentlyViewedProperties.length === 1
-                ? 'You recently viewed 1 property.'
-                : `You recently viewed ${recentlyViewedProperties.length} properties.`,
-            emptyRecentProperties:
-            'You have not viewed any properties yet.',
-            recentMarkets:
-            'Recently Viewed Markets',
-            recentMarketCount:
-            recentlyViewedMarkets.length === 1
-                ? 'You recently viewed 1 market.'
-                : `You recently viewed ${recentlyViewedMarkets.length} markets.`,            
 
-            emptyRecentMarkets:
-            'You have not explored any markets yet.',
-            favoriteCollections:
-            'Favorite Collections',
+        async function handleMoveCollection(
+          collectionId: string,
+          direction: 'up' | 'down'
+        ) {
+          if (reorderingCollection) {
+            return
+          }
 
-            favoriteCollectionCount:
-            favoriteCollections.length === 1
-                ? 'You have 1 favorite collection.'
-                : `You have ${favoriteCollections.length} favorite collections.`,
+          const currentIndex =
+            loadedFavoriteCollections.findIndex(
+              collection =>
+                collection.id ===
+                collectionId
+            )
 
-            emptyCollections:
-            'You have not created any favorite collections yet.',
+          if (currentIndex === -1) {
+            return
+          }
 
-            createCollection:
-            'Create Collection',
+          const targetIndex =
+            direction === 'up'
+              ? currentIndex - 1
+              : currentIndex + 1
 
-            notes:
-            'Property Notes',
+          if (
+            targetIndex < 0 ||
+            targetIndex >=
+              loadedFavoriteCollections.length
+          ) {
+            return
+          }
 
-            noteCount:
-            propertyNotes.length === 1
-                ? 'You have 1 property note.'
-                : `You have ${propertyNotes.length} property notes.`,
+          const previousCollections =
+            loadedFavoriteCollections
 
-            emptyNotes:
-            'You have not saved any property notes yet.',
+          const reorderedCollections =
+            [...loadedFavoriteCollections]
 
-            marketComparisons:
-              'Market Comparisons',
+          const [
+            movedCollection
+          ] = reorderedCollections.splice(
+            currentIndex,
+            1
+          )
 
-            comparisonCount:
-              resolvedMarketComparisons.length === 1
-                ? 'You have 1 market comparison.'
-                : `You have ${resolvedMarketComparisons.length} market comparisons.`,
+          reorderedCollections.splice(
+            targetIndex,
+            0,
+            movedCollection
+          )
 
-            emptyComparisons:
-              'You have not saved any market comparisons yet.',
+          setLoadedFavoriteCollections(
+            reorderedCollections
+          )
 
-            compareProperties:
-              'Compare Markets',
+          setReorderingCollection(true)
 
-            properties:
-            'properties',
+          try {
+            await reorderFavoriteCollections(
+              reorderedCollections.map(
+                collection =>
+                  collection.id
+              )
+            )
+          } catch (error) {
+            console.error(
+              'REORDER COLLECTIONS ERROR:',
+              error
+            )
 
-            sortSearches:
-              'Sort searches',
-
-            newest:
-              'Newest',
-
-            oldest:
-              'Oldest',
-
-            nameAscending:
-              'Name A–Z',
-
-            nameDescending:
-              'Name Z–A',
+            setLoadedFavoriteCollections(
+              previousCollections
+            )
+          } finally {
+            setReorderingCollection(false)
+          }
         }
 
         async function handleRenameSavedSearch(
@@ -1112,24 +2137,142 @@ const resolvedMarketComparisons =
           setDeletingSavedSearch(false)
         }
 
-        const [
-          deletingSavedSearchId,
-          setDeletingSavedSearchId
-        ] = useState<string | null>(
-          null
-        )
+        async function handleOpenNotification(
+            notificationId: string
+          ): Promise<void> {
+            const notification =
+              loadedNotifications.find(
+                item =>
+                  item.id ===
+                  notificationId
+              )
 
-        const [
-          deletingSavedSearch,
-          setDeletingSavedSearch
-        ] = useState(false)
+            if (
+              !notification ||
+              notification.isRead
+            ) {
+              return
+            }
 
-        const [
-          savedSearchSort,
-          setSavedSearchSort
-        ] = useState<SavedSearchSort>(
-          'newest'
-        )
+            await updateNotificationReadState(
+              notificationId,
+              true
+            )
+          }
+
+          async function handleMarkRead(
+            notificationId: string
+          ): Promise<void> {
+            await updateNotificationReadState(
+              notificationId,
+              true
+            )
+          }
+
+          async function handleMarkUnread(
+            notificationId: string
+          ): Promise<void> {
+            await updateNotificationReadState(
+              notificationId,
+              false
+            )
+          }
+
+          async function handleMarkAllRead():
+            Promise<void> {
+            const previousNotifications =
+              loadedNotifications
+
+            const unreadIds =
+              loadedNotifications
+                .filter(
+                  notification =>
+                    !notification.isRead
+                )
+                .map(
+                  notification =>
+                    notification.id
+                )
+
+            if (
+              unreadIds.length === 0
+            ) {
+              return
+            }
+
+            setLoadedNotifications(
+              current =>
+                current.map(
+                  notification => ({
+                    ...notification,
+                    isRead: true
+                  })
+                )
+            )
+
+            const {
+              error
+            } = await supabase
+              .from('notifications')
+              .update({
+                is_read: true
+              })
+              .in(
+                'id',
+                unreadIds
+              )
+
+            if (error) {
+              console.error(
+                'MARK ALL NOTIFICATIONS READ ERROR:',
+                error
+              )
+
+              setLoadedNotifications(
+                previousNotifications
+              )
+            }
+          }
+
+          async function updateNotificationReadState(
+            notificationId: string,
+            isRead: boolean
+          ): Promise<void> {
+            const previousNotifications =
+              loadedNotifications
+
+            setLoadedNotifications(
+              current =>
+                current.map(
+                  notification =>
+                    notification.id === notificationId
+                      ? {
+                          ...notification,
+                          isRead
+                        }
+                      : notification
+                )
+            )
+
+            const { error } = await supabase
+              .from('notifications')
+              .update({
+                is_read: isRead
+              })
+              .eq('id', notificationId)
+
+            if (error) {
+              console.error(
+                'UPDATE NOTIFICATION ERROR:',
+                error
+              )
+
+              setLoadedNotifications(
+                previousNotifications
+              )
+            }
+
+            }
 
   const exploreHref =
     language === 'es'
@@ -1143,371 +2286,1109 @@ const resolvedMarketComparisons =
     language === 'es'
         ? '/es/inteligencia-de-mercado?tab=explorer'
         : '/en/market-intelligence?tab=explorer'
-  const propertyHref = (
-      property:
-        MarketHubSavedProperty
-    ) => {
-      if (
-        language === 'es'
-      ) {
-        return property.transactionType ===
-          'rent'
-          ? `/es/alquilar-arrendar/anuncio/${property.id}`
-          : `/es/comprar/anuncio/${property.id}`
-      }
-
-      return property.transactionType ===
-        'rent'
-        ? `/en/rent-lease/listing/${property.id}`
-        : `/en/buy/listing/${property.id}`
-    }
 
   return (
-    <section style={section}>
-      <header style={header}>
-        <div>
-          <div style={titleRow}>
-            <Heart
-              size={25}
-              strokeWidth={1}
-              color="#C7A44B"
-            />
+                  <section style={section}>
+                    <header style={header}>
+                      <div>
+                        <div style={titleRow}>
+                          <Heart
+                            size={25}
+                            strokeWidth={1}
+                            color="#C7A44B"
+                          />
 
-            <h2 style={heading}>
-              {labels.heading}
-            </h2>
-          </div>
+                          <h2 style={heading}>
+                            {labels.heading}
+                          </h2>
+                        </div>
 
-          <p style={purpose}>
-            {labels.purpose}
-          </p>
+                        <p style={purpose}>
+                          {labels.purpose}
+                        </p>
 
-          <p style={summary}>
-            {labels.savedCount}
-          </p>
-        </div>
+                        <p style={summary}>
+                          {labels.savedCount}
+                        </p>
+                      </div>
 
-        <Link
-          href={favoritesHref}
-          style={viewAllButton}
-        >
-          {labels.viewFavorites}
-        </Link>
-      </header>
-
-      <div style={divider} />
-
-      <h3 style={sectionHeading}>
-        {labels.savedProperties}
-
-        <span style={count}>
-          {savedProperties.length}
-        </span>
-      </h3>
-
-      {savedProperties.length === 0 ? (
-        <div style={emptyState}>
-          <Heart
-            size={36}
-            strokeWidth={0.75}
-            color="#C7A44B"
-          />
-
-          <p style={emptyText}>
-            {labels.empty}
-          </p>
-
-          <Link
-            href={exploreHref}
-            style={exploreLink}
-          >
-            {labels.explore}
-          </Link>
-        </div>
-      ) : (
-        <div style={propertyGrid}>
-          
-          {savedProperties.map(
-              property => (
-                <div
-                  key={property.id}
-                  style={propertyCard}
-                >
-                  <Link
-                    href={propertyHref(
-                      property
-                    )}
-                    style={{
-                      color: '#fff',
-                      textDecoration: 'none'
-                    }}
-                  >
-                    {property.image ? (
-                      <img
-                        src={property.image}
-                        alt={property.title}
-                        style={propertyImage}
-                      />
-                    ) : (
-                      <div
-                        style={
-                          imagePlaceholder
-                        }
+                      <Link
+                        href={favoritesHref}
+                        style={viewAllButton}
                       >
+                        {labels.viewFavorites}
+                      </Link>
+                    </header>
+
+                    <div style={divider} />
+
+                      <div style={summaryDashboardHeader}>
+                        <h3 style={summaryDashboardHeading}>
+                          {labels.dashboardSummary}
+                        </h3>
+                      </div>
+
+                      <div style={summaryCardGrid}>
+                        <a
+                          href="#saved-properties"
+                          style={summaryCard}
+                        >
+                          <div style={summaryCardIcon}>
+                            <Heart
+                              size={23}
+                              strokeWidth={1}
+                              color="#C7A44B"
+                            />
+                          </div>
+
+                          <div style={summaryCardCount}>
+                            {savedProperties.length}
+                          </div>
+
+                          <div style={summaryCardLabel}>
+                            {labels.summarySavedProperties}
+                          </div>
+                        </a>
+
+                        <a
+                          href="#saved-searches"
+                          style={summaryCard}
+                        >
+                          <div style={summaryCardIcon}>
+                            <Search
+                              size={23}
+                              strokeWidth={1}
+                              color="#C7A44B"
+                            />
+                          </div>
+
+                          <div style={summaryCardCount}>
+                            {resolvedSavedSearches.length}
+                          </div>
+
+                          <div style={summaryCardLabel}>
+                            {labels.summarySavedSearches}
+                          </div>
+                        </a>
+
+                        <a
+                          href="#saved-analyses"
+                          style={summaryCard}
+                        >
+                          <div style={summaryCardIcon}>
+                            <BarChart3
+                              size={23}
+                              strokeWidth={1}
+                              color="#C7A44B"
+                            />
+                          </div>
+
+                          <div style={summaryCardCount}>
+                            {savedAnalyses.length}
+                          </div>
+
+                          <div style={summaryCardLabel}>
+                            {labels.summarySavedAnalyses}
+                          </div>
+                        </a>
+
+                        <a
+                          href="#favorite-collections"
+                          style={summaryCard}
+                        >
+                          <div style={summaryCardIcon}>
+                            <FolderHeart
+                              size={23}
+                              strokeWidth={1}
+                              color="#C7A44B"
+                            />
+                          </div>
+
+                          <div style={summaryCardCount}>
+                            {favoriteCollections.length}
+                          </div>
+
+                          <div style={summaryCardLabel}>
+                            {labels.summaryCollections}
+                          </div>
+                        </a>
+
+                        <a
+                          href="#property-notes"
+                          style={summaryCard}
+                        >
+                          <div style={summaryCardIcon}>
+                            <NotebookPen
+                              size={23}
+                              strokeWidth={1}
+                              color="#C7A44B"
+                            />
+                          </div>
+
+                          <div style={summaryCardCount}>
+                            {propertyNotes.length}
+                          </div>
+
+                          <div style={summaryCardLabel}>
+                            {labels.summaryNotes}
+                          </div>
+                        </a>
+
+                        <a
+                          href="#comparisons"
+                          style={summaryCard}
+                        >
+                          <div style={summaryCardIcon}>
+                            <Columns3
+                              size={23}
+                              strokeWidth={1}
+                              color="#C7A44B"
+                            />
+                          </div>
+
+                          <div style={summaryCardCount}>
+                            {totalComparisonCount}
+                          </div>
+
+                          <div style={summaryCardLabel}>
+                            {labels.summaryComparisons}
+                          </div>
+                        </a>
+                      </div>
+
+                      <div style={subsectionDivider} />
+
+
+
+                      <div style={subsectionHeader}>
+                          <div>
+                            <h3 style={sectionHeading}>
+                              {language === 'es'
+                                ? 'Acciones Rápidas'
+                                : 'Quick Actions'}
+                            </h3>
+
+                            <p style={subsectionSummary}>
+                              {language === 'es'
+                                ? 'Acceda rápidamente a sus herramientas más utilizadas.'
+                                : 'Quick access to your most frequently used tools.'}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div style={quickActionGrid}>
+                          <div
+                            style={{
+                              ...quickActionCard,
+                              opacity: 0.45,
+                              cursor: 'not-allowed'
+                            }}
+                          >
+                            <Search
+                              size={24}
+                              strokeWidth={1}
+                              color="#777"
+                            />
+
+                            <div style={quickActionContent}>
+                              <h4 style={quickActionTitle}>
+                                {language === 'es'
+                                  ? 'Guardar Búsqueda Actual'
+                                  : 'Save Current Search'}
+                              </h4>
+
+                              <p style={quickActionDescription}>
+                                {language === 'es'
+                                  ? 'No hay una búsqueda activa para guardar.'
+                                  : 'No active search is available to save.'}
+                              </p>
+                            </div>
+                          </div>
+
+                          <Link
+                            href={favoritesHref}
+                            style={quickActionCard}
+                          >
+                            <Heart
+                              size={24}
+                              strokeWidth={1}
+                              color="#C7A44B"
+                            />
+
+                            <div style={quickActionContent}>
+                              <h4 style={quickActionTitle}>
+                                {language === 'es'
+                                  ? 'Abrir Favoritos'
+                                  : 'Open Favorites'}
+                              </h4>
+
+                              <p style={quickActionDescription}>
+                                {language === 'es'
+                                  ? 'Vea y administre todas sus propiedades favoritas.'
+                                  : 'View and manage all your favorite properties.'}
+                              </p>
+                            </div>
+
+                            <ArrowRight
+                              size={20}
+                              strokeWidth={1}
+                              color="#C7A44B"
+                            />
+                          </Link>
+
+                          <div style={quickActionCard}>
+                            <FolderHeart
+                              size={24}
+                              strokeWidth={1}
+                              color="#C7A44B"
+                            />
+
+                            <div style={quickActionContent}>
+                              <h4 style={quickActionTitle}>
+                                {language === 'es'
+                                  ? 'Crear Colección'
+                                  : 'Create Collection'}
+                              </h4>
+
+                              <p style={quickActionDescription}>
+                                {language === 'es'
+                                  ? 'Organice propiedades guardadas en grupos.'
+                                  : 'Organize saved properties into collections.'}
+                              </p>
+
+                              <div style={quickActionControl}>
+                                <CreateCollectionButton
+                                  language={language}
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          {latestAnalysis ? (
+                            <Link
+                              href={latestAnalysis.href}
+                              style={quickActionCard}
+                            >
+                              <RefreshCw
+                                size={24}
+                                strokeWidth={1}
+                                color="#C7A44B"
+                              />
+
+                              <div style={quickActionContent}>
+                                <h4 style={quickActionTitle}>
+                                  {language === 'es'
+                                    ? 'Reanudar Análisis'
+                                    : 'Resume Analysis'}
+                                </h4>
+
+                                <p style={quickActionDescription}>
+                                  {language === 'es'
+                                    ? `Continuar ${latestAnalysis.title} en ${latestAnalysis.market}.`
+                                    : `Continue ${latestAnalysis.title} in ${latestAnalysis.market}.`}
+                                </p>
+                              </div>
+
+                              <ArrowRight
+                                size={20}
+                                strokeWidth={1}
+                                color="#C7A44B"
+                              />
+                            </Link>
+                          ) : (
+                            <div
+                              style={{
+                                ...quickActionCard,
+                                opacity: 0.45,
+                                cursor: 'not-allowed'
+                              }}
+                            >
+                              <RefreshCw
+                                size={24}
+                                strokeWidth={1}
+                                color="#777"
+                              />
+
+                              <div style={quickActionContent}>
+                                <h4 style={quickActionTitle}>
+                                  {language === 'es'
+                                    ? 'Reanudar Análisis'
+                                    : 'Resume Analysis'}
+                                </h4>
+
+                                <p style={quickActionDescription}>
+                                  {language === 'es'
+                                    ? 'Todavía no tiene análisis guardados.'
+                                    : 'No saved analyses yet.'}
+                                </p>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                        <div style={subsectionDivider} />
+
+                        <h3
+                          id="saved-properties"
+                          style={sectionHeading}
+                        >
+                        
+                      {labels.savedProperties}
+
+                      <span style={count}>
+                        {savedProperties.length}
+                      </span>
+                    </h3>
+
+                    {savedProperties.length === 0 ? (
+                      <div style={emptyState}>
                         <Heart
-                          size={34}
+                          size={36}
                           strokeWidth={0.75}
                           color="#C7A44B"
                         />
+
+                        <p style={emptyText}>
+                          {labels.empty}
+                        </p>
+
+                        <Link
+                          href={exploreHref}
+                          style={exploreLink}
+                        >
+                          {labels.explore}
+                        </Link>
+                      </div>
+                    ) : (
+                      <div style={propertyGrid}>
+                        
+                        {savedProperties.map(
+                            property => (
+                              <div
+                                key={property.id}
+                                style={propertyCard}
+                              >
+                                <Link
+                                  href={propertyHref(
+                                    property
+                                  )}
+                                  style={{
+                                    color: '#fff',
+                                    textDecoration: 'none'
+                                  }}
+                                >
+                                  {property.image ? (
+                                    <img
+                                      src={property.image}
+                                      alt={property.title}
+                                      style={propertyImage}
+                                    />
+                                  ) : (
+                                    <div
+                                      style={
+                                        imagePlaceholder
+                                      }
+                                    >
+                                      <Heart
+                                        size={34}
+                                        strokeWidth={0.75}
+                                        color="#C7A44B"
+                                      />
+                                    </div>
+                                  )}
+
+                                  <div style={propertyContent}>
+                                    <h4 style={propertyTitle}>
+                                      {property.title}
+                                    </h4>
+
+                                    {property.location && (
+                                      <div style={location}>
+                                        <MapPin
+                                          size={15}
+                                          strokeWidth={1}
+                                        />
+
+                                        {property.location}
+                                      </div>
+                                    )}
+
+                                    {property.price && (
+                                      <div style={price}>
+                                        {property.price}
+                                      </div>
+                                    )}
+                                  </div>
+                                </Link>
+
+                                <div
+                                  style={{
+                                    padding:
+                                      '0 1rem 1rem'
+                                  }}
+                                >
+                                  <CollectionPicker
+                                    listingId={property.id}
+                                    language={language}
+                                  />
+                                </div>
+                              </div>
+                            )
+                          )}
                       </div>
                     )}
 
-                    <div style={propertyContent}>
-                      <h4 style={propertyTitle}>
-                        {property.title}
-                      </h4>
+                    <div style={subsectionDivider} />
+                          <div style={subsectionHeader}>
+                            <div>
+                              <h3
+                                  id="saved-searches"
+                                  style={sectionHeading}
+                                >
+                                <Search
+                                  size={20}
+                                  strokeWidth={1}
+                                  color="#C7A44B"
+                                />
 
-                      {property.location && (
-                        <div style={location}>
-                          <MapPin
-                            size={15}
-                            strokeWidth={1}
-                          />
+                                {labels.savedSearches}
 
-                          {property.location}
+                                <span style={count}>
+                                  {
+                                    resolvedSavedSearches.length
+                                  }
+                                </span>
+                              </h3>
+
+                              <p style={subsectionSummary}>
+                                {labels.savedSearchCount}
+                              </p>
+                            </div>
+
+                            {resolvedSavedSearches.length >
+                              1 && (
+                              <label style={savedSearchSortLabel}>
+                                <span style={savedSearchSortText}>
+                                  {labels.sortSearches}
+                                </span>
+
+                                <select
+                                  value={savedSearchSort}
+                                  onChange={event =>
+                                    setSavedSearchSort(
+                                      event.target
+                                        .value as SavedSearchSort
+                                    )
+                                  }
+                                  style={savedSearchSortSelect}
+                                >
+                                  <option value="newest">
+                                    {labels.newest}
+                                  </option>
+
+                                  <option value="oldest">
+                                    {labels.oldest}
+                                  </option>
+
+                                  <option value="name-asc">
+                                    {labels.nameAscending}
+                                  </option>
+
+                                  <option value="name-desc">
+                                    {labels.nameDescending}
+                                  </option>
+                                </select>
+                              </label>
+                            )}
+                          </div>
+
+                          {resolvedSavedSearches.length === 0 ? (
+                          <div style={emptyState}>
+                              <Search
+                              size={36}
+                              strokeWidth={0.75}
+                              color="#C7A44B"
+                              />
+
+                              <p style={emptyText}>
+                              {labels.emptySearches}
+                              </p>
+
+                              <Link
+                              href={exploreHref}
+                              style={exploreLink}
+                              >
+                              {labels.exploreMarket}
+                              </Link>
+                          </div>
+                          ) : (
+                          <div style={searchGrid}>
+                              {resolvedSavedSearches.map(search => {
+                                const isEditing =
+                                  editingSavedSearchId === search.id
+
+                                return (
+                                  <div
+                                    key={search.id}
+                                    style={searchCard}
+                                  >
+                                    <div style={searchIconWrap}>
+                                      <Search
+                                        size={26}
+                                        strokeWidth={1}
+                                        color="#C7A44B"
+                                      />
+                                    </div>
+
+                                    <div style={searchContent}>
+                                      {isEditing ? (
+                                        <>
+                                          <input
+                                            value={savedSearchNameDraft}
+                                            onChange={event =>
+                                              setSavedSearchNameDraft(
+                                                event.target.value
+                                              )
+                                            }
+                                            onKeyDown={event => {
+                                              if (event.key === 'Enter') {
+                                                void handleRenameSavedSearch(
+                                                  search.id
+                                                )
+                                              }
+
+                                              if (event.key === 'Escape') {
+                                                setEditingSavedSearchId(
+                                                  null
+                                                )
+
+                                                setSavedSearchNameDraft(
+                                                  ''
+                                                )
+                                              }
+                                            }}
+                                            autoFocus
+                                            style={savedSearchNameInput}
+                                          />
+
+                                          <div style={savedSearchActions}>
+                                            <button
+                                              type="button"
+                                              onClick={() =>
+                                                void handleRenameSavedSearch(
+                                                  search.id
+                                                )
+                                              }
+                                              disabled={
+                                                savingSavedSearchName
+                                              }
+                                              style={savedSearchSaveButton}
+                                            >
+                                              {language === 'es'
+                                                ? 'Guardar'
+                                                : 'Save'}
+                                            </button>
+
+                                            <button
+                                              type="button"
+                                              onClick={() => {
+                                                setEditingSavedSearchId(
+                                                  null
+                                                )
+
+                                                setSavedSearchNameDraft(
+                                                  ''
+                                                )
+                                              }}
+                                              style={savedSearchCancelButton}
+                                            >
+                                              {language === 'es'
+                                                ? 'Cancelar'
+                                                : 'Cancel'}
+                                            </button>
+                                          </div>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <Link
+                                            href={search.href}
+                                            style={savedSearchTitleLink}
+                                          >
+                                            <h4 style={searchTitle}>
+                                              {search.title}
+                                            </h4>
+                                          </Link>
+
+                                          <div style={searchMeta}>
+                                            {search.resultCount}{' '}
+                                            {language === 'es'
+                                              ? 'resultados'
+                                              : 'results'}
+                                          </div>
+
+                                          <div style={searchUpdated}>
+                                            {search.lastUpdated}
+                                          </div>
+                                        </>
+                                      )}
+                                    </div>
+
+                                    {isEditing ? null : (
+                                      <div style={savedSearchCardActions}>
+                                        {deletingSavedSearchId ===
+                                        search.id ? (
+                                          <div
+                                            style={
+                                              savedSearchDeleteConfirmation
+                                            }
+                                          >
+                                            <span
+                                              style={
+                                                savedSearchDeleteText
+                                              }
+                                            >
+                                              {language === 'es'
+                                                ? '¿Eliminar?'
+                                                : 'Delete?'}
+                                            </span>
+
+                                            <button
+                                              type="button"
+                                              onClick={() =>
+                                                void handleDeleteSavedSearch(
+                                                  search.id
+                                                )
+                                              }
+                                              disabled={
+                                                deletingSavedSearch
+                                              }
+                                              style={
+                                                savedSearchDeleteConfirmButton
+                                              }
+                                            >
+                                              {language === 'es'
+                                                ? 'Eliminar'
+                                                : 'Delete'}
+                                            </button>
+
+                                            <button
+                                              type="button"
+                                              onClick={() =>
+                                                setDeletingSavedSearchId(
+                                                  null
+                                                )
+                                              }
+                                              disabled={
+                                                deletingSavedSearch
+                                              }
+                                              style={
+                                                savedSearchDeleteCancelButton
+                                              }
+                                            >
+                                              {language === 'es'
+                                                ? 'Cancelar'
+                                                : 'Cancel'}
+                                            </button>
+                                          </div>
+                                        ) : (
+                                          <>
+                                            <button
+                                              type="button"
+                                              aria-label={
+                                                language === 'es'
+                                                  ? 'Renombrar búsqueda'
+                                                  : 'Rename search'
+                                              }
+                                              onClick={() => {
+                                                setEditingSavedSearchId(
+                                                  search.id
+                                                )
+
+                                                setSavedSearchNameDraft(
+                                                  search.title
+                                                )
+
+                                                setDeletingSavedSearchId(
+                                                  null
+                                                )
+                                              }}
+                                              style={
+                                                savedSearchEditButton
+                                              }
+                                            >
+                                              <Pencil
+                                                size={17}
+                                                strokeWidth={1}
+                                              />
+                                            </button>
+
+                                            <button
+                                              type="button"
+                                              aria-label={
+                                                language === 'es'
+                                                  ? 'Eliminar búsqueda'
+                                                  : 'Delete search'
+                                              }
+                                              onClick={() => {
+                                                setDeletingSavedSearchId(
+                                                  search.id
+                                                )
+
+                                                setEditingSavedSearchId(
+                                                  null
+                                                )
+
+                                                setSavedSearchNameDraft(
+                                                  ''
+                                                )
+                                              }}
+                                              style={
+                                                savedSearchDeleteButton
+                                              }
+                                            >
+                                              <Trash2
+                                                size={17}
+                                                strokeWidth={1}
+                                              />
+                                            </button>
+
+                                            <Link
+                                              href={search.href}
+                                              style={
+                                                savedSearchOpenLink
+                                              }
+                                            >
+                                              <ArrowRight
+                                                size={20}
+                                                strokeWidth={1}
+                                                color="#C7A44B"
+                                              />
+                                            </Link>
+                                          </>
+                                        )}
+                                      </div>
+                                    )}
+                                  </div>
+                                )
+                              })}
+                                    </div>
+                          )}
+
+                          <div style={subsectionDivider} />
+
+                          {notificationsLoaded && (
+                            <MarketHubNotificationFeed
+                                language={language}
+                                notifications={
+                                  loadedNotifications
+                                }
+                                onOpenNotification={
+                                  notificationId =>
+                                    void handleOpenNotification(
+                                      notificationId
+                                    )
+                                }
+                                onMarkRead={
+                                  notificationId =>
+                                    void handleMarkRead(
+                                      notificationId
+                                    )
+                                }
+                                onMarkUnread={
+                                  notificationId =>
+                                    void handleMarkUnread(
+                                      notificationId
+                                    )
+                                }
+                                onMarkAllRead={() =>
+                                  void handleMarkAllRead()
+                                }
+                              />
+                          )}
+
+                          <div style={subsectionDivider} />
+
+                          <div style={subsectionHeader}>
+                            <div>
+                              <h3
+                                  id="saved-analyses"
+                                  style={sectionHeading}
+                                >
+                                <BarChart3
+                                      size={20}
+                                      strokeWidth={1}
+                                      color="#C7A44B"
+                                  />
+
+                                  {labels.savedAnalyses}
+
+                                  <span style={count}>
+                                      {savedAnalyses.length}
+                                  </span>
+                                  </h3>
+
+                                  <p style={subsectionSummary}>
+                                  {labels.savedAnalysisCount}
+                                  </p>
+                              </div>
+                              </div>
+
+                              {savedAnalyses.length === 0 ? (
+                              <div style={emptyState}>
+                                  <BarChart3
+                                  size={36}
+                                  strokeWidth={0.75}
+                                  color="#C7A44B"
+                                  />
+
+                                  <p style={emptyText}>
+                                  {labels.emptyAnalyses}
+                                  </p>
+
+                                  <Link
+                                  href={marketExplorerHref}
+                                  style={exploreLink}
+                                  >
+                                  {labels.openExplorer}
+                                  </Link>
+                              </div>
+                              ) : (
+                              <div style={analysisGrid}>
+                                  {savedAnalyses.map(
+                                  analysis => (
+                                      <Link
+                                      key={analysis.id}
+                                      href={analysis.href}
+                                      style={analysisCard}
+                                      >
+                                      <div style={analysisIconWrap}>
+                                          <BarChart3
+                                          size={26}
+                                          strokeWidth={1}
+                                          color="#C7A44B"
+                                          />
+                                      </div>
+
+                                      <div style={analysisContent}>
+                                          <h4 style={analysisTitle}>
+                                          {analysis.title}
+                                          </h4>
+
+                                          <div style={analysisMarket}>
+                                          {analysis.market}
+                                          </div>
+
+                                          <div style={analysisSummary}>
+                                          {analysis.summary}
+                                          </div>
+
+                                          <div style={analysisUpdated}>
+                                          {analysis.lastUpdated}
+                                          </div>
+                                      </div>
+
+                                      <ArrowRight
+                                          size={20}
+                                          strokeWidth={1}
+                                          color="#C7A44B"
+                                      />
+                                      </Link>
+                                    )
+                                  )}
+                                </div>
+                              )}
+
+                                  <div style={subsectionDivider} />
+
+              <div style={subsectionHeader}>
+                <div>
+                  <h3 style={sectionHeading}>
+                    <Clock3
+                      size={20}
+                      strokeWidth={1}
+                      color="#C7A44B"
+                    />
+
+                    {labels.recentActivity}
+
+                    <span style={count}>
+                      {recentActivity.length}
+                    </span>
+                  </h3>
+
+                  <p style={subsectionSummary}>
+                    {labels.recentActivitySummary}
+                  </p>
+                </div>
+              </div>
+
+              {recentActivity.length === 0 ? (
+                <div style={emptyState}>
+                  <Clock3
+                    size={36}
+                    strokeWidth={0.75}
+                    color="#C7A44B"
+                  />
+
+                  <p style={emptyText}>
+                    {labels.emptyRecentActivity}
+                  </p>
+                </div>
+              ) : (
+                <div style={recentActivityList}>
+                  {recentActivity.map(
+                    activity => (
+                      <Link
+                        key={activity.id}
+                        href={activity.href}
+                        style={recentActivityCard}
+                      >
+                        <div style={recentActivityIcon}>
+                          {renderRecentActivityIcon(
+                            activity.type
+                          )}
                         </div>
-                      )}
 
-                      {property.price && (
-                        <div style={price}>
-                          {property.price}
+                        <div style={recentActivityContent}>
+                          <div style={recentActivityMeta}>
+                            <span style={recentActivityType}>
+                              {getRecentActivityLabel(
+                                activity.type,
+                                language
+                              )}
+                            </span>
+
+                            <span style={recentActivityTime}>
+                              {formatRelativeActivityTime(
+                                activity.timestamp,
+                                language
+                              )}
+                            </span>
+                          </div>
+
+                          <h4 style={recentActivityTitle}>
+                            {activity.title}
+                          </h4>
+
+                          <p style={recentActivityDescription}>
+                            {activity.description}
+                          </p>
                         </div>
-                      )}
-                    </div>
-                  </Link>
+
+                        <ArrowRight
+                          size={20}
+                          strokeWidth={1}
+                          color="#C7A44B"
+                        />
+                      </Link>
+                    )
+                  )}
+                </div>
+              )}
+
+              <div style={subsectionDivider} />
+
+              <div style={subsectionHeader}>
+                <div>
+                  <h3
+                    id="favorite-collections"
+                    style={sectionHeading}
+                  >
+                    <FolderHeart
+                      size={20}
+                      strokeWidth={1}
+                      color="#C7A44B"
+                    />
+
+                    {labels.favoriteCollections}
+
+                    <span style={count}>
+                      {favoriteCollections.length}
+                    </span>
+                  </h3>
+
+                  <p style={subsectionSummary}>
+                    {labels.favoriteCollectionCount}
+                  </p>
 
                   <div
                     style={{
-                      padding:
-                        '0 1rem 1rem'
+                      marginTop: '.75rem'
                     }}
                   >
-                    <CollectionPicker
-                      listingId={property.id}
+                    <CreateCollectionButton
                       language={language}
                     />
                   </div>
                 </div>
-              )
-            )}
-        </div>
-      )}
-
-      <div style={subsectionDivider} />
-            <div style={subsectionHeader}>
-              <div>
-                <h3 style={sectionHeading}>
-                  <Search
-                    size={20}
-                    strokeWidth={1}
-                    color="#C7A44B"
-                  />
-
-                  {labels.savedSearches}
-
-                  <span style={count}>
-                    {
-                      resolvedSavedSearches.length
-                    }
-                  </span>
-                </h3>
-
-                <p style={subsectionSummary}>
-                  {labels.savedSearchCount}
-                </p>
               </div>
 
-              {resolvedSavedSearches.length >
-                1 && (
-                <label style={savedSearchSortLabel}>
-                  <span style={savedSearchSortText}>
-                    {labels.sortSearches}
-                  </span>
+              {favoriteCollections.length === 0 ? (
+              <div style={emptyState}>
+                  <FolderHeart
+                  size={36}
+                  strokeWidth={0.75}
+                  color="#C7A44B"
+                  />
 
-                  <select
-                    value={savedSearchSort}
-                    onChange={event =>
-                      setSavedSearchSort(
-                        event.target
-                          .value as SavedSearchSort
-                      )
-                    }
-                    style={savedSearchSortSelect}
-                  >
-                    <option value="newest">
-                      {labels.newest}
-                    </option>
+                  <p style={emptyText}>
+                  {labels.emptyCollections}
+                  </p>
 
-                    <option value="oldest">
-                      {labels.oldest}
-                    </option>
+                  <CreateCollectionButton
+                    language={language}
+                  />
 
-                    <option value="name-asc">
-                      {labels.nameAscending}
-                    </option>
-
-                    <option value="name-desc">
-                      {labels.nameDescending}
-                    </option>
-                  </select>
-                </label>
-              )}
-            </div>
-
-            {resolvedSavedSearches.length === 0 ? (
-            <div style={emptyState}>
-                <Search
-                size={36}
-                strokeWidth={0.75}
-                color="#C7A44B"
-                />
-
-                <p style={emptyText}>
-                {labels.emptySearches}
-                </p>
-
-                <Link
-                href={exploreHref}
-                style={exploreLink}
-                >
-                {labels.exploreMarket}
-                </Link>
-            </div>
-            ) : (
-            <div style={searchGrid}>
-                {resolvedSavedSearches.map(search => {
-                  const isEditing =
-                    editingSavedSearchId === search.id
-
-                  return (
+              </div>
+              ) : (
+              <div style={collectionGrid}>
+                  {favoriteCollections.map(
+                    (
+                      collection,
+                      collectionIndex
+                    ) => (
                     <div
-                      key={search.id}
-                      style={searchCard}
+                      key={collection.id}
+                      style={collectionCard}
                     >
-                      <div style={searchIconWrap}>
-                        <Search
-                          size={26}
-                          strokeWidth={1}
-                          color="#C7A44B"
-                        />
-                      </div>
+                      <Link
+                        href={collection.href}
+                        style={collectionMainLink}
+                      >
+                        <div style={collectionIconWrap}>
+                          <FolderHeart
+                            size={28}
+                            strokeWidth={1}
+                            color="#C7A44B"
+                          />
+                        </div>
 
-                      <div style={searchContent}>
-                        {isEditing ? (
-                          <>
-                            <input
-                              value={savedSearchNameDraft}
-                              onChange={event =>
-                                setSavedSearchNameDraft(
-                                  event.target.value
-                                )
-                              }
-                              onKeyDown={event => {
-                                if (event.key === 'Enter') {
-                                  void handleRenameSavedSearch(
-                                    search.id
-                                  )
-                                }
+                        <div style={collectionContent}>
+                          <h4 style={collectionTitle}>
+                            {collection.name}
+                          </h4>
 
-                                if (event.key === 'Escape') {
-                                  setEditingSavedSearchId(
-                                    null
-                                  )
+                          <div style={collectionMeta}>
+                            {collection.propertyCount}{' '}
+                            {labels.properties}
+                          </div>
 
-                                  setSavedSearchNameDraft(
-                                    ''
-                                  )
-                                }
-                              }}
-                              autoFocus
-                              style={savedSearchNameInput}
-                            />
+                          <div style={collectionUpdated}>
+                            {collection.updatedAt}
+                          </div>
+                        </div>
+                      </Link>
 
-                            <div style={savedSearchActions}>
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  void handleRenameSavedSearch(
-                                    search.id
-                                  )
-                                }
-                                disabled={
-                                  savingSavedSearchName
-                                }
-                                style={savedSearchSaveButton}
-                              >
-                                {language === 'es'
-                                  ? 'Guardar'
-                                  : 'Save'}
-                              </button>
-
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setEditingSavedSearchId(
-                                    null
-                                  )
-
-                                  setSavedSearchNameDraft(
-                                    ''
-                                  )
-                                }}
-                                style={savedSearchCancelButton}
-                              >
-                                {language === 'es'
-                                  ? 'Cancelar'
-                                  : 'Cancel'}
-                              </button>
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            <Link
-                              href={search.href}
-                              style={savedSearchTitleLink}
-                            >
-                              <h4 style={searchTitle}>
-                                {search.title}
-                              </h4>
-                            </Link>
-
-                            <div style={searchMeta}>
-                              {search.resultCount}{' '}
-                              {language === 'es'
-                                ? 'resultados'
-                                : 'results'}
-                            </div>
-
-                            <div style={searchUpdated}>
-                              {search.lastUpdated}
-                            </div>
-                          </>
-                        )}
-                      </div>
-
-                      {isEditing ? null : (
-                        <div style={savedSearchCardActions}>
-                          {deletingSavedSearchId ===
-                          search.id ? (
+                      <div style={collectionActions}>
+                          {deletingCollectionId ===
+                          collection.id ? (
                             <div
                               style={
-                                savedSearchDeleteConfirmation
+                                collectionDeleteConfirmation
                               }
                             >
                               <span
-                                style={
-                                  savedSearchDeleteText
-                                }
+                                style={collectionDeleteText}
                               >
                                 {language === 'es'
                                   ? '¿Eliminar?'
@@ -1517,15 +3398,13 @@ const resolvedMarketComparisons =
                               <button
                                 type="button"
                                 onClick={() =>
-                                  void handleDeleteSavedSearch(
-                                    search.id
+                                  void handleDeleteCollection(
+                                    collection.id
                                   )
                                 }
-                                disabled={
-                                  deletingSavedSearch
-                                }
+                                disabled={deletingCollection}
                                 style={
-                                  savedSearchDeleteConfirmButton
+                                  collectionDeleteConfirmButton
                                 }
                               >
                                 {language === 'es'
@@ -1536,15 +3415,13 @@ const resolvedMarketComparisons =
                               <button
                                 type="button"
                                 onClick={() =>
-                                  setDeletingSavedSearchId(
+                                  setDeletingCollectionId(
                                     null
                                   )
                                 }
-                                disabled={
-                                  deletingSavedSearch
-                                }
+                                disabled={deletingCollection}
                                 style={
-                                  savedSearchDeleteCancelButton
+                                  collectionDeleteCancelButton
                                 }
                               >
                                 {language === 'es'
@@ -1554,29 +3431,111 @@ const resolvedMarketComparisons =
                             </div>
                           ) : (
                             <>
+
+                            <button
+                              type="button"
+                              aria-label={
+                                language === 'es'
+                                  ? 'Mover colección hacia arriba'
+                                  : 'Move collection up'
+                              }
+                              title={
+                                language === 'es'
+                                  ? 'Mover hacia arriba'
+                                  : 'Move up'
+                              }
+                              onClick={() =>
+                                void handleMoveCollection(
+                                  collection.id,
+                                  'up'
+                                )
+                              }
+                              disabled={
+                                collectionIndex === 0 ||
+                                reorderingCollection
+                              }
+                              style={{
+                                ...collectionReorderButton,
+                                opacity:
+                                  collectionIndex === 0 ||
+                                  reorderingCollection
+                                    ? 0.35
+                                    : 1,
+                                cursor:
+                                  collectionIndex === 0 ||
+                                  reorderingCollection
+                                    ? 'not-allowed'
+                                    : 'pointer'
+                              }}
+                            >
+                              <ArrowUp
+                                size={17}
+                                strokeWidth={1}
+                              />
+                            </button>
+
+                            <button
+                              type="button"
+                              aria-label={
+                                language === 'es'
+                                  ? 'Mover colección hacia abajo'
+                                  : 'Move collection down'
+                              }
+                              title={
+                                language === 'es'
+                                  ? 'Mover hacia abajo'
+                                  : 'Move down'
+                              }
+                              onClick={() =>
+                                void handleMoveCollection(
+                                  collection.id,
+                                  'down'
+                                )
+                              }
+                              disabled={
+                                collectionIndex ===
+                                  favoriteCollections.length - 1 ||
+                                reorderingCollection
+                              }
+                              style={{
+                                ...collectionReorderButton,
+                                opacity:
+                                  collectionIndex ===
+                                    favoriteCollections.length - 1 ||
+                                  reorderingCollection
+                                    ? 0.35
+                                    : 1,
+                                cursor:
+                                  collectionIndex ===
+                                    favoriteCollections.length - 1 ||
+                                  reorderingCollection
+                                    ? 'not-allowed'
+                                    : 'pointer'
+                              }}
+                            >
+                              <ArrowDown
+                                size={17}
+                                strokeWidth={1}
+                              />
+                            </button>
                               <button
                                 type="button"
                                 aria-label={
                                   language === 'es'
-                                    ? 'Renombrar búsqueda'
-                                    : 'Rename search'
+                                    ? 'Renombrar colección'
+                                    : 'Rename collection'
                                 }
                                 onClick={() => {
-                                  setEditingSavedSearchId(
-                                    search.id
-                                  )
-
-                                  setSavedSearchNameDraft(
-                                    search.title
-                                  )
-
-                                  setDeletingSavedSearchId(
+                                  setDeletingCollectionId(
                                     null
                                   )
+
+                                  void handleRenameCollection(
+                                    collection.id,
+                                    collection.name
+                                  )
                                 }}
-                                style={
-                                  savedSearchEditButton
-                                }
+                                style={collectionEditButton}
                               >
                                 <Pencil
                                   size={17}
@@ -1588,25 +3547,15 @@ const resolvedMarketComparisons =
                                 type="button"
                                 aria-label={
                                   language === 'es'
-                                    ? 'Eliminar búsqueda'
-                                    : 'Delete search'
+                                    ? 'Eliminar colección'
+                                    : 'Delete collection'
                                 }
-                                onClick={() => {
-                                  setDeletingSavedSearchId(
-                                    search.id
+                                onClick={() =>
+                                  setDeletingCollectionId(
+                                    collection.id
                                   )
-
-                                  setEditingSavedSearchId(
-                                    null
-                                  )
-
-                                  setSavedSearchNameDraft(
-                                    ''
-                                  )
-                                }}
-                                style={
-                                  savedSearchDeleteButton
                                 }
+                                style={collectionDeleteButton}
                               >
                                 <Trash2
                                   size={17}
@@ -1615,10 +3564,8 @@ const resolvedMarketComparisons =
                               </button>
 
                               <Link
-                                href={search.href}
-                                style={
-                                  savedSearchOpenLink
-                                }
+                                href={collection.href}
+                                style={collectionOpenLink}
                               >
                                 <ArrowRight
                                   size={20}
@@ -1629,388 +3576,19 @@ const resolvedMarketComparisons =
                             </>
                           )}
                         </div>
-                      )}
                     </div>
                   )
-                })}
-            </div>
-            )}
-            <div style={subsectionDivider} />
-
-                <div style={subsectionHeader}>
-                <div>
-                    <h3 style={sectionHeading}>
-                    <BarChart3
-                        size={20}
-                        strokeWidth={1}
-                        color="#C7A44B"
-                    />
-
-                    {labels.savedAnalyses}
-
-                    <span style={count}>
-                        {savedAnalyses.length}
-                    </span>
-                    </h3>
-
-                    <p style={subsectionSummary}>
-                    {labels.savedAnalysisCount}
-                    </p>
-                </div>
-                </div>
-
-                {savedAnalyses.length === 0 ? (
-                <div style={emptyState}>
-                    <BarChart3
-                    size={36}
-                    strokeWidth={0.75}
-                    color="#C7A44B"
-                    />
-
-                    <p style={emptyText}>
-                    {labels.emptyAnalyses}
-                    </p>
-
-                    <Link
-                    href={marketExplorerHref}
-                    style={exploreLink}
-                    >
-                    {labels.openExplorer}
-                    </Link>
-                </div>
-                ) : (
-                <div style={analysisGrid}>
-                    {savedAnalyses.map(
-                    analysis => (
-                        <Link
-                        key={analysis.id}
-                        href={analysis.href}
-                        style={analysisCard}
-                        >
-                        <div style={analysisIconWrap}>
-                            <BarChart3
-                            size={26}
-                            strokeWidth={1}
-                            color="#C7A44B"
-                            />
-                        </div>
-
-                        <div style={analysisContent}>
-                            <h4 style={analysisTitle}>
-                            {analysis.title}
-                            </h4>
-
-                            <div style={analysisMarket}>
-                            {analysis.market}
-                            </div>
-
-                            <div style={analysisSummary}>
-                            {analysis.summary}
-                            </div>
-
-                            <div style={analysisUpdated}>
-                            {analysis.lastUpdated}
-                            </div>
-                        </div>
-
-                        <ArrowRight
-                            size={20}
-                            strokeWidth={1}
-                            color="#C7A44B"
-                        />
-                        </Link>
-                      )
-                    )}
-                  </div>
                 )}
-
-                    <div style={subsectionDivider} />
-
-                        <div style={subsectionHeader}>
-                        <div>
-                            <h3 style={sectionHeading}>
-                            <Clock3
-                                size={20}
-                                strokeWidth={1}
-                                color="#C7A44B"
-                            />
-
-                            {labels.recentProperties}
-
-                            <span style={count}>
-                                {recentlyViewedProperties.length}
-                            </span>
-                            </h3>
-
-                            <p style={subsectionSummary}>
-                            {labels.recentPropertyCount}
-                            </p>
-                        </div>
-                        </div>
-
-                        {recentlyViewedProperties.length === 0 ? (
-                        <div style={emptyState}>
-                            <Clock3
-                            size={36}
-                            strokeWidth={0.75}
-                            color="#C7A44B"
-                            />
-
-                            <p style={emptyText}>
-                            {labels.emptyRecentProperties}
-                            </p>
-
-                            <Link
-                            href={exploreHref}
-                            style={exploreLink}
-                            >
-                            {labels.explore}
-                            </Link>
-                        </div>
-                        ) : (
-                        <div style={recentPropertyGrid}>
-                            {recentlyViewedProperties.map(
-                            property => (
-                                <Link
-                                key={property.id}
-                                href={property.href}
-                                style={recentPropertyCard}
-                                >
-                                {property.image ? (
-                                    <img
-                                    src={property.image}
-                                    alt={property.title}
-                                    style={recentPropertyImage}
-                                    />
-                                ) : (
-                                    <div style={recentImagePlaceholder}>
-                                    <Heart
-                                        size={30}
-                                        strokeWidth={0.75}
-                                        color="#C7A44B"
-                                    />
-                                    </div>
-                                )}
-
-                                <div style={recentPropertyContent}>
-                                    <h4 style={recentPropertyTitle}>
-                                    {property.title}
-                                    </h4>
-
-                                    {property.location && (
-                                    <div style={location}>
-                                        <MapPin
-                                        size={15}
-                                        strokeWidth={1}
-                                        />
-
-                                        {property.location}
-                                    </div>
-                                    )}
-
-                                    {property.price && (
-                                    <div style={price}>
-                                        {property.price}
-                                    </div>
-                                    )}
-
-                                    <div style={recentlyViewedAt}>
-                                    {property.viewedAt}
-                                    </div>
-                                </div>
-                                </Link>
-                            )
-                            )}
-                        </div>
-                        )}
+              </div>
+              )}
 
                         <div style={subsectionDivider} />
                             <div style={subsectionHeader}>
                             <div>
-                                <h3 style={sectionHeading}>
-                                <FolderHeart
-                                    size={20}
-                                    strokeWidth={1}
-                                    color="#C7A44B"
-                                />
-
-                          <div style={subsectionHeader}>
-                            <div>
-                              <h3 style={sectionHeading}>
-                                <Map
-                                  size={20}
-                                  strokeWidth={1}
-                                  color="#C7A44B"
-                                />
-
-                                {labels.recentMarkets}
-
-                                <span style={count}>
-                                  {recentlyViewedMarkets.length}
-                                </span>
-                              </h3>
-
-                              <p style={subsectionSummary}>
-                                {labels.recentMarketCount}
-                              </p>
-                            </div>
-                          </div>
-
-                          {recentlyViewedMarkets.length === 0 ? (
-                            <div style={emptyState}>
-                              <Map
-                                size={36}
-                                strokeWidth={0.75}
-                                color="#C7A44B"
-                              />
-
-                              <p style={emptyText}>
-                                {labels.emptyRecentMarkets}
-                              </p>
-
-                              <Link
-                                href={marketExplorerHref}
-                                style={exploreLink}
-                              >
-                                {labels.openExplorer}
-                              </Link>
-                            </div>
-                          ) : (
-                            <div style={recentMarketGrid}>
-                              {recentlyViewedMarkets.map(
-                                market => (
-                                  <Link
-                                    key={market.id}
-                                    href={market.href}
-                                    style={recentMarketCard}
-                                  >
-                                    <div style={recentMarketIconWrap}>
-                                      <Map
-                                        size={26}
-                                        strokeWidth={1}
-                                        color="#C7A44B"
-                                      />
-                                    </div>
-
-                                    <div style={recentMarketContent}>
-                                      <h4 style={recentMarketTitle}>
-                                        {market.title}
-                                      </h4>
-
-                                      <div style={recentMarketType}>
-                                        {market.marketType}
-                                      </div>
-
-                                      <div style={recentMarketSummary}>
-                                        {market.summary}
-                                      </div>
-
-                                      <div style={recentlyViewedAt}>
-                                        {market.viewedAt}
-                                      </div>
-                                    </div>
-
-                                    <ArrowRight
-                                      size={20}
-                                      strokeWidth={1}
-                                      color="#C7A44B"
-                                    />
-                                  </Link>
-                                )
-                              )}
-                            </div>
-                          )}
-
-                          <div style={subsectionDivider} />
-
-                                {labels.favoriteCollections}
-
-                                <span style={count}>
-                                    {favoriteCollections.length}
-                                </span>
-                                </h3>
-
-                                <p style={subsectionSummary}>
-                                {labels.favoriteCollectionCount}
-                                </p>
-
-                                <div
-                                  style={{
-                                    marginTop: '.75rem'
-                                  }}
+                                <h3
+                                  id="property-notes"
+                                  style={sectionHeading}
                                 >
-                                  <CreateCollectionButton
-                                    language={language}
-                                  />
-                                </div>
-
-                            </div>
-                            </div>
-
-                            {favoriteCollections.length === 0 ? (
-                            <div style={emptyState}>
-                                <FolderHeart
-                                size={36}
-                                strokeWidth={0.75}
-                                color="#C7A44B"
-                                />
-
-                                <p style={emptyText}>
-                                {labels.emptyCollections}
-                                </p>
-
-                                <CreateCollectionButton
-                                  language={language}
-                                />
-
-                            </div>
-                            ) : (
-                            <div style={collectionGrid}>
-                                {favoriteCollections.map(
-                                collection => (
-                                    <Link
-                                    key={collection.id}
-                                    href={collection.href}
-                                    style={collectionCard}
-                                    >
-                                    <div style={collectionIconWrap}>
-                                        <FolderHeart
-                                        size={28}
-                                        strokeWidth={1}
-                                        color="#C7A44B"
-                                        />
-                                    </div>
-
-                                    <div style={collectionContent}>
-                                        <h4 style={collectionTitle}>
-                                        {collection.name}
-                                        </h4>
-
-                                        <div style={collectionMeta}>
-                                        {collection.propertyCount}{' '}
-                                        {labels.properties}
-                                        </div>
-
-                                        <div style={collectionUpdated}>
-                                        {collection.updatedAt}
-                                        </div>
-                                    </div>
-
-                                    <ArrowRight
-                                        size={20}
-                                        strokeWidth={1}
-                                        color="#C7A44B"
-                                    />
-                                    </Link>
-                                )
-                                )}
-                            </div>
-                            )}
-
-                        <div style={subsectionDivider} />
-                            <div style={subsectionHeader}>
-                            <div>
-                                <h3 style={sectionHeading}>
                                 <NotebookPen
                                     size={20}
                                     strokeWidth={1}
@@ -2080,12 +3658,14 @@ const resolvedMarketComparisons =
                                 </Link>
                                 ))}
                             </div>
-                            )}
+                          )}
 
-                        <div style={subsectionDivider} />
-                            <div style={subsectionHeader}>
+                          <div style={subsectionHeader}>
                             <div>
-                                <h3 style={sectionHeading}>
+                                <h3
+                                  id="comparisons"
+                                  style={sectionHeading}
+                                >
                                 <Columns3
                                     size={20}
                                     strokeWidth={1}
@@ -2180,49 +3760,253 @@ const resolvedMarketComparisons =
                       )
                     }
 
-function getFirstImage(
-  images: unknown
-): string | null {
-  if (
-    Array.isArray(images)
-  ) {
-    return typeof images[0] ===
-      'string'
-      ? images[0]
-      : null
-  }
+function getRecentActivityLabel(
+  type: RecentActivityType,
+  language: SupportedLanguage
+): string {
+  const labels =
+    language === 'es'
+      ? {
+          'property-saved':
+            'Propiedad Guardada',
+
+          'property-viewed':
+            'Propiedad Vista',
+
+          'market-viewed':
+            'Mercado Visto',
+
+          'analysis-updated':
+            'Análisis Actualizado',
+
+          'property-note-updated':
+            'Nota Actualizada',
+
+          'property-compared':
+            'Propiedades Comparadas',
+
+          'market-compared':
+            'Mercados Comparados'
+        }
+      : {
+          'property-saved':
+            'Property Saved',
+
+          'property-viewed':
+            'Property Viewed',
+
+          'market-viewed':
+            'Market Viewed',
+
+          'analysis-updated':
+            'Analysis Updated',
+
+          'property-note-updated':
+            'Note Updated',
+
+          'property-compared':
+            'Properties Compared',
+
+          'market-compared':
+            'Markets Compared'
+        }
+
+  return labels[type]
+}
+
+function formatRelativeActivityTime(
+  timestamp: string,
+  language: SupportedLanguage
+): string {
+  const timestampValue =
+    new Date(
+      timestamp
+    ).getTime()
 
   if (
-    typeof images !==
-    'string'
+    Number.isNaN(
+      timestampValue
+    )
   ) {
-    return null
+    return ''
   }
 
-  try {
-    const parsed =
-      JSON.parse(images)
+  const difference =
+    timestampValue -
+    Date.now()
 
-    if (
-      Array.isArray(parsed) &&
-      typeof parsed[0] ===
-        'string'
-    ) {
-      return parsed[0]
-    }
-  } catch {
-    return (
-      images
-        .split('|')
-        .map(image =>
-          image.trim()
-        )
-        .filter(Boolean)[0] ??
-      null
+  const absoluteDifference =
+    Math.abs(
+      difference
+    )
+
+  const formatter =
+    new Intl.RelativeTimeFormat(
+      language === 'es'
+        ? 'es'
+        : 'en',
+      {
+        numeric: 'auto'
+      }
+    )
+
+  if (
+    absoluteDifference <
+    60 * 1000
+  ) {
+    return formatter.format(
+      Math.round(
+        difference / 1000
+      ),
+      'second'
     )
   }
 
-  return null
+  if (
+    absoluteDifference <
+    60 * 60 * 1000
+  ) {
+    return formatter.format(
+      Math.round(
+        difference /
+        (60 * 1000)
+      ),
+      'minute'
+    )
+  }
+
+  if (
+    absoluteDifference <
+    24 * 60 * 60 * 1000
+  ) {
+    return formatter.format(
+      Math.round(
+        difference /
+        (60 * 60 * 1000)
+      ),
+      'hour'
+    )
+  }
+
+  if (
+    absoluteDifference <
+    30 * 24 * 60 * 60 * 1000
+  ) {
+    return formatter.format(
+      Math.round(
+        difference /
+        (
+          24 *
+          60 *
+          60 *
+          1000
+        )
+      ),
+      'day'
+    )
+  }
+
+  return new Date(
+    timestamp
+  ).toLocaleDateString(
+    language === 'es'
+      ? 'es-CR'
+      : 'en-US'
+  )
+}
+
+function renderRecentActivityIcon(
+  type: RecentActivityType
+) {
+  const iconProps = {
+    size: 22,
+    strokeWidth: 1,
+    color: '#C7A44B'
+  }
+
+  switch (type) {
+    case 'property-saved':
+      return (
+        <Heart
+          {...iconProps}
+        />
+      )
+
+    case 'property-viewed':
+      return (
+        <Eye
+          {...iconProps}
+        />
+      )
+
+    case 'market-viewed':
+      return (
+        <MapIcon
+          {...iconProps}
+        />
+      )
+
+    case 'analysis-updated':
+      return (
+        <BarChart3
+          {...iconProps}
+        />
+      )
+
+    case 'property-note-updated':
+      return (
+        <NotebookPen
+          {...iconProps}
+        />
+      )
+
+    case 'property-compared':
+    case 'market-compared':
+      return (
+        <Columns3
+          {...iconProps}
+        />
+      )
+
+    default:
+      return (
+        <RefreshCw
+          {...iconProps}
+        />
+      )
+  }
+}
+
+function propertyNoteToPlainText(
+  content: string
+): string {
+  const sanitized =
+    DOMPurify.sanitize(
+      content
+    )
+
+  const container =
+    document.createElement(
+      'div'
+    )
+
+  container.innerHTML =
+    sanitized
+
+  return (
+    container.textContent ||
+    container.innerText ||
+    ''
+  )
+    .replace(
+      /\u00a0/g,
+      ' '
+    )
+    .replace(
+      /\s+/g,
+      ' '
+    )
+    .trim()
 }
 
 function formatSavedPropertyPrice({
@@ -2271,6 +4055,67 @@ function formatSavedPropertyPrice({
   return `₡${Number(
     priceMillions
   ).toLocaleString()}M`
+}
+
+const summaryDashboardHeader = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  marginBottom: '1rem'
+}
+
+const summaryDashboardHeading = {
+  margin: 0,
+  color: '#fff',
+  fontSize: '1.1rem'
+}
+
+const summaryCardGrid = {
+  display: 'grid',
+  gridTemplateColumns:
+    'repeat(auto-fit, minmax(160px, 1fr))',
+  gap: '.85rem'
+}
+
+const summaryCard = {
+  display: 'grid',
+  gridTemplateColumns:
+    'auto minmax(0, 1fr)',
+  gridTemplateRows:
+    'auto auto',
+  columnGap: '.75rem',
+  alignItems: 'center',
+  padding: '1rem',
+  color: '#fff',
+  background: '#1b1b1b',
+  border: '1px solid #303030',
+  borderRadius: '14px',
+  textDecoration: 'none'
+}
+
+const summaryCardIcon = {
+  gridRow: '1 / span 2',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '2.75rem',
+  height: '2.75rem',
+  background: '#121212',
+  borderRadius: '999px'
+}
+
+const summaryCardCount = {
+  color: '#fff',
+  fontSize: '1.45rem',
+  fontWeight: 700,
+  lineHeight: 1
+}
+
+const summaryCardLabel = {
+  marginTop: '.25rem',
+  color: '#999',
+  fontSize: '.78rem',
+  lineHeight: 1.3
 }
 
 const section = {
@@ -2376,6 +4221,50 @@ const exploreLink = {
   color: '#C7A44B',
   textDecoration: 'none',
   fontWeight: 600
+}
+
+const quickActionGrid = {
+  display: 'grid',
+  gridTemplateColumns:
+    'repeat(auto-fit, minmax(260px, 1fr))',
+  gap: '1rem'
+}
+
+const quickActionCard = {
+  display: 'grid',
+  gridTemplateColumns:
+    'auto minmax(0, 1fr) auto',
+  alignItems: 'start',
+  gap: '.85rem',
+  minHeight: '120px',
+  padding: '1rem',
+  color: '#fff',
+  background: '#1b1b1b',
+  border: '1px solid #303030',
+  borderRadius: '14px',
+  textDecoration: 'none'
+}
+
+const quickActionContent = {
+  minWidth: 0
+}
+
+const quickActionTitle = {
+  margin: 0,
+  color: '#fff',
+  fontSize: '1rem',
+  lineHeight: 1.35
+}
+
+const quickActionDescription = {
+  margin: '.4rem 0 0',
+  color: '#999',
+  fontSize: '.8rem',
+  lineHeight: 1.45
+}
+
+const quickActionControl = {
+  marginTop: '.75rem'
 }
 
 const propertyGrid = {
@@ -2686,6 +4575,80 @@ const emptyActionButton = {
   cursor: 'pointer'
 }
 
+const recentActivityList = {
+  display: 'grid',
+  gap: '.75rem'
+}
+
+const recentActivityCard = {
+  display: 'grid',
+  gridTemplateColumns:
+    'auto minmax(0, 1fr) auto',
+  alignItems: 'center',
+  gap: '.9rem',
+  padding: '1rem',
+  color: '#fff',
+  background: '#1b1b1b',
+  border: '1px solid #303030',
+  borderRadius: '14px',
+  textDecoration: 'none'
+}
+
+const recentActivityIcon = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '2.8rem',
+  height: '2.8rem',
+  background: '#121212',
+  borderRadius: '999px'
+}
+
+const recentActivityContent = {
+  minWidth: 0
+}
+
+const recentActivityMeta = {
+  display: 'flex',
+  flexWrap: 'wrap' as const,
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: '.5rem'
+}
+
+const recentActivityType = {
+  color: '#C7A44B',
+  fontSize: '.74rem',
+  fontWeight: 600,
+  textTransform:
+    'uppercase' as const,
+  letterSpacing: '.04em'
+}
+
+const recentActivityTime = {
+  color: '#707070',
+  fontSize: '.72rem'
+}
+
+const recentActivityTitle = {
+  margin: '.3rem 0 0',
+  color: '#fff',
+  fontSize: '.96rem',
+  lineHeight: 1.35
+}
+
+const recentActivityDescription = {
+  display: '-webkit-box',
+  margin: '.3rem 0 0',
+  overflow: 'hidden',
+  color: '#999',
+  fontSize: '.8rem',
+  lineHeight: 1.45,
+  WebkitBoxOrient:
+    'vertical' as const,
+  WebkitLineClamp: 2
+}
+
 const collectionGrid = {
   display: 'grid',
   gridTemplateColumns:
@@ -2696,7 +4659,7 @@ const collectionGrid = {
 const collectionCard = {
   display: 'grid',
   gridTemplateColumns:
-    'auto minmax(0, 1fr) auto',
+  'minmax(0, 1fr) auto',
   alignItems: 'center',
   gap: '.85rem',
   padding: '1rem',
@@ -2705,6 +4668,106 @@ const collectionCard = {
   border: '1px solid #303030',
   borderRadius: '14px',
   textDecoration: 'none'
+}
+
+const collectionMainLink = {
+  display: 'grid',
+  gridTemplateColumns:
+    'auto minmax(0, 1fr)',
+  alignItems: 'center',
+  gap: '.85rem',
+  minWidth: 0,
+  color: '#fff',
+  textDecoration: 'none'
+}
+
+const collectionReorderButton = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '2.25rem',
+  height: '2.25rem',
+  padding: 0,
+  color: '#aaa',
+  background: '#161616',
+  border: '1px solid #303030',
+  borderRadius: '999px'
+}
+
+const collectionEditButton = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '2.25rem',
+  height: '2.25rem',
+  padding: 0,
+  color: '#C7A44B',
+  background: '#161616',
+  border: '1px solid #303030',
+  borderRadius: '999px',
+  cursor: 'pointer'
+}
+
+const collectionActions = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '.5rem'
+}
+
+const collectionDeleteButton = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '2.25rem',
+  height: '2.25rem',
+  padding: 0,
+  color: '#d66',
+  background: '#161616',
+  border: '1px solid #303030',
+  borderRadius: '999px',
+  cursor: 'pointer'
+}
+
+const collectionDeleteConfirmation = {
+  display: 'flex',
+  flexWrap: 'wrap' as const,
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  gap: '.4rem'
+}
+
+const collectionDeleteText = {
+  color: '#aaa',
+  fontSize: '.78rem'
+}
+
+const collectionDeleteConfirmButton = {
+  padding: '.4rem .6rem',
+  color: '#fff',
+  background: '#8f2d2d',
+  border: '1px solid #b34747',
+  borderRadius: '7px',
+  fontFamily: 'inherit',
+  fontSize: '.75rem',
+  fontWeight: 600,
+  cursor: 'pointer'
+}
+
+const collectionDeleteCancelButton = {
+  padding: '.4rem .6rem',
+  color: '#aaa',
+  background: '#1b1b1b',
+  border: '1px solid #3a3a3a',
+  borderRadius: '7px',
+  fontFamily: 'inherit',
+  fontSize: '.75rem',
+  cursor: 'pointer'
+}
+
+const collectionOpenLink = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center'
 }
 
 const collectionIconWrap = {

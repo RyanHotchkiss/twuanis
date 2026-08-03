@@ -31,6 +31,7 @@ export type MarketHubMarketComparison =
   ComparisonSummary & {
     kind: 'market'
     marketCount: number
+    timestamp: string
   }
 
 type ComparisonFilterValue =
@@ -345,16 +346,19 @@ export async function getMarketComparisons({
           : 'Saved comparison of two real estate markets.',
 
       updatedAt:
-        new Date(
-          comparison.updated_at
-        ).toLocaleDateString(
-          language === 'es'
-            ? 'es-CR'
-            : 'en-US'
-        ),
+          new Date(
+            comparison.updated_at
+          ).toLocaleDateString(
+            language === 'es'
+              ? 'es-CR'
+              : 'en-US'
+          ),
 
-      href:
-        `${basePath}?${params.toString()}`
+        timestamp:
+          comparison.updated_at,
+
+        href:
+          `${basePath}?${params.toString()}`
     }
   })
 }

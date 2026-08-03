@@ -11,6 +11,9 @@ import {
   getOntologyTermsByIds
 } from '@/lib/graph-engine'
 
+import ListingCompareButton
+  from '@/app/components/comparisons/ListingCompareButton'
+
 function StatCard({ label, value }: { label: string; value: any }) {
   return (
     <div style={statCard}>
@@ -19,6 +22,13 @@ function StatCard({ label, value }: { label: string; value: any }) {
     </div>
   )
 }
+
+import PropertyNotes
+  from '@/app/components/PropertyNotes'
+
+import {
+  resolveListingImages
+} from '@/app/utils/resolveListingImages'
 
 export default async function ListingPage({
   params
@@ -51,20 +61,9 @@ const { data, error } = await supabase
                     const listing = {
                     ...data,
                     images:
-                        Array.isArray(data.images)
-                        ? data.images
-                        : typeof data.images === 'string'
-                        ? (() => {
-                            try {
-                                return JSON.parse(data.images)
-                            } catch {
-                                return data.images
-                                .split('|')
-                                .map((img: string) => img.trim())
-                                .filter(Boolean)
-                            }
-                            })()
-                        : []
+                      resolveListingImages(
+                        data.images
+                      )
                     }
 
                     const listingPricePerM2 =
@@ -307,7 +306,7 @@ return (
             top: '2rem'
           }}>
 
-            <h1 style={{
+            <h1 style={{ 
               fontSize: '2rem',
               marginBottom: '1rem'
             }}>
@@ -322,6 +321,16 @@ return (
               district={listing.district}
               propertyType={listing.property_type}
               transactionType="buy"
+              language="es"
+            />
+
+            <ListingCompareButton
+              listingId={listing.id}
+              language="es"
+            />
+
+            <PropertyNotes
+              listingId={listing.id}
               language="es"
             />
 

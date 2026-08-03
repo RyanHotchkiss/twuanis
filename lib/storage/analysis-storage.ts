@@ -16,13 +16,29 @@ import {
   getSavedAnalyses
 } from '@/lib/saved-analyses'
 
+import type {
+  SavedAnalysisEngine,
+  SavedAnalysisLanguage
+} from '@/lib/saved-analyses'
+
 type TemporaryAnalysis = {
-  engineType: string
-  language: string
-  name: string
-  filters: unknown
-  result: unknown
-  schemaVersion?: number
+  engineType:
+    SavedAnalysisEngine
+
+  language:
+    SavedAnalysisLanguage
+
+  name:
+    string
+
+  filters:
+    unknown
+
+  result:
+    unknown
+
+  schemaVersion?:
+    number
 }
 
 export async function saveAnalysisState(

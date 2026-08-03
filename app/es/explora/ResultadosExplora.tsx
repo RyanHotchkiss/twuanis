@@ -2,6 +2,10 @@ import Link from 'next/link'
 import { getRelatedMarkets }
 from '@/lib/related-markets-engine'
 
+import {
+  resolveFirstListingImage
+} from '@/app/utils/resolveListingImages'
+
 function valueOrFallback(value: any) {
   return value ?? 'No hay suficientes datos confiables'
 }
@@ -122,25 +126,7 @@ function StatCard({
   )
 }
 
-function getFirstImage(images: any) {
-  if (!images) return null
 
-  if (Array.isArray(images)) {
-    return images[0]
-  }
-
-  try {
-    const parsed = JSON.parse(images)
-
-    if (Array.isArray(parsed)) {
-      return parsed[0]
-    }
-
-    return null
-  } catch {
-    return null
-  }
-}
 
 function translateListingTitle(title: string = '') {
   return title
@@ -609,9 +595,13 @@ export default function ExploreResults({
                 }}
               >
 
-              {getFirstImage(listing.images) && (
-                <img
-                  src={getFirstImage(listing.images) || ''}
+              {resolveFirstListingImage(
+                listing.images
+              ) && (
+                              <img
+                                src={resolveFirstListingImage(
+                listing.images
+              ) || ''}
                   alt={translateListingTitle(listing.title) || 'Imagen de la propiedad'}
                   style={{
                     width: '100%',

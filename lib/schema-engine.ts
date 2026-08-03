@@ -5,6 +5,9 @@ import {
   buildDistrictNode
 } from './schema/buildPlaceNode'
 
+import {
+  resolveListingImages
+} from '@/app/utils/resolveListingImages'
 
 import { buildRelationshipNode }
 from '@/lib/schema/buildRelationshipNode'
@@ -222,9 +225,9 @@ const relationshipNodes =
   const districtSlug = slugify(listing.district)
 
   const images =
-  Array.isArray(listing.images)
-    ? listing.images
-    : []
+  resolveListingImages(
+    listing.images
+  )
 
   return {
     '@context': 'https://schema.org',

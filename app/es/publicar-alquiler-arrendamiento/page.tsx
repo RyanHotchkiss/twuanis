@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react'
 
 
 import {
-  uploadListingImages
-} from '@/app/utils/uploadListingImages'
+  startListingPublishFlow
+} from '@/app/utils/startListingPublishFlow'
 
 
 import Papa from 'papaparse'
@@ -887,68 +887,28 @@ formattedData
                      }
  
                      try {
- 
-                     const uploadedImageUrls =
-                         await uploadListingImages(
-                         propertyData.images
-                         )
- 
-                     const updatedPropertyData = {
-                         ...propertyData,
-                         images: uploadedImageUrls
-                     }
- 
- console.log(
-   'SENDING LISTING DATA:',
-   updatedPropertyData
- )
- 
- fetch('/api/send-otp')
- 
-                     const response = await fetch(
-                         '/api/send-otp',
-                         {
-                         method: 'POST',
-                         headers: {
-                             'Content-Type':
-                             'application/json'
-                         },
-                         body: JSON.stringify({
-                             phone:
-                             propertyData.whatsapp,
-                             listingData:
-                             updatedPropertyData
-                         })
-                         }
-                     )
- 
-                     const data =
-                         await response.json()
- 
-                     if (!data.success) {
- 
-                         alert(
-                         data.error ||
-                         'Failed to send WhatsApp link'
-                         )
- 
-                         return
- 
-                     }
- 
-                     alert(
-                         'Tuanis! Check your WhatsApp.'
-                     )
- 
-                     } catch (error) {
- 
-                     console.error(error)
- 
-                     alert(
-                         'Something went wrong.'
-                     )
- 
-                     }
+                        await startListingPublishFlow({
+                            phone:
+                            propertyData.whatsapp,
+
+                            propertyData
+                        })
+
+                        alert(
+                            '¡Tuanis! Revise su WhatsApp.'
+                        )
+                        } catch (error) {
+                        console.error(
+                            'LISTING PUBLISH FLOW ERROR:',
+                            error
+                        )
+
+                        alert(
+                            error instanceof Error
+                            ? error.message
+                            : 'Ocurrió un error.'
+                        )
+                        }
  
                  }}
                  />

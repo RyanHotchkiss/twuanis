@@ -11,7 +11,8 @@ type SupportedLanguage =
   | 'en'
   | 'es'
 
-type BillingCycle =
+export type BillingCycle =
+  | 'free'
   | 'monthly'
   | 'annual'
 
@@ -30,9 +31,14 @@ type UsageSummary = {
     listingsAnalyzed: number
 }
 
-type MarketHubPackagesProps = {
+export type MarketHubPackagesProps = {
   language: SupportedLanguage
   currentPlan: string
+  packageDescription: string
+  subscriptionStatus: string
+  listingLimit: number | null
+  storageLimitMb: number | null
+  accountPermissions: string[]
   monthlyPriceUSD: string
   monthlyPriceCRC: string
   renewalDate: string
@@ -40,12 +46,70 @@ type MarketHubPackagesProps = {
   includedPackages: IncludedPackageBenefit[]
   usageSummary: UsageSummary
   upgradePackages: UpgradePackage[]
+  availableUpgradeCount: number
   listingAddons: ListingAddon[]
   exposureOptions?: ExposureOption[]
   presentationOptions?: PresentationOption[]
   trustOptions?: TrustOption[]
   paymentMethods?: PaymentMethodOption[]
-}
+  onSelectUpgradePackage: (
+    packageItem: UpgradePackage
+  ) => void
+  selectedUpgradePackage:
+  SelectedUpgradePackage | null
+
+  pendingUpgrade:
+  PendingUpgrade | null
+
+  upgradeOutcome:
+  UpgradeOutcome | null
+
+  paymentCurrency:
+    'CRC' | 'USD'
+
+  onPaymentCurrencyChange: (
+    value: 'CRC' | 'USD'
+  ) => void
+
+  sinpeReference:
+    string
+
+  onSinpeReferenceChange: (
+    value: string
+  ) => void
+
+  senderName:
+    string
+
+  onSenderNameChange: (
+    value: string
+  ) => void
+
+  senderPhone:
+  string
+
+  onSenderPhoneChange: (
+    value: string
+  ) => void
+
+  paymentDate:
+    string
+
+  onPaymentDateChange: (
+    value: string
+  ) => void
+
+  submittingUpgrade:
+    boolean
+
+  upgradeError:
+    string
+
+  onSubmitUpgrade: () => void
+
+  onCloseUpgrade: () => void
+
+  }
 
 type TrustOption = {
   name: string
@@ -58,12 +122,20 @@ type PaymentMethodOption = {
 }
 
 type UpgradePackage = {
+  packageId: string
   name: string
   priceUSD: string
   priceCRC: string
   features: string[]
   current: boolean
   premium: boolean
+}
+
+export type SelectedUpgradePackage = {
+  packageId: string
+  name: string
+  priceUSD: string
+  priceCRC: string
 }
 
 type ListingAddon = {
@@ -83,9 +155,35 @@ type PresentationOption = {
   price: string
 }
 
+type PendingUpgrade = {
+  packageName: string
+  subscriptionStatus: string
+  paymentStatus: string | null
+  sinpeReference: string | null
+  amount: number | null
+  currency: 'CRC' | 'USD' | null
+  submittedAt: string | null
+}
+
+type UpgradeOutcome = {
+  paymentId: string
+  status:
+    | 'approved'
+    | 'rejected'
+    | 'cancelled'
+  packageName: string
+  rejectionReason: string | null
+  resolvedAt: string
+}
+
 export default function MarketHubPackages({
     language,
     currentPlan,
+    packageDescription,
+    subscriptionStatus,
+    listingLimit,
+    storageLimitMb,
+    accountPermissions,
     monthlyPriceUSD,
     monthlyPriceCRC,
     renewalDate,
@@ -93,11 +191,30 @@ export default function MarketHubPackages({
     includedPackages,
     usageSummary,
     upgradePackages,
+    availableUpgradeCount,
     listingAddons,
     exposureOptions = [],
     presentationOptions = [],
     trustOptions = [],
-    paymentMethods = []
+    paymentMethods = [],
+    onSelectUpgradePackage,
+    selectedUpgradePackage,
+    paymentCurrency,
+    onPaymentCurrencyChange,
+    sinpeReference,
+    onSinpeReferenceChange,
+    senderName,
+    onSenderNameChange,
+    senderPhone,
+    onSenderPhoneChange,
+    paymentDate,
+    onPaymentDateChange,
+    submittingUpgrade,
+    upgradeError,
+    onSubmitUpgrade,
+    onCloseUpgrade,
+    pendingUpgrade,
+    upgradeOutcome,
 }: MarketHubPackagesProps) {
   const labels =
     language === 'es'
@@ -213,8 +330,84 @@ export default function MarketHubPackages({
             manage: 'Administrar',
             connect: 'Conectar',
 
-            }
-      : {
+            subscriptionStatus: 'Estado de Suscripción',
+
+            listingLimit: 'Límite de Propiedades',
+            storageLimit: 'Límite de Almacenamiento',
+            accountPermissions: 'Permisos de Cuenta',
+            unlimited: 'Ilimitado',
+            upgradeCheckout:
+              'Mejorar Suscripción',
+            selectedPackage:
+              'Paquete Seleccionado',
+            sinpePayment:
+              'Pago por SINPE',
+            sinpePaymentDescription:
+              'Ingrese los datos de su pago por SINPE para solicitar la mejora de su suscripción.',
+            currency:
+              'Moneda',
+            sinpeReference:
+              'Referencia SINPE',
+            senderName:
+              'Nombre del Remitente',
+            senderPhone:
+              'Teléfono del Remitente',
+            optional:
+              'Opcional',
+            paymentDate:
+              'Fecha de Pago',
+            continueUpgrade:
+              'Continuar',
+            cancel:
+              'Cancelar',
+
+            upgradePending:
+              'Mejora Pendiente',
+
+            upgradePendingDescription:
+              'Su paquete actual permanece activo mientras revisamos su pago por SINPE.',
+
+            targetPackage:
+              'Paquete Solicitado',
+
+            paymentStatus:
+              'Estado del Pago',
+
+            submitted:
+              'Enviado',
+
+            underReview:
+              'En Revisión',
+
+            reference:
+              'Referencia SINPE',
+
+            upgradeSuccessful:
+              'Suscripción Mejorada',
+
+            upgradeSuccessfulDescription:
+              'Su paquete mejorado está activo y su nuevo acceso a Inteligencia de Mercado está disponible.',
+
+            paymentRejected:
+              'Pago Rechazado',
+
+            paymentRejectedDescription:
+              'Su paquete actual permanece activo. Revise el motivo antes de enviar otro pago.',
+
+            upgradeCancelled:
+              'Mejora Cancelada',
+
+            upgradeCancelledDescription:
+              'La solicitud de mejora fue cancelada. Su paquete actual permanece activo.',
+
+            activatedPackage:
+              'Paquete Activo',
+
+            rejectionReason:
+              'Motivo del Rechazo'
+
+                        }
+                  : {
             heading:
                 'Packages',
             purpose:
@@ -327,12 +520,108 @@ export default function MarketHubPackages({
             manage: 'Manage',
             connect: 'Connect',
 
+            subscriptionStatus: 'Subscription Status',
+
+            listingLimit: 'Listing Limit',
+            storageLimit: 'Storage Limit',
+            accountPermissions: 'Account Permissions',
+            unlimited: 'Unlimited',
+
+            upgradeCheckout:
+              'Upgrade Subscription',
+            selectedPackage:
+              'Selected Package',
+            sinpePayment:
+              'SINPE Payment',
+            sinpePaymentDescription:
+              'Enter your SINPE payment information to request your subscription upgrade.',
+            currency:
+              'Currency',
+            sinpeReference:
+              'SINPE Reference',
+            senderName:
+              'Sender Name',
+            senderPhone:
+              'Sender Phone',
+            optional:
+              'Optional',
+            paymentDate:
+              'Payment Date',
+            continueUpgrade:
+              'Continue',
+            cancel:
+              'Cancel',
+            
+            upgradePending:
+              'Upgrade Pending',
+
+            upgradePendingDescription:
+              'Your current package remains active while your SINPE payment is reviewed.',
+
+            targetPackage:
+              'Target Package',
+
+            paymentStatus:
+              'Payment Status',
+
+            submitted:
+              'Submitted',
+
+            underReview:
+              'Under Review',
+
+            reference:
+              'SINPE Reference',
+
+            upgradeSuccessful:
+              'Subscription Upgraded',
+
+            upgradeSuccessfulDescription:
+              'Your upgraded package is active and your new Market Intelligence access is available.',
+
+            paymentRejected:
+              'Payment Rejected',
+
+            paymentRejectedDescription:
+              'Your existing package remains active. Review the reason below before submitting another payment.',
+
+            upgradeCancelled:
+              'Upgrade Cancelled',
+
+            upgradeCancelledDescription:
+              'The upgrade request was cancelled. Your existing package remains active.',
+
+            activatedPackage:
+              'Active Package',
+
+            rejectionReason:
+              'Rejection Reason'
+
             }
 
-  const billingCycleLabel =
-    billingCycle === 'annual'
-      ? labels.annual
-      : labels.monthly
+      const billingCycleLabel =
+      billingCycle === 'free'
+        ? labels.free
+        : billingCycle === 'annual'
+          ? labels.annual
+          : labels.monthly
+
+      const normalizedSubscriptionStatus =
+        subscriptionStatus.toLowerCase()
+
+      const subscriptionStatusLabel =
+        normalizedSubscriptionStatus === 'active'
+          ? labels.active
+          : normalizedSubscriptionStatus === 'inactive'
+            ? labels.inactive
+            : subscriptionStatus
+
+      const storageLimitLabel =
+        storageLimitMb === null
+          ? labels.unlimited
+          : storageLimitMb >= 1000
+            ? `${storageLimitMb / 1000} GB`
+            : `${storageLimitMb} MB`
 
         return (
             <section style={section}>
@@ -367,10 +656,26 @@ export default function MarketHubPackages({
                 </p>
                 </div>
 
-                <div style={activeBadge}>
-                <span style={activeDot} />
+                <div
+                  style={{
+                    ...activeBadge,
+                    background:
+                      normalizedSubscriptionStatus === 'active'
+                        ? '#1b4727'
+                        : '#303030'
+                  }}
+                >
+                  <span
+                    style={{
+                      ...activeDot,
+                      background:
+                        normalizedSubscriptionStatus === 'active'
+                          ? '#59c173'
+                          : '#777'
+                    }}
+                  />
 
-                {labels.active}
+                  {subscriptionStatusLabel}
                 </div>
             </div>
 
@@ -392,7 +697,11 @@ export default function MarketHubPackages({
 
                 <div style={planName}>
                     {currentPlan}
-                </div>
+                  </div>
+
+                  <div style={planDescription}>
+                    {packageDescription}
+                  </div>
                 </article>
 
                 <article style={priceCard}>
@@ -462,7 +771,105 @@ export default function MarketHubPackages({
                     {billingCycleLabel}
                 </div>
                 </article>
+
+              <article style={detailCard}>
+                <div style={cardHeadingRow}>
+                  <div style={iconContainer}>
+                    <PackageCheck
+                      size={25}
+                      strokeWidth={1}
+                      color="#C7A44B"
+                    />
+                  </div>
+
+                  <span style={cardLabel}>
+                    Available Upgrades
+                  </span>
+                </div>
+
+                <div style={detailValue}>
+                  {availableUpgradeCount}
+                </div>
+              </article>
+
+              <article style={detailCard}>
+              <div style={cardHeadingRow}>
+                <div style={iconContainer}>
+                  <PackageCheck
+                    size={25}
+                    strokeWidth={1}
+                    color="#C7A44B"
+                  />
+                </div>
+
+                <span style={cardLabel}>
+                  {labels.listingLimit}
+                </span>
+              </div>
+
+              <div style={detailValue}>
+                {listingLimit === null
+                  ? labels.unlimited
+                  : listingLimit.toLocaleString()}
+              </div>
+            </article>
+
+            <article style={detailCard}>
+              <div style={cardHeadingRow}>
+                <div style={iconContainer}>
+                  <PackageCheck
+                    size={25}
+                    strokeWidth={1}
+                    color="#C7A44B"
+                  />
+                </div>
+
+                <span style={cardLabel}>
+                  {labels.storageLimit}
+                </span>
+              </div>
+
+              <div style={detailValue}>
+                {storageLimitLabel}
+              </div>
+            </article>
+
+            <article style={detailCard}>
+              <div style={cardHeadingRow}>
+                <div style={iconContainer}>
+                  <PackageCheck
+                    size={25}
+                    strokeWidth={1}
+                    color="#C7A44B"
+                  />
+                </div>
+
+                <span style={cardLabel}>
+                  {labels.accountPermissions}
+                </span>
+              </div>
+
+              <div style={permissionList}>
+                {accountPermissions.map(permission => (
+                  <div
+                    key={permission}
+                    style={permissionItem}
+                  >
+                    <span style={permissionCheck}>
+                      ✓
+                    </span>
+
+                    <span>
+                      {permission}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </article>
+
             </div>
+
+      
 
             <div style={divider} />
 
@@ -703,9 +1110,14 @@ export default function MarketHubPackages({
                             </div>
 
                             <button
-                            type="button"
-                            disabled={packageItem.current}
-                            style={{
+                                type="button"
+                                disabled={packageItem.current}
+                                onClick={() =>
+                                  onSelectUpgradePackage(
+                                    packageItem
+                                  )
+                                }
+                                style={{
                                 ...upgradeButton,
                                 cursor:
                                 packageItem.current
@@ -801,18 +1213,379 @@ export default function MarketHubPackages({
                                         </div>
 
                                         <button
-                                            type="button"
-                                            style={premiumButton}
+                                          type="button"
+                                          onClick={() =>
+                                            onSelectUpgradePackage(
+                                              packageItem
+                                            )
+                                          }
+                                          style={premiumButton}
                                         >
-                                            {labels.upgrade}
+                                          {labels.upgrade}
                                         </button>
                                     </article>
                                 ))}
                         </div>
-                    </div>
+                        </div>
 
+                        {upgradeOutcome && (
+                          <section
+                            style={{
+                              ...upgradeOutcomeCard,
 
-                    <section style={listingAddonsSection}>
+                              borderColor:
+                                upgradeOutcome.status ===
+                                'approved'
+                                  ? '#315f3a'
+                                  : upgradeOutcome.status ===
+                                      'rejected'
+                                    ? '#6a3028'
+                                    : '#4a4a4a',
+
+                              background:
+                                upgradeOutcome.status ===
+                                'approved'
+                                  ? '#17231a'
+                                  : upgradeOutcome.status ===
+                                      'rejected'
+                                    ? '#291816'
+                                    : '#202020'
+                            }}
+                          >
+                            <div
+                              style={{
+                                ...upgradeOutcomeIcon,
+
+                                color:
+                                  upgradeOutcome.status ===
+                                  'approved'
+                                    ? '#59c173'
+                                    : upgradeOutcome.status ===
+                                        'rejected'
+                                      ? '#ff8d79'
+                                      : '#aaa'
+                              }}
+                            >
+                              {upgradeOutcome.status ===
+                              'approved'
+                                ? '✓'
+                                : upgradeOutcome.status ===
+                                    'rejected'
+                                  ? '×'
+                                  : '—'}
+                            </div>
+
+                            <div>
+                              <div style={phaseEyebrow}>
+                                {upgradeOutcome.status ===
+                                'approved'
+                                  ? labels.upgradeSuccessful
+                                  : upgradeOutcome.status ===
+                                      'rejected'
+                                    ? labels.paymentRejected
+                                    : labels.upgradeCancelled}
+                              </div>
+
+                              <h3 style={upgradeOutcomeHeading}>
+                                {upgradeOutcome.packageName}
+                              </h3>
+
+                              <p style={upgradeOutcomeDescription}>
+                                {upgradeOutcome.status ===
+                                'approved'
+                                  ? labels.upgradeSuccessfulDescription
+                                  : upgradeOutcome.status ===
+                                      'rejected'
+                                    ? labels.paymentRejectedDescription
+                                    : labels.upgradeCancelledDescription}
+                              </p>
+
+                              <div style={upgradeOutcomeDetails}>
+                                <div>
+                                  <div style={pendingUpgradeLabel}>
+                                    {labels.activatedPackage}
+                                  </div>
+
+                                  <div style={pendingUpgradeValue}>
+                                    {upgradeOutcome.packageName}
+                                  </div>
+                                </div>
+
+                                {upgradeOutcome.status ===
+                                  'rejected' &&
+                                upgradeOutcome.rejectionReason && (
+                                  <div>
+                                    <div style={pendingUpgradeLabel}>
+                                      {labels.rejectionReason}
+                                    </div>
+
+                                    <div style={pendingUpgradeValue}>
+                                      {upgradeOutcome.rejectionReason}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </section>
+                        )}
+
+                        {pendingUpgrade && (
+                          <section style={pendingUpgradeCard}>
+                            <div style={phaseEyebrow}>
+                              {labels.upgradePending}
+                            </div>
+
+                            <h3 style={pendingUpgradeHeading}>
+                              {pendingUpgrade.packageName}
+                            </h3>
+
+                            <p style={pendingUpgradeDescription}>
+                              {labels.upgradePendingDescription}
+                            </p>
+
+                            <div style={pendingUpgradeDetails}>
+                              <div>
+                                <div style={pendingUpgradeLabel}>
+                                  {labels.targetPackage}
+                                </div>
+
+                                <div style={pendingUpgradeValue}>
+                                  {pendingUpgrade.packageName}
+                                </div>
+                              </div>
+
+                              <div>
+                                <div style={pendingUpgradeLabel}>
+                                  {labels.paymentStatus}
+                                </div>
+
+                                <div style={pendingUpgradeValue}>
+                                  {pendingUpgrade.paymentStatus ===
+                                  'under_review'
+                                    ? labels.underReview
+                                    : labels.submitted}
+                                </div>
+                              </div>
+
+                              {pendingUpgrade.sinpeReference && (
+                                <div>
+                                  <div style={pendingUpgradeLabel}>
+                                    {labels.reference}
+                                  </div>
+
+                                  <div style={pendingUpgradeValue}>
+                                    {pendingUpgrade.sinpeReference}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </section>
+                        )}
+
+                        {selectedUpgradePackage && (
+                          <section style={upgradeCheckoutSection}>
+                            <div style={upgradeCheckoutHeader}>
+                              <div>
+                                <div style={phaseEyebrow}>
+                                  {labels.upgradeCheckout}
+                                </div>
+
+                                <h3 style={upgradeCheckoutHeading}>
+                                  {labels.sinpePayment}
+                                </h3>
+
+                                <p style={upgradeCheckoutDescription}>
+                                  {labels.sinpePaymentDescription}
+                                </p>
+                              </div>
+
+                              <button
+                                type="button"
+                                onClick={onCloseUpgrade}
+                                style={upgradeCloseButton}
+                                aria-label={labels.cancel}
+                              >
+                                ×
+                              </button>
+                            </div>
+
+                            <div style={selectedPackageCard}>
+                              <div>
+                                <div style={selectedPackageLabel}>
+                                  {labels.selectedPackage}
+                                </div>
+
+                                <div style={selectedPackageName}>
+                                  {selectedUpgradePackage.name}
+                                </div>
+                              </div>
+
+                              <div style={selectedPackagePrices}>
+                                <div style={selectedPackageUSD}>
+                                  {selectedUpgradePackage.priceUSD}
+                                </div>
+
+                                <div style={selectedPackageCRC}>
+                                  {selectedUpgradePackage.priceCRC}
+                                </div>
+                              </div>
+                            </div>
+
+                            <form
+                              style={sinpeForm}
+                              onSubmit={event => {
+                                event.preventDefault()
+                                onSubmitUpgrade()
+                              }}
+                            >
+                              <div style={formField}>
+                                <label style={formLabel}>
+                                  {labels.currency}
+                                </label>
+
+                                <select
+                                  name="currency"
+                                  value={paymentCurrency}
+                                  onChange={event =>
+                                    onPaymentCurrencyChange(
+                                      event.target.value as
+                                        'CRC' | 'USD'
+                                    )
+                                  }
+                                  style={formInput}
+                                >
+                                  <option value="CRC">
+                                    CRC
+                                  </option>
+
+                                  <option value="USD">
+                                    USD
+                                  </option>
+                                </select>
+                              </div>
+
+                              <div style={formField}>
+                                <label style={formLabel}>
+                                  {labels.sinpeReference}
+                                </label>
+
+                                <input
+                                  type="text"
+                                  name="sinpeReference"
+                                  value={sinpeReference}
+                                  onChange={event =>
+                                    onSinpeReferenceChange(
+                                      event.target.value
+                                    )
+                                  }
+                                  required
+                                  style={formInput}
+                                />
+                              </div>
+
+                              <div style={formField}>
+                                <label style={formLabel}>
+                                  {labels.senderName}
+                                </label>
+
+                                <input
+                                  type="text"
+                                  name="senderName"
+                                  value={senderName}
+                                  onChange={event =>
+                                    onSenderNameChange(
+                                      event.target.value
+                                    )
+                                  }
+                                  required
+                                  style={formInput}
+                                />
+                              </div>
+
+                              <div style={formField}>
+                                <label style={formLabel}>
+                                  {labels.senderPhone}{' '}
+                                  <span style={optionalLabel}>
+                                    ({labels.optional})
+                                  </span>
+                                </label>
+
+                                <input
+                                  type="tel"
+                                  name="senderPhone"
+                                  value={senderPhone}
+                                  onChange={event =>
+                                    onSenderPhoneChange(
+                                      event.target.value
+                                    )
+                                  }
+                                  style={formInput}
+                                />
+                              </div>
+
+                              <div style={formField}>
+                                <label style={formLabel}>
+                                  {labels.paymentDate}
+                                </label>
+
+                                <input
+                                  type="date"
+                                  name="paymentDate"
+                                  value={paymentDate}
+                                  onChange={event =>
+                                    onPaymentDateChange(
+                                      event.target.value
+                                    )
+                                  }
+                                  required
+                                  style={formInput}
+                                />
+                              </div>
+
+                              {upgradeError && (
+                                <div style={upgradeErrorMessage}>
+                                  {upgradeError}
+                                </div>
+                              )}
+
+                              <div style={formActions}>
+                                <button
+                                  type="button"
+                                  onClick={onCloseUpgrade}
+                                  style={cancelUpgradeButton}
+                                >
+                                  {labels.cancel}
+                                </button>
+
+                                <button
+                                  type="submit"
+                                  disabled={submittingUpgrade}
+                                  style={{
+                                    ...continueUpgradeButton,
+                                    opacity:
+                                      submittingUpgrade
+                                        ? 0.6
+                                        : 1,
+                                    cursor:
+                                      submittingUpgrade
+                                        ? 'default'
+                                        : 'pointer'
+                                  }}
+                                >
+                                  {submittingUpgrade
+                                    ? (
+                                        language === 'es'
+                                          ? 'Enviando...'
+                                          : 'Submitting...'
+                                      )
+                                    : labels.continueUpgrade}
+                                </button>
+                              </div>
+                            </form>
+                          </section>
+                        )}
+
+                        <section style={listingAddonsSection}>
                         <div style={listingAddonsHeader}>
                             <div style={listingAddonsEyebrow}>
                                 {labels.phase3}
@@ -1269,6 +2042,13 @@ const planName = {
   fontSize: '1.45rem',
   fontWeight: 700,
   lineHeight: 1.25
+}
+
+const planDescription = {
+  marginTop: '.65rem',
+  color: '#888',
+  fontSize: '.8rem',
+  lineHeight: 1.5
 }
 
 const priceUSD = {
@@ -2349,3 +3129,290 @@ const paymentMethodButton: React.CSSProperties = {
   fontSize: '.8rem',
   fontWeight: 700
 }
+
+const permissionList = {
+  display: 'grid',
+  gap: '.55rem',
+  marginTop: 'auto',
+  paddingTop: '1.2rem'
+}
+
+const permissionItem = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '.55rem',
+  color: '#fff',
+  fontSize: '.85rem',
+  fontWeight: 600
+}
+
+const permissionCheck = {
+  color: '#59c173',
+  fontWeight: 700
+}
+
+const upgradeCheckoutSection: React.CSSProperties = {
+  marginTop: '2rem',
+  padding: '1.5rem',
+  background: '#191919',
+  border: '1px solid #4c4023',
+  borderRadius: '18px'
+}
+
+const upgradeCheckoutHeader: React.CSSProperties = {
+  display: 'flex',
+  alignItems: 'flex-start',
+  justifyContent: 'space-between',
+  gap: '1rem'
+}
+
+const upgradeCheckoutHeading: React.CSSProperties = {
+  margin: 0,
+  color: '#ff3b00',
+  fontSize: '1.2rem'
+}
+
+const upgradeCheckoutDescription: React.CSSProperties = {
+  maxWidth: '650px',
+  margin: '.45rem 0 0',
+  color: '#888',
+  fontSize: '.86rem',
+  lineHeight: 1.5
+}
+
+const upgradeCloseButton: React.CSSProperties = {
+  width: '2.25rem',
+  height: '2.25rem',
+  flexShrink: 0,
+  color: '#aaa',
+  background: '#242424',
+  border: '1px solid #3a3a3a',
+  borderRadius: '999px',
+  cursor: 'pointer',
+  fontSize: '1.25rem'
+}
+
+const selectedPackageCard: React.CSSProperties = {
+  display: 'flex',
+  flexWrap: 'wrap',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: '1rem',
+  marginTop: '1.5rem',
+  padding: '1.25rem',
+  background: '#202020',
+  border: '1px solid #333',
+  borderRadius: '14px'
+}
+
+const selectedPackageLabel: React.CSSProperties = {
+  color: '#777',
+  fontSize: '.7rem',
+  fontWeight: 700,
+  letterSpacing: '.06em',
+  textTransform: 'uppercase'
+}
+
+const selectedPackageName: React.CSSProperties = {
+  marginTop: '.4rem',
+  color: '#fff',
+  fontSize: '1.15rem',
+  fontWeight: 700
+}
+
+const selectedPackagePrices: React.CSSProperties = {
+  textAlign: 'right'
+}
+
+const selectedPackageUSD: React.CSSProperties = {
+  color: '#fff',
+  fontSize: '1.5rem',
+  fontWeight: 700
+}
+
+const selectedPackageCRC: React.CSSProperties = {
+  marginTop: '.3rem',
+  color: '#888',
+  fontSize: '.85rem',
+  fontWeight: 600
+}
+
+const sinpeForm: React.CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns:
+    'repeat(auto-fit, minmax(240px, 1fr))',
+  gap: '1rem',
+  marginTop: '1.25rem'
+}
+
+const formField: React.CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '.45rem'
+}
+
+const formLabel: React.CSSProperties = {
+  color: '#aaa',
+  fontSize: '.76rem',
+  fontWeight: 600
+}
+
+const optionalLabel: React.CSSProperties = {
+  color: '#666',
+  fontWeight: 400
+}
+
+const formInput: React.CSSProperties = {
+  width: '100%',
+  boxSizing: 'border-box',
+  padding: '.8rem .9rem',
+  color: '#fff',
+  background: '#151515',
+  border: '1px solid #3a3a3a',
+  borderRadius: '10px',
+  fontSize: '.85rem',
+  outline: 'none'
+}
+
+const formActions: React.CSSProperties = {
+  display: 'flex',
+  justifyContent: 'flex-end',
+  alignItems: 'flex-end',
+  gap: '.75rem',
+  gridColumn: '1 / -1',
+  marginTop: '.5rem'
+}
+
+const cancelUpgradeButton: React.CSSProperties = {
+  padding: '.8rem 1.1rem',
+  color: '#aaa',
+  background: '#292929',
+  border: '1px solid #444',
+  borderRadius: '10px',
+  cursor: 'pointer',
+  fontSize: '.8rem',
+  fontWeight: 700
+}
+
+const continueUpgradeButton: React.CSSProperties = {
+  padding: '.8rem 1.25rem',
+  color: '#161616',
+  background: '#C7A44B',
+  border: '1px solid #D7B85E',
+  borderRadius: '10px',
+  cursor: 'pointer',
+  fontSize: '.8rem',
+  fontWeight: 700
+}
+
+const upgradeErrorMessage:
+  React.CSSProperties = {
+    gridColumn: '1 / -1',
+    padding: '.8rem 1rem',
+    color: '#ff9b8a',
+    background: '#2a1714',
+    border: '1px solid #5b2d25',
+    borderRadius: '10px',
+    fontSize: '.8rem'
+  }
+
+  const pendingUpgradeCard:
+  React.CSSProperties = {
+    marginTop: '2rem',
+    padding: '1.5rem',
+    background: '#1d1b15',
+    border: '1px solid #665526',
+    borderRadius: '18px'
+  }
+
+  const pendingUpgradeHeading:
+    React.CSSProperties = {
+      margin: '.35rem 0 0',
+      color: '#C7A44B',
+      fontSize: '1.2rem'
+    }
+
+  const pendingUpgradeDescription:
+    React.CSSProperties = {
+      margin: '.5rem 0 0',
+      color: '#aaa',
+      fontSize: '.85rem',
+      lineHeight: 1.5
+    }
+
+  const pendingUpgradeDetails:
+    React.CSSProperties = {
+      display: 'grid',
+      gridTemplateColumns:
+        'repeat(auto-fit, minmax(180px, 1fr))',
+      gap: '1rem',
+      marginTop: '1.25rem'
+    }
+
+  const pendingUpgradeLabel:
+    React.CSSProperties = {
+      color: '#777',
+      fontSize: '.68rem',
+      fontWeight: 700,
+      letterSpacing: '.05em',
+      textTransform: 'uppercase'
+    }
+
+  const pendingUpgradeValue:
+    React.CSSProperties = {
+      marginTop: '.35rem',
+      color: '#fff',
+      fontSize: '.88rem',
+      fontWeight: 600
+    }
+
+  const upgradeOutcomeCard:
+    React.CSSProperties = {
+      display: 'grid',
+      gridTemplateColumns:
+        'auto minmax(0, 1fr)',
+      gap: '1rem',
+      marginTop: '2rem',
+      padding: '1.5rem',
+      border: '1px solid',
+      borderRadius: '18px'
+    }
+
+  const upgradeOutcomeIcon:
+    React.CSSProperties = {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '2.75rem',
+      height: '2.75rem',
+      background: '#111',
+      border: '1px solid #383838',
+      borderRadius: '999px',
+      fontSize: '1.25rem',
+      fontWeight: 800
+    }
+
+  const upgradeOutcomeHeading:
+    React.CSSProperties = {
+      margin: '.35rem 0 0',
+      color: '#fff',
+      fontSize: '1.2rem'
+    }
+
+  const upgradeOutcomeDescription:
+    React.CSSProperties = {
+      maxWidth: '700px',
+      margin: '.5rem 0 0',
+      color: '#aaa',
+      fontSize: '.85rem',
+      lineHeight: 1.5
+    }
+
+  const upgradeOutcomeDetails:
+    React.CSSProperties = {
+      display: 'grid',
+      gridTemplateColumns:
+        'repeat(auto-fit, minmax(200px, 1fr))',
+      gap: '1rem',
+      marginTop: '1.1rem'
+    }

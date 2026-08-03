@@ -2,6 +2,10 @@
 import { supabase } from '@/lib/supabase'
 import { createListingId } from '@/lib/createListingId'
 
+import {
+  resolveListingImages
+} from '@/app/utils/resolveListingImages'
+
 export type EntityType =
   | 'country'
   | 'province'
@@ -96,15 +100,10 @@ export async function getEntity(
         ...listing,
         id: createListingId(listing),
         images:
-          Array.isArray(listing.images)
-            ? listing.images
-            : typeof listing.images === 'string'
-            ? listing.images
-                .split('|')
-                .map((img: string) => img.trim())
-                .filter(Boolean)
-            : []
-      })) || []
+          resolveListingImages(
+            listing.images
+          )
+    })) || []
   }
 
   let relatedEntities: any[] = []

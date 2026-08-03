@@ -9,7 +9,9 @@ import {
   addPropertyToCollection,
   createFavoriteCollection,
   FavoriteCollectionRecord,
-  getFavoriteCollections
+  getFavoriteCollections,
+  getListingCollectionIds,
+  removePropertyFromCollection
 } from '@/lib/collections'
 
 type Props = {
@@ -35,6 +37,20 @@ export default function CollectionPicker({
     FavoriteCollectionRecord[]
   >([])
 
+const [
+    selectedCollectionIds,
+    setSelectedCollectionIds
+  ] = useState<
+    Set<string>
+  >(new Set())
+
+  const [
+    changingCollectionId,
+    setChangingCollectionId
+  ] = useState<
+    string | null
+  >(null)
+
   const [
     newCollectionName,
     setNewCollectionName
@@ -46,55 +62,158 @@ export default function CollectionPicker({
   ] = useState('')
 
   useEffect(() => {
-    if (!open) {
-      return
+      if (!open) {
+        return
+      }
+
+      void loadCollectionState()
+    }, [
+      open,
+      listingId
+    ])
+
+  async function loadCollectionState() {
+      try {
+        const [
+          loadedCollections,
+          listingCollectionIds
+        ] = await Promise.all([
+          getFavoriteCollections(),
+          getListingCollectionIds(
+            listingId
+          )
+        ])
+
+        setCollections(
+          loadedCollections
+        )
+
+        setSelectedCollectionIds(
+          new Set(
+            listingCollectionIds
+          )
+        )
+      } catch (error) {
+        console.error(
+          'LOAD COLLECTION STATE ERROR:',
+          error
+        )
+
+        setStatus(
+          language === 'es'
+            ? 'No se pudieron cargar las colecciones.'
+            : 'Unable to load collections.'
+        )
+      }
     }
 
-    loadCollections()
-  }, [open])
+  async function handleToggleCollection(
+      collectionId: string
+    ) {
+      if (changingCollectionId) {
+        return
+      }
 
-  async function loadCollections() {
-    const loadedCollections =
-      await getFavoriteCollections()
+      const isSelected =
+        selectedCollectionIds.has(
+          collectionId
+        )
 
-    setCollections(
-      loadedCollections
-    )
-  }
-
-  async function handleAdd(
-    collectionId: string
-  ) {
-    try {
-      setStatus(
-        language === 'es'
-          ? 'Guardando...'
-          : 'Saving...'
-      )
-
-      await addPropertyToCollection(
-        collectionId,
-        listingId
+      setChangingCollectionId(
+        collectionId
       )
 
       setStatus(
         language === 'es'
-          ? 'Propiedad agregada.'
-          : 'Property added.'
-      )
-    } catch (error) {
-      console.error(
-        'ADD TO COLLECTION ERROR:',
-        error
+          ? isSelected
+            ? 'Eliminando...'
+            : 'Guardando...'
+          : isSelected
+            ? 'Removing...'
+            : 'Saving...'
       )
 
-      setStatus(
-        language === 'es'
-          ? 'No se pudo guardar.'
-          : 'Unable to save.'
-      )
+      try {
+        if (isSelected) {
+          await removePropertyFromCollection(
+            collectionId,
+            listingId
+          )
+        } else {
+          await addPropertyToCollection(
+            collectionId,
+            listingId
+          )
+        }
+
+        setSelectedCollectionIds(
+          currentIds => {
+            const nextIds =
+              new Set(currentIds)
+
+            if (isSelected) {
+              nextIds.delete(
+                collectionId
+              )
+            } else {
+              nextIds.add(
+                collectionId
+              )
+            }
+
+            return nextIds
+          }
+        )
+
+        setCollections(
+          currentCollections =>
+            currentCollections.map(
+              collection =>
+                collection.id ===
+                collectionId
+                  ? {
+                      ...collection,
+                      propertyCount:
+                        Math.max(
+                          0,
+                          collection.propertyCount +
+                            (
+                              isSelected
+                                ? -1
+                                : 1
+                            )
+                        )
+                    }
+                  : collection
+            )
+        )
+
+        setStatus(
+          language === 'es'
+            ? isSelected
+              ? 'Propiedad eliminada.'
+              : 'Propiedad agregada.'
+            : isSelected
+              ? 'Property removed.'
+              : 'Property added.'
+        )
+      } catch (error) {
+        console.error(
+          'TOGGLE COLLECTION ERROR:',
+          error
+        )
+
+        setStatus(
+          language === 'es'
+            ? 'No se pudo actualizar.'
+            : 'Unable to update.'
+        )
+      } finally {
+        setChangingCollectionId(
+          null
+        )
+      }
     }
-  }
 
   async function handleCreateAndAdd() {
     if (
@@ -115,7 +234,7 @@ export default function CollectionPicker({
       )
 
       setNewCollectionName('')
-      await loadCollections()
+        await loadCollectionState()
 
       setStatus(
         language === 'es'
@@ -169,31 +288,92 @@ export default function CollectionPicker({
           ) : (
             <div style={collectionList}>
               {collections.map(
-                collection => (
-                  <button
-                    key={
+                collection => {
+                  const isSelected =
+                    selectedCollectionIds.has(
                       collection.id
-                    }
-                    type="button"
-                    onClick={() =>
-                      handleAdd(
-                        collection.id
-                      )
-                    }
-                    style={
-                      collectionButton
-                    }
-                  >
-                    {collection.name}
+                    )
 
-                    <span style={count}>
-                      {
-                        collection.propertyCount
+                  const isChanging =
+                    changingCollectionId ===
+                    collection.id
+
+                  return (
+                    <button
+                      key={
+                        collection.id
                       }
-                    </span>
-                  </button>
-                )
+                      type="button"
+                      onClick={() =>
+                        void handleToggleCollection(
+                          collection.id
+                        )
+                      }
+                      disabled={
+                        changingCollectionId !==
+                        null
+                      }
+                      aria-pressed={
+                        isSelected
+                      }
+                      style={{
+                        ...collectionButton,
+                        opacity:
+                          changingCollectionId &&
+                          !isChanging
+                            ? 0.55
+                            : 1,
+                        cursor:
+                          changingCollectionId
+                            ? 'wait'
+                            : 'pointer',
+                        borderColor:
+                          isSelected
+                            ? '#C7A44B'
+                            : '#333'
+                      }}
+                    >
+                      <span
+                        style={
+                          collectionName
+                        }
+                      >
+                        <span
+                          style={{
+                            ...checkbox,
+                            color:
+                              isSelected
+                                ? '#000'
+                                : 'transparent',
+                            background:
+                              isSelected
+                                ? '#C7A44B'
+                                : 'transparent',
+                            borderColor:
+                              isSelected
+                                ? '#C7A44B'
+                                : '#666'
+                          }}
+                        >
+                          ✓
+                        </span>
+
+                        <span>
+                          {collection.name}
+                        </span>
+                      </span>
+
+                      <span style={count}>
+                        {isChanging
+                          ? '…'
+                          : collection.propertyCount}
+                      </span>
+                    </button>
+                  )
+                }
               )}
+
+
             </div>
           )}
 
@@ -332,4 +512,25 @@ const statusText = {
   margin: '.65rem 0 0',
   color: '#aaa',
   fontSize: '.78rem'
+}
+
+const collectionName = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '.55rem',
+  minWidth: 0,
+  textAlign: 'left' as const
+}
+
+const checkbox = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexShrink: 0,
+  width: '1.1rem',
+  height: '1.1rem',
+  border: '1px solid #666',
+  borderRadius: '4px',
+  fontSize: '.75rem',
+  fontWeight: 800
 }

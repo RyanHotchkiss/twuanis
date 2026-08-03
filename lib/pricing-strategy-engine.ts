@@ -1,5 +1,9 @@
 import { getMarketStatistics } from '@/lib/statistics-engine'
 
+import {
+  resolveListingImages
+} from '@/app/utils/resolveListingImages'
+
 type PricingStrategyLanguage = 'en' | 'es'
 
 type PricingStrategyFilters = {
@@ -126,28 +130,6 @@ function getListingPrice(listing: any) {
       return price
     }
 
-function parseImages(value: any) {
-  if (!value) return []
-
-  if (Array.isArray(value)) {
-    return value
-  }
-
-  if (typeof value === 'string') {
-    try {
-      const parsed = JSON.parse(value)
-
-      if (Array.isArray(parsed)) {
-        return parsed
-      }
-    } catch {
-      return []
-    }
-  }
-
-  return []
-}
-
 function average(values: number[]) {
   if (!values.length) return null
 
@@ -174,7 +156,9 @@ function decorateListing(listing: any) {
     ...listing,
 
     images:
-      parseImages(listing.images),
+      resolveListingImages(
+        listing.images
+      ),
 
     formattedPrice:
       price

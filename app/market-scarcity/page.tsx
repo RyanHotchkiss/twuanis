@@ -4,6 +4,8 @@ import MarketScarcityResults from './MarketScarcityResults'
 import { getExplorerOptions } from '@/lib/explorer-options-engine'
 import { getMarketScarcity } from '@/lib/market-scarcity-engine'
 
+import AnalysisActions from '@/app/components/AnalysisActions'
+
 type PageProps = {
   searchParams: Promise<{
     transaction_type?: string
@@ -74,6 +76,14 @@ export default async function MarketScarcityPage({
         options={options}
         filters={filters}
         basePath="/market-scarcity"
+      />
+
+      <AnalysisActions
+            engineType="scarcity"
+            language="en"
+            filters={filters}
+            result={scarcity}
+            defaultName="Market Scarcity"
       />
 
       <MarketScarcityResults

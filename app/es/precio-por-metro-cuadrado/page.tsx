@@ -3,6 +3,8 @@ import PriceMeterResults from './ResultadosPrecioMetro'
 import { getExplorerOptions } from '@/lib/explorer-options-engine'
 import { getPriceMeterAnalysis } from '@/lib/price-meter-engine'
 
+import AnalysisActions from '@/app/components/AnalysisActions'
+
 type PageProps = {
   searchParams: Promise<{
     transaction_type?: string
@@ -55,6 +57,14 @@ export default async function PrecioPorMetroCuadradoPage({
         options={options}
         filters={filters}
         basePath="/es/precio-por-metro-cuadrado"
+      />
+
+      <AnalysisActions
+        engineType="price-meter"
+        language="es"
+        filters={filters}
+        result={analysis}
+        defaultName="Precio por Metro Cuadrado"
       />
 
       <PriceMeterResults

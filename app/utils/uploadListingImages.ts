@@ -1,52 +1,85 @@
-import { supabase } from '@/lib/supabase'
+import {
+  optimizeListingImage
+} from '@/app/utils/optimizeListingImage'
+
+type ListingImageInput = {
+  file: File
+}
+
+type TemporaryUploadResponse = {
+  success: boolean
+  path?: string
+  imageCount?: number
+  error?: string
+}
 
 export async function uploadListingImages(
-  images: {
-    file: File
-  }[]
-) {
+  images: ListingImageInput[],
+  publishToken: string
+): Promise<string[]> {
+  if (!publishToken) {
+    throw new Error(
+      'A publish token is required before uploading images.'
+    )
+  }
 
-  const uploadedImageUrls: string[] = []
+  if (images.length > 25) {
+    throw new Error(
+      'A listing may contain no more than 25 images.'
+    )
+  }
+
+  const uploadedPaths:
+    string[] = []
 
   for (const image of images) {
-
-    const fileName =
-      `${Date.now()}-${image.file.name}`
-
-    const { error } = await supabase
-      .storage
-      .from('listings-images')
-      .upload(
-        fileName,
+    const optimizedImage =
+      await optimizeListingImage(
         image.file
       )
 
-    if (error) {
+    const formData =
+      new FormData()
 
-      console.error(
-        'IMAGE UPLOAD ERROR:',
-        JSON.stringify(
-          error,
-          null,
-          2
-        )
-      )
-
-      continue
-
-    }
-
-    const { data } = supabase
-      .storage
-      .from('listings-images')
-      .getPublicUrl(fileName)
-
-    uploadedImageUrls.push(
-      data.publicUrl
+    formData.append(
+      'token',
+      publishToken
     )
 
+    formData.append(
+      'image',
+      optimizedImage
+    )
+
+    const response =
+      await fetch(
+        '/api/upload-temporary-listing-image',
+        {
+          method: 'POST',
+          body:
+            formData
+        }
+      )
+
+    const result =
+      await response.json() as
+        TemporaryUploadResponse
+
+    if (
+      !response.ok ||
+      !result.success ||
+      !result.path
+    ) {
+      throw new Error(
+        result.error ||
+        `${image.file.name} could not be uploaded.`
+      )
+    }
+
+    uploadedPaths.push(
+      result.path
+    )
   }
 
-  return uploadedImageUrls
-
+  return uploadedPaths
 }

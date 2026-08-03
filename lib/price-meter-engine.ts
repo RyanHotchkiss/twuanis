@@ -1,5 +1,9 @@
 import { getMarketStatistics } from '@/lib/statistics-engine'
 
+import {
+  resolveListingImages
+} from '@/app/utils/resolveListingImages'
+
 type PriceMeterLanguage = 'en' | 'es'
 
 type MarketFilters = {
@@ -116,28 +120,6 @@ function getConfidence(
   }
 }
 
-function parseImages(value: any) {
-  if (!value) return []
-
-  if (Array.isArray(value)) {
-    return value
-  }
-
-  if (typeof value === 'string') {
-    try {
-      const parsed = JSON.parse(value)
-
-      if (Array.isArray(parsed)) {
-        return parsed
-      }
-    } catch {
-      return []
-    }
-  }
-
-  return []
-}
-
 function getListingPrice(listing: any) {
       const price =
         listing.transaction_type === 'rent'
@@ -199,10 +181,11 @@ function decorateListing(listing: any) {
 
   return {
     ...listing,
-
+    
     images:
-
-    parseImages(listing.images),
+      resolveListingImages(
+        listing.images
+      ),
 
    formattedPrice:
       price

@@ -20,13 +20,13 @@ export type SavedAnalysisEngine =
   | 'buyer-demand'
 
 type SaveAnalysisInput = {
-    engineType: string
-    language: string
+    engineType: SavedAnalysisEngine
+    language: SavedAnalysisLanguage
     name: string
     filters: unknown
     result: unknown
     schemaVersion?: number
-}
+  }
 
 export async function saveAnalysis({
   engineType,
@@ -62,6 +62,27 @@ export async function saveAnalysis({
 
   return data
 }
+
+export async function saveScarcityAnalysis({
+    language,
+    name,
+    filters,
+    result
+  }: {
+    language: SavedAnalysisLanguage
+    name: string
+    filters: unknown
+    result: unknown
+  }) {
+    return saveAnalysis({
+      engineType: 'scarcity',
+      language,
+      name,
+      filters,
+      result
+    })
+  }
+
 export async function getSavedAnalyses() {
   const user =
   await getCurrentUser()
@@ -86,6 +107,12 @@ if (!user) {
   }
 
   return data
+}
+
+export async function getSavedScarcityAnalyses() {
+  return getSavedAnalysesByEngine(
+    'scarcity'
+  )
 }
 
 export async function getSavedAnalysesByEngine(

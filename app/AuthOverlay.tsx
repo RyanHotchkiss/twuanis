@@ -2,8 +2,8 @@
 import { useState } from 'react'
 
 import {
-  uploadListingImages
-} from '@/app/utils/uploadListingImages'
+  startListingPublishFlow
+} from '@/app/utils/startListingPublishFlow'
 
 type AuthOverlayProps = {
   whatsapp: string
@@ -132,62 +132,58 @@ export default function AuthOverlay({
         </div>
 
       <button
-  onClick={async () => {
+        type="button"
+        disabled={loading}
+        onClick={async () => {
+            if (loading) {
+              return
+            }
 
-    setLoading(true)
+            setLoading(true)
 
-   const uploadedImageUrls =
-          await uploadListingImages(
-            propertyData.images
-          )
-        const updatedPropertyData = {
-          ...propertyData,
-          images: uploadedImageUrls
-        }
-        const response = await fetch(
-          '/api/send-otp',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              phone: whatsapp,
-              listingData:
-                updatedPropertyData
-            })
-          }
-        )
+            try {
+              await startListingPublishFlow({
+                phone:
+                  whatsapp,
 
-    const data = await response.json()
+                propertyData
+              })
 
-    setLoading(false)
+              alert(
+                'Tuanis!'
+              )
 
-    if (!data.success) {
-      alert(data.error)
-      return
-    }
+              onClose()
+            } catch (error) {
+              console.error(
+                'AUTH OVERLAY PUBLISH ERROR:',
+                error
+              )
 
-    alert('Tuanis!')
-
-    onClose()
-
-  }}
-  style={{
-    background:'#FFFFFF',
-    color:'#000',
-    border:'none',
-    borderRadius:'999rem',
-    padding:'1rem',
-    fontWeight:'bold',
-    cursor:'pointer',
-    fontSize:'1rem'
-  }}
->
-  {loading
-    ? 'Sending...'
-    : 'Send WhatsApp Link'}
-</button>
+              alert(
+                error instanceof Error
+                  ? error.message
+                  : 'Something went wrong.'
+              )
+            } finally {
+              setLoading(false)
+            }
+          }}
+            style={{
+              background:'#FFFFFF',
+              color:'#000',
+              border:'none',
+              borderRadius:'999rem',
+              padding:'1rem',
+              fontWeight:'bold',
+              cursor:'pointer',
+              fontSize:'1rem'
+            }}
+          >
+            {loading
+              ? 'Sending...'
+              : 'Send WhatsApp Link'}
+          </button>
 
       </div>
 

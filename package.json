@@ -10,9 +10,13 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.105.3",
+    "@tiptap/pm": "^3.29.2",
+    "@tiptap/react": "^3.29.2",
+    "@tiptap/starter-kit": "^3.29.2",
     "axios": "^1.16.1",
     "cheerio": "^1.2.0",
     "csvtojson": "^2.0.14",
+    "dompurify": "^3.4.12",
     "dotenv": "^17.4.2",
     "lucide-react": "^1.24.0",
     "next": "^16.2.6",
@@ -20,7 +24,9 @@
     "puppeteer": "^24.43.1",
     "react": "19.2.0",
     "react-dom": "19.2.0",
+    "resend": "^6.18.0",
     "twilio": "^6.0.2",
+    "web-push": "^3.6.7",
     "ws": "^8.21.0"
   },
   "devDependencies": {
@@ -29,6 +35,7 @@
     "@types/papaparse": "^5.5.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/web-push": "^3.6.4",
     "@types/ws": "^8.18.1",
     "eslint": "^9",
     "eslint-config-next": "16.0.3",

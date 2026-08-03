@@ -2,6 +2,10 @@
 
 import Link from 'next/link'
 
+import {
+  trackComparisonOpened
+} from '@/lib/activity/comparisons'
+
 import type {
   ComparisonKind,
   ComparisonLanguage
@@ -16,10 +20,20 @@ type ComparisonCardProps = {
   href: string
   language: ComparisonLanguage
   countLabel?: string
+  onRename?: (
+    comparisonId: string,
+    currentTitle: string
+  ) => Promise<void> | void
+  onDuplicate?: (
+    comparisonId: string
+  ) => Promise<void> | void
+  onShare?: (
+    comparisonId: string
+  ) => Promise<void> | void
   onDelete?: (
     comparisonId: string
   ) => Promise<void> | void
-}
+  }
 
 export default function ComparisonCard({
   id,
@@ -30,8 +44,52 @@ export default function ComparisonCard({
   href,
   language,
   countLabel,
+  onRename,
+  onDuplicate,
+  onShare,
   onDelete
 }: ComparisonCardProps) {
+  async function handleRename() {
+      if (!onRename) {
+        return
+      }
+
+      await onRename(
+        id,
+        title
+      )
+    }
+
+  async function handleDuplicate() {
+      if (!onDuplicate) {
+        return
+      }
+
+      await onDuplicate(id)
+    }
+
+  async function handleShare() {
+      const url =
+        new URL(
+          href,
+          window.location.origin
+        ).toString()
+
+      await navigator.clipboard.writeText(
+        url
+      )
+
+      if (onShare) {
+        await onShare(id)
+      }
+
+      window.alert(
+        language === 'es'
+          ? 'Enlace copiado al portapapeles.'
+          : 'Comparison link copied to clipboard.'
+      )
+    }
+
   async function handleDelete() {
     if (!onDelete) {
       return
@@ -91,6 +149,42 @@ export default function ComparisonCard({
             ? 'Abrir comparación'
             : 'Open comparison'}
         </Link>
+
+        {onRename && (
+          <button
+            type="button"
+            onClick={handleRename}
+            style={secondaryButton}
+          >
+            {language === 'es'
+              ? 'Renombrar'
+              : 'Rename'}
+          </button>
+        )}
+
+        {onDuplicate && (
+          <button
+            type="button"
+            onClick={handleDuplicate}
+            style={secondaryButton}
+          >
+            {language === 'es'
+              ? 'Duplicar'
+              : 'Duplicate'}
+          </button>
+        )}
+
+        {(
+          <button
+            type="button"
+            onClick={handleShare}
+            style={secondaryButton}
+          >
+            {language === 'es'
+              ? 'Compartir'
+              : 'Share'}
+          </button>
+        )}
 
         {onDelete && (
           <button
@@ -204,5 +298,14 @@ const deleteButton = {
   borderRadius: '9px',
   background: 'transparent',
   color: '#aaa',
+  cursor: 'pointer'
+}
+
+const secondaryButton = {
+  padding: '0.75rem 1rem',
+  border: '1px solid #333',
+  borderRadius: '9px',
+  background: '#1a1a1a',
+  color: '#ddd',
   cursor: 'pointer'
 }

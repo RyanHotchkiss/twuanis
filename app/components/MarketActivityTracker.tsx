@@ -26,7 +26,7 @@ export default function MarketActivityTracker({
     recordMarketViewed({
       id,
       title,
-      type,
+      marketType: type,
       href: pathname,
       summary
     })

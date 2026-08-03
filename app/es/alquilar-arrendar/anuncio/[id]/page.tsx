@@ -10,6 +10,16 @@ import {
 } from '@/lib/graph-engine'
 import { getValuation } from '@/lib/valuation-engine'
 
+import ListingCompareButton
+  from '@/app/components/comparisons/ListingCompareButton'
+
+import PropertyNotes
+  from '@/app/components/PropertyNotes'
+
+import {
+  resolveListingImages
+} from '@/app/utils/resolveListingImages'
+
 export default async function ListingPage({
   params
 }: {
@@ -42,20 +52,9 @@ const listing = {
             ...data,
 
             images:
-              Array.isArray(data.images)
-                ? data.images
-                : typeof data.images === 'string'
-                ? (() => {
-                    try {
-                      return JSON.parse(data.images)
-                    } catch {
-                      return data.images
-                        .split('|')
-                        .map((img: string) => img.trim())
-                        .filter(Boolean)
-                    }
-                  })()
-                : [],
+              resolveListingImages(
+                data.images
+              ),
 
             utility:
               Array.isArray(data.utility)
@@ -336,6 +335,16 @@ return (
               district={listing.district}
               propertyType={listing.property_type}
               transactionType="rent"
+              language="es"
+            />
+
+            <ListingCompareButton
+              listingId={listing.id}
+              language="es"
+            />
+
+            <PropertyNotes
+              listingId={listing.id}
               language="es"
             />
 

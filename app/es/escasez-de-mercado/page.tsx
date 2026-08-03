@@ -4,6 +4,8 @@ import ResultadosEscasezMercado from './ResultadosEscasezMercado'
 import { getExplorerOptions } from '@/lib/explorer-options-engine'
 import { getMarketScarcity } from '@/lib/market-scarcity-engine'
 
+import AnalysisActions from '@/app/components/AnalysisActions'
+
 type PageProps = {
   searchParams: Promise<{
     transaction_type?: string
@@ -75,6 +77,14 @@ export default async function EscasezMercadoPage({
         filters={filters}
         basePath="/es/escasez-de-mercado"
       />
+
+        <AnalysisActions
+          engineType="scarcity"
+          language="es"
+          filters={filters}
+          result={scarcity}
+          defaultName="Escasez de Mercado"
+        />
 
       <ResultadosEscasezMercado
         filters={filters}

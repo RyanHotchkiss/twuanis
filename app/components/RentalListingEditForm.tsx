@@ -59,6 +59,10 @@ import TerrainFilterES from '@/app/components/filter-bar/TerrainFilterES'
 
 import RentalPropertyDefinitionPanelES from '@/app/components/RentalPropertyDefinitionPanelES'
 
+import {
+  resolveEditableListingImages
+} from '@/app/utils/resolveListingImages'
+
 type SupportedLanguage =
   | 'en'
   | 'es'
@@ -179,6 +183,12 @@ export default function RentalListingEditForm({
         remove:
           'Eliminar',
 
+        moveLeft:
+          'Mover a la izquierda',
+
+        moveRight:
+          'Mover a la derecha',
+
         cancel:
           'Cancelar',
 
@@ -230,6 +240,12 @@ export default function RentalListingEditForm({
 
         remove:
           'Remove',
+
+        moveLeft:
+          'Move Left',
+
+        moveRight:
+          'Move Right',
 
         cancel:
           'Cancel',
@@ -330,7 +346,7 @@ export default function RentalListingEditForm({
         listing.description || '',
 
       images:
-        normalizeStringArray(
+        resolveEditableListingImages(
           listing.images
         )
     })
@@ -406,6 +422,152 @@ export default function RentalListingEditForm({
       [field]: value
     }))
   }
+
+  async function getAccessToken() {
+      const {
+        data: { session }
+      } = await supabase.auth.getSession()
+
+      return session?.access_token ?? null
+    }
+
+    async function deleteImage(
+    imageValue: string
+  ) {
+    const token =
+      await getAccessToken()
+
+    if (!token) {
+      return
+    }
+
+    const response =
+      await fetch(
+        '/api/delete-listing-image',
+        {
+          method: 'POST',
+
+          headers: {
+            'Content-Type':
+              'application/json',
+
+            Authorization:
+              `Bearer ${token}`
+          },
+
+          body: JSON.stringify({
+            listingId: listing.id,
+            imageValue
+          })
+        }
+      )
+
+    const result =
+      await response.json()
+
+    if (!result.success) {
+      alert(result.error)
+      return
+    }
+
+    setField(
+        'images',
+        resolveEditableListingImages(
+          result.images
+        )
+      )
+    }
+
+    async function reorderImages(
+      images: string[]
+    ) {
+      const token =
+        await getAccessToken()
+
+      if (!token) {
+        return
+      }
+
+      const response =
+        await fetch(
+          '/api/reorder-listing-images',
+          {
+            method: 'POST',
+
+            headers: {
+              'Content-Type':
+                'application/json',
+
+              Authorization:
+                `Bearer ${token}`
+            },
+
+            body: JSON.stringify({
+              listingId: listing.id,
+              images
+            })
+          }
+        )
+
+      const result =
+        await response.json()
+
+      if (!result.success) {
+        alert(result.error)
+        return
+      }
+
+      setField(
+        'images',
+        resolveEditableListingImages(
+          result.images
+        )
+      )
+    }
+
+    async function moveImage(
+      currentIndex: number,
+      direction: -1 | 1
+    ) {
+      const targetIndex =
+        currentIndex + direction
+
+      if (
+        targetIndex < 0 ||
+        targetIndex >=
+          propertyData.images.length
+      ) {
+        return
+      }
+
+      const reorderedImages = [
+        ...propertyData.images
+      ]
+
+      const currentImage =
+        reorderedImages[
+          currentIndex
+        ]
+
+      reorderedImages[
+        currentIndex
+      ] =
+        reorderedImages[
+          targetIndex
+        ]
+
+      reorderedImages[
+        targetIndex
+      ] =
+        currentImage
+
+      await reorderImages(
+        reorderedImages.map(
+          image =>
+            image.storedValue
+        )
+      )
+    }
 
   async function handleSubmit(
     event: FormEvent<HTMLFormElement>
@@ -517,7 +679,10 @@ export default function RentalListingEditForm({
             propertyData.description.trim(),
 
           images:
-            propertyData.images
+            propertyData.images.map(
+              image =>
+                image.storedValue
+            )
         }
       })
 
@@ -1320,39 +1485,77 @@ export default function RentalListingEditForm({
                   <div style={imageGrid}>
                     {propertyData.images.map(
                         (
-                            imageUrl,
-                            index
+                          listingImage,
+                          index
                         ) => (
                         <article
-                          key={`${imageUrl}-${index}`}
+                          key={`${listingImage.storedValue}-${index}`}
                           style={imageCard}
                         >
                           <img
-                            src={imageUrl}
+                            src={listingImage.displayUrl}
                             alt=""
                             referrerPolicy="no-referrer"
                             style={image}
                           />
 
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setField(
-                                'images',
-                                propertyData.images.filter(
-                                  (
-                                    _,
-                                    imageIndex
-                                  ) =>
-                                    imageIndex !==
-                                    index
+                          <div style={imageActions}>
+                            <button
+                              type="button"
+                              disabled={index === 0}
+                              onClick={() =>
+                                moveImage(
+                                  index,
+                                  -1
                                 )
-                              )
-                            }
-                            style={removeButton}
-                          >
-                            {labels.remove}
-                          </button>
+                              }
+                              style={{
+                                ...imageActionButton,
+                                opacity:
+                                  index === 0
+                                    ? 0.35
+                                    : 1
+                              }}
+                            >
+                              {labels.moveLeft}
+                            </button>
+
+                            <button
+                              type="button"
+                              disabled={
+                                index ===
+                                propertyData.images.length - 1
+                              }
+                              onClick={() =>
+                                moveImage(
+                                  index,
+                                  1
+                                )
+                              }
+                              style={{
+                                ...imageActionButton,
+                                opacity:
+                                  index ===
+                                  propertyData.images.length - 1
+                                    ? 0.35
+                                    : 1
+                              }}
+                            >
+                              {labels.moveRight}
+                            </button>
+
+                            <button
+                              type="button"
+                              onClick={() =>
+                                deleteImage(
+                                  listingImage.storedValue
+                                )
+                              }
+                              style={removeButton}
+                            >
+                              {labels.remove}
+                            </button>
+                          </div>
                         </article>
                       )
                     )}
@@ -1552,12 +1755,14 @@ const image = {
 }
 
 const removeButton = {
+  gridColumn: '1 / -1',
   width: '100%',
   padding: '.7rem',
   background: 'transparent',
-  color: '#aaa',
+  color: '#ff9b9b',
   border: 0,
-  borderTop: '1px solid #292929',
+  borderTop:
+    '1px solid #292929',
   cursor: 'pointer'
 }
 
@@ -1594,5 +1799,22 @@ const primaryButton = {
   border: 0,
   borderRadius: '999px',
   fontWeight: 800,
+  cursor: 'pointer'
+}
+
+const imageActions = {
+  display: 'grid',
+  gridTemplateColumns:
+    '1fr 1fr',
+  gap: '.5rem',
+  padding: '.6rem'
+}
+
+const imageActionButton = {
+  padding: '.65rem',
+  background: '#151515',
+  color: '#ddd',
+  border: '1px solid #333',
+  borderRadius: '.6rem',
   cursor: 'pointer'
 }

@@ -14,6 +14,10 @@ import {
   saveFavorite
 } from '@/lib/favorites'
 
+import {
+  resolveListingImages
+} from '@/app/utils/resolveListingImages'
+
 export default function SwipePage() {
 
   const [properties, setProperties] = useState<any[]>([])
@@ -46,12 +50,10 @@ async function fetchProperties() {
           const normalizedSupabaseListings = (data || []).map(
             (listing: any) => ({
               ...listing,
-              images:
-                Array.isArray(listing.images)
-                  ? listing.images
-                  : typeof listing.images === 'string'
-                  ? listing.images.split('|')
-                  : []
+             images:
+              resolveListingImages(
+                listing.images
+              )
             })
           )
           setProperties([

@@ -3,6 +3,8 @@ import PriceMeterResults from './PriceMeterResults'
 import { getExplorerOptions } from '@/lib/explorer-options-engine'
 import { getPriceMeterAnalysis } from '@/lib/price-meter-engine'
 
+import AnalysisActions from '@/app/components/AnalysisActions'
+
 type PageProps = {
   searchParams: Promise<{
     transaction_type?: string
@@ -54,6 +56,14 @@ export default async function PricePerSquareMeterPage({
         options={options}
         filters={filters}
         basePath="/price-per-square-meter"
+      />
+
+      <AnalysisActions
+        engineType="price-meter"
+        language="en"
+        filters={filters}
+        result={analysis}
+        defaultName="Price per Square Meter"
       />
 
       <PriceMeterResults

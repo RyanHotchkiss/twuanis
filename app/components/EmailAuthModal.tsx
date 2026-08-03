@@ -12,17 +12,47 @@ type EmailAuthModalProps = {
   redirectTo?: string
 }
 
+type AuthMode =
+  | 'sign-in'
+  | 'sign-up'
+  | 'forgot-password'
+
 export default function EmailAuthModal({
   onClose,
   redirectTo = '/en/market-hub'
 }: EmailAuthModalProps) {
-  const [email, setEmail] = useState('')
+  const [mode, setMode] =
+    useState<AuthMode>('sign-in')
+
+  const [email, setEmail] =
+    useState('')
+
+  const [password, setPassword] =
+    useState('')
+
+  const [confirmPassword, setConfirmPassword] =
+    useState('')
+
   const [loading, setLoading] =
     useState(false)
+
   const [message, setMessage] =
     useState('')
+
   const [errorMessage, setErrorMessage] =
     useState('')
+
+  function clearMessages() {
+    setMessage('')
+    setErrorMessage('')
+  }
+
+  function changeMode(nextMode: AuthMode) {
+    setMode(nextMode)
+    setPassword('')
+    setConfirmPassword('')
+    clearMessages()
+  }
 
   async function handleSubmit(
     event: FormEvent<HTMLFormElement>
@@ -39,56 +69,154 @@ export default function EmailAuthModal({
       return
     }
 
+    if (
+      mode !== 'forgot-password' &&
+      password.length < 6
+    ) {
+      setErrorMessage(
+        'Your password must contain at least 6 characters.'
+      )
+      return
+    }
+
+    if (
+      mode === 'sign-up' &&
+      password !== confirmPassword
+    ) {
+      setErrorMessage(
+        'The passwords do not match.'
+      )
+      return
+    }
+
     try {
       setLoading(true)
-      setMessage('')
-      setErrorMessage('')
+      clearMessages()
 
-      const callbackUrl =
+      if (mode === 'sign-in') {
+        const { error } =
+          await supabase.auth
+            .signInWithPassword({
+              email: normalizedEmail,
+              password
+            })
+
+        if (error) {
+          throw error
+        }
+
+        window.location.href =
+          redirectTo
+
+        return
+      }
+
+      if (mode === 'sign-up') {
+        const callbackUrl =
+          new URL(
+            '/auth/callback',
+            window.location.origin
+          )
+
+        callbackUrl.searchParams.set(
+          'next',
+          redirectTo
+        )
+
+        const {
+          data,
+          error
+        } = await supabase.auth.signUp({
+          email: normalizedEmail,
+          password,
+          options: {
+            emailRedirectTo:
+              callbackUrl.toString()
+          }
+        })
+
+        if (error) {
+          throw error
+        }
+
+        if (data.session) {
+          window.location.href =
+            redirectTo
+
+          return
+        }
+
+        setMessage(
+          'Account created. Check your email to confirm your account.'
+        )
+
+        return
+      }
+
+      const resetUrl =
         new URL(
-          '/auth/callback',
+          '/auth/reset-password',
           window.location.origin
         )
 
-      callbackUrl.searchParams.set(
+      resetUrl.searchParams.set(
         'next',
         redirectTo
       )
 
-      callbackUrl.searchParams.set(
-        'publish',
-        'true'
-      )
-
       const { error } =
-        await supabase.auth.signInWithOtp({
-          email: normalizedEmail,
-          options: {
-            emailRedirectTo:
-              callbackUrl.toString(),
-            shouldCreateUser: true
-          }
-        })
+        await supabase.auth
+          .resetPasswordForEmail(
+            normalizedEmail,
+            {
+              redirectTo:
+                resetUrl.toString()
+            }
+          )
 
       if (error) {
         throw error
       }
 
       setMessage(
-        'Check your email and click the secure sign-in link.'
+        'Check your email for the password-reset link.'
       )
     } catch (error) {
-      console.error(error)
+      console.error(
+        'MARKETHUB AUTH ERROR:',
+        error
+      )
 
       setErrorMessage(
         error instanceof Error
           ? error.message
-          : 'Unable to send the sign-in link.'
+          : 'Authentication failed.'
       )
     } finally {
       setLoading(false)
     }
   }
+
+  const headingText =
+    mode === 'sign-in'
+      ? 'Sign In to MarketHub'
+      : mode === 'sign-up'
+        ? 'Create Your MarketHub Account'
+        : 'Reset Your Password'
+
+  const descriptionText =
+    mode === 'sign-in'
+      ? 'Enter your email address and password.'
+      : mode === 'sign-up'
+        ? 'Create an account using your email address and password.'
+        : 'Enter your email address. We will send you a password-reset link.'
+
+  const submitText =
+    mode === 'sign-in'
+      ? 'Sign In'
+      : mode === 'sign-up'
+        ? 'Create Account'
+        : 'Send Reset Link'
 
   return (
     <div style={overlay}>
@@ -105,12 +233,11 @@ export default function EmailAuthModal({
         )}
 
         <h2 style={heading}>
-          Sign In to MarketHub
+          {headingText}
         </h2>
 
         <p style={description}>
-          Enter your email address. We will
-          send you a secure sign-in link.
+          {descriptionText}
         </p>
 
         <form
@@ -129,20 +256,64 @@ export default function EmailAuthModal({
             style={input}
           />
 
+          {mode !== 'forgot-password' && (
+            <input
+              type="password"
+              value={password}
+              onChange={event =>
+                setPassword(
+                  event.target.value
+                )
+              }
+              placeholder="Password"
+              autoComplete={
+                mode === 'sign-in'
+                  ? 'current-password'
+                  : 'new-password'
+              }
+              required
+              minLength={6}
+              style={input}
+            />
+          )}
+
+          {mode === 'sign-up' && (
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={event =>
+                setConfirmPassword(
+                  event.target.value
+                )
+              }
+              placeholder="Confirm password"
+              autoComplete="new-password"
+              required
+              minLength={6}
+              style={input}
+            />
+          )}
+
           <button
             type="submit"
             disabled={loading}
             style={{
               ...submitButton,
-              opacity: loading ? 0.65 : 1
+              opacity: loading
+                ? 0.65
+                : 1,
+              cursor: loading
+                ? 'not-allowed'
+                : 'pointer'
             }}
           >
             {loading
-              ? 'Sending...'
-              : 'Send Secure Link'}
+              ? 'Working...'
+              : submitText}
           </button>
         </form>
-                    {message && (
+
+        {message && (
           <p style={successMessage}>
             {message}
           </p>
@@ -153,6 +324,47 @@ export default function EmailAuthModal({
             {errorMessage}
           </p>
         )}
+
+        <div style={authLinks}>
+          {mode !== 'sign-in' && (
+            <button
+              type="button"
+              onClick={() =>
+                changeMode('sign-in')
+              }
+              style={textButton}
+            >
+              Sign In
+            </button>
+          )}
+
+          {mode !== 'sign-up' && (
+            <button
+              type="button"
+              onClick={() =>
+                changeMode('sign-up')
+              }
+              style={textButton}
+            >
+              Create Account
+            </button>
+          )}
+
+          {mode !==
+            'forgot-password' && (
+            <button
+              type="button"
+              onClick={() =>
+                changeMode(
+                  'forgot-password'
+                )
+              }
+              style={textButton}
+            >
+              Forgot Password?
+            </button>
+          )}
+        </div>
       </div>
     </div>
   )
@@ -214,6 +426,7 @@ const form = {
 
 const input = {
   width: '100%',
+  boxSizing: 'border-box' as const,
   padding: '1rem',
   border: '1px solid #333',
   borderRadius: '1rem',
@@ -230,7 +443,23 @@ const submitButton = {
   background: '#fff',
   color: '#000',
   fontSize: '1rem',
-  fontWeight: 700,
+  fontWeight: 700
+}
+
+const authLinks = {
+  display: 'flex',
+  flexWrap: 'wrap' as const,
+  justifyContent: 'center',
+  gap: '0.75rem 1.25rem',
+  marginTop: '1.5rem'
+}
+
+const textButton = {
+  padding: 0,
+  border: 'none',
+  background: 'transparent',
+  color: '#D4AF37',
+  fontSize: '0.95rem',
   cursor: 'pointer'
 }
 

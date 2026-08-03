@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import {
+  useEffect,
   useState
 } from 'react'
 
@@ -35,6 +36,14 @@ import {
   ChartColumnIncreasing,
   Construction
 } from 'lucide-react'
+
+import {
+  recordMarketViewed
+} from '@/lib/activity/markets'
+
+import {
+  recordRecentActivity
+} from '@/lib/account-storage'
 
 type Props = {
   activeTab: string
@@ -276,6 +285,19 @@ const tabs = [
                     filters,
                     result
                   })
+
+                  await recordRecentActivity(
+                  'market_saved',
+                  'market',
+                  `explorer:${queryString}`,
+                  {
+                    title: getAnalysisName(),
+                    href: `/en/market-intelligence?${queryString}&tab=${activeTab}`,
+                    engine: activeTab,
+                    filters
+                  }
+                )
+
                 }
                 setSaveStatus(
                   'saved'
@@ -312,6 +334,59 @@ const tabs = [
               }
             }
           )
+
+          const queryString =
+            query.toString()
+
+          useEffect(() => {
+            const result = getActiveResult()
+
+            if (!result) {
+              return
+            }
+
+            const location = [
+              filters.district,
+              filters.canton,
+              filters.province
+            ]
+              .filter(Boolean)
+              .join(', ')
+
+            const tab =
+              tabs.find(
+                item => item.id === activeTab
+              )
+
+            const title =
+              location || 'Costa Rica'
+
+            recordMarketViewed({
+              id: `${activeTab}:${queryString}`,
+              title,
+              marketType:
+                tab?.label || activeTab,
+              summary:
+            `Análisis de ${tab?.label || activeTab}`,
+
+          href:
+            `/es/inteligencia-de-mercado?${queryString}&tab=${activeTab}`
+            })
+          }, [
+            activeTab,
+            explorerResult,
+            valuation,
+            pricingStrategy,
+            marketMatches,
+            comparison,
+            marketScarcity,
+            priceMeterAnalysis,
+            buyerDemand,
+            queryString,
+            filters.district,
+            filters.canton,
+            filters.province
+          ])
 
           return (
             <>

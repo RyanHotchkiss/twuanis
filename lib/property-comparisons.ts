@@ -12,6 +12,11 @@ import type {
   PropertyComparison
 } from '@/lib/comparisons/types'
 
+import {
+  trackComparisonCreated,
+  trackComparisonDeleted
+} from '@/lib/activity/comparisons'
+
 export type PropertyComparisonRow = {
   id: string
   user_id: string
@@ -25,6 +30,7 @@ export type MarketHubPropertyComparison =
   ComparisonSummary & {
     kind: 'property'
     propertyCount: number
+    timestamp: string
   }
 
 function toPropertyComparison(
@@ -136,9 +142,20 @@ export async function savePropertyComparison({
     throw error
   }
 
-  return toPropertyComparison(
-    data as PropertyComparisonRow
-  )
+  const comparison =
+      toPropertyComparison(
+        data as PropertyComparisonRow
+      )
+
+    await trackComparisonCreated({
+      comparisonId: comparison.id,
+      metadata: {
+        propertyCount:
+          comparison.propertyIds.length
+      }
+    })
+
+    return comparison
 }
 
 export async function getPropertyComparison(
@@ -188,226 +205,261 @@ export async function getPropertyComparison(
 }
 
 export async function getPropertyComparisonRows():
-Promise<PropertyComparison[]> {
-  const user =
-  await getCurrentUser()
+    Promise<PropertyComparison[]> {
+      const user =
+      await getCurrentUser()
 
-if (!user) {
-    return []
-  }
-
-  const {
-    data,
-    error
-  } = await supabase
-    .from('property_comparisons')
-    .select(`
-      id,
-      user_id,
-      name,
-      property_ids,
-      created_at,
-      updated_at
-    `)
-    .eq(
-      'user_id',
-      user.id
-    )
-    .order(
-      'updated_at',
-      {
-        ascending: false
+    if (!user) {
+        return []
       }
-    )
 
-  if (error) {
-    throw error
-  }
+      const {
+        data,
+        error
+      } = await supabase
+        .from('property_comparisons')
+        .select(`
+          id,
+          user_id,
+          name,
+          property_ids,
+          created_at,
+          updated_at
+        `)
+        .eq(
+          'user_id',
+          user.id
+        )
+        .order(
+          'updated_at',
+          {
+            ascending: false
+          }
+        )
 
-  return (
-    (data || []) as
-      PropertyComparisonRow[]
-  ).map(
-    toPropertyComparison
-  )
-}
+      if (error) {
+        throw error
+      }
+
+      return (
+        (data || []) as
+          PropertyComparisonRow[]
+      ).map(
+        toPropertyComparison
+      )
+    }
 
 export async function getPropertyComparisons({
-  language
-}: {
-  language: ComparisonLanguage
-}): Promise<
-  MarketHubPropertyComparison[]
-> {
-  const comparisons =
-    await getPropertyComparisonRows()
-
-  const basePath =
-    getPropertyComparisonPath(
       language
-    )
+    }: {
+      language: ComparisonLanguage
+    }): Promise<
+      MarketHubPropertyComparison[]
+    > {
+      const comparisons =
+        await getPropertyComparisonRows()
 
-  return comparisons.map(
-    comparison => {
-      const params =
-        createPropertyComparisonParams(
-          comparison.propertyIds
+      const basePath =
+        getPropertyComparisonPath(
+          language
         )
 
-      return {
-        id:
-          comparison.id,
+      return comparisons.map(
+        comparison => {
+          const params =
+            createPropertyComparisonParams(
+              comparison.propertyIds
+            )
 
-        kind:
-          'property',
+          return {
+            id:
+              comparison.id,
 
-        title:
-          comparison.name,
+            kind:
+              'property',
 
-        summary:
-          language === 'es'
-            ? `${comparison.propertyIds.length} propiedades guardadas en esta comparación.`
-            : `${comparison.propertyIds.length} properties saved in this comparison.`,
+            title:
+              comparison.name,
 
-        updatedAt:
-          new Date(
-            comparison.updatedAt
-          ).toLocaleDateString(
-            language === 'es'
-              ? 'es-CR'
-              : 'en-US'
-          ),
+            summary:
+              language === 'es'
+                ? `${comparison.propertyIds.length} propiedades guardadas en esta comparación.`
+                : `${comparison.propertyIds.length} properties saved in this comparison.`,
 
-        href:
-          `${basePath}?${params.toString()}`,
+            updatedAt:
+              new Date(
+                comparison.updatedAt
+              ).toLocaleDateString(
+                language === 'es'
+                  ? 'es-CR'
+                  : 'en-US'
+              ),
 
-        propertyCount:
-          comparison.propertyIds.length
-      }
+            timestamp:
+              comparison.updatedAt,
+
+            href:
+              `${basePath}?${params.toString()}`,
+
+            propertyCount:
+              comparison.propertyIds.length
+          }
+        }
+      )
     }
-  )
-}
 
 export async function updatePropertyComparison({
-  comparisonId,
-  name,
-  propertyIds,
-  language = 'en'
-}: {
-  comparisonId: string
-  name?: string
-  propertyIds?: string[]
-  language?: ComparisonLanguage
-}): Promise<PropertyComparison> {
-  const user =
-  await getCurrentUser()
-
-if (!user) {
-    throw new Error(
-      language === 'es'
-        ? 'Debes iniciar sesión.'
-        : 'Authentication required.'
-    )
-  }
-
-  const updates: {
-    name?: string
-    property_ids?: string[]
-  } = {}
-
-  if (name !== undefined) {
-    const trimmedName =
-      name.trim()
-
-    if (!trimmedName) {
-      throw new Error(
-        language === 'es'
-          ? 'El nombre es obligatorio.'
-          : 'The name is required.'
-      )
-    }
-
-    updates.name =
-      trimmedName
-  }
-
-  if (propertyIds !== undefined) {
-    const normalizedPropertyIds =
-      Array.from(
-        new Set(
-          propertyIds
-            .map(propertyId =>
-              propertyId.trim()
-            )
-            .filter(Boolean)
-        )
-      )
-
-    if (
-      normalizedPropertyIds.length < 2
-    ) {
-      throw new Error(
-        language === 'es'
-          ? 'Selecciona al menos dos propiedades.'
-          : 'Select at least two properties.'
-      )
-    }
-
-    updates.property_ids =
-      normalizedPropertyIds
-  }
-
-  if (
-    Object.keys(updates).length === 0
-  ) {
-    const existing =
-      await getPropertyComparison(
-        comparisonId
-      )
-
-    if (!existing) {
-      throw new Error(
-        language === 'es'
-          ? 'No se encontró la comparación.'
-          : 'Comparison not found.'
-      )
-    }
-
-    return existing
-  }
-
-  const {
-    data,
-    error
-  } = await supabase
-    .from('property_comparisons')
-    .update(updates)
-    .eq(
-      'id',
-      comparisonId
-    )
-    .eq(
-      'user_id',
-      user.id
-    )
-    .select(`
-      id,
-      user_id,
+      comparisonId,
       name,
-      property_ids,
-      created_at,
-      updated_at
-    `)
-    .single()
+      propertyIds,
+      language = 'en'
+    }: {
+      comparisonId: string
+      name?: string
+      propertyIds?: string[]
+      language?: ComparisonLanguage
+    }): Promise<PropertyComparison> {
+      const user =
+      await getCurrentUser()
 
-  if (error) {
-    throw error
-  }
+    if (!user) {
+        throw new Error(
+          language === 'es'
+            ? 'Debes iniciar sesión.'
+            : 'Authentication required.'
+        )
+      }
 
-  return toPropertyComparison(
-    data as PropertyComparisonRow
-  )
-}
+      const updates: {
+        name?: string
+        property_ids?: string[]
+      } = {}
+
+      if (name !== undefined) {
+        const trimmedName =
+          name.trim()
+
+        if (!trimmedName) {
+          throw new Error(
+            language === 'es'
+              ? 'El nombre es obligatorio.'
+              : 'The name is required.'
+          )
+        }
+
+        updates.name =
+          trimmedName
+      }
+
+      if (propertyIds !== undefined) {
+        const normalizedPropertyIds =
+          Array.from(
+            new Set(
+              propertyIds
+                .map(propertyId =>
+                  propertyId.trim()
+                )
+                .filter(Boolean)
+            )
+          )
+
+        if (
+          normalizedPropertyIds.length < 2
+        ) {
+          throw new Error(
+            language === 'es'
+              ? 'Selecciona al menos dos propiedades.'
+              : 'Select at least two properties.'
+          )
+        }
+
+        updates.property_ids =
+          normalizedPropertyIds
+      }
+
+      if (
+        Object.keys(updates).length === 0
+      ) {
+        const existing =
+          await getPropertyComparison(
+            comparisonId
+          )
+
+        if (!existing) {
+          throw new Error(
+            language === 'es'
+              ? 'No se encontró la comparación.'
+              : 'Comparison not found.'
+          )
+        }
+
+        return existing
+      }
+
+      
+      const {
+        data,
+        error
+      } = await supabase
+        .from('property_comparisons')
+        .update(updates)
+        .eq(
+          'id',
+          comparisonId
+        )
+        .eq(
+          'user_id',
+          user.id
+        )
+        .select(`
+          id,
+          user_id,
+          name,
+          property_ids,
+          created_at,
+          updated_at
+        `)
+        .single()
+
+      if (error) {
+        throw error
+      }
+
+      return toPropertyComparison(
+        data as PropertyComparisonRow
+      )
+    }
+
+    export async function duplicatePropertyComparison({
+      comparisonId,
+      language = 'en'
+    }: {
+      comparisonId: string
+      language?: ComparisonLanguage
+    }): Promise<PropertyComparison> {
+      const comparison =
+        await getPropertyComparison(
+          comparisonId
+        )
+
+      if (!comparison) {
+        throw new Error(
+          language === 'es'
+            ? 'No se encontró la comparación.'
+            : 'Comparison not found.'
+        )
+      }
+
+      return savePropertyComparison({
+        name:
+          language === 'es'
+            ? `${comparison.name} (Copia)`
+            : `${comparison.name} (Copy)`,
+        propertyIds:
+          comparison.propertyIds,
+        language
+      })
+    }
 
 export async function deletePropertyComparison(
   comparisonId: string
@@ -436,6 +488,11 @@ export async function deletePropertyComparison(
     )
 
   if (error) {
-    throw error
-  }
+      throw error
+    }
+
+    await trackComparisonDeleted({
+      comparisonId
+    })
 }
+

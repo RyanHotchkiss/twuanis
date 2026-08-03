@@ -21,7 +21,7 @@ export function recordMarketViewed(
   market: {
     id: string
     title: string
-    type: string
+    marketType: string
     href: string
     summary?: string | null
   }

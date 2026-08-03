@@ -1,9 +1,45 @@
-import TopBar from '@/app/components/TopBar'
+'use client'
 
-import ComparisonShell from '@/app/components/comparisons/ComparisonShell'
-import PropertyComparisonPanel from '@/app/components/comparisons/PropertyComparisonPanel'
+import {
+  Suspense
+} from 'react'
+
+import {
+  useSearchParams
+} from 'next/navigation'
+
+import TopBar
+  from '@/app/components/TopBar'
+
+import ComparisonShell
+  from '@/app/components/comparisons/ComparisonShell'
+
+import PropertyComparisonPanel
+  from '@/app/components/comparisons/PropertyComparisonPanel'
+
+import PropertyComparisonEngine
+  from '@/app/components/comparisons/PropertyComparisonEngine'
 
 export default function PropertyComparisonsPage() {
+  return (
+    <Suspense fallback={null}>
+      <PropertyComparisonsContent />
+    </Suspense>
+  )
+}
+
+function PropertyComparisonsContent() {
+  const searchParams =
+    useSearchParams()
+
+  const propertyIds =
+    searchParams.getAll(
+      'property'
+    )
+
+  const hasActiveComparison =
+    propertyIds.length >= 2
+
   return (
     <main style={main}>
       <TopBar />
@@ -11,12 +47,26 @@ export default function PropertyComparisonsPage() {
       <ComparisonShell
         language="en"
         activeKind="property"
-        title="Property Comparisons"
-        description="Compare saved groups of individual Costa Rica property listings."
+        title={
+          hasActiveComparison
+            ? 'Property Comparison'
+            : 'Property Comparisons'
+        }
+        description={
+          hasActiveComparison
+            ? 'Compare selected Costa Rica property listings side by side.'
+            : 'Compare saved groups of individual Costa Rica property listings.'
+        }
       >
-        <PropertyComparisonPanel
-          language="en"
-        />
+        {hasActiveComparison ? (
+          <PropertyComparisonEngine
+            language="en"
+          />
+        ) : (
+          <PropertyComparisonPanel
+            language="en"
+          />
+        )}
       </ComparisonShell>
     </main>
   )

@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase'
+import { unstable_cache } from 'next/cache'
 
 export type ExplorerOption = {
   id: number
@@ -32,7 +33,7 @@ const EXPLORER_TERM_TYPES = [
   'legal_status'
 ]
 
-export async function getExplorerOptions() {
+async function loadExplorerOptions() {
   const { data, error } = await supabase
     .from('ontology_terms')
     .select(`
@@ -82,3 +83,12 @@ export async function getExplorerOptions() {
 
   return grouped
 }
+
+export const getExplorerOptions = unstable_cache(
+  loadExplorerOptions,
+  ['explorer-options'],
+  {
+    revalidate: 86400,
+    tags: ['explorer-options']
+  }
+)

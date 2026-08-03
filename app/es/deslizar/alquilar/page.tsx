@@ -3,6 +3,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 
+import {
+  resolveListingImages
+} from '@/app/utils/resolveListingImages'
 
 export default function SwipePage() {
 
@@ -47,11 +50,9 @@ export default function SwipePage() {
               ...listing,
 
               images:
-                Array.isArray(listing.images)
-                  ? listing.images
-                  : typeof listing.images === 'string'
-                  ? listing.images.split('|')
-                  : []
+                resolveListingImages(
+                  listing.images
+                )
 
             })
           )

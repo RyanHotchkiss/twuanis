@@ -20,6 +20,10 @@ import {
 } from '@/lib/saved-searches'
 
 import {
+  getRecentlyViewedMarkets
+} from '@/lib/activity/markets'
+
+import {
   ArrowRight,
   BarChart3,
   Calculator,
@@ -31,6 +35,11 @@ import {
   Tags
 } from 'lucide-react'
 
+import {
+  getIntelligenceEngineUsage,
+  type IntelligenceEngineUsage
+} from '@/lib/intelligence-analytics'
+
 type SupportedLanguage =
   | 'en'
   | 'es'
@@ -41,6 +50,15 @@ export type MarketExplorerActivity = {
   market: string
   summary: string
   updatedAt: string
+  href: string
+}
+
+type RecentlyViewedMarket = {
+  id: string
+  title: string
+  marketType: string
+  summary?: string | null
+  viewedAt: string
   href: string
 }
 
@@ -208,6 +226,25 @@ export default function MarketHubMarketIntelligence({
     ] = useState<any[]>([])
 
     const [
+      engineUsage,
+      setEngineUsage
+    ] = useState<
+      IntelligenceEngineUsage[]
+    >([])
+
+    const [
+      recentlyViewedMarkets,
+      setRecentlyViewedMarkets
+    ] = useState<
+      RecentlyViewedMarket[]
+    >([])
+
+    const [
+      recentMarketsLoaded,
+      setRecentMarketsLoaded
+    ] = useState(false)
+
+    const [
       savedSearches,
       setSavedSearches
     ] = useState<any[]>([])
@@ -223,10 +260,12 @@ export default function MarketHubMarketIntelligence({
         async function loadSavedData() {
           const [
             analyses,
-            searches
+            searches,
+            usage
           ] = await Promise.all([
             getSavedAnalyses(),
-            getSavedSearches()
+            getSavedSearches(),
+            getIntelligenceEngineUsage()
           ])
 
           if (!active) {
@@ -237,9 +276,9 @@ export default function MarketHubMarketIntelligence({
             analyses
           )
 
-          setSavedSearches(
-            searches
-          )
+          setSavedSearches(searches)
+
+          setEngineUsage(usage)
 
           setSavedDataLoaded(true)
         }
@@ -251,6 +290,30 @@ export default function MarketHubMarketIntelligence({
         }
       }, [])
 
+      useEffect(() => {
+          function loadRecentMarkets() {
+            setRecentlyViewedMarkets(
+              getRecentlyViewedMarkets()
+            )
+
+            setRecentMarketsLoaded(true)
+          }
+
+          loadRecentMarkets()
+
+          window.addEventListener(
+            'recent-markets-updated',
+            loadRecentMarkets
+          )
+
+          return () => {
+            window.removeEventListener(
+              'recent-markets-updated',
+              loadRecentMarkets
+            )
+          }
+        }, [])
+
         const resolvedSavedAnalysisCount =
           savedDataLoaded
             ? savedAnalyses.length
@@ -260,6 +323,52 @@ export default function MarketHubMarketIntelligence({
           savedDataLoaded
             ? savedSearches.length
             : initialSavedSearchCount
+
+        const resolvedMarketsViewedCount =
+          recentMarketsLoaded
+            ? recentlyViewedMarkets.length
+            : marketsViewedCount
+
+        const resolvedMarketExplorerActivity:
+          MarketExplorerActivity[] =
+          marketExplorerActivity.length > 0
+            ? marketExplorerActivity
+            : recentlyViewedMarkets.map(
+                market => ({
+                  id:
+                    market.id,
+
+                  title:
+                    market.title,
+
+                  market:
+                    market.marketType,
+
+                  summary:
+                    market.summary ||
+                    (
+                      language === 'es'
+                        ? 'Exploración del mercado'
+                        : 'Market exploration'
+                    ),
+
+                  updatedAt:
+                    new Date(
+                      market.viewedAt
+                    ).toLocaleString(
+                      language === 'es'
+                        ? 'es-CR'
+                        : 'en-US',
+                      {
+                        dateStyle: 'medium',
+                        timeStyle: 'short'
+                      }
+                    ),
+
+                  href:
+                    market.href
+                })
+              )
 
   const labels =
     language === 'es'
@@ -298,15 +407,15 @@ export default function MarketHubMarketIntelligence({
             'Actualizado',
 
           recentActivity:
-            'Actividad Reciente del Explorador de Mercado',
+            'Actividad Reciente de Inteligencia de Mercado',
 
           activitySummary:
-            marketExplorerActivity.length === 1
+            resolvedMarketExplorerActivity.length === 1
               ? 'Tiene 1 actividad reciente.'
-              : `Tiene ${marketExplorerActivity.length} actividades recientes.`,
-
+              : `Tiene ${resolvedMarketExplorerActivity.length} actividades recientes.`,
+              
           empty:
-            'Todavía no tiene actividad en el Explorador de Mercado.',
+            'Todavía no tiene actividad de Inteligencia de Mercado.',
 
           valuationAndPricing:
             'Valoración y Precios',
@@ -409,7 +518,13 @@ export default function MarketHubMarketIntelligence({
             'Comportamiento del Vendedor',
 
             sellerBehaviorDescription:
-            'Mida cambios de precio, actualizaciones, retiros y republicaciones.'
+            'Mida cambios de precio, actualizaciones, retiros y republicaciones.',
+
+            mostUsedEngines:
+            'Motores Más Utilizados',
+
+            userEngagement:
+            'Participación del Usuario'
         }
       : {
           heading:
@@ -446,15 +561,15 @@ export default function MarketHubMarketIntelligence({
             'Updated',
 
           recentActivity:
-            'Recent Market Explorer Activity',
+            'Recent Market Intelligence Activity',
 
           activitySummary:
-            marketExplorerActivity.length === 1
+            resolvedMarketExplorerActivity.length === 1
               ? 'You have 1 recent activity.'
-              : `You have ${marketExplorerActivity.length} recent activities.`,
-
+              : `You have ${resolvedMarketExplorerActivity.length} recent activities.`,
+              
           empty:
-            'You do not have any Market Explorer activity yet.',
+            'You do not have any Market Intelligence activity yet.',
 
           valuationAndPricing:
             'Valuation & Pricing',
@@ -557,7 +672,13 @@ export default function MarketHubMarketIntelligence({
             'Seller Behavior',
 
             sellerBehaviorDescription:
-            'Measure seller pricing behavior, listing updates, withdrawals, and relistings.'
+            'Measure seller pricing behavior, listing updates, withdrawals, and relistings.',
+
+            mostUsedEngines:
+            'Most Used Engines',
+
+            userEngagement:
+            'User Engagement'
         }
 
   const marketExplorerHref =
@@ -699,6 +820,65 @@ export default function MarketHubMarketIntelligence({
         : '/en/market-intelligence?tab=seller-behavior'
     }
   }
+
+  const mostUsedEngines =
+  [...engineUsage]
+    .sort(
+      (a, b) =>
+        b.usageCount -
+        a.usageCount
+    )
+    .slice(0, 5)
+
+    const savedAnalysisStatistics =
+      savedAnalyses.reduce(
+        (
+          stats,
+          analysis
+        ) => {
+          stats[
+            analysis.engine_type
+          ] =
+            (
+              stats[
+                analysis.engine_type
+              ] ?? 0
+            ) + 1
+
+          return stats
+        },
+        {} as Record<
+          string,
+          number
+        >
+      )
+
+      const totalEngineLaunches =
+        engineUsage.reduce(
+          (total, engine) =>
+            total + engine.usageCount,
+          0
+        )
+
+      const userEngagement = [
+        {
+          label: labels.savedAnalyses,
+          value: resolvedSavedAnalysisCount
+        },
+        {
+          label: labels.savedSearches,
+          value: resolvedSavedSearchCount
+        },
+        {
+          label: labels.marketsViewed,
+          value: resolvedMarketsViewedCount
+        },
+        {
+          label: labels.history,
+          value: totalEngineLaunches
+        }
+      ]
+
     return (
     <section style={section}>
       <header>
@@ -805,7 +985,7 @@ export default function MarketHubMarketIntelligence({
                 strokeWidth={1}
               />
             }
-            value={marketsViewedCount}
+            value={resolvedMarketsViewedCount}
             label={labels.marketsViewed}
           />
         </div>
@@ -825,11 +1005,11 @@ export default function MarketHubMarketIntelligence({
         </div>
 
         <span style={count}>
-          {marketExplorerActivity.length}
+          {resolvedMarketExplorerActivity.length}
         </span>
       </div>
 
-      {marketExplorerActivity.length === 0 ? (
+      {resolvedMarketExplorerActivity.length === 0 ? (
         <div style={emptyState}>
           <Compass
             size={35}
@@ -850,7 +1030,7 @@ export default function MarketHubMarketIntelligence({
         </div>
       ) : (
         <div style={activityGrid}>
-          {marketExplorerActivity.map(
+          {resolvedMarketExplorerActivity.map(
             activity => (
               <Link
                 key={activity.id}
@@ -886,6 +1066,104 @@ export default function MarketHubMarketIntelligence({
         </div>
       )}
 
+      <div style={divider} />
+        <h3 style={phaseTitle}>
+          {labels.mostUsedEngines}
+        </h3>
+
+        <div style={phaseGrid}>
+          {mostUsedEngines.map(engine => (
+            <div
+              key={engine.engineType}
+              style={engineCard}
+            >
+              <h4 style={engineCardTitle}>
+                {getEngineDisplayName(
+                  engine.engineType,
+                  engineConfigurations
+                )}
+              </h4>
+
+              <div style={engineMetrics}>
+                <div style={metric}>
+                  <strong>
+                    {engine.usageCount}
+                  </strong>
+
+                  <span>
+                    {labels.history}
+                  </span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div style={divider} />
+          <h3 style={phaseTitle}>
+            {labels.savedAnalyses}
+          </h3>
+
+          <div style={phaseGrid}>
+            {(
+              Object.entries(
+                savedAnalysisStatistics
+              ) as Array<
+                [string, number]
+              >
+            ).map(
+              ([engineType, count]) => (
+                <div
+                  key={engineType}
+                  style={engineCard}
+                >
+                  <h4 style={engineCardTitle}>
+                    {getEngineDisplayName(
+                      engineType,
+                      engineConfigurations
+                    )}
+                  </h4>
+
+                  <div style={engineMetrics}>
+                    <div style={metric}>
+                      <strong>
+                        {count}
+                      </strong>
+
+                      <span>
+                        {labels.savedAnalyses}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )
+            )}
+          </div>
+
+          <div style={divider} />
+            <h3 style={phaseTitle}>
+              {labels.userEngagement}
+            </h3>
+
+            <div style={statisticsGrid}>
+              {userEngagement.map(metric => (
+                <div
+                  key={metric.label}
+                  style={statistic}
+                >
+                  <div>
+                    <div style={statisticValue}>
+                      {metric.value}
+                    </div>
+
+                    <div style={statisticLabel}>
+                      {metric.label}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
       <EnginePackage
         title={
           labels.valuationAndPricing
@@ -901,6 +1179,7 @@ export default function MarketHubMarketIntelligence({
         }
         labels={labels}
         savedAnalyses={savedAnalyses}
+        engineUsage={engineUsage}
       />
 
       <EnginePackage
@@ -918,6 +1197,7 @@ export default function MarketHubMarketIntelligence({
         }
         labels={labels}
         savedAnalyses={savedAnalyses}
+        engineUsage={engineUsage}
       />
 
       <EnginePackage
@@ -935,6 +1215,7 @@ export default function MarketHubMarketIntelligence({
         }
         labels={labels}
         savedAnalyses={savedAnalyses}
+        engineUsage={engineUsage}
       />
 
       <EnginePackage
@@ -944,6 +1225,7 @@ export default function MarketHubMarketIntelligence({
             engineConfigurations={engineConfigurations}
             labels={labels}
             savedAnalyses={savedAnalyses}
+            engineUsage={engineUsage}
             />
 
     </section>
@@ -957,16 +1239,71 @@ type EnginePackageProps = {
   engineConfigurations: EngineConfigurationMap
   labels: EngineLabels
   savedAnalyses: any[]
+  engineUsage:
+  IntelligenceEngineUsage[]
+}
+
+function getSavedAnalysisEngineType(
+  engineId:
+    MarketIntelligenceEngine['id']
+): string {
+  switch (engineId) {
+    case 'pricing-strategy':
+      return 'pricing'
+
+    case 'property-matching':
+      return 'matching'
+
+    case 'market-comparison':
+      return 'comparison'
+
+    case 'market-frequency':
+      return 'scarcity'
+
+    case 'price-per-square-meter':
+      return 'price-meter'
+
+    default:
+      return engineId
+  }
+}
+
+function getEngineDisplayName(
+  engineType: string,
+  engineConfigurations: EngineConfigurationMap
+): string {
+  switch (engineType) {
+    case 'pricing':
+      return engineConfigurations['pricing-strategy'].name
+
+    case 'matching':
+      return engineConfigurations['property-matching'].name
+
+    case 'comparison':
+      return engineConfigurations['market-comparison'].name
+
+    case 'scarcity':
+      return engineConfigurations['market-frequency'].name
+
+    case 'price-meter':
+      return engineConfigurations['price-per-square-meter'].name
+
+    default:
+      return engineConfigurations[
+        engineType as keyof EngineConfigurationMap
+      ]?.name ?? engineType
+  }
 }
 
 function EnginePackage({
-  title,
-  description,
-  engines,
-  engineConfigurations,
-  labels,
-  savedAnalyses
-}: EnginePackageProps) {
+    title,
+    description,
+    engines,
+    engineConfigurations,
+    labels,
+    savedAnalyses,
+    engineUsage
+  }: EnginePackageProps) {
 
   return (
     <>
@@ -991,8 +1328,19 @@ function EnginePackage({
             savedAnalyses.filter(
               analysis =>
                 analysis.engine_type ===
-                engine.id
+                getSavedAnalysisEngineType(
+                  engine.id
+                )
             ).length
+
+          const usageCount =
+            engineUsage.find(
+              usage =>
+                usage.engineType ===
+                getSavedAnalysisEngineType(
+                  engine.id
+                )
+            )?.usageCount ?? 0
 
           const Icon =
             config.icon
@@ -1058,7 +1406,7 @@ function EnginePackage({
 
                 <div style={metric}>
                   <strong>
-                    {engine.historyCount}
+                    {usageCount}
                   </strong>
 
                   <span>

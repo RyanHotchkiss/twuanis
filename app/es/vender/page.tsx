@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import {
-  uploadListingImages
-} from '@/app/utils/uploadListingImages'
+  startListingPublishFlow
+} from '@/app/utils/startListingPublishFlow'
 
 import Papa from 'papaparse'
 
@@ -802,61 +802,28 @@ const [showAuthOverlay, setShowAuthOverlay] = useState(false)
                     }
 
                     try {
-
-                    const uploadedImageUrls =
-                        await uploadListingImages(
-                        propertyData.images
-                        )
-
-                    const updatedPropertyData = {
-                        ...propertyData,
-                        images: uploadedImageUrls
-                    }
-
-                    const response = await fetch(
-                        '/api/send-otp',
-                        {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type':
-                            'application/json'
-                        },
-                        body: JSON.stringify({
+                        await startListingPublishFlow({
                             phone:
                             propertyData.whatsapp,
-                            listingData:
-                            updatedPropertyData
+
+                            propertyData
                         })
-                        }
-                    )
-
-                    const data =
-                        await response.json()
-
-                    if (!data.success) {
 
                         alert(
-                        data.error ||
-                        'Failed to send WhatsApp link'
+                            '¡Tuanis! Revise su WhatsApp.'
+                        )
+                        } catch (error) {
+                        console.error(
+                            'LISTING PUBLISH FLOW ERROR:',
+                            error
                         )
 
-                        return
-
-                    }
-
-                    alert(
-                        'Tuanis! Check your WhatsApp.'
-                    )
-
-                    } catch (error) {
-
-                    console.error(error)
-
-                    alert(
-                        'Something went wrong.'
-                    )
-
-                    }
+                        alert(
+                            error instanceof Error
+                            ? error.message
+                            : 'Ocurrió un error.'
+                        )
+                        }
 
                 }}
                 />

@@ -1,5 +1,14 @@
 'use client'
 
+import { useState } from 'react'
+
+import {
+  subscribeToPush,
+  unsubscribeFromPush
+} from '@/lib/browser-push'
+
+import { supabase } from '@/lib/supabase'
+
 import {
   Camera,
   Settings,
@@ -144,6 +153,15 @@ export default function MarketHubSettings({
   accountRecoverySettings,
   deleteAccountSettings
 }: MarketHubSettingsProps) {
+
+  const [pushEnabled, setPushEnabled] =
+  useState(
+    notificationPreferences.push
+  )
+
+  const [savingPush, setSavingPush] =
+    useState(false)
+
   const labels =
     language === 'es'
       ? {
@@ -747,6 +765,104 @@ export default function MarketHubSettings({
 
         }
 
+        async function togglePush() {
+          console.log('togglePush()')
+
+          setSavingPush(true)
+
+          try {
+            const {
+              data: { session },
+              error: sessionError
+            } = await supabase.auth.getSession()
+
+            console.log('PUSH SESSION:', session)
+            console.log('PUSH SESSION ERROR:', sessionError)
+
+            if (!session) {
+              throw new Error(
+                'No valid Supabase session. Sign out and sign back in.'
+              )
+            }
+
+            if (!pushEnabled) {
+              const subscription =
+                await subscribeToPush()
+
+              const response = await fetch(
+                '/api/push/subscribe',
+                {
+                  method: 'POST',
+                  headers: {
+                    Authorization:
+                      `Bearer ${session.access_token}`,
+                    'Content-Type':
+                      'application/json'
+                  },
+                  body: JSON.stringify({
+                    subscription:
+                      subscription.toJSON(),
+                    userAgent:
+                      navigator.userAgent
+                  })
+                }
+              )
+
+              const result =
+                await response.json()
+
+              if (!response.ok) {
+                throw new Error(
+                  result.error ||
+                  'Unable to save push subscription.'
+                )
+              }
+
+              setPushEnabled(true)
+            } else {
+              const endpoint =
+                await unsubscribeFromPush()
+
+              if (endpoint) {
+                const response = await fetch(
+                  '/api/push/unsubscribe',
+                  {
+                    method: 'DELETE',
+                    headers: {
+                      Authorization:
+                        `Bearer ${session.access_token}`,
+                      'Content-Type':
+                        'application/json'
+                    },
+                    body: JSON.stringify({
+                      endpoint
+                    })
+                  }
+                )
+
+                const result =
+                  await response.json()
+
+                if (!response.ok) {
+                  throw new Error(
+                    result.error ||
+                    'Unable to remove push subscription.'
+                  )
+                }
+              }
+
+              setPushEnabled(false)
+            }
+          } catch (error) {
+            console.error(
+              'MARKETHUB PUSH ERROR:',
+              error
+            )
+          } finally {
+            setSavingPush(false)
+          }
+        }
+
   return (
     <section style={section}>
       <header>
@@ -1131,11 +1247,22 @@ export default function MarketHubSettings({
                               {labels.emailNotificationsDescription}
                             </span>
                           </div>
-                          <input
-                            type="checkbox"
-                            defaultChecked={notificationPreferences.email}
-                            style={notificationCheckbox}
-                          />
+                          <button
+                            type="button"
+                            onClick={togglePush}
+                            disabled={savingPush}
+                            style={{
+                              ...primaryButton,
+                              marginTop: 0,
+                              minWidth: '170px'
+                            }}
+                          >
+                            {savingPush
+                              ? 'Working...'
+                              : pushEnabled
+                                ? 'Disable'
+                                : 'Enable'}
+                          </button>
                         </label>
                         <div style={notificationDivider} />
                         <label style={notificationRow}>

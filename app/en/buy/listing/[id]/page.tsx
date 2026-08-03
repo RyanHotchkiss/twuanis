@@ -17,6 +17,16 @@ import {
 import RecordRecentlyViewedProperty
   from '@/app/components/RecordRecentlyViewedProperty'
 
+import ListingCompareButton
+  from '@/app/components/comparisons/ListingCompareButton'
+
+import PropertyNotes
+  from '@/app/components/PropertyNotes'
+
+import {
+  resolveListingImages
+} from '@/app/utils/resolveListingImages'
+
 export default async function ListingPage({
   params
 }: {
@@ -82,20 +92,9 @@ if (error || !data) {
 const listing = {
       ...data,
       images:
-        Array.isArray(data.images)
-          ? data.images
-          : typeof data.images === 'string'
-          ? (() => {
-              try {
-                return JSON.parse(data.images)
-              } catch {
-                return data.images
-                  .split('|')
-                  .map((img: string) => img.trim())
-                  .filter(Boolean)
-              }
-            })()
-          : []
+        resolveListingImages(
+          data.images
+        )
     }
 
     const valuation = await getValuation(
@@ -335,6 +334,16 @@ const schema = buildListingSchema({
               district={listing.district}
               propertyType={listing.property_type}
               transactionType="buy"
+              language="en"
+            />
+
+            <ListingCompareButton
+              listingId={listing.id}
+              language="en"
+            />
+
+            <PropertyNotes
+              listingId={listing.id}
               language="en"
             />
 

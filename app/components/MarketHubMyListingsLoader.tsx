@@ -13,6 +13,10 @@ import MarketHubMyListings, {
   type MarketHubListing
 } from '@/app/components/MarketHubMyListings'
 
+import {
+  resolveFirstListingImage
+} from '@/app/utils/resolveListingImages'
+
 type SupportedLanguage =
   | 'en'
   | 'es'
@@ -51,39 +55,6 @@ type DatabaseActivityEvent = {
 
 type MarketHubMyListingsLoaderProps = {
   language: SupportedLanguage
-}
-
-function parseImages(
-  value: unknown
-): string[] {
-  if (Array.isArray(value)) {
-    return value
-      .map(image => String(image))
-      .filter(Boolean)
-  }
-
-  if (
-    typeof value === 'string' &&
-    value.trim()
-  ) {
-    try {
-      const parsed =
-        JSON.parse(value)
-
-      if (Array.isArray(parsed)) {
-        return parsed
-          .map(image => String(image))
-          .filter(Boolean)
-      }
-    } catch {
-      return value
-        .split('|')
-        .map(image => image.trim())
-        .filter(Boolean)
-    }
-  }
-
-  return []
 }
 
 function normalizeStatus(
@@ -255,10 +226,6 @@ function mapListing(
     emailInquiryCount: number
   }
 ): MarketHubListing {
-  const images =
-    parseImages(
-      listing.images
-    )
 
   return {
     id:
@@ -283,7 +250,9 @@ function mapListing(
       ),
 
     image:
-      images[0] ?? null,
+      resolveFirstListingImage(
+        listing.images
+      ),
 
     location:
       [

@@ -40,6 +40,17 @@ import {
 
 import EmailAuthModal from '@/app/components/EmailAuthModal'
 
+import PropertyComparisonTray
+  from '@/app/components/comparisons/PropertyComparisonTray'
+
+import {
+  usePropertyComparisonSelection
+} from '@/lib/property-comparison-selection'
+
+import {
+  resolveListingImages
+} from '@/app/utils/resolveListingImages'
+
 export default function HomePage() {
   return (
     <Suspense fallback={null}>
@@ -55,6 +66,14 @@ const searchParams =
 
 const savedSearchId =
   searchParams.get('savedSearch')
+
+const {
+  isSelected,
+  toggleProperty,
+  maximumProperties,
+  propertyIds
+} =
+  usePropertyComparisonSelection()
 
 const navButton = {
             background:'#FFFFFF50',
@@ -264,40 +283,22 @@ const { data, error } = await supabase
 
 
 
-            const normalizedSupabaseListings = (data || []).map(
-                  (listing: any) => ({
-                    ...listing,
+const normalizedSupabaseListings =
+  (data || []).map(
+    (listing: any) => ({
+      ...listing,
 
-                    id: createListingId(listing),
+      id:
+        createListingId(
+          listing
+        ),
 
-                    images:
-                      Array.isArray(listing.images)
-                        ? listing.images
-                        : typeof listing.images === 'string'
-                        ? (() => {
-
-                            try {
-
-                              return JSON.parse(
-                                listing.images
-                              )
-
-                            } catch {
-
-                              return listing.images
-                                .split('|')
-                                .map((img: string) =>
-                                  img.trim()
-                                )
-                                .filter(Boolean)
-
-                            }
-
-                          })()
-                        : []
-
-                  })
-                )
+      images:
+        resolveListingImages(
+          listing.images
+        )
+    })
+  )
 
                 const mergedListings = [
                   ...normalizedSupabaseListings
@@ -950,7 +951,9 @@ const filteredProperties = properties.filter((property) => {
                 style={{
                   display: 'flex',
                   justifyContent: 'center',
-                  marginBottom: '24px'
+                  marginBottom: '24px',
+                  gap: '12px',
+                  flexWrap: 'wrap',
                 }}
               >
                 <button
@@ -968,6 +971,23 @@ const filteredProperties = properties.filter((property) => {
                 >
                   Guardar búsqueda
                 </button>
+
+                <Link
+                  href="/es/favoritos"
+                  style={{
+                    background: '#161616',
+                    border: '1px solid #C7A44B',
+                    color: '#C7A44B',
+                    padding: '12px 20px',
+                    borderRadius: '999px',
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                    textDecoration: 'none'
+                  }}
+                >
+                  Abrir Favoritos
+                </Link>
+
               </div>   
 
         {/* MAIN GRID */}
@@ -1222,6 +1242,62 @@ const filteredProperties = properties.filter((property) => {
 
                                       </button>
 
+                                  <button
+                                    type="button"
+                                    onClick={e => {
+                                      e.preventDefault()
+                                      e.stopPropagation()
+
+                                      toggleProperty(
+                                        property.id
+                                      )
+                                    }}
+                                    style={{
+                                      position: 'absolute',
+                                      left: '1rem',
+                                      bottom: '1rem',
+                                      zIndex: 20,
+                                      border:
+                                        isSelected(property.id)
+                                          ? '1px solid #fff'
+                                          : '1px solid rgba(255,255,255,.25)',
+                                      borderRadius: '999px',
+                                      padding: '.55rem .8rem',
+                                      background:
+                                        isSelected(property.id)
+                                          ? '#fff'
+                                          : 'rgba(0,0,0,.65)',
+                                      color:
+                                        isSelected(property.id)
+                                          ? '#000'
+                                          : '#fff',
+                                      backdropFilter: 'blur(8px)',
+                                      cursor:
+                                        !isSelected(property.id) &&
+                                        propertyIds.length >=
+                                          maximumProperties
+                                          ? 'not-allowed'
+                                          : 'pointer',
+                                      fontSize: '.75rem',
+                                      fontWeight: 700,
+                                      opacity:
+                                        !isSelected(property.id) &&
+                                        propertyIds.length >=
+                                          maximumProperties
+                                          ? 0.45
+                                          : 1
+                                    }}
+                                    disabled={
+                                      !isSelected(property.id) &&
+                                      propertyIds.length >=
+                                        maximumProperties
+                                    }
+                                  >
+                                    {isSelected(property.id)
+                                      ? 'Selected'
+                                      : '+ Comparar'}
+                                  </button>
+
                                     </div>
 
                                     {/* CONTENT */}
@@ -1357,6 +1433,10 @@ const filteredProperties = properties.filter((property) => {
                 </div>
               </div>
            </div>
+        <PropertyComparisonTray
+          properties={properties}
+          language="es"
+        />
     </main>
   )
 }

@@ -10,7 +10,9 @@ import ComparisonCard from './ComparisonCard'
 
 import {
   deletePropertyComparison,
+  duplicatePropertyComparison,
   getPropertyComparisons,
+  updatePropertyComparison,
   type MarketHubPropertyComparison
 } from '@/lib/property-comparisons'
 
@@ -75,19 +77,65 @@ export default function PropertyComparisonPanel({
   }, [loadComparisons])
 
   async function handleDelete(
-    comparisonId: string
-  ) {
-    await deletePropertyComparison(
-      comparisonId
-    )
-
-    setComparisons(current =>
-      current.filter(
-        comparison =>
-          comparison.id !== comparisonId
+      comparisonId: string
+    ) {
+      await deletePropertyComparison(
+        comparisonId
       )
-    )
-  }
+
+      setComparisons(current =>
+        current.filter(
+          comparison =>
+            comparison.id !== comparisonId
+        )
+      )
+    }
+
+    async function handleRename(
+      comparisonId: string,
+      currentTitle: string
+    ) 
+    {
+      const name = window.prompt(
+        language === 'es'
+          ? 'Nuevo nombre de la comparación'
+          : 'New comparison name',
+        currentTitle
+      )
+
+      if (!name?.trim()) {
+        return
+      }
+
+      await updatePropertyComparison({
+        comparisonId,
+        name,
+        language
+      })
+
+      setComparisons(current =>
+        current.map(comparison =>
+          comparison.id === comparisonId
+            ? {
+                ...comparison,
+                title: name.trim()
+              }
+            : comparison
+        )
+      )
+    }
+
+    async function handleDuplicate(
+      comparisonId: string
+    ) {
+      const comparison =
+        await duplicatePropertyComparison({
+          comparisonId,
+          language
+        })
+
+      await loadComparisons()
+    }
 
   if (loading) {
     return (
@@ -136,6 +184,8 @@ export default function PropertyComparisonPanel({
               ? `${comparison.propertyCount} propiedades`
               : `${comparison.propertyCount} properties`
           }
+          onRename={handleRename}
+          onDuplicate={handleDuplicate}
           onDelete={handleDelete}
         />
       ))}

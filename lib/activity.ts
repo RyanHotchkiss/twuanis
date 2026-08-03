@@ -1,3 +1,7 @@
+import {
+  supabase
+} from '@/lib/supabase'
+
 export const ACTIVITY_TYPES = [
     'viewed-property',
     'saved-property',
@@ -164,6 +168,7 @@ export type ActivityEventCategory =
   | 'market'
   | 'search'
   | 'account'
+  | 'comparison'
 
 export type PropertyActivityEventType =
   | 'property_viewed'
@@ -183,20 +188,29 @@ export type ListingActivityEventType =
   | 'listing_archived'
   | 'listing_restored'
   | 'listing_deleted'
+  | 'listing_permanently_deleted'
   | 'listing_removed'
 
   export type SearchActivityEventType =
   | 'search_saved'
 
+export type ComparisonActivityEventType =
+  | 'comparison_created'
+  | 'comparison_opened'
+  | 'comparison_duplicated'
+  | 'comparison_deleted'
+
 export type ActivityEventType =
   | PropertyActivityEventType
   | ListingActivityEventType
   | SearchActivityEventType
+  | ComparisonActivityEventType
 
 export type ActivityEntityType =
   | 'property'
   | 'listing'
   | 'search'
+  | 'property_comparison'
 
 export function recordSearchSaved({
   searchId,
@@ -275,28 +289,55 @@ export const PROPERTY_ACTIVITY_EVENTS = [
 }[]
 
 export async function recordActivityEvent(
-  event: ActivityEventInput
-): Promise<void> {
-  const response = await fetch(
-    '/api/activity',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(event)
+      event: ActivityEventInput
+    ): Promise<void> {
+      const {
+        data: {
+          session
+        },
+        error: sessionError
+      } =
+        await supabase.auth.getSession()
+
+      if (
+        sessionError ||
+        !session
+      ) {
+        throw new Error(
+          'Authentication required to record activity.'
+        )
+      }
+
+      const response = await fetch(
+        '/api/activity',
+        {
+          method: 'POST',
+
+          headers: {
+            'Content-Type':
+              'application/json',
+
+            Authorization:
+              `Bearer ${session.access_token}`
+          },
+
+          body:
+            JSON.stringify(event)
+        }
+      )
+
+      if (!response.ok) {
+        const result =
+          await response
+            .json()
+            .catch(() => null)
+
+        throw new Error(
+          result?.error ||
+            'Unable to record activity event.'
+        )
+      }
     }
-  )
-
-  if (!response.ok) {
-    const message = await response.text()
-
-    throw new Error(
-      message ||
-        'Unable to record activity event.'
-    )
-  }
-}
 
 export function recordPropertyViewed({
   propertyId,

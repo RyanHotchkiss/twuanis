@@ -5,6 +5,10 @@ import { supabase } from '@/lib/supabase'
 
 import TopBar from '@/app/components/TopBarES'
 
+import {
+  resolveListingImages
+} from '@/app/utils/resolveListingImages'
+
 export default function SwipePage() {
 
   const [properties, setProperties] = useState<any[]>([])
@@ -47,11 +51,9 @@ export default function SwipePage() {
               ...listing,
 
               images:
-                Array.isArray(listing.images)
-                  ? listing.images
-                  : typeof listing.images === 'string'
-                  ? listing.images.split('|')
-                  : []
+              resolveListingImages(
+                listing.images
+              )
 
             })
           )

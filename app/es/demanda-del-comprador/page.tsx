@@ -4,6 +4,8 @@ import ResultadosDemandaComprador from './ResultadosDemandaComprador'
 import { getExplorerOptions } from '@/lib/explorer-options-engine'
 import { getBuyerDemand } from '@/lib/buyer-demand-engine'
 
+import AnalysisActions from '@/app/components/AnalysisActions'
+
 type PageProps = {
   searchParams: Promise<{
     transaction_type?: string
@@ -76,6 +78,14 @@ export default async function DemandaCompradorPage({
         filters={filters}
         basePath="/es/demanda-del-comprador"
       />
+
+        <AnalysisActions
+          engineType="buyer-demand"
+          language="es"
+          filters={filters}
+          result={demand}
+          defaultName="Demanda del Comprador"
+        />
 
       <ResultadosDemandaComprador
         filters={filters}

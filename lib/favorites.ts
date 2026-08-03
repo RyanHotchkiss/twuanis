@@ -9,6 +9,10 @@ import {
 import { supabase }
 from '@/lib/supabase'
 
+import {
+  recordPropertySaved
+} from '@/lib/activity/listings'
+
 export const FAVORITES_STORAGE_KEY =
   'favorites'
 
@@ -20,44 +24,40 @@ const LEGACY_KEYS = [
 function read(
   key: string
 ): string[] {
-
-  if (typeof window === 'undefined') {
+  if (
+    typeof window === 'undefined'
+  ) {
     return []
   }
 
   try {
-
-    const value = JSON.parse(
-      localStorage.getItem(key) || '[]'
-    )
+    const value =
+      JSON.parse(
+        window.localStorage.getItem(key) ||
+        '[]'
+      )
 
     return Array.isArray(value)
       ? value
       : []
-
   } catch {
-
     return []
-
   }
-
 }
 
 function write(
   ids: string[]
 ) {
+  if (
+    typeof window === 'undefined'
+  ) {
+    return
+  }
 
-  localStorage.setItem(
+  window.localStorage.setItem(
     FAVORITES_STORAGE_KEY,
     JSON.stringify(ids)
   )
-
-  window.dispatchEvent(
-    new Event(
-      'favorites-updated'
-    )
-  )
-
 }
 
 export function getFavorites() {
@@ -73,9 +73,13 @@ export function getFavorites() {
 
   write(unique)
 
-  LEGACY_KEYS.forEach(key =>
-    localStorage.removeItem(key)
-  )
+  if (
+    typeof window !== 'undefined'
+  ) {
+    LEGACY_KEYS.forEach(key =>
+      window.localStorage.removeItem(key)
+    )
+  }
 
   return unique
 
@@ -103,6 +107,8 @@ export async function saveFavorite(
     ])
 
     await saveListingFavorite(id)
+
+    recordPropertySaved(id)
 
 }
 
@@ -148,6 +154,15 @@ export async function migrateAnonymousFavorites() {
     return
   }
 
+  const RECENT_SAVED_PROPERTIES_KEY =
+  'recently-saved-properties'
+
+  window.dispatchEvent(
+      new Event(
+        'recent-saved-properties-updated'
+      )
+    )
+
   const rows =
     favorites.map(id => ({
       user_id: user.id,
@@ -164,7 +179,10 @@ export async function migrateAnonymousFavorites() {
       }
     )
 
-  localStorage.removeItem(
+  if (
+  typeof window !== 'undefined'
+) {
+  window.localStorage.removeItem(
     FAVORITES_STORAGE_KEY
   )
 
@@ -173,4 +191,5 @@ export async function migrateAnonymousFavorites() {
       'favorites-updated'
     )
   )
+}
 }

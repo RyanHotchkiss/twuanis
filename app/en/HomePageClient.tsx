@@ -27,7 +27,9 @@ import {
   legal_statuses
 } from '@/data/property-data'
 
-
+import {
+  resolveListingImages
+} from '@/app/utils/resolveListingImages'
 
 function HomePageContent({
                 ontologyTerms,
@@ -145,11 +147,9 @@ const [showMainOverlay, setShowMainOverlay] =
                         id: createListingId(listing),
 
                         images:
-                        Array.isArray(listing.images)
-                            ? listing.images
-                            : typeof listing.images === 'string'
-                            ? listing.images.split('|')
-                            : []
+                    resolveListingImages(
+                      listing.images
+                    )
 
                     })
                     )
