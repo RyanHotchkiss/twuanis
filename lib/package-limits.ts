@@ -31,15 +31,11 @@ type PackageLimitRecord = {
 type PackageRecord = {
   id: string
   slug: string
-  package_limits:
-    PackageLimitRecord[]
 }
 
 type ActiveSubscriptionRow = {
   id: string
   package_id: string
-  package:
-    PackageRecord[]
 }
 
 export class PackageLimitsError
@@ -78,9 +74,9 @@ export async function resolveUserPackageLimits({
     )
   }
 
-  const {
-    data,
-    error
+    const {
+    data: subscriptionData,
+    error: subscriptionError
   } =
     await supabase
       .from(
@@ -88,18 +84,7 @@ export async function resolveUserPackageLimits({
       )
       .select(`
         id,
-        package_id,
-
-        package:packages (
-          id,
-          slug,
-
-          package_limits (
-            listing_limit,
-            featured_listing_limit,
-            storage_limit_mb
-          )
-        )
+        package_id
       `)
       .eq(
         'user_id',
@@ -118,18 +103,14 @@ export async function resolveUserPackageLimits({
       .limit(1)
       .maybeSingle()
 
-  if (error) {
+  if (subscriptionError) {
     throw new PackageLimitsError(
       'PACKAGE_LIMITS_LOAD_FAILED',
-      error.message
+      subscriptionError.message
     )
   }
 
-  if (
-    !data ||
-    !data.package ||
-    data.package.length === 0
-  ) {
+  if (!subscriptionData) {
     throw new PackageLimitsError(
       'NO_ACTIVE_SUBSCRIPTION',
       'No active subscription was found.'
@@ -137,21 +118,88 @@ export async function resolveUserPackageLimits({
   }
 
   const subscription =
-    data as ActiveSubscriptionRow
+    subscriptionData as
+      ActiveSubscriptionRow
+
+  if (!subscription.package_id) {
+    throw new PackageLimitsError(
+      'NO_ACTIVE_SUBSCRIPTION',
+      'The active subscription does not identify a package.'
+    )
+  }
+
+  const {
+    data: packageData,
+    error: packageError
+  } =
+    await supabase
+      .from(
+        'packages'
+      )
+      .select(`
+        id,
+        slug
+      `)
+      .eq(
+        'id',
+        subscription.package_id
+      )
+      .maybeSingle()
+
+  if (packageError) {
+    throw new PackageLimitsError(
+      'PACKAGE_LIMITS_LOAD_FAILED',
+      packageError.message
+    )
+  }
+
+  if (!packageData) {
+    throw new PackageLimitsError(
+      'NO_ACTIVE_SUBSCRIPTION',
+      'The active subscription package could not be resolved.'
+    )
+  }
 
   const packageRecord =
-    subscription.package[0]
+    packageData as
+      PackageRecord
 
-  const limitRecord =
-    packageRecord
-      .package_limits?.[0]
+  const {
+    data: limitsData,
+    error: limitsError
+  } =
+    await supabase
+      .from(
+        'package_limits'
+      )
+      .select(`
+        listing_limit,
+        featured_listing_limit,
+        storage_limit_mb
+      `)
+      .eq(
+        'package_id',
+        packageRecord.id
+      )
+      .maybeSingle()
 
-  if (!limitRecord) {
+  if (limitsError) {
+    throw new PackageLimitsError(
+      'PACKAGE_LIMITS_LOAD_FAILED',
+      limitsError.message
+    )
+  }
+
+  if (!limitsData) {
     throw new PackageLimitsError(
       'PACKAGE_LIMITS_NOT_FOUND',
       'No limits were configured for the active package.'
     )
   }
+
+  const limitRecord =
+    limitsData as
+      PackageLimitRecord
 
   const storageLimitMb =
     limitRecord.storage_limit_mb

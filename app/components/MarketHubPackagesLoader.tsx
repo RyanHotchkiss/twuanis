@@ -1055,7 +1055,26 @@ export default function MarketHubPackagesLoader({
       )
 
       const currentPackage =
-        loadedSubscription.package[0]
+                loadedSubscription.package[0]
+
+              if (!currentPackage) {
+          setPackageEntitlements([])
+          setPackageEngines([])
+          setPackageLimits(null)
+          setAccountPermissions([])
+          setPackageUsage(null)
+          setPackageUsageError('')
+          setAddOnProducts([])
+
+          setErrorMessage(
+            language === 'es'
+              ? 'No se pudo resolver el paquete activo.'
+              : 'The active package could not be resolved.'
+          )
+
+          setLoading(false)
+          return
+        }
 
         try {
           const availableAddOns =
@@ -1346,9 +1365,19 @@ export default function MarketHubPackagesLoader({
   }
 
   const pkg =
-     subscription.package[0]
+  subscription.package[0]
 
-  const formatAddOnDuration = (
+    if (!pkg) {
+      return (
+        <section style={messageCard}>
+          {language === 'es'
+            ? 'No se pudo resolver el paquete activo.'
+            : 'The active package could not be resolved.'}
+        </section>
+      )
+    }
+
+    const formatAddOnDuration = (
       product: AvailableAddOn
     ): string => {
       switch (
@@ -1519,6 +1548,7 @@ export default function MarketHubPackagesLoader({
     const upgradePackages =
       availablePackages.map(
         availablePackage => {
+
           const packageName =
             language === 'es'
               ? availablePackage.name_es
