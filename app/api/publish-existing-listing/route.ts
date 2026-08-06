@@ -12,20 +12,18 @@ import {
 } from '@/lib/supabase-admin'
 
 import {
-  recordListingPermanentlyDeleted
-} from '@/lib/activity/listings'
+  resolveUserPackageUsage
+} from '@/lib/package-usage'
+
+import {
+  recordListingPublished
+} from '@/lib/activity'
 
 export const runtime =
   'nodejs'
 
 export const dynamic =
   'force-dynamic'
-
-const BUCKET_NAME =
-  'listings-images'
-
-const STORAGE_LIST_LIMIT =
-  100
 
 type ListingRow = {
   id: string
@@ -34,6 +32,7 @@ type ListingRow = {
   transaction_type: string | null
   listing_status: string | null
   images: unknown
+  published_at: string | null
 }
 
 function normalizeStoredImages(
@@ -89,113 +88,10 @@ function normalizeStoredImages(
     .filter(Boolean)
 }
 
-function isExternalUrl(
-  value: string
-): boolean {
-  return (
-    value.startsWith(
-      'https://'
-    ) ||
-    value.startsWith(
-      'http://'
-    )
-  )
-}
-
-function isOwnedStoragePath(
-  value: string,
-  userId: string,
-  listingId: string
-): boolean {
-  return value.startsWith(
-    `${userId}/${listingId}/`
-  )
-}
-
-async function listListingStoragePaths(
-  userId: string,
-  listingId: string
-): Promise<string[]> {
-  const folderPath =
-    `${userId}/${listingId}`
-
-  const storagePaths:
-    string[] = []
-
-  let offset = 0
-
-  while (true) {
-    const {
-      data,
-      error
-    } =
-      await supabaseAdmin
-        .storage
-        .from(
-          BUCKET_NAME
-        )
-        .list(
-          folderPath,
-          {
-            limit:
-              STORAGE_LIST_LIMIT,
-
-            offset,
-
-            sortBy: {
-              column:
-                'name',
-
-              order:
-                'asc'
-            }
-          }
-        )
-
-    if (error) {
-      throw new Error(
-        `Storage folder could not be inspected: ${error.message}`
-      )
-    }
-
-    const files =
-      (
-        data ?? []
-      )
-        .filter(item =>
-          Boolean(
-            item.name
-          )
-        )
-        .map(item =>
-          `${folderPath}/${item.name}`
-        )
-
-    storagePaths.push(
-      ...files
-    )
-
-    if (
-      files.length <
-      STORAGE_LIST_LIMIT
-    ) {
-      break
-    }
-
-    offset +=
-      STORAGE_LIST_LIMIT
-  }
-
-  return storagePaths
-}
-
 export async function POST(
   request: NextRequest
 ) {
   try {
-    /*
-     * Verify the authenticated user.
-     */
     const authorization =
       request.headers.get(
         'authorization'
@@ -267,9 +163,6 @@ export async function POST(
       )
     }
 
-    /*
-     * Read the request.
-     */
     const requestBody =
       await request.json()
 
@@ -294,9 +187,6 @@ export async function POST(
       )
     }
 
-    /*
-     * Load the listing and verify ownership.
-     */
     const {
       data: listingData,
       error: listingError
@@ -311,7 +201,8 @@ export async function POST(
           title,
           transaction_type,
           listing_status,
-          images
+          images,
+          published_at
         `)
         .eq(
           'id',
@@ -321,7 +212,7 @@ export async function POST(
 
     if (listingError) {
       console.error(
-        'PERMANENT DELETE LISTING LOAD ERROR:',
+        'PUBLISH EXISTING LISTING LOAD ERROR:',
         listingError
       )
 
@@ -362,7 +253,7 @@ export async function POST(
         {
           success: false,
           error:
-            'You are not authorized to permanently delete this listing.'
+            'You are not authorized to publish this listing.'
         },
         {
           status: 403
@@ -372,13 +263,13 @@ export async function POST(
 
     if (
       listing.listing_status !==
-      'deleted'
+      'draft'
     ) {
       return NextResponse.json(
         {
           success: false,
           error:
-            'Only deleted listings can be permanently deleted.'
+            'Only draft listings can be published.'
         },
         {
           status: 409
@@ -386,110 +277,100 @@ export async function POST(
       )
     }
 
-    /*
-     * Find every customer-owned Storage object.
-     *
-     * Canonical listing images are included, and the
-     * folder is inspected so orphaned objects are also
-     * removed.
-     *
-     * External scraped URLs are never sent to Storage.
-     */
-    const storedImages =
+    const images =
       normalizeStoredImages(
         listing.images
       )
 
-    const canonicalOwnedPaths =
-      storedImages.filter(
-        image =>
-          !isExternalUrl(
-            image
-          ) &&
-          isOwnedStoragePath(
-            image,
-            user.id,
-            listing.id
-          )
+    if (images.length === 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          error:
+            'Add at least one image before publishing this listing.'
+        },
+        {
+          status: 409
+        }
       )
-
-    const folderStoragePaths =
-      await listListingStoragePaths(
-        user.id,
-        listing.id
-      )
-
-    const ownedStoragePaths =
-      Array.from(
-        new Set([
-          ...canonicalOwnedPaths,
-          ...folderStoragePaths
-        ])
-      )
-
-    /*
-     * Remove owned Storage objects first.
-     *
-     * If Storage deletion fails, the database record
-     * remains intact and the user can safely retry.
-     */
-    if (
-      ownedStoragePaths.length >
-      0
-    ) {
-      const {
-        error: storageDeleteError
-      } =
-        await supabaseAdmin
-          .storage
-          .from(
-            BUCKET_NAME
-          )
-          .remove(
-            ownedStoragePaths
-          )
-
-      if (storageDeleteError) {
-        console.error(
-          'PERMANENT DELETE STORAGE ERROR:',
-          storageDeleteError
-        )
-
-        return NextResponse.json(
-          {
-            success: false,
-            error:
-              'The listing images could not be permanently deleted. The listing was preserved.'
-          },
-          {
-            status: 500
-          }
-        )
-      }
     }
 
-    /*
-     * Delete the listing row.
-     *
-     * Related rows are removed automatically through:
-     * - favorite_collection_items
-     * - listing_events
-     * - listing_favorites
-     * - listings_ontology_terms
-     * - property_notes
-     * - saved_search_alert_deliveries
-     *
-     * All six foreign keys use ON DELETE CASCADE.
-     */
+    let packageUsage
+
+    try {
+      packageUsage =
+        await resolveUserPackageUsage({
+          supabase:
+            supabaseAdmin,
+
+          userId:
+            user.id
+        })
+    } catch (usageError) {
+      console.error(
+        'PUBLISH EXISTING PACKAGE USAGE ERROR:',
+        usageError
+      )
+
+      return NextResponse.json(
+        {
+          success: false,
+          error:
+            'Your package allowance could not be verified.'
+        },
+        {
+          status: 500
+        }
+      )
+    }
+
+    if (
+      packageUsage.listingLimit !==
+        null &&
+      packageUsage.listingsUsed >=
+        packageUsage.listingLimit
+    ) {
+      return NextResponse.json(
+        {
+          success: false,
+
+          code:
+            'LISTING_LIMIT_EXCEEDED',
+
+          error:
+            `Your package allows ${packageUsage.listingLimit} active ${
+              packageUsage.listingLimit === 1
+                ? 'listing'
+                : 'listings'
+            }. Archive an existing listing or upgrade your package before publishing another.`
+        },
+        {
+          status: 403
+        }
+      )
+    }
+
+    const publishedAt =
+      new Date().toISOString()
+
     const {
-      data: deletedListing,
-      error: deleteError
+      data: publishedListing,
+      error: publishError
     } =
       await supabaseAdmin
         .from(
           'listings'
         )
-        .delete()
+        .update({
+          listing_status:
+            'active',
+
+          published_at:
+            publishedAt,
+
+          updated_at:
+            publishedAt
+        })
         .eq(
           'id',
           listing.id
@@ -500,27 +381,32 @@ export async function POST(
         )
         .eq(
           'listing_status',
-          'deleted'
+          'draft'
         )
         .select(`
-          id
+          id,
+          title,
+          listing_status,
+          transaction_type,
+          published_at,
+          updated_at
         `)
         .maybeSingle()
 
     if (
-      deleteError ||
-      !deletedListing
+      publishError ||
+      !publishedListing
     ) {
       console.error(
-        'PERMANENT DELETE DATABASE ERROR:',
-        deleteError
+        'PUBLISH EXISTING LISTING UPDATE ERROR:',
+        publishError
       )
 
       return NextResponse.json(
         {
           success: false,
           error:
-            'The Storage objects were removed, but the listing record could not be deleted. Administrative cleanup is required.'
+            'The listing could not be published.'
         },
         {
           status: 500
@@ -528,33 +414,25 @@ export async function POST(
       )
     }
 
-    /*
-     * Record the lifecycle event after deletion.
-     *
-     * Activity failure must not recreate or invalidate
-     * an otherwise successful permanent deletion.
-     */
     try {
-      await recordListingPermanentlyDeleted({
+      await recordListingPublished({
         listingId:
-          listing.id,
+          publishedListing.id,
 
         metadata: {
           title:
-            listing.title ??
-            undefined,
+            publishedListing.title,
+
+          status:
+            publishedListing
+              .listing_status,
 
           transactionType:
-            listing.transaction_type,
+            publishedListing
+              .transaction_type,
 
           previousStatus:
-            listing.listing_status,
-
-          deletionType:
-            'permanent-delete',
-
-          deletedStorageObjectCount:
-            ownedStoragePaths.length,
+            'draft',
 
           source:
             'market-hub'
@@ -562,7 +440,7 @@ export async function POST(
       })
     } catch (activityError) {
       console.error(
-        'PERMANENT DELETE ACTIVITY ERROR:',
+        'PUBLISH EXISTING LISTING ACTIVITY ERROR:',
         activityError
       )
     }
@@ -570,15 +448,12 @@ export async function POST(
     return NextResponse.json({
       success: true,
 
-      listingId:
-        listing.id,
-
-      deletedStorageObjectCount:
-        ownedStoragePaths.length
+      listing:
+        publishedListing
     })
   } catch (error) {
     console.error(
-      'PERMANENT DELETE LISTING ROUTE ERROR:',
+      'PUBLISH EXISTING LISTING ROUTE ERROR:',
       error
     )
 
@@ -586,7 +461,7 @@ export async function POST(
       {
         success: false,
         error:
-          'The listing could not be permanently deleted.'
+          'The listing could not be published.'
       },
       {
         status: 500

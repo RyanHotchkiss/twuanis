@@ -1,11 +1,14 @@
 'use client'
 
 import {
-  CalendarDays,
-  CreditCard,
-  PackageCheck,
-  RefreshCw
-} from 'lucide-react'
+    CalendarDays,
+    CreditCard,
+    Database,
+    PackageCheck,
+    RefreshCw,
+    Star,
+    Warehouse
+  } from 'lucide-react'
 
 type SupportedLanguage =
   | 'en'
@@ -24,11 +27,36 @@ type IncludedPackageBenefit = {
 }
 
 type UsageSummary = {
-    enginesUsed: number
-    savedAnalyses: number
-    savedSearches: number
-    reportsGenerated: number
-    listingsAnalyzed: number
+  savedAnalyses: number
+  savedSearches: number
+  recentActivity: number
+  recentActivityWindowDays: number
+}
+
+type PackageUsage = {
+  packageId: string
+  packageSlug: string
+
+  listingsUsed: number
+  listingLimit: number | null
+
+  featuredListingsUsed: number
+  featuredListingLimit:
+    number | null
+
+  featuredUsageStatus:
+    | 'available'
+    | 'not_configured'
+
+  storageUsedBytes: number
+  storageLimitMb: number | null
+  storageLimitBytes: number | null
+
+  savedAnalysesUsed: number
+  savedSearchesUsed: number
+
+  recentActivityCount: number
+  recentActivityWindowDays: number
 }
 
 export type MarketHubPackagesProps = {
@@ -45,6 +73,8 @@ export type MarketHubPackagesProps = {
   billingCycle: BillingCycle
   includedPackages: IncludedPackageBenefit[]
   usageSummary: UsageSummary
+  packageUsage: PackageUsage | null
+  packageUsageError: string
   upgradePackages: UpgradePackage[]
   availableUpgradeCount: number
   listingAddons: ListingAddon[]
@@ -176,6 +206,56 @@ type UpgradeOutcome = {
   resolvedAt: string
 }
 
+function calculateUsagePercentage(
+  used: number,
+  limit: number | null
+): number | null {
+  if (
+    limit === null ||
+    limit <= 0
+  ) {
+    return null
+  }
+
+  return Math.min(
+    100,
+    Math.max(
+      0,
+      (
+        used /
+        limit
+      ) * 100
+    )
+  )
+}
+
+function formatStorage(
+  bytes: number
+): string {
+  if (bytes < 1024) {
+    return `${bytes} B`
+  }
+
+  const kilobytes =
+    bytes / 1024
+
+  if (kilobytes < 1024) {
+    return `${kilobytes.toFixed(1)} KB`
+  }
+
+  const megabytes =
+    kilobytes / 1024
+
+  if (megabytes < 1024) {
+    return `${megabytes.toFixed(1)} MB`
+  }
+
+  const gigabytes =
+    megabytes / 1024
+
+  return `${gigabytes.toFixed(2)} GB`
+}
+
 export default function MarketHubPackages({
     language,
     currentPlan,
@@ -190,6 +270,8 @@ export default function MarketHubPackages({
     billingCycle,
     includedPackages,
     usageSummary,
+    packageUsage,
+    packageUsageError,
     upgradePackages,
     availableUpgradeCount,
     listingAddons,
@@ -238,20 +320,17 @@ export default function MarketHubPackages({
             activitySummary:
             'Resumen de Actividad',
 
-            enginesUsed:
-            'Motores Utilizados',
-
             savedAnalyses:
             'Análisis Guardados',
 
             savedSearches:
             'Búsquedas Guardadas',
 
-            reportsGenerated:
-            'Informes Generados',
+            recentActivity:
+              'Actividad Reciente',
 
-            listingsAnalyzed:
-            'Propiedades Analizadas',
+            recentActivityDescription:
+              'Eventos registrados durante los últimos',
 
             active:
             'Activo',
@@ -404,7 +483,40 @@ export default function MarketHubPackages({
               'Paquete Activo',
 
             rejectionReason:
-              'Motivo del Rechazo'
+              'Motivo del Rechazo',
+            
+            usageDashboard:
+              'Uso del Paquete',
+
+            usageDashboardDescription:
+              'Revise la capacidad utilizada y disponible en su paquete actual.',
+
+            activeListings:
+              'Propiedades Activas',
+
+            featuredListings:
+              'Propiedades Destacadas',
+
+            storageUsed:
+              'Almacenamiento Utilizado',
+
+            usageUnavailable:
+              'Uso no disponible',
+
+            featuredTrackingPending:
+              'El seguimiento comenzará cuando se activen los complementos para anuncios.',
+
+            of:
+              'de',
+
+            nearLimit:
+              'Se está acercando al límite de su paquete.',
+
+            upgradeRecommendation:
+              'Mejore su paquete para aumentar su capacidad.',
+
+            capacityAvailable:
+              'Capacidad Disponible'
 
                         }
                   : {
@@ -427,20 +539,17 @@ export default function MarketHubPackages({
             activitySummary:
             'Activity Summary',
 
-            enginesUsed:
-            'Engines Used',
-
             savedAnalyses:
             'Saved Analyses',
 
             savedSearches:
             'Saved Searches',
 
-            reportsGenerated:
-            'Reports Generated',
+            recentActivity:
+              'Recent Activity',
 
-            listingsAnalyzed:
-            'Listings Analyzed',
+            recentActivityDescription:
+              'Events recorded during the last',
 
             active:
             'Active',
@@ -595,7 +704,40 @@ export default function MarketHubPackages({
               'Active Package',
 
             rejectionReason:
-              'Rejection Reason'
+              'Rejection Reason',
+
+            usageDashboard:
+              'Package Usage',
+
+            usageDashboardDescription:
+              'Review the capacity used and available in your current package.',
+
+            activeListings:
+              'Active Listings',
+
+            featuredListings:
+              'Featured Listings',
+
+            storageUsed:
+              'Storage Used',
+
+            usageUnavailable:
+              'Usage unavailable',
+
+            featuredTrackingPending:
+              'Usage tracking will begin when Listing Add-ons are activated.',
+
+            of:
+              'of',
+
+            nearLimit:
+              'You are approaching your package limit.',
+
+            upgradeRecommendation:
+              'Upgrade your package to increase your capacity.',
+
+            capacityAvailable:
+              'Capacity Available'
 
             }
 
@@ -622,6 +764,46 @@ export default function MarketHubPackages({
           : storageLimitMb >= 1000
             ? `${storageLimitMb / 1000} GB`
             : `${storageLimitMb} MB`
+
+      const listingUsagePercentage =
+        packageUsage
+          ? calculateUsagePercentage(
+              packageUsage.listingsUsed,
+              packageUsage.listingLimit
+            )
+          : null
+
+      const storageUsagePercentage =
+        packageUsage
+          ? calculateUsagePercentage(
+              packageUsage.storageUsedBytes,
+              packageUsage.storageLimitBytes
+            )
+          : null
+
+      const featuredUsagePercentage =
+        packageUsage &&
+        packageUsage.featuredUsageStatus ===
+          'available'
+          ? calculateUsagePercentage(
+              packageUsage.featuredListingsUsed,
+              packageUsage.featuredListingLimit
+            )
+          : null
+
+      const isNearPackageLimit =
+        (
+          listingUsagePercentage !== null &&
+          listingUsagePercentage >= 80
+        ) ||
+        (
+          storageUsagePercentage !== null &&
+          storageUsagePercentage >= 80
+        ) ||
+        (
+          featuredUsagePercentage !== null &&
+          featuredUsagePercentage >= 80
+        )
 
         return (
             <section style={section}>
@@ -961,64 +1143,266 @@ export default function MarketHubPackages({
                     </div>
                 </div>
 
+                <div style={usageSection}>
+                  <div style={usageSectionHeader}>
+                    <div>
+                      <h3 style={includedHeading}>
+                        {labels.usageDashboard}
+                      </h3>
+
+                      <p style={usageSectionDescription}>
+                        {labels.usageDashboardDescription}
+                      </p>
+                    </div>
+
+                    {isNearPackageLimit &&
+                      availableUpgradeCount > 0 && (
+                        <div style={usageWarning}>
+                          <strong>
+                            {labels.nearLimit}
+                          </strong>
+
+                          <span>
+                            {labels.upgradeRecommendation}
+                          </span>
+                        </div>
+                      )}
+                  </div>
+
+                  {packageUsage ? (
+                    <div style={usageGrid}>
+                      <article style={usageCard}>
+                        <div style={usageCardHeader}>
+                          <div style={usageIcon}>
+                            <Warehouse
+                              size={22}
+                              strokeWidth={1.4}
+                            />
+                          </div>
+
+                          <div style={usageCardLabel}>
+                            {labels.activeListings}
+                          </div>
+                        </div>
+
+                        <div style={usageValueRow}>
+                          <span style={usagePrimaryValue}>
+                            {packageUsage.listingsUsed}
+                          </span>
+
+                          <span style={usageLimitValue}>
+                            {packageUsage.listingLimit ===
+                            null
+                              ? labels.unlimited
+                              : `${labels.of} ${packageUsage.listingLimit}`}
+                          </span>
+                        </div>
+
+                        {listingUsagePercentage !==
+                          null ? (
+                          <>
+                            <div style={progressTrack}>
+                              <div
+                                style={{
+                                  ...progressFill,
+                                  width:
+                                    `${listingUsagePercentage}%`
+                                }}
+                              />
+                            </div>
+
+                            <div style={usagePercentage}>
+                              {listingUsagePercentage.toFixed(
+                                0
+                              )}%{' '}
+                              {language === 'es'
+                                ? 'utilizado'
+                                : 'used'}
+                            </div>
+                          </>
+                        ) : (
+                          <div style={unlimitedBadge}>
+                            {labels.unlimited}
+                          </div>
+                        )}
+                      </article>
+
+                      <article style={usageCard}>
+                        <div style={usageCardHeader}>
+                          <div style={usageIcon}>
+                            <Star
+                              size={22}
+                              strokeWidth={1.4}
+                            />
+                          </div>
+
+                          <div style={usageCardLabel}>
+                            {labels.featuredListings}
+                          </div>
+                        </div>
+
+                        <div style={usageValueRow}>
+                          <span style={usagePrimaryValue}>
+                            {packageUsage
+                              .featuredUsageStatus ===
+                            'available'
+                              ? packageUsage
+                                  .featuredListingsUsed
+                              : '—'}
+                          </span>
+
+                          <span style={usageLimitValue}>
+                            {packageUsage
+                              .featuredListingLimit ===
+                            null
+                              ? labels.unlimited
+                              : `${labels.of} ${packageUsage.featuredListingLimit}`}
+                          </span>
+                        </div>
+
+                        {packageUsage
+                          .featuredUsageStatus ===
+                        'available' ? (
+                          featuredUsagePercentage !==
+                          null ? (
+                            <div style={progressTrack}>
+                              <div
+                                style={{
+                                  ...progressFill,
+                                  width:
+                                    `${featuredUsagePercentage}%`
+                                }}
+                              />
+                            </div>
+                          ) : (
+                            <div style={unlimitedBadge}>
+                              {labels.unlimited}
+                            </div>
+                          )
+                        ) : (
+                          <div style={usagePendingMessage}>
+                            {labels.featuredTrackingPending}
+                          </div>
+                        )}
+                      </article>
+
+                      <article style={usageCard}>
+                        <div style={usageCardHeader}>
+                          <div style={usageIcon}>
+                            <Database
+                              size={22}
+                              strokeWidth={1.4}
+                            />
+                          </div>
+
+                          <div style={usageCardLabel}>
+                            {labels.storageUsed}
+                          </div>
+                        </div>
+
+                        <div style={usageValueRow}>
+                          <span style={usagePrimaryValue}>
+                            {formatStorage(
+                              packageUsage.storageUsedBytes
+                            )}
+                          </span>
+
+                          <span style={usageLimitValue}>
+                            {packageUsage
+                              .storageLimitBytes === null
+                              ? labels.unlimited
+                              : `${labels.of} ${formatStorage(
+                                  packageUsage
+                                    .storageLimitBytes
+                                )}`}
+                          </span>
+                        </div>
+
+                        {storageUsagePercentage !==
+                          null ? (
+                          <>
+                            <div style={progressTrack}>
+                              <div
+                                style={{
+                                  ...progressFill,
+                                  width:
+                                    `${storageUsagePercentage}%`
+                                }}
+                              />
+                            </div>
+
+                            <div style={usagePercentage}>
+                              {storageUsagePercentage.toFixed(
+                                1
+                              )}%{' '}
+                              {language === 'es'
+                                ? 'utilizado'
+                                : 'used'}
+                            </div>
+                          </>
+                        ) : (
+                          <div style={unlimitedBadge}>
+                            {labels.unlimited}
+                          </div>
+                        )}
+                      </article>
+                    </div>
+                  ) : (
+                    <div style={usageErrorCard}>
+                      {packageUsageError ||
+                        labels.usageUnavailable}
+                    </div>
+                  )}
+                </div>
+
+                
+
                 <div style={divider} />
 
-                        <div style={includedSection}>
-                        <h3 style={includedHeading}>
-                            {labels.activitySummary}
-                        </h3>
+                    <div style={includedSection}>
+                      <h3 style={includedHeading}>
+                        {labels.activitySummary}
+                      </h3>
 
-                        <div style={activityGrid}>
-                            <div style={activityCard}>
-                            <div style={activityValue}>
-                                {usageSummary.enginesUsed}
-                            </div>
+                      <div style={activityGrid}>
+                        <div style={activityCard}>
+                          <div style={activityValue}>
+                            {usageSummary.savedAnalyses}
+                          </div>
 
-                            <div style={activityLabel}>
-                                {labels.enginesUsed}
-                            </div>
-                            </div>
-
-                            <div style={activityCard}>
-                            <div style={activityValue}>
-                                {usageSummary.savedAnalyses}
-                            </div>
-
-                            <div style={activityLabel}>
-                                {labels.savedAnalyses}
-                            </div>
-                            </div>
-
-                            <div style={activityCard}>
-                            <div style={activityValue}>
-                                {usageSummary.savedSearches}
-                            </div>
-
-                            <div style={activityLabel}>
-                                {labels.savedSearches}
-                            </div>
-                            </div>
-
-                            <div style={activityCard}>
-                            <div style={activityValue}>
-                                {usageSummary.reportsGenerated}
-                            </div>
-
-                            <div style={activityLabel}>
-                                {labels.reportsGenerated}
-                            </div>
-                            </div>
-
-                            <div style={activityCard}>
-                            <div style={activityValue}>
-                                {usageSummary.listingsAnalyzed}
-                            </div>
-
-                            <div style={activityLabel}>
-                                {labels.listingsAnalyzed}
-                            </div>
-                            </div>
+                          <div style={activityLabel}>
+                            {labels.savedAnalyses}
+                          </div>
                         </div>
+
+                        <div style={activityCard}>
+                          <div style={activityValue}>
+                            {usageSummary.savedSearches}
+                          </div>
+
+                          <div style={activityLabel}>
+                            {labels.savedSearches}
+                          </div>
+                        </div>
+
+                        <div style={activityCard}>
+                          <div style={activityValue}>
+                            {usageSummary.recentActivity}
+                          </div>
+
+                          <div style={activityLabel}>
+                            {labels.recentActivity}
+                          </div>
+
+                          <div style={activitySupportingText}>
+                            {labels.recentActivityDescription}{' '}
+                            {usageSummary.recentActivityWindowDays}{' '}
+                            {language === 'es'
+                              ? 'días'
+                              : 'days'}
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
                     <div style={phaseDivider} />
@@ -1628,7 +2012,7 @@ export default function MarketHubPackages({
                                         <span style={listingAddonStatusDot} />
 
                                         <span>
-                                            {labels.activeFor30Days}
+                                            {addon.duration}
                                         </span>
                                     </div>
 
@@ -2231,6 +2615,13 @@ const activityLabel = {
   color: '#888',
   fontSize: '.82rem',
   fontWeight: 600
+}
+
+const activitySupportingText = {
+  marginTop: '.45rem',
+  color: '#666',
+  fontSize: '.7rem',
+  lineHeight: 1.4
 }
 
 const phaseDivider = {
@@ -3415,4 +3806,157 @@ const upgradeErrorMessage:
         'repeat(auto-fit, minmax(200px, 1fr))',
       gap: '1rem',
       marginTop: '1.1rem'
+    }
+
+    const usageSection = {
+      marginTop: '.25rem'
+    }
+
+    const usageSectionHeader = {
+      display: 'flex',
+      flexWrap: 'wrap' as const,
+      alignItems: 'flex-start',
+      justifyContent: 'space-between',
+      gap: '1rem'
+    }
+
+    const usageSectionDescription = {
+      maxWidth: '650px',
+      margin: '.45rem 0 0',
+      color: '#888',
+      fontSize: '.86rem',
+      lineHeight: 1.5
+    }
+
+    const usageGrid = {
+      display: 'grid',
+      gridTemplateColumns:
+        'repeat(auto-fit, minmax(250px, 1fr))',
+      gap: '1rem',
+      marginTop: '1.25rem'
+    }
+
+    const usageCard = {
+      minHeight: '220px',
+      padding: '1.25rem',
+      background:
+        'linear-gradient(145deg, #1d1d1d 0%, #151515 100%)',
+      border: '1px solid #343434',
+      borderRadius: '16px'
+    }
+
+    const usageCardHeader = {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '.75rem'
+    }
+
+    const usageIcon = {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '2.6rem',
+      height: '2.6rem',
+      flexShrink: 0,
+      color: '#C7A44B',
+      background: '#292313',
+      border: '1px solid #4d4226',
+      borderRadius: '11px'
+    }
+
+    const usageCardLabel = {
+      color: '#aaa',
+      fontSize: '.78rem',
+      fontWeight: 700,
+      letterSpacing: '.04em',
+      textTransform: 'uppercase' as const
+    }
+
+    const usageValueRow = {
+      display: 'flex',
+      flexWrap: 'wrap' as const,
+      alignItems: 'baseline',
+      gap: '.5rem',
+      marginTop: '1.4rem'
+    }
+
+    const usagePrimaryValue = {
+      color: '#fff',
+      fontSize: '2rem',
+      fontWeight: 800,
+      lineHeight: 1
+    }
+
+    const usageLimitValue = {
+      color: '#777',
+      fontSize: '.82rem',
+      fontWeight: 600
+    }
+
+    const progressTrack = {
+      width: '100%',
+      height: '.65rem',
+      marginTop: '1.25rem',
+      overflow: 'hidden',
+      background: '#292929',
+      border: '1px solid #363636',
+      borderRadius: '999px'
+    }
+
+    const progressFill = {
+      height: '100%',
+      background:
+        'linear-gradient(90deg, #8d742e 0%, #C7A44B 100%)',
+      borderRadius: '999px',
+      transition:
+        'width 250ms ease'
+    }
+
+    const usagePercentage = {
+      marginTop: '.55rem',
+      color: '#777',
+      fontSize: '.72rem',
+      fontWeight: 600
+    }
+
+    const unlimitedBadge = {
+      display: 'inline-flex',
+      marginTop: '1.25rem',
+      padding: '.4rem .7rem',
+      color: '#a9d8b3',
+      background: '#18261c',
+      border: '1px solid #294531',
+      borderRadius: '999px',
+      fontSize: '.72rem',
+      fontWeight: 700
+    }
+
+    const usagePendingMessage = {
+      marginTop: '1.2rem',
+      color: '#777',
+      fontSize: '.76rem',
+      lineHeight: 1.5
+    }
+
+    const usageWarning = {
+      display: 'grid',
+      gap: '.25rem',
+      maxWidth: '340px',
+      padding: '.8rem 1rem',
+      color: '#e4ca82',
+      background: '#292313',
+      border: '1px solid #5a4b24',
+      borderRadius: '12px',
+      fontSize: '.76rem',
+      lineHeight: 1.4
+    }
+
+    const usageErrorCard = {
+      marginTop: '1.25rem',
+      padding: '1rem',
+      color: '#ff9b8a',
+      background: '#2a1714',
+      border: '1px solid #5b2d25',
+      borderRadius: '12px',
+      fontSize: '.8rem'
     }

@@ -187,6 +187,7 @@ export type ListingActivityEventType =
   | 'listing_unpublished'
   | 'listing_archived'
   | 'listing_restored'
+  | 'listing_renewed'
   | 'listing_deleted'
   | 'listing_permanently_deleted'
   | 'listing_removed'
@@ -490,6 +491,46 @@ export function recordListingDeleted({
   return recordActivityEvent({
     eventCategory: 'listing',
     eventType: 'listing_deleted',
+    entityType: 'listing',
+    entityId: listingId,
+    metadata
+  })
+}
+
+export function recordListingRestored({
+  listingId,
+  metadata
+}: ListingActivityInput) {
+  return recordActivityEvent({
+    eventCategory: 'listing',
+    eventType: 'listing_restored',
+    entityType: 'listing',
+    entityId: listingId,
+    metadata
+  })
+}
+
+export function recordListingRenewed({
+  listingId,
+  metadata
+}: ListingActivityInput) {
+  return recordActivityEvent({
+    eventCategory: 'listing',
+    eventType: 'listing_renewed',
+    entityType: 'listing',
+    entityId: listingId,
+    metadata
+  })
+}
+
+export function recordListingPermanentlyDeleted({
+  listingId,
+  metadata
+}: ListingActivityInput) {
+  return recordActivityEvent({
+    eventCategory: 'listing',
+    eventType:
+      'listing_permanently_deleted',
     entityType: 'listing',
     entityId: listingId,
     metadata

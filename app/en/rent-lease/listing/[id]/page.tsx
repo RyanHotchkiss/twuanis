@@ -320,6 +320,7 @@ return (
               canton={listing.canton}
               district={listing.district}
               propertyType={listing.property_type}
+              whatsapp={listing.whatsapp}
               transactionType="rent"
               language="en"
             />
@@ -652,26 +653,7 @@ return (
             </div>
 
             {/* CONTACT BUTTON */}
-            <a
-              href={`https://wa.me/${listing.whatsapp}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                marginTop: '2rem',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                background: '#FFFFFF',
-                color: '#000',
-                textDecoration: 'none',
-                padding: '1rem',
-                borderRadius: '999px',
-                fontWeight: 'bold'
-              }}
-            >
-              Contact Seller
-            </a>
-
+    
           </div>
 
         </div>

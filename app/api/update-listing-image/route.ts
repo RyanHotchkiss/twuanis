@@ -11,6 +11,10 @@ import {
   supabaseAdmin
 } from '@/lib/supabase-admin'
 
+import {
+  resolveUserPackageUsage
+} from '@/lib/package-usage'
+
 export const runtime =
   'nodejs'
 
@@ -100,6 +104,33 @@ function isJpeg(
     bytes[1] === 0xd8 &&
     bytes[2] === 0xff
   )
+}
+
+function formatBytes(
+  bytes: number
+): string {
+  if (bytes < 1024) {
+    return `${bytes} B`
+  }
+
+  const kilobytes =
+    bytes / 1024
+
+  if (kilobytes < 1024) {
+    return `${kilobytes.toFixed(1)} KB`
+  }
+
+  const megabytes =
+    kilobytes / 1024
+
+  if (megabytes < 1024) {
+    return `${megabytes.toFixed(1)} MB`
+  }
+
+  const gigabytes =
+    megabytes / 1024
+
+  return `${gigabytes.toFixed(1)} GB`
 }
 
 export async function POST(
@@ -395,6 +426,87 @@ export async function POST(
         }
       )
     }
+
+    /*
+      * Resolve current package usage before
+      * uploading the new Storage object.
+      */
+      let packageUsage
+
+      try {
+        packageUsage =
+          await resolveUserPackageUsage({
+            supabase:
+              supabaseAdmin,
+
+            userId:
+              user.id
+          })
+      } catch (usageError) {
+        console.error(
+          'EDIT IMAGE PACKAGE USAGE ERROR:',
+          usageError
+        )
+
+        return NextResponse.json(
+          {
+            success: false,
+            error:
+              'Your current Storage allowance could not be verified.'
+          },
+          {
+            status: 500
+          }
+        )
+      }
+
+      const projectedStorageBytes =
+        packageUsage.storageUsedBytes +
+        imageBytes.byteLength
+
+      if (
+        packageUsage.storageLimitBytes !==
+          null &&
+        projectedStorageBytes >
+          packageUsage.storageLimitBytes
+      ) {
+        const remainingStorageBytes =
+          Math.max(
+            0,
+            packageUsage.storageLimitBytes -
+            packageUsage.storageUsedBytes
+          )
+
+        return NextResponse.json(
+          {
+            success: false,
+
+            error:
+              `This upload would exceed your package Storage allowance. You have ${formatBytes(
+                remainingStorageBytes
+              )} available, and this optimized image requires ${formatBytes(
+                imageBytes.byteLength
+              )}.`,
+
+            code:
+              'STORAGE_LIMIT_EXCEEDED',
+
+            storageUsedBytes:
+              packageUsage.storageUsedBytes,
+
+            storageLimitBytes:
+              packageUsage.storageLimitBytes,
+
+            incomingFileBytes:
+              imageBytes.byteLength,
+
+            remainingStorageBytes
+          },
+          {
+            status: 403
+          }
+        )
+      }
 
     /*
      * Upload directly to the permanent,

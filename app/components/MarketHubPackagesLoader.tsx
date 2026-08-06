@@ -9,6 +9,11 @@ import {
   supabase
 } from '@/lib/supabase'
 
+import {
+  resolveAvailableAddOns,
+  type AvailableAddOn
+} from '@/lib/add-on-catalog'
+
 import MarketHubPackages, {
   type BillingCycle,
   type SelectedUpgradePackage
@@ -163,6 +168,38 @@ type DatabasePackageLimits = {
   storage_limit_mb: number | null
 }
 
+type PackageUsage = {
+  packageId: string
+  packageSlug: string
+
+  listingsUsed: number
+  listingLimit: number | null
+
+  featuredListingsUsed: number
+  featuredListingLimit:
+    number | null
+
+  featuredUsageStatus:
+    | 'available'
+    | 'not_configured'
+
+  storageUsedBytes: number
+  storageLimitMb: number | null
+  storageLimitBytes: number | null
+
+  savedAnalysesUsed: number
+  savedSearchesUsed: number
+
+  recentActivityCount: number
+  recentActivityWindowDays: number
+}
+
+type PackageUsageResponse = {
+  success: boolean
+  usage?: PackageUsage
+  error?: string
+}
+
 type DatabaseAccountPermission = {
   id: string
   slug: string
@@ -299,6 +336,20 @@ export default function MarketHubPackagesLoader({
       )
      
     const [
+      packageUsage,
+      setPackageUsage
+    ] =
+      useState<PackageUsage | null>(
+        null
+      )
+
+    const [
+      packageUsageError,
+      setPackageUsageError
+    ] =
+      useState('')
+
+    const [
       accountPermissions,
       setAccountPermissions
     ] =
@@ -318,9 +369,17 @@ export default function MarketHubPackagesLoader({
       comparisonPackageEngines,
       setComparisonPackageEngines
     ] =
-      useState<DatabaseComparisonPackageEngine[]>(
-        []
-      )
+      useState<
+        DatabaseComparisonPackageEngine[]
+      >([])
+
+    const [
+      addOnProducts,
+      setAddOnProducts
+    ] =
+      useState<
+        AvailableAddOn[]
+      >([])
 
     const [
       selectedUpgradePackage,
@@ -401,6 +460,94 @@ export default function MarketHubPackagesLoader({
         setUpgradeError
       ] =
         useState('')
+
+    async function loadPackageUsage():
+      Promise<void> {
+      setPackageUsageError('')
+
+      const {
+        data: {
+          session
+        },
+        error: sessionError
+      } =
+        await supabase
+          .auth
+          .getSession()
+
+      if (
+        sessionError ||
+        !session?.access_token
+      ) {
+        setPackageUsage(null)
+
+        setPackageUsageError(
+          language === 'es'
+            ? 'No se pudo verificar el uso de su paquete.'
+            : 'Your package usage could not be verified.'
+        )
+
+        return
+      }
+
+      try {
+        const response =
+          await fetch(
+            '/api/package-usage',
+            {
+              method: 'GET',
+
+              headers: {
+                Authorization:
+                  `Bearer ${session.access_token}`
+              },
+
+              cache:
+                'no-store'
+            }
+          )
+
+        const result =
+          await response.json() as
+            PackageUsageResponse
+
+        if (
+          !response.ok ||
+          !result.success ||
+          !result.usage
+        ) {
+          setPackageUsage(null)
+
+          setPackageUsageError(
+            result.error ||
+            (
+              language === 'es'
+                ? 'No se pudo cargar el uso de su paquete.'
+                : 'Your package usage could not be loaded.'
+            )
+          )
+
+          return
+        }
+
+        setPackageUsage(
+          result.usage
+        )
+      } catch (usageError) {
+        console.error(
+          'MARKETHUB PACKAGE USAGE ERROR:',
+          usageError
+        )
+
+        setPackageUsage(null)
+
+        setPackageUsageError(
+          language === 'es'
+            ? 'No se pudo cargar el uso de su paquete.'
+            : 'Your package usage could not be loaded.'
+        )
+      }
+    }
 
   useEffect(() => {
     let active = true
@@ -529,7 +676,8 @@ export default function MarketHubPackagesLoader({
               setPackageEngines([])
               setPackageLimits(null)
               setAccountPermissions([])
-
+              setPackageUsage(null)
+              setPackageUsageError('')
               setErrorMessage(
                 language === 'es'
                   ? 'Inicie sesión para ver su suscripción.'
@@ -537,8 +685,16 @@ export default function MarketHubPackagesLoader({
               )
 
               setLoading(false)
-              return
-            }
+                            return
+                          }
+
+                          if (showLoading) {
+                await loadPackageUsage()
+
+                if (!active) {
+                  return
+                }
+              }
 
             const {
         data: pendingSubscriptionData,
@@ -879,7 +1035,8 @@ export default function MarketHubPackagesLoader({
         setPackageEngines([])
         setPackageLimits(null)
         setAccountPermissions([])
-
+        setPackageUsage(null)
+        setPackageUsageError('')
         setErrorMessage(
           language === 'es'
             ? 'No se encontró una suscripción activa.'
@@ -899,6 +1056,34 @@ export default function MarketHubPackagesLoader({
 
       const currentPackage =
         loadedSubscription.package[0]
+
+        try {
+          const availableAddOns =
+            await resolveAvailableAddOns({
+              supabase,
+              packageId:
+                currentPackage.id
+            })
+
+          if (!active) {
+            return
+          }
+
+          setAddOnProducts(
+            availableAddOns
+          )
+        } catch (addOnError) {
+          console.error(
+            'MARKETHUB AVAILABLE ADD-ONS ERROR:',
+            addOnError
+          )
+
+          if (!active) {
+            return
+          }
+
+          setAddOnProducts([])
+        }
 
       const {
         data: entitlementData,
@@ -1080,6 +1265,14 @@ export default function MarketHubPackagesLoader({
 
     loadSubscription(true)
 
+    const usageRefreshInterval =
+      window.setInterval(
+        () => {
+          loadPackageUsage()
+        },
+        60000
+      )
+
     const refreshInterval =
       window.setInterval(
         () => {
@@ -1089,8 +1282,9 @@ export default function MarketHubPackagesLoader({
       )
 
     const handleWindowFocus = () => {
-      loadSubscription(false)
-    }
+        loadSubscription(false)
+        loadPackageUsage()
+      }
 
     window.addEventListener(
       'focus',
@@ -1111,6 +1305,10 @@ export default function MarketHubPackagesLoader({
 
         window.clearInterval(
           refreshInterval
+        )
+
+        window.clearInterval(
+          usageRefreshInterval
         )
 
         window.removeEventListener(
@@ -1150,6 +1348,70 @@ export default function MarketHubPackagesLoader({
   const pkg =
      subscription.package[0]
 
+  const formatAddOnDuration = (
+      product: AvailableAddOn
+    ): string => {
+      switch (
+        product.durationType
+      ) {
+        case 'days':
+          return language === 'es'
+            ? `${product.durationDays} días`
+            : `${product.durationDays} days`
+
+        case 'listing_lifetime':
+          return language === 'es'
+            ? 'Durante la vida del anuncio'
+            : 'Listing lifetime'
+
+        case 'permanent':
+          return language === 'es'
+            ? 'Permanente'
+            : 'Permanent'
+
+        case 'single_use':
+          return language === 'es'
+            ? 'Un solo uso'
+            : 'Single use'
+
+        default:
+          return '—'
+      }
+    }
+
+    const listingAddons =
+      addOnProducts
+        .filter(
+          product =>
+            product.targetType ===
+            'listing'
+        )
+        .map(product => ({
+          name:
+            language === 'es'
+              ? product.nameEs
+              : product.nameEn,
+
+          price:
+            language === 'es'
+              ? formatCRC(
+                  product.priceCrc
+                )
+              : formatUSD(
+                  product.priceUsd
+                ),
+
+          description:
+            language === 'es'
+              ? product.descriptionEs
+              : product.descriptionEn,
+
+          duration:
+            formatAddOnDuration(
+              product
+            )
+        }))
+        
   const currentPlan =
     language === 'es'
       ? pkg.name_es
@@ -1617,12 +1879,27 @@ export default function MarketHubPackagesLoader({
         includedPackages
       }
         usageSummary={{
-        enginesUsed: 0,
-        savedAnalyses: 0,
-        savedSearches: 0,
-        reportsGenerated: 0,
-        listingsAnalyzed: 0
-        }}
+        savedAnalyses:
+          packageUsage?.savedAnalysesUsed ?? 0,
+
+        savedSearches:
+          packageUsage?.savedSearchesUsed ?? 0,
+
+        recentActivity:
+          packageUsage?.recentActivityCount ?? 0,
+
+        recentActivityWindowDays:
+          packageUsage?.recentActivityWindowDays ?? 30
+      }}
+
+        packageUsage={
+          packageUsage
+        }
+
+        packageUsageError={
+          packageUsageError
+        }
+
         upgradePackages={
           upgradePackages
         }
@@ -1703,7 +1980,7 @@ export default function MarketHubPackagesLoader({
             upgradeOutcome
           }
 
-        listingAddons={[]}
+        listingAddons={listingAddons}
             />
         )
         }

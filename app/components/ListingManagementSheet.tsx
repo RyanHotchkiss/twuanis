@@ -3,13 +3,28 @@
 import Link from 'next/link'
 
 import {
+  resolveListingLifecycle,
+  type ListingStatus
+} from '@/lib/listing-lifecycle-engine'
+
+import type {
+  ResolvedListingCapabilities
+} from '@/lib/listing-capabilities'
+
+import {
+  AlertTriangle,
   Archive,
+  CheckCircle2,
+  CirclePlus,
+  Clock3,
   Copy,
   EyeOff,
   Pencil,
   RefreshCcw,
   RotateCcw,
+  Sparkles,
   Trash2,
+  Upload,
   X
 } from 'lucide-react'
 
@@ -26,12 +41,9 @@ type SupportedLanguage =
   | 'en'
   | 'es'
 
-export type ListingStatus =
-  | 'active'
-  | 'draft'
-  | 'expired'
-  | 'archived'
-  | 'deleted'
+export type {
+  ListingStatus
+} from '@/lib/listing-lifecycle-engine'
 
 export type ManagedListing = {
   id: string
@@ -48,7 +60,18 @@ type ListingManagementSheetProps = {
   language: SupportedLanguage
   listing: ManagedListing | null
   open: boolean
+    capabilities:
+    ResolvedListingCapabilities | null
+
+  capabilitiesLoading:
+    boolean
+
+  capabilitiesError:
+    string
   onClose: () => void
+  onPublish?: (
+  listing: ManagedListing
+  ) => void
   onDuplicate?: (
     listing: ManagedListing
   ) => void
@@ -67,6 +90,10 @@ type ListingManagementSheetProps = {
   onRemove?: (
     listing: ManagedListing
   ) => void
+
+  onPermanentDelete?: (
+    listing: ManagedListing
+  ) => void
 }
 
 const ANIMATION_DURATION =
@@ -79,14 +106,19 @@ export default function ListingManagementSheet({
   language,
   listing,
   open,
+  capabilities,
+  capabilitiesLoading,
+  capabilitiesError,
   onClose,
+  onPublish,
   onDuplicate,
   onRenew,
   onUnpublish,
   onArchive,
   onRestore,
-  onRemove
-}: ListingManagementSheetProps) {
+  onRemove,
+  onPermanentDelete
+  }: ListingManagementSheetProps) {
   const [
     mounted,
     setMounted
@@ -108,9 +140,13 @@ export default function ListingManagementSheet({
   ] = useState(false)
 
   const [
-    removeConfirmationOpen,
-    setRemoveConfirmationOpen
-  ] = useState(false)
+      confirmationMode,
+      setConfirmationMode
+    ] = useState<
+      | 'soft-delete'
+      | 'permanent-delete'
+      | null
+    >(null)
 
   const sheetRef =
     useRef<HTMLElement | null>(
@@ -155,8 +191,8 @@ export default function ListingManagementSheet({
 
       setDragOffset(0)
       setEntered(false)
-      setRemoveConfirmationOpen(
-        false
+      setConfirmationMode(
+        null
       )
 
       closeTimerRef.current =
@@ -219,8 +255,8 @@ export default function ListingManagementSheet({
         setTimeout(() => {
           setMounted(false)
           setDragOffset(0)
-          setRemoveConfirmationOpen(
-            false
+          setConfirmationMode(
+            null
           )
         }, animationDuration)
 
@@ -248,10 +284,10 @@ export default function ListingManagementSheet({
     ) => {
       if (event.key === 'Escape') {
         if (
-          removeConfirmationOpen
+          confirmationMode
         ) {
-          setRemoveConfirmationOpen(
-            false
+          setConfirmationMode(
+            null
           )
           return
         }
@@ -277,7 +313,7 @@ export default function ListingManagementSheet({
   }, [
     mounted,
     requestClose,
-    removeConfirmationOpen
+    confirmationMode
   ])
 
   useEffect(() => {
@@ -433,13 +469,163 @@ export default function ListingManagementSheet({
 
         const currentListing = listing
 
+        const lifecycle =
+          resolveListingLifecycle(
+            currentListing.status
+          )
+
+        const canPublish =
+          lifecycle.availableActions.includes(
+            'publish'
+          )
+
+        const canEdit =
+          lifecycle.availableActions.includes(
+            'edit'
+          )
+
+        const canDuplicate =
+          lifecycle.availableActions.includes(
+            'duplicate'
+          )
+
+        const canRenew =
+          lifecycle.availableActions.includes(
+            'renew'
+          )
+
+        const canUnpublish =
+          lifecycle.availableActions.includes(
+            'unpublish'
+          )
+
+        const canArchive =
+          lifecycle.availableActions.includes(
+            'archive'
+          )
+
+        const canRestore =
+          lifecycle.availableActions.includes(
+            'restore'
+          )
+
+        const canRemove =
+          lifecycle.availableActions.includes(
+            'soft-delete'
+          )
+        
+        const canPermanentDelete =
+          lifecycle.availableActions.includes(
+            'permanent-delete'
+          )
+
         const labels =
+
     language === 'es'
       ? {
           title:
             'Administrar Publicación',
+
           intro:
             'Administre esta publicación y su estado.',
+          
+           lifecycle:
+            'Ciclo de Vida',
+
+          lifecycleDescription:
+            'Administre la publicación, el estado y la permanencia de este anuncio.',
+          
+          capabilities:
+            'Capacidades',
+
+          capabilitiesDescription:
+            'Vea las capacidades activas, programadas y disponibles para esta publicación.',
+
+          capabilitiesLoading:
+            'Cargando capacidades...',
+
+          capabilitiesEmpty:
+            'Esta publicación no tiene capacidades activas, programadas o disponibles.',
+
+          activeCapabilities:
+            'Capacidades Activas',
+
+          scheduledCapabilities:
+            'Capacidades Programadas',
+
+          availableCapabilities:
+            'Capacidades Disponibles',
+
+          statusActive:
+            'Activa',
+
+          statusScheduled:
+            'Programada',
+
+          statusAvailable:
+            'Disponible',
+
+          source:
+            'Fuente',
+
+          starts:
+            'Comienza',
+
+          expires:
+            'Vence',
+
+          duration:
+            'Duración',
+
+          quantity:
+            'Cantidad',
+
+          approval:
+            'Aprobación',
+
+          approvalRequired:
+            'Requerida',
+
+          approvalNotRequired:
+            'No requerida',
+
+          unlimited:
+            'Ilimitada',
+
+          days:
+            'días',
+
+          listingLifetime:
+            'Durante la vida de la publicación',
+
+          permanent:
+            'Permanente',
+
+          singleUse:
+            'Uso único',
+
+          sourcePackageCredit:
+            'Crédito del paquete',
+
+          sourcePurchase:
+            'Compra',
+
+          sourceManual:
+            'Asignación manual',
+
+          sourceSystem:
+            'Sistema',
+
+          noStartDate:
+            'Inmediatamente',
+
+          noExpiration:
+            'Sin vencimiento',
+          publish:
+            'Publicar Anuncio',
+
+          publishDescription:
+            'Publique este borrador en el mercado después de verificar los límites de su paquete.',
           edit:
             'Editar Publicación',
           editDescription:
@@ -465,25 +651,138 @@ export default function ListingManagementSheet({
           restoreDescription:
             'Devuelva esta publicación archivada a borrador para revisarla antes de publicarla.',
           remove:
-            'Eliminar de MarketHub',
+            'Eliminar Publicación',
           removeDescription:
-            'Retire esta publicación de su MarketHub y del mercado público.',
+            'Mueva esta publicación al estado eliminado. Más adelante podrá restaurarla o eliminarla permanentemente.',
           confirmRemoveTitle:
-            '¿Eliminar esta publicación de MarketHub?',
+            '¿Eliminar esta publicación?',
           confirmRemoveDescription:
-            'La publicación dejará de aparecer en su MarketHub y en el mercado público. Twuanis conservará el registro internamente.',
+            'La publicación pasará al estado eliminado. Más adelante podrá restaurarla o eliminarla permanentemente.',
           cancel:
             'Cancelar',
           confirmRemove:
-            'Eliminar Publicación',
+            'Eliminar',
           close:
-            'Cerrar'
+            'Cerrar',
+          permanentDelete:
+            'Eliminar Permanentemente',
+
+          permanentDeleteDescription:
+            'Elimine definitivamente esta publicación y sus archivos. Esta acción no se puede deshacer.',
+
+          confirmPermanentDeleteTitle:
+            '¿Eliminar permanentemente esta publicación?',
+
+          confirmPermanentDeleteDescription:
+            'La publicación y sus archivos se eliminarán definitivamente. Esta acción no se puede deshacer.',
+
+          confirmPermanentDelete:
+            'Eliminar Permanentemente',
         }
       : {
           title:
             'Manage Listing',
+
           intro:
             'Manage this listing and its publication status.',
+         
+          lifecycle:
+            'Lifecycle',
+
+          lifecycleDescription:
+            'Manage this listing’s publication, status, and continued existence.',
+          
+          capabilities:
+            'Capabilities',
+
+          capabilitiesDescription:
+            'View the active, scheduled, and available capabilities for this listing.',
+
+          capabilitiesLoading:
+            'Loading capabilities...',
+
+          capabilitiesEmpty:
+            'This listing has no active, scheduled, or available capabilities.',
+
+          activeCapabilities:
+            'Active Capabilities',
+
+          scheduledCapabilities:
+            'Scheduled Capabilities',
+
+          availableCapabilities:
+            'Available Capabilities',
+
+          statusActive:
+            'Active',
+
+          statusScheduled:
+            'Scheduled',
+
+          statusAvailable:
+            'Available',
+
+          source:
+            'Source',
+
+          starts:
+            'Starts',
+
+          expires:
+            'Expires',
+
+          duration:
+            'Duration',
+
+          quantity:
+            'Quantity',
+
+          approval:
+            'Approval',
+
+          approvalRequired:
+            'Required',
+
+          approvalNotRequired:
+            'Not required',
+
+          unlimited:
+            'Unlimited',
+
+          days:
+            'days',
+
+          listingLifetime:
+            'Listing lifetime',
+
+          permanent:
+            'Permanent',
+
+          singleUse:
+            'Single use',
+
+          sourcePackageCredit:
+            'Package credit',
+
+          sourcePurchase:
+            'Purchase',
+
+          sourceManual:
+            'Manual assignment',
+
+          sourceSystem:
+            'System',
+
+          noStartDate:
+            'Immediately',
+
+          noExpiration:
+            'No expiration',
+          publish:
+            'Publish Listing',
+
+          publishDescription:
+            'Publish this draft to the marketplace after verifying your package limits.',
           edit:
             'Edit Listing',
           editDescription:
@@ -509,20 +808,153 @@ export default function ListingManagementSheet({
           restoreDescription:
             'Return this archived listing to draft for review before publishing.',
           remove:
-            'Remove from MarketHub',
+            'Soft Delete Listing',
           removeDescription:
-            'Remove this listing from your MarketHub and the public marketplace.',
+            'Move this listing into the deleted state. It can still be permanently deleted later.',
           confirmRemoveTitle:
-            'Remove this listing from MarketHub?',
+            'Soft delete this listing?',
           confirmRemoveDescription:
-            'The listing will no longer appear in your MarketHub or the public marketplace. Twuanis will retain the record internally.',
+            'The listing will be moved into the deleted state. It can still be restored or permanently deleted later.',
           cancel:
             'Cancel',
           confirmRemove:
-            'Remove Listing',
+            'Soft Delete',
           close:
-            'Close'
+            'Close',
+          permanentDelete:
+            'Permanently Delete Listing',
+
+          permanentDeleteDescription:
+            'Permanently delete this listing and its files. This action cannot be undone.',
+
+          confirmPermanentDeleteTitle:
+            'Permanently delete this listing?',
+
+          confirmPermanentDeleteDescription:
+            'The listing and its files will be permanently deleted. This action cannot be undone.',
+
+          confirmPermanentDelete:
+            'Permanently Delete',
         }
+
+      function formatCapabilityDate(
+          value: string | null,
+          fallback: string
+        ): string {
+          if (!value) {
+            return fallback
+          }
+
+          const date =
+            new Date(value)
+
+          if (
+            Number.isNaN(
+              date.getTime()
+            )
+          ) {
+            return fallback
+          }
+
+          return new Intl.DateTimeFormat(
+            language === 'es'
+              ? 'es-CR'
+              : 'en-US',
+            {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric'
+            }
+          ).format(date)
+        }
+
+        function formatCapabilitySource(
+            sourceType: string | null
+          ): string {
+            switch (sourceType) {
+              case 'package_credit':
+                return labels
+                  .sourcePackageCredit
+
+              case 'purchase':
+                return labels
+                  .sourcePurchase
+
+              case 'manual':
+                return labels
+                  .sourceManual
+
+              case 'system':
+                return labels
+                  .sourceSystem
+
+              default:
+                return '—'
+            }
+          }
+
+        function formatCapabilityDuration({
+            durationType,
+            durationDays
+          }: {
+            durationType:
+              string | null
+
+            durationDays:
+              number | null
+          }): string {
+            switch (durationType) {
+              case 'days':
+                return durationDays === null
+                  ? '—'
+                  : `${durationDays} ${labels.days}`
+
+              case 'listing_lifetime':
+                return labels
+                  .listingLifetime
+
+              case 'permanent':
+                return labels
+                  .permanent
+
+              case 'single_use':
+                return labels
+                  .singleUse
+
+              default:
+                return '—'
+            }
+          }
+
+      function formatCapabilityQuantity({
+            assignedQuantity,
+            maximumQuantity,
+            remainingQuantity
+          }: {
+            assignedQuantity: number
+
+            maximumQuantity:
+              number | null
+
+            remainingQuantity:
+              number | null
+          }): string {
+            if (
+              maximumQuantity ===
+              null
+            ) {
+              return (
+                `${assignedQuantity} / ` +
+                labels.unlimited
+              )
+            }
+
+            return (
+              `${assignedQuantity} / ` +
+              `${maximumQuantity} ` +
+              `(${remainingQuantity ?? 0} remaining)`
+            )
+          }
 
     const isRental =
       currentListing.transactionType ===
@@ -536,20 +968,24 @@ export default function ListingManagementSheet({
         : isRental
           ? `/en/rent-out-lease-out/edit/${currentListing.id}`
           : `/en/sell/edit/${currentListing.id}`
+  function handlePublish() {
+      if (!canPublish) {
+        return
+      }
 
-  const canRenew =
-    currentListing.status === 'active' ||
-    currentListing.status === 'expired'
-  const canUnpublish =
-    currentListing.status === 'active'
-  const canArchive =
-    currentListing.status === 'active'
-  const canRestore =
-    currentListing.status === 'archived'
-  const canRemove =
-    currentListing.status !== 'deleted'
+      onPublish?.(
+        currentListing
+      )
+    }
+
   function handleDuplicate() {
-    onDuplicate?.(currentListing)
+    if (!canDuplicate) {
+      return
+    }
+
+    onDuplicate?.(
+      currentListing
+    )
   }
   function handleRenew() {
     if (!canRenew) return
@@ -580,30 +1016,88 @@ export default function ListingManagementSheet({
   }
 
   function openRemoveConfirmation() {
-    if (!canRemove) return
+  if (!canRemove) {
+    return
+  }
 
-    setRemoveConfirmationOpen(
-      true
+  setConfirmationMode(
+    'soft-delete'
+  )
+}
+
+function openPermanentDeleteConfirmation() {
+  if (!canPermanentDelete) {
+    return
+  }
+
+  setConfirmationMode(
+    'permanent-delete'
+  )
+}
+
+function closeConfirmation() {
+  setConfirmationMode(
+    null
+  )
+}
+
+function confirmDestructiveAction() {
+  if (
+    confirmationMode ===
+    'soft-delete'
+  ) {
+    if (!canRemove) {
+      return
+    }
+
+    onRemove?.(
+      currentListing
     )
   }
 
-  function closeRemoveConfirmation() {
-    setRemoveConfirmationOpen(
-      false
+  if (
+    confirmationMode ===
+    'permanent-delete'
+  ) {
+    if (!canPermanentDelete) {
+      return
+    }
+
+    onPermanentDelete?.(
+      currentListing
     )
   }
 
-  function confirmRemove() {
-    if (!canRemove) return
+  setConfirmationMode(
+    null
+  )
 
-    onRemove?.(currentListing)
+  requestClose()
+}
 
-    setRemoveConfirmationOpen(
-      false
-    )
+const confirmationTitleLabel =
+  confirmationMode ===
+  'permanent-delete'
+    ? labels
+        .confirmPermanentDeleteTitle
+    : labels
+        .confirmRemoveTitle
 
-    requestClose()
-  }
+const confirmationDescriptionLabel =
+  confirmationMode ===
+  'permanent-delete'
+    ? labels
+        .confirmPermanentDeleteDescription
+    : labels
+        .confirmRemoveDescription
+
+const confirmationButtonLabel =
+  confirmationMode ===
+  'permanent-delete'
+    ? labels
+        .confirmPermanentDelete
+    : labels
+        .confirmRemove
 
   const sheetTransform =
   dragOffset > 0
@@ -698,54 +1192,97 @@ return (
         </header>
 
         <div style={scrollContent}>
-          {!removeConfirmationOpen ? (
-            <div style={actionList}>
-              <Link
-                href={editHref}
-                style={actionCard}
-              >
-                <div style={actionIconWrap}>
-                  <Pencil
-                    size={30}
-                    strokeWidth={1}
-                    color="#C7A44B"
-                  />
-                </div>
+          {!confirmationMode ? (
+            <div style={managementSections}>
+              <section style={managementSection}>
+                <div style={sectionHeader}>
+                  <div>
+                    <h3 style={sectionTitle}>
+                      {labels.lifecycle}
+                    </h3>
 
-                <div>
-                  <div style={actionTitle}>
-                    {labels.edit}
-                  </div>
-
-                  <div style={actionDescription}>
-                    {labels.editDescription}
+                    <p style={sectionDescription}>
+                      {labels.lifecycleDescription}
+                    </p>
                   </div>
                 </div>
-              </Link>
 
-              <button
-                type="button"
-                onClick={handleDuplicate}
-                style={actionButton}
-              >
-                <div style={actionIconWrap}>
-                  <Copy
-                    size={30}
-                    strokeWidth={1}
-                    color="#C7A44B"
-                  />
-                </div>
-
-                <div>
-                  <div style={actionTitle}>
-                    {labels.duplicate}
+           <div style={actionList}>
+              {canPublish && (
+                <button
+                  type="button"
+                  onClick={handlePublish}
+                  style={actionButton}
+                >
+                  <div style={actionIconWrap}>
+                    <Upload
+                      size={30}
+                      strokeWidth={1}
+                      color="#C7A44B"
+                    />
                   </div>
 
-                  <div style={actionDescription}>
-                    {labels.duplicateDescription}
+                  <div>
+                    <div style={actionTitle}>
+                      {labels.publish}
+                    </div>
+
+                    <div style={actionDescription}>
+                      {labels.publishDescription}
+                    </div>
                   </div>
-                </div>
-              </button>
+                </button>
+              )}
+              {canEdit && (
+                <Link
+                  href={editHref}
+                  style={actionCard}
+                >
+                  <div style={actionIconWrap}>
+                    <Pencil
+                      size={30}
+                      strokeWidth={1}
+                      color="#C7A44B"
+                    />
+                  </div>
+
+                  <div>
+                    <div style={actionTitle}>
+                      {labels.edit}
+                    </div>
+
+                    <div style={actionDescription}>
+                      {labels.editDescription}
+                    </div>
+                  </div>
+                </Link>
+              )}
+
+              {canDuplicate && (
+                <button
+                  type="button"
+                  onClick={handleDuplicate}
+                  style={actionButton}
+                >
+                  <div style={actionIconWrap}>
+                    <Copy
+                      size={30}
+                      strokeWidth={1}
+                      color="#C7A44B"
+                    />
+                  </div>
+
+                  <div>
+                    <div style={actionTitle}>
+                      {labels.duplicate}
+                    </div>
+
+                    <div style={actionDescription}>
+                      {labels.duplicateDescription}
+                    </div>
+                  </div>
+                </button>
+              )}
 
               {canRenew && (
                 <button
@@ -904,8 +1441,582 @@ return (
                   </div>
                 </button>
               )}
+              {canPermanentDelete && (
+                <button
+                  type="button"
+                  onClick={
+                    openPermanentDeleteConfirmation
+                  }
+                  style={{
+                    ...actionButton,
+                    ...dangerAction
+                  }}
+                >
+                  <div style={actionIconWrap}>
+                    <Trash2
+                      size={30}
+                      strokeWidth={1}
+                      color="#dc143c"
+                    />
+                  </div>
+
+                  <div>
+                    <div
+                      style={{
+                        ...actionTitle,
+                        color: '#dc143c'
+                      }}
+                    >
+                      {labels.permanentDelete}
+                    </div>
+
+                    <div style={actionDescription}>
+                      {
+                        labels
+                          .permanentDeleteDescription
+                      }
+                    </div>
+                  </div>
+                </button>
+              )}
             </div>
-          ) : (
+          </section>
+
+                  <section style={managementSection}>
+            <div style={sectionHeader}>
+              <div>
+                <h3 style={sectionTitle}>
+                  {labels.capabilities}
+                </h3>
+
+                <p style={sectionDescription}>
+                  {
+                    labels
+                      .capabilitiesDescription
+                  }
+                </p>
+              </div>
+            </div>
+
+            {capabilitiesLoading ? (
+              <div style={capabilityMessage}>
+                <Clock3
+                  size={22}
+                  strokeWidth={1}
+                  color="#C7A44B"
+                />
+
+                <span>
+                  {
+                    labels
+                      .capabilitiesLoading
+                  }
+                </span>
+              </div>
+            ) : capabilitiesError ? (
+              <div
+                style={{
+                  ...capabilityMessage,
+                  ...capabilityErrorMessage
+                }}
+              >
+                <AlertTriangle
+                  size={22}
+                  strokeWidth={1}
+                  color="#ff7676"
+                />
+
+                <span>
+                  {capabilitiesError}
+                </span>
+              </div>
+            ) : capabilities ? (
+              <div style={capabilityGroups}>
+                {capabilities
+                  .activeCapabilities
+                  .length > 0 && (
+                  <div style={capabilityGroup}>
+                    <h4 style={capabilityGroupTitle}>
+                      {
+                        labels
+                          .activeCapabilities
+                      }
+                    </h4>
+
+                    <div style={capabilityList}>
+                      {capabilities
+                        .activeCapabilities
+                        .map(
+                          (
+                            capability,
+                            index
+                          ) => (
+                            <article
+                              key={
+                                `${capability.slug}-active-${index}`
+                              }
+                              style={capabilityCard}
+                            >
+                              <div style={capabilityCardHeader}>
+                                <div style={capabilityIdentity}>
+                                  <CheckCircle2
+                                    size={23}
+                                    strokeWidth={1}
+                                    color="#2ecc71"
+                                  />
+
+                                  <div>
+                                    <div style={capabilityName}>
+                                      {
+                                        language === 'es'
+                                          ? capability.nameEs
+                                          : capability.nameEn
+                                      }
+                                    </div>
+
+                                    <div style={activeStatusBadge}>
+                                      {
+                                        labels
+                                          .statusActive
+                                      }
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              {(language === 'es'
+                                ? capability.descriptionEs
+                                : capability.descriptionEn
+                              ) && (
+                                <p style={capabilityDescription}>
+                                  {
+                                    language === 'es'
+                                      ? capability.descriptionEs
+                                      : capability.descriptionEn
+                                  }
+                                </p>
+                              )}
+
+                              <div style={capabilityDetails}>
+                                <div style={capabilityDetail}>
+                                  <span style={capabilityDetailLabel}>
+                                    {labels.source}
+                                  </span>
+
+                                  <span style={capabilityDetailValue}>
+                                    {
+                                      formatCapabilitySource(
+                                        capability.sourceType
+                                      )
+                                    }
+                                  </span>
+                                </div>
+
+                                <div style={capabilityDetail}>
+                                  <span style={capabilityDetailLabel}>
+                                    {labels.starts}
+                                  </span>
+
+                                  <span style={capabilityDetailValue}>
+                                    {
+                                      formatCapabilityDate(
+                                        capability.startsAt,
+                                        labels.noStartDate
+                                      )
+                                    }
+                                  </span>
+                                </div>
+
+                                <div style={capabilityDetail}>
+                                  <span style={capabilityDetailLabel}>
+                                    {labels.expires}
+                                  </span>
+
+                                  <span style={capabilityDetailValue}>
+                                    {
+                                      formatCapabilityDate(
+                                        capability.expiresAt,
+                                        labels.noExpiration
+                                      )
+                                    }
+                                  </span>
+                                </div>
+
+                                <div style={capabilityDetail}>
+                                  <span style={capabilityDetailLabel}>
+                                    {labels.duration}
+                                  </span>
+
+                                  <span style={capabilityDetailValue}>
+                                    {
+                                      formatCapabilityDuration(
+                                        capability
+                                      )
+                                    }
+                                  </span>
+                                </div>
+
+                                <div style={capabilityDetail}>
+                                  <span style={capabilityDetailLabel}>
+                                    {labels.quantity}
+                                  </span>
+
+                                  <span style={capabilityDetailValue}>
+                                    {
+                                      formatCapabilityQuantity(
+                                        capability
+                                      )
+                                    }
+                                  </span>
+                                </div>
+
+                                <div style={capabilityDetail}>
+                                  <span style={capabilityDetailLabel}>
+                                    {labels.approval}
+                                  </span>
+
+                                  <span style={capabilityDetailValue}>
+                                    {
+                                      capability
+                                        .requiresManualApproval
+                                        ? labels
+                                            .approvalRequired
+                                        : labels
+                                            .approvalNotRequired
+                                    }
+                                  </span>
+                                </div>
+                              </div>
+                            </article>
+                          )
+                        )}
+                    </div>
+                  </div>
+                )}
+
+                {capabilities
+                  .scheduledCapabilities
+                  .length > 0 && (
+                  <div style={capabilityGroup}>
+                    <h4 style={capabilityGroupTitle}>
+                      {
+                        labels
+                          .scheduledCapabilities
+                      }
+                    </h4>
+
+                    <div style={capabilityList}>
+                      {capabilities
+                        .scheduledCapabilities
+                        .map(
+                          (
+                            capability,
+                            index
+                          ) => (
+                            <article
+                              key={
+                                `${capability.slug}-scheduled-${index}`
+                              }
+                              style={capabilityCard}
+                            >
+                              <div style={capabilityIdentity}>
+                                <Clock3
+                                  size={23}
+                                  strokeWidth={1}
+                                  color="#f1c40f"
+                                />
+
+                                <div>
+                                  <div style={capabilityName}>
+                                    {
+                                      language === 'es'
+                                        ? capability.nameEs
+                                        : capability.nameEn
+                                    }
+                                  </div>
+
+                                  <div style={scheduledStatusBadge}>
+                                    {
+                                      labels
+                                        .statusScheduled
+                                    }
+                                  </div>
+                                </div>
+                              </div>
+
+                              {(language === 'es'
+                                ? capability.descriptionEs
+                                : capability.descriptionEn
+                              ) && (
+                                <p style={capabilityDescription}>
+                                  {
+                                    language === 'es'
+                                      ? capability.descriptionEs
+                                      : capability.descriptionEn
+                                  }
+                                </p>
+                              )}
+
+                              <div style={capabilityDetails}>
+                                <div style={capabilityDetail}>
+                                  <span style={capabilityDetailLabel}>
+                                    {labels.source}
+                                  </span>
+
+                                  <span style={capabilityDetailValue}>
+                                    {
+                                      formatCapabilitySource(
+                                        capability.sourceType
+                                      )
+                                    }
+                                  </span>
+                                </div>
+
+                                <div style={capabilityDetail}>
+                                  <span style={capabilityDetailLabel}>
+                                    {labels.starts}
+                                  </span>
+
+                                  <span style={capabilityDetailValue}>
+                                    {
+                                      formatCapabilityDate(
+                                        capability.startsAt,
+                                        labels.noStartDate
+                                      )
+                                    }
+                                  </span>
+                                </div>
+
+                                <div style={capabilityDetail}>
+                                  <span style={capabilityDetailLabel}>
+                                    {labels.expires}
+                                  </span>
+
+                                  <span style={capabilityDetailValue}>
+                                    {
+                                      formatCapabilityDate(
+                                        capability.expiresAt,
+                                        labels.noExpiration
+                                      )
+                                    }
+                                  </span>
+                                </div>
+
+                                <div style={capabilityDetail}>
+                                  <span style={capabilityDetailLabel}>
+                                    {labels.duration}
+                                  </span>
+
+                                  <span style={capabilityDetailValue}>
+                                    {
+                                      formatCapabilityDuration(
+                                        capability
+                                      )
+                                    }
+                                  </span>
+                                </div>
+
+                                <div style={capabilityDetail}>
+                                  <span style={capabilityDetailLabel}>
+                                    {labels.quantity}
+                                  </span>
+
+                                  <span style={capabilityDetailValue}>
+                                    {
+                                      formatCapabilityQuantity(
+                                        capability
+                                      )
+                                    }
+                                  </span>
+                                </div>
+
+                                <div style={capabilityDetail}>
+                                  <span style={capabilityDetailLabel}>
+                                    {labels.approval}
+                                  </span>
+
+                                  <span style={capabilityDetailValue}>
+                                    {
+                                      capability
+                                        .requiresManualApproval
+                                        ? labels
+                                            .approvalRequired
+                                        : labels
+                                            .approvalNotRequired
+                                    }
+                                  </span>
+                                </div>
+                              </div>
+                            </article>
+                          )
+                        )}
+                    </div>
+                  </div>
+                )}
+
+                {capabilities
+                  .availableCapabilities
+                  .length > 0 && (
+                  <div style={capabilityGroup}>
+                    <h4 style={capabilityGroupTitle}>
+                      {
+                        labels
+                          .availableCapabilities
+                      }
+                    </h4>
+
+                    <div style={capabilityList}>
+                      {capabilities
+                        .availableCapabilities
+                        .map(
+                          (
+                            capability,
+                            index
+                          ) => (
+                            <article
+                              key={
+                                `${capability.slug}-available-${index}`
+                              }
+                              style={capabilityCard}
+                            >
+                              <div style={capabilityIdentity}>
+                                <CirclePlus
+                                  size={23}
+                                  strokeWidth={1}
+                                  color="#C7A44B"
+                                />
+
+                                <div>
+                                  <div style={capabilityName}>
+                                    {
+                                      language === 'es'
+                                        ? capability.nameEs
+                                        : capability.nameEn
+                                    }
+                                  </div>
+
+                                  <div style={availableStatusBadge}>
+                                    {
+                                      labels
+                                        .statusAvailable
+                                    }
+                                  </div>
+                                </div>
+                              </div>
+
+                              {(language === 'es'
+                                ? capability.descriptionEs
+                                : capability.descriptionEn
+                              ) && (
+                                <p style={capabilityDescription}>
+                                  {
+                                    language === 'es'
+                                      ? capability.descriptionEs
+                                      : capability.descriptionEn
+                                  }
+                                </p>
+                              )}
+
+                              <div style={capabilityDetails}>
+                                <div style={capabilityDetail}>
+                                  <span style={capabilityDetailLabel}>
+                                    {labels.duration}
+                                  </span>
+
+                                  <span style={capabilityDetailValue}>
+                                    {
+                                      formatCapabilityDuration(
+                                        capability
+                                      )
+                                    }
+                                  </span>
+                                </div>
+
+                                <div style={capabilityDetail}>
+                                  <span style={capabilityDetailLabel}>
+                                    {labels.quantity}
+                                  </span>
+
+                                  <span style={capabilityDetailValue}>
+                                    {
+                                      formatCapabilityQuantity(
+                                        capability
+                                      )
+                                    }
+                                  </span>
+                                </div>
+
+                                <div style={capabilityDetail}>
+                                  <span style={capabilityDetailLabel}>
+                                    {labels.approval}
+                                  </span>
+
+                                  <span style={capabilityDetailValue}>
+                                    {
+                                      capability
+                                        .requiresManualApproval
+                                        ? labels
+                                            .approvalRequired
+                                        : labels
+                                            .approvalNotRequired
+                                    }
+                                  </span>
+                                </div>
+                              </div>
+                            </article>
+                          )
+                        )}
+                    </div>
+                  </div>
+                )}
+
+                {
+                  capabilities
+                    .activeCapabilities
+                    .length === 0 &&
+                  capabilities
+                    .scheduledCapabilities
+                    .length === 0 &&
+                  capabilities
+                    .availableCapabilities
+                    .length === 0 && (
+                    <div style={capabilityMessage}>
+                      <Sparkles
+                        size={22}
+                        strokeWidth={1}
+                        color="#777"
+                      />
+
+                      <span>
+                        {
+                          labels
+                            .capabilitiesEmpty
+                        }
+                      </span>
+                    </div>
+                  )
+                }
+              </div>
+            ) : (
+              <div style={capabilityMessage}>
+                <Sparkles
+                  size={22}
+                  strokeWidth={1}
+                  color="#777"
+                />
+
+                <span>
+                  {
+                    labels
+                      .capabilitiesEmpty
+                  }
+                </span>
+              </div>
+            )}
+          </section>
+
+        </div>
+      ) : (
             <div style={confirmationCard}>
               <div style={confirmationIconWrap}>
                 <Trash2
@@ -916,17 +2027,17 @@ return (
               </div>
 
               <h3 style={confirmationTitle}>
-                {labels.confirmRemoveTitle}
+                {confirmationTitleLabel}
               </h3>
 
               <p style={confirmationDescription}>
-                {labels.confirmRemoveDescription}
+                {confirmationDescriptionLabel}
               </p>
 
               <div style={confirmationButtons}>
                 <button
                   type="button"
-                  onClick={closeRemoveConfirmation}
+                  onClick={closeConfirmation}
                   style={cancelButton}
                 >
                   {labels.cancel}
@@ -934,10 +2045,12 @@ return (
 
                 <button
                   type="button"
-                  onClick={confirmRemove}
+                  onClick={
+                    confirmDestructiveAction
+                  }
                   style={removeButton}
                 >
-                  {labels.confirmRemove}
+                  {confirmationButtonLabel}
                 </button>
               </div>
             </div>
@@ -1058,6 +2171,41 @@ const scrollContent = {
   WebkitOverflowScrolling: 'touch' as const
 }
 
+const managementSections = {
+  display: 'grid',
+  gap: '1.5rem'
+}
+
+const managementSection = {
+  padding: '1.15rem',
+  background: '#181818',
+  border: '1px solid #303030',
+  borderRadius: '16px'
+}
+
+const sectionHeader = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'flex-start',
+  gap: '1rem',
+  marginBottom: '1rem',
+  paddingBottom: '1rem',
+  borderBottom: '1px solid #303030'
+}
+
+const sectionTitle = {
+  margin: 0,
+  color: '#C7A44B',
+  fontSize: '1.1rem'
+}
+
+const sectionDescription = {
+  margin: '.4rem 0 0',
+  color: '#888',
+  fontSize: '.85rem',
+  lineHeight: 1.5
+}
+
 const actionList = {
   display: 'grid',
   gap: '.9rem'
@@ -1123,6 +2271,159 @@ const actionDescription = {
   color: '#999',
   fontSize: '.86rem',
   lineHeight: 1.5
+}
+
+const capabilityGroups = {
+  display: 'grid',
+  gap: '1.25rem'
+}
+
+const capabilityGroup = {
+  display: 'grid',
+  gap: '.75rem'
+}
+
+const capabilityGroupTitle = {
+  margin: 0,
+  color: '#ddd',
+  fontSize: '.92rem',
+  fontWeight: 650
+}
+
+const capabilityList = {
+  display: 'grid',
+  gap: '.85rem'
+}
+
+const capabilityCard = {
+  padding: '1rem',
+  background: '#1b1b1b',
+  border: '1px solid #303030',
+  borderRadius: '14px'
+}
+
+const capabilityCardHeader = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'flex-start',
+  gap: '1rem'
+}
+
+const capabilityIdentity = {
+  display: 'grid',
+  gridTemplateColumns:
+    'auto minmax(0, 1fr)',
+  alignItems: 'start',
+  gap: '.75rem'
+}
+
+const capabilityName = {
+  color: '#fff',
+  fontSize: '.98rem',
+  fontWeight: 650,
+  lineHeight: 1.3
+}
+
+const activeStatusBadge = {
+  display: 'inline-flex',
+  marginTop: '.35rem',
+  padding: '.2rem .5rem',
+  color: '#72e59a',
+  background:
+    'rgba(46, 204, 113, .1)',
+  border:
+    '1px solid rgba(46, 204, 113, .3)',
+  borderRadius: '999px',
+  fontSize: '.7rem',
+  fontWeight: 700
+}
+
+const scheduledStatusBadge = {
+  display: 'inline-flex',
+  marginTop: '.35rem',
+  padding: '.2rem .5rem',
+  color: '#f5d76e',
+  background:
+    'rgba(241, 196, 15, .08)',
+  border:
+    '1px solid rgba(241, 196, 15, .3)',
+  borderRadius: '999px',
+  fontSize: '.7rem',
+  fontWeight: 700
+}
+
+const availableStatusBadge = {
+  display: 'inline-flex',
+  marginTop: '.35rem',
+  padding: '.2rem .5rem',
+  color: '#d8bc72',
+  background:
+    'rgba(199, 164, 75, .08)',
+  border:
+    '1px solid rgba(199, 164, 75, .3)',
+  borderRadius: '999px',
+  fontSize: '.7rem',
+  fontWeight: 700
+}
+
+const capabilityDescription = {
+  margin: '.75rem 0 0',
+  color: '#999',
+  fontSize: '.84rem',
+  lineHeight: 1.5
+}
+
+const capabilityDetails = {
+  display: 'grid',
+  gridTemplateColumns:
+    'repeat(auto-fit, minmax(130px, 1fr))',
+  gap: '.65rem',
+  marginTop: '.9rem',
+  paddingTop: '.9rem',
+  borderTop: '1px solid #303030'
+}
+
+const capabilityDetail = {
+  display: 'grid',
+  gap: '.2rem',
+  minWidth: 0
+}
+
+const capabilityDetailLabel = {
+  color: '#777',
+  fontSize: '.67rem',
+  fontWeight: 650,
+  letterSpacing: '.035em',
+  textTransform:
+    'uppercase' as const
+}
+
+const capabilityDetailValue = {
+  color: '#ddd',
+  fontSize: '.8rem',
+  lineHeight: 1.35,
+  overflowWrap:
+    'anywhere' as const
+}
+
+const capabilityMessage = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '.7rem',
+  padding: '1rem',
+  color: '#999',
+  background: '#171717',
+  border: '1px dashed #333',
+  borderRadius: '12px',
+  fontSize: '.86rem',
+  lineHeight: 1.5
+}
+
+const capabilityErrorMessage = {
+  color: '#ffb4b4',
+  background: '#2a1010',
+  border:
+    '1px solid #6b2222'
 }
 
 const confirmationCard = {

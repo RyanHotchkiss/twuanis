@@ -12,6 +12,10 @@ import {
 } from '@/lib/supabase-admin'
 
 import {
+  resolveUserPackageUsage
+} from '@/lib/package-usage'
+
+import {
   assignListingOntology
 } from '@/lib/assign-listing-ontology'
 
@@ -39,17 +43,6 @@ type PublishTokenRow = {
   verified: boolean
   listing_data:
     Record<string, unknown> | null
-}
-
-type PackageLimitRow = {
-  listing_limit: number | null
-}
-
-type ActiveSubscriptionRow = {
-  id: string
-  package_id: string
-  package_limits:
-    PackageLimitRow[]
 }
 
 function generateFallbackTitle(
@@ -174,6 +167,8 @@ export async function POST(
 
   const copiedImagePaths:
     string[] = []
+
+  let temporaryImageBytes = 0
 
   try {
     /*
@@ -353,7 +348,6 @@ export async function POST(
       temporaryImagePaths.length >
       MAX_TEMPORARY_IMAGES
     ) {
-
       await releasePublishToken(
         claimedPublishTokenId
       )
@@ -371,102 +365,23 @@ export async function POST(
     }
 
     /*
-     * Resolve the active package and listing limit.
-     */
-    const {
-      data:
-        activeSubscriptionData,
-      error:
-        activeSubscriptionError
-    } =
-      await supabaseAdmin
-        .from(
-          'user_subscriptions'
-        )
-        .select(`
-          id,
-          package_id,
-          package_limits (
-            listing_limit
-          )
-        `)
-        .eq(
-          'user_id',
-          user.id
-        )
-        .eq(
-          'status',
-          'active'
-        )
-        .maybeSingle()
+    * Resolve centralized package usage.
+    */
+    let packageUsage
 
-    if (
-      activeSubscriptionError ||
-      !activeSubscriptionData
-    ) {
+    try {
+      packageUsage =
+        await resolveUserPackageUsage({
+          supabase:
+            supabaseAdmin,
 
-      await releasePublishToken(
-        claimedPublishTokenId
-      )
-
-      return NextResponse.json(
-        {
-          success: false,
-          error:
-            'An active subscription is required to publish a listing.'
-        },
-        {
-          status: 403
-        }
-      )
-    }
-
-    const activeSubscription =
-      activeSubscriptionData as
-        ActiveSubscriptionRow
-
-    const listingLimit =
-      activeSubscription
-        .package_limits?.[0]
-        ?.listing_limit ??
-      null
-
-    /*
-     * Archived and deleted listings do not consume
-     * an active-listing slot.
-     */
-    const {
-      count: activeListingCount,
-      error: listingCountError
-    } =
-      await supabaseAdmin
-        .from(
-          'listings'
-        )
-        .select(
-          'id',
-          {
-            count: 'exact',
-            head: true
-          }
-        )
-        .eq(
-          'owner_id',
-          user.id
-        )
-        .eq(
-          'listing_status',
-          'active'
-        )
-        .is(
-          'deleted_at',
-          null
-        )
-
-    if (listingCountError) {
+          userId:
+            user.id
+        })
+    } catch (usageError) {
       console.error(
-        'LISTING LIMIT COUNT ERROR:',
-        listingCountError
+        'PACKAGE USAGE ERROR:',
+        usageError
       )
 
       await releasePublishToken(
@@ -477,7 +392,7 @@ export async function POST(
         {
           success: false,
           error:
-            'Your listing allowance could not be verified.'
+            'Your package allowance could not be verified.'
         },
         {
           status: 500
@@ -485,13 +400,16 @@ export async function POST(
       )
     }
 
+    /*
+    * Enforce the active-listing limit before
+    * inserting a new listing.
+    */
     if (
-      listingLimit !== null &&
-      (
-        activeListingCount ?? 0
-      ) >= listingLimit
+      packageUsage.listingLimit !==
+        null &&
+      packageUsage.listingsUsed >=
+        packageUsage.listingLimit
     ) {
-
       await releasePublishToken(
         claimedPublishTokenId
       )
@@ -499,12 +417,113 @@ export async function POST(
       return NextResponse.json(
         {
           success: false,
+
+          code:
+            'LISTING_LIMIT_EXCEEDED',
+
           error:
-            `Your package allows ${listingLimit} active ${
-              listingLimit === 1
+            `Your package allows ${packageUsage.listingLimit} active ${
+              packageUsage.listingLimit === 1
                 ? 'listing'
                 : 'listings'
             }. Archive an existing listing or upgrade your package before publishing another.`
+        },
+        {
+          status: 403
+        }
+      )
+    }
+
+    /*
+    * Calculate the total size of every temporary
+    * image before inserting the listing.
+    */
+    for (
+      const temporaryPath
+      of temporaryImagePaths
+    ) {
+      const {
+        data: temporaryImage,
+        error: temporaryImageError
+      } =
+        await supabaseAdmin
+          .storage
+          .from(
+            STORAGE_BUCKET
+          )
+          .download(
+            temporaryPath
+          )
+
+      if (
+        temporaryImageError ||
+        !temporaryImage
+      ) {
+        await releasePublishToken(
+          claimedPublishTokenId
+        )
+
+        return NextResponse.json(
+          {
+            success: false,
+            error:
+              'A temporary image could not be verified.'
+          },
+          {
+            status: 500
+          }
+        )
+      }
+
+      temporaryImageBytes +=
+        (
+          await temporaryImage
+            .arrayBuffer()
+        ).byteLength
+    }
+
+    /*
+    * Enforce projected Storage usage before
+    * inserting or copying anything.
+    */
+    if (
+      packageUsage.storageLimitBytes !==
+        null &&
+      packageUsage.storageUsedBytes +
+        temporaryImageBytes >
+          packageUsage.storageLimitBytes
+    ) {
+      await releasePublishToken(
+        claimedPublishTokenId
+      )
+
+      const remainingStorageBytes =
+        Math.max(
+          0,
+          packageUsage.storageLimitBytes -
+          packageUsage.storageUsedBytes
+        )
+
+      return NextResponse.json(
+        {
+          success: false,
+
+          code:
+            'STORAGE_LIMIT_EXCEEDED',
+
+          error:
+            'Publishing this listing would exceed your package Storage allowance.',
+
+          storageUsedBytes:
+            packageUsage.storageUsedBytes,
+
+          storageLimitBytes:
+            packageUsage.storageLimitBytes,
+
+          incomingStorageBytes:
+            temporaryImageBytes,
+
+          remainingStorageBytes
         },
         {
           status: 403

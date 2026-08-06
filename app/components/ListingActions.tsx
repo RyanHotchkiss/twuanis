@@ -10,6 +10,10 @@ import {
 } from '@/lib/activity'
 
 import {
+  trackListingWhatsAppClicked
+} from '@/lib/activity/listings'
+
+import {
   toggleFavorite,
   isFavorite
 } from '@/lib/favorites'
@@ -21,6 +25,7 @@ type ListingActionsProps = {
   canton?: string | null
   district?: string | null
   propertyType?: string | null
+  whatsapp?: string | null
   transactionType:
     | 'buy'
     | 'rent'
@@ -37,8 +42,9 @@ export default function ListingActions({
   canton,
   district,
   propertyType,
+  whatsapp,
   transactionType,
-  language
+  language  
 }: ListingActionsProps) {
   const [saved, setSaved] =
     useState(
@@ -118,60 +124,81 @@ export default function ListingActions({
 
 }
 
-async function handleShare() {
-  try {
-    const shareData = {
-      title:
-        title || 'Twuanis',
-      url:
-        window.location.href
-    }
+async function handleShare() 
+    {
+      try {
+        const shareData = {
+          title:
+            title || 'Twuanis',
+          url:
+            window.location.href
+        }
 
-    let shareMethod =
-      'clipboard'
+        let shareMethod =
+          'clipboard'
 
-    if (navigator.share) {
-      await navigator.share(
-        shareData
-      )
+        if (navigator.share) {
+          await navigator.share(
+            shareData
+          )
 
-      shareMethod =
-        'native'
-    } else {
-      await navigator.clipboard.writeText(
-        window.location.href
-      )
+          shareMethod =
+            'native'
+        } else {
+          await navigator.clipboard.writeText(
+            window.location.href
+          )
 
-      setMessage(
-        labels.copied
-      )
-    }
+          setMessage(
+            labels.copied
+          )
+        }
 
-    await recordListingShared({
-      listingId,
-      metadata: {
-        ...getMetadata(),
-        shareMethod
+        await recordListingShared({
+          listingId,
+          metadata: {
+            ...getMetadata(),
+            shareMethod
+          }
+        })
+      } catch (error) {
+        if (
+          error instanceof DOMException &&
+          error.name === 'AbortError'
+        ) {
+          return
+        }
+
+        setMessage(
+          labels.error
+        )
       }
-    })
-  } catch (error) {
-    if (
-      error instanceof DOMException &&
-      error.name === 'AbortError'
-    ) {
-      return
     }
 
-    console.error(
-      'LISTING SHARE ERROR:',
-      error
-    )
+    async function handleWhatsApp() {
+      if (!whatsapp) {
+        return
+      }
 
-    setMessage(
-      labels.error
-    )
-  }
-}
+      try {
+        await trackListingWhatsAppClicked({
+          listingId,
+
+          metadata: getMetadata()
+        })
+      } catch (error) {
+        console.error(
+          'WHATSAPP TRACKING ERROR:',
+          error
+        )
+      }
+
+      window.open(
+        `https://wa.me/${whatsapp}`,
+        '_blank',
+        'noopener,noreferrer'
+      )
+    }
 
   return (
     <div
@@ -227,6 +254,24 @@ async function handleShare() {
         }}
       >
         {labels.share}
+      </button>
+
+      <button
+        type="button"
+        onClick={handleWhatsApp}
+        style={{
+          flex: 1,
+          minWidth: '8rem',
+          border: '1px solid #25D366',
+          borderRadius: '999px',
+          padding: '.85rem 1.25rem',
+          background: '#25D366',
+          color: '#fff',
+          cursor: 'pointer',
+          fontWeight: 'bold'
+        }}
+      >
+        WhatsApp
       </button>
 
       {message && (

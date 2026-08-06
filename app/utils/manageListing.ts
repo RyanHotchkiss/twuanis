@@ -41,18 +41,6 @@ type DuplicateListingResult = {
   images?: string[] | null
 }
 
-type RenewListingResult = {
-  id: string
-  title: string
-  listing_status: 'active'
-  transaction_type:
-    | 'buy'
-    | 'rent'
-    | 'sale'
-    | null
-  created_at?: string | null
-}
-
 async function updateListingStatus({
   supabase,
   listingId,
@@ -464,49 +452,3 @@ export async function duplicateListing({
   return duplicatedListing as DuplicateListingResult
 }
 
-export async function renewListing({
-  supabase,
-  listingId
-}: ListingLifecycleInput) {
-  const renewedAt =
-    new Date().toISOString()
-
-  const {
-    data,
-    error
-  } = await supabase
-    .from('listings')
-    .update({
-      listing_status:
-        'active',
-
-      created_at:
-        renewedAt
-    })
-    .eq(
-      'id',
-      listingId
-    )
-    .select(`
-      id,
-      title,
-      listing_status,
-      transaction_type,
-      created_at
-    `)
-    .single()
-
-  if (error) {
-    throw new Error(
-      error.message
-    )
-  }
-
-  if (!data) {
-    throw new Error(
-      'Listing was not found.'
-    )
-  }
-
-  return data as RenewListingResult
-}
