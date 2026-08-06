@@ -159,6 +159,11 @@ async function removeStorageObjects(
 export async function POST(
   request: NextRequest
 ) {
+
+console.log(
+  'PUBLISH ROUTE STARTED'
+)
+
   let createdListingId:
     string | null = null
   
@@ -541,6 +546,11 @@ export async function POST(
     /*
      * Insert the listing first, with no final images.
      */
+
+console.log(
+  'ABOUT TO INSERT LISTING'
+)
+
     const {
       data: listingData,
       error: listingError
@@ -691,6 +701,11 @@ export async function POST(
 
     createdListingId =
       listingData.id
+
+console.log(
+  'LISTING INSERTED',
+  listingData.id
+)
 
     /*
      * Copy temporary images into their permanent,
