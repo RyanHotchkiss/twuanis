@@ -1,9 +1,22 @@
-import { notFound } from 'next/navigation'
+import {
+  notFound,
+  redirect
+} from 'next/navigation'
 
-import { supabase } from '@/lib/supabase'
+import {
+  supabaseAdmin
+} from '@/lib/supabase-admin'
 
 import AuthenticatedListingPublisher
   from '@/app/components/AuthenticatedListingPublisher'
+
+type PublishTokenState = {
+  published_at:
+    string | null
+
+  published_listing_id:
+    string | null
+}
 
 export default async function PublishPage({
   params
@@ -12,68 +25,52 @@ export default async function PublishPage({
     token: string
   }>
 }) {
-
   const {
     token
-  } = await params
+  } =
+    await params
 
   const {
-    data: tokenData
-  } = await supabase
-    .from('listing_publish_tokens')
-    .select('verified')
-    .eq('token', token)
-    .single()
+    data: tokenData,
+    error
+  } =
+    await supabaseAdmin
+      .from(
+        'listing_publish_tokens'
+      )
+      .select(`
+        published_at,
+        published_listing_id
+      `)
+      .eq(
+        'token',
+        token
+      )
+      .maybeSingle()
 
-  if (!tokenData) {
-
+  if (
+    error ||
+    !tokenData
+  ) {
     notFound()
-
   }
 
-  if (tokenData.verified) {
+  const publishState =
+    tokenData as
+      PublishTokenState
 
-    return (
-
-      <main
-        style={{
-          minHeight: '100vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          background: '#0a0a0a',
-          color: '#fff'
-        }}
-      >
-
-        <div
-          style={{
-            textAlign: 'center'
-          }}
-        >
-
-          <h1>
-            Listing Already Published
-          </h1>
-
-          <p>
-            This listing has already been verified.
-          </p>
-
-        </div>
-
-      </main>
-
+  if (
+    publishState.published_at &&
+    publishState.published_listing_id
+  ) {
+    redirect(
+      `/en/buy/listing/${publishState.published_listing_id}`
     )
-
   }
 
   return (
-
     <AuthenticatedListingPublisher
       token={token}
     />
-
   )
-
 }

@@ -41,6 +41,16 @@ type PublishTokenRow = {
   phone: string
   token: string
   verified: boolean
+
+  claimed_at:
+    string | null
+
+  published_at:
+    string | null
+
+  published_listing_id:
+    string | null
+
   listing_data:
     Record<string, unknown> | null
 }
@@ -94,33 +104,45 @@ function getTemporaryImagePaths(
     )
 
   return Array.from(
-    new Set(
-      temporaryPaths.filter(
-        (
-          value
-        ): value is string =>
-          typeof value ===
-            'string' &&
-          value.startsWith(
-            `temporary/${token}/`
+        new Set(
+          temporaryPaths.filter(
+            (
+              value
+            ): value is string =>
+              typeof value ===
+                'string' &&
+              value.startsWith(
+                `temporary/${token}/`
+              )
           )
+        )
       )
-    )
-  )
-}
+    }
 
 async function releasePublishToken(
-  tokenId: string | null
-) {
-  if (!tokenId) return
+      tokenId: string | null
+    ) {
+      if (!tokenId) {
+        return
+      }
 
-  await supabaseAdmin
-    .from('listing_publish_tokens')
-    .update({
-      verified: false
-    })
-    .eq('id', tokenId)
-}
+      await supabaseAdmin
+        .from(
+          'listing_publish_tokens'
+        )
+        .update({
+          claimed_at:
+            null
+        })
+        .eq(
+          'id',
+          tokenId
+        )
+        .is(
+          'published_at',
+          null
+        )
+    }
 
 async function removeStorageObjects(
       paths: string[],
@@ -272,32 +294,41 @@ console.log(
      * Verify the publishing token.
      */
     const {
-            data: tokenData,
-            error: tokenError
-          } =
-            await supabaseAdmin
-              .from(
-                'listing_publish_tokens'
-              )
-              .update({
-                verified: true
-              })
-              .eq(
-                'token',
-                token
-              )
-              .eq(
-                'verified',
-                false
-              )
-              .select(`
-                id,
-                phone,
-                token,
-                verified,
-                listing_data
-              `)
-              .maybeSingle()
+  data: tokenData,
+      error: tokenError
+    } =
+      await supabaseAdmin
+        .from(
+          'listing_publish_tokens'
+        )
+        .update({
+          claimed_at:
+            new Date()
+              .toISOString()
+        })
+        .eq(
+          'token',
+          token
+        )
+        .is(
+          'published_at',
+          null
+        )
+        .is(
+          'published_listing_id',
+          null
+        )
+        .select(`
+          id,
+          phone,
+          token,
+          verified,
+          claimed_at,
+          published_at,
+          published_listing_id,
+          listing_data
+        `)
+        .maybeSingle()
 
           if (tokenError) {
             console.error(
@@ -541,7 +572,7 @@ console.log(
         .transaction_type ===
       'rent'
         ? 'rent'
-        : 'buy'
+        : 'sale'
 
     /*
      * Insert the listing first, with no final images.
@@ -909,15 +940,31 @@ console.log(
           'listing_publish_tokens'
         )
         .update({
-          listing_data: {
-            ...propertyData,
+            listing_data: {
+              ...propertyData,
 
-            images:
-              copiedImagePaths,
+              images:
+                copiedImagePaths,
 
-            temporary_images: []
-          }
-        })
+              temporary_images:
+                []
+            },
+
+            claimed_at:
+              null,
+
+            published_at:
+              new Date()
+                .toISOString(),
+
+            published_listing_id:
+              listingWithImages.id,
+
+            verified:
+              true
+          })
+
+
         .eq(
           'id',
           publishToken.id

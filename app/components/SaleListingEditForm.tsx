@@ -356,7 +356,7 @@ export default function SaleListingEditForm({
           0
         ),
 
-      transaction_type: 'buy',
+      transaction_type: 'sale',
 
       listing_status:
         listing.listing_status ||
@@ -725,7 +725,7 @@ export default function SaleListingEditForm({
             null,
 
           transaction_type:
-            'buy',
+            'sale',
 
           listing_status:
             propertyData.listing_status,

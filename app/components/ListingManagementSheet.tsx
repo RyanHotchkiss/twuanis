@@ -11,6 +11,14 @@ import type {
   ResolvedListingCapabilities
 } from '@/lib/listing-capabilities'
 
+import type {
+  ResolvedListingTimeline
+} from '@/lib/listing-timeline'
+
+import {
+  supabase
+} from '@/lib/supabase'
+
 import {
   AlertTriangle,
   Archive,
@@ -147,6 +155,147 @@ export default function ListingManagementSheet({
       | 'permanent-delete'
       | null
     >(null)
+
+  const [
+      timeline,
+      setTimeline
+    ] = useState<
+      ResolvedListingTimeline | null
+    >(null)
+
+    const [
+      timelineLoading,
+      setTimelineLoading
+    ] = useState(false)
+
+    const [
+      timelineError,
+      setTimelineError
+    ] = useState<
+      string | null
+    >(null)
+
+    const loadListingTimeline =
+      useCallback(
+        async () => {
+
+          if (!listing) {
+            return
+          }
+
+          try {
+
+            setTimelineLoading(
+              true
+            )
+
+            setTimelineError(
+              null
+            )
+
+            const {
+              data: {
+                session
+              }
+            } =
+              await supabase.auth.getSession()
+
+            if (
+              !session
+            ) {
+              throw new Error(
+                'Authentication required.'
+              )
+            }
+
+            const response =
+              await fetch(
+                '/api/listing-timeline',
+                {
+                  method:
+                    'POST',
+
+                  headers: {
+                    'Content-Type':
+                      'application/json',
+
+                    Authorization:
+                      `Bearer ${session.access_token}`
+                  },
+
+                  body:
+                    JSON.stringify({
+                      listingId:
+                        listing.id
+                    })
+                }
+              )
+
+            const result =
+              await response.json()
+
+            if (
+              !response.ok ||
+              !result.success
+            ) {
+              throw new Error(
+                result.error ??
+                'Timeline could not be loaded.'
+              )
+            }
+
+            setTimeline(
+              result.timeline
+            )
+
+          } catch (error) {
+
+            setTimeline(
+              null
+            )
+
+            setTimelineError(
+              error instanceof Error
+                ? error.message
+                : 'Timeline could not be loaded.'
+            )
+
+          } finally {
+
+            setTimelineLoading(
+              false
+            )
+
+          }
+
+        },
+        [
+          listing
+        ]
+      )
+
+      useEffect(() => {
+        if (
+          !open ||
+          !listing
+        ) {
+          return
+        }
+
+        setTimeline(
+          null
+        )
+
+        setTimelineError(
+          null
+        )
+
+        void loadListingTimeline()
+      }, [
+        open,
+        listing,
+        loadListingTimeline
+      ])
 
   const sheetRef =
     useRef<HTMLElement | null>(
@@ -535,6 +684,42 @@ export default function ListingManagementSheet({
           lifecycleDescription:
             'Administre la publicación, el estado y la permanencia de este anuncio.',
           
+          timeline:
+            'Cronología',
+
+          timelineDescription:
+            'Vea el registro operativo completo de esta publicación.',
+
+          timelineLoading:
+            'Cargando cronología...',
+
+          timelineEmpty:
+            'Esta publicación todavía no tiene eventos en su cronología.',
+
+          timelineSource:
+            'Fuente',
+
+          timelineState:
+            'Estado',
+
+          timelineUpdatedFields:
+            'Campos actualizados',
+
+          timelineStarts:
+            'Comienza',
+
+          timelineExpires:
+            'Vence',
+
+          timelineAssignedBy:
+            'Asignado por',
+
+          timelineRevokedBy:
+            'Revocado por',
+
+          timelineRevocationReason:
+            'Motivo de revocación',
+
           capabilities:
             'Capacidades',
 
@@ -692,6 +877,42 @@ export default function ListingManagementSheet({
           lifecycleDescription:
             'Manage this listing’s publication, status, and continued existence.',
           
+          timeline:
+            'Timeline',
+
+          timelineDescription:
+            'View the complete operational record of this listing.',
+
+          timelineLoading:
+            'Loading timeline...',
+
+          timelineEmpty:
+            'This listing does not have any timeline events yet.',
+
+          timelineSource:
+            'Source',
+
+          timelineState:
+            'State',
+
+          timelineUpdatedFields:
+            'Updated Fields',
+
+          timelineStarts:
+            'Starts',
+
+          timelineExpires:
+            'Expires',
+
+          timelineAssignedBy:
+            'Assigned By',
+
+          timelineRevokedBy:
+            'Revoked By',
+
+          timelineRevocationReason:
+            'Revocation Reason',
+
           capabilities:
             'Capabilities',
 
@@ -835,6 +1056,43 @@ export default function ListingManagementSheet({
 
           confirmPermanentDelete:
             'Permanently Delete',
+        }
+
+        function formatTimelineDate(
+          value: string
+        ): string {
+          const date =
+            new Date(value)
+
+          if (
+            Number.isNaN(
+              date.getTime()
+            )
+          ) {
+            return value
+          }
+
+          return new Intl.DateTimeFormat(
+            language === 'es'
+              ? 'es-CR'
+              : 'en-US',
+            {
+              year:
+                'numeric',
+
+              month:
+                'short',
+
+              day:
+                'numeric',
+
+              hour:
+                'numeric',
+
+              minute:
+                '2-digit'
+            }
+          ).format(date)
         }
 
       function formatCapabilityDate(
@@ -2015,6 +2273,262 @@ return (
             )}
           </section>
 
+          <section style={managementSection}>
+            <div style={sectionHeader}>
+              <div>
+                <h3 style={sectionTitle}>
+                  {labels.timeline}
+                </h3>
+
+                <p style={sectionDescription}>
+                  {
+                    labels
+                      .timelineDescription
+                  }
+                </p>
+              </div>
+            </div>
+
+            {timelineLoading ? (
+              <div style={timelineMessage}>
+                <Clock3
+                  size={22}
+                  strokeWidth={1}
+                  color="#C7A44B"
+                />
+
+                <span>
+                  {labels.timelineLoading}
+                </span>
+              </div>
+            ) : timelineError ? (
+              <div
+                style={{
+                  ...timelineMessage,
+                  ...timelineErrorMessage
+                }}
+              >
+                <AlertTriangle
+                  size={22}
+                  strokeWidth={1}
+                  color="#ff7676"
+                />
+
+                <span>
+                  {timelineError}
+                </span>
+              </div>
+            ) : timeline &&
+                timeline.events.length > 0 ? (
+              <div style={timelineList}>
+                {timeline.events.map(
+                  event => (
+                    <article
+                      key={event.id}
+                      style={timelineCard}
+                    >
+                      <div style={timelineCardHeader}>
+                        <div>
+                          <div style={timelineEventTitle}>
+                            {event.title}
+                          </div>
+
+                          <div style={timelineTimestamp}>
+                            {
+                              formatTimelineDate(
+                                event.occurredAt
+                              )
+                            }
+                          </div>
+                        </div>
+
+                        {event.source && (
+                          <div style={timelineSourceBadge}>
+                            {event.source}
+                          </div>
+                        )}
+                      </div>
+
+                      {(
+                        event.previousState ||
+                        event.resultingState
+                      ) && (
+                        <div style={timelineDetail}>
+                          <span style={timelineDetailLabel}>
+                            {labels.timelineState}
+                          </span>
+
+                          <span style={timelineDetailValue}>
+                            {
+                              event.previousState ??
+                              '—'
+                            }
+                            {' → '}
+                            {
+                              event.resultingState ??
+                              '—'
+                            }
+                          </span>
+                        </div>
+                      )}
+
+                      {event.metadata
+                        .updatedFields &&
+                        event.metadata
+                          .updatedFields
+                          .length > 0 && (
+                        <div style={timelineDetail}>
+                          <span style={timelineDetailLabel}>
+                            {
+                              labels
+                                .timelineUpdatedFields
+                            }
+                          </span>
+
+                          <span style={timelineDetailValue}>
+                            {
+                              event.metadata
+                                .updatedFields
+                                .join(', ')
+                            }
+                          </span>
+                        </div>
+                      )}
+
+                      {event.metadata
+                        .capabilityNameEn && (
+                        <div style={timelineDetail}>
+                          <span style={timelineDetailLabel}>
+                            {labels.capabilities}
+                          </span>
+
+                          <span style={timelineDetailValue}>
+                            {
+                              language === 'es'
+                                ? (
+                                    event.metadata
+                                      .capabilityNameEs ??
+                                    event.metadata
+                                      .capabilityNameEn
+                                  )
+                                : event.metadata
+                                    .capabilityNameEn
+                            }
+                          </span>
+                        </div>
+                      )}
+
+                      {event.metadata
+                        .startsAt && (
+                        <div style={timelineDetail}>
+                          <span style={timelineDetailLabel}>
+                            {labels.timelineStarts}
+                          </span>
+
+                          <span style={timelineDetailValue}>
+                            {
+                              formatTimelineDate(
+                                event.metadata
+                                  .startsAt
+                              )
+                            }
+                          </span>
+                        </div>
+                      )}
+
+                      {event.metadata
+                        .expiresAt && (
+                        <div style={timelineDetail}>
+                          <span style={timelineDetailLabel}>
+                            {labels.timelineExpires}
+                          </span>
+
+                          <span style={timelineDetailValue}>
+                            {
+                              formatTimelineDate(
+                                event.metadata
+                                  .expiresAt
+                              )
+                            }
+                          </span>
+                        </div>
+                      )}
+
+                      {event.actor
+                        .assignedBy && (
+                        <div style={timelineDetail}>
+                          <span style={timelineDetailLabel}>
+                            {
+                              labels
+                                .timelineAssignedBy
+                            }
+                          </span>
+
+                          <span style={timelineDetailValue}>
+                            {
+                              event.actor
+                                .assignedBy
+                            }
+                          </span>
+                        </div>
+                      )}
+
+                      {event.actor
+                        .revokedBy && (
+                        <div style={timelineDetail}>
+                          <span style={timelineDetailLabel}>
+                            {
+                              labels
+                                .timelineRevokedBy
+                            }
+                          </span>
+
+                          <span style={timelineDetailValue}>
+                            {
+                              event.actor
+                                .revokedBy
+                            }
+                          </span>
+                        </div>
+                      )}
+
+                      {event.metadata
+                        .revocationReason && (
+                        <div style={timelineDetail}>
+                          <span style={timelineDetailLabel}>
+                            {
+                              labels
+                                .timelineRevocationReason
+                            }
+                          </span>
+
+                          <span style={timelineDetailValue}>
+                            {
+                              event.metadata
+                                .revocationReason
+                            }
+                          </span>
+                        </div>
+                      )}
+                    </article>
+                  )
+                )}
+              </div>
+            ) : (
+              <div style={timelineMessage}>
+                <Clock3
+                  size={22}
+                  strokeWidth={1}
+                  color="#777"
+                />
+
+                <span>
+                  {labels.timelineEmpty}
+                </span>
+              </div>
+            )}
+          </section>
+
         </div>
       ) : (
             <div style={confirmationCard}>
@@ -2422,6 +2936,196 @@ const capabilityMessage = {
 const capabilityErrorMessage = {
   color: '#ffb4b4',
   background: '#2a1010',
+  border:
+    '1px solid #6b2222'
+}
+
+const timelineList = {
+  display:
+    'grid',
+
+  gap:
+    '.85rem'
+}
+
+const timelineCard = {
+  padding:
+    '1rem',
+
+  background:
+    '#1b1b1b',
+
+  border:
+    '1px solid #303030',
+
+  borderRadius:
+    '14px'
+}
+
+const timelineCardHeader = {
+  display:
+    'flex',
+
+  justifyContent:
+    'space-between',
+
+  alignItems:
+    'flex-start',
+
+  gap:
+    '1rem',
+
+  paddingBottom:
+    '.8rem',
+
+  marginBottom:
+    '.8rem',
+
+  borderBottom:
+    '1px solid #303030'
+}
+
+const timelineEventTitle = {
+  color:
+    '#fff',
+
+  fontSize:
+    '.98rem',
+
+  fontWeight:
+    650,
+
+  lineHeight:
+    1.3
+}
+
+const timelineTimestamp = {
+  marginTop:
+    '.3rem',
+
+  color:
+    '#777',
+
+  fontSize:
+    '.75rem',
+
+  lineHeight:
+    1.4
+}
+
+const timelineSourceBadge = {
+  flexShrink:
+    0,
+
+  padding:
+    '.25rem .55rem',
+
+  color:
+    '#d8bc72',
+
+  background:
+    'rgba(199, 164, 75, .08)',
+
+  border:
+    '1px solid rgba(199, 164, 75, .3)',
+
+  borderRadius:
+    '999px',
+
+  fontSize:
+    '.68rem',
+
+  fontWeight:
+    700,
+
+  overflowWrap:
+    'anywhere' as const
+}
+
+const timelineDetail = {
+  display:
+    'grid',
+
+  gridTemplateColumns:
+    'minmax(110px, auto) minmax(0, 1fr)',
+
+  gap:
+    '.75rem',
+
+  padding:
+    '.35rem 0'
+}
+
+const timelineDetailLabel = {
+  color:
+    '#777',
+
+  fontSize:
+    '.7rem',
+
+  fontWeight:
+    650,
+
+  letterSpacing:
+    '.035em',
+
+  textTransform:
+    'uppercase' as const
+}
+
+const timelineDetailValue = {
+  color:
+    '#ddd',
+
+  fontSize:
+    '.8rem',
+
+  lineHeight:
+    1.4,
+
+  overflowWrap:
+    'anywhere' as const
+}
+
+const timelineMessage = {
+  display:
+    'flex',
+
+  alignItems:
+    'center',
+
+  gap:
+    '.7rem',
+
+  padding:
+    '1rem',
+
+  color:
+    '#999',
+
+  background:
+    '#171717',
+
+  border:
+    '1px dashed #333',
+
+  borderRadius:
+    '12px',
+
+  fontSize:
+    '.86rem',
+
+  lineHeight:
+    1.5
+}
+
+const timelineErrorMessage = {
+  color:
+    '#ffb4b4',
+
+  background:
+    '#2a1010',
+
   border:
     '1px solid #6b2222'
 }

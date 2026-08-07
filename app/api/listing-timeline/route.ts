@@ -11,10 +11,10 @@ import {
 } from '@/lib/supabase-admin'
 
 import {
-  resolveListingCapabilities
-} from '@/lib/listing-capabilities'
+  resolveListingTimeline
+} from '@/lib/listing-timeline'
 
-type ListingCapabilitiesRequest = {
+type ListingTimelineRequest = {
   listingId?: string
 }
 
@@ -83,6 +83,9 @@ export async function POST(
           success:
             false,
 
+          timeline:
+            null,
+
           error:
             'Authentication is required.'
         },
@@ -93,7 +96,7 @@ export async function POST(
       )
     }
 
-    const supabase =
+    const authenticatedSupabase =
       createAuthenticatedSupabaseClient(
         accessToken
       )
@@ -105,7 +108,8 @@ export async function POST(
       error:
         userError
     } =
-      await supabase.auth
+      await authenticatedSupabase
+        .auth
         .getUser(
           accessToken
         )
@@ -118,6 +122,9 @@ export async function POST(
         {
           success:
             false,
+
+          timeline:
+            null,
 
           error:
             'The authenticated user could not be verified.'
@@ -136,7 +143,7 @@ export async function POST(
           () =>
             null
         ) as
-          | ListingCapabilitiesRequest
+          | ListingTimelineRequest
           | null
 
     const listingId =
@@ -149,6 +156,9 @@ export async function POST(
           success:
             false,
 
+          timeline:
+            null,
+
           error:
             'A listing ID is required.'
         },
@@ -159,8 +169,8 @@ export async function POST(
       )
     }
 
-    const capabilities =
-      await resolveListingCapabilities({
+    const timeline =
+      await resolveListingTimeline({
         supabase:
           supabaseAdmin,
 
@@ -174,11 +184,14 @@ export async function POST(
       success:
         true,
 
-      capabilities
+      timeline,
+
+      empty:
+        timeline.events.length === 0
     })
   } catch (error) {
     console.error(
-      'LISTING CAPABILITIES ERROR:',
+      'LISTING TIMELINE ERROR:',
       error
     )
 
@@ -187,10 +200,13 @@ export async function POST(
         success:
           false,
 
+        timeline:
+          null,
+
         error:
           error instanceof Error
             ? error.message
-            : 'Listing capabilities could not be resolved.'
+            : 'Listing timeline could not be resolved.'
       },
       {
         status:
