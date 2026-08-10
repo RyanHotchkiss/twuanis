@@ -51,6 +51,10 @@ import {
   resolveListingImages
 } from '@/app/utils/resolveListingImages'
 
+import {
+  resolveMarketplacePlacement
+} from '@/lib/promotion-placement'
+
 export default function HomePage() {
   return (
     <Suspense fallback={null}>
@@ -264,8 +268,6 @@ const { data, error } = await supabase
   .select('*')
   .eq('transaction_type', 'sale')
   .eq('listing_status', 'active')
-  .order('id', { ascending: false })
-
 
   if (error) {
 
@@ -305,7 +307,18 @@ const normalizedSupabaseListings =
                 ]
 
 
-                setProperties(mergedListings)
+                const placement =
+                  await resolveMarketplacePlacement({
+                    supabase,
+                    listings:
+                      mergedListings,
+                    surface:
+                      'buy-results'
+                  })
+
+                setProperties(
+                  placement.listings
+                )
 
                 setLoading(false)
 
@@ -900,6 +913,9 @@ const filteredProperties = properties.filter((property) => {
       return true
     })
 
+    const rankedProperties =
+      filteredProperties
+
   return (
       <main style={{
         background: '#000',
@@ -1102,7 +1118,7 @@ const filteredProperties = properties.filter((property) => {
                       }}
                     >
 
-                              {filteredProperties.map((property) => (
+                              {rankedProperties.map((property) => (
 
                                 <Link
                                   href={`/es/comprar/anuncio/${property.id}`}

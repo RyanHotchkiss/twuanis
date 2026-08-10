@@ -64,7 +64,7 @@ export type ManagedListing = {
     | 'sale'
 }
 
-type ListingManagementSheetProps = {
+type ListingOperationsCenterProps = {
   language: SupportedLanguage
   listing: ManagedListing | null
   open: boolean
@@ -110,7 +110,7 @@ const ANIMATION_DURATION =
 const SWIPE_CLOSE_DISTANCE =
   120
 
-export default function ListingManagementSheet({
+export default function ListingOperationsCenter({
   language,
   listing,
   open,
@@ -126,7 +126,7 @@ export default function ListingManagementSheet({
   onRestore,
   onRemove,
   onPermanentDelete
-  }: ListingManagementSheetProps) {
+  }: ListingOperationsCenterProps) {
   const [
     mounted,
     setMounted
@@ -1397,8 +1397,8 @@ return (
         }}
         role="dialog"
         aria-modal="true"
-        aria-labelledby="listing-management-title"
-        aria-describedby="listing-management-description"
+        aria-labelledby="listing-operations-center-title"
+        aria-describedby="listing-operations-center-description"
         onClick={event => {
           event.stopPropagation()
         }}
@@ -1418,14 +1418,14 @@ return (
         <header style={sheetHeader}>
           <div>
             <h2
-              id="listing-management-title"
+              id="listing-operations-center-title"
               style={title}
             >
               {labels.title}
             </h2>
 
             <p
-              id="listing-management-description"
+              id="listing-operations-center-description"
               style={description}
             >
               {currentListing.title}

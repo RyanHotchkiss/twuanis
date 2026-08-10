@@ -149,6 +149,739 @@ export type ResolvedListingEntitlements = {
     >
 }
 
+/*
+ * ---------------------------------------------------------
+ * BATCH LISTING ENTITLEMENT RESOLUTION
+ * ---------------------------------------------------------
+ *
+ * Canonical cohort resolver.
+ *
+ * Designed for marketplace surfaces where many listings
+ * need entitlement state at once.
+ *
+ * Instead of:
+ *
+ * N listings
+ * → N listing queries
+ * → N entitlement queries
+ *
+ * this resolver performs:
+ *
+ * → one listings query
+ * → one listing_entitlements query
+ *
+ * Entitlement lifecycle truth still belongs exclusively
+ * to calculateEntitlementState().
+ */
+
+
+  export async function resolveListingEntitlementsBatch({
+      supabase,
+      listingIds,
+      includeInactive = true,
+      now = new Date()
+    }: {
+      supabase:
+        SupabaseClient
+
+      listingIds:
+        string[]
+
+      includeInactive?:
+        boolean
+
+      now?:
+        Date
+    }): Promise<
+      ResolvedListingEntitlementsBatch
+    > {
+
+      /*
+      * Normalize the cohort first.
+      *
+      * Duplicate listing IDs must never result in duplicate
+      * commercial resolution work.
+      */
+
+      const uniqueListingIds =
+        Array.from(
+          new Set(
+            listingIds.filter(
+              Boolean
+            )
+          )
+        )
+
+
+      if (
+        uniqueListingIds.length ===
+          0
+      ) {
+
+        return {
+          resolvedAt:
+            now.toISOString(),
+
+          requestedListingIds: [],
+
+          customerOwnedListingIds: [],
+
+          externalListingIds: [],
+
+          byListingId: {}
+        }
+      }
+
+
+      /*
+      * -------------------------------------------------------
+      * LOAD LISTING OWNERSHIP IN ONE QUERY
+      * -------------------------------------------------------
+      */
+
+
+      const {
+        data:
+          listingData,
+
+        error:
+          listingError
+      } =
+        await supabase
+          .from(
+            'listings'
+          )
+          .select(`
+            id,
+            owner_id
+          `)
+          .in(
+            'id',
+            uniqueListingIds
+          )
+
+
+      if (
+        listingError
+      ) {
+
+        throw new ListingEntitlementsError(
+          'LISTING_NOT_FOUND',
+          listingError.message
+        )
+      }
+
+
+      const listings =
+        (
+          listingData ??
+          []
+        ) as DatabaseListing[]
+
+
+      /*
+      * Fail closed if a requested listing disappeared between
+      * cohort resolution and entitlement resolution.
+      */
+
+      const returnedListingIds =
+        new Set(
+          listings.map(
+            listing =>
+              listing.id
+          )
+        )
+
+
+      const missingListingIds =
+        uniqueListingIds.filter(
+          listingId =>
+            !returnedListingIds.has(
+              listingId
+            )
+        )
+
+
+      if (
+        missingListingIds.length >
+          0
+      ) {
+
+        throw new ListingEntitlementsError(
+          'LISTING_NOT_FOUND',
+          `Could not resolve listing entitlements because the following listings do not exist: ${missingListingIds.join(', ')}`
+        )
+      }
+
+
+      const customerOwnedListings =
+        listings.filter(
+          listing =>
+            Boolean(
+              listing.owner_id
+            )
+        )
+
+
+      const externalListings =
+        listings.filter(
+          listing =>
+            !listing.owner_id
+        )
+
+
+      const customerOwnedListingIds =
+        customerOwnedListings.map(
+          listing =>
+            listing.id
+        )
+
+
+      const externalListingIds =
+        externalListings.map(
+          listing =>
+            listing.id
+        )
+
+
+      /*
+      * External inventory cannot own listing entitlements.
+      *
+      * It is intentionally excluded from the entitlement
+      * query rather than treated as exceptional.
+      */
+
+      if (
+        customerOwnedListingIds.length ===
+          0
+      ) {
+
+        return {
+          resolvedAt:
+            now.toISOString(),
+
+          requestedListingIds:
+            uniqueListingIds,
+
+          customerOwnedListingIds: [],
+
+          externalListingIds,
+
+          byListingId: {}
+        }
+      }
+
+
+      const ownerByListingId =
+        new Map<
+          string,
+          string
+        >()
+
+
+      for (
+        const listing
+        of customerOwnedListings
+      ) {
+
+        if (
+          listing.owner_id
+        ) {
+
+          ownerByListingId.set(
+            listing.id,
+            listing.owner_id
+          )
+        }
+      }
+
+
+      /*
+      * -------------------------------------------------------
+      * LOAD ALL ENTITLEMENTS IN ONE QUERY
+      * -------------------------------------------------------
+      */
+
+
+      const {
+        data:
+          entitlementData,
+
+        error:
+          entitlementError
+      } =
+        await supabase
+          .from(
+            'listing_entitlements'
+          )
+          .select(`
+            id,
+            listing_id,
+            product_id,
+            owner_id,
+            status,
+            source_type,
+            starts_at,
+            expires_at,
+            purchase_request_id,
+            assigned_by,
+            revoked_at,
+            revoked_by,
+            revocation_reason,
+            created_at,
+            updated_at,
+
+            product:add_on_products (
+              id,
+              slug,
+              name_en,
+              name_es,
+              product_type,
+              target_type
+            )
+          `)
+          .in(
+            'listing_id',
+            customerOwnedListingIds
+          )
+          .order(
+            'created_at',
+            {
+              ascending:
+                false
+            }
+          )
+
+
+      if (
+        entitlementError
+      ) {
+
+        throw new ListingEntitlementsError(
+          'LISTING_ENTITLEMENTS_LOAD_FAILED',
+          entitlementError.message
+        )
+      }
+
+
+      const nowTimestamp =
+        now.getTime()
+
+
+      const resolvedRecords =
+        (
+          entitlementData ??
+          []
+        )
+          .map(
+            row => {
+
+              const entitlement =
+                row as
+                  DatabaseListingEntitlement
+
+
+              const canonicalOwnerId =
+                ownerByListingId.get(
+                  entitlement.listing_id
+                )
+
+
+              /*
+              * Entitlement ownership must agree with canonical
+              * listing ownership.
+              */
+
+              if (
+                !canonicalOwnerId ||
+                entitlement.owner_id !==
+                  canonicalOwnerId
+              ) {
+
+                throw new ListingEntitlementsError(
+                  'LISTING_OWNER_MISMATCH',
+                  `Entitlement ${entitlement.id} does not match the canonical owner of listing ${entitlement.listing_id}.`
+                )
+              }
+
+        const product =
+          resolveEntitlementProduct(
+            entitlement.product
+          )
+              if (
+                !product ||
+                product.target_type !==
+                  'listing'
+              ) {
+
+                throw new ListingEntitlementsError(
+                  'INVALID_ENTITLEMENT_PRODUCT',
+                  `Entitlement ${entitlement.id} does not reference a valid listing-targeted product.`
+                )
+              }
+
+
+              const state =
+                calculateEntitlementState({
+                  status:
+                    entitlement.status,
+
+                  startsAt:
+                    entitlement.starts_at,
+
+                  expiresAt:
+                    entitlement.expires_at,
+
+                  now:
+                    nowTimestamp
+                })
+
+
+              return {
+                entitlementId:
+                  entitlement.id,
+
+                listingId:
+                  entitlement.listing_id,
+
+                ownerId:
+                  entitlement.owner_id,
+
+                productId:
+                  product.id,
+
+                productSlug:
+                  product.slug,
+
+                productNameEn:
+                  product.name_en,
+
+                productNameEs:
+                  product.name_es,
+
+                productType:
+                  product.product_type,
+
+                targetType:
+                  product.target_type,
+
+                status:
+                  entitlement.status,
+
+                sourceType:
+                  entitlement.source_type,
+
+                startsAt:
+                  entitlement.starts_at,
+
+                expiresAt:
+                  entitlement.expires_at,
+
+                purchaseRequestId:
+                  entitlement
+                    .purchase_request_id,
+
+                assignedBy:
+                  entitlement.assigned_by,
+
+                revokedAt:
+                  entitlement.revoked_at,
+
+                revokedBy:
+                  entitlement.revoked_by,
+
+                revocationReason:
+                  entitlement
+                    .revocation_reason,
+
+                createdAt:
+                  entitlement.created_at,
+
+                updatedAt:
+                  entitlement.updated_at,
+
+                ...state
+              } satisfies
+                ListingEntitlementRecord
+            }
+          )
+
+
+      /*
+      * -------------------------------------------------------
+      * GROUP ENTITLEMENTS BY LISTING
+      * -------------------------------------------------------
+      */
+
+
+      const recordsByListingId =
+        resolvedRecords.reduce<
+          Record<
+            string,
+            ListingEntitlementRecord[]
+          >
+        >(
+          (
+            grouped,
+            entitlement
+          ) => {
+
+            if (
+              !grouped[
+                entitlement.listingId
+              ]
+            ) {
+
+              grouped[
+                entitlement.listingId
+              ] = []
+            }
+
+
+            grouped[
+              entitlement.listingId
+            ].push(
+              entitlement
+            )
+
+
+            return grouped
+          },
+          {}
+        )
+
+
+      /*
+      * -------------------------------------------------------
+      * BUILD CANONICAL RESULT FOR EACH CUSTOMER LISTING
+      * -------------------------------------------------------
+      */
+
+
+      const byListingId:
+        Record<
+          string,
+          ResolvedListingEntitlements
+        > = {}
+
+
+      for (
+        const listing
+        of customerOwnedListings
+      ) {
+
+        if (
+          !listing.owner_id
+        ) {
+          continue
+        }
+
+
+        const allEntitlements =
+          recordsByListingId[
+            listing.id
+          ] ??
+          []
+
+
+        const returnedEntitlements =
+          includeInactive
+            ? allEntitlements
+            : allEntitlements.filter(
+                entitlement =>
+                  entitlement
+                    .isCurrentlyActive
+              )
+
+
+        const activeEntitlements =
+          allEntitlements.filter(
+            entitlement =>
+              entitlement
+                .isCurrentlyActive
+          )
+
+
+        const scheduledEntitlements =
+          allEntitlements.filter(
+            entitlement =>
+              entitlement
+                .isScheduled
+          )
+
+
+        const historicalEntitlements =
+          allEntitlements.filter(
+            entitlement =>
+              !entitlement
+                .isCurrentlyActive &&
+              !entitlement
+                .isScheduled
+          )
+
+
+        const capabilitiesBySlug =
+          allEntitlements.reduce<
+            Record<
+              string,
+              ResolvedListingCapability
+            >
+          >(
+            (
+              capabilities,
+              entitlement
+            ) => {
+
+              const slug =
+                entitlement.productSlug
+
+
+              if (
+                !capabilities[
+                  slug
+                ]
+              ) {
+
+                capabilities[
+                  slug
+                ] =
+                  createCapability({
+                    slug,
+
+                    entitlements:
+                      allEntitlements
+                  })
+              }
+
+
+              return capabilities
+            },
+            {}
+          )
+
+
+        const getNamedCapability = (
+          slug:
+            ListingCapabilitySlug
+        ):
+          ResolvedListingCapability => {
+
+          return (
+            capabilitiesBySlug[
+              slug
+            ] ??
+            createCapability({
+              slug,
+
+              entitlements:
+                allEntitlements
+            })
+          )
+        }
+
+
+        byListingId[
+          listing.id
+        ] = {
+
+          listingId:
+            listing.id,
+
+          ownerId:
+            listing.owner_id,
+
+          resolvedAt:
+            now.toISOString(),
+
+          entitlements:
+            returnedEntitlements,
+
+          activeEntitlements,
+
+          scheduledEntitlements,
+
+          historicalEntitlements,
+
+          capabilities: {
+
+            featuredListing:
+              getNamedCapability(
+                NAMED_CAPABILITY_SLUGS
+                  .featuredListing
+              ),
+
+            listingBoost:
+              getNamedCapability(
+                NAMED_CAPABILITY_SLUGS
+                  .listingBoost
+              ),
+
+            premiumGallery:
+              getNamedCapability(
+                NAMED_CAPABILITY_SLUGS
+                  .premiumGallery
+              ),
+
+            verifiedOwnership:
+              getNamedCapability(
+                NAMED_CAPABILITY_SLUGS
+                  .verifiedOwnership
+              ),
+
+            premiumListingTemplate:
+              getNamedCapability(
+                NAMED_CAPABILITY_SLUGS
+                  .premiumListingTemplate
+              ),
+
+            homepageExposure:
+              getNamedCapability(
+                NAMED_CAPABILITY_SLUGS
+                  .homepageExposure
+              )
+          },
+
+          capabilitiesBySlug
+        }
+      }
+
+
+      return {
+
+        resolvedAt:
+          now.toISOString(),
+
+        requestedListingIds:
+          uniqueListingIds,
+
+        customerOwnedListingIds,
+
+        externalListingIds,
+
+        byListingId
+      }
+    }
+
+export type ResolvedListingEntitlementsBatch = {
+    resolvedAt:
+      string
+
+    requestedListingIds:
+      string[]
+
+    customerOwnedListingIds:
+      string[]
+
+    externalListingIds:
+      string[]
+
+    byListingId:
+      Record<
+        string,
+        ResolvedListingEntitlements
+      >
+  }
+
 type DatabaseListing = {
   id: string
   owner_id: string | null
@@ -167,6 +900,28 @@ type DatabaseAddOnProduct = {
   target_type:
     AddOnTargetType
 }
+
+function resolveEntitlementProduct(
+    product:
+      DatabaseListingEntitlement['product']
+  ): DatabaseAddOnProduct | null {
+
+    if (
+      Array.isArray(
+        product
+      )
+    ) {
+      return (
+        product[0] ??
+        null
+      )
+    }
+
+    return (
+      product ??
+      null
+    )
+  }
 
 type DatabaseListingEntitlement = {
   id: string
@@ -203,7 +958,9 @@ type DatabaseListingEntitlement = {
   updated_at: string
 
   product:
-    DatabaseAddOnProduct[]
+  | DatabaseAddOnProduct
+  | DatabaseAddOnProduct[]
+  | null
 }
 
 export class ListingEntitlementsError
@@ -550,14 +1307,14 @@ export async function resolveListingEntitlements({
       )
 
   if (error) {
-    throw new ListingEntitlementsError(
-      'LISTING_ENTITLEMENTS_LOAD_FAILED',
-      error.message
-    )
-  }
+      throw new ListingEntitlementsError(
+        'LISTING_ENTITLEMENTS_LOAD_FAILED',
+        error.message
+      )
+    }
 
-  const nowTimestamp =
-    now.getTime()
+    const nowTimestamp =
+      now.getTime()
 
   const resolvedRecords =
     (
@@ -569,7 +1326,9 @@ export async function resolveListingEntitlements({
             DatabaseListingEntitlement
 
         const product =
-          entitlement.product?.[0]
+          resolveEntitlementProduct(
+            entitlement.product
+          )
 
         if (
           !product ||

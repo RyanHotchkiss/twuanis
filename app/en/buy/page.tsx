@@ -50,6 +50,10 @@ import {
   resolveListingImages
 } from '@/app/utils/resolveListingImages'
 
+import {
+  resolveMarketplacePlacement
+} from '@/lib/promotion-placement'
+
 export default function HomePage() {
   return (
     <Suspense fallback={null}>
@@ -263,7 +267,6 @@ const navButton = {
   .select('*')
   .eq('transaction_type', 'sale')
   .eq('listing_status', 'active')
-  .order('id', { ascending: false })
 
   console.log(
   JSON.stringify(
@@ -368,9 +371,20 @@ const mergedListings = [
 ]
 
 
-setProperties(mergedListings)
+const placement =
+    await resolveMarketplacePlacement({
+      supabase,
+      listings:
+        mergedListings,
+      surface:
+        'buy-results'
+    })
 
-setLoading(false)
+  setProperties(
+    placement.listings
+  )
+
+  setLoading(false)
 
 
 console.log(
@@ -990,6 +1004,9 @@ const filteredProperties = properties.filter((property) => {
       return true
     })
 
+    const rankedProperties =
+      filteredProperties
+
   return (
       <main style={{
         background: '#000',
@@ -1192,7 +1209,7 @@ const filteredProperties = properties.filter((property) => {
                       }}
                     >
 
-                                {filteredProperties.map((property) => {
+                                {rankedProperties.map((property) => {
                                   console.log(
                                     'TITLE:',
                                     property.title

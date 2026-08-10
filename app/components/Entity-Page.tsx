@@ -9,6 +9,18 @@ import {
   getCachedMarketStatistics
 } from '@/lib/statistics-engine'
 
+import {
+  supabase
+} from '@/lib/supabase'
+
+import {
+  resolveMarketplacePlacement
+} from '@/lib/promotion-placement'
+
+import {
+  rankListings
+} from '@/lib/listing-ranking'
+
 import MarketActivityTracker from '@/app/components/MarketActivityTracker'
 
 type EntityPageProps = {
@@ -83,13 +95,66 @@ export default async function EntityPage({
     ).catch(() => null)
 
   const {
-    entity,
-    parentEntity,
-    childEntities,
-    relatedEntities,
-    listings,
-    listingCount
-  } = data
+      entity,
+      parentEntity,
+      childEntities,
+      relatedEntities,
+      listings,
+      listingCount
+    } = data
+
+    let placedListings =
+    rankListings({
+      listings
+    })
+
+
+  if (
+    entityType ===
+      'province'
+  ) {
+
+    const placement =
+      await resolveMarketplacePlacement({
+        supabase,
+
+        listings,
+
+        surface:
+          'province',
+
+        province:
+          entity.term_name_en ||
+          entity.term_name
+      })
+
+    placedListings =
+      placement.listings
+  }
+
+
+  if (
+    entityType ===
+      'property_type'
+  ) {
+
+    const placement =
+      await resolveMarketplacePlacement({
+        supabase,
+
+        listings,
+
+        surface:
+          'property-type',
+
+        propertyType:
+          entity.term_name_en ||
+          entity.term_name
+      })
+
+    placedListings =
+      placement.listings
+  }
 
   return (
     <>
@@ -285,7 +350,7 @@ export default async function EntityPage({
 
         <h2>Listings</h2>
 
-        {listings.length === 0 && (
+        {placedListings.length === 0 && (
           <p>
             No listings connected to this
             entity yet.
@@ -293,7 +358,7 @@ export default async function EntityPage({
         )}
 
         <div>
-          {listings.map((listing) => (
+          {placedListings.map((listing) => (
             <Link
               key={listing.id}
               href={`/en/buy/listing/${listing.id}`}

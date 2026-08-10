@@ -6,7 +6,12 @@
     "dev": "next dev",
     "build": "next build --webpack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "verify-provider": "tsx scripts/verification/commercial-provider.ts",
+    "verify-activation": "tsx scripts/verification/activation-engine.ts",
+    "verify-promotion-placement": "tsx scripts/verification/promotion-placement.ts",
+    "verify-promotion-history": "tsx scripts/verification/promotion-history.ts",
+    "verify-promotion-performance": "tsx scripts/verification/promotion-performance.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.105.3",
@@ -40,6 +45,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.0.3",
     "tailwindcss": "^4",
+    "tsx": "^4.23.11",
     "typescript": "^5"
   }
 }

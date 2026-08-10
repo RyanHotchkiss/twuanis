@@ -5,6 +5,13 @@ import MarketFilters from '@/app/components/MarketFilters'
 import ExploreResults from './ExploreResults'
 import TopBar from '@/app/components/TopBar'
 import GraphExplorer from '@/app/components/GraphExplorer'
+import {
+  supabase
+} from '@/lib/supabase'
+
+import {
+  resolveMarketplacePlacement
+} from '@/lib/promotion-placement'
 
 type ExplorePageProps = {
   searchParams: Promise<{
@@ -52,6 +59,29 @@ export default async function ExplorePage({
     ? await exploreMarket(filters)
     : null
 
+  const placedResult =
+  result &&
+  Array.isArray(
+    result.listings
+  )
+    ? {
+        ...result,
+
+        listings:
+          (
+            await resolveMarketplacePlacement({
+              supabase,
+
+              listings:
+                result.listings,
+
+              surface:
+                'market-explorer'
+            })
+          ).listings
+      }
+    : result
+
   return (
     <main
         style={{
@@ -96,8 +126,10 @@ export default async function ExplorePage({
         <p>Select a market combination to begin exploring.</p>
       )}
 
-      {result && (
-        <ExploreResults result={result} />
+      {placedResult && (
+        <ExploreResults
+          result={placedResult}
+        />
       )}
     </main>
   )

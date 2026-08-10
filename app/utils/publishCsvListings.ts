@@ -52,6 +52,11 @@ console.log(
 
     const finalListing = {
 
+      listing_origin:
+        'scraped',
+      listing_source_type:
+        'realtor',
+
       province: listing.province,
       canton: listing.canton,
       district: listing.district,

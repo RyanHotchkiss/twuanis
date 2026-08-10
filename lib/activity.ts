@@ -162,6 +162,9 @@ export function getActivityTimelineGroup(
   return 'earlier'
 }
 
+export type CommercialActivityEventType =
+  | 'commercial_activation_completed'
+
 export type ActivityEventCategory =
   | 'property'
   | 'listing'
@@ -206,12 +209,15 @@ export type ActivityEventType =
   | ListingActivityEventType
   | SearchActivityEventType
   | ComparisonActivityEventType
+  | CommercialActivityEventType
 
 export type ActivityEntityType =
   | 'property'
   | 'listing'
   | 'search'
   | 'property_comparison'
+  | 'subscription'
+  | 'listing_entitlement'
 
 export function recordSearchSaved({
   searchId,

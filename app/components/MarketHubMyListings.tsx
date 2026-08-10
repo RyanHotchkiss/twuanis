@@ -34,10 +34,10 @@ import {
 
 import PublishListingSheet from '@/app/components/PublishListingSheet'
 
-import ListingManagementSheet, {
-type ListingStatus,
-type ManagedListing
-} from '@/app/components/ListingManagementSheet'
+import ListingOperationsCenter, {
+  type ListingStatus,
+  type ManagedListing
+} from '@/app/components/ListingOperationsCenter'
 
 import {
   prependListing,
@@ -156,8 +156,8 @@ MarketHubListing | null
 >(null)
 
 const [
-managementSheetOpen,
-setManagementSheetOpen
+operationsCenterOpen,
+setOperationsCenterOpen
 ] = useState(false)
 
 const [
@@ -401,10 +401,11 @@ async function loadListingCapabilities(
   }
 }
 
-function openManagementSheet(
+function openOperationsCenter(
   listing:
     MarketHubListing
 ) {
+
   setSelectedListing(
     listing
   )
@@ -416,7 +417,7 @@ function openManagementSheet(
     null
   )
 
-  setManagementSheetOpen(
+  setOperationsCenterOpen(
     true
   )
 
@@ -518,7 +519,7 @@ async function handlePublish(
         )
     )
 
-    setManagementSheetOpen(
+    setOperationsCenterOpen(
       false
     )
 
@@ -836,7 +837,7 @@ listing.id
 )
 )
 
-setManagementSheetOpen(
+setOperationsCenterOpen(
 false
 )
 
@@ -893,7 +894,7 @@ async function handleDuplicate(
 
     setDraftsOpen(true)
 
-    setManagementSheetOpen(
+    setOperationsCenterOpen(
       false
     )
 
@@ -1007,7 +1008,7 @@ async function handleRenew(
           )
       )
 
-      setManagementSheetOpen(
+      setOperationsCenterOpen(
         false
       )
 
@@ -1241,7 +1242,7 @@ style={listingCard}
   <button
       type="button"
       onClick={() =>
-        openManagementSheet(
+        openOperationsCenter(
           listing
         )
       }
@@ -1363,7 +1364,7 @@ transition:
         <button
             type="button"
             onClick={() =>
-              openManagementSheet(
+              openOperationsCenter(
                 listing
               )
             }
@@ -1486,7 +1487,7 @@ transition:
           <button
                 type="button"
                 onClick={() =>
-                  openManagementSheet(
+                  openOperationsCenter(
                     listing
                   )
                 }
@@ -1607,7 +1608,7 @@ transition:
         <button
           type="button"
           onClick={() =>
-            openManagementSheet(
+            openOperationsCenter(
               listing
             )
           }
@@ -1640,16 +1641,18 @@ style={managementErrorBox}
 
 <PublishListingSheet
 language={language}
-open={publishSheetOpen}
+open={
+operationsCenterOpen
+}
 onClose={() => {
 setPublishSheetOpen(false)
 }}
 />
 
-<ListingManagementSheet
+<ListingOperationsCenter
 language={language}
 open={
-managementSheetOpen
+operationsCenterOpen
 }
 listing={
 selectedListing
@@ -1664,7 +1667,7 @@ capabilitiesError={
 capabilitiesError
 }
 onClose={() => {
-  setManagementSheetOpen(
+  setOperationsCenterOpen(
     false
   )
 

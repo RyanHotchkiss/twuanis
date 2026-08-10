@@ -16,6 +16,12 @@ import type {
   SupabaseClient
 } from '@supabase/supabase-js'
 
+import {
+  getPromotionHistory,
+  type PromotionHistoryEvent,
+  type PromotionHistoryEventType
+} from '@/lib/promotion-history'
+
 type ResolveListingLifecycleTimelineInput = {
   supabase: SupabaseClient
 
@@ -56,6 +62,7 @@ type DatabaseListingActivityEvent = {
 export type ListingTimelineCategory =
   | 'lifecycle'
   | 'capability'
+  | 'promotion'
 
 /*
  * Normalized lifecycle events.
@@ -89,9 +96,13 @@ export type ListingCapabilityTimelineEventType =
   | 'capability_revoked'
   | 'capability_cancelled'
 
+export type ListingPromotionTimelineEventType =
+  PromotionHistoryEventType
+
 export type ListingTimelineEventType =
   | ListingLifecycleTimelineEventType
   | ListingCapabilityTimelineEventType
+  | ListingPromotionTimelineEventType
 
 /*
  * Canonical source of the event.
@@ -216,6 +227,21 @@ export type ListingTimelineMetadata = {
 
   purchaseRequestId?:
     string | null
+
+  promotionSlug?:
+    string
+
+  promotionSurfaces?:
+    string[]
+
+  promotionPriority?:
+    number
+
+  promotionScope?:
+    Record<
+      string,
+      unknown
+    >
 
   startsAt?:
     string | null
@@ -814,6 +840,183 @@ function normalizeCapabilityTimelineEvents(
   return events
 }
 
+function normalizePromotionTimelineTitle(
+  eventType:
+    PromotionHistoryEventType
+): string {
+
+  switch (
+    eventType
+  ) {
+
+    case 'promotion_scheduled':
+      return 'Promotion Scheduled'
+
+    case 'promotion_activated':
+      return 'Promotion Activated'
+
+    case 'promotion_changed':
+      return 'Promotion Changed'
+
+    case 'promotion_expired':
+      return 'Promotion Expired'
+
+    case 'promotion_cancelled':
+      return 'Promotion Cancelled'
+
+    default:
+      return 'Promotion Updated'
+  }
+}
+
+
+function normalizePromotionTimelineEvent(
+  event:
+    PromotionHistoryEvent
+): ListingTimelineEvent {
+
+  return {
+    id:
+      `promotion:${event.id}`,
+
+    listingId:
+      event.listingId,
+
+    category:
+      'promotion',
+
+    eventType:
+      event.eventType,
+
+    title:
+      normalizePromotionTimelineTitle(
+        event.eventType
+      ),
+
+    occurredAt:
+      event.occurredAt,
+
+    source:
+      'promotion-history',
+
+    actor: {
+      actorId:
+        event.actorId,
+
+      actorType:
+        event.actorType === 'admin'
+          ? 'admin'
+          : event.actorType === 'system'
+            ? 'system'
+            : event.actorType === 'user'
+              ? 'owner'
+              : 'unknown',
+
+      assignedBy:
+        null,
+
+      revokedBy:
+        null
+    },
+
+    previousState:
+      event.previousState as
+        ListingTimelineState,
+
+    resultingState:
+      event.resultingState as
+        ListingTimelineState,
+
+    metadata: {
+      entitlementId:
+        event.entitlementId,
+
+      purchaseRequestId:
+        event.purchaseRequestId,
+
+      promotionSlug:
+        event.promotionSlug,
+
+      promotionSurfaces:
+        event.surfaces,
+
+      promotionPriority:
+        event.priority,
+
+      promotionScope:
+        event.scope,
+
+      startsAt:
+        event.startsAt,
+
+      expiresAt:
+        event.expiresAt,
+
+      details: {
+        ...event.metadata,
+
+        productId:
+          event.productId
+      }
+    }
+  }
+}
+
+export async function resolveListingPromotionTimeline({
+  supabase,
+  listingId,
+  ownerId
+}: ResolveListingTimelineInput) {
+
+  /*
+   * Ownership is already enforced by the
+   * promotion_events RLS policy.
+   *
+   * We still retain ownerId in this resolver's
+   * contract so every Listing Timeline source
+   * has the same ownership context.
+   */
+
+  const history =
+    await getPromotionHistory({
+      supabase,
+      listingId
+    })
+
+
+  const events =
+    history.map(
+      normalizePromotionTimelineEvent
+    )
+
+
+  events.sort(
+    (
+      first,
+      second
+    ) =>
+      new Date(
+        second.occurredAt
+      ).getTime() -
+      new Date(
+        first.occurredAt
+      ).getTime()
+  )
+
+
+  return {
+    listingId,
+
+    ownerId,
+
+    resolvedAt:
+      new Date().toISOString(),
+
+    events
+  } satisfies
+    ResolvedListingTimeline
+}
+
 export async function resolveListingLifecycleTimeline({
   supabase,
   listingId,
@@ -934,9 +1137,41 @@ export async function resolveListingCapabilityTimeline({
     })
 
   const events =
-  resolved.entitlements.flatMap(
-    normalizeCapabilityTimelineEvents
-  )
+    resolved.entitlements.flatMap(
+      entitlement => {
+
+        const entitlementEvents =
+          normalizeCapabilityTimelineEvents(
+            entitlement
+          )
+
+        /*
+        * Promotional operational lifecycle is now
+        * authoritative in promotion_events.
+        *
+        * Keep assignment/pending entitlement facts,
+        * but do not reconstruct operational promotion
+        * events from current entitlement state.
+        */
+
+        if (
+          entitlement.productType ===
+            'promotion'
+        ) {
+
+          return entitlementEvents.filter(
+            event =>
+              event.eventType ===
+                'capability_assigned' ||
+              event.eventType ===
+                'capability_pending'
+          )
+        }
+
+
+        return entitlementEvents
+      }
+    )
 
   events.sort(
       (
@@ -988,10 +1223,21 @@ export async function resolveListingTimeline({
       ownerId
     })
 
+  const promotions =
+    await resolveListingPromotionTimeline({
+      supabase,
+
+      listingId,
+
+      ownerId
+    })
+
     const events = [
       ...lifecycle.events,
 
-      ...capabilities.events
+      ...capabilities.events,
+
+      ...promotions.events
     ]
 
     events.sort(

@@ -49,6 +49,10 @@ import {
   resolveListingImages
 } from '@/app/utils/resolveListingImages'
 
+import {
+  resolveMarketplacePlacement
+} from '@/lib/promotion-placement'
+
 export default function HomePage() {
   return (
     <Suspense fallback={null}>
@@ -261,7 +265,6 @@ const navButton = {
           .select('*')
           .eq('transaction_type', 'rent')
           .eq('listing_status', 'active')
-          .order('created_at', { ascending: false })
 
         if (error) {
 
@@ -298,7 +301,18 @@ const normalizedSupabaseListings =
           ...normalizedSupabaseListings
         ]
 
-        setProperties(mergedListings)
+        const placement =
+          await resolveMarketplacePlacement({
+            supabase,
+            listings:
+              mergedListings,
+            surface:
+              'rent-results'
+          })
+
+        setProperties(
+          placement.listings
+        )
 
         setLoading(false)
 
@@ -890,6 +904,9 @@ const filteredProperties = properties.filter((property) => {
       return true
     })
 
+    const rankedProperties =
+      filteredProperties
+
   return (
       <main style={{
         background: '#000',
@@ -1137,10 +1154,7 @@ const filteredProperties = properties.filter((property) => {
                       }}
                     >
 
-                              {filteredProperties.map((property) => (
-
-
-
+                              {rankedProperties.map((property) => (
 
                                 <Link
                                   href={`/en/rent-lease/listing/${property.id}`}

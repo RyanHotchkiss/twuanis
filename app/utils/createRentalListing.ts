@@ -68,6 +68,10 @@ export async function createRentalListing(
 
                 owner_id:
                 user.id,
+                listing_origin:
+                  'customer',
+                listing_source_type:
+                  'customer',
 
                 province: propertyData.province,
                 canton: propertyData.canton,

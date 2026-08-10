@@ -3,6 +3,10 @@ import { supabase } from '@/lib/supabase'
 import { buildHomePageSchema }
 from '@/lib/schema/buildHomePageSchema'
 
+import {
+  resolveMarketplacePlacement
+} from '@/lib/promotion-placement'
+
 export default async function HomePage() {
 
   const { data: ontologyTerms }
@@ -22,6 +26,15 @@ export default async function HomePage() {
         .eq('transaction_type', 'sale')
         .eq('listing_status', 'active')
 
+  const homepagePlacement =
+    await resolveMarketplacePlacement({
+      supabase,
+      listings:
+        listings || [],
+      surface:
+        'homepage'
+    })
+
   const homePageSchema =
     buildHomePageSchema({
       lang: 'es',
@@ -40,7 +53,7 @@ export default async function HomePage() {
         ontologyRelationships || []
       }
       listings={
-        listings || []
+        homepagePlacement.listings
       }
       homePageSchema={
         homePageSchema
