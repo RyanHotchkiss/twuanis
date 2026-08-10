@@ -1,6 +1,8 @@
 import HomePageClient from './HomePageClient'
 import { supabase } from '@/lib/supabase'
-
+import {
+  supabaseAdmin
+} from '@/lib/supabase-admin'
 import { buildHomePageSchema }
 from '@/lib/schema/buildHomePageSchema'
 
@@ -34,13 +36,16 @@ export default async function HomePage() {
         )
     
   const homepagePlacement =
-      await resolveMarketplacePlacement({
-        supabase,
-        listings:
-          listings || [],
-        surface:
-          'homepage'
-      })
+    await resolveMarketplacePlacement({
+      supabase:
+        supabaseAdmin,
+
+      listings:
+        listings || [],
+
+      surface:
+        'homepage'
+    })
 
   const homePageSchema =
       buildHomePageSchema({
