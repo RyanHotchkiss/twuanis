@@ -8,7 +8,9 @@ import GraphExplorer from '@/app/components/GraphExplorer'
 import {
   supabase
 } from '@/lib/supabase'
-
+import {
+  supabaseAdmin
+} from '@/lib/supabase-admin'
 import {
   resolveMarketplacePlacement
 } from '@/lib/promotion-placement'
@@ -70,7 +72,8 @@ export default async function ExplorePage({
         listings:
           (
             await resolveMarketplacePlacement({
-              supabase,
+              supabase:
+                supabaseAdmin,
 
               listings:
                 result.listings,

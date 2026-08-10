@@ -51,10 +51,6 @@ import {
   resolveListingImages
 } from '@/app/utils/resolveListingImages'
 
-import {
-  resolveMarketplacePlacement
-} from '@/lib/promotion-placement'
-
 export default function HomePage() {
   return (
     <Suspense fallback={null}>
@@ -307,18 +303,89 @@ const normalizedSupabaseListings =
                 ]
 
 
-                const placement =
-                  await resolveMarketplacePlacement({
-                    supabase,
-                    listings:
-                      mergedListings,
-                    surface:
-                      'buy-results'
-                  })
+                let placedListings =
+                    mergedListings
 
-                setProperties(
-                  placement.listings
-                )
+
+                  try {
+
+                    const placementResponse =
+                      await fetch(
+                        '/api/marketplace-placement',
+                        {
+                          method:
+                            'POST',
+
+                          headers: {
+                            'Content-Type':
+                              'application/json'
+                          },
+
+                          body:
+                            JSON.stringify({
+                              listings:
+                                mergedListings,
+
+                              surface:
+                                'buy-results'
+                            }),
+
+                          cache:
+                            'no-store'
+                        }
+                      )
+
+
+                    if (
+                      placementResponse.ok
+                    ) {
+
+                      const placementResult =
+                        await placementResponse.json() as {
+                          listings?:
+                            typeof mergedListings
+                        }
+
+
+                      if (
+                        Array.isArray(
+                          placementResult.listings
+                        )
+                      ) {
+
+                        placedListings =
+                          placementResult.listings
+                      }
+                    } else {
+
+                      console.error(
+                        'BUY MARKETPLACE PLACEMENT FAILED:',
+                        placementResponse.status
+                      )
+                    }
+
+                  } catch (
+                    placementError
+                  ) {
+
+                    /*
+                    * Placement enhancement fails open to the already-valid
+                    * organic cohort.
+                    *
+                    * Listing discovery must not disappear because promotion
+                    * ranking temporarily failed.
+                    */
+
+                    console.error(
+                      'BUY MARKETPLACE PLACEMENT ERROR:',
+                      placementError
+                    )
+                  }
+
+
+                  setProperties(
+                    placedListings
+                  )
 
                 setLoading(false)
 

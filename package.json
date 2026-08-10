@@ -11,7 +11,13 @@
     "verify-activation": "tsx scripts/verification/activation-engine.ts",
     "verify-promotion-placement": "tsx scripts/verification/promotion-placement.ts",
     "verify-promotion-history": "tsx scripts/verification/promotion-history.ts",
-    "verify-promotion-performance": "tsx scripts/verification/promotion-performance.ts"
+    "verify-promotion-performance": "tsx scripts/verification/promotion-performance.ts",
+    "verify-comparable-cohort": "tsx scripts/verification/comparable-cohort.ts",
+    "verify-promotion-intelligence": "tsx scripts/verification/promotion-intelligence.ts",
+    "verify-aggregate-promotion-intelligence": "tsx scripts/verification/aggregate-promotion-intelligence.ts",
+    "verify-public-promotion-evidence": "tsx scripts/verification/public-promotion-evidence.ts",
+    "verify-commercial-resolver": "tsx scripts/verification/commercial-resolver.ts",
+    "verify-commercial-timeline": "tsx scripts/verification/commercial-timeline.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.105.3",

@@ -14,6 +14,10 @@ import {
 } from '@/lib/supabase'
 
 import {
+  supabaseAdmin
+} from '@/lib/supabase-admin'
+
+import {
   resolveMarketplacePlacement
 } from '@/lib/promotion-placement'
 
@@ -116,7 +120,8 @@ export default async function EntityPage({
 
     const placement =
       await resolveMarketplacePlacement({
-        supabase,
+        supabase:
+          supabaseAdmin,
 
         listings,
 
@@ -140,7 +145,8 @@ export default async function EntityPage({
 
     const placement =
       await resolveMarketplacePlacement({
-        supabase,
+        supabase:
+          supabaseAdmin,
 
         listings,
 

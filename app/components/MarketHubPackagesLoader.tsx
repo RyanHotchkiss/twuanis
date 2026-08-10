@@ -14,13 +14,33 @@ import {
   type AvailableAddOn
 } from '@/lib/add-on-catalog'
 
+import type {
+  PublicPromotionEvidence
+} from '@/lib/public-promotion-evidence'
+
 import MarketHubPackages, {
   type BillingCycle,
   type SelectedUpgradePackage
 } from '@/app/components/MarketHubPackages'
 
+import type {
+  CanonicalCommercialState
+} from '@/lib/commercial-resolver'
+
+import type {
+  CommercialTimeline
+} from '@/lib/commercial-timeline'
+
 type MarketHubPackagesLoaderProps = {
   language: 'en' | 'es'
+}
+
+type PublicPromotionEvidenceResponse = {
+  evidence:
+    Record<
+      string,
+      PublicPromotionEvidence | null
+    >
 }
 
 type SubscriptionPackage = {
@@ -215,6 +235,27 @@ type DatabasePackageAccountPermission = {
   permission: DatabaseAccountPermission[]
 }
 
+type CommercialStateResponse = {
+  success:
+    boolean
+
+  commercialState?:
+    CanonicalCommercialState
+
+  error?:
+    string
+}
+
+const [
+  commercialTimeline,
+  setCommercialTimeline
+] =
+  useState<
+    CommercialTimeline | null
+  >(
+    null
+  )
+
 function formatUSD(
   value: number
 ): string {
@@ -344,6 +385,16 @@ export default function MarketHubPackagesLoader({
       )
 
     const [
+      commercialState,
+      setCommercialState
+    ] =
+      useState<
+        CanonicalCommercialState | null
+      >(
+        null
+      )
+
+    const [
       packageUsageError,
       setPackageUsageError
     ] =
@@ -380,6 +431,17 @@ export default function MarketHubPackagesLoader({
       useState<
         AvailableAddOn[]
       >([])
+
+    const [
+  promotionEvidence,
+  setPromotionEvidence
+] =
+  useState<
+    Record<
+      string,
+      PublicPromotionEvidence | null
+    >
+  >({})
 
     const [
       selectedUpgradePackage,
@@ -461,93 +523,279 @@ export default function MarketHubPackagesLoader({
       ] =
         useState('')
 
-    async function loadPackageUsage():
-      Promise<void> {
-      setPackageUsageError('')
+      async function loadCommercialTimeline():
+        Promise<
+          CommercialTimeline | null
+        > {
 
-      const {
-        data: {
-          session
-        },
-        error: sessionError
-      } =
-        await supabase
-          .auth
-          .getSession()
+        const {
+          data: {
+            session
+          },
 
-      if (
-        sessionError ||
-        !session?.access_token
-      ) {
-        setPackageUsage(null)
+          error:
+            sessionError
+        } =
+          await supabase
+            .auth
+            .getSession()
 
-        setPackageUsageError(
-          language === 'es'
-            ? 'No se pudo verificar el uso de su paquete.'
-            : 'Your package usage could not be verified.'
-        )
-
-        return
-      }
-
-      try {
-        const response =
-          await fetch(
-            '/api/package-usage',
-            {
-              method: 'GET',
-
-              headers: {
-                Authorization:
-                  `Bearer ${session.access_token}`
-              },
-
-              cache:
-                'no-store'
-            }
-          )
-
-        const result =
-          await response.json() as
-            PackageUsageResponse
 
         if (
-          !response.ok ||
-          !result.success ||
-          !result.usage
+          sessionError ||
+          !session?.access_token
         ) {
-          setPackageUsage(null)
 
-          setPackageUsageError(
-            result.error ||
-            (
-              language === 'es'
-                ? 'No se pudo cargar el uso de su paquete.'
-                : 'Your package usage could not be loaded.'
-            )
+          setCommercialTimeline(
+            null
           )
 
-          return
+          return null
         }
 
-        setPackageUsage(
-          result.usage
-        )
-      } catch (usageError) {
-        console.error(
-          'MARKETHUB PACKAGE USAGE ERROR:',
-          usageError
-        )
 
-        setPackageUsage(null)
+        try {
 
-        setPackageUsageError(
-          language === 'es'
-            ? 'No se pudo cargar el uso de su paquete.'
-            : 'Your package usage could not be loaded.'
-        )
+          const response =
+            await fetch(
+              '/api/commercial-timeline',
+              {
+                method:
+                  'GET',
+
+                headers: {
+                  Authorization:
+                    `Bearer ${session.access_token}`
+                },
+
+                cache:
+                  'no-store'
+              }
+            )
+
+
+          const result =
+            await response.json() as {
+              success:
+                boolean
+
+              timeline?:
+                CommercialTimeline
+
+              error?:
+                string
+            }
+
+
+          if (
+            !response.ok ||
+            !result.success ||
+            !result.timeline
+          ) {
+
+            setCommercialTimeline(
+              null
+            )
+
+            return null
+          }
+
+
+          setCommercialTimeline(
+            result.timeline
+          )
+
+
+          return result.timeline
+
+        } catch (
+          timelineError
+        ) {
+
+          console.error(
+            'MARKETHUB COMMERCIAL TIMELINE ERROR:',
+            timelineError
+          )
+
+
+          setCommercialTimeline(
+            null
+          )
+
+          return null
+        }
       }
-    }
+
+    async function loadCommercialState():
+        Promise<
+          CanonicalCommercialState | null
+        > {
+
+        setPackageUsageError('')
+
+
+        const {
+          data: {
+            session
+          },
+
+          error:
+            sessionError
+        } =
+          await supabase
+            .auth
+            .getSession()
+
+
+        if (
+          sessionError ||
+          !session?.access_token
+        ) {
+
+          setCommercialState(
+            null
+          )
+
+          setPackageUsage(
+            null
+          )
+
+          setPackageLimits(
+            null
+          )
+
+          setPackageUsageError(
+            language === 'es'
+              ? 'No se pudo verificar su estado comercial.'
+              : 'Your commercial state could not be verified.'
+          )
+
+          return null
+        }
+
+
+        try {
+
+          const response =
+            await fetch(
+              '/api/commercial-state',
+              {
+                method:
+                  'GET',
+
+                headers: {
+                  Authorization:
+                    `Bearer ${session.access_token}`
+                },
+
+                cache:
+                  'no-store'
+              }
+            )
+
+
+          const result =
+            await response.json() as
+              CommercialStateResponse
+
+
+          if (
+            !response.ok ||
+            !result.success ||
+            !result.commercialState
+          ) {
+
+            setCommercialState(
+              null
+            )
+
+            setPackageUsage(
+              null
+            )
+
+            setPackageLimits(
+              null
+            )
+
+            setPackageUsageError(
+              result.error ||
+              (
+                language === 'es'
+                  ? 'No se pudo cargar su estado comercial.'
+                  : 'Your commercial state could not be loaded.'
+              )
+            )
+
+            return null
+          }
+
+
+          const state =
+            result.commercialState
+
+
+          setCommercialState(
+            state
+          )
+
+          setPackageUsage(
+            state.usage
+          )
+
+
+          setPackageLimits(
+            state.limits
+              ? {
+                  listing_limit:
+                    state.limits
+                      .listingLimit,
+
+                  featured_listing_limit:
+                    state.limits
+                      .featuredListingLimit,
+
+                  storage_limit_mb:
+                    state.limits
+                      .storageLimitMb
+                }
+              : null
+          )
+
+
+          return state
+
+        } catch (
+          commercialError
+        ) {
+
+          console.error(
+            'MARKETHUB COMMERCIAL STATE ERROR:',
+            commercialError
+          )
+
+
+          setCommercialState(
+            null
+          )
+
+          setPackageUsage(
+            null
+          )
+
+          setPackageLimits(
+            null
+          )
+
+          setPackageUsageError(
+            language === 'es'
+              ? 'No se pudo cargar su estado comercial.'
+              : 'Your commercial state could not be loaded.'
+          )
+
+
+          return null
+        }
+      }
 
   useEffect(() => {
     let active = true
@@ -688,13 +936,140 @@ export default function MarketHubPackagesLoader({
                             return
                           }
 
-                          if (showLoading) {
-                await loadPackageUsage()
+              const resolvedCommercialState =
+                  await loadCommercialState()
 
-                if (!active) {
+              await loadCommercialTimeline()
+
+
+                if (
+                  !active
+                ) {
                   return
                 }
-              }
+
+              if (
+                  !resolvedCommercialState ||
+                  !resolvedCommercialState.subscriptions.active ||
+                  !resolvedCommercialState.activePackage
+                ) {
+                  setSubscription(null)
+                  setPackageEntitlements([])
+                  setPackageEngines([])
+                  setAccountPermissions([])
+                  setAddOnProducts([])
+
+                  setErrorMessage(
+                    language === 'es'
+                      ? 'No se encontró una suscripción activa.'
+                      : 'No active subscription was found.'
+                  )
+
+                  setLoading(false)
+                  return
+                }
+
+
+                const canonicalSubscription =
+                  resolvedCommercialState
+                    .subscriptions
+                    .active
+
+
+                const canonicalPackage =
+                  resolvedCommercialState
+                    .activePackage
+
+
+                const loadedSubscription:
+                  DatabaseSubscription = {
+
+                    id:
+                      canonicalSubscription
+                        .subscriptionId,
+
+                    user_id:
+                      canonicalSubscription
+                        .userId,
+
+                    package_id:
+                      canonicalSubscription
+                        .packageId,
+
+                    status:
+                      canonicalSubscription
+                        .status,
+
+                    billing_cycle:
+                      canonicalSubscription
+                        .billingCycle ?? 'monthly',
+
+                    started_at:
+                      canonicalSubscription
+                        .startedAt,
+
+                    current_period_start:
+                      canonicalSubscription
+                        .currentPeriodStart,
+
+                    current_period_end:
+                      canonicalSubscription
+                        .currentPeriodEnd,
+
+                    cancelled_at:
+                      canonicalSubscription
+                        .cancelledAt,
+
+                    expired_at:
+                      canonicalSubscription
+                        .expiredAt,
+
+                    package: [
+                      {
+                        id:
+                          canonicalPackage.packageId,
+
+                        slug:
+                          canonicalPackage.packageSlug,
+
+                        name_en:
+                          canonicalPackage.nameEn,
+
+                        name_es:
+                          canonicalPackage.nameEs,
+
+                        description_en:
+                          canonicalPackage.descriptionEn ?? '',
+
+                        description_es:
+                          canonicalPackage.descriptionEs ?? '',
+
+                        price_usd:
+                          canonicalPackage.priceUsd,
+
+                        price_crc:
+                          canonicalPackage.priceCrc,
+
+                        billing_interval:
+                          canonicalPackage.billingInterval,
+
+                        hierarchy_level:
+                          canonicalPackage.hierarchyLevel,
+
+                        display_order:
+                          canonicalPackage.displayOrder
+                      }
+                    ]
+                  }
+
+
+                setSubscription(
+                  loadedSubscription
+                )
+
+
+                const currentPackage =
+                  loadedSubscription.package[0]
 
             const {
         data: pendingSubscriptionData,
@@ -950,132 +1325,6 @@ export default function MarketHubPackagesLoader({
         setUpgradeOutcome(null)
       }
 
-      const {
-        data,
-        error
-      } =
-        await supabase
-          .from(
-            'user_subscriptions'
-          )
-          .select(`
-            id,
-            user_id,
-            package_id,
-            status,
-            billing_cycle,
-            started_at,
-            current_period_start,
-            current_period_end,
-            cancelled_at,
-            expired_at,
-            package:packages (
-              id,
-              slug,
-              name_en,
-              name_es,
-              description_en,
-              description_es,
-              price_usd,
-              price_crc,
-              billing_interval,
-              hierarchy_level,
-              display_order
-            )
-          `)
-          .eq(
-            'user_id',
-            user.id
-          )
-          .eq(
-            'status',
-            'active'
-          )
-          .order(
-            'created_at',
-            {
-              ascending: false
-            }
-          )
-          .limit(1)
-          .maybeSingle()
-
-      if (!active) {
-        return
-      }
-
-      if (error) {
-        console.error(
-          'MARKETHUB SUBSCRIPTION ERROR:',
-          error
-        )
-
-        setSubscription(null)
-        setPackageEntitlements([])
-
-        setErrorMessage(
-          language === 'es'
-            ? 'No se pudo cargar su suscripción.'
-            : 'Your subscription could not be loaded.'
-        )
-
-        setLoading(false)
-        return
-      }
-
-
-      
-      if (
-        !data ||
-        !data.package ||
-        data.package.length === 0
-        ) {
-        setSubscription(null)
-        setPackageEntitlements([])
-        setPackageEngines([])
-        setPackageLimits(null)
-        setAccountPermissions([])
-        setPackageUsage(null)
-        setPackageUsageError('')
-        setErrorMessage(
-          language === 'es'
-            ? 'No se encontró una suscripción activa.'
-            : 'No active subscription was found.'
-        )
-
-        setLoading(false)
-        return
-      }
-
-      const loadedSubscription =
-        data as DatabaseSubscription
-
-      setSubscription(
-        loadedSubscription
-      )
-
-      const currentPackage =
-                loadedSubscription.package[0]
-
-              if (!currentPackage) {
-          setPackageEntitlements([])
-          setPackageEngines([])
-          setPackageLimits(null)
-          setAccountPermissions([])
-          setPackageUsage(null)
-          setPackageUsageError('')
-          setAddOnProducts([])
-
-          setErrorMessage(
-            language === 'es'
-              ? 'No se pudo resolver el paquete activo.'
-              : 'The active package could not be resolved.'
-          )
-
-          setLoading(false)
-          return
-        }
-
         try {
           const availableAddOns =
             await resolveAvailableAddOns({
@@ -1091,6 +1340,130 @@ export default function MarketHubPackagesLoader({
           setAddOnProducts(
             availableAddOns
           )
+
+
+          /*
+          * -------------------------------------------------------
+          * PUBLIC PROMOTION EVIDENCE
+          * -------------------------------------------------------
+          *
+          * Resolve display-safe aggregate evidence only for
+          * promotion products available to this package.
+          */
+
+
+          const promotionSlugs =
+            Array.from(
+              new Set(
+                availableAddOns
+                  .filter(
+                    product =>
+                      product.productType ===
+                        'promotion' &&
+                      product.targetType ===
+                        'listing'
+                  )
+                  .map(
+                    product =>
+                      product.slug
+                  )
+              )
+            )
+
+
+          if (
+            promotionSlugs.length ===
+              0
+          ) {
+            setPromotionEvidence({})
+          } else {
+
+            try {
+
+              const response =
+                await fetch(
+                  '/api/public-promotion-evidence',
+                  {
+                    method:
+                      'POST',
+
+                    headers: {
+                      'Content-Type':
+                        'application/json'
+                    },
+
+                    body:
+                      JSON.stringify({
+                        promotionSlugs
+                      }),
+
+                    cache:
+                      'no-store'
+                  }
+                )
+
+
+              if (
+                !active
+              ) {
+                return
+              }
+
+
+              if (
+                !response.ok
+              ) {
+                throw new Error(
+                  `Public Promotion Evidence request failed with status ${response.status}.`
+                )
+              }
+
+
+              const result =
+                await response.json() as
+                  PublicPromotionEvidenceResponse
+
+
+              if (
+                !active
+              ) {
+                return
+              }
+
+
+              setPromotionEvidence(
+                result.evidence ??
+                {}
+              )
+
+            } catch (
+              evidenceError
+            ) {
+
+              console.error(
+                'MARKETHUB PUBLIC PROMOTION EVIDENCE ERROR:',
+                evidenceError
+              )
+
+
+              if (
+                !active
+              ) {
+                return
+              }
+
+
+              /*
+              * Fail closed.
+              *
+              * Add-ons remain commercially usable without
+              * supplemental promotion evidence.
+              */
+
+              setPromotionEvidence({})
+            }
+          }
+
         } catch (addOnError) {
           console.error(
             'MARKETHUB AVAILABLE ADD-ONS ERROR:',
@@ -1102,6 +1475,7 @@ export default function MarketHubPackagesLoader({
           }
 
           setAddOnProducts([])
+          setPromotionEvidence({})
         }
 
       const {
@@ -1199,42 +1573,6 @@ export default function MarketHubPackagesLoader({
         )
       }
 
-      const {
-          data: limitsData,
-          error: limitsError
-        } =
-          await supabase
-            .from(
-              'package_limits'
-            )
-            .select(`
-              listing_limit,
-              featured_listing_limit,
-              storage_limit_mb
-            `)
-            .eq(
-              'package_id',
-              currentPackage.id
-            )
-            .maybeSingle()
-
-        if (!active) {
-          return
-        }
-
-        if (limitsError) {
-          console.error(
-            'MARKETHUB PACKAGE LIMITS ERROR:',
-            limitsError
-          )
-
-          setPackageLimits(null)
-        } else {
-          setPackageLimits(
-            limitsData as DatabasePackageLimits | null
-          )
-        }
-
         const {
           data: accountPermissionData,
           error: accountPermissionError
@@ -1287,7 +1625,7 @@ export default function MarketHubPackagesLoader({
     const usageRefreshInterval =
       window.setInterval(
         () => {
-          loadPackageUsage()
+          loadCommercialState()
         },
         60000
       )
@@ -1302,7 +1640,7 @@ export default function MarketHubPackagesLoader({
 
     const handleWindowFocus = () => {
         loadSubscription(false)
-        loadPackageUsage()
+        loadCommercialState()
       }
 
     window.addEventListener(
@@ -1409,37 +1747,51 @@ export default function MarketHubPackagesLoader({
     }
 
     const listingAddons =
-      addOnProducts
-        .filter(
-          product =>
-            product.targetType ===
-            'listing'
-        )
-        .map(product => ({
-          name:
-            language === 'es'
-              ? product.nameEs
-              : product.nameEn,
+  addOnProducts
+    .filter(
+      product =>
+        product.targetType ===
+        'listing'
+    )
+    .map(product => ({
+      slug:
+        product.slug,
 
-          price:
-            language === 'es'
-              ? formatCRC(
-                  product.priceCrc
-                )
-              : formatUSD(
-                  product.priceUsd
-                ),
+      name:
+        language === 'es'
+          ? product.nameEs
+          : product.nameEn,
 
-          description:
-            language === 'es'
-              ? product.descriptionEs
-              : product.descriptionEn,
-
-          duration:
-            formatAddOnDuration(
-              product
+      price:
+        language === 'es'
+          ? formatCRC(
+              product.priceCrc
             )
-        }))
+          : formatUSD(
+              product.priceUsd
+            ),
+
+      description:
+        language === 'es'
+          ? product.descriptionEs
+          : product.descriptionEn,
+
+      duration:
+        formatAddOnDuration(
+          product
+        ),
+
+      promotionEvidence:
+        product.productType ===
+          'promotion'
+          ? (
+              promotionEvidence[
+                product.slug
+              ] ??
+              null
+            )
+          : null
+    }))
         
   const currentPlan =
     language === 'es'
@@ -1872,8 +2224,12 @@ export default function MarketHubPackagesLoader({
   return (
     <MarketHubPackages
       language={language}
+      commercialState={commercialState}
       currentPlan={currentPlan}
       packageDescription={packageDescription}
+      commercialTimeline={
+        commercialTimeline
+      }
       subscriptionStatus={subscription.status}
       listingLimit={
         packageLimits?.listing_limit ?? null
