@@ -9,10 +9,9 @@ import {
   supabase
 } from '@/lib/supabase'
 
-import {
-  resolveAvailableAddOns,
-  type AvailableAddOn
-} from '@/lib/add-on-catalog'
+import type {
+  AvailableAddOn
+} from '@/lib/add-on-catalog' 
 
 import type {
   PublicPromotionEvidence
@@ -246,16 +245,6 @@ type CommercialStateResponse = {
     string
 }
 
-const [
-  commercialTimeline,
-  setCommercialTimeline
-] =
-  useState<
-    CommercialTimeline | null
-  >(
-    null
-  )
-
 function formatUSD(
   value: number
 ): string {
@@ -390,6 +379,16 @@ export default function MarketHubPackagesLoader({
     ] =
       useState<
         CanonicalCommercialState | null
+      >(
+        null
+      )
+
+    const [
+      commercialTimeline,
+      setCommercialTimeline
+    ] =
+      useState<
+        CommercialTimeline | null
       >(
         null
       )
@@ -1326,12 +1325,79 @@ export default function MarketHubPackagesLoader({
       }
 
         try {
+          const {
+            data: {
+              session
+            }
+          } =
+            await supabase
+              .auth
+              .getSession()
+
+
+          if (
+            !session?.access_token
+          ) {
+            throw new Error(
+              'Authenticated session required to load available add-ons.'
+            )
+          }
+
+
+          const addOnResponse =
+            await fetch(
+              '/api/available-add-ons',
+              {
+                method:
+                  'POST',
+
+                headers: {
+                  'Content-Type':
+                    'application/json',
+
+                  Authorization:
+                    `Bearer ${session.access_token}`
+                },
+
+                body:
+                  JSON.stringify({
+                    packageId:
+                      currentPackage.id
+                  }),
+
+                cache:
+                  'no-store'
+              }
+            )
+
+
+          const addOnResult =
+            await addOnResponse.json() as {
+              success:
+                boolean
+
+              addOns?:
+                AvailableAddOn[]
+
+              error?:
+                string
+            }
+
+
+          if (
+            !addOnResponse.ok ||
+            !addOnResult.success
+          ) {
+            throw new Error(
+              addOnResult.error ||
+              'Available add-ons could not be loaded.'
+            )
+          }
+
+
           const availableAddOns =
-            await resolveAvailableAddOns({
-              supabase,
-              packageId:
-                currentPackage.id
-            })
+            addOnResult.addOns ??
+            []
 
           if (!active) {
             return
