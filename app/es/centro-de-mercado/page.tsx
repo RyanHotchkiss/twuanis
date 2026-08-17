@@ -1,18 +1,61 @@
-import TopBarES from '@/app/components/TopBarES'
-import MarketHubAuthGate from '@/app/components/MarketHubAuthGate'
-import MarketHubMyListingsLoader from '@/app/components/MarketHubMyListingsLoader'
-import MarketHubFavorites from '@/app/components/MarketHubFavorites'
-import MarketHubMarketIntelligence from '@/app/components/MarketHubMarketIntelligence'
-import MarketHubPackagesLoader from '@/app/components/MarketHubPackagesLoader'
-import MarketHubSettings from '@/app/components/MarketHubSettings'
-import PermissionGate from '@/app/components/PermissionGate'
-import MarketHubFirstTimeExperience from '@/app/components/MarketHubFirstTimeExperience'
-import MarketHubActivityEngine from '@/app/components/MarketHubActivityEngine'
-import MarketHubComparisons from '@/app/components/MarketHubComparisons'
-import MarketHubSavedAnalyses from '@/app/components/MarketHubSavedAnalyses'
+import TopBarES
+  from '@/app/components/TopBarES'
+
+import MarketHubAuthGate
+  from '@/app/components/MarketHubAuthGate'
+
+import MarketHubShell
+  from '@/app/components/MarketHubShell'
+
+import MarketHubMyListingsLoader
+  from '@/app/components/MarketHubMyListingsLoader'
+
+import MarketHubFavorites
+  from '@/app/components/MarketHubFavorites'
+
+import MarketHubIntelligence
+  from '@/app/components/MarketHubIntelligence'
+
+import MarketHubPackagesLoader
+  from '@/app/components/MarketHubPackagesLoader'
+
+import MarketHubSettings
+  from '@/app/components/MarketHubSettings'
+
+import MarketHubFirstTimeExperience
+  from '@/app/components/MarketHubFirstTimeExperience'
+
+import MarketHubActivityEngine
+  from '@/app/components/MarketHubActivityEngine'
+
+import MarketHubComparisons
+  from '@/app/components/MarketHubComparisons'
+
+import MarketHubSavedAnalyses
+  from '@/app/components/MarketHubSavedAnalyses'
+
 import MarketHubPaymentReview
   from '@/app/components/MarketHubPaymentReview'
 
+import MarketHubPropertyNotes
+  from '@/app/components/MarketHubPropertyNotes'
+
+type PageProps = {
+  searchParams:
+    Promise<
+      MarketIntelligenceSearchParams & {
+        intelligence?: string
+      }
+    >
+}
+
+import PestanasInteligenciaMercado
+  from '@/app/es/inteligencia-de-mercado/PestanasInteligenciaMercado'
+
+import {
+  resolveMarketIntelligenceWorkspace,
+  type MarketIntelligenceSearchParams
+} from '@/lib/market-intelligence-workspace'
 
 import {
   MARKET_HUB_EXPLORE_ACTIONS,
@@ -20,253 +63,475 @@ import {
   calculateMarketHubOnboardingProgress
 } from '@/lib/onboarding'
 
+
 const onboardingProgress =
   calculateMarketHubOnboardingProgress(
     MARKET_HUB_FIRST_ACTIONS
   )
 
-import MarketHubPropertyNotes
-  from '@/app/components/MarketHubPropertyNotes'
+import MarketHubCompare
+  from '@/app/components/MarketHubCompare'
 
-export default function CentroDeMercadoPage() {
+export default async function CentroDeMercadoPage({
+  searchParams
+}: PageProps) {
+
+  const params =
+    await searchParams
+
+
+  const intelligenceWorkspace =
+  params.intelligence
+
+
+const intelligenceTabMap:
+  Record<
+    string,
+    string
+  > = {
+    explore:
+      'explorer',
+
+    valuation:
+      'valuation',
+
+    pricing:
+      'pricing',
+
+    matching:
+      'matching',
+
+    comparison:
+      'comparison',
+
+    scarcity:
+      'scarcity'
+  }
+
+
+  const resolvedIntelligenceTab =
+    intelligenceWorkspace
+      ? intelligenceTabMap[
+          intelligenceWorkspace
+        ]
+      : undefined
+
+
+  const resolvedIntelligence =
+    resolvedIntelligenceTab
+      ? await resolveMarketIntelligenceWorkspace({
+          params: {
+            ...params,
+            tab:
+              resolvedIntelligenceTab
+          },
+          language:
+            'es'
+        })
+      : null
+
+
+  const intelligenceContent =
+    resolvedIntelligence
+      ? (
+          <PestanasInteligenciaMercado
+            activeTab={
+              resolvedIntelligence.activeTab
+            }
+            options={
+              resolvedIntelligence.options
+            }
+            filters={
+              resolvedIntelligence.filters
+            }
+            explorerResult={
+              resolvedIntelligence.explorerResult
+            }
+            priceMeterAnalysis={
+              resolvedIntelligence.priceMeterAnalysis
+            }
+            pricingStrategy={
+              resolvedIntelligence.pricingStrategy
+            }
+            marketScarcity={
+              resolvedIntelligence.marketScarcity
+            }
+            buyerDemand={
+              resolvedIntelligence.buyerDemand
+            }
+            marketMatches={
+              resolvedIntelligence.marketMatches
+            }
+            valuation={
+              resolvedIntelligence.valuation
+            }
+            comparison={
+              resolvedIntelligence.comparison
+            }
+            embedded
+          />
+        )
+      : undefined
+
+    const compareContent =
+      resolvedIntelligence &&
+      intelligenceWorkspace ===
+        'comparison'
+        ? (
+            <MarketHubCompare
+              language="es"
+              marketOptions={
+                resolvedIntelligence.options
+              }
+              marketFilters={
+                resolvedIntelligence.comparisonFilters
+              }
+              marketComparison={
+                resolvedIntelligence.comparison
+              }
+            />
+          )
+        : undefined
+
   return (
     <MarketHubAuthGate>
-      <main style={main}>
-      <TopBarES />
 
-      <section style={hero}>
-        <h1 style={heading}>
-          MarketHub
-        </h1>
+      <div style={page}>
+        <TopBarES />
 
-        <p style={intro}>
-          Su actividad inmobiliaria, publicaciones, favoritos e inteligencia del mercado inmobiliario de Costa Rica en un solo lugar.
-        </p>
-      </section>
 
-      <div style={cardSpacing}>
-        <MarketHubFirstTimeExperience
-            language="es"
-            userName=""
-            progress={{
-            savedFirstProperty:
-                MARKET_HUB_FIRST_ACTIONS.find(
-                action =>
-                    action.id ===
-                    'save-first-property'
-                )?.completed ?? false,
-            publishedFirstListing:
-                MARKET_HUB_FIRST_ACTIONS.find(
-                action =>
-                    action.id ===
-                    'publish-first-listing'
-                )?.completed ?? false,
-            createdFirstSavedSearch:
-                MARKET_HUB_FIRST_ACTIONS.find(
-                action =>
-                    action.id ===
-                    'create-first-saved-search'
-                )?.completed ?? false
-            }}
-            exploreActions={
-            MARKET_HUB_EXPLORE_ACTIONS
-            }
-            onboardingProgress={
-            onboardingProgress
-            }
-        />
-        </div>
+        <MarketHubShell
+          language="es"
 
-        <div style={cardSpacing}>
-            <MarketHubActivityEngine
+          overview={
+            <div style={workspaceStack}>
+
+              <MarketHubFirstTimeExperience
+                language="es"
+                userName=""
+                progress={{
+                  savedFirstProperty:
+                    MARKET_HUB_FIRST_ACTIONS.find(
+                      action =>
+                        action.id ===
+                        'save-first-property'
+                    )?.completed ?? false,
+
+                  publishedFirstListing:
+                    MARKET_HUB_FIRST_ACTIONS.find(
+                      action =>
+                        action.id ===
+                        'publish-first-listing'
+                    )?.completed ?? false,
+
+                  createdFirstSavedSearch:
+                    MARKET_HUB_FIRST_ACTIONS.find(
+                      action =>
+                        action.id ===
+                        'create-first-saved-search'
+                    )?.completed ?? false
+                }}
+                exploreActions={
+                  MARKET_HUB_EXPLORE_ACTIONS
+                }
+                onboardingProgress={
+                  onboardingProgress
+                }
+              />
+
+
+              <MarketHubActivityEngine
                 language="es"
                 propertyEvents={[
-                {
+                  {
                     eventType:
-                    'property_viewed',
-                    count: 0
-                },
-                {
+                      'property_viewed',
+
+                    count:
+                      0
+                  },
+
+                  {
                     eventType:
-                    'property_saved',
-                    count: 0
-                },
-                {
+                      'property_saved',
+
+                    count:
+                      0
+                  },
+
+                  {
                     eventType:
-                    'property_shared',
-                    count: 0
-                }
+                      'property_shared',
+
+                    count:
+                      0
+                  }
                 ]}
-            />
+              />
+
             </div>
+          }
 
-      <MarketHubMyListingsLoader
-        language="es"
-      />
 
-    <div style={cardSpacing}>
-        <MarketHubFavorites
-          language="es"
-          savedProperties={undefined}
-          savedSearches={[]}
-          recentlyViewedProperties={[]}
-          recentlyViewedMarkets={[]}
-          favoriteCollections={[]}
-          
-        />
-    </div>
-
-    <div style={cardSpacing}>
-      <MarketHubPropertyNotes
-        language="es"
-      />
-    </div>
-
-        <div style={cardSpacing}>
-          <MarketHubComparisons
-            language="es"
-          />
-        </div>
-
-        <div style={cardSpacing}>
-          <MarketHubSavedAnalyses
+          listings={
+            <MarketHubMyListingsLoader
               language="es"
             />
-        </div>
+          }
 
-        <div style={cardSpacing}>
-          <MarketHubMarketIntelligence
-            language="es"
-          />
-                </div>
 
-                <div
-                    id="packages"
-                    style={cardSpacing}
-                    >
-                    <MarketHubPackagesLoader
-                      language="es"
-                    />
-                </div>
+          knowledge={
+            <div style={workspaceStack}>
 
-                <div style={cardSpacing}>
-                  <MarketHubPaymentReview
-                    language="es"
-                  />
-                </div>
+              <MarketHubFavorites
+                language="es"
+                savedProperties={
+                  undefined
+                }
+                savedSearches={[]}
+                recentlyViewedProperties={[]}
+                recentlyViewedMarkets={[]}
+                favoriteCollections={[]}
+              />
 
-                <div style={cardSpacing}>
-                    <MarketHubSettings
-                      language="es"
-                      personalInformation={{
-                        name: '',
-                        profilePhoto: '',
-                        bio: ''
-                      }}
-                      contactInformation={{
-                        email: '',
-                        phone: '',
-                        whatsapp: '',
-                        office: ''
-                      }}
-                      professionalInformation={{
-                        professionalType: '',
-                        licenseNumber: '',
-                        company: '',
-                        website: ''
-                      }}
-                      publicProfileInformation={{
-                        publicProfileUrl: '',
-                        agentPage: '',
-                        socialLinks: '',
-                        visibility: ''
-                      }}
-                      languagePreferences={{
-                        language: 'Español'
-                      }}
-                      notificationPreferences={{
-                        email: false,
-                        sms: false,
-                        push: false,
-                        marketing: false
-                      }}
-                      appearancePreferences={{
-                        appearance: 'System'
-                      }}
-                      regionalSettings={{
-                        currency: 'CRC (₡)',
-                        units: 'Métrico',
-                        dateFormat: 'DD/MM/YYYY',
-                        timeZone: 'America/Costa_Rica'
-                      }}
-                      privacySettings={{
-                        publicProfile: false,
-                        searchVisibility: false,
-                        analyticsSharing: false
-                      }}
-                      securitySettings={{
-                        recoveryEmail: '',
-                        twoFactorEnabled: false
-                      }}
-                      sessionSettings={{
-                        loggedInDevices: 0,
-                        activeSessions: 0
-                      }}
-                      connectedAccounts={[]}
-                      exportDataSettings={{
-                        listings: false,
-                        favorites: false,
-                        savedSearches: false,
-                        marketAnalyses: false
-                      }}
-                      billingRecordsSettings={{
-                        invoices: 0,
-                        paymentHistory: 0,
-                        receipts: 0
-                      }}
-                      accountRecoverySettings={{
-                        backupCodesRemaining: 0,
-                        recoveryOptions: 0,
-                        accountRestorable: false
-                      }}
-                      deleteAccountSettings={{
-                        downloadDataAvailable: false,
-                        listingsToDelete: 0
-                      }}
-                    />
-                </div>
 
-                 </main>
+              <MarketHubPropertyNotes
+                language="es"
+              />
+
+
+              <MarketHubComparisons
+                language="es"
+              />
+
+
+              <MarketHubSavedAnalyses
+                language="es"
+              />
+
+            </div>
+          }
+
+
+          intelligence={
+            <MarketHubIntelligence
+              language="es"
+              engineContent={
+                intelligenceContent
+              }
+              compareContent={
+                compareContent
+              }
+            />
+          }
+
+
+          commercial={
+            <div style={workspaceStack}>
+
+              <MarketHubPackagesLoader
+                language="es"
+              />
+
+
+              <MarketHubPaymentReview
+                language="es"
+              />
+
+            </div>
+          }
+
+
+          settings={
+            <MarketHubSettings
+              language="es"
+
+              personalInformation={{
+                name:
+                  '',
+
+                profilePhoto:
+                  '',
+
+                bio:
+                  ''
+              }}
+
+              contactInformation={{
+                email:
+                  '',
+
+                phone:
+                  '',
+
+                whatsapp:
+                  '',
+
+                office:
+                  ''
+              }}
+
+              professionalInformation={{
+                professionalType:
+                  '',
+
+                licenseNumber:
+                  '',
+
+                company:
+                  '',
+
+                website:
+                  ''
+              }}
+
+              publicProfileInformation={{
+                publicProfileUrl:
+                  '',
+
+                agentPage:
+                  '',
+
+                socialLinks:
+                  '',
+
+                visibility:
+                  ''
+              }}
+
+              languagePreferences={{
+                language:
+                  'Español'
+              }}
+
+              notificationPreferences={{
+                email:
+                  false,
+
+                sms:
+                  false,
+
+                push:
+                  false,
+
+                marketing:
+                  false
+              }}
+
+              appearancePreferences={{
+                appearance:
+                  'System'
+              }}
+
+              regionalSettings={{
+                currency:
+                  'CRC (₡)',
+
+                units:
+                  'Métrico',
+
+                dateFormat:
+                  'DD/MM/YYYY',
+
+                timeZone:
+                  'America/Costa_Rica'
+              }}
+
+              privacySettings={{
+                publicProfile:
+                  false,
+
+                searchVisibility:
+                  false,
+
+                analyticsSharing:
+                  false
+              }}
+
+              securitySettings={{
+                recoveryEmail:
+                  '',
+
+                twoFactorEnabled:
+                  false
+              }}
+
+              sessionSettings={{
+                loggedInDevices:
+                  0,
+
+                activeSessions:
+                  0
+              }}
+
+              connectedAccounts={[]}
+
+              exportDataSettings={{
+                listings:
+                  false,
+
+                favorites:
+                  false,
+
+                savedSearches:
+                  false,
+
+                marketAnalyses:
+                  false
+              }}
+
+              billingRecordsSettings={{
+                invoices:
+                  0,
+
+                paymentHistory:
+                  0,
+
+                receipts:
+                  0
+              }}
+
+              accountRecoverySettings={{
+                backupCodesRemaining:
+                  0,
+
+                recoveryOptions:
+                  0,
+
+                accountRestorable:
+                  false
+              }}
+
+              deleteAccountSettings={{
+                downloadDataAvailable:
+                  false,
+
+                listingsToDelete:
+                  0
+              }}
+            />
+          }
+        />
+      </div>
+
     </MarketHubAuthGate>
   )
 }
-const main = {
-  minHeight: '100vh',
-  padding: '2rem',
-  background: '#0a0a0a',
-  color: '#ededed'
+
+
+const page = {
+  minHeight:
+    '100vh',
+
+  background:
+    '#0a0a0a'
 }
 
-const hero = {
-  maxWidth: '900px',
-  margin: '3rem auto',
-  textAlign: 'center' as const
-}
 
-const heading = {
-  margin: 0,
-  color: '#fff',
-  fontSize: 'clamp(2.5rem, 7vw, 4.5rem)'
-}
+const workspaceStack = {
+  display:
+    'grid',
 
-const intro = {
-  maxWidth: '700px',
-  margin: '1rem auto 0',
-  color: '#999',
-  fontSize: '1.05rem',
-  lineHeight: 1.6
-}
-
-const cardSpacing = {
-  marginTop: '1.25rem'
+  gap:
+    '1.25rem'
 }

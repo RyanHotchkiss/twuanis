@@ -25,7 +25,7 @@ type PropertyTypeFilterProps = {
 
   yearBuiltRange: string
 
-  constructionArea: string
+  constructionArea: number | null
 
   showPropertyTypeOptions: boolean
 
@@ -212,13 +212,13 @@ selectedPropertyType && (
         </>
       )}
 
-      {constructionArea && (
+      {constructionArea !== null && constructionArea > 0 && (
         <>
           <span style={{ color:'#fff' }}>
             {' '}•{' '}
           </span>
 
-          {constructionArea}
+          {constructionArea.toLocaleString('en-US')} m²
         </>
       )}
 

@@ -23,7 +23,6 @@ import {
   bathroom_options,
   parking_options,
   year_built_options,
-  construction_area_options,
   property_areas,
   utilities,
   terrainOptions,
@@ -41,13 +40,15 @@ import {
 import AccessibilityFilters from '@/app/components/filter-bar/AccessibilityFilterS'
 import EnvironmentFilterS from '@/app/components/filter-bar/EnvironmentFilterS'
 import LegalStatusFilterS from '@/app/components/filter-bar/LegalStatusFilterS'
-import PropertyAreaFilterS from '@/app/components/filter-bar/PropertyAreaFilterS'
+import ExactPropertyAreaInput
+from '@/app/components/listing-input/ExactPropertyAreaInput'
 import UtilitiesFilterS from '@/app/components/filter-bar/UtilitiesFilterS'
 import BedroomFilterS from '@/app/components/filter-bar/BedroomFilterS'
 import BathroomFilterS from '@/app/components/filter-bar/BathroomFilterS'
 import ParkingFilterS from '@/app/components/filter-bar/ParkingFilterS'
 import YearBuiltFilterS from '@/app/components/filter-bar/YearBuiltFilterS'
-import ConstructionAreaFilterS from '@/app/components/filter-bar/ConstructionAreaFilterS'
+import ExactConstructionAreaInput
+from '@/app/components/listing-input/ExactConstructionAreaInput'
 import LocationSelectorS from '@/app/components/filter-bar/LocationSelectorS'
 import TerrainFilterS from '@/app/components/filter-bar/TerrainFilterS'
 import PriceSelectorS from '@/app/components/filter-bar/PriceSelectorS'
@@ -97,12 +98,12 @@ export default function SellPage() {
     canton: '',
     district: '',
     property_type: '',
-    property_area: '',
+    property_area: null as number | null,
     bedrooms: '',
     bathrooms: '',
     parking: '',
     year_built_range: '',
-    construction_area: '',
+    construction_area: null as number | null,
     utility: [] as string[],
     use_type: '',
     legal_status: '',
@@ -540,7 +541,7 @@ console.log('BedroomFilterS', BedroomFilterS)
                         bathrooms:'',
                         parking:'',
                         year_built_range:'',
-                        construction_area:''
+                        construction_area: null
                         }))
 
                        
@@ -611,46 +612,38 @@ console.log('BedroomFilterS', BedroomFilterS)
                     }
                     />
 
-                    <ConstructionAreaFilterS
-                        selectedConstructionArea={propertyData.construction_area}
-                        setSelectedConstructionArea={(value) =>
-                            setPropertyData({
-                            ...propertyData,
-                            construction_area: value
-                            })
+                    <ExactConstructionAreaInput
+                        valueSquareMeters={
+                            propertyData.construction_area
                         }
-                        constructionAreaOptions={construction_area_options}
-                        showConstructionAreaOptions={show_construction_area_options}
-                        setShowConstructionAreaOptions={
-                            setShow_construction_area_options
+                        onChange={(valueSquareMeters) =>
+                            setPropertyData(prev => ({
+                                ...prev,
+                                construction_area: valueSquareMeters
+                            }))
                         }
-                        setShowPropertyAreaOptions={
-                            setShowproperty_areaOptions
+                        language="en"
+                        initiallyOpen={
+                            show_construction_area_options
                         }
-                        />
+                    />
 
 {/* PROPERTY AREA */}
                     
-                    <PropertyAreaFilterS
-                        selectedPropertyArea={
+                    <ExactPropertyAreaInput
+                        valueSquareMeters={
                             propertyData.property_area
                         }
-                        setSelectedPropertyArea={(value) =>
-                            setPropertyData({
-                            ...propertyData,
-                            property_area: value
-                            })
+                        onChange={(valueSquareMeters) =>
+                            setPropertyData(prev => ({
+                                ...prev,
+                                property_area: valueSquareMeters
+                            }))
                         }
-                        showPropertyAreaOptions={
+                        language="en"
+                        initiallyOpen={
                             showproperty_areaOptions
                         }
-                        setShowPropertyAreaOptions={
-                            setShowproperty_areaOptions
-                        }
-                        setShowUtilityOptions={
-                            setShowutilityOptions
-                        }
-                        propertyAreas={property_areas}
                     />
 
 {/* UTILITIES */}

@@ -26,7 +26,15 @@ function normalizeSideFilters(
   prefix: 'a' | 'b'
 ) {
   return {
-    province: sideFilters[`${prefix}_province`],
+    transaction_type:
+      sideFilters[
+        `${prefix}_transaction_type`
+      ],
+
+    province:
+      sideFilters[
+        `${prefix}_province`
+      ],
     canton: sideFilters[`${prefix}_canton`],
     district: sideFilters[`${prefix}_district`],
     property_type: sideFilters[`${prefix}_property_type`],

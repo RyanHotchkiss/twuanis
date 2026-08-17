@@ -14,9 +14,6 @@ type ResidentialAttributesSProps = {
   yearBuiltRange: string
   setYearBuiltRange: (value: string) => void
 
-  constructionArea: string
-  setConstructionArea: (value: string) => void
-
   setShowproperty_typeOptions: (
     value: boolean
   ) => void
@@ -29,7 +26,6 @@ type ResidentialAttributesSProps = {
   bathroomOptions: string[]
   parkingOptions: string[]
   yearBuiltOptions: string[]
-  constructionAreaOptions: string[]
 
   showResidentialSummary: boolean
   setShowResidentialSummary: (
@@ -55,12 +51,6 @@ type ResidentialAttributesSProps = {
   setShowYearBuiltOptions: (
     value: boolean
   ) => void
-
-  showConstructionAreaOptions: boolean
-  setShowConstructionAreaOptions: (
-    value: boolean
-  ) => void
-
 }
 
 const residentialLabels: Record<string, string> = {
@@ -88,13 +78,6 @@ const residentialLabels: Record<string, string> = {
   '2000–2009': '2000–2009',
   '2010–2019': '2010–2019',
   '2020+': '2020+',
-
-  '<50m²': '<50m²',
-  '50–100m²': '50–100m²',
-  '100–200m²': '100–200m²',
-  '200–400m²': '200–400m²',
-  '400–800m²': '400–800m²',
-  '800m²+': '800m²+'
 }
 
 export default function ResidentialAttributesS({
@@ -115,14 +98,10 @@ export default function ResidentialAttributesS({
 
   setShowproperty_areaOptions,
 
-  constructionArea,
-  setConstructionArea,
-
   bedroomOptions,
   bathroomOptions,
   parkingOptions,
   yearBuiltOptions,
-  constructionAreaOptions,
 
   showBedroomOptions,
   setShowBedroomOptions,
@@ -135,9 +114,6 @@ export default function ResidentialAttributesS({
 
   showYearBuiltOptions,
   setShowYearBuiltOptions,
-
-  showConstructionAreaOptions,
-  setShowConstructionAreaOptions,
 
   showResidentialSummary,
   setShowResidentialSummary,
@@ -215,17 +191,8 @@ export default function ResidentialAttributesS({
                         )}
 
                         {yearBuiltRange && (
-                          <>
-                            <span>
-                              {residentialLabels[yearBuiltRange] || yearBuiltRange}
-                            </span>
-                            <span style={{ color: '#fff' }}>•</span>
-                          </>
-                        )}
-
-                        {constructionArea && (
                           <span>
-                            {residentialLabels[constructionArea] || constructionArea}
+                            {residentialLabels[yearBuiltRange] || yearBuiltRange}
                           </span>
                         )}
 
@@ -240,7 +207,6 @@ export default function ResidentialAttributesS({
                         setBathrooms('')
                         setParking('')
                         setYearBuiltRange('')
-                        setConstructionArea('')
 
                         setShowResidentialSummary(false)
 
@@ -248,7 +214,6 @@ export default function ResidentialAttributesS({
                         setShowBathroomOptions(false)
                         setShowParkingOptions(false)
                         setShowYearBuiltOptions(false)
-                        setShowConstructionAreaOptions(false)
 
                       }}
                       style={resetButton}
@@ -550,7 +515,6 @@ export default function ResidentialAttributesS({
                               setYearBuiltRange('')
 
                               setShowYearBuiltOptions(true)
-                              setShowConstructionAreaOptions(false)
 
                             }}
                             style={resetButton}
@@ -582,105 +546,10 @@ export default function ResidentialAttributesS({
                                   setYearBuiltRange(option)
 
                                   setShowYearBuiltOptions(false)
-                                  setShowConstructionAreaOptions(true)
 
                                 }}
                                 style={
                                   yearBuiltRange === option
-                                    ? activePill
-                                    : pill
-                                }
-                              >
-                                {residentialLabels[option] || option}
-                              </button>
-
-                            ))}
-
-                          </div>
-
-                        </div>
-
-                      )}
-
-                    </div>
-
-                    {/* CONSTRUCTION AREA */}
-
-                    <div>
-
-                      {!showConstructionAreaOptions && constructionArea && (
-
-                        <div
-                          style={{
-                            ...summaryCard,
-                            cursor:'pointer'
-                          }}
-                          onClick={() => {
-
-                            setShowConstructionAreaOptions(true)
-
-                          }}
-                        >
-
-                          <span>
-                            {residentialLabels[constructionArea] || constructionArea}
-                          </span>
-
-                          <button
-                            type="button"
-                            onClick={(e) => {
-
-                              e.stopPropagation()
-
-                              setConstructionArea('')
-
-                              setShowConstructionAreaOptions(true)
-
-                            }}
-                            style={resetButton}
-                          >
-                            ✕
-                          </button>
-
-                        </div>
-
-                      )}
-
-                      {showConstructionAreaOptions && (
-
-                        <div>
-
-                          <h2 style={sectionHeading}>
-                            Área de Construcción
-                          </h2>
-
-                          <div style={pillWrap}>
-
-                            {constructionAreaOptions.map((option) => (
-
-                              <button
-                                type="button"
-                                key={residentialLabels[option] || option}
-                                onClick={() => {
-
-                                  setConstructionArea(option)
-
-                                  setShowConstructionAreaOptions(false)
-
-                                  setShowBedroomOptions(false)
-                                  setShowBathroomOptions(false)
-                                  setShowParkingOptions(false)
-                                  setShowYearBuiltOptions(false)
-
-                                  setShowResidentialSummary(true)
-
-                                  setShowproperty_typeOptions(false)
-
-                                  setShowproperty_areaOptions(true)
-
-                                }}
-                                style={
-                                  constructionArea === option
                                     ? activePill
                                     : pill
                                 }

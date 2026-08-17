@@ -50,6 +50,11 @@ import {
   resolveListingImages
 } from '@/app/utils/resolveListingImages'
 
+import {
+  matchesPropertyAreaRange,
+  matchesConstructionAreaRange
+} from '@/lib/marketplace-area-ranges'
+
 export default function HomePage() {
   return (
     <Suspense fallback={null}>
@@ -125,7 +130,7 @@ const navButton = {
   const [showBathroomOptions, setShowBathroomOptions] = useState(false)
   const [showParkingOptions, setShowParkingOptions] = useState(false)
   const [showYearBuiltOptions, setShowYearBuiltOptions] = useState(false)
-  const [showConstructionAreaOptions, setShowConstructionAreaOptions] = useState(false)
+  const [showConstructionAreaOptions, setShowConstructionAreaOptions] = useState(true)
   const [showResidentialSummary, setShowResidentialSummary] = useState(false)
 
   const [showMobileFilters, setShowMobileFilters] = useState(false)
@@ -762,113 +767,28 @@ const filteredProperties = properties.filter((property) => {
       * CONSTRUCTION AREA
       */
 
-      if (filters.construction_area) {
-        const constructionArea =
-          getFirstNumber(
-            property.construction_area
-          )
-
-        if (constructionArea === null) {
-          return false
-        }
-
-        if (
-          filters.construction_area === '<50m²' &&
-          constructionArea >= 50
-        ) {
-          return false
-        }
-
-        if (
-          filters.construction_area === '50-100m²' &&
-          (
-            constructionArea < 50 ||
-            constructionArea > 100
-          )
-        ) {
-          return false
-        }
-
-        if (
-          filters.construction_area === '100-200m²' &&
-          (
-            constructionArea < 100 ||
-            constructionArea > 200
-          )
-        ) {
-          return false
-        }
-
-        if (
-          filters.construction_area === '200-400m²' &&
-          (
-            constructionArea < 200 ||
-            constructionArea > 400
-          )
-        ) {
-          return false
-        }
-
-        if (
-          filters.construction_area === '400m²+' &&
-          constructionArea < 400
-        ) {
-          return false
-        }
+      if (
+        filters.construction_area &&
+        !matchesConstructionAreaRange(
+          property.construction_area,
+          filters.construction_area
+        )
+      ) {
+        return false
       }
 
       /*
       * PROPERTY AREA
       */
 
-      if (filters.property_area) {
-        const propertyArea =
-          getFirstNumber(property.property_area)
-
-        if (propertyArea === null) {
-          return false
-        }
-
-        if (
-          filters.property_area === '<1,000m²' &&
-          propertyArea >= 1000
-        ) {
-          return false
-        }
-
-        if (
-          filters.property_area ===
-            '1,000–10,000m²' &&
-          (
-            propertyArea < 1000 ||
-            propertyArea > 10000
-          )
-        ) {
-          return false
-        }
-
-        if (
-          filters.property_area ===
-            '10,000–50,000m²' &&
-          (
-            propertyArea < 10000 ||
-            propertyArea > 50000
-          )
-        ) {
-          return false
-        }
-
-        if (
-          (
-            filters.property_area ===
-              'Más de 50,000m²' ||
-            filters.property_area ===
-              '50,000m²+'
-          ) &&
-          propertyArea <= 50000
-        ) {
-          return false
-        }
+      if (
+        filters.property_area &&
+        !matchesPropertyAreaRange(
+          property.property_area,
+          filters.property_area
+        )
+      ) {
+        return false
       }
 
       /*
@@ -1187,7 +1107,7 @@ const filteredProperties = properties.filter((property) => {
             parkingOptions={parkingOptions}
             yearBuiltOptions={yearBuiltOptions}
             constructionAreaOptions={constructionAreaOptions}
-
+            
             filters={filters}
             setFilters={setFilters}
           />

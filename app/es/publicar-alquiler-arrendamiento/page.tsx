@@ -19,8 +19,6 @@ import {
   bathroom_options,
   parking_options,
   year_built_options,
-  construction_area_options,
-  property_areas,
   utilities,
   terrainOptions,
 
@@ -39,7 +37,8 @@ import EnvironmentFilterSES from '@/app/components/filter-bar/EnvironmentFilterS
 import LegalStatusFilterSES from '@/app/components/filter-bar/LegalStatusFilterSES'
 import PropertyAreaFilterES from '@/app/components/filter-bar/PropertyAreaFilterES'
 import UtilitiesFilterES from '@/app/components/filter-bar/UtilitiesFilterES'
-
+import ExactPropertyAreaInput
+from '@/app/components/listing-input/ExactPropertyAreaInput'
 import LocationSelectorS from '@/app/components/filter-bar/LocationSelectorS'
 import TerrainFilterES from '@/app/components/filter-bar/TerrainFilterES'
 import MonthlyRentSelectorS from '@/app/components/filter-bar/MonthlyRentSelectorS'
@@ -58,7 +57,8 @@ import BedroomFilterSES from '@/app/components/filter-bar/BedroomFilterSES'
 import BathroomFilterSES from '@/app/components/filter-bar/BathroomFilterSES'
 import ParkingFilterSES from '@/app/components/filter-bar/ParkingFilterSES'
 import YearBuiltFilterSES from '@/app/components/filter-bar/YearBuiltFilterSES'
-import ConstructionAreaFilterSES from '@/app/components/filter-bar/ConstructionAreaFilterSES'
+import ExactConstructionAreaInput
+from '@/app/components/listing-input/ExactConstructionAreaInput'
 
 
 export default function SellPage() {
@@ -92,12 +92,12 @@ export default function SellPage() {
                     canton: '',
                     district: '',
                     property_type: '',
-                    property_area: '',
+                    property_area: null as number | null,
                     bedrooms: '',
                     bathrooms: '',
                     parking: '',
                     year_built_range: '',
-                    construction_area: '',
+                    construction_area: null as number | null,
                     utility: [] as string[],
                     use_type: '',
                     legal_status: '',
@@ -518,10 +518,6 @@ formattedData
                             propertyData.year_built_range
                         }
 
-                        constructionArea={
-                            propertyData.construction_area
-                        }
-
                         selectedproperty_type={
                             propertyData.property_type
                         }
@@ -625,62 +621,38 @@ formattedData
                         }
                         />
 
-                    <ConstructionAreaFilterSES
-                        selectedConstructionArea={propertyData.construction_area}
-                        setSelectedConstructionArea={(value) =>
-                            setPropertyData({
-                            ...propertyData,
-                            construction_area: value
-                            })
+                    <ExactConstructionAreaInput
+                        valueSquareMeters={
+                            propertyData.construction_area
                         }
-                        constructionAreaOptions={construction_area_options}
-                        showConstructionAreaOptions={
+                        onChange={(valueSquareMeters) =>
+                            setPropertyData(prev => ({
+                                ...prev,
+                                construction_area: valueSquareMeters
+                            }))
+                        }
+                        language="es"
+                        initiallyOpen={
                             show_construction_area_options
                         }
-                        setShowConstructionAreaOptions={
-                            setShow_construction_area_options
-                        }
-                        setShowPropertyAreaOptions={
-                            setShowproperty_areaOptions
-                        }
-                        />
+                    />
 
 {/* PROPERTY AREA */}
                     
-<PropertyAreaFilterES
-                        selectedproperty_area={
+                    <ExactPropertyAreaInput
+                        valueSquareMeters={
                             propertyData.property_area
                         }
-                        setSelectedproperty_area={(value) =>
-                            setPropertyData({
-                            ...propertyData,
-                            property_area: value
-                            })
+                        onChange={(valueSquareMeters) =>
+                            setPropertyData(prev => ({
+                                ...prev,
+                                property_area: valueSquareMeters
+                            }))
                         }
-                        showproperty_areaOptions={
+                        language="es"
+                        initiallyOpen={
                             showproperty_areaOptions
                         }
-
-                        setShowproperty_areaOptions={
-                        setShowproperty_areaOptions
-                        }
-                        
-                        setShowutilityOptions={
-                            setShowutilityOptions
-                        }
-
-                        setShowProvinceOptions={
-                            setShow_province_options
-                        }
-
-                        setShowCantonOptions={
-                            setShow_canton_options
-                        }
-
-                        setShowDistrictOptions={
-                            setShow_district_options
-                        }
-                       
                     />
 
 <UtilitiesFilterES

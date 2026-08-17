@@ -14,9 +14,6 @@ type ResidentialAttributesSProps = {
   yearBuiltRange: string
   setYearBuiltRange: (value: string) => void
 
-  constructionArea: string
-  setConstructionArea: (value: string) => void
-
   setShowproperty_typeOptions: (
     value: boolean
   ) => void
@@ -29,7 +26,7 @@ type ResidentialAttributesSProps = {
   bathroomOptions: string[]
   parkingOptions: string[]
   yearBuiltOptions: string[]
-  constructionAreaOptions: string[]
+  
 
   showResidentialSummary: boolean
   setShowResidentialSummary: (
@@ -56,11 +53,6 @@ type ResidentialAttributesSProps = {
     value: boolean
   ) => void
 
-  showConstructionAreaOptions: boolean
-  setShowConstructionAreaOptions: (
-    value: boolean
-  ) => void
-
 }
 
 export default function ResidentialAttributesS({
@@ -81,14 +73,10 @@ export default function ResidentialAttributesS({
 
   setShowproperty_areaOptions,
 
-  constructionArea,
-  setConstructionArea,
-
   bedroomOptions,
   bathroomOptions,
   parkingOptions,
   yearBuiltOptions,
-  constructionAreaOptions,
 
   showBedroomOptions,
   setShowBedroomOptions,
@@ -101,9 +89,6 @@ export default function ResidentialAttributesS({
 
   showYearBuiltOptions,
   setShowYearBuiltOptions,
-
-  showConstructionAreaOptions,
-  setShowConstructionAreaOptions,
 
   showResidentialSummary,
   setShowResidentialSummary,
@@ -173,14 +158,7 @@ export default function ResidentialAttributesS({
                             )}
 
                             {yearBuiltRange && (
-                              <>
-                                <span>{yearBuiltRange}</span>
-                                <span style={{ color:'#fff' }}>•</span>
-                              </>
-                            )}
-
-                            {constructionArea && (
-                              <span>{constructionArea}</span>
+                              <span>{yearBuiltRange}</span>
                             )}
 
                           </span>
@@ -195,7 +173,7 @@ export default function ResidentialAttributesS({
                         setBathrooms('')
                         setParking('')
                         setYearBuiltRange('')
-                        setConstructionArea('')
+                        
 
                         setShowResidentialSummary(false)
 
@@ -203,7 +181,7 @@ export default function ResidentialAttributesS({
                         setShowBathroomOptions(false)
                         setShowParkingOptions(false)
                         setShowYearBuiltOptions(false)
-                        setShowConstructionAreaOptions(false)
+                        
 
                       }}
                       style={resetButton}
@@ -505,7 +483,7 @@ export default function ResidentialAttributesS({
                               setYearBuiltRange('')
 
                               setShowYearBuiltOptions(true)
-                              setShowConstructionAreaOptions(false)
+                              
 
                             }}
                             style={resetButton}
@@ -537,105 +515,14 @@ export default function ResidentialAttributesS({
                                   setYearBuiltRange(option)
 
                                   setShowYearBuiltOptions(false)
-                                  setShowConstructionAreaOptions(true)
-
-                                }}
-                                style={
-                                  yearBuiltRange === option
-                                    ? activePill
-                                    : pill
-                                }
-                              >
-                                {option}
-                              </button>
-
-                            ))}
-
-                          </div>
-
-                        </div>
-
-                      )}
-
-                    </div>
-
-                    {/* CONSTRUCTION AREA */}
-
-                    <div>
-
-                      {!showConstructionAreaOptions && constructionArea && (
-
-                        <div
-                          style={{
-                            ...summaryCard,
-                            cursor:'pointer'
-                          }}
-                          onClick={() => {
-
-                            setShowConstructionAreaOptions(true)
-
-                          }}
-                        >
-
-                          <span>
-                            {constructionArea}
-                          </span>
-
-                          <button
-                            type="button"
-                            onClick={(e) => {
-
-                              e.stopPropagation()
-
-                              setConstructionArea('')
-
-                              setShowConstructionAreaOptions(true)
-
-                            }}
-                            style={resetButton}
-                          >
-                            ✕
-                          </button>
-
-                        </div>
-
-                      )}
-
-                      {showConstructionAreaOptions && (
-
-                        <div>
-
-                          <h2 style={sectionHeading}>
-                            Construction Area
-                          </h2>
-
-                          <div style={pillWrap}>
-
-                            {constructionAreaOptions.map((option) => (
-
-                              <button
-                                type="button"
-                                key={option}
-                                onClick={() => {
-
-                                  setConstructionArea(option)
-
-                                  setShowConstructionAreaOptions(false)
-
-                                  
-                                  setShowBathroomOptions(false)
-                                  setShowParkingOptions(false)
-                                  setShowYearBuiltOptions(false)
-
                                   setShowResidentialSummary(true)
 
                                   setShowproperty_typeOptions(false)
-
                                   setShowproperty_areaOptions(true)
 
                                 }}
                                 style={
-                                  constructionArea === option
+                                  yearBuiltRange === option
                                     ? activePill
                                     : pill
                                 }

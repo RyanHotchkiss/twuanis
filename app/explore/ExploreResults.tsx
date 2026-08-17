@@ -105,11 +105,12 @@ function formatLabel(value: string) {
 
             
 
-            function buildRefinementUrl(
-            filters: Record<string, any>,
-            filterType: string,
-            neighbor: any
-            ) {
+        function buildRefinementUrl(
+          filters: Record<string, any>,
+          filterType: string,
+          neighbor: any,
+          embedded = false
+        ) {
             const params = new URLSearchParams()
 
             Object.entries(filters).forEach(([key, value]) => {
@@ -131,14 +132,18 @@ function formatLabel(value: string) {
                 .replace(/\s+/g, '-')
             )
 
-            return `/explore?${params.toString()}`
+          return embedded
+              ? `/en/market-hub?intelligence=explore&${params.toString()}`
+              : `/explore?${params.toString()}`
             }
 
-export default function ExploreResults({
-        result
-        }: {
+      export default function ExploreResults({
+        result,
+        embedded = false
+      }: {
         result: any
-        }) {
+        embedded?: boolean
+      }) {
 
         const statistics = result.statistics || {}
 
@@ -534,7 +539,13 @@ export default function ExploreResults({
                 {relatedMarkets.map((market: any) => (
                     <Link
                     key={market.url}
-                    href={market.url}
+                    href={
+                      embedded
+                        ? `/en/market-hub?intelligence=explore&${
+                            market.url.split('?')[1] || ''
+                          }`
+                        : market.url
+                    }
                     style={{
                         display: 'block',
                         background: '#111',
@@ -614,9 +625,10 @@ export default function ExploreResults({
                         <Link
                         key={neighbor.id}
                         href={buildRefinementUrl(
-                            result.filters,
-                            type,
-                            neighbor
+                          result.filters,
+                          type,
+                          neighbor,
+                          embedded
                         )}
                         style={{
                             background: '#181818',

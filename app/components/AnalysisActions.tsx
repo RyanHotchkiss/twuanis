@@ -94,9 +94,7 @@ export default function AnalysisActions({
           await updateSavedAnalysis(
             currentSavedId,
             {
-              name: currentName,
-              filters,
-              result
+              name: currentName
             }
           )
 
@@ -106,8 +104,8 @@ export default function AnalysisActions({
 
         setMessage(
           spanish
-            ? 'Análisis actualizado.'
-            : 'Analysis updated.'
+            ? 'Nombre del análisis actualizado.'
+            : 'Analysis name updated.'
         )
 
         return

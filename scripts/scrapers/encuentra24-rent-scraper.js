@@ -607,6 +607,96 @@ function extractCurrency(
 
               return clean(offer?.priceCurrency || '')
             }
+function resolveRentPriceIdentity({
+  offer,
+  flightAd,
+  insightAttributes,
+  detailAttributes,
+  title,
+  description,
+  $
+}) {
+  const offerPrice =
+    parsePriceValue(
+      offer?.price
+    )
+
+  const offerCurrency =
+    clean(
+      offer?.priceCurrency
+    ).toUpperCase()
+
+  if (
+    offerPrice &&
+    (
+      offerCurrency === 'USD' ||
+      offerCurrency === 'CRC'
+    )
+  ) {
+    return {
+      amount: offerPrice,
+      currency: offerCurrency,
+      source: 'json_ld_offer'
+    }
+  }
+
+  const flightPrice =
+    parsePriceValue(
+      flightAd?.price?.amount?.value
+    )
+
+  const flightCurrencyRaw =
+    clean(
+      flightAd?.price?.currency?.countryISO ||
+      flightAd?.price?.currency?.symbol
+    ).toUpperCase()
+
+  const flightCurrency =
+    flightCurrencyRaw === '$'
+      ? 'USD'
+      : flightCurrencyRaw === '₡'
+        ? 'CRC'
+        : flightCurrencyRaw
+
+  if (
+    flightPrice &&
+    (
+      flightCurrency === 'USD' ||
+      flightCurrency === 'CRC'
+    )
+  ) {
+    return {
+      amount: flightPrice,
+      currency: flightCurrency,
+      source: 'flight_ad'
+    }
+  }
+
+  const fallbackAmount =
+    extractPrice(
+      offer,
+      insightAttributes,
+      detailAttributes,
+      title,
+      description
+    )
+
+  const fallbackCurrency =
+    extractVisibleCurrency($) ||
+    extractCurrency(
+      offer,
+      insightAttributes,
+      detailAttributes,
+      title
+    )
+
+  return {
+    amount: fallbackAmount,
+    currency: fallbackCurrency,
+    source: 'legacy_fallback'
+  }
+}
+
 
 function extractFlightAd(html) {
   const match = html.match(/"ad":(\{.*?\}),"googleMapsApiKey"/s)
@@ -724,6 +814,16 @@ const flightAd = extractFlightAd(html)
     extractInsightAttributes($)
   const detailAttributes =
     extractDetailAttributes($)
+  const rentPriceIdentity =
+  resolveRentPriceIdentity({
+    offer,
+    flightAd,
+    insightAttributes,
+    detailAttributes,
+    title,
+    description,
+    $
+  })
 
 
   const rawBedrooms =
@@ -869,27 +969,13 @@ const rawConstructionArea =
 
   current_price: '',
 
-    monthly_price:
-      flightAd?.rent?.amount?.value ||
-      flightAd?.price?.amount?.value ||
-      extractPrice(
-        offer,
-        insightAttributes,
-        detailAttributes,
-        title,
-        description
-      ),
+  monthly_price:
+    rentPriceIdentity.amount,
 
   currency:
-    extractVisibleCurrency($) ||
-    flightAd?.price?.currency?.symbol ||
-    extractCurrency(
-      offer,
-      insightAttributes,
-      detailAttributes,
-      title,
-      description
-    ),
+    rentPriceIdentity.currency,
+
+    
   whatsapp:
   flightAd?.user?.contact?.whatsapp ||
   flightAd?.user?.contact?.phone1?.number ||
@@ -968,6 +1054,7 @@ function writeCsv({
     
 
 async function scrapeEncuentra24Rent() {
+
   const regionSlug =
     process.argv[2]
   if (!regionSlug) {
@@ -985,7 +1072,8 @@ console.log(
   const rows = []
   let browser
   try {
-    const cards = []
+  
+      const cards = []
 
 for (let pageNumber = 1; pageNumber <= MAX_PAGES; pageNumber++) {
   const pageUrl =

@@ -12,6 +12,7 @@ import LegalStatusFilter from '@/app/components/filter-bar/LegalStatusFilter'
 import {
   residential_property_types
 } from '@/data/property-data'
+import ConstructionAreaFilterS from '@/app/components/filter-bar/ConstructionAreaFilterS'
 
 export default function BuySidebar(props: any) {
 
@@ -318,30 +319,22 @@ const {
                 setShowDistrictOptions={setShowDistrictOptions}
 
                 selectedproperty_type={filters.property_type}
-
+                setSelectedproperty_type={(value: string) =>
+                    setFilters((prev: any) => ({
+                        ...prev,
+                        property_type: value
+                    }))
+                    }
                 bedrooms={filters.bedrooms}
                 bathrooms={filters.bathrooms}
                 parking={filters.parking}
 
                 yearBuiltRange={filters.year_built}
-                constructionArea={filters.construction_area}
-
-                setSelectedproperty_type={(value: string) => {
-
-                    setFilters((prev: any) => ({
-                    ...prev,
-                    property_type: value
-                    }))
-
-                }}
-
+                
                 />
-
-                {
-                residential_property_types.includes(
-                    filters.property_type
-                ) && (
-
+{residential_property_types.includes(
+  filters.property_type
+) && (
 <ResidentialAttributesS
 
                     setShowproperty_typeOptions={
@@ -384,14 +377,6 @@ const {
                         }))
                     }
 
-                    constructionArea={filters.construction_area}
-                    setConstructionArea={(value: string) =>
-                        setFilters((prev: any) => ({
-                        ...prev,
-                        construction_area: value
-                        }))
-                    }
-
                     setShowResidentialSummary={
                         setShowResidentialSummary
                     }
@@ -400,7 +385,7 @@ const {
                     bathroomOptions={bathroomOptions}
                     parkingOptions={parkingOptions}
                     yearBuiltOptions={yearBuiltOptions}
-                    constructionAreaOptions={constructionAreaOptions}
+                    
 
                     showBedroomOptions={showBedroomOptions}
                     setShowBedroomOptions={setShowBedroomOptions}
@@ -414,29 +399,44 @@ const {
                     showYearBuiltOptions={showYearBuiltOptions}
                     setShowYearBuiltOptions={setShowYearBuiltOptions}
 
-                    showConstructionAreaOptions={
-                        showConstructionAreaOptions
-                    }
-
-                    setShowConstructionAreaOptions={
-                        setShowConstructionAreaOptions
-                    }
-
                     showResidentialSummary={
                         showResidentialSummary
                     }
+                />
+                )}
+        <ConstructionAreaFilterS
+            selectedConstructionArea={
+                filters.construction_area
+            }
 
-                    />
+            setSelectedConstructionArea={(value: string) => {
+                setFilters((prev: any) => ({
+                ...prev,
+                construction_area: value
+                }))
+            }}
 
+            showConstructionAreaOptions={
+                showConstructionAreaOptions
+            }
+
+            setShowConstructionAreaOptions={
+                setShowConstructionAreaOptions
+            }
+
+            setShowPropertyAreaOptions={
+                setShowproperty_areaOptions
+            }
+
+            constructionAreaOptions={
+                constructionAreaOptions.map(
+                    (option: string) => ({
+                    en: option,
+                    es: option
+                    })
                 )
                 }
-
-               {
-                    !residential_property_types.includes(
-                        filters.property_type
-                    ) && (
-
-                        <>
+            />
 
 <PropertyAreaFilter
 
@@ -513,11 +513,6 @@ const {
                     }
 
                     />
-
-                </>
-
-                )
-                }
 
 <EnvironmentFilter
 

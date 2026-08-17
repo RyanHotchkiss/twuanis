@@ -57,6 +57,7 @@ type Props = {
   valuation: any
   comparison: any
   options: any
+  embedded?: boolean
 }
 
 const tabs = [
@@ -185,7 +186,8 @@ const tabs = [
           buyerDemand,
           marketMatches,
           valuation,
-          comparison
+          comparison,
+          embedded = false
         }: Props) {
 
 
@@ -390,12 +392,14 @@ const tabs = [
 
           return (
             <>
-              <div style={tabBar}>
 
-              {tabs.map(tab => {
-                    const Icon = tab.icon
+{!embedded && (
+    <div style={tabBar}>
 
-                    return (
+    {tabs.map(tab => {
+          const Icon = tab.icon
+
+          return (
           <Link
             key={tab.id}
             href={`/es/inteligencia-de-mercado?${query.toString()}&tab=${tab.id}`}
@@ -458,10 +462,10 @@ const tabs = [
               {tab.package}
             </div>
           </Link>
-        )
+         )
         })}
-
-        </div>
+  </div>
+)}
 
 <section style={filterSection}>
         <h2 style={sectionTitle}>
@@ -471,14 +475,22 @@ const tabs = [
         <MarketFilters
             language="es"
             mode={
-                activeTab === 'comparison'
+              activeTab === 'comparison'
                 ? 'comparison'
                 : 'single'
             }
             options={options}
             filters={filters}
-            basePath={`/es/inteligencia-de-mercado?tab=${activeTab}`}
-            />
+            basePath={
+              embedded
+                ? `/es/centro-de-mercado?intelligence=${
+                    activeTab === 'explorer'
+                      ? 'explore'
+                      : activeTab
+                  }`
+                : `/es/inteligencia-de-mercado?tab=${activeTab}`
+            }
+          />
       </section>
 
 
@@ -566,6 +578,7 @@ const tabs = [
             ? (
               <ExploreResults
                 result={explorerResult}
+                embedded={embedded}
               />
             )
             : (

@@ -55,6 +55,13 @@ import type {
 
 type SupportedLanguage = 'en' | 'es'
 
+type ListingsWorkspaceView =
+  | 'all'
+  | 'active'
+  | 'drafts'
+  | 'archived'
+  | 'deleted'
+
 export type MarketHubListing = {
 id: string
 title: string
@@ -196,19 +203,12 @@ setPublishSheetOpen
 ] = useState(false)
 
 const [
-draftsOpen,
-setDraftsOpen
-] = useState(false)
-
-const [
-archivedOpen,
-setArchivedOpen
-] = useState(false)
-
-const [
-deletedOpen,
-setDeletedOpen
-] = useState(false)
+  activeView,
+  setActiveView
+] =
+  useState<ListingsWorkspaceView>(
+    'all'
+  )
 
 const activeListings =
 currentListings.filter(
@@ -233,6 +233,17 @@ currentListings.filter(
 listing =>
 listing.status === 'deleted'
 )
+
+const visibleListings =
+  activeView === 'active'
+    ? activeListings
+    : activeView === 'drafts'
+      ? draftListings
+      : activeView === 'archived'
+        ? archivedListings
+        : activeView === 'deleted'
+          ? deletedListings
+          : currentListings
 
 const labels =
 language === 'es'
@@ -265,7 +276,13 @@ favorites: 'Favoritos',
 shares: 'Compartidos',
 whatsappClicks: 'Clics en WhatsApp',
 daysPublished: 'Días Publicada',
-daysUpdated: 'Días desde la Actualización'
+daysUpdated: 'Días desde la Actualización',
+allListings: 'Todas',
+activeTab: 'Activas',
+draftsTab: 'Borradores',
+archivedTab: 'Archivadas',
+deletedTab: 'Eliminadas',
+workspaceDescription: 'Administre sus propiedades y abra el centro de operaciones de cualquier publicación.'
 }
 : {
 heading: 'My Listings',
@@ -296,8 +313,27 @@ favorites: 'Favorites',
 shares: 'Shares',
 whatsappClicks: 'WhatsApp Clicks',
 daysPublished: 'Days Published',
-daysUpdated: 'Days Since Update'
+daysUpdated: 'Days Since Update',
+allListings: 'All',
+activeTab: 'Active',
+draftsTab: 'Drafts',
+archivedTab: 'Archived',
+deletedTab: 'Deleted',
+workspaceDescription: 'Manage your properties and open the operations center for any listing.'
 }
+
+const emptyViewMessage =
+  activeView === 'active'
+    ? labels.empty
+    : activeView === 'drafts'
+      ? labels.noDrafts
+      : activeView === 'archived'
+        ? labels.noArchived
+        : activeView === 'deleted'
+          ? labels.noDeleted
+          : language === 'es'
+            ? 'Todavía no tiene publicaciones.'
+            : 'You do not have any listings yet.'
 
 async function loadListingCapabilities(
   listingId: string
@@ -583,7 +619,9 @@ setSelectedListing(
   canonicalListing
 )
 
-setDraftsOpen(true)
+setActiveView(
+  'drafts'
+)
 
 } catch (error) {
 console.error(
@@ -636,7 +674,9 @@ setSelectedListing(
   canonicalListing
 )
 
-setArchivedOpen(true)
+setActiveView(
+  'archived'
+)
 
 } catch (error) {
 console.error(
@@ -689,7 +729,9 @@ setSelectedListing(
   canonicalListing
 )
 
-setDraftsOpen(true)
+setActiveView(
+  'drafts'
+)
 
 } catch (error) {
 console.error(
@@ -741,7 +783,9 @@ setSelectedListing(
   canonicalListing
 )
 
-setDeletedOpen(true)
+setActiveView(
+  'deleted'
+)
 
 } catch (error) {
 console.error(
@@ -892,7 +936,9 @@ async function handleDuplicate(
         )
     )
 
-    setDraftsOpen(true)
+    setActiveView(
+  'drafts'
+)
 
     setOperationsCenterOpen(
       false
@@ -1033,603 +1079,333 @@ async function handleRenew(
 
 return (
 <section style={section}>
-<header style={header}>
-<div>
-<h2 style={heading}>
-{labels.heading}
-</h2>
+<header style={workspaceHeader}>
+  <div>
+    <h2 style={heading}>
+      {labels.heading}
+    </h2>
 
-<p style={summary}>
-{labels.activeCount}
-</p>
-</div>
-
-<button
-type="button"
-onClick={() => {
-setPublishSheetOpen(true)
-}}
-style={newListingButton}
->
-<HousePlus
-size={22}
-strokeWidth={1}
-/>
-
-{labels.newListing}
-</button>
-</header>
-
-<div style={divider} />
-
-<h3 style={sectionHeading}>
-{labels.activeListings}
-<span style={count}>
-{activeListings.length}
-</span>
-</h3>
-
-{activeListings.length === 0 ? (
-<div style={emptyState}>
-<p style={emptyText}>
-{labels.empty}
-</p>
-
-<button
-type="button"
-onClick={() => {
-  setPublishSheetOpen(true)
-}}
-style={emptyLink}
->
-{labels.createFirst}
-</button>
-</div>
-) : (
-<div style={listingGrid}>
-{activeListings.map(listing => {
-
-return (
-<article
-key={listing.id}
-style={listingCard}
->
-{listing.image ? (
-<img
-  src={listing.image}
-  alt={listing.title}
-  style={listingImage}
-/>
-) : (
-<div style={imagePlaceholder}>
-  <HousePlus
-    size={34}
-    strokeWidth={0.75}
-    color="#C7A44B"
-  />
-</div>
-)}
-
-<div style={listingContent}>
-<h4 style={listingTitle}>
-  {listing.title}
-</h4>
-
-{listing.location && (
-  <div style={listingMeta}>
-    {listing.location}
-  </div>
-)}
-
-{listing.price && (
-  <div style={listingPrice}>
-    {listing.price}
-  </div>
-)}
-
-<div style={analyticsGrid}>
-  <div style={analyticsItem}>
-      <Eye
-      size={18}
-      strokeWidth={1}
-      color="#C7A44B"
-      />
-
-      <div>
-      <div style={analyticsValue}>
-          {listing.viewCount ?? 0}
-      </div>
-
-      <div style={analyticsLabel}>
-          {labels.views}
-      </div>
-      </div>
-  </div>
-
-  <div style={analyticsItem}>
-      <Heart
-      size={18}
-      strokeWidth={1}
-      color="#C7A44B"
-      />
-
-      <div>
-      <div style={analyticsValue}>
-          {listing.favoriteCount ?? 0}
-      </div>
-
-      <div style={analyticsLabel}>
-          {labels.favorites}
-      </div>
-      </div>
-  </div>
-
-  <div style={analyticsItem}>
-      <Forward
-      size={18}
-      strokeWidth={1}
-      color="#C7A44B"
-      />
-
-      <div>
-      <div style={analyticsValue}>
-          {listing.shareCount ?? 0}
-      </div>
-
-      <div style={analyticsLabel}>
-          {labels.shares}
-      </div>
-      </div>
-  </div>
-
-  <div style={analyticsItem}>
-      <MessageCircle
-      size={18}
-      strokeWidth={1}
-      color="#C7A44B"
-      />
-
-      <div>
-      <div style={analyticsValue}>
-          {listing.whatsappClickCount ?? 0}
-      </div>
-
-      <div style={analyticsLabel}>
-          {labels.whatsappClicks}
-      </div>
-      </div>
-  </div>
-
-  
-
-  <div style={analyticsItem}>
-      <CalendarDays
-      size={18}
-      strokeWidth={1}
-      color="#C7A44B"
-      />
-
-      <div>
-      <div style={analyticsValue}>
-          {listing.daysSincePublished ?? 0}
-      </div>
-
-      <div style={analyticsLabel}>
-          {labels.daysPublished}
-      </div>
-      </div>
-  </div>
-
-  <div style={analyticsItem}>
-      <Clock3
-      size={18}
-      strokeWidth={1}
-      color="#C7A44B"
-      />
-
-      <div>
-      <div style={analyticsValue}>
-          {listing.daysSinceLastUpdate ?? 0}
-      </div>
-
-      <div style={analyticsLabel}>
-          {labels.daysUpdated}
-      </div>
-      </div>
-  </div>
+    <p style={workspaceDescription}>
+      {labels.workspaceDescription}
+    </p>
   </div>
 
   <button
-      type="button"
-      onClick={() =>
-        openOperationsCenter(
-          listing
-        )
-      }
-      style={
-        manageButton
-      }
-    >
-      <Pencil
-        size={18}
-        strokeWidth={1}
-      />
+    type="button"
+    onClick={() => {
+      setPublishSheetOpen(
+        true
+      )
+    }}
+    style={newListingButton}
+  >
+    <HousePlus
+      size={20}
+      strokeWidth={1.2}
+    />
 
-      {
-        labels.manage
-      }
-</button>
+    {labels.newListing}
+  </button>
+</header>
 
 
-</div>
-</article>
-)
-})}
-</div>
-)}
+<nav style={workspaceTabs}>
+  {[
+    {
+      id:
+        'all' as const,
 
-<div style={secondarySection}>
-<button
-type="button"
-onClick={() => {
-setDraftsOpen(
-current => !current
-)
-}}
-style={sectionToggle}
-aria-expanded={draftsOpen}
->
-<div style={sectionToggleTitle}>
-<FilePenLine
-size={21}
-strokeWidth={1}
-color="#C7A44B"
-/>
+      label:
+        labels.allListings,
 
-<span>
-{labels.draftListings}
-</span>
+      count:
+        currentListings.length
+    },
 
-<span style={count}>
-{draftListings.length}
-</span>
-</div>
+    {
+      id:
+        'active' as const,
 
-<ChevronDown
-size={21}
-strokeWidth={1}
-style={{
-transform: draftsOpen
-? 'rotate(180deg)'
-: 'rotate(0deg)',
-transition:
-'transform .2s ease'
-}}
-/>
-</button>
+      label:
+        labels.activeTab,
 
-{draftsOpen && (
-<div style={collapsibleContent}>
-{draftListings.length === 0 ? (
-<div style={secondaryEmpty}>
-{labels.noDrafts}
-</div>
-) : (
-<div style={listingGrid}>
-{draftListings.map(
-  listing => {
-  
-  return (
-      <article
-      key={listing.id}
-      style={listingCard}
-      >
-      {listing.image ? (
-          <img
-          src={listing.image}
-          alt={listing.title}
-          style={listingImage}
-          />
-      ) : (
-          <div
-          style={
-              imagePlaceholder
-          }
-          >
-          <FilePenLine
-              size={34}
-              strokeWidth={0.75}
-              color="#C7A44B"
-          />
-          </div>
-      )}
+      count:
+        activeListings.length
+    },
 
-      <div
-          style={listingContent}
-      >
-          <h4
-          style={listingTitle}
-          >
-          {listing.title}
-          </h4>
+    {
+      id:
+        'drafts' as const,
 
-          {listing.location && (
-          <div
-              style={listingMeta}
-          >
-              {listing.location}
-          </div>
-          )}
+      label:
+        labels.draftsTab,
 
+      count:
+        draftListings.length
+    },
+
+    {
+      id:
+        'archived' as const,
+
+      label:
+        labels.archivedTab,
+
+      count:
+        archivedListings.length
+    },
+
+    {
+      id:
+        'deleted' as const,
+
+      label:
+        labels.deletedTab,
+
+      count:
+        deletedListings.length
+    }
+  ].map(
+    tab => {
+
+      const selected =
+        activeView ===
+        tab.id
+
+      return (
         <button
-            type="button"
-            onClick={() =>
-              openOperationsCenter(
-                listing
-              )
-            }
-            style={
-              manageButton
-            }
-          >
-            <Pencil
-              size={18}
-              strokeWidth={1}
-            />
-
-            {
-              labels.manage
-            }
-      </button>
-      </div>
-      </article>
-  )
-  }
-)}
-</div>
-)}
-</div>
-)}
-</div>
-<div style={secondarySection}>
-<button
-type="button"
-onClick={() => {
-setArchivedOpen(
-current => !current
-)
-}}
-style={sectionToggle}
-aria-expanded={archivedOpen}
->
-<div style={sectionToggleTitle}>
-<Archive
-size={21}
-strokeWidth={1}
-color="#C7A44B"
-/>
-
-<span>
-{labels.archivedListings}
-</span>
-
-<span style={count}>
-{archivedListings.length}
-</span>
-</div>
-
-<ChevronDown
-size={21}
-strokeWidth={1}
-style={{
-transform: archivedOpen
-? 'rotate(180deg)'
-: 'rotate(0deg)',
-transition:
-'transform .2s ease'
-}}
-/>
-</button>
-
-{archivedOpen && (
-<div style={collapsibleContent}>
-{archivedListings.length === 0 ? (
-<div style={secondaryEmpty}>
-{labels.noArchived}
-</div>
-) : (
-<div style={listingGrid}>
-{archivedListings.map(
-  listing => {
-  
-  return (
-      <article
-      key={listing.id}
-      style={listingCard}
-      >
-      {listing.image ? (
-          <img
-          src={listing.image}
-          alt={listing.title}
-          style={listingImage}
-          />
-      ) : (
-          <div
-          style={
-              imagePlaceholder
+          key={tab.id}
+          type="button"
+          onClick={() =>
+            setActiveView(
+              tab.id
+            )
           }
-          >
-          <Archive
-              size={34}
-              strokeWidth={0.75}
-              color="#C7A44B"
-          />
-          </div>
-      )}
+          style={{
+            ...workspaceTab,
 
-      <div
-          style={listingContent}
+            color:
+              selected
+                ? '#fff'
+                : '#777',
+
+            borderBottomColor:
+              selected
+                ? '#C7A44B'
+                : 'transparent'
+          }}
+        >
+          <span>
+            {tab.label}
+          </span>
+
+          <span
+            style={{
+              ...workspaceTabCount,
+
+              color:
+                selected
+                  ? '#C7A44B'
+                  : '#666'
+            }}
+          >
+            {tab.count}
+          </span>
+        </button>
+      )
+    }
+  )}
+</nav>
+
+
+<div style={workspaceToolbar}>
+  <div style={workspaceResultCount}>
+    {visibleListings.length}{' '}
+    {language === 'es'
+      ? visibleListings.length === 1
+        ? 'publicación'
+        : 'publicaciones'
+      : visibleListings.length === 1
+        ? 'listing'
+        : 'listings'}
+  </div>
+</div>
+
+
+{visibleListings.length === 0 ? (
+  <div style={workspaceEmptyState}>
+    <HousePlus
+      size={30}
+      strokeWidth={0.8}
+      color="#C7A44B"
+    />
+
+    <p style={emptyText}>
+      {emptyViewMessage}
+    </p>
+
+    {activeView === 'all' ||
+    activeView === 'active' ? (
+      <button
+        type="button"
+        onClick={() => {
+          setPublishSheetOpen(
+            true
+          )
+        }}
+        style={emptyLink}
       >
-          <h4
-          style={listingTitle}
-          >
-          {listing.title}
-          </h4>
+        {labels.createFirst}
+      </button>
+    ) : null}
+  </div>
+) : (
+  <div style={listingGrid}>
+    {visibleListings.map(
+      listing => {
 
-          {listing.location && (
-          <div
-              style={listingMeta}
-          >
-              {listing.location}
-          </div>
-          )}
+        const statusLabel =
+          listing.status === 'active'
+            ? labels.activeTab
+            : listing.status === 'draft'
+              ? labels.draftsTab
+              : listing.status === 'archived'
+                ? labels.archivedTab
+                : labels.deletedTab
 
-          <button
+
+        return (
+          <article
+            key={listing.id}
+            style={workspaceListingCard}
+          >
+            <div style={listingImageShell}>
+              {listing.image ? (
+                <img
+                  src={listing.image}
+                  alt={listing.title}
+                  style={listingImage}
+                />
+              ) : (
+                <div style={imagePlaceholder}>
+                  <HousePlus
+                    size={32}
+                    strokeWidth={0.75}
+                    color="#C7A44B"
+                  />
+                </div>
+              )}
+
+              <div
+                style={{
+                  ...listingStatusBadge,
+
+                  color:
+                    listing.status === 'deleted'
+                      ? '#ff8d79'
+                      : listing.status === 'active'
+                        ? '#9bd5aa'
+                        : '#aaa'
+                }}
+              >
+                {statusLabel}
+              </div>
+            </div>
+
+
+            <div style={listingContent}>
+              <div>
+                <h4 style={listingTitle}>
+                  {listing.title}
+                </h4>
+
+                {listing.location && (
+                  <div style={listingMeta}>
+                    {listing.location}
+                  </div>
+                )}
+
+                {listing.price && (
+                  <div style={listingPrice}>
+                    {listing.price}
+                  </div>
+                )}
+              </div>
+
+
+              {listing.status === 'active' && (
+                <div style={compactMetrics}>
+                  <div style={compactMetric}>
+                    <Eye
+                      size={15}
+                      strokeWidth={1}
+                    />
+
+                    <span>
+                      {listing.viewCount ?? 0}
+                    </span>
+                  </div>
+
+                  <div style={compactMetric}>
+                    <Heart
+                      size={15}
+                      strokeWidth={1}
+                    />
+
+                    <span>
+                      {listing.favoriteCount ?? 0}
+                    </span>
+                  </div>
+
+                  <div style={compactMetric}>
+                    <Forward
+                      size={15}
+                      strokeWidth={1}
+                    />
+
+                    <span>
+                      {listing.shareCount ?? 0}
+                    </span>
+                  </div>
+
+                  <div style={compactMetric}>
+                    <MessageCircle
+                      size={15}
+                      strokeWidth={1}
+                    />
+
+                    <span>
+                      {listing.whatsappClickCount ?? 0}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+
+              <button
                 type="button"
                 onClick={() =>
                   openOperationsCenter(
                     listing
                   )
                 }
-                style={
-                  manageButton
-                }
+                style={workspaceManageButton}
               >
-                {
-                  labels.manage
-                }
-          </button>
+                <span>
+                  {labels.manage}
+                </span>
 
-      </div>
-      </article>
-  )
-  }
+                <span>
+                  →
+                </span>
+              </button>
+            </div>
+          </article>
+        )
+      }
+    )}
+  </div>
 )}
-</div>
-)}
-</div>
-)}
-</div>
-
-<div style={secondarySection}>
-<button
-type="button"
-onClick={() => {
-setDeletedOpen(
-current => !current
-)
-}}
-style={sectionToggle}
-aria-expanded={deletedOpen}
->
-<div style={sectionToggleTitle}>
-<Trash2
-size={21}
-strokeWidth={1}
-color="#dc143c"
-/>
-
-<span>
-{labels.deletedListings}
-</span>
-
-<span style={count}>
-{deletedListings.length}
-</span>
-</div>
-
-<ChevronDown
-size={21}
-strokeWidth={1}
-style={{
-transform:
-deletedOpen
-  ? 'rotate(180deg)'
-  : 'rotate(0deg)',
-
-transition:
-'transform .2s ease'
-}}
-/>
-</button>
-
-{deletedOpen && (
-<div style={collapsibleContent}>
-{deletedListings.length === 0 ? (
-<div style={secondaryEmpty}>
-{labels.noDeleted}
-</div>
-) : (
-<div style={listingGrid}>
-{deletedListings.map(
-  listing => (
-    <article
-      key={listing.id}
-      style={{
-        ...listingCard,
-        borderColor:
-          'rgba(220, 20, 60, .35)'
-      }}
-    >
-      {listing.image ? (
-        <img
-          src={listing.image}
-          alt={listing.title}
-          style={{
-            ...listingImage,
-            opacity: 0.55
-          }}
-        />
-      ) : (
-        <div
-          style={
-            imagePlaceholder
-          }
-        >
-          <Trash2
-            size={34}
-            strokeWidth={0.75}
-            color="#dc143c"
-          />
-        </div>
-      )}
-
-      <div style={listingContent}>
-        <h4 style={listingTitle}>
-          {listing.title}
-        </h4>
-
-        {listing.location && (
-          <div style={listingMeta}>
-            {listing.location}
-          </div>
-        )}
-
-        <button
-          type="button"
-          onClick={() =>
-            openOperationsCenter(
-              listing
-            )
-          }
-          style={manageButton}
-        >
-          <Pencil
-            size={18}
-            strokeWidth={1}
-          />
-
-          {labels.manage}
-        </button>
-      </div>
-    </article>
-  )
-)}
-</div>
-)}
-</div>
-)}
-</div>
 
 {managementError && (
 <div
@@ -1640,13 +1416,15 @@ style={managementErrorBox}
 )}
 
 <PublishListingSheet
-language={language}
-open={
-operationsCenterOpen
-}
-onClose={() => {
-setPublishSheetOpen(false)
-}}
+  language={language}
+  open={
+    publishSheetOpen
+  }
+  onClose={() => {
+    setPublishSheetOpen(
+      false
+    )
+  }}
 />
 
 <ListingOperationsCenter
@@ -1716,10 +1494,7 @@ handlePermanentDelete
 }
 
 const section = {
-padding: '1.5rem',
-background: '#151515',
-border: '1px solid #303030',
-borderRadius: '18px'
+  minWidth: 0
 }
 
 const header = {
@@ -1813,10 +1588,10 @@ fontWeight: 600
 }
 
 const listingGrid = {
-display: 'grid',
-gridTemplateColumns:
-'repeat(auto-fit, minmax(250px, 1fr))',
-gap: '1rem'
+  display: 'grid',
+  gridTemplateColumns:
+    'repeat(auto-fill, minmax(280px, 1fr))',
+  gap: '1rem'
 }
 
 const listingCard = {
@@ -1968,4 +1743,130 @@ background: '#2a1010',
 border:
 '1px solid #6b2222',
 borderRadius: '10px'
+}
+
+const workspaceHeader = {
+  display: 'flex',
+  flexWrap: 'wrap' as const,
+  alignItems: 'flex-start',
+  justifyContent: 'space-between',
+  gap: '1rem'
+}
+
+const workspaceDescription = {
+  maxWidth: '680px',
+  margin: '.55rem 0 0',
+  color: '#7f7f7f',
+  fontSize: '.88rem',
+  lineHeight: 1.55
+}
+
+const workspaceTabs = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '1.6rem',
+  marginTop: '2rem',
+  overflowX: 'auto' as const,
+  borderBottom: '1px solid #292929'
+}
+
+const workspaceTab = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '.5rem',
+  flexShrink: 0,
+  padding: '0 0 .85rem',
+  background: 'transparent',
+  border: 0,
+  borderBottom: '2px solid transparent',
+  fontFamily: 'inherit',
+  fontSize: '.84rem',
+  fontWeight: 600,
+  cursor: 'pointer'
+}
+
+const workspaceTabCount = {
+  fontSize: '.7rem',
+  fontWeight: 700
+}
+
+const workspaceToolbar = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  margin: '1.25rem 0'
+}
+
+const workspaceResultCount = {
+  color: '#666',
+  fontSize: '.75rem'
+}
+
+const workspaceEmptyState = {
+  minHeight: '280px',
+  display: 'grid',
+  placeItems: 'center',
+  alignContent: 'center',
+  gap: '.8rem',
+  textAlign: 'center' as const,
+  borderTop: '1px solid #222'
+}
+
+const workspaceListingCard = {
+  overflow: 'hidden',
+  background: '#141414',
+  border: '1px solid #292929',
+  borderRadius: '12px'
+}
+
+const listingImageShell = {
+  position: 'relative' as const
+}
+
+const listingStatusBadge = {
+  position: 'absolute' as const,
+  top: '.75rem',
+  left: '.75rem',
+  padding: '.3rem .55rem',
+  background: 'rgba(10, 10, 10, .88)',
+  backdropFilter: 'blur(8px)',
+  border: '1px solid rgba(255,255,255,.08)',
+  borderRadius: '999px',
+  fontSize: '.63rem',
+  fontWeight: 700,
+  letterSpacing: '.04em'
+}
+
+const compactMetrics = {
+  display: 'flex',
+  flexWrap: 'wrap' as const,
+  gap: '.85rem',
+  marginTop: '1rem',
+  paddingTop: '.85rem',
+  color: '#777',
+  borderTop: '1px solid #252525'
+}
+
+const compactMetric = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '.3rem',
+  fontSize: '.72rem'
+}
+
+const workspaceManageButton = {
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  marginTop: '1rem',
+  padding: '.8rem 0 0',
+  color: '#C7A44B',
+  background: 'transparent',
+  border: 0,
+  borderTop: '1px solid #252525',
+  fontFamily: 'inherit',
+  fontSize: '.8rem',
+  fontWeight: 650,
+  cursor: 'pointer'
 }

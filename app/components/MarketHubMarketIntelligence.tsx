@@ -881,25 +881,143 @@ export default function MarketHubMarketIntelligence({
 
     return (
     <section style={section}>
-      <header>
-        <div style={titleRow}>
-          <Compass
-            size={25}
-            strokeWidth={1}
-            color="#C7A44B"
-          />
+      <div style={intelligenceHero}>
 
-          <h2 style={heading}>
-            {labels.heading}
+        <div style={intelligenceHeroCopy}>
+
+          <div style={intelligenceEyebrow}>
+            {language === 'es'
+              ? 'SISTEMA DE INTELIGENCIA'
+              : 'INTELLIGENCE SYSTEM'}
+          </div>
+
+          <h2 style={intelligenceStatement}>
+            {language === 'es'
+              ? 'Entienda el mercado. Valore propiedades. Encuentre oportunidades. Decida mejor.'
+              : 'Understand the market. Value property. Find opportunity. Decide better.'}
           </h2>
+
+          <p style={intelligenceIntroduction}>
+            {language === 'es'
+              ? 'Twuanis transforma datos inmobiliarios, conocimiento estructurado y comportamiento del mercado en evidencia para tomar decisiones.'
+              : 'Twuanis transforms real estate data, structured knowledge, and market behavior into evidence for better decisions.'}
+          </p>
+
         </div>
 
-        <p style={purpose}>
-          {labels.purpose}
-        </p>
-      </header>
 
-      <div style={divider} />
+        <div style={intelligenceHeroMetrics}>
+
+          <div style={heroMetric}>
+            <div style={heroMetricValue}>
+              {resolvedSavedAnalysisCount}
+            </div>
+
+            <div style={heroMetricLabel}>
+              {labels.savedAnalyses}
+            </div>
+          </div>
+
+
+          <div style={heroMetric}>
+            <div style={heroMetricValue}>
+              {resolvedMarketsViewedCount}
+            </div>
+
+            <div style={heroMetricLabel}>
+              {labels.marketsViewed}
+            </div>
+          </div>
+
+
+          <div style={heroMetric}>
+            <div style={heroMetricValue}>
+              {totalEngineLaunches}
+            </div>
+
+            <div style={heroMetricLabel}>
+              {labels.history}
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div style={intelligenceSectionDivider} />
+
+
+      <div style={sectionIdentity}>
+        <span style={sectionNumber}>
+          01
+        </span>
+
+        <div>
+          <div style={sectionEyebrow}>
+            {language === 'es'
+              ? 'PUERTA DE ENTRADA'
+              : 'PRIMARY GATEWAY'}
+          </div>
+
+          <h3 style={sectionIdentityTitle}>
+            {labels.marketExplorer}
+          </h3>
+        </div>
+      </div>
+
+
+      <div style={explorerFeature}>
+
+        <div style={explorerFeatureIdentity}>
+
+          <div style={explorerFeatureIcon}>
+            <Compass
+              size={36}
+              strokeWidth={0.75}
+              color="#C7A44B"
+            />
+          </div>
+
+          <div>
+            <h3 style={explorerFeatureTitle}>
+              {labels.marketExplorer}
+            </h3>
+
+            <p style={explorerFeatureDescription}>
+              {language === 'es'
+                ? 'Entre a cualquier mercado de Costa Rica y examine su inventario, precios, composición, características, mercados relacionados y propiedades disponibles.'
+                : 'Enter any Costa Rica market and examine its inventory, pricing, composition, characteristics, related markets, and available properties.'}
+            </p>
+          </div>
+
+        </div>
+
+
+        <div style={explorerFeatureAction}>
+
+          <div style={explorerStatus}>
+            <span style={activeDot} />
+
+            {labels.active}
+          </div>
+
+          <Link
+            href={marketExplorerHref}
+            style={explorerLaunch}
+          >
+            {labels.launch}
+
+            <ArrowRight
+              size={18}
+              strokeWidth={1}
+            />
+          </Link>
+
+        </div>
+
+      </div>
+
 
       <div style={engineHeader}>
         <div style={engineIdentity}>
@@ -1228,6 +1346,14 @@ export default function MarketHubMarketIntelligence({
             engineUsage={engineUsage}
             />
 
+        <style>{`
+          @media (max-width: 900px) {
+            .intelligence-responsive {
+              grid-template-columns: minmax(0, 1fr) !important;
+            }
+          }
+        `}</style>
+
     </section>
   )
 }
@@ -1476,11 +1602,9 @@ function Statistic({
     </div>
   )
 }
+
 const section = {
-  padding: '1.5rem',
-  background: '#151515',
-  border: '1px solid #303030',
-  borderRadius: '18px'
+  minWidth: 0
 }
 
 const titleRow = {
@@ -1863,4 +1987,205 @@ const launchLink = {
   color: '#C7A44B',
   fontWeight: 600,
   fontSize: '.85rem'
+}
+
+const intelligenceHero = {
+  display: 'grid',
+  gridTemplateColumns:
+    'minmax(0, 1.6fr) minmax(280px, .7fr)',
+  gap: '3rem',
+  alignItems: 'end',
+  padding: '1rem 0 2.5rem'
+}
+
+
+const intelligenceHeroCopy = {
+  maxWidth: '900px'
+}
+
+
+const intelligenceEyebrow = {
+  marginBottom: '.9rem',
+  color: '#C7A44B',
+  fontSize: '.68rem',
+  fontWeight: 700,
+  letterSpacing: '.18em'
+}
+
+
+const intelligenceStatement = {
+  maxWidth: '920px',
+  margin: 0,
+  color: '#f2efe8',
+  fontSize: 'clamp(2rem, 4vw, 4rem)',
+  fontWeight: 400,
+  lineHeight: 1.05,
+  letterSpacing: '-.035em'
+}
+
+
+const intelligenceIntroduction = {
+  maxWidth: '760px',
+  margin: '1.35rem 0 0',
+  color: '#858585',
+  fontSize: '.95rem',
+  lineHeight: 1.7
+}
+
+
+const intelligenceHeroMetrics = {
+  display: 'grid',
+  gridTemplateColumns:
+    'repeat(3, minmax(0, 1fr))',
+  gap: '1px',
+  background: '#292929',
+  border: '1px solid #292929'
+}
+
+
+const heroMetric = {
+  padding: '1.25rem',
+  background: '#101010'
+}
+
+
+const heroMetricValue = {
+  color: '#f2efe8',
+  fontSize: '1.75rem',
+  fontWeight: 500,
+  lineHeight: 1
+}
+
+
+const heroMetricLabel = {
+  marginTop: '.55rem',
+  color: '#666',
+  fontSize: '.66rem',
+  fontWeight: 650,
+  letterSpacing: '.04em',
+  textTransform: 'uppercase' as const
+}
+
+
+const intelligenceSectionDivider = {
+  height: '1px',
+  margin: '0 0 2rem',
+  background:
+    'linear-gradient(90deg, #3a3322 0%, #252525 35%, transparent 100%)'
+}
+
+
+const sectionIdentity = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '1rem',
+  marginBottom: '1rem'
+}
+
+
+const sectionNumber = {
+  color: '#4f4222',
+  fontSize: '.72rem',
+  fontWeight: 700,
+  fontVariantNumeric:
+    'tabular-nums' as const
+}
+
+
+const sectionEyebrow = {
+  color: '#666',
+  fontSize: '.62rem',
+  fontWeight: 700,
+  letterSpacing: '.14em'
+}
+
+
+const sectionIdentityTitle = {
+  margin: '.25rem 0 0',
+  color: '#ddd',
+  fontSize: '1rem',
+  fontWeight: 500
+}
+
+
+const explorerFeature = {
+  display: 'grid',
+  gridTemplateColumns:
+    'minmax(0, 1fr) auto',
+  alignItems: 'center',
+  gap: '2rem',
+  padding: '1.75rem',
+  background:
+    'linear-gradient(135deg, #15140f 0%, #101010 52%, #0d0d0d 100%)',
+  border: '1px solid #383224',
+  borderRadius: '16px'
+}
+
+
+const explorerFeatureIdentity = {
+  display: 'grid',
+  gridTemplateColumns:
+    'auto minmax(0, 1fr)',
+  alignItems: 'center',
+  gap: '1.25rem'
+}
+
+
+const explorerFeatureIcon = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '4.25rem',
+  height: '4.25rem',
+  background: '#18150d',
+  border: '1px solid #43391f',
+  borderRadius: '999px'
+}
+
+
+const explorerFeatureTitle = {
+  margin: 0,
+  color: '#f3f0e8',
+  fontSize: '1.35rem',
+  fontWeight: 500
+}
+
+
+const explorerFeatureDescription = {
+  maxWidth: '750px',
+  margin: '.55rem 0 0',
+  color: '#888',
+  fontSize: '.86rem',
+  lineHeight: 1.65
+}
+
+
+const explorerFeatureAction = {
+  display: 'grid',
+  justifyItems: 'end',
+  gap: '.9rem'
+}
+
+
+const explorerStatus = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '.45rem',
+  color: '#8fae96',
+  fontSize: '.72rem',
+  fontWeight: 600
+}
+
+
+const explorerLaunch = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '.55rem',
+  padding: '.75rem 1rem',
+  color: '#111',
+  background: '#C7A44B',
+  borderRadius: '9px',
+  textDecoration: 'none',
+  fontSize: '.8rem',
+  fontWeight: 700
 }

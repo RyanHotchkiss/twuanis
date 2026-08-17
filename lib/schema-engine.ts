@@ -41,7 +41,7 @@ type Listing = {
   bedrooms?: string | null
   bathrooms?: string | null
   parking?: string | null
-  construction_area?: string | null
+  construction_area?: number | null
   year_built_range?: string | null
   images?: string | null
   whatsapp?: string | null
@@ -247,7 +247,15 @@ const relationshipNodes =
           name: clean(listing.property_type),
           numberOfBedrooms: clean(listing.bedrooms),
           numberOfBathroomsTotal: clean(listing.bathrooms),
-          floorSize: clean(listing.construction_area),
+          floorSize:
+          listing.construction_area != null
+            ? {
+                '@type': 'QuantitativeValue',
+                value: listing.construction_area,
+                unitCode: 'MTK',
+                unitText: 'm²'
+              }
+            : undefined,
           additionalProperty: ontologyTerms.map(term => ({
             '@type': 'PropertyValue',
             name: term.term_type,

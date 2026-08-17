@@ -6,8 +6,8 @@ type ComparableListing = {
   price_millions?: number | string | null
   current_price?: number | string | null
   monthly_price?: number | string | null
-  property_area?: number | string | null
-  construction_area?: number | string | null
+  property_area?: number | null
+  construction_area?: number | null
   province?: string | null
   canton?: string | null
   district?: string | null
@@ -18,7 +18,13 @@ type ComparableListing = {
   images?: any
 }
 
-type ComparableFilters = Partial<ComparableListing>
+type ComparableFilters = Omit<
+  Partial<ComparableListing>,
+  'property_area' | 'construction_area'
+> & {
+  property_area?: string
+  construction_area?: string
+}
 
 const MAX_SCORE = 110
 

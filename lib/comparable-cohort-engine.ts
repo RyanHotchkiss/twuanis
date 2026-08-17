@@ -66,10 +66,10 @@ export type ComparableCohortListing = {
     string | null
 
   propertyArea:
-    string | null
+  number | null
 
   constructionArea:
-    string | null
+    number | null
 
   currency:
     string | null
@@ -192,10 +192,10 @@ type MarketListing = {
     number | string | null
 
   property_area?:
-    number | string | null
+    number | null
 
   construction_area?:
-    number | string | null
+    number | null
 
   province?:
     string | null
@@ -927,14 +927,12 @@ function evaluateSimilarity({
       'propertyArea',
 
     targetValue:
-      parseNumericValue(
-        target.property_area
-      ),
+      target.property_area ??
+      null,
 
     candidateValue:
-      parseNumericValue(
-        candidate.property_area
-      ),
+      candidate.property_area ??
+      null,
 
     weight:
       DIMENSION_WEIGHTS
@@ -950,14 +948,12 @@ function evaluateSimilarity({
       'constructionArea',
 
     targetValue:
-      parseNumericValue(
-        target.construction_area
-      ),
+      target.construction_area ??
+      null,
 
     candidateValue:
-      parseNumericValue(
-        candidate.construction_area
-      ),
+      candidate.construction_area ??
+      null,
 
     weight:
       DIMENSION_WEIGHTS
@@ -1210,20 +1206,12 @@ function normalizeCohortListing({
       null,
 
     propertyArea:
-      listing.property_area ===
-        undefined
-        ? null
-        : String(
-            listing.property_area
-          ),
+      listing.property_area ??
+      null,
 
     constructionArea:
-      listing.construction_area ===
-        undefined
-        ? null
-        : String(
-            listing.construction_area
-          ),
+      listing.construction_area ??
+      null,
 
     currency:
       price.currency,

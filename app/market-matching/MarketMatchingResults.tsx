@@ -5,107 +5,234 @@ export default function MarketMatchingResults({
   filters: any
   matches: any
 }) {
+  const listings =
+    matches.listings || []
+
   return (
-    <section>
+    <section style={workspace}>
 
-      <h2 style={sectionTitle}>
-        Best Matching Properties
-      </h2>
+      <section style={header}>
+        <div>
+          <div style={eyebrow}>
+            Property Matching
+          </div>
 
-      {matches.listings?.length > 0 ? (
-        <div style={listingGrid}>
-          {matches.listings.map((listing: any) => (
-            <div
-              key={listing.id}
-              style={listingCard}
-            >
+          <h2 style={title}>
+            Best Matching Properties
+          </h2>
 
-              {listing.images?.[0] && (
-                <img
-                  src={listing.images[0]}
-                  alt={listing.title}
-                  style={listingImage}
-                />
-              )}
+          <p style={description}>
+            Properties ranked by how closely
+            they match your selected criteria.
+          </p>
+        </div>
 
-              <div style={{ padding: '1rem' }}>
+        <div style={resultCount}>
+          <span style={resultCountValue}>
+            {listings.length}
+          </span>
 
-                <div style={scoreBadge}>
-                  {listing.matchScore}% Match
+          <span style={resultCountLabel}>
+            Matches
+          </span>
+        </div>
+      </section>
+
+
+      {listings.length > 0 ? (
+        <div style={results}>
+
+          {listings.map(
+            (
+              listing: any,
+              index: number
+            ) => (
+              <article
+                key={listing.id}
+                style={matchCard}
+              >
+
+                <div style={rankColumn}>
+                  <div style={rankLabel}>
+                    Rank
+                  </div>
+
+                  <div style={rankValue}>
+                    #{index + 1}
+                  </div>
                 </div>
 
-                <h3 style={listingTitle}>
-                  {listing.title}
-                </h3>
 
-                <p style={listingMeta}>
-                  {listing.province} · {listing.canton}
-                </p>
+                <div style={propertyColumn}>
 
-                <div style={listingStats}>
-
-                  <p>
-                    Price:
-                    <strong> {listing.formattedPrice}</strong>
-                  </p>
-
-                  <p>
-                    Property Type:
-                    <strong> {listing.property_type}</strong>
-                  </p>
-
-                  <p>
-                    Bedrooms:
-                    <strong> {listing.bedrooms || 'N/A'}</strong>
-                  </p>
-
-                  <p>
-                    Bathrooms:
-                    <strong> {listing.bathrooms || 'N/A'}</strong>
-                  </p>
-
-                </div>
-
-                <h4 style={subHeading}>
-                  Why this property?
-                </h4>
-
-                <ul style={bulletList}>
-                  {listing.matchReasons?.map(
-                    (reason: string) => (
-                      <li key={reason}>{reason}</li>
-                    )
+                  {listing.images?.[0] && (
+                    <img
+                      src={listing.images[0]}
+                      alt={
+                        listing.title ||
+                        'Property'
+                      }
+                      style={listingImage}
+                    />
                   )}
-                </ul>
 
-                <h4 style={subHeading}>
-                  Missing Features
-                </h4>
+                  <div style={propertyContent}>
 
-                {listing.missingFeatures?.length > 0 ? (
-                  <ul style={bulletList}>
-                    {listing.missingFeatures.map(
-                      (feature: string) => (
-                        <li key={feature}>
-                          {feature}
-                        </li>
-                      )
-                    )}
-                  </ul>
-                ) : (
-                  <p style={perfectMatch}>
-                    Perfect Match
-                  </p>
-                )}
+                    <div style={propertyHeader}>
+                      <div>
+                        <h3 style={listingTitle}>
+                          {listing.title ||
+                            'Untitled Property'}
+                        </h3>
 
-              </div>
+                        <div style={listingMeta}>
+                          {[
+                            listing.canton,
+                            listing.province
+                          ]
+                            .filter(Boolean)
+                            .join(' · ')}
+                        </div>
+                      </div>
 
-            </div>
-          ))}
+                      <div style={scoreBlock}>
+                        <div style={scoreValue}>
+                          {listing.matchScore}%
+                        </div>
+
+                        <div style={scoreLabel}>
+                          Match
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div style={facts}>
+                      <Fact
+                        label="Price"
+                        value={
+                          listing.formattedPrice ||
+                          'N/A'
+                        }
+                      />
+
+                      <Fact
+                        label="Property Type"
+                        value={
+                          listing.property_type ||
+                          'N/A'
+                        }
+                      />
+
+                      <Fact
+                        label="Bedrooms"
+                        value={
+                          listing.bedrooms ||
+                          'N/A'
+                        }
+                      />
+
+                      <Fact
+                        label="Bathrooms"
+                        value={
+                          listing.bathrooms ||
+                          'N/A'
+                        }
+                      />
+                    </div>
+
+
+                    <div style={reasoningGrid}>
+
+                      <div style={reasoningPanel}>
+                        <div style={reasoningHeading}>
+                          Why It Matches
+                        </div>
+
+                        {listing.matchReasons?.length >
+                        0 ? (
+                          <div style={reasonList}>
+                            {listing.matchReasons.map(
+                              (reason: string) => (
+                                <div
+                                  key={reason}
+                                  style={positiveReason}
+                                >
+                                  <span style={positiveMark}>
+                                    ✓
+                                  </span>
+
+                                  <span>
+                                    {reason}
+                                  </span>
+                                </div>
+                              )
+                            )}
+                          </div>
+                        ) : (
+                          <div style={muted}>
+                            No match reasons available.
+                          </div>
+                        )}
+                      </div>
+
+
+                      <div style={reasoningPanel}>
+                        <div style={reasoningHeading}>
+                          Tradeoffs
+                        </div>
+
+                        {listing.missingFeatures
+                          ?.length > 0 ? (
+                          <div style={reasonList}>
+                            {listing.missingFeatures.map(
+                              (feature: string) => (
+                                <div
+                                  key={feature}
+                                  style={tradeoffReason}
+                                >
+                                  <span style={tradeoffMark}>
+                                    –
+                                  </span>
+
+                                  <span>
+                                    {feature}
+                                  </span>
+                                </div>
+                              )
+                            )}
+                          </div>
+                        ) : (
+                          <div style={perfectMatch}>
+                            <span style={positiveMark}>
+                              ✓
+                            </span>
+
+                            No identified tradeoffs
+                          </div>
+                        )}
+                      </div>
+
+                    </div>
+
+                  </div>
+                </div>
+
+              </article>
+            )
+          )}
+
         </div>
       ) : (
-        <div style={emptyCard}>
-          No matching properties found.
+        <div style={emptyState}>
+          <div style={emptyTitle}>
+            No matching properties found
+          </div>
+
+          <div style={emptyDescription}>
+            Adjust your criteria to broaden
+            the property search.
+          </div>
         </div>
       )}
 
@@ -113,79 +240,358 @@ export default function MarketMatchingResults({
   )
 }
 
-const sectionTitle = {
-  color: '#ff3B00',
-  fontSize: '2rem',
-  marginBottom: '1rem'
+
+function Fact({
+  label,
+  value
+}: {
+  label: string
+  value: any
+}) {
+  return (
+    <div style={fact}>
+      <div style={factLabel}>
+        {label}
+      </div>
+
+      <div style={factValue}>
+        {value}
+      </div>
+    </div>
+  )
 }
 
-const listingGrid = {
+
+const workspace = {
+  display: 'grid',
+  gap: '1.25rem'
+}
+
+
+const header = {
+  display: 'flex',
+  alignItems: 'flex-end',
+  justifyContent: 'space-between',
+  flexWrap: 'wrap' as const,
+  gap: '1.5rem',
+  padding:
+    'clamp(1.25rem, 3vw, 2rem)',
+  background:
+    'linear-gradient(135deg, #151515, #0d0d0d)',
+  border: '1px solid #252525',
+  borderRadius: '20px'
+}
+
+
+const eyebrow = {
+  marginBottom: '.45rem',
+  color: '#C7A44B',
+  fontSize: '.7rem',
+  fontWeight: 700,
+  letterSpacing: '.12em',
+  textTransform:
+    'uppercase' as const
+}
+
+
+const title = {
+  margin: 0,
+  color: '#fff',
+  fontSize:
+    'clamp(1.7rem, 4vw, 2.5rem)',
+  fontWeight: 650,
+  letterSpacing: '-.025em'
+}
+
+
+const description = {
+  maxWidth: '560px',
+  margin: '.65rem 0 0',
+  color: '#858585',
+  fontSize: '.92rem',
+  lineHeight: 1.55
+}
+
+
+const resultCount = {
+  display: 'grid',
+  justifyItems: 'end'
+}
+
+
+const resultCountValue = {
+  color: '#fff',
+  fontSize: '2rem',
+  fontWeight: 650,
+  lineHeight: 1
+}
+
+
+const resultCountLabel = {
+  marginTop: '.3rem',
+  color: '#666',
+  fontSize: '.68rem',
+  fontWeight: 700,
+  letterSpacing: '.09em',
+  textTransform:
+    'uppercase' as const
+}
+
+
+const results = {
+  display: 'grid',
+  gap: '.85rem'
+}
+
+
+const matchCard = {
   display: 'grid',
   gridTemplateColumns:
-    'repeat(auto-fit,minmax(320px,1fr))',
-  gap: '2rem'
-}
-
-const listingCard = {
+    '70px minmax(0, 1fr)',
+  overflow: 'hidden',
   background: '#111',
   border: '1px solid #222',
-  borderRadius: '1rem',
-  overflow: 'hidden'
+  borderRadius: '18px'
 }
 
-const listingImage = {
-  width: '100%',
-  height: '220px',
-  objectFit: 'cover' as const
+
+const rankColumn = {
+  display: 'flex',
+  flexDirection: 'column' as const,
+  alignItems: 'center',
+  padding: '1.25rem .5rem',
+  background: '#0c0c0c',
+  borderRight: '1px solid #222'
 }
 
-const listingTitle = {
-  marginTop: '.75rem',
-  marginBottom: '.25rem',
-  fontSize: '1.35rem'
-}
 
-const listingMeta = {
-  color: '#888',
-  marginBottom: '1rem'
-}
-
-const listingStats = {
-  color: '#ddd',
-  lineHeight: 1.6
-}
-
-const scoreBadge = {
-  display: 'inline-block',
-  background: '#D4AF37',
-  color: '#000',
-  padding: '.35rem .8rem',
-  borderRadius: '999px',
+const rankLabel = {
+  color: '#555',
+  fontSize: '.6rem',
   fontWeight: 700,
-  marginBottom: '.75rem'
+  letterSpacing: '.08em',
+  textTransform:
+    'uppercase' as const
 }
 
-const subHeading = {
-  color: '#ff3B00',
-  marginTop: '1.5rem',
-  marginBottom: '.5rem'
-}
 
-const bulletList = {
-  color: '#ddd',
-  paddingLeft: '1.25rem',
-  lineHeight: 1.6
-}
-
-const perfectMatch = {
-  color: '#66ff99',
+const rankValue = {
+  marginTop: '.4rem',
+  color: '#C7A44B',
+  fontSize: '1.35rem',
   fontWeight: 700
 }
 
-const emptyCard = {
+
+const propertyColumn = {
+  display: 'grid',
+  gridTemplateColumns:
+    'minmax(180px, 260px) minmax(0, 1fr)'
+}
+
+
+const listingImage = {
+  width: '100%',
+  height: '100%',
+  minHeight: '310px',
+  objectFit: 'cover' as const
+}
+
+
+const propertyContent = {
+  display: 'grid',
+  alignContent: 'start',
+  gap: '1.25rem',
+  padding: '1.35rem'
+}
+
+
+const propertyHeader = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'flex-start',
+  gap: '1.5rem'
+}
+
+
+const listingTitle = {
+  margin: 0,
+  color: '#eee',
+  fontSize:
+    'clamp(1.15rem, 2.5vw, 1.45rem)',
+  fontWeight: 600,
+  lineHeight: 1.35
+}
+
+
+const listingMeta = {
+  marginTop: '.4rem',
+  color: '#777',
+  fontSize: '.85rem'
+}
+
+
+const scoreBlock = {
+  display: 'grid',
+  justifyItems: 'end',
+  flexShrink: 0
+}
+
+
+const scoreValue = {
+  color: '#D4AF37',
+  fontSize: '1.8rem',
+  fontWeight: 700,
+  lineHeight: 1
+}
+
+
+const scoreLabel = {
+  marginTop: '.25rem',
+  color: '#666',
+  fontSize: '.65rem',
+  fontWeight: 700,
+  letterSpacing: '.08em',
+  textTransform:
+    'uppercase' as const
+}
+
+
+const facts = {
+  display: 'grid',
+  gridTemplateColumns:
+    'repeat(auto-fit, minmax(120px, 1fr))',
+  gap: '1px',
+  overflow: 'hidden',
+  background: '#292929',
+  border: '1px solid #292929',
+  borderRadius: '12px'
+}
+
+
+const fact = {
+  minWidth: 0,
+  padding: '.85rem',
+  background: '#0c0c0c'
+}
+
+
+const factLabel = {
+  color: '#5f5f5f',
+  fontSize: '.62rem',
+  fontWeight: 700,
+  letterSpacing: '.07em',
+  textTransform:
+    'uppercase' as const
+}
+
+
+const factValue = {
+  marginTop: '.3rem',
+  overflow: 'hidden',
+  color: '#ddd',
+  fontSize: '.86rem',
+  fontWeight: 600,
+  textOverflow: 'ellipsis'
+}
+
+
+const reasoningGrid = {
+  display: 'grid',
+  gridTemplateColumns:
+    'repeat(auto-fit, minmax(220px, 1fr))',
+  gap: '.75rem'
+}
+
+
+const reasoningPanel = {
+  padding: '1rem',
+  background: '#0c0c0c',
+  border: '1px solid #222',
+  borderRadius: '12px'
+}
+
+
+const reasoningHeading = {
+  marginBottom: '.8rem',
+  color: '#888',
+  fontSize: '.68rem',
+  fontWeight: 700,
+  letterSpacing: '.08em',
+  textTransform:
+    'uppercase' as const
+}
+
+
+const reasonList = {
+  display: 'grid',
+  gap: '.5rem'
+}
+
+
+const positiveReason = {
+  display: 'flex',
+  gap: '.55rem',
+  alignItems: 'flex-start',
+  color: '#bbb',
+  fontSize: '.86rem',
+  lineHeight: 1.45
+}
+
+
+const positiveMark = {
+  color: '#C7A44B',
+  fontWeight: 800
+}
+
+
+const tradeoffReason = {
+  display: 'flex',
+  gap: '.55rem',
+  alignItems: 'flex-start',
+  color: '#929292',
+  fontSize: '.86rem',
+  lineHeight: 1.45
+}
+
+
+const tradeoffMark = {
+  color: '#777',
+  fontWeight: 800
+}
+
+
+const perfectMatch = {
+  display: 'flex',
+  gap: '.55rem',
+  color: '#bbb',
+  fontSize: '.86rem'
+}
+
+
+const muted = {
+  color: '#666',
+  fontSize: '.85rem'
+}
+
+
+const emptyState = {
+  padding: '2rem',
   background: '#111',
   border: '1px solid #222',
-  borderRadius: '1rem',
-  padding: '1.5rem',
-  color: '#888'
+  borderRadius: '18px'
+}
+
+
+const emptyTitle = {
+  color: '#eee',
+  fontSize: '1.05rem',
+  fontWeight: 600
+}
+
+
+const emptyDescription = {
+  marginTop: '.4rem',
+  color: '#777',
+  fontSize: '.88rem'
 }

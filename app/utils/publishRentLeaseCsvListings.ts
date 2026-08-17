@@ -92,6 +92,9 @@ console.log(
       monthly_price:
         Number(listing.monthly_price),
 
+      currency:
+        listing.currency,
+
       whatsapp:
         listing.whatsapp,
 

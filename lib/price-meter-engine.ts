@@ -1,6 +1,27 @@
 import { getMarketStatistics } from '@/lib/statistics-engine'
 
 import {
+  resolvePriceMeterAnalyticalIdentity
+} from '@/lib/price-meter-identity'
+
+import {
+  getCurrentAnalyticalDate
+} from '@/lib/analysis-date'
+
+import {
+  getHistoricalUsdToCrcRate
+} from '@/lib/fx/fx-service'
+
+import type {
+  PriceMeterFxIdentity
+} from '@/lib/price-meter-identity'
+
+import {
+  createPriceMeterStatistic,
+  type PriceMeterStatisticMonetaryIdentity
+} from '@/lib/price-meter-statistic-identity'
+
+import {
   resolveListingImages
 } from '@/app/utils/resolveListingImages'
 
@@ -26,7 +47,6 @@ type MarketFilters = {
 }
 
 const SQM_TO_SQFT = 10.7639
-const CRC_TO_USD = 500
 
 function formatCRC(value: number | null, suffix = '') {
   if (value === null || Number.isNaN(value)) return null
@@ -77,6 +97,33 @@ function pricePerFt2(value: number | null) {
   return value / SQM_TO_SQFT
 }
 
+function formatStatisticM2(
+  statistic: {
+    value:
+      number | null
+  }
+) {
+  return formatCRC(
+    statistic.value,
+    ' / m²'
+  )
+}
+
+
+function formatStatisticFt2(
+  statistic: {
+    value:
+      number | null
+  }
+) {
+  return formatCRC(
+    pricePerFt2(
+      statistic.value
+    ),
+    ' / ft²'
+  )
+}
+
 function getConfidence(
   sampleSize: number,
   language: PriceMeterLanguage
@@ -120,56 +167,42 @@ function getConfidence(
   }
 }
 
-function getListingPrice(listing: any) {
-      const price =
-        listing.transaction_type === 'rent'
-          ? Number(listing.monthly_price)
-          : Number(listing.current_price)
+function decorateListing(
+    listing:
+      any,
 
-      if (!price || Number.isNaN(price)) return null
+    context: {
+      analyticalDate:
+        string
 
-      if (listing.currency === 'USD') {
-        return price * CRC_TO_USD
-      }
-
-      return price
+      fxIdentity:
+        PriceMeterFxIdentity | null
     }
+  ) {
 
-    function parseArea(value: any) {
-            if (!value) return null
+    const analyticalIdentity =
+      resolvePriceMeterAnalyticalIdentity(
+        listing,
+        context
+      )
 
-            const text = String(value)
-              .replace(/,/g, '')
-              .trim()
+  const price =
+  analyticalIdentity
+    .price
+    .analyticalAmount
 
-            const isHectares = /hect/i.test(text)
+    const propertyArea =
+    analyticalIdentity
+      .propertyArea
+      .exactM2
 
-            const numbers =
-              text.match(/\d+(\.\d+)?/g)
-
-            if (!numbers?.length) return null
-
-            const area =
-              numbers.length === 1
-                ? Number(numbers[0])
-                : (
-                    Number(numbers[0]) +
-                    Number(numbers[1])
-                  ) / 2
-
-            return isHectares
-              ? area * 10000
-              : area
-          }
-
-function decorateListing(listing: any) {
-  const price = getListingPrice(listing)
-
-    const propertyArea = parseArea(listing.property_area)
-
-    const constructionArea = parseArea(listing.construction_area)
+  const constructionArea =
+    analyticalIdentity
+      .constructionArea
+      .exactM2
 
   const pricePerLandM2 =
+
     price && propertyArea
       ? price / propertyArea
       : null
@@ -181,18 +214,32 @@ function decorateListing(listing: any) {
 
   return {
     ...listing,
-    
+
+    analyticalIdentity,
+
     images:
       resolveListingImages(
         listing.images
       ),
 
-   formattedPrice:
-      price
-        ? listing.currency === 'USD'
-          ? formatUSD(price)
-          : formatCRC(price)
-        : null,
+       formattedPrice:
+          analyticalIdentity
+            .price
+            .originalAmount !== null
+            ? analyticalIdentity
+                .price
+                .originalCurrency === 'USD'
+              ? formatUSD(
+                  analyticalIdentity
+                    .price
+                    .originalAmount
+                )
+              : formatCRC(
+                  analyticalIdentity
+                    .price
+                    .originalAmount
+                )
+            : null,
 
     pricePerLandM2:
       formatCRC(pricePerLandM2, ' / m²'),
@@ -208,220 +255,1028 @@ function decorateListing(listing: any) {
   }
 }
 
+type PriceMeterObservation = {
+  listingId:
+    string | null
+
+  transactionType:
+    'sale' | 'rent'
+
+  propertyBasis:
+    'land_only' | 'improved_property'
+
+  normalizationBasis:
+    'land' | 'construction'
+
+  analyticalPrice:
+    number
+
+  fx:
+    PriceMeterFxIdentity | null
+
+  areaM2:
+    number
+
+  pricePerM2:
+    number
+}
+
+
+function buildPriceMeterObservations(
+  listings: any[]
+): PriceMeterObservation[] {
+
+  const observations:
+    PriceMeterObservation[] =
+      []
+
+
+  for (
+    const listing of listings
+  ) {
+
+    const identity =
+      listing.analyticalIdentity
+
+
+    if (
+      !identity ||
+      !identity.eligibility.eligible ||
+      !identity.price.analyticallyUsable ||
+      identity.price.analyticalAmount === null ||
+      identity.transactionType === null ||
+      identity.propertyBasis === 'unknown'
+    ) {
+      continue
+    }
+
+
+    const analyticalPrice =
+      identity.price
+        .analyticalAmount
+
+
+    const listingId =
+      typeof listing.id === 'string'
+        ? listing.id
+        : null
+
+
+    if (
+      identity
+        .availableNormalizationBases
+        .includes('land') &&
+      identity.propertyArea.exactM2 !== null
+    ) {
+
+      const areaM2 =
+        identity.propertyArea
+          .exactM2
+
+
+      observations.push({
+        listingId,
+
+        transactionType:
+          identity.transactionType,
+
+        propertyBasis:
+          identity.propertyBasis,
+
+        normalizationBasis:
+          'land',
+
+        analyticalPrice,
+
+        fx:
+          identity.price.fx,
+
+        areaM2,
+
+        pricePerM2:
+          analyticalPrice /
+          areaM2
+      })
+    }
+
+
+    if (
+      identity
+        .availableNormalizationBases
+        .includes('construction') &&
+      identity.constructionArea.exactM2 !== null
+    ) {
+
+      const areaM2 =
+        identity.constructionArea
+          .exactM2
+
+
+      observations.push({
+        listingId,
+
+        transactionType:
+          identity.transactionType,
+
+        propertyBasis:
+          identity.propertyBasis,
+
+        normalizationBasis:
+          'construction',
+
+        analyticalPrice,
+
+        fx:
+          identity.price.fx,
+
+        areaM2,
+
+        pricePerM2:
+          analyticalPrice /
+          areaM2
+      })
+    }
+  }
+
+
+  return observations
+}
+
+function resolveStatisticMonetaryIdentity(
+  observations:
+    PriceMeterObservation[],
+
+  analyticalDate:
+    string
+): PriceMeterStatisticMonetaryIdentity {
+
+  const uniqueFxObservations =
+    new Map<
+      string,
+      PriceMeterStatisticMonetaryIdentity[
+        'fxObservations'
+      ][number]
+    >()
+
+
+  for (
+    const observation
+    of observations
+  ) {
+
+    const fx =
+      observation.fx
+
+
+    /*
+     * Native CRC requires no external FX observation.
+     */
+
+    if (
+      !fx ||
+      fx.conversionApplied ===
+        false
+    ) {
+      continue
+    }
+
+
+    const key =
+      [
+        fx.baseCurrency,
+        fx.quoteCurrency,
+        fx.rateType,
+        fx.effectiveDate,
+        fx.source,
+        fx.rate
+      ].join('|')
+
+
+    if (
+      !uniqueFxObservations.has(
+        key
+      )
+    ) {
+
+      uniqueFxObservations.set(
+        key,
+        {
+          baseCurrency:
+            'USD',
+
+          quoteCurrency:
+            'CRC',
+
+          rate:
+            fx.rate,
+
+          rateType:
+            'reference_sale',
+
+          effectiveDate:
+            fx.effectiveDate,
+
+          source:
+            'BCCR'
+        }
+      )
+    }
+  }
+
+
+  return {
+    analyticalDate,
+
+    analyticalCurrency:
+      'CRC',
+
+    fxObservations:
+      Array.from(
+        uniqueFxObservations.values()
+      )
+  }
+}
+
 export async function getPriceMeterAnalysis(
   filters: MarketFilters,
   language: PriceMeterLanguage = 'en'
 ) {
-  const market = await getMarketStatistics(filters)
+  const market =
+    await getMarketStatistics(
+      filters
+    )
 
-  const listings = market.listings || []
 
-  const decoratedListings =
-    listings.map(decorateListing)
+  const listings =
+    market.listings ||
+    []
 
- const landOnlyPrices: number[] = []
-  const constructionOnlyPrices: number[] = []
-  const mixedLandPrices: number[] = []
-  const mixedConstructionPrices: number[] = []
-  const mixedConstructionToLandRatios: number[] = []
 
-  for (const listing of decoratedListings) {
-    const price = getListingPrice(listing)
-    const landArea = parseArea(listing.property_area)
-    const constructionArea = parseArea(listing.construction_area)
+  const analyticalDate =
+    getCurrentAnalyticalDate()
 
-    if (!price) continue
 
-    if (landArea && !constructionArea) {
-      landOnlyPrices.push(price / landArea)
-    }
+  const containsUsdListings =
+    listings.some(
+      listing =>
+        String(
+          listing.currency ??
+          ''
+        )
+          .trim()
+          .toUpperCase() ===
+        'USD'
+    )
 
-    if (constructionArea && !landArea) {
-      constructionOnlyPrices.push(price / constructionArea)
-    }
 
-    if (landArea && constructionArea) {
-      mixedLandPrices.push(price / landArea)
-      mixedConstructionPrices.push(price / constructionArea)
-      mixedConstructionToLandRatios.push(constructionArea / landArea)
+  let fxIdentity:
+    PriceMeterFxIdentity | null =
+      null
+
+
+  if (
+    containsUsdListings
+  ) {
+
+    const resolvedFx =
+      await getHistoricalUsdToCrcRate(
+        analyticalDate
+      )
+
+
+    fxIdentity = {
+      conversionApplied:
+        true,
+
+      analyticalDate:
+        resolvedFx.analyticalDate,
+
+      baseCurrency:
+        'USD',
+
+      quoteCurrency:
+        'CRC',
+
+      rate:
+        resolvedFx.rate,
+
+      rateType:
+        'reference_sale',
+
+      effectiveDate:
+        resolvedFx.effectiveDate,
+
+      source:
+        'BCCR',
+
+      resolutionMode:
+        resolvedFx.resolutionMode
     }
   }
 
-  const averageLandM2 = average(landOnlyPrices)
-  const medianLandM2 = median(landOnlyPrices)
 
-  const averageConstructionM2 = average(constructionOnlyPrices)
-  const medianConstructionM2 = median(constructionOnlyPrices)
+  const decoratedListings =
+    listings.map(
+      listing =>
+        decorateListing(
+          listing,
+          {
+            analyticalDate,
+            fxIdentity
+          }
+        )
+    )
 
-  const averageMixedLandM2 = average(mixedLandPrices)
-  const medianMixedLandM2 = median(mixedLandPrices)
 
-  const averageMixedConstructionM2 = average(mixedConstructionPrices)
-  const medianMixedConstructionM2 = median(mixedConstructionPrices)
+   const observations =
+    buildPriceMeterObservations(
+      decoratedListings
+    )
 
-  const averageMixedConstructionToLandRatio =
-    average(mixedConstructionToLandRatios)
 
-  const medianMixedConstructionToLandRatio =
-    median(mixedConstructionToLandRatios)
+    const saleVacantLandObservations =
+    observations.filter(
+      observation =>
+        observation.transactionType === 'sale' &&
+        observation.propertyBasis === 'land_only' &&
+        observation.normalizationBasis === 'land'
+    )
 
-  const lowestLandM2 = lowest(landOnlyPrices)
-  const highestLandM2 = highest(landOnlyPrices)
 
-  const lowestConstructionM2 = lowest(constructionOnlyPrices)
-  const highestConstructionM2 = highest(constructionOnlyPrices)
+  const saleImprovedLandObservations =
+    observations.filter(
+      observation =>
+        observation.transactionType === 'sale' &&
+        observation.propertyBasis === 'improved_property' &&
+        observation.normalizationBasis === 'land'
+    )
 
-  const lowestMixedLandM2 = lowest(mixedLandPrices)
-  const highestMixedLandM2 = highest(mixedLandPrices)
 
-  const lowestMixedConstructionM2 = lowest(mixedConstructionPrices)
-  const highestMixedConstructionM2 = highest(mixedConstructionPrices)
+  const saleImprovedConstructionObservations =
+    observations.filter(
+      observation =>
+        observation.transactionType === 'sale' &&
+        observation.propertyBasis === 'improved_property' &&
+        observation.normalizationBasis === 'construction'
+    )
+
+
+  const rentVacantLandObservations =
+    observations.filter(
+      observation =>
+        observation.transactionType === 'rent' &&
+        observation.propertyBasis === 'land_only' &&
+        observation.normalizationBasis === 'land'
+    )
+
+
+  const rentImprovedLandObservations =
+    observations.filter(
+      observation =>
+        observation.transactionType === 'rent' &&
+        observation.propertyBasis === 'improved_property' &&
+        observation.normalizationBasis === 'land'
+    )
+
+
+  const rentImprovedConstructionObservations =
+    observations.filter(
+      observation =>
+        observation.transactionType === 'rent' &&
+        observation.propertyBasis === 'improved_property' &&
+        observation.normalizationBasis === 'construction'
+    )
+
+    const saleVacantLandPrices =
+    saleVacantLandObservations.map(
+      observation =>
+        observation.pricePerM2
+    )
+
+
+  const saleImprovedLandPrices =
+    saleImprovedLandObservations.map(
+      observation =>
+        observation.pricePerM2
+    )
+
+
+  const saleImprovedConstructionPrices =
+    saleImprovedConstructionObservations.map(
+      observation =>
+        observation.pricePerM2
+    )
+
+
+  const rentVacantLandPrices =
+    rentVacantLandObservations.map(
+      observation =>
+        observation.pricePerM2
+    )
+
+
+  const rentImprovedLandPrices =
+    rentImprovedLandObservations.map(
+      observation =>
+        observation.pricePerM2
+    )
+
+
+  const rentImprovedConstructionPrices =
+    rentImprovedConstructionObservations.map(
+      observation =>
+        observation.pricePerM2
+    )
+
+  /*
+   * -------------------------------------------------------
+   * TEMPORARY LEGACY SUMMARY BRIDGE
+   * -------------------------------------------------------
+   *
+   * The existing result component expects one land
+   * population and one construction population.
+   *
+   * Until the result shape is redesigned, choose the
+   * population matching the selected transaction filter.
+   *
+   * IMPORTANT:
+   * Sale and Rent are NEVER combined.
+   */
+
+  const selectedTransactionType =
+    filters.transaction_type === 'rent'
+      ? 'rent'
+      : 'sale'
+
+    const selectedGeography = {
+    province:
+      filters.province ??
+      null,
+
+    canton:
+      filters.canton ??
+      null,
+
+    district:
+      filters.district ??
+      null
+  }
+
+    const landPrices =
+    selectedTransactionType === 'rent'
+      ? rentImprovedLandPrices
+      : saleImprovedLandPrices
+
+
+  const constructionPrices =
+    selectedTransactionType === 'rent'
+      ? rentImprovedConstructionPrices
+      : saleImprovedConstructionPrices
+
+
+  const averageLandM2 =
+    average(
+      landPrices
+    )
+
+
+  const medianLandM2 =
+    median(
+      landPrices
+    )
+
+
+  const averageConstructionM2 =
+    average(
+      constructionPrices
+    )
+
+
+  const medianConstructionM2 =
+    median(
+      constructionPrices
+    )
+
+
+  const lowestLandM2 =
+    lowest(
+      landPrices
+    )
+
+
+  const highestLandM2 =
+    highest(
+      landPrices
+    )
+
+
+  const lowestConstructionM2 =
+    lowest(
+      constructionPrices
+    )
+
+
+  const highestConstructionM2 =
+    highest(
+      constructionPrices
+    )
+
+
+    const selectedLandObservations =
+    selectedTransactionType === 'rent'
+      ? rentImprovedLandObservations
+      : saleImprovedLandObservations
+
+
+  const selectedConstructionObservations =
+    selectedTransactionType === 'rent'
+      ? rentImprovedConstructionObservations
+      : saleImprovedConstructionObservations
+
+
+  const sampleListingIds =
+    new Set(
+      [
+        ...selectedLandObservations,
+        ...selectedConstructionObservations
+      ]
+        .map(
+          observation =>
+            observation.listingId
+        )
+        .filter(
+          (
+            listingId
+          ): listingId is string =>
+            listingId !== null
+        )
+    )
+
 
   const sampleSize =
-    landOnlyPrices.length +
-    constructionOnlyPrices.length +
-    mixedLandPrices.length
+    sampleListingIds.size
 
-console.log(
-  'PRICE METER DEBUG',
-  listings.slice(0, 5).map((listing: any) => ({
-    title: listing.title,
-    transaction_type: listing.transaction_type,
-    current_price: listing.current_price,
-    monthly_price: listing.monthly_price,
-    property_area: listing.property_area,
-    construction_area: listing.construction_area,
-    calculated_price: getListingPrice(listing),
-    currency: listing.currency
-  }))
-)
+  const landConfidence =
+    getConfidence(
+      selectedLandObservations.length,
+      language
+    )
+
+
+  const constructionConfidence =
+    getConfidence(
+      selectedConstructionObservations.length,
+      language
+    )
+
+  const landMonetaryIdentity =
+  resolveStatisticMonetaryIdentity(
+    selectedLandObservations,
+    analyticalDate
+  )
+
+
+const constructionMonetaryIdentity =
+  resolveStatisticMonetaryIdentity(
+    selectedConstructionObservations,
+    analyticalDate
+  )
+
+  const landStatistics = {
+    average:
+      createPriceMeterStatistic({
+        statistic:
+          'average',
+
+        value:
+          averageLandM2,
+
+        transactionType:
+          selectedTransactionType,
+
+        propertyBasis:
+          'improved_property',
+
+        normalizationBasis:
+          'land',
+
+        geography:
+          selectedGeography,
+
+        monetary:
+          landMonetaryIdentity,
+
+        sampleSize:
+          selectedLandObservations.length,
+
+        confidence:
+          landConfidence
+      }),
+
+    median:
+      createPriceMeterStatistic({
+        statistic:
+          'median',
+
+        value:
+          medianLandM2,
+
+        transactionType:
+          selectedTransactionType,
+
+        propertyBasis:
+          'improved_property',
+
+        normalizationBasis:
+          'land',
+
+        geography:
+          selectedGeography,
+
+        monetary:
+          landMonetaryIdentity,
+
+        sampleSize:
+          selectedLandObservations.length,
+
+        confidence:
+          landConfidence
+      }),
+
+    lowest:
+      createPriceMeterStatistic({
+        statistic:
+          'lowest',
+
+        value:
+          lowestLandM2,
+
+        transactionType:
+          selectedTransactionType,
+
+        propertyBasis:
+          'improved_property',
+
+        normalizationBasis:
+          'land',
+
+        geography:
+          selectedGeography,
+
+        monetary:
+          landMonetaryIdentity,
+
+        sampleSize:
+          selectedLandObservations.length,
+
+        confidence:
+          landConfidence
+      }),
+
+    highest:
+      createPriceMeterStatistic({
+        statistic:
+          'highest',
+
+        value:
+          highestLandM2,
+
+        transactionType:
+          selectedTransactionType,
+
+        propertyBasis:
+          'improved_property',
+
+        normalizationBasis:
+          'land',
+
+        geography:
+          selectedGeography,
+
+        monetary:
+          landMonetaryIdentity,
+
+        sampleSize:
+          selectedLandObservations.length,
+
+        confidence:
+          landConfidence
+      })
+  }
+
+
+  const constructionStatistics = {
+    average:
+      createPriceMeterStatistic({
+        statistic:
+          'average',
+
+        value:
+          averageConstructionM2,
+
+        transactionType:
+          selectedTransactionType,
+
+        propertyBasis:
+          'improved_property',
+
+        normalizationBasis:
+          'construction',
+
+        geography:
+          selectedGeography,
+
+        monetary:
+          constructionMonetaryIdentity,
+
+        sampleSize:
+          selectedConstructionObservations.length,
+
+        confidence:
+          constructionConfidence
+      }),
+
+    median:
+      createPriceMeterStatistic({
+        statistic:
+          'median',
+
+        value:
+          medianConstructionM2,
+
+        transactionType:
+          selectedTransactionType,
+
+        propertyBasis:
+          'improved_property',
+
+        normalizationBasis:
+          'construction',
+
+        geography:
+          selectedGeography,
+
+        monetary:
+          constructionMonetaryIdentity,
+
+        sampleSize:
+          selectedConstructionObservations.length,
+
+        confidence:
+          constructionConfidence
+      }),
+
+    lowest:
+      createPriceMeterStatistic({
+        statistic:
+          'lowest',
+
+        value:
+          lowestConstructionM2,
+
+        transactionType:
+          selectedTransactionType,
+
+        propertyBasis:
+          'improved_property',
+
+        normalizationBasis:
+          'construction',
+
+        geography:
+          selectedGeography,
+
+        monetary:
+          constructionMonetaryIdentity,
+
+        sampleSize:
+          selectedConstructionObservations.length,
+
+        confidence:
+          constructionConfidence
+      }),
+
+    highest:
+      createPriceMeterStatistic({
+        statistic:
+          'highest',
+
+        value:
+          highestConstructionM2,
+
+        transactionType:
+          selectedTransactionType,
+
+        propertyBasis:
+          'improved_property',
+
+        normalizationBasis:
+          'construction',
+
+        geography:
+          selectedGeography,
+
+        monetary:
+          constructionMonetaryIdentity,
+
+        sampleSize:
+          selectedConstructionObservations.length,
+
+        confidence:
+          constructionConfidence
+      })
+  }
 
   return {
     filters,
 
     summary: {
+      /*
+      * PRESENTATION COMPATIBILITY VIEW
+      *
+      * These fields are retained only because the existing
+      * Price / m² result components consume this shape.
+      *
+      * They MUST NOT perform or own analytical calculations.
+      * Every displayed statistic is projected from the
+      * canonical identified statistic above.
+      */
+
       averagePricePerLandM2:
-        formatCRC(averageLandM2, ' / m²'),
+        formatStatisticM2(
+          landStatistics.average
+        ),
 
       averagePricePerLandFt2:
-        formatCRC(pricePerFt2(averageLandM2), ' / ft²'),
+        formatStatisticFt2(
+          landStatistics.average
+        ),
 
       medianPricePerLandM2:
-        formatCRC(medianLandM2, ' / m²'),
+        formatStatisticM2(
+          landStatistics.median
+        ),
 
       medianPricePerLandFt2:
-        formatCRC(pricePerFt2(medianLandM2), ' / ft²'),
+        formatStatisticFt2(
+          landStatistics.median
+        ),
 
       averagePricePerConstructionM2:
-        formatCRC(averageConstructionM2, ' / m²'),
+        formatStatisticM2(
+          constructionStatistics.average
+        ),
 
       averagePricePerConstructionFt2:
-        formatCRC(pricePerFt2(averageConstructionM2), ' / ft²'),
+        formatStatisticFt2(
+          constructionStatistics.average
+        ),
 
       medianPricePerConstructionM2:
-        formatCRC(medianConstructionM2, ' / m²'),
+        formatStatisticM2(
+          constructionStatistics.median
+        ),
 
       medianPricePerConstructionFt2:
-        formatCRC(pricePerFt2(medianConstructionM2), ' / ft²'),
+        formatStatisticFt2(
+          constructionStatistics.median
+        ),
 
       averageMixedPricePerLandM2:
-        formatCRC(averageMixedLandM2, ' / m²'),
+        null,
 
       averageMixedPricePerLandFt2:
-        formatCRC(pricePerFt2(averageMixedLandM2), ' / ft²'),
+        null,
 
       medianMixedPricePerLandM2:
-        formatCRC(medianMixedLandM2, ' / m²'),
+        null,
 
       medianMixedPricePerLandFt2:
-        formatCRC(pricePerFt2(medianMixedLandM2), ' / ft²'),
+        null,
 
       averageMixedPricePerConstructionM2:
-        formatCRC(averageMixedConstructionM2, ' / m²'),
+        null,
 
       averageMixedPricePerConstructionFt2:
-        formatCRC(pricePerFt2(averageMixedConstructionM2), ' / ft²'),
+        null,
 
       medianMixedPricePerConstructionM2:
-        formatCRC(medianMixedConstructionM2, ' / m²'),
+        null,
 
       medianMixedPricePerConstructionFt2:
-        formatCRC(pricePerFt2(medianMixedConstructionM2), ' / ft²'),
+        null,
 
       averageMixedConstructionToLandRatio:
-        averageMixedConstructionToLandRatio === null
-          ? null
-          : `${Math.round(averageMixedConstructionToLandRatio * 100)}%`,
+        null,
 
       medianMixedConstructionToLandRatio:
-        medianMixedConstructionToLandRatio === null
-          ? null
-          : `${Math.round(medianMixedConstructionToLandRatio * 100)}%`,
+        null,
 
       landOnlySampleSize:
-        landOnlyPrices.length,
+        landStatistics.median
+          .identity
+          .sampleSize,
 
       constructionOnlySampleSize:
-        constructionOnlyPrices.length,
+        constructionStatistics.median
+          .identity
+          .sampleSize,
 
       mixedSampleSize:
-        mixedLandPrices.length
+        0
     },
 
     breakdown: {
+      /*
+      * PRESENTATION COMPATIBILITY VIEW
+      *
+      * Lowest/highest values are projections of canonical
+      * PriceMeterStatistic objects and therefore cannot
+      * bypass Statistic Identity.
+      */
+
       lowestPricePerLandM2:
-        formatCRC(lowestLandM2, ' / m²'),
+        formatStatisticM2(
+          landStatistics.lowest
+        ),
 
       lowestPricePerLandFt2:
-        formatCRC(pricePerFt2(lowestLandM2), ' / ft²'),
+        formatStatisticFt2(
+          landStatistics.lowest
+        ),
 
       highestPricePerLandM2:
-        formatCRC(highestLandM2, ' / m²'),
+        formatStatisticM2(
+          landStatistics.highest
+        ),
 
       highestPricePerLandFt2:
-        formatCRC(pricePerFt2(highestLandM2), ' / ft²'),
+        formatStatisticFt2(
+          landStatistics.highest
+        ),
 
       lowestPricePerConstructionM2:
-        formatCRC(lowestConstructionM2, ' / m²'),
+        formatStatisticM2(
+          constructionStatistics.lowest
+        ),
 
       lowestPricePerConstructionFt2:
-        formatCRC(pricePerFt2(lowestConstructionM2), ' / ft²'),
+        formatStatisticFt2(
+          constructionStatistics.lowest
+        ),
 
       highestPricePerConstructionM2:
-        formatCRC(highestConstructionM2, ' / m²'),
+        formatStatisticM2(
+          constructionStatistics.highest
+        ),
 
       highestPricePerConstructionFt2:
-        formatCRC(pricePerFt2(highestConstructionM2), ' / ft²'),
+        formatStatisticFt2(
+          constructionStatistics.highest
+        ),
 
       lowestMixedPricePerLandM2:
-        formatCRC(lowestMixedLandM2, ' / m²'),
+        null,
 
       lowestMixedPricePerLandFt2:
-        formatCRC(pricePerFt2(lowestMixedLandM2), ' / ft²'),
+        null,
 
       highestMixedPricePerLandM2:
-        formatCRC(highestMixedLandM2, ' / m²'),
+        null,
 
       highestMixedPricePerLandFt2:
-        formatCRC(pricePerFt2(highestMixedLandM2), ' / ft²'),
+        null,
 
       lowestMixedPricePerConstructionM2:
-        formatCRC(lowestMixedConstructionM2, ' / m²'),
+        null,
 
       lowestMixedPricePerConstructionFt2:
-        formatCRC(pricePerFt2(lowestMixedConstructionM2), ' / ft²'),
+        null,
 
       highestMixedPricePerConstructionM2:
-        formatCRC(highestMixedConstructionM2, ' / m²'),
+        null,
 
       highestMixedPricePerConstructionFt2:
-        formatCRC(pricePerFt2(highestMixedConstructionM2), ' / ft²')
+        null
     },
 
     confidence:
-      getConfidence(sampleSize, language),
+      landStatistics.median
+        .identity
+        .confidence,
 
-    sampleSize,
+    sampleSize:
+      sampleListingIds.size,
+
+    statistics: {
+      land:
+        landStatistics,
+
+      construction:
+        constructionStatistics
+    },
+
+    observations,
 
     listings:
       decoratedListings

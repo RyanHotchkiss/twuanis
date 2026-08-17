@@ -50,8 +50,8 @@ type Listing = {
   price_millions: number | null
   current_price: number | null
   monthly_price: number | null
-  property_area: string | null
-  construction_area: string | null
+  property_area: number | null
+  construction_area: number | null
   created_at: string | null
 }
 
@@ -120,15 +120,6 @@ function average(values: number[]) {
 
           function crcToUSD(value: number) {
             return value / CRC_PER_USD
-          }
-
-          function numericArea(value: string | null) {
-            if (!value) return null
-
-            const cleaned = value.replace(/[^0-9.]/g, '')
-            const number = Number(cleaned)
-
-            return Number.isFinite(number) ? number : null
           }
 
           function validNumbers(values: Array<number | null>) {
@@ -432,12 +423,12 @@ export function calculateStatistics(listings: Listing[]) {
     )
 
   const propertyAreas = validNumbers(
-    listings.map(listing => numericArea(listing.property_area))
-  )
+      listings.map(listing => listing.property_area)
+    )
 
-  const constructionAreas = validNumbers(
-    listings.map(listing => numericArea(listing.construction_area))
-  )
+    const constructionAreas = validNumbers(
+      listings.map(listing => listing.construction_area)
+    )
 
   const pricePerM2Values = saleListings
       .map(listing => {
@@ -445,7 +436,7 @@ export function calculateStatistics(listings: Listing[]) {
           listing.current_price
 
         const area =
-          numericArea(listing.property_area)
+          listing.property_area
 
         if (!price || !area) return null
 
@@ -467,15 +458,6 @@ export function calculateStatistics(listings: Listing[]) {
 
     return new Date(listing.created_at).getTime() >= thirtyDaysAgo
   }).length
-
-  console.log(
-  'SALE PRICE DEBUG:',
-  saleListings.slice(0, 10).map(l => ({
-    currency: l.currency,
-    current_price: l.current_price,
-    price_millions: l.price_millions
-  }))
-)
 
   return {
     totalListings: listings.length,

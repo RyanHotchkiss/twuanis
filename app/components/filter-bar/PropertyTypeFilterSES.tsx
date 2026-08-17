@@ -17,7 +17,7 @@ type PropertyTypeFilterProps = {
   bathrooms?: string
   parking: string
   yearBuiltRange: string
-  constructionArea: string
+  constructionArea: number | null
 
   showproperty_typeOptions: boolean
 
@@ -239,13 +239,13 @@ export default function PropertyTypeFilterSES({
               </>
             )}
 
-            {constructionArea && (
+            {constructionArea !== null && constructionArea > 0 && (
               <>
                 <span style={{ color:'#fff' }}>
                   {' '}•{' '}
                 </span>
 
-                {propertyTypeLabels[constructionArea] || constructionArea}
+                {constructionArea.toLocaleString('es-CR')} m²
               </>
             )}
 

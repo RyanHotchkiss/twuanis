@@ -52,17 +52,6 @@ export default function ConstructionAreaFilterS({
           Área de Construcción
         </h2>
 
-        <button
-          onClick={() =>
-            setShowConstructionAreaOptions(
-              !showConstructionAreaOptions
-            )
-          }
-          style={collapseButton}
-        >
-          {showConstructionAreaOptions ? '−' : '+'}
-        </button>
-
       </div>
 
       {!showConstructionAreaOptions && (

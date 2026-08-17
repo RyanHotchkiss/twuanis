@@ -43,7 +43,8 @@ import BedroomFilterS from '@/app/components/filter-bar/BedroomFilterS'
 import BathroomFilterS from '@/app/components/filter-bar/BathroomFilterS'
 import ParkingFilterS from '@/app/components/filter-bar/ParkingFilterS'
 import YearBuiltFilterS from '@/app/components/filter-bar/YearBuiltFilterS'
-import ConstructionAreaFilterS from '@/app/components/filter-bar/ConstructionAreaFilterS'
+import ExactPropertyAreaInput
+from '@/app/components/listing-input/ExactPropertyAreaInput'
 import PropertyAreaFilterS from '@/app/components/filter-bar/PropertyAreaFilterS'
 import UtilitiesFilterS from '@/app/components/filter-bar/UtilitiesFilterS'
 import EnvironmentFilterS from '@/app/components/filter-bar/EnvironmentFilterS'
@@ -53,14 +54,15 @@ import LegalStatusFilterS from '@/app/components/filter-bar/LegalStatusFilterS'
 import PriceSelectorS from '@/app/components/filter-bar/PriceSelectorS'
 import PropertyDefinitionPanel from '@/app/components/PropertyDefinitionPanel'
 import TopBar from '@/app/components/TopBar'
-
+import ExactConstructionAreaInput
+from '@/app/components/listing-input/ExactConstructionAreaInput'
 import TopBarES from '@/app/components/TopBarES'
 import PropertyTypeFilterSES from '@/app/components/filter-bar/PropertyTypeFilterSES'
 import BedroomFilterSES from '@/app/components/filter-bar/BedroomFilterSES'
 import BathroomFilterSES from '@/app/components/filter-bar/BathroomFilterSES'
 import ParkingFilterSES from '@/app/components/filter-bar/ParkingFilterSES'
 import YearBuiltFilterSES from '@/app/components/filter-bar/YearBuiltFilterSES'
-import ConstructionAreaFilterSES from '@/app/components/filter-bar/ConstructionAreaFilterSES'
+
 import PropertyAreaFilterES from '@/app/components/filter-bar/PropertyAreaFilterES'
 import UtilitiesFilterES from '@/app/components/filter-bar/UtilitiesFilterES'
 import EnvironmentFilterSES from '@/app/components/filter-bar/EnvironmentFilterSES'
@@ -143,6 +145,55 @@ function normalizeAccessibility(
     ? value
     : ''
 }
+
+function normalizeExactAreaMeasurement(
+      value: unknown
+    ): number | null {
+      if (
+        typeof value === 'number' &&
+        Number.isFinite(value) &&
+        value > 0
+      ) {
+        return value
+      }
+
+      if (typeof value !== 'string') {
+        return null
+      }
+
+      const trimmedValue =
+        value.trim()
+
+      if (!trimmedValue) {
+        return null
+      }
+
+      const normalizedValue =
+        trimmedValue
+          .replace(/,/g, '')
+          .replace(/\s*m²\s*$/i, '')
+          .trim()
+
+      if (
+        !/^\d+(?:\.\d+)?$/.test(
+          normalizedValue
+        )
+      ) {
+        return null
+      }
+
+      const numericValue =
+        Number(normalizedValue)
+
+      if (
+        !Number.isFinite(numericValue) ||
+        numericValue <= 0
+      ) {
+        return null
+      }
+
+      return numericValue
+    }
 
 export default function SaleListingEditForm({
   listing,
@@ -285,11 +336,9 @@ export default function SaleListingEditForm({
         listing.property_type || '',
 
       property_area:
-        listing.property_area
-          ? String(
-              listing.property_area
-            )
-          : '',
+        normalizeExactAreaMeasurement(
+          listing.property_area
+        ),
 
       bedrooms:
         listing.bedrooms
@@ -317,11 +366,9 @@ export default function SaleListingEditForm({
         '',
 
       construction_area:
-        listing.construction_area
-          ? String(
-              listing.construction_area
-            )
-          : '',
+        normalizeExactAreaMeasurement(
+          listing.construction_area
+        ),
 
       utility:
         normalizeStringArray(
@@ -937,7 +984,7 @@ export default function SaleListingEditForm({
                         bathrooms: '',
                         parking: '',
                         year_built_range: '',
-                        construction_area: ''
+                        construction_area: null
                       })
                     )
                   }
@@ -1004,7 +1051,7 @@ export default function SaleListingEditForm({
                         bathrooms: '',
                         parking: '',
                         year_built_range: '',
-                        construction_area: ''
+                        construction_area: null
                       })
                     )
                   }
@@ -1220,111 +1267,69 @@ export default function SaleListingEditForm({
               )}
 
               {language === 'es' ? (
-                <ConstructionAreaFilterSES
-                  selectedConstructionArea={
+                <ExactConstructionAreaInput
+                  valueSquareMeters={
                     propertyData.construction_area
                   }
-                  setSelectedConstructionArea={
-                    value =>
-                      setField(
-                        'construction_area',
-                        value
-                      )
+                  onChange={(valueSquareMeters) =>
+                    setField(
+                      'construction_area',
+                      valueSquareMeters
+                    )
                   }
-                  constructionAreaOptions={
-                    construction_area_options
-                  }
-                  showConstructionAreaOptions={
+                  language="es"
+                  initiallyOpen={
                     showConstructionAreaOptions
-                  }
-                  setShowConstructionAreaOptions={
-                    setShowConstructionAreaOptions
-                  }
-                  setShowPropertyAreaOptions={
-                    setShowPropertyAreaOptions
                   }
                 />
               ) : (
-                <ConstructionAreaFilterS
-                  selectedConstructionArea={
+                <ExactConstructionAreaInput
+                  valueSquareMeters={
                     propertyData.construction_area
                   }
-                  setSelectedConstructionArea={
-                    value =>
-                      setField(
-                        'construction_area',
-                        value
-                      )
+                  onChange={(valueSquareMeters) =>
+                    setField(
+                      'construction_area',
+                      valueSquareMeters
+                    )
                   }
-                  constructionAreaOptions={
-                    construction_area_options
-                  }
-                  showConstructionAreaOptions={
+                  language="en"
+                  initiallyOpen={
                     showConstructionAreaOptions
-                  }
-                  setShowConstructionAreaOptions={
-                    setShowConstructionAreaOptions
-                  }
-                  setShowPropertyAreaOptions={
-                    setShowPropertyAreaOptions
                   }
                 />
               )}
 
               {language === 'es' ? (
-                <PropertyAreaFilterES
-                  selectedproperty_area={
+                <ExactPropertyAreaInput
+                  valueSquareMeters={
                     propertyData.property_area
                   }
-                  setSelectedproperty_area={
-                    (value: string) =>
-                      setField(
-                        'property_area',
-                        value
-                      )
+                  onChange={(valueSquareMeters) =>
+                    setField(
+                      'property_area',
+                      valueSquareMeters
+                    )
                   }
-                  showproperty_areaOptions={
+                  language="es"
+                  initiallyOpen={
                     showPropertyAreaOptions
-                  }
-                  setShowproperty_areaOptions={
-                    setShowPropertyAreaOptions
-                  }
-                  setShowutilityOptions={
-                    setShowUtilityOptions
-                  }
-                  setShowProvinceOptions={
-                    setShowProvinceOptions
-                  }
-                  setShowCantonOptions={
-                    setShowCantonOptions
-                  }
-                  setShowDistrictOptions={
-                    setShowDistrictOptions
                   }
                 />
               ) : (
-                <PropertyAreaFilterS
-                  selectedPropertyArea={
+                <ExactPropertyAreaInput
+                  valueSquareMeters={
                     propertyData.property_area
                   }
-                  setSelectedPropertyArea={
-                    (value: string) =>
-                      setField(
-                        'property_area',
-                        value
-                      )
+                  onChange={(valueSquareMeters) =>
+                    setField(
+                      'property_area',
+                      valueSquareMeters
+                    )
                   }
-                  propertyAreas={
-                    property_areas
-                  }
-                  showPropertyAreaOptions={
+                  language="en"
+                  initiallyOpen={
                     showPropertyAreaOptions
-                  }
-                  setShowPropertyAreaOptions={
-                    setShowPropertyAreaOptions
-                  }
-                  setShowUtilityOptions={
-                    setShowUtilityOptions
                   }
                 />
               )}

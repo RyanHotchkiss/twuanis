@@ -1,217 +1,262 @@
-export default function ResultadosValoracion({
+export default function ValuationResults({
   filters,
   valuation
 }: {
   filters: any
   valuation: any
 }) {
+      const isRent =
+      filters.transaction_type === 'rent'
+
+    const primaryCRC =
+      isRent
+        ? valuation.summary.estimatedRentalValueCRC
+        : valuation.summary.estimatedSalePriceCRC ||
+          valuation.summary.estimatedMarketValueCRC
+
+    const primaryUSD =
+      isRent
+        ? valuation.summary.estimatedRentalValueUSD
+        : valuation.summary.estimatedSalePriceUSD ||
+          valuation.summary.estimatedMarketValueUSD
+
   return (
-    <section>
-      <h2 style={sectionTitle}>
-        Resumen de Valoración
-      </h2>
+    <section style={workspace}>
 
-      <div style={cardGrid}>
-          <StatCard
-            label="Valor Estimado de Mercado"
-            value={
-              valuation.summary.estimatedMarketValueCRC ? (
-                <>
-                  <div>{valuation.summary.estimatedMarketValueCRC}</div>
-                  <div style={secondaryValue}>
-                    {valuation.summary.estimatedMarketValueUSD}
-                  </div>
-                </>
-              ) : (
-                'No hay suficientes datos'
-              )
-            }
-          />
-
-          <StatCard
-            label="Nivel de Confianza"
-            value={`${valuation.summary.confidenceScore} · ${valuation.summary.confidenceLabel}`}
-          />
-
-          <StatCard
-            label="Precio Estimado de Venta"
-            value={
-              valuation.summary.estimatedSalePriceCRC ? (
-                <>
-                  <div>{valuation.summary.estimatedSalePriceCRC}</div>
-                  <div style={secondaryValue}>
-                    {valuation.summary.estimatedSalePriceUSD}
-                  </div>
-                </>
-              ) : (
-                'No hay suficientes datos'
-              )
-            }
-          />
-
-          <StatCard
-            label="Valor Estimado de Alquiler"
-            value={
-              valuation.summary.estimatedRentalValueCRC ? (
-                <>
-                  <div>{valuation.summary.estimatedRentalValueCRC}</div>
-                  <div style={secondaryValue}>
-                    {valuation.summary.estimatedRentalValueUSD}
-                  </div>
-                </>
-              ) : (
-                'No hay suficientes datos'
-              )
-            }
-          />
+      <section style={hero}>
+        <div style={heroEyebrow}>
+          {isRent
+            ? 'Valor Estimado de Alquiler'
+            : 'Valor Estimado de Mercado'}
         </div>
 
-      <h2 style={sectionTitle}>
-        Propiedades Comparables
-      </h2>
+        <div style={heroValue}>
+          {primaryCRC ||
+            'No hay suficientes datos'}
+        </div>
 
-      <div style={cardGrid}>
-        {valuation.comparables?.length > 0 ? (
-          valuation.comparables.map((listing: any) => (
-            <div key={listing.id} style={statCard}>
-              <p style={cardLabel}>
-                Puntaje Comparable: {listing.comparableScore}
-              </p>
-
-              <h3 style={cardValue}>
-                {listing.title || 'Propiedad sin título'}
-              </h3>
-
-              <p style={{ color: '#888', marginBottom: 0 }}>
-                {listing.province} · {listing.canton}
-              </p>
-            </div>
-          ))
-        ) : (
-          <div style={emptyCard}>
-            No hay propiedades comparables disponibles todavía.
+        {primaryUSD && (
+          <div style={heroSecondary}>
+            {primaryUSD}
           </div>
         )}
-      </div>
 
-      <h2 style={sectionTitle}>
-        Indicadores del Mercado
-      </h2>
+        <div style={confidenceRow}>
+          <span style={confidenceLabel}>
+            Confianza
+          </span>
 
-      <div style={cardGrid}>
-          <StatCard
-            label="Precio por m²"
-            value={valuation.pricingSignals.pricePerM2 || 'Próximamente'}
-          />
+          <span style={confidenceValue}>
+            {valuation.summary.confidenceScore}
+            {' · '}
+            {valuation.summary.confidenceLabel}
+          </span>
+        </div>
+      </section>
 
-          <StatCard
-            label="Percentil del Mercado"
-            value={valuation.pricingSignals.marketPercentile || 'Próximamente'}
-          />
 
-          <StatCard
-            label="Días Estimados en el Mercado"
-            value={valuation.pricingSignals.daysOnMarketEstimate || 'Próximamente'}
-          />
+      <section style={section}>
+        <div style={sectionHeader}>
+          <div>
+            <div style={eyebrow}>
+              Rango de Valoración
+            </div>
 
-          <StatCard
-            label="Sobrevalorada / Subvalorada"
-            value={valuation.pricingSignals.pricePosition || 'Próximamente'}
-          />
+            <h2 style={sectionTitle}>
+              Rango de Precio Recomendado
+            </h2>
+          </div>
+
+          <p style={sectionDescription}>
+            El rango refleja la evidencia del mercado
+            que respalda esta valoración.
+          </p>
         </div>
 
-        <h2 style={sectionTitle}>
-          Rango de Precio Recomendado
-        </h2>
-
-        <div style={cardGrid}>
-          <StatCard
-            label="Estimación Baja"
-            value={
-              valuation.recommendedRange.lowCRC ? (
-                <>
-                  <div>{valuation.recommendedRange.lowCRC}</div>
-                  <div style={secondaryValue}>
-                    {valuation.recommendedRange.lowUSD}
-                  </div>
-                </>
-              ) : (
-                'No hay suficientes datos'
-              )
+        <div style={rangeGrid}>
+          <RangePoint
+            label="Bajo"
+            crc={
+              valuation.recommendedRange.lowCRC
+            }
+            usd={
+              valuation.recommendedRange.lowUSD
             }
           />
 
-          <StatCard
-            label="Estimación Probable"
-            value={
-              valuation.recommendedRange.likelyCRC ? (
-                <>
-                  <div>{valuation.recommendedRange.likelyCRC}</div>
-                  <div style={secondaryValue}>
-                    {valuation.recommendedRange.likelyUSD}
-                  </div>
-                </>
-              ) : (
-                'No hay suficientes datos'
-              )
+          <RangePoint
+            label="Probable"
+            crc={
+              valuation.recommendedRange.likelyCRC
             }
+            usd={
+              valuation.recommendedRange.likelyUSD
+            }
+            primary
           />
 
-          <StatCard
-            label="Estimación Alta"
-            value={
-              valuation.recommendedRange.highCRC ? (
-                <>
-                  <div>{valuation.recommendedRange.highCRC}</div>
-                  <div style={secondaryValue}>
-                    {valuation.recommendedRange.highUSD}
-                  </div>
-                </>
-              ) : (
-                'No hay suficientes datos'
-              )
+          <RangePoint
+            label="Alto"
+            crc={
+              valuation.recommendedRange.highCRC
+            }
+            usd={
+              valuation.recommendedRange.highUSD
             }
           />
         </div>
+      </section>
 
-      <h2 style={sectionTitle}>
-        Explicación de la Valoración
-      </h2>
 
-      <div style={cardGrid}>
-        <TextListCard
-          title="Fortalezas"
-          items={valuation.explanation.strengths}
-        />
+      <section style={section}>
+        <div style={sectionHeader}>
+          <div>
+            <div style={eyebrow}>
+              Evidencia
+            </div>
 
-        <TextListCard
-          title="Debilidades"
-          items={valuation.explanation.weaknesses}
-        />
+            <h2 style={sectionTitle}>
+              Propiedades Comparables
+            </h2>
+          </div>
 
-        <TextListCard
-          title="Notas del Método"
-          items={valuation.explanation.notes}
-        />
-      </div>
+          <p style={sectionDescription}>
+            Propiedades que aportan evidencia comparable
+            del mercado a la valoración.
+          </p>
+        </div>
+
+        {valuation.comparables?.length > 0 ? (
+          <div style={comparables}>
+            {valuation.comparables.map(
+              (listing: any) => (
+                <div
+                  key={listing.id}
+                  style={comparableRow}
+                >
+                  <div style={comparableIdentity}>
+                    <div style={comparableTitle}>
+                      {listing.title ||
+                        'Propiedad sin título'}
+                    </div>
+
+                    <div style={comparableLocation}>
+                      {[
+                        listing.district,
+                        listing.canton,
+                        listing.province
+                      ]
+                        .filter(Boolean)
+                        .join(' · ')}
+                    </div>
+                  </div>
+
+                  <div style={scoreBlock}>
+                    <span style={scoreLabel}>
+                      Puntaje Comparable
+                    </span>
+
+                    <strong style={scoreValue}>
+                      {listing.comparableScore}
+                    </strong>
+                  </div>
+                </div>
+              )
+            )}
+          </div>
+        ) : (
+          <div style={emptyState}>
+             No hay propiedades comparables disponibles todavía.
+          </div>
+        )}
+      </section>
+
+
+      <section style={section}>
+        <div style={sectionHeader}>
+          <div>
+            <div style={eyebrow}>
+              Razonamiento
+            </div>
+
+            <h2 style={sectionTitle}>
+              Por Qué Esta Valoración
+            </h2>
+          </div>
+
+          <p style={sectionDescription}>
+            Características del mercado y metodología
+            que influyen en la estimación.
+          </p>
+        </div>
+
+        <div style={reasoningGrid}>
+          <TextListCard
+            title="Fortalezas"
+            items={
+              valuation.explanation.strengths
+            }
+          />
+
+          <TextListCard
+            title="Debilidades"
+            items={
+              valuation.explanation.weaknesses
+            }
+          />
+
+          <TextListCard
+            title="Método"
+            items={
+              valuation.explanation.notes
+            }
+          />
+        </div>
+      </section>
+
     </section>
   )
 }
 
-function StatCard({
+
+function RangePoint({
   label,
-  value
+  crc,
+  usd,
+  primary = false
 }: {
   label: string
-  value: any
+  crc: any
+  usd: any
+  primary?: boolean
 }) {
   return (
-    <div style={statCard}>
-      <p style={cardLabel}>{label}</p>
-      <h3 style={cardValue}>{value}</h3>
+    <div
+      style={{
+        ...rangePoint,
+        ...(primary
+          ? rangePointPrimary
+          : {})
+      }}
+    >
+      <div style={rangeLabel}>
+        {label}
+      </div>
+
+      <div style={rangeValue}>
+        {crc ||
+          'No hay suficientes datos'}
+      </div>
+
+      {usd && (
+        <div style={rangeSecondary}>
+          {usd}
+        </div>
+      )}
     </div>
   )
 }
+
 
 function TextListCard({
   title,
@@ -221,69 +266,321 @@ function TextListCard({
   items: string[]
 }) {
   return (
-    <div style={statCard}>
-      <p style={cardLabel}>{title}</p>
+    <div style={reasoningCard}>
+      <div style={reasoningTitle}>
+        {title}
+      </div>
 
       {items?.length > 0 ? (
-        <ul style={{ marginBottom: 0, paddingLeft: '1.25rem' }}>
-          {items.map((item, index) => (
-            <li key={index} style={{ marginBottom: '.5rem' }}>
-              {item}
-            </li>
-          ))}
+        <ul style={reasoningList}>
+          {items.map(
+            (item, index) => (
+              <li
+                key={index}
+                style={reasoningItem}
+              >
+                {item}
+              </li>
+            )
+          )}
         </ul>
       ) : (
-        <p style={{ color: '#888', marginBottom: 0 }}>
+        <div style={muted}>
           No hay notas disponibles.
-        </p>
+        </div>
       )}
     </div>
   )
 }
 
-const sectionTitle = {
-  color: '#ff3B00',
-  fontSize: '2rem',
-  marginBottom: '1rem'
-}
 
-const cardGrid = {
+const workspace = {
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-  gap: '1rem',
-  marginBottom: '2rem'
+  gap: '1.5rem'
 }
 
-const statCard = {
+
+const hero = {
+  background:
+    'linear-gradient(135deg, #151515 0%, #0d0d0d 100%)',
+  border:
+    '1px solid #2a2a2a',
+  borderRadius:
+    '22px',
+  padding:
+    'clamp(1.5rem, 4vw, 3rem)'
+}
+
+
+const heroEyebrow = {
+  color: '#9a9a9a',
+  fontSize: '.78rem',
+  fontWeight: 700,
+  textTransform:
+    'uppercase' as const,
+  letterSpacing: '.12em',
+  marginBottom: '.75rem'
+}
+
+
+const heroValue = {
+  color: '#fff',
+  fontSize:
+    'clamp(2.4rem, 6vw, 4.75rem)',
+  fontWeight: 650,
+  lineHeight: 1,
+  letterSpacing: '-.045em'
+}
+
+
+const heroSecondary = {
+  color: '#999',
+  fontSize: '1.15rem',
+  marginTop: '.65rem'
+}
+
+
+const confidenceRow = {
+  display: 'flex',
+  flexWrap:
+    'wrap' as const,
+  alignItems: 'center',
+  gap: '.65rem',
+  marginTop: '2rem',
+  paddingTop: '1.25rem',
+  borderTop:
+    '1px solid #262626'
+}
+
+
+const confidenceLabel = {
+  color: '#777',
+  fontSize: '.8rem',
+  textTransform:
+    'uppercase' as const,
+  letterSpacing: '.08em'
+}
+
+
+const confidenceValue = {
+  color: '#D4AF37',
+  fontSize: '.95rem',
+  fontWeight: 700
+}
+
+
+const section = {
   background: '#111',
-  border: '1px solid #222',
-  borderRadius: '1rem',
+  border:
+    '1px solid #222',
+  borderRadius: '20px',
+  padding:
+    'clamp(1.25rem, 3vw, 2rem)'
+}
+
+
+const sectionHeader = {
+  display: 'flex',
+  justifyContent:
+    'space-between',
+  alignItems:
+    'flex-end',
+  gap: '2rem',
+  flexWrap:
+    'wrap' as const,
+  marginBottom: '1.5rem'
+}
+
+
+const eyebrow = {
+  color: '#C7A44B',
+  fontSize: '.72rem',
+  fontWeight: 700,
+  textTransform:
+    'uppercase' as const,
+  letterSpacing: '.12em',
+  marginBottom: '.4rem'
+}
+
+
+const sectionTitle = {
+  color: '#fff',
+  fontSize:
+    'clamp(1.35rem, 3vw, 1.8rem)',
+  margin: 0,
+  fontWeight: 600
+}
+
+
+const sectionDescription = {
+  color: '#777',
+  maxWidth: '430px',
+  lineHeight: 1.5,
+  fontSize: '.9rem',
+  margin: 0
+}
+
+
+const rangeGrid = {
+  display: 'grid',
+  gridTemplateColumns:
+    'repeat(auto-fit, minmax(190px, 1fr))',
+  gap: '.75rem'
+}
+
+
+const rangePoint = {
+  background: '#0c0c0c',
+  border:
+    '1px solid #242424',
+  borderRadius: '14px',
   padding: '1.25rem'
 }
 
-const cardLabel = {
-  color: '#888',
-  margin: 0,
-  fontSize: '.85rem'
+
+const rangePointPrimary = {
+  border:
+    '1px solid #C7A44B',
+  background: '#15130d'
 }
 
-const cardValue = {
-  margin: '.5rem 0 0',
-  fontSize: '1.8rem'
+
+const rangeLabel = {
+  color: '#777',
+  fontSize: '.75rem',
+  textTransform:
+    'uppercase' as const,
+  letterSpacing: '.08em',
+  marginBottom: '.65rem'
 }
 
-const secondaryValue = {
+
+const rangeValue = {
+  color: '#fff',
+  fontSize:
+    'clamp(1.3rem, 3vw, 1.8rem)',
+  fontWeight: 600
+}
+
+
+const rangeSecondary = {
+  color: '#777',
   marginTop: '.35rem',
-  color: '#888',
-  fontSize: '1rem',
-  fontWeight: 400
+  fontSize: '.9rem'
 }
 
-const emptyCard = {
-  background: '#111',
-  border: '1px solid #222',
-  borderRadius: '1rem',
+
+const comparables = {
+  display: 'grid',
+  gap: '.65rem'
+}
+
+
+const comparableRow = {
+  display: 'flex',
+  justifyContent:
+    'space-between',
+  alignItems: 'center',
+  gap: '1rem',
+  background: '#0c0c0c',
+  border:
+    '1px solid #222',
+  borderRadius: '14px',
+  padding:
+    '1rem 1.15rem'
+}
+
+
+const comparableIdentity = {
+  minWidth: 0
+}
+
+
+const comparableTitle = {
+  color: '#eee',
+  fontWeight: 600,
+  lineHeight: 1.35
+}
+
+
+const comparableLocation = {
+  color: '#777',
+  fontSize: '.85rem',
+  marginTop: '.3rem'
+}
+
+
+const scoreBlock = {
+  display: 'grid',
+  justifyItems: 'end',
+  flexShrink: 0
+}
+
+
+const scoreLabel = {
+  color: '#666',
+  fontSize: '.7rem',
+  textTransform:
+    'uppercase' as const,
+  letterSpacing: '.07em'
+}
+
+
+const scoreValue = {
+  color: '#D4AF37',
+  fontSize: '1.25rem',
+  marginTop: '.2rem'
+}
+
+
+const reasoningGrid = {
+  display: 'grid',
+  gridTemplateColumns:
+    'repeat(auto-fit, minmax(230px, 1fr))',
+  gap: '.75rem'
+}
+
+
+const reasoningCard = {
+  background: '#0c0c0c',
+  border:
+    '1px solid #222',
+  borderRadius: '14px',
+  padding: '1.25rem'
+}
+
+
+const reasoningTitle = {
+  color: '#fff',
+  fontWeight: 600,
+  marginBottom: '.9rem'
+}
+
+
+const reasoningList = {
+  margin: 0,
+  paddingLeft: '1.15rem',
+  color: '#aaa'
+}
+
+
+const reasoningItem = {
+  marginBottom: '.55rem',
+  lineHeight: 1.5
+}
+
+
+const muted = {
+  color: '#666',
+  fontSize: '.9rem'
+}
+
+
+const emptyState = {
+  background: '#0c0c0c',
+  border:
+    '1px solid #222',
+  borderRadius: '14px',
   padding: '1.25rem',
-  color: '#888',
-  marginBottom: '2rem'
+  color: '#777'
 }

@@ -87,6 +87,12 @@ import {
   resolveFirstListingImage
 } from '@/app/utils/resolveListingImages'
 
+export type MarketHubKnowledgeView =
+  | 'overview'
+  | 'properties'
+  | 'searches'
+  | 'collections'
+
 type SupportedLanguage =
   | 'en'
   | 'es'
@@ -115,7 +121,8 @@ type MarketHubFavoritesProps = {
         RecentlyViewedMarket[]
       favoriteCollections?:
         FavoriteCollection[]
-      
+      workspaceView?:
+         MarketHubKnowledgeView
       marketComparisons?:
         MarketHubMarketComparison[]
     }
@@ -202,11 +209,12 @@ export type RecentlyViewedMarket = {
 
 export default function MarketHubFavorites({
       language,
+      workspaceView = 'overview',
       savedProperties:
-        initialSavedProperties = [],
+      initialSavedProperties = [],
       savedSearches = [],
       savedAnalyses:
-  initialSavedAnalyses = [],
+      initialSavedAnalyses = [],
       recentlyViewedProperties = [],
       recentlyViewedMarkets = [],
       favoriteCollections:
@@ -2287,1478 +2295,828 @@ export default function MarketHubFavorites({
         ? '/es/inteligencia-de-mercado?tab=explorer'
         : '/en/market-intelligence?tab=explorer'
 
-  return (
-                  <section style={section}>
-                    <header style={header}>
-                      <div>
-                        <div style={titleRow}>
-                          <Heart
-                            size={25}
-                            strokeWidth={1}
-                            color="#C7A44B"
-                          />
-
-                          <h2 style={heading}>
-                            {labels.heading}
-                          </h2>
-                        </div>
-
-                        <p style={purpose}>
-                          {labels.purpose}
-                        </p>
-
-                        <p style={summary}>
-                          {labels.savedCount}
-                        </p>
-                      </div>
-
-                      <Link
-                        href={favoritesHref}
-                        style={viewAllButton}
-                      >
-                        {labels.viewFavorites}
-                      </Link>
-                    </header>
-
-                    <div style={divider} />
-
-                      <div style={summaryDashboardHeader}>
-                        <h3 style={summaryDashboardHeading}>
-                          {labels.dashboardSummary}
-                        </h3>
-                      </div>
-
-                      <div style={summaryCardGrid}>
-                        <a
-                          href="#saved-properties"
-                          style={summaryCard}
-                        >
-                          <div style={summaryCardIcon}>
-                            <Heart
-                              size={23}
-                              strokeWidth={1}
-                              color="#C7A44B"
-                            />
-                          </div>
-
-                          <div style={summaryCardCount}>
-                            {savedProperties.length}
-                          </div>
-
-                          <div style={summaryCardLabel}>
-                            {labels.summarySavedProperties}
-                          </div>
-                        </a>
-
-                        <a
-                          href="#saved-searches"
-                          style={summaryCard}
-                        >
-                          <div style={summaryCardIcon}>
-                            <Search
-                              size={23}
-                              strokeWidth={1}
-                              color="#C7A44B"
-                            />
-                          </div>
-
-                          <div style={summaryCardCount}>
-                            {resolvedSavedSearches.length}
-                          </div>
-
-                          <div style={summaryCardLabel}>
-                            {labels.summarySavedSearches}
-                          </div>
-                        </a>
-
-                        <a
-                          href="#saved-analyses"
-                          style={summaryCard}
-                        >
-                          <div style={summaryCardIcon}>
-                            <BarChart3
-                              size={23}
-                              strokeWidth={1}
-                              color="#C7A44B"
-                            />
-                          </div>
-
-                          <div style={summaryCardCount}>
-                            {savedAnalyses.length}
-                          </div>
-
-                          <div style={summaryCardLabel}>
-                            {labels.summarySavedAnalyses}
-                          </div>
-                        </a>
-
-                        <a
-                          href="#favorite-collections"
-                          style={summaryCard}
-                        >
-                          <div style={summaryCardIcon}>
-                            <FolderHeart
-                              size={23}
-                              strokeWidth={1}
-                              color="#C7A44B"
-                            />
-                          </div>
-
-                          <div style={summaryCardCount}>
-                            {favoriteCollections.length}
-                          </div>
-
-                          <div style={summaryCardLabel}>
-                            {labels.summaryCollections}
-                          </div>
-                        </a>
-
-                        <a
-                          href="#property-notes"
-                          style={summaryCard}
-                        >
-                          <div style={summaryCardIcon}>
-                            <NotebookPen
-                              size={23}
-                              strokeWidth={1}
-                              color="#C7A44B"
-                            />
-                          </div>
-
-                          <div style={summaryCardCount}>
-                            {propertyNotes.length}
-                          </div>
-
-                          <div style={summaryCardLabel}>
-                            {labels.summaryNotes}
-                          </div>
-                        </a>
-
-                        <a
-                          href="#comparisons"
-                          style={summaryCard}
-                        >
-                          <div style={summaryCardIcon}>
-                            <Columns3
-                              size={23}
-                              strokeWidth={1}
-                              color="#C7A44B"
-                            />
-                          </div>
-
-                          <div style={summaryCardCount}>
-                            {totalComparisonCount}
-                          </div>
-
-                          <div style={summaryCardLabel}>
-                            {labels.summaryComparisons}
-                          </div>
-                        </a>
-                      </div>
-
-                      <div style={subsectionDivider} />
+         const showOverview =
+            workspaceView ===
+            'overview'
 
 
+          const showProperties =
+            workspaceView ===
+            'properties'
 
-                      <div style={subsectionHeader}>
-                          <div>
-                            <h3 style={sectionHeading}>
-                              {language === 'es'
-                                ? 'Acciones Rápidas'
-                                : 'Quick Actions'}
-                            </h3>
 
-                            <p style={subsectionSummary}>
-                              {language === 'es'
-                                ? 'Acceda rápidamente a sus herramientas más utilizadas.'
-                                : 'Quick access to your most frequently used tools.'}
-                            </p>
-                          </div>
-                        </div>
+          const showSearches =
+            workspaceView ===
+            'searches'
 
-                        <div style={quickActionGrid}>
-                          <div
-                            style={{
-                              ...quickActionCard,
-                              opacity: 0.45,
-                              cursor: 'not-allowed'
-                            }}
-                          >
-                            <Search
-                              size={24}
-                              strokeWidth={1}
-                              color="#777"
-                            />
 
-                            <div style={quickActionContent}>
-                              <h4 style={quickActionTitle}>
-                                {language === 'es'
-                                  ? 'Guardar Búsqueda Actual'
-                                  : 'Save Current Search'}
-                              </h4>
+          const showCollections =
+            workspaceView ===
+            'collections'
 
-                              <p style={quickActionDescription}>
-                                {language === 'es'
-                                  ? 'No hay una búsqueda activa para guardar.'
-                                  : 'No active search is available to save.'}
-                              </p>
-                            </div>
-                          </div>
+                
+ return (
+  <section style={section}>
 
-                          <Link
-                            href={favoritesHref}
-                            style={quickActionCard}
-                          >
-                            <Heart
-                              size={24}
-                              strokeWidth={1}
-                              color="#C7A44B"
-                            />
+    {showOverview && (
+      <>
+        <div style={summaryDashboardHeader}>
+          <h3 style={summaryDashboardHeading}>
+            {language === 'es'
+              ? 'Resumen de Conocimiento'
+              : 'Knowledge Overview'}
+          </h3>
+        </div>
 
-                            <div style={quickActionContent}>
-                              <h4 style={quickActionTitle}>
-                                {language === 'es'
-                                  ? 'Abrir Favoritos'
-                                  : 'Open Favorites'}
-                              </h4>
+        <div style={summaryCardGrid}>
+          <div style={summaryCard}>
+            <div style={summaryCardIcon}>
+              <Heart
+                size={23}
+                strokeWidth={1}
+                color="#C7A44B"
+              />
+            </div>
 
-                              <p style={quickActionDescription}>
-                                {language === 'es'
-                                  ? 'Vea y administre todas sus propiedades favoritas.'
-                                  : 'View and manage all your favorite properties.'}
-                              </p>
-                            </div>
+            <div style={summaryCardCount}>
+              {savedProperties.length}
+            </div>
 
-                            <ArrowRight
-                              size={20}
-                              strokeWidth={1}
-                              color="#C7A44B"
-                            />
-                          </Link>
+            <div style={summaryCardLabel}>
+              {labels.summarySavedProperties}
+            </div>
+          </div>
 
-                          <div style={quickActionCard}>
-                            <FolderHeart
-                              size={24}
-                              strokeWidth={1}
-                              color="#C7A44B"
-                            />
+          <div style={summaryCard}>
+            <div style={summaryCardIcon}>
+              <Search
+                size={23}
+                strokeWidth={1}
+                color="#C7A44B"
+              />
+            </div>
 
-                            <div style={quickActionContent}>
-                              <h4 style={quickActionTitle}>
-                                {language === 'es'
-                                  ? 'Crear Colección'
-                                  : 'Create Collection'}
-                              </h4>
+            <div style={summaryCardCount}>
+              {resolvedSavedSearches.length}
+            </div>
 
-                              <p style={quickActionDescription}>
-                                {language === 'es'
-                                  ? 'Organice propiedades guardadas en grupos.'
-                                  : 'Organize saved properties into collections.'}
-                              </p>
+            <div style={summaryCardLabel}>
+              {labels.summarySavedSearches}
+            </div>
+          </div>
 
-                              <div style={quickActionControl}>
-                                <CreateCollectionButton
-                                  language={language}
-                                />
-                              </div>
-                            </div>
-                          </div>
+          <div style={summaryCard}>
+            <div style={summaryCardIcon}>
+              <BarChart3
+                size={23}
+                strokeWidth={1}
+                color="#C7A44B"
+              />
+            </div>
 
-                          {latestAnalysis ? (
-                            <Link
-                              href={latestAnalysis.href}
-                              style={quickActionCard}
-                            >
-                              <RefreshCw
-                                size={24}
-                                strokeWidth={1}
-                                color="#C7A44B"
-                              />
+            <div style={summaryCardCount}>
+              {savedAnalyses.length}
+            </div>
 
-                              <div style={quickActionContent}>
-                                <h4 style={quickActionTitle}>
-                                  {language === 'es'
-                                    ? 'Reanudar Análisis'
-                                    : 'Resume Analysis'}
-                                </h4>
+            <div style={summaryCardLabel}>
+              {labels.summarySavedAnalyses}
+            </div>
+          </div>
 
-                                <p style={quickActionDescription}>
-                                  {language === 'es'
-                                    ? `Continuar ${latestAnalysis.title} en ${latestAnalysis.market}.`
-                                    : `Continue ${latestAnalysis.title} in ${latestAnalysis.market}.`}
-                                </p>
-                              </div>
+          <div style={summaryCard}>
+            <div style={summaryCardIcon}>
+              <FolderHeart
+                size={23}
+                strokeWidth={1}
+                color="#C7A44B"
+              />
+            </div>
 
-                              <ArrowRight
-                                size={20}
-                                strokeWidth={1}
-                                color="#C7A44B"
-                              />
-                            </Link>
-                          ) : (
-                            <div
-                              style={{
-                                ...quickActionCard,
-                                opacity: 0.45,
-                                cursor: 'not-allowed'
-                              }}
-                            >
-                              <RefreshCw
-                                size={24}
-                                strokeWidth={1}
-                                color="#777"
-                              />
+            <div style={summaryCardCount}>
+              {favoriteCollections.length}
+            </div>
 
-                              <div style={quickActionContent}>
-                                <h4 style={quickActionTitle}>
-                                  {language === 'es'
-                                    ? 'Reanudar Análisis'
-                                    : 'Resume Analysis'}
-                                </h4>
+            <div style={summaryCardLabel}>
+              {labels.summaryCollections}
+            </div>
+          </div>
 
-                                <p style={quickActionDescription}>
-                                  {language === 'es'
-                                    ? 'Todavía no tiene análisis guardados.'
-                                    : 'No saved analyses yet.'}
-                                </p>
-                              </div>
-                            </div>
-                          )}
-                        </div>
+          <div style={summaryCard}>
+            <div style={summaryCardIcon}>
+              <NotebookPen
+                size={23}
+                strokeWidth={1}
+                color="#C7A44B"
+              />
+            </div>
 
-                        <div style={subsectionDivider} />
+            <div style={summaryCardCount}>
+              {propertyNotes.length}
+            </div>
 
-                        <h3
-                          id="saved-properties"
-                          style={sectionHeading}
-                        >
-                        
-                      {labels.savedProperties}
+            <div style={summaryCardLabel}>
+              {labels.summaryNotes}
+            </div>
+          </div>
 
-                      <span style={count}>
-                        {savedProperties.length}
-                      </span>
-                    </h3>
+          <div style={summaryCard}>
+            <div style={summaryCardIcon}>
+              <Columns3
+                size={23}
+                strokeWidth={1}
+                color="#C7A44B"
+              />
+            </div>
 
-                    {savedProperties.length === 0 ? (
-                      <div style={emptyState}>
+            <div style={summaryCardCount}>
+              {totalComparisonCount}
+            </div>
+
+            <div style={summaryCardLabel}>
+              {labels.summaryComparisons}
+            </div>
+          </div>
+        </div>
+      </>
+    )}
+
+
+    {showProperties && (
+      <>
+        <h3 style={sectionHeading}>
+          <Heart
+            size={20}
+            strokeWidth={1}
+            color="#C7A44B"
+          />
+
+          {labels.savedProperties}
+
+          <span style={count}>
+            {savedProperties.length}
+          </span>
+        </h3>
+
+        {savedProperties.length === 0 ? (
+          <div style={emptyState}>
+            <Heart
+              size={36}
+              strokeWidth={0.75}
+              color="#C7A44B"
+            />
+
+            <p style={emptyText}>
+              {labels.empty}
+            </p>
+
+            <Link
+              href={exploreHref}
+              style={exploreLink}
+            >
+              {labels.explore}
+            </Link>
+          </div>
+        ) : (
+          <div style={propertyGrid}>
+            {savedProperties.map(
+              property => (
+                <div
+                  key={property.id}
+                  style={propertyCard}
+                >
+                  <Link
+                    href={propertyHref(
+                      property
+                    )}
+                    style={{
+                      color: '#fff',
+                      textDecoration: 'none'
+                    }}
+                  >
+                    {property.image ? (
+                      <img
+                        src={property.image}
+                        alt={property.title}
+                        style={propertyImage}
+                      />
+                    ) : (
+                      <div style={imagePlaceholder}>
                         <Heart
-                          size={36}
+                          size={34}
                           strokeWidth={0.75}
                           color="#C7A44B"
                         />
-
-                        <p style={emptyText}>
-                          {labels.empty}
-                        </p>
-
-                        <Link
-                          href={exploreHref}
-                          style={exploreLink}
-                        >
-                          {labels.explore}
-                        </Link>
-                      </div>
-                    ) : (
-                      <div style={propertyGrid}>
-                        
-                        {savedProperties.map(
-                            property => (
-                              <div
-                                key={property.id}
-                                style={propertyCard}
-                              >
-                                <Link
-                                  href={propertyHref(
-                                    property
-                                  )}
-                                  style={{
-                                    color: '#fff',
-                                    textDecoration: 'none'
-                                  }}
-                                >
-                                  {property.image ? (
-                                    <img
-                                      src={property.image}
-                                      alt={property.title}
-                                      style={propertyImage}
-                                    />
-                                  ) : (
-                                    <div
-                                      style={
-                                        imagePlaceholder
-                                      }
-                                    >
-                                      <Heart
-                                        size={34}
-                                        strokeWidth={0.75}
-                                        color="#C7A44B"
-                                      />
-                                    </div>
-                                  )}
-
-                                  <div style={propertyContent}>
-                                    <h4 style={propertyTitle}>
-                                      {property.title}
-                                    </h4>
-
-                                    {property.location && (
-                                      <div style={location}>
-                                        <MapPin
-                                          size={15}
-                                          strokeWidth={1}
-                                        />
-
-                                        {property.location}
-                                      </div>
-                                    )}
-
-                                    {property.price && (
-                                      <div style={price}>
-                                        {property.price}
-                                      </div>
-                                    )}
-                                  </div>
-                                </Link>
-
-                                <div
-                                  style={{
-                                    padding:
-                                      '0 1rem 1rem'
-                                  }}
-                                >
-                                  <CollectionPicker
-                                    listingId={property.id}
-                                    language={language}
-                                  />
-                                </div>
-                              </div>
-                            )
-                          )}
                       </div>
                     )}
 
-                    <div style={subsectionDivider} />
-                          <div style={subsectionHeader}>
-                            <div>
-                              <h3
-                                  id="saved-searches"
-                                  style={sectionHeading}
-                                >
-                                <Search
-                                  size={20}
-                                  strokeWidth={1}
-                                  color="#C7A44B"
-                                />
+                    <div style={propertyContent}>
+                      <h4 style={propertyTitle}>
+                        {property.title}
+                      </h4>
 
-                                {labels.savedSearches}
+                      {property.location && (
+                        <div style={location}>
+                          <MapPin
+                            size={15}
+                            strokeWidth={1}
+                          />
 
-                                <span style={count}>
-                                  {
-                                    resolvedSavedSearches.length
-                                  }
-                                </span>
-                              </h3>
-
-                              <p style={subsectionSummary}>
-                                {labels.savedSearchCount}
-                              </p>
-                            </div>
-
-                            {resolvedSavedSearches.length >
-                              1 && (
-                              <label style={savedSearchSortLabel}>
-                                <span style={savedSearchSortText}>
-                                  {labels.sortSearches}
-                                </span>
-
-                                <select
-                                  value={savedSearchSort}
-                                  onChange={event =>
-                                    setSavedSearchSort(
-                                      event.target
-                                        .value as SavedSearchSort
-                                    )
-                                  }
-                                  style={savedSearchSortSelect}
-                                >
-                                  <option value="newest">
-                                    {labels.newest}
-                                  </option>
-
-                                  <option value="oldest">
-                                    {labels.oldest}
-                                  </option>
-
-                                  <option value="name-asc">
-                                    {labels.nameAscending}
-                                  </option>
-
-                                  <option value="name-desc">
-                                    {labels.nameDescending}
-                                  </option>
-                                </select>
-                              </label>
-                            )}
-                          </div>
-
-                          {resolvedSavedSearches.length === 0 ? (
-                          <div style={emptyState}>
-                              <Search
-                              size={36}
-                              strokeWidth={0.75}
-                              color="#C7A44B"
-                              />
-
-                              <p style={emptyText}>
-                              {labels.emptySearches}
-                              </p>
-
-                              <Link
-                              href={exploreHref}
-                              style={exploreLink}
-                              >
-                              {labels.exploreMarket}
-                              </Link>
-                          </div>
-                          ) : (
-                          <div style={searchGrid}>
-                              {resolvedSavedSearches.map(search => {
-                                const isEditing =
-                                  editingSavedSearchId === search.id
-
-                                return (
-                                  <div
-                                    key={search.id}
-                                    style={searchCard}
-                                  >
-                                    <div style={searchIconWrap}>
-                                      <Search
-                                        size={26}
-                                        strokeWidth={1}
-                                        color="#C7A44B"
-                                      />
-                                    </div>
-
-                                    <div style={searchContent}>
-                                      {isEditing ? (
-                                        <>
-                                          <input
-                                            value={savedSearchNameDraft}
-                                            onChange={event =>
-                                              setSavedSearchNameDraft(
-                                                event.target.value
-                                              )
-                                            }
-                                            onKeyDown={event => {
-                                              if (event.key === 'Enter') {
-                                                void handleRenameSavedSearch(
-                                                  search.id
-                                                )
-                                              }
-
-                                              if (event.key === 'Escape') {
-                                                setEditingSavedSearchId(
-                                                  null
-                                                )
-
-                                                setSavedSearchNameDraft(
-                                                  ''
-                                                )
-                                              }
-                                            }}
-                                            autoFocus
-                                            style={savedSearchNameInput}
-                                          />
-
-                                          <div style={savedSearchActions}>
-                                            <button
-                                              type="button"
-                                              onClick={() =>
-                                                void handleRenameSavedSearch(
-                                                  search.id
-                                                )
-                                              }
-                                              disabled={
-                                                savingSavedSearchName
-                                              }
-                                              style={savedSearchSaveButton}
-                                            >
-                                              {language === 'es'
-                                                ? 'Guardar'
-                                                : 'Save'}
-                                            </button>
-
-                                            <button
-                                              type="button"
-                                              onClick={() => {
-                                                setEditingSavedSearchId(
-                                                  null
-                                                )
-
-                                                setSavedSearchNameDraft(
-                                                  ''
-                                                )
-                                              }}
-                                              style={savedSearchCancelButton}
-                                            >
-                                              {language === 'es'
-                                                ? 'Cancelar'
-                                                : 'Cancel'}
-                                            </button>
-                                          </div>
-                                        </>
-                                      ) : (
-                                        <>
-                                          <Link
-                                            href={search.href}
-                                            style={savedSearchTitleLink}
-                                          >
-                                            <h4 style={searchTitle}>
-                                              {search.title}
-                                            </h4>
-                                          </Link>
-
-                                          <div style={searchMeta}>
-                                            {search.resultCount}{' '}
-                                            {language === 'es'
-                                              ? 'resultados'
-                                              : 'results'}
-                                          </div>
-
-                                          <div style={searchUpdated}>
-                                            {search.lastUpdated}
-                                          </div>
-                                        </>
-                                      )}
-                                    </div>
-
-                                    {isEditing ? null : (
-                                      <div style={savedSearchCardActions}>
-                                        {deletingSavedSearchId ===
-                                        search.id ? (
-                                          <div
-                                            style={
-                                              savedSearchDeleteConfirmation
-                                            }
-                                          >
-                                            <span
-                                              style={
-                                                savedSearchDeleteText
-                                              }
-                                            >
-                                              {language === 'es'
-                                                ? '¿Eliminar?'
-                                                : 'Delete?'}
-                                            </span>
-
-                                            <button
-                                              type="button"
-                                              onClick={() =>
-                                                void handleDeleteSavedSearch(
-                                                  search.id
-                                                )
-                                              }
-                                              disabled={
-                                                deletingSavedSearch
-                                              }
-                                              style={
-                                                savedSearchDeleteConfirmButton
-                                              }
-                                            >
-                                              {language === 'es'
-                                                ? 'Eliminar'
-                                                : 'Delete'}
-                                            </button>
-
-                                            <button
-                                              type="button"
-                                              onClick={() =>
-                                                setDeletingSavedSearchId(
-                                                  null
-                                                )
-                                              }
-                                              disabled={
-                                                deletingSavedSearch
-                                              }
-                                              style={
-                                                savedSearchDeleteCancelButton
-                                              }
-                                            >
-                                              {language === 'es'
-                                                ? 'Cancelar'
-                                                : 'Cancel'}
-                                            </button>
-                                          </div>
-                                        ) : (
-                                          <>
-                                            <button
-                                              type="button"
-                                              aria-label={
-                                                language === 'es'
-                                                  ? 'Renombrar búsqueda'
-                                                  : 'Rename search'
-                                              }
-                                              onClick={() => {
-                                                setEditingSavedSearchId(
-                                                  search.id
-                                                )
-
-                                                setSavedSearchNameDraft(
-                                                  search.title
-                                                )
-
-                                                setDeletingSavedSearchId(
-                                                  null
-                                                )
-                                              }}
-                                              style={
-                                                savedSearchEditButton
-                                              }
-                                            >
-                                              <Pencil
-                                                size={17}
-                                                strokeWidth={1}
-                                              />
-                                            </button>
-
-                                            <button
-                                              type="button"
-                                              aria-label={
-                                                language === 'es'
-                                                  ? 'Eliminar búsqueda'
-                                                  : 'Delete search'
-                                              }
-                                              onClick={() => {
-                                                setDeletingSavedSearchId(
-                                                  search.id
-                                                )
-
-                                                setEditingSavedSearchId(
-                                                  null
-                                                )
-
-                                                setSavedSearchNameDraft(
-                                                  ''
-                                                )
-                                              }}
-                                              style={
-                                                savedSearchDeleteButton
-                                              }
-                                            >
-                                              <Trash2
-                                                size={17}
-                                                strokeWidth={1}
-                                              />
-                                            </button>
-
-                                            <Link
-                                              href={search.href}
-                                              style={
-                                                savedSearchOpenLink
-                                              }
-                                            >
-                                              <ArrowRight
-                                                size={20}
-                                                strokeWidth={1}
-                                                color="#C7A44B"
-                                              />
-                                            </Link>
-                                          </>
-                                        )}
-                                      </div>
-                                    )}
-                                  </div>
-                                )
-                              })}
-                                    </div>
-                          )}
-
-                          <div style={subsectionDivider} />
-
-                          {notificationsLoaded && (
-                            <MarketHubNotificationFeed
-                                language={language}
-                                notifications={
-                                  loadedNotifications
-                                }
-                                onOpenNotification={
-                                  notificationId =>
-                                    void handleOpenNotification(
-                                      notificationId
-                                    )
-                                }
-                                onMarkRead={
-                                  notificationId =>
-                                    void handleMarkRead(
-                                      notificationId
-                                    )
-                                }
-                                onMarkUnread={
-                                  notificationId =>
-                                    void handleMarkUnread(
-                                      notificationId
-                                    )
-                                }
-                                onMarkAllRead={() =>
-                                  void handleMarkAllRead()
-                                }
-                              />
-                          )}
-
-                          <div style={subsectionDivider} />
-
-                          <div style={subsectionHeader}>
-                            <div>
-                              <h3
-                                  id="saved-analyses"
-                                  style={sectionHeading}
-                                >
-                                <BarChart3
-                                      size={20}
-                                      strokeWidth={1}
-                                      color="#C7A44B"
-                                  />
-
-                                  {labels.savedAnalyses}
-
-                                  <span style={count}>
-                                      {savedAnalyses.length}
-                                  </span>
-                                  </h3>
-
-                                  <p style={subsectionSummary}>
-                                  {labels.savedAnalysisCount}
-                                  </p>
-                              </div>
-                              </div>
-
-                              {savedAnalyses.length === 0 ? (
-                              <div style={emptyState}>
-                                  <BarChart3
-                                  size={36}
-                                  strokeWidth={0.75}
-                                  color="#C7A44B"
-                                  />
-
-                                  <p style={emptyText}>
-                                  {labels.emptyAnalyses}
-                                  </p>
-
-                                  <Link
-                                  href={marketExplorerHref}
-                                  style={exploreLink}
-                                  >
-                                  {labels.openExplorer}
-                                  </Link>
-                              </div>
-                              ) : (
-                              <div style={analysisGrid}>
-                                  {savedAnalyses.map(
-                                  analysis => (
-                                      <Link
-                                      key={analysis.id}
-                                      href={analysis.href}
-                                      style={analysisCard}
-                                      >
-                                      <div style={analysisIconWrap}>
-                                          <BarChart3
-                                          size={26}
-                                          strokeWidth={1}
-                                          color="#C7A44B"
-                                          />
-                                      </div>
-
-                                      <div style={analysisContent}>
-                                          <h4 style={analysisTitle}>
-                                          {analysis.title}
-                                          </h4>
-
-                                          <div style={analysisMarket}>
-                                          {analysis.market}
-                                          </div>
-
-                                          <div style={analysisSummary}>
-                                          {analysis.summary}
-                                          </div>
-
-                                          <div style={analysisUpdated}>
-                                          {analysis.lastUpdated}
-                                          </div>
-                                      </div>
-
-                                      <ArrowRight
-                                          size={20}
-                                          strokeWidth={1}
-                                          color="#C7A44B"
-                                      />
-                                      </Link>
-                                    )
-                                  )}
-                                </div>
-                              )}
-
-                                  <div style={subsectionDivider} />
-
-              <div style={subsectionHeader}>
-                <div>
-                  <h3 style={sectionHeading}>
-                    <Clock3
-                      size={20}
-                      strokeWidth={1}
-                      color="#C7A44B"
-                    />
-
-                    {labels.recentActivity}
-
-                    <span style={count}>
-                      {recentActivity.length}
-                    </span>
-                  </h3>
-
-                  <p style={subsectionSummary}>
-                    {labels.recentActivitySummary}
-                  </p>
-                </div>
-              </div>
-
-              {recentActivity.length === 0 ? (
-                <div style={emptyState}>
-                  <Clock3
-                    size={36}
-                    strokeWidth={0.75}
-                    color="#C7A44B"
-                  />
-
-                  <p style={emptyText}>
-                    {labels.emptyRecentActivity}
-                  </p>
-                </div>
-              ) : (
-                <div style={recentActivityList}>
-                  {recentActivity.map(
-                    activity => (
-                      <Link
-                        key={activity.id}
-                        href={activity.href}
-                        style={recentActivityCard}
-                      >
-                        <div style={recentActivityIcon}>
-                          {renderRecentActivityIcon(
-                            activity.type
-                          )}
+                          {property.location}
                         </div>
+                      )}
 
-                        <div style={recentActivityContent}>
-                          <div style={recentActivityMeta}>
-                            <span style={recentActivityType}>
-                              {getRecentActivityLabel(
-                                activity.type,
-                                language
-                              )}
-                            </span>
-
-                            <span style={recentActivityTime}>
-                              {formatRelativeActivityTime(
-                                activity.timestamp,
-                                language
-                              )}
-                            </span>
-                          </div>
-
-                          <h4 style={recentActivityTitle}>
-                            {activity.title}
-                          </h4>
-
-                          <p style={recentActivityDescription}>
-                            {activity.description}
-                          </p>
+                      {property.price && (
+                        <div style={price}>
+                          {property.price}
                         </div>
-
-                        <ArrowRight
-                          size={20}
-                          strokeWidth={1}
-                          color="#C7A44B"
-                        />
-                      </Link>
-                    )
-                  )}
-                </div>
-              )}
-
-              <div style={subsectionDivider} />
-
-              <div style={subsectionHeader}>
-                <div>
-                  <h3
-                    id="favorite-collections"
-                    style={sectionHeading}
-                  >
-                    <FolderHeart
-                      size={20}
-                      strokeWidth={1}
-                      color="#C7A44B"
-                    />
-
-                    {labels.favoriteCollections}
-
-                    <span style={count}>
-                      {favoriteCollections.length}
-                    </span>
-                  </h3>
-
-                  <p style={subsectionSummary}>
-                    {labels.favoriteCollectionCount}
-                  </p>
+                      )}
+                    </div>
+                  </Link>
 
                   <div
                     style={{
-                      marginTop: '.75rem'
+                      padding: '0 1rem 1rem'
                     }}
                   >
-                    <CreateCollectionButton
+                    <CollectionPicker
+                      listingId={property.id}
                       language={language}
                     />
                   </div>
                 </div>
-              </div>
+              )
+            )}
+          </div>
+        )}
+      </>
+    )}
 
-              {favoriteCollections.length === 0 ? (
-              <div style={emptyState}>
-                  <FolderHeart
-                  size={36}
-                  strokeWidth={0.75}
-                  color="#C7A44B"
-                  />
 
-                  <p style={emptyText}>
-                  {labels.emptyCollections}
-                  </p>
+    {showSearches && (
+      <>
+        <div style={subsectionHeader}>
+          <div>
+            <h3 style={sectionHeading}>
+              <Search
+                size={20}
+                strokeWidth={1}
+                color="#C7A44B"
+              />
 
-                  <CreateCollectionButton
-                    language={language}
-                  />
+              {labels.savedSearches}
 
-              </div>
-              ) : (
-              <div style={collectionGrid}>
-                  {favoriteCollections.map(
-                    (
-                      collection,
-                      collectionIndex
-                    ) => (
-                    <div
-                      key={collection.id}
-                      style={collectionCard}
-                    >
-                      <Link
-                        href={collection.href}
-                        style={collectionMainLink}
+              <span style={count}>
+                {resolvedSavedSearches.length}
+              </span>
+            </h3>
+
+            <p style={subsectionSummary}>
+              {labels.savedSearchCount}
+            </p>
+          </div>
+
+          {resolvedSavedSearches.length > 1 && (
+            <label style={savedSearchSortLabel}>
+              <span style={savedSearchSortText}>
+                {labels.sortSearches}
+              </span>
+
+              <select
+                value={savedSearchSort}
+                onChange={event =>
+                  setSavedSearchSort(
+                    event.target
+                      .value as SavedSearchSort
+                  )
+                }
+                style={savedSearchSortSelect}
+              >
+                <option value="newest">
+                  {labels.newest}
+                </option>
+
+                <option value="oldest">
+                  {labels.oldest}
+                </option>
+
+                <option value="name-asc">
+                  {labels.nameAscending}
+                </option>
+
+                <option value="name-desc">
+                  {labels.nameDescending}
+                </option>
+              </select>
+            </label>
+          )}
+        </div>
+
+        {resolvedSavedSearches.length === 0 ? (
+          <div style={emptyState}>
+            <Search
+              size={36}
+              strokeWidth={0.75}
+              color="#C7A44B"
+            />
+
+            <p style={emptyText}>
+              {labels.emptySearches}
+            </p>
+
+            <Link
+              href={exploreHref}
+              style={exploreLink}
+            >
+              {labels.exploreMarket}
+            </Link>
+          </div>
+        ) : (
+          <div style={searchGrid}>
+            {resolvedSavedSearches.map(
+              search => {
+
+                const isEditing =
+                  editingSavedSearchId ===
+                  search.id
+
+                return (
+                  <div
+                    key={search.id}
+                    style={searchCard}
+                  >
+                    <div style={searchIconWrap}>
+                      <Search
+                        size={26}
+                        strokeWidth={1}
+                        color="#C7A44B"
+                      />
+                    </div>
+
+                    <div style={searchContent}>
+                      {isEditing ? (
+                        <>
+                          <input
+                            value={
+                              savedSearchNameDraft
+                            }
+                            onChange={event =>
+                              setSavedSearchNameDraft(
+                                event.target.value
+                              )
+                            }
+                            style={savedSearchNameInput}
+                          />
+
+                          <div style={savedSearchActions}>
+                            <button
+                              type="button"
+                              onClick={() =>
+                                void handleRenameSavedSearch(
+                                  search.id
+                                )
+                              }
+                              style={
+                                savedSearchSaveButton
+                              }
+                            >
+                              {language === 'es'
+                                ? 'Guardar'
+                                : 'Save'}
+                            </button>
+
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setEditingSavedSearchId(
+                                  null
+                                )
+
+                                setSavedSearchNameDraft(
+                                  ''
+                                )
+                              }}
+                              style={
+                                savedSearchCancelButton
+                              }
+                            >
+                              {language === 'es'
+                                ? 'Cancelar'
+                                : 'Cancel'}
+                            </button>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <Link
+                            href={search.href}
+                            style={
+                              savedSearchTitleLink
+                            }
+                          >
+                            <h4 style={searchTitle}>
+                              {search.title}
+                            </h4>
+                          </Link>
+
+                          <div style={searchUpdated}>
+                            {search.lastUpdated}
+                          </div>
+                        </>
+                      )}
+                    </div>
+
+                    {!isEditing && (
+                      <div
+                        style={
+                          savedSearchCardActions
+                        }
                       >
-                        <div style={collectionIconWrap}>
-                          <FolderHeart
-                            size={28}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setEditingSavedSearchId(
+                              search.id
+                            )
+
+                            setSavedSearchNameDraft(
+                              search.title
+                            )
+                          }}
+                          style={
+                            savedSearchEditButton
+                          }
+                        >
+                          <Pencil
+                            size={17}
+                            strokeWidth={1}
+                          />
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setDeletingSavedSearchId(
+                              search.id
+                            )
+                          }
+                          style={
+                            savedSearchDeleteButton
+                          }
+                        >
+                          <Trash2
+                            size={17}
+                            strokeWidth={1}
+                          />
+                        </button>
+
+                        <Link
+                          href={search.href}
+                          style={
+                            savedSearchOpenLink
+                          }
+                        >
+                          <ArrowRight
+                            size={20}
                             strokeWidth={1}
                             color="#C7A44B"
                           />
-                        </div>
+                        </Link>
+                      </div>
+                    )}
 
-                        <div style={collectionContent}>
-                          <h4 style={collectionTitle}>
-                            {collection.name}
-                          </h4>
+                    {deletingSavedSearchId ===
+                      search.id && (
+                      <div
+                        style={
+                          savedSearchDeleteConfirmation
+                        }
+                      >
+                        <span
+                          style={
+                            savedSearchDeleteText
+                          }
+                        >
+                          {language === 'es'
+                            ? '¿Eliminar?'
+                            : 'Delete?'}
+                        </span>
 
-                          <div style={collectionMeta}>
-                            {collection.propertyCount}{' '}
-                            {labels.properties}
-                          </div>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            void handleDeleteSavedSearch(
+                              search.id
+                            )
+                          }
+                          style={
+                            savedSearchDeleteConfirmButton
+                          }
+                        >
+                          {language === 'es'
+                            ? 'Eliminar'
+                            : 'Delete'}
+                        </button>
 
-                          <div style={collectionUpdated}>
-                            {collection.updatedAt}
-                          </div>
-                        </div>
-                      </Link>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setDeletingSavedSearchId(
+                              null
+                            )
+                          }
+                          style={
+                            savedSearchDeleteCancelButton
+                          }
+                        >
+                          {language === 'es'
+                            ? 'Cancelar'
+                            : 'Cancel'}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )
+              }
+            )}
+          </div>
+        )}
 
-                      <div style={collectionActions}>
-                          {deletingCollectionId ===
-                          collection.id ? (
-                            <div
-                              style={
-                                collectionDeleteConfirmation
-                              }
-                            >
-                              <span
-                                style={collectionDeleteText}
-                              >
-                                {language === 'es'
-                                  ? '¿Eliminar?'
-                                  : 'Delete?'}
-                              </span>
+        {notificationsLoaded && (
+          <>
+            <div style={subsectionDivider} />
 
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  void handleDeleteCollection(
-                                    collection.id
-                                  )
-                                }
-                                disabled={deletingCollection}
-                                style={
-                                  collectionDeleteConfirmButton
-                                }
-                              >
-                                {language === 'es'
-                                  ? 'Eliminar'
-                                  : 'Delete'}
-                              </button>
-
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  setDeletingCollectionId(
-                                    null
-                                  )
-                                }
-                                disabled={deletingCollection}
-                                style={
-                                  collectionDeleteCancelButton
-                                }
-                              >
-                                {language === 'es'
-                                  ? 'Cancelar'
-                                  : 'Cancel'}
-                              </button>
-                            </div>
-                          ) : (
-                            <>
-
-                            <button
-                              type="button"
-                              aria-label={
-                                language === 'es'
-                                  ? 'Mover colección hacia arriba'
-                                  : 'Move collection up'
-                              }
-                              title={
-                                language === 'es'
-                                  ? 'Mover hacia arriba'
-                                  : 'Move up'
-                              }
-                              onClick={() =>
-                                void handleMoveCollection(
-                                  collection.id,
-                                  'up'
-                                )
-                              }
-                              disabled={
-                                collectionIndex === 0 ||
-                                reorderingCollection
-                              }
-                              style={{
-                                ...collectionReorderButton,
-                                opacity:
-                                  collectionIndex === 0 ||
-                                  reorderingCollection
-                                    ? 0.35
-                                    : 1,
-                                cursor:
-                                  collectionIndex === 0 ||
-                                  reorderingCollection
-                                    ? 'not-allowed'
-                                    : 'pointer'
-                              }}
-                            >
-                              <ArrowUp
-                                size={17}
-                                strokeWidth={1}
-                              />
-                            </button>
-
-                            <button
-                              type="button"
-                              aria-label={
-                                language === 'es'
-                                  ? 'Mover colección hacia abajo'
-                                  : 'Move collection down'
-                              }
-                              title={
-                                language === 'es'
-                                  ? 'Mover hacia abajo'
-                                  : 'Move down'
-                              }
-                              onClick={() =>
-                                void handleMoveCollection(
-                                  collection.id,
-                                  'down'
-                                )
-                              }
-                              disabled={
-                                collectionIndex ===
-                                  favoriteCollections.length - 1 ||
-                                reorderingCollection
-                              }
-                              style={{
-                                ...collectionReorderButton,
-                                opacity:
-                                  collectionIndex ===
-                                    favoriteCollections.length - 1 ||
-                                  reorderingCollection
-                                    ? 0.35
-                                    : 1,
-                                cursor:
-                                  collectionIndex ===
-                                    favoriteCollections.length - 1 ||
-                                  reorderingCollection
-                                    ? 'not-allowed'
-                                    : 'pointer'
-                              }}
-                            >
-                              <ArrowDown
-                                size={17}
-                                strokeWidth={1}
-                              />
-                            </button>
-                              <button
-                                type="button"
-                                aria-label={
-                                  language === 'es'
-                                    ? 'Renombrar colección'
-                                    : 'Rename collection'
-                                }
-                                onClick={() => {
-                                  setDeletingCollectionId(
-                                    null
-                                  )
-
-                                  void handleRenameCollection(
-                                    collection.id,
-                                    collection.name
-                                  )
-                                }}
-                                style={collectionEditButton}
-                              >
-                                <Pencil
-                                  size={17}
-                                  strokeWidth={1}
-                                />
-                              </button>
-
-                              <button
-                                type="button"
-                                aria-label={
-                                  language === 'es'
-                                    ? 'Eliminar colección'
-                                    : 'Delete collection'
-                                }
-                                onClick={() =>
-                                  setDeletingCollectionId(
-                                    collection.id
-                                  )
-                                }
-                                style={collectionDeleteButton}
-                              >
-                                <Trash2
-                                  size={17}
-                                  strokeWidth={1}
-                                />
-                              </button>
-
-                              <Link
-                                href={collection.href}
-                                style={collectionOpenLink}
-                              >
-                                <ArrowRight
-                                  size={20}
-                                  strokeWidth={1}
-                                  color="#C7A44B"
-                                />
-                              </Link>
-                            </>
-                          )}
-                        </div>
-                    </div>
+            <MarketHubNotificationFeed
+              language={language}
+              notifications={
+                loadedNotifications
+              }
+              onOpenNotification={
+                notificationId =>
+                  void handleOpenNotification(
+                    notificationId
                   )
-                )}
-              </div>
-              )}
+              }
+              onMarkRead={
+                notificationId =>
+                  void handleMarkRead(
+                    notificationId
+                  )
+              }
+              onMarkUnread={
+                notificationId =>
+                  void handleMarkUnread(
+                    notificationId
+                  )
+              }
+              onMarkAllRead={() =>
+                void handleMarkAllRead()
+              }
+            />
+          </>
+        )}
+      </>
+    )}
 
-                        <div style={subsectionDivider} />
-                            <div style={subsectionHeader}>
-                            <div>
-                                <h3
-                                  id="property-notes"
-                                  style={sectionHeading}
-                                >
-                                <NotebookPen
-                                    size={20}
-                                    strokeWidth={1}
-                                    color="#C7A44B"
-                                />
 
-                                {labels.notes}
+    {showCollections && (
+      <>
+        <div style={subsectionHeader}>
+          <div>
+            <h3 style={sectionHeading}>
+              <FolderHeart
+                size={20}
+                strokeWidth={1}
+                color="#C7A44B"
+              />
 
-                                <span style={count}>
-                                    {propertyNotes.length}
-                                </span>
-                                </h3>
+              {labels.favoriteCollections}
 
-                                <p style={subsectionSummary}>
-                                {labels.noteCount}
-                                </p>
-                            </div>
-                            </div>
+              <span style={count}>
+                {favoriteCollections.length}
+              </span>
+            </h3>
 
-                            {propertyNotes.length === 0 ? (
-                            <div style={emptyState}>
-                                <NotebookPen
-                                size={36}
-                                strokeWidth={0.75}
-                                color="#C7A44B"
-                                />
+            <p style={subsectionSummary}>
+              {labels.favoriteCollectionCount}
+            </p>
 
-                                <p style={emptyText}>
-                                {labels.emptyNotes}
-                                </p>
-                            </div>
-                            ) : (
-                            <div style={noteGrid}>
-                                {propertyNotes.map(note => (
-                                <Link
-                                    key={note.id}
-                                    href={note.href}
-                                    style={noteCard}
-                                >
-                                    <div style={noteIconWrap}>
-                                    <NotebookPen
-                                        size={25}
-                                        strokeWidth={1}
-                                        color="#C7A44B"
-                                    />
-                                    </div>
+            <div
+              style={{
+                marginTop: '.75rem'
+              }}
+            >
+              <CreateCollectionButton
+                language={language}
+              />
+            </div>
+          </div>
+        </div>
 
-                                    <div style={noteContent}>
-                                    <h4 style={notePropertyTitle}>
-                                        {note.propertyTitle}
-                                    </h4>
+        {favoriteCollections.length === 0 ? (
+          <div style={emptyState}>
+            <FolderHeart
+              size={36}
+              strokeWidth={0.75}
+              color="#C7A44B"
+            />
 
-                                    <p style={noteText}>
-                                        {note.note}
-                                    </p>
+            <p style={emptyText}>
+              {labels.emptyCollections}
+            </p>
 
-                                    <div style={noteUpdated}>
-                                        {note.updatedAt}
-                                    </div>
-                                    </div>
+            <CreateCollectionButton
+              language={language}
+            />
+          </div>
+        ) : (
+          <div style={collectionGrid}>
+            {favoriteCollections.map(
+              (
+                collection,
+                collectionIndex
+              ) => (
+                <div
+                  key={collection.id}
+                  style={collectionCard}
+                >
+                  <Link
+                    href={collection.href}
+                    style={collectionMainLink}
+                  >
+                    <div
+                      style={
+                        collectionIconWrap
+                      }
+                    >
+                      <FolderHeart
+                        size={28}
+                        strokeWidth={1}
+                        color="#C7A44B"
+                      />
+                    </div>
 
-                                    <ArrowRight
-                                    size={20}
-                                    strokeWidth={1}
-                                    color="#C7A44B"
-                                    />
-                                </Link>
-                                ))}
-                            </div>
-                          )}
+                    <div style={collectionContent}>
+                      <h4 style={collectionTitle}>
+                        {collection.name}
+                      </h4>
 
-                          <div style={subsectionHeader}>
-                            <div>
-                                <h3
-                                  id="comparisons"
-                                  style={sectionHeading}
-                                >
-                                <Columns3
-                                    size={20}
-                                    strokeWidth={1}
-                                    color="#C7A44B"
-                                />
+                      <div style={collectionMeta}>
+                        {
+                          collection.propertyCount
+                        }{' '}
+                        {labels.properties}
+                      </div>
 
-                                {labels.marketComparisons}
+                      <div
+                        style={
+                          collectionUpdated
+                        }
+                      >
+                        {collection.updatedAt}
+                      </div>
+                    </div>
+                  </Link>
 
-                                <span style={count}>
-                                    {resolvedMarketComparisons.length}
-                                </span>
-                                </h3>
+                  <div style={collectionActions}>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        void handleMoveCollection(
+                          collection.id,
+                          'up'
+                        )
+                      }
+                      disabled={
+                        collectionIndex === 0
+                      }
+                      style={
+                        collectionReorderButton
+                      }
+                    >
+                      <ArrowUp
+                        size={17}
+                        strokeWidth={1}
+                      />
+                    </button>
 
-                                <p style={subsectionSummary}>
-                                {labels.comparisonCount}
-                                </p>
-                            </div>
-                            </div>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        void handleMoveCollection(
+                          collection.id,
+                          'down'
+                        )
+                      }
+                      disabled={
+                        collectionIndex ===
+                        favoriteCollections.length -
+                          1
+                      }
+                      style={
+                        collectionReorderButton
+                      }
+                    >
+                      <ArrowDown
+                        size={17}
+                        strokeWidth={1}
+                      />
+                    </button>
 
-                            {resolvedMarketComparisons.length === 0 ? (
-                            <div style={emptyState}>
-                                <Columns3
-                                size={36}
-                                strokeWidth={0.75}
-                                color="#C7A44B"
-                                />
+                    <button
+                      type="button"
+                      onClick={() =>
+                        void handleRenameCollection(
+                          collection.id,
+                          collection.name
+                        )
+                      }
+                      style={collectionEditButton}
+                    >
+                      <Pencil
+                        size={17}
+                        strokeWidth={1}
+                      />
+                    </button>
 
-                                <p style={emptyText}>
-                                {labels.emptyComparisons}
-                                </p>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setDeletingCollectionId(
+                          collection.id
+                        )
+                      }
+                      style={
+                        collectionDeleteButton
+                      }
+                    >
+                      <Trash2
+                        size={17}
+                        strokeWidth={1}
+                      />
+                    </button>
+                  </div>
 
-                                <Link
-                                href={favoritesHref}
-                                style={exploreLink}
-                                >
-                                {labels.compareProperties}
-                                </Link>
-                            </div>
-                            ) : (
-                            <div style={comparisonGrid}>
-                                {resolvedMarketComparisons.map(
-                                comparison => (
-                                    <Link
-                                    key={comparison.id}
-                                    href={comparison.href}
-                                    style={comparisonCard}
-                                    >
-                                    <div style={comparisonIconWrap}>
-                                        <Columns3
-                                        size={27}
-                                        strokeWidth={1}
-                                        color="#C7A44B"
-                                        />
-                                    </div>
+                  {deletingCollectionId ===
+                    collection.id && (
+                    <div
+                      style={
+                        collectionDeleteConfirmation
+                      }
+                    >
+                      <span
+                        style={
+                          collectionDeleteText
+                        }
+                      >
+                        {language === 'es'
+                          ? '¿Eliminar?'
+                          : 'Delete?'}
+                      </span>
 
-                                    <div style={comparisonContent}>
-                                        <h4 style={comparisonTitle}>
-                                        {comparison.title}
-                                        </h4>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          void handleDeleteCollection(
+                            collection.id
+                          )
+                        }
+                        style={
+                          collectionDeleteConfirmButton
+                        }
+                      >
+                        {language === 'es'
+                          ? 'Eliminar'
+                          : 'Delete'}
+                      </button>
 
-                                        <div style={comparisonMeta}>
-                                          {comparison.marketCount}{' '}
-                                          {language === 'es'
-                                            ? comparison.marketCount === 1
-                                              ? 'mercado'
-                                              : 'mercados'
-                                            : comparison.marketCount === 1
-                                            ? 'market'
-                                            : 'markets'}
-                                        </div>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setDeletingCollectionId(
+                            null
+                          )
+                        }
+                        style={
+                          collectionDeleteCancelButton
+                        }
+                      >
+                        {language === 'es'
+                          ? 'Cancelar'
+                          : 'Cancel'}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )
+            )}
+          </div>
+        )}
+      </>
+    )}
 
-                                        <div style={comparisonSummary}>
-                                        {comparison.summary}
-                                        </div>
-
-                                        <div style={comparisonUpdated}>
-                                        {comparison.updatedAt}
-                                        </div>
-                                    </div>
-
-                                    <ArrowRight
-                                        size={20}
-                                        strokeWidth={1}
-                                        color="#C7A44B"
-                                    />
-                                    </Link>
-                                )
-                                )}
-                            </div>
-                            )}
-                        </section>
-                      )
-                    }
+  </section>
+)
+}
 
 function getRecentActivityLabel(
   type: RecentActivityType,
@@ -4119,10 +3477,7 @@ const summaryCardLabel = {
 }
 
 const section = {
-  padding: '1.5rem',
-  background: '#151515',
-  border: '1px solid #303030',
-  borderRadius: '18px'
+  minWidth: 0
 }
 
 const header = {

@@ -143,10 +143,11 @@ function translateListingTitle(title: string = '') {
 }
 
 function buildRefinementUrl(
-  filters: Record<string, any>,
-  filterType: string,
-  neighbor: any
-) {
+      filters: Record<string, any>,
+      filterType: string,
+      neighbor: any,
+      embedded = false
+    ) {
   const params = new URLSearchParams()
 
   Object.entries(filters).forEach(([key, value]) => {
@@ -169,14 +170,18 @@ function buildRefinementUrl(
       .replace(/\s+/g, '-')
   )
 
-  return `/es/explora?${params.toString()}`
-}
+  return embedded
+      ? `/es/centro-de-mercado?intelligence=explore&${params.toString()}`
+      : `/es/explora?${params.toString()}`
+    }
 
-export default function ExploreResults({
-  result
-}: {
-  result: any
-}) {
+    export default function ExploreResults({
+          result,
+          embedded = false
+        }: {
+          result: any
+          embedded?: boolean
+        }) {
   const statistics = result.statistics || {}
 
   const transactionType =
@@ -465,7 +470,16 @@ export default function ExploreResults({
             {relatedMarkets.map((market: any) => (
               <Link
                 key={market.url}
-                href={market.url.replace('/explore', '/es/explora')}
+                href={
+                  embedded
+                    ? `/es/centro-de-mercado?intelligence=explore&${
+                        market.url.split('?')[1] || ''
+                      }`
+                    : market.url.replace(
+                        '/explore',
+                        '/es/explora'
+                      )
+                }
                 style={{
                   display: 'block',
                   background: '#111',
@@ -541,7 +555,8 @@ export default function ExploreResults({
                         href={buildRefinementUrl(
                           result.filters,
                           type,
-                          neighbor
+                          neighbor,
+                          embedded
                         )}
                         style={{
                           background: '#181818',

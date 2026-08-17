@@ -12,8 +12,6 @@ type PropertyTypeFilterProps = {
 
     yearBuiltRange: string
 
-    constructionArea: string
-
   showproperty_typeOptions: boolean
   setShowproperty_typeOptions: (value: boolean) => void
 
@@ -44,7 +42,7 @@ export default function PropertyTypeFilter({
     bathrooms,
     parking,
     yearBuiltRange,
-    constructionArea,
+    
 
   showproperty_typeOptions,
   setShowproperty_typeOptions,
@@ -157,13 +155,7 @@ export default function PropertyTypeFilter({
                                   {yearBuiltRange}
                                 </>
                               )}
-
-                              {constructionArea && (
-                                <>
-                                  <span style={{ color:'#fff' }}> • </span>
-                                  {constructionArea}
-                                </>
-                              )}
+                              
                       </span>
 
                       <button

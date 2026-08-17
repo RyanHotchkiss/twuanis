@@ -10,6 +10,7 @@ type Props = {
   options: any
   leftFilters: any
   rightFilters: any
+  embedded?: boolean
 }
 
 const copy = {
@@ -38,7 +39,8 @@ const copy = {
     terrain: 'Terrain',
     utilities: 'Utilities',
     accessibility: 'Accessibility',
-    legalStatus: 'Legal Status'
+    legalStatus: 'Legal Status',
+    transactionType: 'Transaction'
   },
 
   es: {
@@ -66,7 +68,8 @@ const copy = {
     terrain: 'Terreno',
     utilities: 'Servicios',
     accessibility: 'Accesibilidad',
-    legalStatus: 'Estado Legal'
+    legalStatus: 'Estado Legal',
+    transactionType: 'Transacción'
   }
 }
 
@@ -74,7 +77,8 @@ export default function MarketComparisonFilters({
   language,
   options,
   leftFilters,
-  rightFilters
+  rightFilters,
+  embedded = false
 }: Props) {
 
   const router = useRouter()
@@ -170,6 +174,18 @@ function getValue(option: any) {
 
   const params =
     new URLSearchParams()
+
+  if (embedded) {
+    params.set(
+      'intelligence',
+      'comparison'
+    )
+
+    params.set(
+      'compare',
+      'markets'
+    )
+  }
 
   formData.forEach((value, key) => {
     const stringValue = String(value)
@@ -271,6 +287,38 @@ function getValue(option: any) {
             ))}
     </select>
 
+  </div>
+
+  <div style={assetSection}>
+    <h3 style={assetHeading}>
+      {t.transactionType}
+    </h3>
+
+    <select
+      name="a_transaction_type"
+      defaultValue={
+        leftFilters.a_transaction_type || ''
+      }
+      style={select}
+    >
+      <option value="">
+        {language === 'es'
+          ? 'Transacción'
+          : 'Transaction'}
+      </option>
+
+      <option value="sale">
+        {language === 'es'
+          ? 'En Venta'
+          : 'For Sale'}
+      </option>
+
+      <option value="rent">
+        {language === 'es'
+          ? 'En Alquiler'
+          : 'For Rent'}
+      </option>
+    </select>
   </div>
 
   {/* PROPERTY TYPE */}
@@ -782,6 +830,38 @@ function getValue(option: any) {
             ))}
     </select>
 
+  </div>
+
+  <div style={assetSection}>
+    <h3 style={assetHeading}>
+      {t.transactionType}
+    </h3>
+
+    <select
+      name="b_transaction_type"
+      defaultValue={
+        rightFilters.b_transaction_type || ''
+      }
+      style={select}
+    >
+      <option value="">
+        {language === 'es'
+          ? 'Transacción'
+          : 'Transaction'}
+      </option>
+
+      <option value="sale">
+        {language === 'es'
+          ? 'En Venta'
+          : 'For Sale'}
+      </option>
+
+      <option value="rent">
+        {language === 'es'
+          ? 'En Alquiler'
+          : 'For Rent'}
+      </option>
+    </select>
   </div>
 
   {/* PROPERTY TYPE */}

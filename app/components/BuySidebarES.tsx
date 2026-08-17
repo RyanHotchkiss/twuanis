@@ -12,6 +12,7 @@ import LegalStatusFilterES from '@/app/components/filter-bar/LegalStatusFilterES
 import {
   residential_property_types
 } from '@/data/property-data'
+import ConstructionAreaFilterSES from '@/app/components/filter-bar/ConstructionAreaFilterSES'
 
 export default function BuySidebarES(props: any) {
 
@@ -324,30 +325,22 @@ const {
                 setShowDistrictOptions={setShowDistrictOptions}
 
                 selectedproperty_type={filters.property_type}
-
+                setSelectedproperty_type={(value: string) =>
+                    setFilters((prev: any) => ({
+                        ...prev,
+                        property_type: value
+                    }))
+                    }
                 bedrooms={filters.bedrooms}
                 bathrooms={filters.bathrooms}
                 parking={filters.parking}
 
                 yearBuiltRange={filters.year_built}
-                constructionArea={filters.construction_area}
-
-                setSelectedproperty_type={(value: string) => {
-
-                    setFilters((prev: any) => ({
-                    ...prev,
-                    property_type: value
-                    }))
-
-                }}
-
+            
                 />
-
-                {
-                    residential_property_types.includes(
-                        filters.property_type
-                    ) && (
-
+{residential_property_types.includes(
+  filters.property_type
+) && (
 <ResidentialAttributesSES
 
                     setShowproperty_typeOptions={
@@ -390,14 +383,6 @@ const {
                         }))
                     }
 
-                    constructionArea={filters.construction_area}
-                    setConstructionArea={(value: string) =>
-                        setFilters((prev: any) => ({
-                        ...prev,
-                        construction_area: value
-                        }))
-                    }
-
                     setShowResidentialSummary={
                         setShowResidentialSummary
                     }
@@ -406,7 +391,7 @@ const {
                     bathroomOptions={bathroomOptions}
                     parkingOptions={parkingOptions}
                     yearBuiltOptions={yearBuiltOptions}
-                    constructionAreaOptions={constructionAreaOptions}
+                    
 
                     showBedroomOptions={showBedroomOptions}
                     setShowBedroomOptions={setShowBedroomOptions}
@@ -420,29 +405,44 @@ const {
                     showYearBuiltOptions={showYearBuiltOptions}
                     setShowYearBuiltOptions={setShowYearBuiltOptions}
 
-                    showConstructionAreaOptions={
-                        showConstructionAreaOptions
-                    }
-
-                    setShowConstructionAreaOptions={
-                        setShowConstructionAreaOptions
-                    }
-
                     showResidentialSummary={
                         showResidentialSummary
                     }
+                />
+            )}
+        <ConstructionAreaFilterSES
+            selectedConstructionArea={
+                filters.construction_area
+            }
 
-                    />
+            setSelectedConstructionArea={(value: string) => {
+                setFilters((prev: any) => ({
+                ...prev,
+                construction_area: value
+                }))
+            }}
 
+            showConstructionAreaOptions={
+                showConstructionAreaOptions
+            }
+
+            setShowConstructionAreaOptions={
+                setShowConstructionAreaOptions
+            }
+
+            setShowPropertyAreaOptions={
+                setShowproperty_areaOptions
+            }
+
+            constructionAreaOptions={
+                constructionAreaOptions.map(
+                    (option: string) => ({
+                    en: option,
+                    es: option
+                    })
                 )
                 }
-
-               {
-                    !residential_property_types.includes(
-                        filters.property_type
-                    ) && (
-
-                        <>
+            />
 
 <PropertyAreaFilter
 
@@ -535,11 +535,6 @@ const {
                     }
 
                     />
-
-                </>
-
-                )
-                }
 
 <EnvironmentFilterES
 

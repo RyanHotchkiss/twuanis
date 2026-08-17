@@ -1,10 +1,12 @@
 'use client'
 
 import Link from 'next/link'
+
 import {
   useEffect,
   useState
 } from 'react'
+
 import {
   saveAnalysis,
   SavedAnalysisEngine
@@ -54,6 +56,7 @@ type Props = {
   valuation: any
   comparison: any
   options: any
+  embedded?: boolean
 }
 
 const tabs = [
@@ -171,19 +174,20 @@ const tabs = [
       }
     ]
 
-        export default function MarketIntelligenceTabs({
-              activeTab,
-              options,
-              filters,
-              explorerResult,
-              priceMeterAnalysis,
-              pricingStrategy,
-              marketScarcity,
-              buyerDemand,
-              marketMatches,
-              valuation,
-              comparison
-            }: Props) {
+    export default function MarketIntelligenceTabs({
+        activeTab,
+        options,
+        filters,
+        explorerResult,
+        priceMeterAnalysis,
+        pricingStrategy,
+        marketScarcity,
+        buyerDemand,
+        marketMatches,
+        valuation,
+        comparison,
+        embedded = false
+      }: Props) {
 
                             const [
                 saveStatus,
@@ -386,7 +390,9 @@ const tabs = [
 
               return (
                 <>
-                  <div style={tabBar}>
+
+      {!embedded && (
+         <div style={tabBar}>
 
                   {tabs.map(tab => {
                         const Icon = tab.icon
@@ -455,9 +461,9 @@ const tabs = [
                 </div>
               </Link>
             )
-            })}
-
-            </div>
+          })}
+        </div>
+      )}
 
 <section style={filterSection}>
         <h2 style={sectionTitle}>
@@ -473,7 +479,15 @@ const tabs = [
           }
           options={options}
           filters={filters}
-          basePath={`/en/market-intelligence?tab=${activeTab}`}
+          basePath={
+            embedded
+              ? `/en/market-hub?intelligence=${
+                  activeTab === 'explorer'
+                    ? 'explore'
+                    : activeTab
+                }`
+              : `/en/market-intelligence?tab=${activeTab}`
+          }
         />
       </section>
 
@@ -539,6 +553,7 @@ const tabs = [
             ? (
               <ExploreResults
                 result={explorerResult}
+                embedded={embedded}
               />
             )
             : (

@@ -8,193 +8,255 @@ export default function ValuationResults({
   const isRent =
     filters.transaction_type === 'rent'
 
+  const primaryCRC =
+    isRent
+      ? valuation.summary.estimatedRentalValueCRC
+      : valuation.summary.estimatedSalePriceCRC ||
+        valuation.summary.estimatedMarketValueCRC
+
+  const primaryUSD =
+    isRent
+      ? valuation.summary.estimatedRentalValueUSD
+      : valuation.summary.estimatedSalePriceUSD ||
+        valuation.summary.estimatedMarketValueUSD
+
   return (
-    <section>
-      <h2 style={sectionTitle}>
-        Valuation Summary
-      </h2>
+    <section style={workspace}>
 
-      <div style={cardGrid}>
-        <StatCard
-          label="Estimated Market Value"
-          value={
-            valuation.summary.estimatedMarketValueCRC ? (
-              <>
-                <div>{valuation.summary.estimatedMarketValueCRC}</div>
-                <div style={secondaryValue}>
-                  {valuation.summary.estimatedMarketValueUSD}
-                </div>
-              </>
-            ) : (
-              'Not enough data'
-            )
-          }
-        />
+      <section style={hero}>
+        <div style={heroEyebrow}>
+          {isRent
+            ? 'Estimated Rental Value'
+            : 'Estimated Market Value'}
+        </div>
 
-        <StatCard
-          label="Confidence Score"
-          value={`${valuation.summary.confidenceScore} · ${valuation.summary.confidenceLabel}`}
-        />
+        <div style={heroValue}>
+          {primaryCRC ||
+            'Not enough data'}
+        </div>
 
-        {!isRent && (
-        <StatCard
-          label="Estimated Sale Price"
-          value={
-            valuation.summary.estimatedSalePriceCRC ? (
-              <>
-                <div>{valuation.summary.estimatedSalePriceCRC}</div>
-                <div style={secondaryValue}>
-                  {valuation.summary.estimatedSalePriceUSD}
-                </div>
-              </>
-            ) : (
-              'Not enough data'
-            )
-          }
-        />
-      )}
+        {primaryUSD && (
+          <div style={heroSecondary}>
+            {primaryUSD}
+          </div>
+        )}
 
-        {isRent && (
-          <StatCard
-            label="Estimated Rental Value"
-            value={
-              valuation.summary.estimatedRentalValueCRC ? (
-                <>
-                  <div>{valuation.summary.estimatedRentalValueCRC}</div>
-                  <div style={secondaryValue}>
-                    {valuation.summary.estimatedRentalValueUSD}
-                  </div>
-                </>
-              ) : (
-                'Not enough data'
-              )
+        <div style={confidenceRow}>
+          <span style={confidenceLabel}>
+            Confidence
+          </span>
+
+          <span style={confidenceValue}>
+            {valuation.summary.confidenceScore}
+            {' · '}
+            {valuation.summary.confidenceLabel}
+          </span>
+        </div>
+      </section>
+
+
+      <section style={section}>
+        <div style={sectionHeader}>
+          <div>
+            <div style={eyebrow}>
+              Valuation Range
+            </div>
+
+            <h2 style={sectionTitle}>
+              Recommended Price Range
+            </h2>
+          </div>
+
+          <p style={sectionDescription}>
+            The range reflects the market evidence
+            supporting this valuation.
+          </p>
+        </div>
+
+        <div style={rangeGrid}>
+          <RangePoint
+            label="Low"
+            crc={
+              valuation.recommendedRange.lowCRC
+            }
+            usd={
+              valuation.recommendedRange.lowUSD
             }
           />
-        )}
-      </div>
 
-      <h2 style={sectionTitle}>
-        Comparable Properties
-      </h2>
+          <RangePoint
+            label="Likely"
+            crc={
+              valuation.recommendedRange.likelyCRC
+            }
+            usd={
+              valuation.recommendedRange.likelyUSD
+            }
+            primary
+          />
 
-      <div style={cardGrid}>
-        {valuation.comparables?.length > 0 ? (
-          valuation.comparables.map((listing: any) => (
-            <div key={listing.id} style={statCard}>
-              <p style={cardLabel}>
-                Comparable Score: {listing.comparableScore}
-              </p>
+          <RangePoint
+            label="High"
+            crc={
+              valuation.recommendedRange.highCRC
+            }
+            usd={
+              valuation.recommendedRange.highUSD
+            }
+          />
+        </div>
+      </section>
 
-              <h3 style={cardValue}>
-                {listing.title || 'Untitled Listing'}
-              </h3>
 
-              <p style={{ color: '#888', marginBottom: 0 }}>
-                {listing.province} · {listing.canton}
-              </p>
+      <section style={section}>
+        <div style={sectionHeader}>
+          <div>
+            <div style={eyebrow}>
+              Evidence
             </div>
-          ))
+
+            <h2 style={sectionTitle}>
+              Comparable Properties
+            </h2>
+          </div>
+
+          <p style={sectionDescription}>
+            Listings contributing comparable
+            market evidence to the valuation.
+          </p>
+        </div>
+
+        {valuation.comparables?.length > 0 ? (
+          <div style={comparables}>
+            {valuation.comparables.map(
+              (listing: any) => (
+                <div
+                  key={listing.id}
+                  style={comparableRow}
+                >
+                  <div style={comparableIdentity}>
+                    <div style={comparableTitle}>
+                      {listing.title ||
+                        'Untitled Listing'}
+                    </div>
+
+                    <div style={comparableLocation}>
+                      {[
+                        listing.district,
+                        listing.canton,
+                        listing.province
+                      ]
+                        .filter(Boolean)
+                        .join(' · ')}
+                    </div>
+                  </div>
+
+                  <div style={scoreBlock}>
+                    <span style={scoreLabel}>
+                      Comparable Score
+                    </span>
+
+                    <strong style={scoreValue}>
+                      {listing.comparableScore}
+                    </strong>
+                  </div>
+                </div>
+              )
+            )}
+          </div>
         ) : (
-          <div style={emptyCard}>
+          <div style={emptyState}>
             No comparable listings available yet.
           </div>
         )}
-      </div>
+      </section>
 
-      
 
-      <h2 style={sectionTitle}>
-        Recommended Price Range
-      </h2>
+      <section style={section}>
+        <div style={sectionHeader}>
+          <div>
+            <div style={eyebrow}>
+              Reasoning
+            </div>
 
-      <div style={cardGrid}>
-        <StatCard
-          label="Low Estimate"
-          value={
-            valuation.recommendedRange.lowCRC ? (
-              <>
-                <div>{valuation.recommendedRange.lowCRC}</div>
-                <div style={secondaryValue}>
-                  {valuation.recommendedRange.lowUSD}
-                </div>
-              </>
-            ) : (
-              'Not enough data'
-            )
-          }
-        />
+            <h2 style={sectionTitle}>
+              Why This Valuation
+            </h2>
+          </div>
 
-        <StatCard
-          label="Likely Estimate"
-          value={
-            valuation.recommendedRange.likelyCRC ? (
-              <>
-                <div>{valuation.recommendedRange.likelyCRC}</div>
-                <div style={secondaryValue}>
-                  {valuation.recommendedRange.likelyUSD}
-                </div>
-              </>
-            ) : (
-              'Not enough data'
-            )
-          }
-        />
+          <p style={sectionDescription}>
+            Market characteristics and methodology
+            influencing the estimate.
+          </p>
+        </div>
 
-        <StatCard
-          label="High Estimate"
-          value={
-            valuation.recommendedRange.highCRC ? (
-              <>
-                <div>{valuation.recommendedRange.highCRC}</div>
-                <div style={secondaryValue}>
-                  {valuation.recommendedRange.highUSD}
-                </div>
-              </>
-            ) : (
-              'Not enough data'
-            )
-          }
-        />
-      </div>
+        <div style={reasoningGrid}>
+          <TextListCard
+            title="Strengths"
+            items={
+              valuation.explanation.strengths
+            }
+          />
 
-      <h2 style={sectionTitle}>
-        Valuation Explanation
-      </h2>
+          <TextListCard
+            title="Weaknesses"
+            items={
+              valuation.explanation.weaknesses
+            }
+          />
 
-      <div style={cardGrid}>
-        <TextListCard
-          title="Strengths"
-          items={valuation.explanation.strengths}
-        />
+          <TextListCard
+            title="Method"
+            items={
+              valuation.explanation.notes
+            }
+          />
+        </div>
+      </section>
 
-        <TextListCard
-          title="Weaknesses"
-          items={valuation.explanation.weaknesses}
-        />
-
-        <TextListCard
-          title="Method Notes"
-          items={valuation.explanation.notes}
-        />
-      </div>
     </section>
   )
 }
 
-function StatCard({
+
+function RangePoint({
   label,
-  value
+  crc,
+  usd,
+  primary = false
 }: {
   label: string
-  value: any
+  crc: any
+  usd: any
+  primary?: boolean
 }) {
   return (
-    <div style={statCard}>
-      <p style={cardLabel}>{label}</p>
-      <h3 style={cardValue}>{value}</h3>
+    <div
+      style={{
+        ...rangePoint,
+        ...(primary
+          ? rangePointPrimary
+          : {})
+      }}
+    >
+      <div style={rangeLabel}>
+        {label}
+      </div>
+
+      <div style={rangeValue}>
+        {crc ||
+          'Not enough data'}
+      </div>
+
+      {usd && (
+        <div style={rangeSecondary}>
+          {usd}
+        </div>
+      )}
     </div>
   )
 }
+
 
 function TextListCard({
   title,
@@ -204,69 +266,321 @@ function TextListCard({
   items: string[]
 }) {
   return (
-    <div style={statCard}>
-      <p style={cardLabel}>{title}</p>
+    <div style={reasoningCard}>
+      <div style={reasoningTitle}>
+        {title}
+      </div>
 
       {items?.length > 0 ? (
-        <ul style={{ marginBottom: 0, paddingLeft: '1.25rem' }}>
-          {items.map((item, index) => (
-            <li key={index} style={{ marginBottom: '.5rem' }}>
-              {item}
-            </li>
-          ))}
+        <ul style={reasoningList}>
+          {items.map(
+            (item, index) => (
+              <li
+                key={index}
+                style={reasoningItem}
+              >
+                {item}
+              </li>
+            )
+          )}
         </ul>
       ) : (
-        <p style={{ color: '#888', marginBottom: 0 }}>
+        <div style={muted}>
           No notes available.
-        </p>
+        </div>
       )}
     </div>
   )
 }
 
-const sectionTitle = {
-  color: '#ff3B00',
-  fontSize: '2rem',
-  marginBottom: '1rem'
-}
 
-const cardGrid = {
+const workspace = {
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-  gap: '1rem',
-  marginBottom: '2rem'
+  gap: '1.5rem'
 }
 
-const statCard = {
+
+const hero = {
+  background:
+    'linear-gradient(135deg, #151515 0%, #0d0d0d 100%)',
+  border:
+    '1px solid #2a2a2a',
+  borderRadius:
+    '22px',
+  padding:
+    'clamp(1.5rem, 4vw, 3rem)'
+}
+
+
+const heroEyebrow = {
+  color: '#9a9a9a',
+  fontSize: '.78rem',
+  fontWeight: 700,
+  textTransform:
+    'uppercase' as const,
+  letterSpacing: '.12em',
+  marginBottom: '.75rem'
+}
+
+
+const heroValue = {
+  color: '#fff',
+  fontSize:
+    'clamp(2.4rem, 6vw, 4.75rem)',
+  fontWeight: 650,
+  lineHeight: 1,
+  letterSpacing: '-.045em'
+}
+
+
+const heroSecondary = {
+  color: '#999',
+  fontSize: '1.15rem',
+  marginTop: '.65rem'
+}
+
+
+const confidenceRow = {
+  display: 'flex',
+  flexWrap:
+    'wrap' as const,
+  alignItems: 'center',
+  gap: '.65rem',
+  marginTop: '2rem',
+  paddingTop: '1.25rem',
+  borderTop:
+    '1px solid #262626'
+}
+
+
+const confidenceLabel = {
+  color: '#777',
+  fontSize: '.8rem',
+  textTransform:
+    'uppercase' as const,
+  letterSpacing: '.08em'
+}
+
+
+const confidenceValue = {
+  color: '#D4AF37',
+  fontSize: '.95rem',
+  fontWeight: 700
+}
+
+
+const section = {
   background: '#111',
-  border: '1px solid #222',
-  borderRadius: '1rem',
+  border:
+    '1px solid #222',
+  borderRadius: '20px',
+  padding:
+    'clamp(1.25rem, 3vw, 2rem)'
+}
+
+
+const sectionHeader = {
+  display: 'flex',
+  justifyContent:
+    'space-between',
+  alignItems:
+    'flex-end',
+  gap: '2rem',
+  flexWrap:
+    'wrap' as const,
+  marginBottom: '1.5rem'
+}
+
+
+const eyebrow = {
+  color: '#C7A44B',
+  fontSize: '.72rem',
+  fontWeight: 700,
+  textTransform:
+    'uppercase' as const,
+  letterSpacing: '.12em',
+  marginBottom: '.4rem'
+}
+
+
+const sectionTitle = {
+  color: '#fff',
+  fontSize:
+    'clamp(1.35rem, 3vw, 1.8rem)',
+  margin: 0,
+  fontWeight: 600
+}
+
+
+const sectionDescription = {
+  color: '#777',
+  maxWidth: '430px',
+  lineHeight: 1.5,
+  fontSize: '.9rem',
+  margin: 0
+}
+
+
+const rangeGrid = {
+  display: 'grid',
+  gridTemplateColumns:
+    'repeat(auto-fit, minmax(190px, 1fr))',
+  gap: '.75rem'
+}
+
+
+const rangePoint = {
+  background: '#0c0c0c',
+  border:
+    '1px solid #242424',
+  borderRadius: '14px',
   padding: '1.25rem'
 }
 
-const secondaryValue = {
+
+const rangePointPrimary = {
+  border:
+    '1px solid #C7A44B',
+  background: '#15130d'
+}
+
+
+const rangeLabel = {
+  color: '#777',
+  fontSize: '.75rem',
+  textTransform:
+    'uppercase' as const,
+  letterSpacing: '.08em',
+  marginBottom: '.65rem'
+}
+
+
+const rangeValue = {
+  color: '#fff',
+  fontSize:
+    'clamp(1.3rem, 3vw, 1.8rem)',
+  fontWeight: 600
+}
+
+
+const rangeSecondary = {
+  color: '#777',
   marginTop: '.35rem',
-  color: '#888',
-  fontSize: '1rem',
-  fontWeight: 400
+  fontSize: '.9rem'
 }
 
-const cardLabel = {
-  color: '#888',
+
+const comparables = {
+  display: 'grid',
+  gap: '.65rem'
+}
+
+
+const comparableRow = {
+  display: 'flex',
+  justifyContent:
+    'space-between',
+  alignItems: 'center',
+  gap: '1rem',
+  background: '#0c0c0c',
+  border:
+    '1px solid #222',
+  borderRadius: '14px',
+  padding:
+    '1rem 1.15rem'
+}
+
+
+const comparableIdentity = {
+  minWidth: 0
+}
+
+
+const comparableTitle = {
+  color: '#eee',
+  fontWeight: 600,
+  lineHeight: 1.35
+}
+
+
+const comparableLocation = {
+  color: '#777',
+  fontSize: '.85rem',
+  marginTop: '.3rem'
+}
+
+
+const scoreBlock = {
+  display: 'grid',
+  justifyItems: 'end',
+  flexShrink: 0
+}
+
+
+const scoreLabel = {
+  color: '#666',
+  fontSize: '.7rem',
+  textTransform:
+    'uppercase' as const,
+  letterSpacing: '.07em'
+}
+
+
+const scoreValue = {
+  color: '#D4AF37',
+  fontSize: '1.25rem',
+  marginTop: '.2rem'
+}
+
+
+const reasoningGrid = {
+  display: 'grid',
+  gridTemplateColumns:
+    'repeat(auto-fit, minmax(230px, 1fr))',
+  gap: '.75rem'
+}
+
+
+const reasoningCard = {
+  background: '#0c0c0c',
+  border:
+    '1px solid #222',
+  borderRadius: '14px',
+  padding: '1.25rem'
+}
+
+
+const reasoningTitle = {
+  color: '#fff',
+  fontWeight: 600,
+  marginBottom: '.9rem'
+}
+
+
+const reasoningList = {
   margin: 0,
-  fontSize: '.85rem'
+  paddingLeft: '1.15rem',
+  color: '#aaa'
 }
 
-const cardValue = {
-  margin: '.5rem 0 0',
-  fontSize: '1.8rem'
+
+const reasoningItem = {
+  marginBottom: '.55rem',
+  lineHeight: 1.5
 }
 
-const emptyCard = {
-  background: '#111',
-  border: '1px solid #222',
-  borderRadius: '1rem',
+
+const muted = {
+  color: '#666',
+  fontSize: '.9rem'
+}
+
+
+const emptyState = {
+  background: '#0c0c0c',
+  border:
+    '1px solid #222',
+  borderRadius: '14px',
   padding: '1.25rem',
-  color: '#888',
-  marginBottom: '2rem'
+  color: '#777'
 }

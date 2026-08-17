@@ -205,9 +205,6 @@ export async function updateSavedAnalysis(
   id: string,
   updates: {
     name?: string
-    filters?: unknown
-    result?: unknown
-    schemaVersion?: number
   }
 ) {
 const user =
@@ -221,15 +218,6 @@ const user =
     .update({
       ...(updates.name !== undefined && {
         name: updates.name
-      }),
-      ...(updates.filters !== undefined && {
-        filters: updates.filters
-      }),
-      ...(updates.result !== undefined && {
-        result: updates.result
-      }),
-      ...(updates.schemaVersion !== undefined && {
-        schema_version: updates.schemaVersion
       }),
       updated_at: new Date().toISOString()
     })
