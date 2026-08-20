@@ -128,6 +128,25 @@ const [showMainOverlay, setShowMainOverlay] =
     initialOverlayState
   )
 
+  useEffect(() => {
+  const overlayParam =
+    searchParams.get('overlay')
+
+  if (overlayParam === 'looking') {
+    setShowPoster(false)
+    setShowMainOverlay(true)
+    setOverlayState('looking')
+    return
+  }
+
+  if (overlayParam === 'posting') {
+    setShowPoster(false)
+    setShowMainOverlay(true)
+    setOverlayState('posting')
+    return
+  }
+}, [searchParams])
+
   const homepageBlurred =
   showPoster || showMainOverlay
 
