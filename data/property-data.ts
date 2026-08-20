@@ -66,17 +66,123 @@
                 { en: '>5 Hectares', es: '>5 Hectáreas' }
                 ]
 
-                export const utilities = [
-                { en: 'Water', es: 'Agua' },
-                { en: 'Electricity', es: 'Electricidad' },
-                { en: 'Fiber Internet', es: 'Internet por Fibra' },
-                { en: 'Cell Signal', es: 'Señal Celular' },
-                { en: 'Septic', es: 'Séptico' },
-                { en: 'Sewer', es: 'Alcantarillado' },
-                { en: 'Well Water', es: 'Pozo de Agua' },
-                { en: 'Solar Power', es: 'Energía Solar' },
-                { en: 'Municipal Water', es: 'Agua Municipal' }
-                ]
+                export type UtilityCategory =
+                | 'water_supply'
+                | 'electricity'
+                | 'wastewater'
+                | 'greywater'
+                | 'internet'
+                | 'gas'
+
+                export type UtilityOption = {
+                category: UtilityCategory
+                en: string
+                es: string
+                }
+
+                export const utilities: UtilityOption[] = [
+                    // Water Supply
+                    {
+                        category: 'water_supply',
+                        en: 'Municipal / ASADA Water',
+                        es: 'Agua Municipal / ASADA'
+                    },
+                    {
+                        category: 'water_supply',
+                        en: 'Private Well',
+                        es: 'Pozo Privado'
+                    },
+                    {
+                        category: 'water_supply',
+                        en: 'Shared / Community Well',
+                        es: 'Pozo Compartido / Comunitario'
+                    },
+                    {
+                        category: 'water_supply',
+                        en: 'Spring',
+                        es: 'Naciente'
+                    },
+                    {
+                        category: 'water_supply',
+                        en: 'Rainwater Collection',
+                        es: 'Recolección de Agua de Lluvia'
+                    },
+
+                    // Electricity
+                    {
+                        category: 'electricity',
+                        en: 'Grid Electricity',
+                        es: 'Electricidad de la Red'
+                    },
+                    {
+                        category: 'electricity',
+                        en: 'Solar System',
+                        es: 'Sistema Solar'
+                    },
+                    {
+                        category: 'electricity',
+                        en: 'Hydroelectric System',
+                        es: 'Sistema Hidroeléctrico'
+                    },
+
+                    // Wastewater
+                    {
+                        category: 'wastewater',
+                        en: 'Municipal Sewer',
+                        es: 'Alcantarillado Municipal'
+                    },
+                    {
+                        category: 'wastewater',
+                        en: 'Septic System',
+                        es: 'Sistema Séptico'
+                    },
+                    {
+                        category: 'wastewater',
+                        en: 'On-site Treatment System',
+                        es: 'Sistema de Tratamiento en Sitio'
+                    },
+
+                    // Greywater
+                    {
+                        category: 'greywater',
+                        en: 'Drain Field / On-site Disposal',
+                        es: 'Campo de Drenaje / Disposición en Sitio'
+                    },
+                    {
+                        category: 'greywater',
+                        en: 'Greywater to Municipal Sewer',
+                        es: 'Aguas Grises al Alcantarillado Municipal'
+                    },
+                    {
+                        category: 'greywater',
+                        en: 'Surface Discharge',
+                        es: 'Descarga Superficial'
+                    },
+
+                    // Internet
+                    {
+                        category: 'internet',
+                        en: 'Fiber Internet',
+                        es: 'Internet por Fibra'
+                    },
+
+                    // Gas
+                    {
+                        category: 'gas',
+                        en: 'LPG Cylinder',
+                        es: 'Cilindro de Gas LP'
+                    },
+                    {
+                        category: 'gas',
+                        en: 'LPG Fixed Tank',
+                        es: 'Tanque Fijo de Gas LP'
+                    },
+                    {
+                        category: 'gas',
+                        en: 'Piped Gas',
+                        es: 'Gas por Tubería'
+                    }
+                    ]
 
                 export const environments = [
                 { en: 'Urban', es: 'Urbano' },
@@ -89,14 +195,49 @@
                 ]
 
                 export const accessibilityOptions = [
-                { en: '2WD Accessible', es: 'Accesible en 2WD' },
-                { en: 'Paved Road', es: 'Carretera Pavimentada' },
-                { en: '4x4 Required', es: 'Requiere 4x4' },
-                { en: 'Walkable', es: 'Caminable' },
-                { en: 'Boat Access Only', es: 'Acceso Solo por Bote' }
+                {
+                    en: 'Paved Road to Property',
+                    es: 'Carretera Pavimentada hasta la Propiedad'
+                },
+                {
+                    en: 'Unpaved Road to Property',
+                    es: 'Carretera No Pavimentada hasta la Propiedad'
+                },
+                {
+                    en: 'Boat Access Only',
+                    es: 'Acceso Solo por Bote'
+                }
                 ]
 
-                export const terrainOptions = [
+                export const pavedRoadDistanceRangeOptions = [
+                {
+                    value: 'under_100m',
+                    en: '<100 m',
+                    es: '<100 m'
+                },
+                {
+                    value: '100_500m',
+                    en: '100–500 m',
+                    es: '100–500 m'
+                },
+                {
+                    value: '500_1000m',
+                    en: '500–1,000 m',
+                    es: '500–1.000 m'
+                },
+                {
+                    value: '1_5km',
+                    en: '1–5 km',
+                    es: '1–5 km'
+                },
+                {
+                    value: 'over_5km',
+                    en: '>5 km',
+                    es: '>5 km'
+                }
+                ]
+
+               export const terrainOptions = [
                 { en: 'Flat', es: 'Plano' },
                 { en: 'Mostly Flat', es: 'Mayormente Plano' },
                 { en: 'Rolling Hills', es: 'Colinas Onduladas' },

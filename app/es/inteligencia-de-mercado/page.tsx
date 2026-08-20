@@ -1,5 +1,5 @@
-import TopBarES
-  from '@/app/components/TopBarES'
+import TopBar
+  from '@/app/components/TopBar'
 
 import PestanasInteligenciaMercado
   from './PestanasInteligenciaMercado'
@@ -36,7 +36,7 @@ export default async function MarketIntelligencePage({
 
   return (
     <main style={main}>
-      <TopBarES />
+      <TopBar />
 
 
       <section style={hero}>

@@ -1,29 +1,32 @@
 'use client'
 
-type AccessibilityFiltersProps = {
-  selectedAccessibility: string
-  setSelectedAccessibility: (value: string) => void
+import {
+  accessibilityOptions,
+  pavedRoadDistanceRangeOptions
+} from '@/data/property-data'
 
-  showAccessibilityOptions: boolean
-  setShowAccessibilityOptions: (value: boolean) => void
-}
+type AccessibilityFiltersProps = {
+    selectedAccessibility: string
+    setSelectedAccessibility: (value: string) => void
+
+    selectedPavedRoadDistanceRange: string
+    setSelectedPavedRoadDistanceRange: (value: string) => void
+
+    showAccessibilityOptions: boolean
+    setShowAccessibilityOptions: (value: boolean) => void
+  }
 
 export default function AccessibilityFilters({
   selectedAccessibility,
   setSelectedAccessibility,
 
+  selectedPavedRoadDistanceRange,
+  setSelectedPavedRoadDistanceRange,
+
   showAccessibilityOptions,
   setShowAccessibilityOptions
 
 }: AccessibilityFiltersProps) {
-
-  const accessibilityOptions = [
-    '2WD Accessible',
-    'Paved Road',
-    '4x4 Required',
-    'Walkable',
-    'Boat Access Only'
-  ]
 
   return (
 <div>
@@ -83,46 +86,90 @@ export default function AccessibilityFilters({
             {/* OPTIONS */}
             {showAccessibilityOptions && (
 
-              <div style={pillWrap}>
+                  <div style={pillWrap}>
 
-                {accessibilityOptions.map((option) => {
+                    {accessibilityOptions.map((option) => {
 
-                  const alreadySelected =
-                    selectedAccessibility === option
+                      const alreadySelected =
+                        selectedAccessibility === option.en
 
-                  return (
+                      return (
 
-                    <button
-                      type="button"
-                      key={option}
-                      onClick={() => {
+                        <button
+                          type="button"
+                          key={option.en}
+                          onClick={() => {
 
-                        setSelectedAccessibility(option)
-                        setShowAccessibilityOptions(false)
+                            setSelectedAccessibility(option.en)
+                            setShowAccessibilityOptions(false)
 
-                      }}
-                      style={
-                        alreadySelected
-                          ? activePill
-                          : pill
-                      }
-                    >
-                      {option}
-                    </button>
+                          }}
+                          style={
+                            alreadySelected
+                              ? activePill
+                              : pill
+                          }
+                        >
+                          {option.en}
+                        </button>
 
-                  )
+                      )
 
-                })}
+                    })}
+
+                  </div>
+
+                )}
+
+                {selectedAccessibility ===
+                  'Unpaved Road to Property' && (
+
+                  <div style={distanceRangeSection}>
+
+                    <div style={distanceRangeHeading}>
+                      Distance to Paved Road
+                    </div>
+
+                    <div style={pillWrap}>
+
+                      {pavedRoadDistanceRangeOptions.map(
+                        (option) => (
+
+                          <button
+                            type="button"
+                            key={option.value}
+                            onClick={() =>
+                              setSelectedPavedRoadDistanceRange(
+                                option.value
+                              )
+                            }
+                            style={
+                              selectedPavedRoadDistanceRange ===
+                              option.value
+                                ? activePill
+                                : pill
+                            }
+                          >
+                            {option.en}
+                          </button>
+
+                        )
+                      )}
+
+                    </div>
+
+                  </div>
+
+                )}
 
               </div>
 
-            )}
+      )
 
-          </div>
+    }
 
-  )
 
-}
+
 
 const filterHeading = {
   fontSize:'1rem',
@@ -180,4 +227,14 @@ const resetButton = {
   color:'#ff6666',
   cursor:'pointer',
   fontSize:'1rem'
+}
+
+const distanceRangeSection = {
+  marginTop: '1rem'
+}
+
+const distanceRangeHeading = {
+  fontSize: '.85rem',
+  color: '#aaa',
+  marginBottom: '.75rem'
 }

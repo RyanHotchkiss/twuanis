@@ -110,6 +110,7 @@ export default function SellPage() {
     connectivity: '',
     environment: '',
     accessibility: '',
+    distance_to_paved_road_range: '',
     terrain: [] as string[],
     priceMillions: 0,
     images: [] as {
@@ -341,6 +342,9 @@ console.log('BedroomFilterS', BedroomFilterS)
                                             accessibility: row.accessibility
                                             ? [row.accessibility]
                                             : [],
+
+                                            distance_to_paved_road_range:
+                                            row.distance_to_paved_road_range || null,
 
                                             terrain: row.terrain
                                             ? [row.terrain]
@@ -692,20 +696,41 @@ console.log('BedroomFilterS', BedroomFilterS)
 
 {/* accessibility */}
 
-                    <AccessibilityFilters
-                        selectedAccessibility={propertyData.accessibility}
-                        setSelectedAccessibility={(value) =>
-                            setPropertyData({
-                            ...propertyData,
-                            accessibility: value
-                            })
-                        }
+        <AccessibilityFilters
+            selectedAccessibility={
+                propertyData.accessibility
+            }
 
-                        showAccessibilityOptions={showAccessibilityOptions}
-                        setShowAccessibilityOptions={
-                            setShowAccessibilityOptions
-                        }
-                        />
+            setSelectedAccessibility={(value) =>
+                setPropertyData(prev => ({
+                    ...prev,
+                    accessibility: value,
+                    distance_to_paved_road_range:
+                        value === 'Unpaved Road to Property'
+                            ? prev.distance_to_paved_road_range
+                            : ''
+                }))
+            }
+
+            selectedPavedRoadDistanceRange={
+                propertyData.distance_to_paved_road_range
+            }
+
+            setSelectedPavedRoadDistanceRange={(value) =>
+                setPropertyData(prev => ({
+                    ...prev,
+                    distance_to_paved_road_range: value
+                }))
+            }
+
+            showAccessibilityOptions={
+                showAccessibilityOptions
+            }
+
+            setShowAccessibilityOptions={
+                setShowAccessibilityOptions
+            }
+        />
 
 {/* TERRAIN */}
                    <TerrainFilterS

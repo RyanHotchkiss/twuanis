@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import TopBarES from '@/app/components/TopBarES'
+import TopBar from '@/app/components/TopBar'
 import HomeButton from '@/app/components/HomeButton'
 import SearchButton from '@/app/components/SearchButton'
 import FilterButton from '@/app/components/FilterButton'
@@ -64,7 +64,7 @@ export default function HelpPage() {
         borderBottom:'1px solid #151515'
       }}>
 
-        <TopBarES
+        <TopBar
         onFilterClick={() => {}}
         />
 
@@ -104,7 +104,7 @@ export default function HelpPage() {
 
       </div>
 
-        {/* TopBarES ICONS */}
+        {/* TopBar ICONS */}
           <div style={{
             padding:isMobile
               ? '24px'

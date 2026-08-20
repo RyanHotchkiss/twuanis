@@ -2,6 +2,9 @@
 
 import { useRouter, useSearchParams } from 'next/navigation'
 import ExploreLocationFilter from './FiltroUbicacionExplora'
+import {
+  pavedRoadDistanceRangeOptions
+} from '@/data/property-data'
 
 const transactionOptions = [
   { id: 'sale', slug: 'sale', term_name: 'En Venta' },
@@ -27,7 +30,18 @@ function buildExploreUrl(
     params.set(key, value)
   } else {
     params.delete(key)
-  }
+      }
+
+      if (
+      key === 'accessibility' &&
+      !value
+        .split(',')
+        .includes('Unpaved Road to Property')
+    ) {
+      params.delete(
+        'distance_to_paved_road_range'
+      )
+    }
 
   return `/es/explora?${params.toString()}`
 }
@@ -171,6 +185,21 @@ export default function ExploreFilters({
   options: any
   filters: Record<string, string | undefined>
 }) {
+  const showPavedRoadDistance =
+    (filters.accessibility || '')
+      .split(',')
+      .includes('Unpaved Road to Property')
+
+  const pavedRoadDistanceOptions =
+    pavedRoadDistanceRangeOptions.map(
+      option => ({
+        slug: option.value,
+        term_name_en: option.en,
+        term_name_es: option.es,
+        term_name: option.es
+      })
+    )
+
   return (
     <div
       style={{
@@ -191,6 +220,14 @@ export default function ExploreFilters({
       <MultiSelectFilter label="Terreno" filterKey="terrain" options={options.terrain} filters={filters} />
       <MultiSelectFilter label="Servicios" filterKey="utility" options={options.utility} filters={filters} />
       <MultiSelectFilter label="Accesibilidad" filterKey="accessibility" options={options.accessibility} filters={filters} />
+      {showPavedRoadDistance && (
+        <MultiSelectFilter
+          label="Distancia a Calle Pavimentada"
+          filterKey="distance_to_paved_road_range"
+          options={pavedRoadDistanceOptions}
+          filters={filters}
+        />
+      )}
       <MultiSelectFilter label="Estado Legal" filterKey="legal_status" options={options.legal_status} filters={filters} />
     </div>
   )

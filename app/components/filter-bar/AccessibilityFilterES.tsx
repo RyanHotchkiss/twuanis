@@ -1,8 +1,16 @@
 'use client'
 
+import {
+  accessibilityOptions,
+  pavedRoadDistanceRangeOptions
+} from '@/data/property-data'
+
 type AccessibilityFilterProps = {
   selectedaccessibility: string
   setSelectedaccessibility: (value: string) => void
+
+  selectedPavedRoadDistanceRange: string
+  setSelectedPavedRoadDistanceRange: (value: string) => void
 
   showAccessibilityOptions: boolean
   setShowAccessibilityOptions: (value: boolean) => void
@@ -11,16 +19,11 @@ type AccessibilityFilterProps = {
 export default function AccessibilityFilterES({
   selectedaccessibility,
   setSelectedaccessibility,
+  selectedPavedRoadDistanceRange,
+  setSelectedPavedRoadDistanceRange,
   showAccessibilityOptions,
   setShowAccessibilityOptions
 }: AccessibilityFilterProps) {
-  const accessibilityOptions = [
-    'Accesible en 2WD',
-    'Carretera Pavimentada',
-    'Requiere 4x4',
-    'Caminable',
-    'Acceso Solo por Bote'
-  ]
 
   return (
     <div>
@@ -32,18 +35,18 @@ export default function AccessibilityFilterES({
         <div style={pillWrap}>
           {accessibilityOptions.map((option) => (
             <button
-              key={option}
+              key={option.en}
               onClick={() => {
-                setSelectedaccessibility(option)
+                setSelectedaccessibility(option.en)
                 setShowAccessibilityOptions(false)
               }}
               style={
-                selectedaccessibility === option
+                selectedaccessibility === option.en
                   ? activePill
                   : pill
               }
             >
-              {option}
+              {option.es}
             </button>
           ))}
         </div>
@@ -61,7 +64,10 @@ export default function AccessibilityFilterES({
                 cursor: 'pointer'
               }}
             >
-              {selectedaccessibility}
+              {accessibilityOptions.find(
+                (option) =>
+                  option.en === selectedaccessibility
+              )?.es || selectedaccessibility}
             </span>
 
             <button
@@ -75,6 +81,46 @@ export default function AccessibilityFilterES({
               ✕
             </button>
           </div>
+        )}
+        {selectedaccessibility ===
+          'Unpaved Road to Property' && (
+
+          <div style={distanceRangeSection}>
+
+            <div style={distanceRangeHeading}>
+              DISTANCIA A CARRETERA PAVIMENTADA
+            </div>
+
+            <div style={pillWrap}>
+
+              {pavedRoadDistanceRangeOptions.map(
+                (option) => (
+
+                  <button
+                    type="button"
+                    key={option.value}
+                    onClick={() =>
+                      setSelectedPavedRoadDistanceRange(
+                        option.value
+                      )
+                    }
+                    style={
+                      selectedPavedRoadDistanceRange ===
+                      option.value
+                        ? activePill
+                        : pill
+                    }
+                  >
+                    {option.es}
+                  </button>
+
+                )
+              )}
+
+            </div>
+
+          </div>
+
         )}
     </div>
   )
@@ -133,4 +179,14 @@ const resetButton = {
   color: '#ff6666',
   cursor: 'pointer',
   fontSize: '1rem'
+}
+
+const distanceRangeSection = {
+  marginTop: '1rem'
+}
+
+const distanceRangeHeading = {
+  fontSize: '.85rem',
+  color: '#aaa',
+  marginBottom: '.75rem'
 }

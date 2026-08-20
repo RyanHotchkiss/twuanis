@@ -157,6 +157,9 @@ export default function MarketHubCompare({
     a_accessibility:
       marketFilters?.a_accessibility,
 
+    a_distance_to_paved_road_range:
+      marketFilters?.a_distance_to_paved_road_range,
+
     a_legal_status:
       marketFilters?.a_legal_status
   }
@@ -210,6 +213,9 @@ export default function MarketHubCompare({
 
     b_accessibility:
       marketFilters?.b_accessibility,
+
+    b_distance_to_paved_road_range:
+      marketFilters?.b_distance_to_paved_road_range,
 
     b_legal_status:
       marketFilters?.b_legal_status

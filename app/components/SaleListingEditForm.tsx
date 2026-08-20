@@ -56,7 +56,7 @@ import PropertyDefinitionPanel from '@/app/components/PropertyDefinitionPanel'
 import TopBar from '@/app/components/TopBar'
 import ExactConstructionAreaInput
 from '@/app/components/listing-input/ExactConstructionAreaInput'
-import TopBarES from '@/app/components/TopBarES'
+
 import PropertyTypeFilterSES from '@/app/components/filter-bar/PropertyTypeFilterSES'
 import BedroomFilterSES from '@/app/components/filter-bar/BedroomFilterSES'
 import BathroomFilterSES from '@/app/components/filter-bar/BathroomFilterSES'
@@ -391,6 +391,9 @@ export default function SaleListingEditForm({
         normalizeAccessibility(
           listing.accessibility
         ),
+
+      distance_to_paved_road_range:
+        listing.distance_to_paved_road_range || '',
 
       terrain:
         normalizeStringArray(
@@ -758,6 +761,13 @@ export default function SaleListingEditForm({
             propertyData.accessibility ||
             null,
 
+          distance_to_paved_road_range:
+            propertyData.accessibility ===
+              'Unpaved Road to Property'
+                ? propertyData.distance_to_paved_road_range ||
+                  null
+                : null,
+
           terrain:
             propertyData.terrain,
 
@@ -829,10 +839,7 @@ export default function SaleListingEditForm({
   return (
     <main style={page}>
       <div style={container}>
-        {language === 'es'
-          ? <TopBarES />
-          : <TopBar />
-        }
+        <TopBar />
 
         <header style={header}>
           <div>
@@ -1441,38 +1448,80 @@ export default function SaleListingEditForm({
 
              {language === 'es' ? (
                 <AccessibilityFilterES
-                  selectedaccessibility={
-                    propertyData.accessibility
-                  }
-                  setSelectedaccessibility={
-                    (value: string) =>
-                      setField(
-                        'accessibility',
-                        value
-                      )
-                  }
-                  showAccessibilityOptions={
-                    showAccessibilityOptions
-                  }
-                  setShowAccessibilityOptions={
-                    setShowAccessibilityOptions
-                  }
-                />
+                    selectedaccessibility={
+                      propertyData.accessibility
+                    }
+
+                    setSelectedaccessibility={
+                      (value: string) => {
+                        setPropertyData(prev => ({
+                          ...prev,
+                          accessibility: value,
+                          distance_to_paved_road_range:
+                            value ===
+                            'Unpaved Road to Property'
+                              ? prev.distance_to_paved_road_range
+                              : ''
+                        }))
+                      }
+                    }
+
+                    selectedPavedRoadDistanceRange={
+                      propertyData.distance_to_paved_road_range
+                    }
+
+                    setSelectedPavedRoadDistanceRange={
+                      (value: string) =>
+                        setField(
+                          'distance_to_paved_road_range',
+                          value
+                        )
+                    }
+
+                    showAccessibilityOptions={
+                      showAccessibilityOptions
+                    }
+
+                    setShowAccessibilityOptions={
+                      setShowAccessibilityOptions
+                    }
+                  />
               ) : (
                 <AccessibilityFilterS
                   selectedAccessibility={
                     propertyData.accessibility
                   }
+
                   setSelectedAccessibility={
+                    (value: string) => {
+                      setPropertyData(prev => ({
+                        ...prev,
+                        accessibility: value,
+                        distance_to_paved_road_range:
+                          value ===
+                          'Unpaved Road to Property'
+                            ? prev.distance_to_paved_road_range
+                            : ''
+                      }))
+                    }
+                  }
+
+                  selectedPavedRoadDistanceRange={
+                    propertyData.distance_to_paved_road_range
+                  }
+
+                  setSelectedPavedRoadDistanceRange={
                     (value: string) =>
                       setField(
-                        'accessibility',
+                        'distance_to_paved_road_range',
                         value
                       )
                   }
+
                   showAccessibilityOptions={
                     showAccessibilityOptions
                   }
+
                   setShowAccessibilityOptions={
                     setShowAccessibilityOptions
                   }

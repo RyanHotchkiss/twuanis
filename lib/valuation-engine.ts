@@ -1,6 +1,6 @@
 import { getMarketStatistics } from '@/lib/statistics-engine'
 import { getComparableListings } from '@/lib/comparables-engine'
-import { getPriceMeterAnalysis } from '@/lib/price-meter-engine'
+
 
 import {
   getValuationConfidenceScore,
@@ -29,6 +29,7 @@ type ValuationFilters = {
   environment?: string
   terrain?: string
   accessibility?: string
+  distance_to_paved_road_range?: string
   legal_status?: string
 
   current_price?: string
@@ -153,6 +154,8 @@ const marketFilters = {
   environment: filters.environment,
   terrain: filters.terrain,
   accessibility: filters.accessibility,
+  distance_to_paved_road_range:
+    filters.distance_to_paved_road_range,
   legal_status: filters.legal_status,
 }
 
@@ -206,9 +209,6 @@ const marketFilters = {
       )
     ) || markets[0]
 
-  const priceMeterAnalysis =
-  await getPriceMeterAnalysis(marketFilters, language)
-
   const stats = market.statistics
   const listings = market.listings || []
 
@@ -246,25 +246,7 @@ const marketFilters = {
             (estimatedMarketValue - medianSalePrice) /
             medianSalePrice
           ) * 100
-        : null
-
-    const constructionArea =
-      filters.construction_area
-        ? Number(filters.construction_area)
-        : null
-
-    const propertyArea =
-      filters.property_area
-        ? Number(filters.property_area)
-        : null
-
-    const area =
-      constructionArea || propertyArea
-
-    const pricePerM2 =
-      estimatedMarketValue && area
-        ? estimatedMarketValue / area
-        : null    
+        : null 
 
    const comparisonPrice =
       filters.transaction_type === 'rent'
@@ -378,10 +360,8 @@ const marketFilters = {
           : null
     },
 
-    pricingSignals: {
-        pricePerM2: pricePerM2
-        ? formatCRC(pricePerM2)
-        : null,
+        pricingSignals: {
+          pricePerM2: null,
 
         marketPercentile:
           marketPercentile,

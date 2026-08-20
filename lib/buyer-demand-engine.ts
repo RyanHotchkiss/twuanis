@@ -18,6 +18,7 @@ type MarketFilters = {
   environment?: string
   terrain?: string
   accessibility?: string
+  distance_to_paved_road_range?: string
   legal_status?: string
 }
 

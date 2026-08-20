@@ -7,6 +7,8 @@ import {
   resolveListingImages
 } from '@/app/utils/resolveListingImages'
 
+import TopBar from '@/app/components/TopBar'
+
 export default function SwipePage() {
 
   const [properties, setProperties] = useState<any[]>([])
@@ -218,8 +220,22 @@ export default function SwipePage() {
 
   const rotation = dragX / 20
 
+  const topNav = (
+    <div
+      style={{
+        position: 'fixed',
+        top: '1.25rem',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        zIndex: 3000
+      }}
+    >
+      <TopBar />
+    </div>
+  )
+
   // END
-if (!currentProperty) {
+  if (!currentProperty) {
 
   return (
 
@@ -234,37 +250,7 @@ if (!currentProperty) {
       padding: '2rem'
     }}>
 
-      {/* TOP NAV */}
-      <div style={{
-        position: 'absolute',
-        top: '1.5rem',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        display: 'flex',
-        gap: '1rem',
-        zIndex: 20,
-        flexWrap: 'wrap',
-        justifyContent: 'center'
-      }}>
-
-        <a
-          href="/"
-          style={navButton}
-        >
-          Salir del Modo Deslizar
-        </a>
-
-        <a
-          href="/rent_lease_favorites"
-          style={{
-            ...navButton,
-            color: '#FFFFFF'
-          }}
-        >
-          Propiedades Favoritas ♥
-        </a>
-
-      </div>
+      {topNav}
 
       {/* FILTER BAR */}
       <div style={{
@@ -494,37 +480,7 @@ if (!currentProperty) {
       padding: '2rem'
     }}>
 
-      {/* TOP NAV */}
-      <div style={{
-        position: 'absolute',
-        top: '1.5rem',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        display: 'flex',
-        gap: '1rem',
-        zIndex: 20,
-        flexWrap: 'wrap',
-        justifyContent: 'center'
-      }}>
-
-        <a
-          href="/"
-          style={navButton}
-        >
-          Salir del Modo Deslizar
-        </a>
-
-        <a
-          href="/rent_lease_favorites"
-          style={{
-            ...navButton,
-            color: '#FFFFFF'
-          }}
-        >
-          Propiedades Favoritas <span style={{ color: '#D4AF37' }}>♥</span>
-        </a>
-
-      </div>
+      {topNav}
 
       {/* FILTER BAR */}
       <div style={{

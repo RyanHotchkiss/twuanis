@@ -29,6 +29,7 @@ type ExplorePageProps = {
     terrain?: string
     utility?: string
     accessibility?: string
+    distance_to_paved_road_range?: string
     legal_status?: string
   }>
 }
@@ -52,6 +53,8 @@ export default async function ExplorePage({
     terrain: params.terrain,
     utility: params.utility,
     accessibility: params.accessibility,
+    distance_to_paved_road_range:
+      params.distance_to_paved_road_range,
     legal_status: params.legal_status
   }
 

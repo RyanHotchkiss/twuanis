@@ -24,7 +24,7 @@ import {
   removePropertiesFromCollection
 } from '@/lib/collections'
 
-import TopBarES from '@/app/components/TopBarES'
+import TopBar from '@/app/components/TopBar'
 
 
 import { supabase } from '@/lib/supabase'
@@ -423,7 +423,7 @@ export default function FavoritesPage() {
 
     <main style={mainStyle}>
 
-                    <TopBarES
+                    <TopBar
                         onFilterClick={() =>
                           setShowMobileFilters(true)
                         }

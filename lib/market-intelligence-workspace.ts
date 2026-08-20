@@ -56,6 +56,9 @@ export type MarketIntelligenceSearchParams = {
   environment?: string
   terrain?: string
   accessibility?: string
+  b_distance_to_paved_road_range?: string
+  a_distance_to_paved_road_range?: string
+  distance_to_paved_road_range?: string
   legal_status?: string
   tab?: string
 
@@ -226,6 +229,9 @@ export async function resolveMarketIntelligenceWorkspace({
     accessibility:
       params.accessibility,
 
+    distance_to_paved_road_range:
+      params.distance_to_paved_road_range,
+
     legal_status:
       params.legal_status
   }
@@ -286,6 +292,9 @@ export async function resolveMarketIntelligenceWorkspace({
     a_accessibility:
       params.a_accessibility,
 
+    a_distance_to_paved_road_range:
+      params.a_distance_to_paved_road_range,
+
     a_legal_status:
       params.a_legal_status,
 
@@ -337,6 +346,9 @@ export async function resolveMarketIntelligenceWorkspace({
 
     b_accessibility:
       params.b_accessibility,
+
+    b_distance_to_paved_road_range:
+      params.b_distance_to_paved_road_range,
 
     b_legal_status:
       params.b_legal_status
@@ -473,6 +485,9 @@ export async function resolveMarketIntelligenceWorkspace({
         options.accessibility
       ),
 
+    distance_to_paved_road_range:
+      enginefilters.distance_to_paved_road_range,
+
     legal_status:
       resolveFilterValue(
         enginefilters.legal_status,
@@ -530,10 +545,15 @@ export async function resolveMarketIntelligenceWorkspace({
             null
           ),
 
-      getPriceMeterAnalysis(
-        engineFilters,
-        language
-      ),
+      engineFilters.transaction_type === 'sale' ||
+      engineFilters.transaction_type === 'rent'
+        ? getPriceMeterAnalysis(
+            engineFilters,
+            language
+          )
+        : Promise.resolve(
+            null
+          ),
 
       getPricingStrategy(
         engineFilters,

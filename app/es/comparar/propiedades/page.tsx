@@ -8,8 +8,8 @@ import {
   useSearchParams
 } from 'next/navigation'
 
-import TopBarES
-  from '@/app/components/TopBarES'
+import TopBar
+  from '@/app/components/TopBar'
 
 import ComparisonShell
   from '@/app/components/comparisons/ComparisonShell'
@@ -42,7 +42,7 @@ function PropertyComparisonsContent() {
 
   return (
     <main style={main}>
-      <TopBarES />
+      <TopBar />
 
       <ComparisonShell
         language="es"

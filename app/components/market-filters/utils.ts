@@ -104,6 +104,15 @@ export function buildUrl(
     params.delete(`${prefix}district`)
   }
 
+  if (
+    plainKey === 'accessibility' &&
+    value !== 'Unpaved Road to Property'
+  ) {
+    params.delete(
+      `${prefix}distance_to_paved_road_range`
+    )
+  }
+
   const query =
     params.toString()
 

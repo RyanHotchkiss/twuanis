@@ -24,6 +24,10 @@ import {
   recordListingPublished
 } from '@/lib/activity'
 
+import {
+  resolveListingGeography
+} from '@/lib/geography/resolve-listing-geography'
+
 export const runtime =
   'nodejs'
 
@@ -436,10 +440,6 @@ console.log(
       )
     }
 
-    /*
-    * Enforce the active-listing limit before
-    * inserting a new listing.
-    */
     if (
       packageUsage.listingLimit !==
         null &&
@@ -470,10 +470,6 @@ console.log(
       )
     }
 
-    /*
-    * Calculate the total size of every temporary
-    * image before inserting the listing.
-    */
     for (
       const temporaryPath
       of temporaryImagePaths
@@ -518,10 +514,6 @@ console.log(
         ).byteLength
     }
 
-    /*
-    * Enforce projected Storage usage before
-    * inserting or copying anything.
-    */
     if (
       packageUsage.storageLimitBytes !==
         null &&
@@ -574,13 +566,82 @@ console.log(
         ? 'rent'
         : 'sale'
 
-    /*
-     * Insert the listing first, with no final images.
-     */
+    const geography =
+  await resolveListingGeography({
+    supabase:
+      authenticatedSupabase,
 
-console.log(
-  'ABOUT TO INSERT LISTING'
-)
+    province:
+      propertyData.province,
+
+    canton:
+      propertyData.canton,
+
+    district:
+      propertyData.district
+  })
+
+  if (!geography.complete) {
+
+  console.warn(
+    'AUTHENTICATED LISTING REJECTED: unresolved canonical geography',
+    {
+      userId:
+        user.id,
+
+      province:
+        propertyData.province,
+
+      canton:
+        propertyData.canton,
+
+      district:
+        propertyData.district,
+
+      source:
+        geography.source,
+
+      reasons:
+        geography.reasons
+    }
+  )
+
+  await releasePublishToken(
+      claimedPublishTokenId
+    )
+
+    return NextResponse.json(
+      {
+        success: false,
+
+        code:
+          'INCOMPLETE_GEOGRAPHY',
+
+        error:
+          'A listing requires a valid Province, Canton, and District before it can be published.',
+
+        geography: {
+          province:
+            geography.province?.term_name ??
+            null,
+
+          canton:
+            geography.canton?.term_name ??
+            null,
+
+          district:
+            geography.district?.term_name ??
+            null,
+
+          reasons:
+            geography.reasons
+        }
+      },
+      {
+        status: 400
+      }
+    )
+  }
 
     const {
       data: listingData,
@@ -600,13 +661,16 @@ console.log(
               'customer',
 
             province:
-              propertyData.province,
+              geography.province?.term_name ??
+              null,
 
             canton:
-              propertyData.canton,
+              geography.canton?.term_name ??
+              null,
 
             district:
-              propertyData.district,
+              geography.district?.term_name ??
+              null,
 
             property_type:
               propertyData
@@ -868,6 +932,18 @@ console.log(
         listingWithImages.id,
         {
           ...propertyData,
+
+          province:
+            geography.province?.term_name ??
+            null,
+
+          canton:
+            geography.canton?.term_name ??
+            null,
+
+          district:
+            geography.district?.term_name ??
+            null,
 
           price_millions:
             propertyData

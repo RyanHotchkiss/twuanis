@@ -48,6 +48,10 @@ function normalizeSideFilters(
     terrain: sideFilters[`${prefix}_terrain`],
     utility: sideFilters[`${prefix}_utility`],
     accessibility: sideFilters[`${prefix}_accessibility`],
+    distance_to_paved_road_range:
+      sideFilters[
+        `${prefix}_distance_to_paved_road_range`
+      ],
     legal_status: sideFilters[`${prefix}_legal_status`]
   }
 }
@@ -100,16 +104,37 @@ function getListingPrice(listing: any) {
   return priceCRC
 }
 
-function parseNumber(value: any) {
-  if (value === null || value === undefined) return null
+function parseNumber(value: unknown): number | null {
+  if (
+    typeof value === 'number' &&
+    Number.isFinite(value) &&
+    value > 0
+  ) {
+    return value
+  }
 
-  const cleaned = String(value)
-    .replace(/,/g, '')
-    .replace(/[^\d.]/g, '')
+  if (typeof value !== 'string') {
+    return null
+  }
 
-  const number = Number(cleaned)
+  const normalized =
+    value
+      .replace(/,/g, '')
+      .replace(/\s*m²\s*$/i, '')
+      .trim()
 
-  if (!number || Number.isNaN(number)) return null
+  if (!/^\d+(?:\.\d+)?$/.test(normalized)) {
+    return null
+  }
+
+  const number = Number(normalized)
+
+  if (
+    !Number.isFinite(number) ||
+    number <= 0
+  ) {
+    return null
+  }
 
   return number
 }

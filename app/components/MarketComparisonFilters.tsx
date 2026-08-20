@@ -3,6 +3,10 @@
 import { useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 
+import {
+  pavedRoadDistanceRangeOptions
+} from '@/data/property-data'
+
 type Language = 'en' | 'es'
 
 type Props = {
@@ -39,6 +43,7 @@ const copy = {
     terrain: 'Terrain',
     utilities: 'Utilities',
     accessibility: 'Accessibility',
+    distanceToPavedRoad: 'Distance to Paved Road',
     legalStatus: 'Legal Status',
     transactionType: 'Transaction'
   },
@@ -68,6 +73,7 @@ const copy = {
     terrain: 'Terreno',
     utilities: 'Servicios',
     accessibility: 'Accesibilidad',
+    distanceToPavedRoad: 'Distancia a Calle Pavimentada',
     legalStatus: 'Estado Legal',
     transactionType: 'Transacción'
   }
@@ -716,6 +722,44 @@ function getValue(option: any) {
 
 </div>
 
+{leftFilters.a_accessibility ===
+  'Unpaved Road to Property' && (
+
+  <div style={assetSection}>
+
+    <h3 style={assetHeading}>
+      {t.distanceToPavedRoad}
+    </h3>
+
+    <select
+      name="a_distance_to_paved_road_range"
+      defaultValue={
+        leftFilters.a_distance_to_paved_road_range || ''
+      }
+      style={select}
+    >
+      <option value="">
+        {t.distanceToPavedRoad}
+      </option>
+
+      {pavedRoadDistanceRangeOptions.map(
+        option => (
+          <option
+            key={option.value}
+            value={option.value}
+          >
+            {language === 'es'
+              ? option.es
+              : option.en}
+          </option>
+        )
+      )}
+    </select>
+
+  </div>
+
+)}
+
 {/* LEGAL STATUS */}
 
 <div style={assetSection}>
@@ -1215,35 +1259,73 @@ function getValue(option: any) {
 
   {/* ACCESSIBILITY */}
 
-  <div style={assetSection}>
+    <div style={assetSection}>
 
-    <h3 style={assetHeading}>
-      {t.accessibility}
-    </h3>
+      <h3 style={assetHeading}>
+        {t.accessibility}
+      </h3>
 
-    <select
-      name="b_accessibility"
-      defaultValue={rightFilters.b_accessibility || ''}
-      style={select}
-    >
-      <option value="">
-        {language === 'es'
-          ? 'Accesibilidad'
-          : 'Accessibility'}
-      </option>
+      <select
+        name="b_accessibility"
+        defaultValue={rightFilters.b_accessibility || ''}
+        style={select}
+      >
+        <option value="">
+          {language === 'es'
+            ? 'Accesibilidad'
+            : 'Accessibility'}
+        </option>
 
-      {options.accessibility?.map((option: any) => (
+        {options.accessibility?.map((option: any) => (
 
-            <option key={getValue(option)} value={getValue(option)}>
+              <option key={getValue(option)} value={getValue(option)}>
 
-                {getLabel(option, language)}
+                  {getLabel(option, language)}
 
+              </option>
+
+              ))}
+      </select>
+
+    </div>
+
+    {rightFilters.b_accessibility ===
+    'Unpaved Road to Property' && (
+
+    <div style={assetSection}>
+
+      <h3 style={assetHeading}>
+        {t.distanceToPavedRoad}
+      </h3>
+
+      <select
+        name="b_distance_to_paved_road_range"
+        defaultValue={
+          rightFilters.b_distance_to_paved_road_range || ''
+        }
+        style={select}
+      >
+        <option value="">
+          {t.distanceToPavedRoad}
+        </option>
+
+        {pavedRoadDistanceRangeOptions.map(
+          option => (
+            <option
+              key={option.value}
+              value={option.value}
+            >
+              {language === 'es'
+                ? option.es
+                : option.en}
             </option>
+          )
+        )}
+      </select>
 
-            ))}
-    </select>
+    </div>
 
-  </div>
+  )}
 
   {/* LEGAL STATUS */}
 

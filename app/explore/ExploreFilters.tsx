@@ -2,6 +2,9 @@
 
 import { useRouter, useSearchParams } from 'next/navigation'
 import ExploreLocationFilter from './ExploreLocationFilter'
+import {
+  pavedRoadDistanceRangeOptions
+} from '@/data/property-data'
 
 const transactionOptions = [
   { id: 'sale', slug: 'sale', term_name: 'For Sale' },
@@ -27,6 +30,17 @@ function buildExploreUrl(
     params.set(key, value)
   } else {
     params.delete(key)
+  }
+
+  if (
+    key === 'accessibility' &&
+    !value
+      .split(',')
+      .includes('Unpaved Road to Property')
+  ) {
+    params.delete(
+      'distance_to_paved_road_range'
+    )
   }
 
   return `/explore?${params.toString()}`
@@ -171,6 +185,22 @@ export default function ExploreFilters({
   options: any
   filters: Record<string, string | undefined>
 }) {
+
+const showPavedRoadDistance =
+  (filters.accessibility || '')
+    .split(',')
+    .includes('Unpaved Road to Property')
+
+const pavedRoadDistanceOptions =
+  pavedRoadDistanceRangeOptions.map(
+    option => ({
+      slug: option.value,
+      term_name_en: option.en,
+      term_name_es: option.es,
+      term_name: option.en
+    })
+  )     
+
   return (
     <div
       style={{
@@ -191,6 +221,14 @@ export default function ExploreFilters({
       <MultiSelectFilter label="Terrain" filterKey="terrain" options={options.terrain} filters={filters} />
       <MultiSelectFilter label="Utility" filterKey="utility" options={options.utility} filters={filters} />
       <MultiSelectFilter label="Accessibility" filterKey="accessibility" options={options.accessibility} filters={filters} />
+      {showPavedRoadDistance && (
+          <MultiSelectFilter
+            label="Distance to Paved Road"
+            filterKey="distance_to_paved_road_range"
+            options={pavedRoadDistanceOptions}
+            filters={filters}
+          />
+        )}
       <MultiSelectFilter label="Legal Status" filterKey="legal_status" options={options.legal_status} filters={filters} />
     </div>
   )

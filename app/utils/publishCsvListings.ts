@@ -7,6 +7,30 @@ import {
   recordListingCreated
 } from '@/lib/activity'
 
+import {
+  resolveListingGeography
+} from '@/lib/geography/resolve-listing-geography'
+
+function optionalNumber(
+  value: unknown
+): number | null {
+
+  if (
+    value === null ||
+    value === undefined ||
+    value === ''
+  ) {
+    return null
+  }
+
+  const number =
+    Number(value)
+
+  return Number.isFinite(number)
+    ? number
+    : null
+}
+
 export async function publishCsvListings(
   csvListings: any[],
   setShowCsvStaging: (value: boolean) => void,
@@ -50,6 +74,42 @@ console.log(
   uploadedImageUrls.length
 )
 
+    const geography =
+      await resolveListingGeography({
+        supabase,
+
+        province:
+          listing.province,
+
+        canton:
+          listing.canton,
+
+        district:
+          listing.district
+      })
+
+    if (!geography.complete) {
+
+      console.warn(
+        'SCRAPED SALE LISTING REJECTED: unresolved canonical geography',
+        {
+          title:
+            listing.title,
+
+          sourceUrl:
+            listing.source_url,
+
+          source:
+            geography.source,
+
+          reasons:
+            geography.reasons
+        }
+      )
+
+      continue
+    }
+
     const finalListing = {
 
       listing_origin:
@@ -57,9 +117,17 @@ console.log(
       listing_source_type:
         'realtor',
 
-      province: listing.province,
-      canton: listing.canton,
-      district: listing.district,
+      province:
+        geography.province?.term_name ??
+        null,
+
+      canton:
+        geography.canton?.term_name ??
+        null,
+
+      district:
+        geography.district?.term_name ??
+        null,
 
       property_type:
         listing.property_type,
@@ -76,11 +144,15 @@ console.log(
       year_built_range:
         listing.year_built_range,
 
-      construction_area:
-        listing.construction_area,
-
       property_area:
-        listing.property_area,
+        optionalNumber(
+          listing.property_area
+        ),
+
+      construction_area:
+        optionalNumber(
+          listing.construction_area
+        ),
 
       utility:
         listing.utility || [],
@@ -91,6 +163,18 @@ console.log(
       accessibility:
         listing.accessibility || [],
 
+      distance_to_paved_road_range:
+        (
+          Array.isArray(listing.accessibility)
+            ? listing.accessibility.includes(
+                'Unpaved Road to Property'
+              )
+            : listing.accessibility ===
+                'Unpaved Road to Property'
+        )
+          ? listing.distance_to_paved_road_range || null
+          : null,
+
       terrain:
         listing.terrain || [],
 
@@ -98,7 +182,9 @@ console.log(
         listing.legal_status,
 
       price_millions:
-        Number(listing.price_millions),
+        optionalNumber(
+          listing.price_millions
+        ),
 
       whatsapp:
         listing.whatsapp,
@@ -115,8 +201,28 @@ console.log(
     }
 
 console.log(
-  'FINAL LISTING:',
-  finalListing
+  'GEOGRAPHY RESOLUTION:',
+  {
+    source:
+      geography.source,
+
+    resolved: {
+      province:
+        geography.province?.term_name ??
+        null,
+
+      canton:
+        geography.canton?.term_name ??
+        null,
+
+      district:
+        geography.district?.term_name ??
+        null
+    },
+
+    reasons:
+      geography.reasons
+  }
 )
 
   const response = await supabase

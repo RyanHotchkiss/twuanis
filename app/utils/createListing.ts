@@ -7,6 +7,10 @@ import {
   recordListingCreated
 } from '@/lib/activity'
 
+import {
+  resolveListingGeography
+} from '@/lib/geography/resolve-listing-geography'
+
 export async function createListing(
   propertyData: any,
   generateListingTitle: (data: any) => string,
@@ -62,6 +66,47 @@ if (
 
   }
 
+  const geography =
+  await resolveListingGeography({
+    supabase,
+
+    province:
+      propertyData.province,
+
+    canton:
+      propertyData.canton,
+
+    district:
+      propertyData.district
+  })
+
+  if (!geography.complete) {
+
+    console.error(
+      'CUSTOMER SALE LISTING REJECTED: unresolved canonical geography',
+      {
+        province:
+          propertyData.province,
+
+        canton:
+          propertyData.canton,
+
+        district:
+          propertyData.district,
+
+        source:
+          geography.source,
+
+        reasons:
+          geography.reasons
+      }
+    )
+
+    throw new Error(
+      'A listing requires a valid Province, Canton, and District before it can be published.'
+    )
+  }
+
   const response = await supabase
     .from('listings')
     .insert([
@@ -74,9 +119,17 @@ if (
         listing_source_type:
           'customer',
 
-        province: propertyData.province,
-        canton: propertyData.canton,
-        district: propertyData.district,
+        province:
+          geography.province?.term_name ??
+          null,
+
+        canton:
+          geography.canton?.term_name ??
+          null,
+
+        district:
+          geography.district?.term_name ??
+          null,
 
         property_type:
           propertyData.property_type || '',
@@ -156,6 +209,19 @@ if (insertedListing?.id) {
     insertedListing.id,
     {
       ...propertyData,
+
+      province:
+        geography.province?.term_name ??
+        null,
+
+      canton:
+        geography.canton?.term_name ??
+        null,
+
+      district:
+        geography.district?.term_name ??
+        null,
+
       price_millions:
         propertyData.priceMillions
     }

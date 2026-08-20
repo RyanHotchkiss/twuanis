@@ -1,5 +1,5 @@
-import TopBarES
-  from '@/app/components/TopBarES'
+import TopBar
+  from '@/app/components/TopBar'
 
 import MarketHubAuthGate
   from '@/app/components/MarketHubAuthGate'
@@ -197,7 +197,7 @@ const intelligenceTabMap:
     <MarketHubAuthGate>
 
       <div style={page}>
-        <TopBarES />
+        <TopBar />
 
 
         <MarketHubShell

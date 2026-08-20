@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import JsonLd from '@/app/components/JsonLd'
-import TopBarES from '@/app/components/TopBarES'
+import TopBar from '@/app/components/TopBar'
 import ListingActivityTracker from '@/app/components/ListingActivityTracker'
 import ListingActions from '@/app/components/ListingActions'
 import { buildListingSchema } from '@/lib/schema-engine'
@@ -205,7 +205,7 @@ return (
       }}
     >
 
-<TopBarES />
+<TopBar />
 
         {/* MAIN LAYOUT */}
           <div style={{

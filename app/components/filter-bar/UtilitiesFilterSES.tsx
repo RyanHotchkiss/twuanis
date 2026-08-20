@@ -1,5 +1,37 @@
 'use client'
 
+type UtilityCategory =
+  | 'water_supply'
+  | 'electricity'
+  | 'wastewater'
+  | 'greywater'
+  | 'internet'
+  | 'gas'
+
+type Utility = {
+  category: UtilityCategory
+  en: string
+  es: string
+}
+
+const utilityCategoryLabels: Record<UtilityCategory, string> = {
+  water_supply: 'Abastecimiento de Agua',
+  electricity: 'Electricidad',
+  wastewater: 'Aguas Residuales',
+  greywater: 'Aguas Grises',
+  internet: 'Internet',
+  gas: 'Gas'
+}
+
+const utilityCategoryOrder: UtilityCategory[] = [
+  'water_supply',
+  'electricity',
+  'wastewater',
+  'greywater',
+  'internet',
+  'gas'
+]
+
 type UtilitiesFilterSProps = {
   selectedUtilities: string[]
   setSelectedUtilities: (value: string[]) => void
@@ -9,7 +41,7 @@ type UtilitiesFilterSProps = {
 
   setShowEnvironmentOptions: (value: boolean) => void
 
-  utilities: string[]
+  utilities: Utility[]
 }
 
 export default function UtilitiesFilterS({
@@ -37,7 +69,7 @@ export default function UtilitiesFilterS({
       }}>
 
         <h2 style={sectionHeading}>
-          Utilities
+          Servicios
         </h2>
 
         <button
@@ -81,49 +113,89 @@ export default function UtilitiesFilterS({
       )}
 
 {/* OPTIONS */}
-          {showUtilityOptions && (
+    {showUtilityOptions && (
 
-            <div style={pillWrap}>
+      <div style={utilityGroups}>
 
-              {utilities.map((utility) => (
+        {utilityCategoryOrder.map((category) => {
 
-                <button
-                  type="button"
-                  key={utility}
-                  onClick={() => {
+          const categoryUtilities =
+            utilities.filter(
+              (utility) =>
+                utility.category === category
+            )
 
-                    const alreadySelected =
-                      selectedUtilities.includes(utility)
+          if (categoryUtilities.length === 0) {
+            return null
+          }
 
-                    const updatedUtilities =
-                      alreadySelected
-                        ? selectedUtilities.filter(
-                            (item) => item !== utility
-                          )
-                        : [
-                            ...selectedUtilities,
-                            utility
-                          ]
+          return (
 
-                    setSelectedUtilities(updatedUtilities)
+            <div
+              key={category}
+              style={utilityGroup}
+            >
 
-                    setShowEnvironmentOptions(true)
+              <div style={utilityGroupHeading}>
+                {utilityCategoryLabels[category]}
+              </div>
 
-                  }}
-                  style={
-                    selectedUtilities.includes(utility)
-                      ? activePill
-                      : pill
-                  }
-                >
-                  {utility}
-                </button>
+              <div style={pillWrap}>
 
-              ))}
+                {categoryUtilities.map((utility) => (
+
+                  <button
+                    type="button"
+                    key={utility.en}
+                    onClick={() => {
+
+                      const alreadySelected =
+                        selectedUtilities.includes(
+                          utility.en
+                        )
+
+                      const updatedUtilities =
+                        alreadySelected
+                          ? selectedUtilities.filter(
+                              (item) =>
+                                item !== utility.en
+                            )
+                          : [
+                              ...selectedUtilities,
+                              utility.en
+                            ]
+
+                      setSelectedUtilities(
+                        updatedUtilities
+                      )
+
+                      setShowEnvironmentOptions(true)
+
+                    }}
+                    style={
+                      selectedUtilities.includes(
+                        utility.en
+                      )
+                        ? activePill
+                        : pill
+                    }
+                  >
+                    {utility.es}
+                  </button>
+
+                ))}
+
+              </div>
 
             </div>
 
-          )}
+          )
+
+        })}
+
+      </div>
+
+    )}
 
     </div>
 
@@ -164,6 +236,26 @@ const resetButton = {
   color:'#ff6666',
   cursor:'pointer',
   fontSize:'1rem'
+}
+
+const utilityGroups = {
+  display:'flex',
+  flexDirection:'column' as const,
+  gap:'1.5rem'
+}
+
+const utilityGroup = {
+  display:'flex',
+  flexDirection:'column' as const,
+  gap:'.65rem'
+}
+
+const utilityGroupHeading = {
+  fontSize:'.75rem',
+  fontWeight:600,
+  letterSpacing:'.08em',
+  textTransform:'uppercase' as const,
+  color:'#aaa'
 }
 
 const pillWrap = {

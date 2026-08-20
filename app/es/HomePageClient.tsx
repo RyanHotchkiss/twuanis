@@ -3,11 +3,24 @@
 import { buildHomePageSchema }
 from '@/lib/schema/buildHomePageSchema'
 import JsonLd from '@/app/components/JsonLd'
-
-import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import TopBar from '@/app/components/TopBar'
+import {
+  Compass,
+  BadgeDollarSign,
+  CircleDot,
+  HandHeart,
+  Scale,
+  ChartNoAxesColumnIncreasing,
+  Ruler,
+} from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { createListingId } from '@/lib/createListingId'
 import { supabase } from '@/lib/supabase'
+import {
+  isFavorite,
+  toggleFavorite
+} from '@/lib/favorites'
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 
@@ -26,6 +39,10 @@ import {
 import {
   resolveListingImages
 } from '@/app/utils/resolveListingImages'
+
+import {
+  matchesPropertyAreaRange
+} from '@/lib/marketplace-area-ranges'
 
 function HomePageContent({
                 ontologyTerms,
@@ -56,7 +73,7 @@ function HomePageContent({
   const [selectedutility, setSelectedutility] = useState('')
 
   const [showMobileFilters, setShowMobileFilters] = useState(false)
-  const [countdown, setCountdown] = useState(12)
+ 
   const [showPoster, setShowPoster] = useState(true)
 
 const [showMainOverlay, setShowMainOverlay] =
@@ -81,25 +98,7 @@ const [showMainOverlay, setShowMainOverlay] =
                 handleResize
               )
             }
-          }, [])
-
-          useEffect(() => {
-                if (
-                  searchParams.get('overlay')
-                ) {
-                  setShowPoster(false)
-                  setShowMainOverlay(true)
-                  return
-                }
-                const timer = setTimeout(() => {
-                  setShowPoster(false)
-                  setTimeout(() => {
-                    setShowMainOverlay(true)
-                  }, 600)
-                }, 20000)
-                return () => clearTimeout(timer)
-              }, [searchParams])
-    
+          }, [])   
 
   const [selectedlegal_status, setSelectedlegal_status] = useState('')
   const [selectedenvironment, setSelectedenvironment] = useState('')
@@ -143,9 +142,9 @@ const [showMainOverlay, setShowMainOverlay] =
                         id: createListingId(listing),
 
                         images:
-                        resolveListingImages(
-                          listing.images
-                        )
+                    resolveListingImages(
+                      listing.images
+                    )
 
                     })
                     )
@@ -198,7 +197,10 @@ const [showMainOverlay, setShowMainOverlay] =
 
                     if (
                       selectedproperty_area &&
-                      property.property_area !== selectedproperty_area
+                      !matchesPropertyAreaRange(
+                        property.property_area,
+                        selectedproperty_area
+                      )
                     ) {
                       return false
                     }
@@ -326,61 +328,230 @@ const [showMainOverlay, setShowMainOverlay] =
                     }}
                   >
 
-  {/* TOP RIGHT BUTTONS */}
+{/* MOBILE ES INTRO */}
+      {showPoster && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 9998,
+            background: '#080808',
+            overflowY: 'auto',
+            WebkitOverflowScrolling: 'touch',
+          }}
+        >
+          <TopBar />
 
-              {showPoster && (
-
-                <div
+          <main
+            style={{
+              width: '100%',
+              maxWidth: 720,
+              margin: '0 auto',
+              padding: '24px 18px 42px',
+              boxSizing: 'border-box',
+            }}
+          >
+            {/* TWUANIS INTRO */}
+            <section
+              style={{
+                textAlign: 'center',
+                padding: '30px 12px 38px',
+              }}
+            >
+              <div
                   style={{
-                    position:'absolute',
-                    top:'1rem',
-                    right:'1rem',
-                    display:'flex',
-                    gap:'.5rem'
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    width: '100%',
+                    marginBottom: 20,
                   }}
                 >
-
-                  <Link
-                    href="/en"
+                  {/* TWUANIS + MOBIUS */}
+                  <div
                     style={{
-                      background:'#000',
-                      color:'#fff',
-                      border:'2px solid #C9A86A',
-                      borderRadius:'999px',
-                      padding:'.45rem .9rem',
-                      fontSize:'.8rem',
-                      fontWeight:'bold',
-                      textDecoration:'none'
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: 12,
+                      width: '100%',
                     }}
                   >
-                    English
-                  </Link>
+                    <div
+                      style={{
+                        color: '#ffffff',
+                        fontFamily: 'var(--font-cinzel), serif',
+                        fontSize: 'clamp(52px, 16vw, 82px)',
+                        lineHeight: 0.95,
+                        letterSpacing: '-0.04em',
+                        textShadow:
+                          '1px 1px 0 #c99a32, -1px -1px 0 #c99a32, 0 2px 10px rgba(201,154,50,0.35)',
+                      }}
+                    >
+                      Twuanis
+                    </div>
 
-                  <button
-                    onClick={() => {
-                          setShowPoster(false)
-                          setTimeout(() => {
-                            setShowMainOverlay(true)
-                          }, 600)
-                        }}
-                    
-                    style={{
-                      background:'#000',
-                      color:'#fff',
-                      border:'2px solid #C9A86A',
-                      borderRadius:'999px',
-                      padding:'.45rem .9rem',
-                      fontSize:'.8rem',
-                      fontWeight:'bold',
-                      cursor:'pointer'
-                    }}
-                  >
-                    Omitir →
-                  </button>
+                    <img
+                      src="/images/twuanis-mobius.svg"
+                      alt=""
+                      aria-hidden="true"
+                      style={{
+                        width: 48,
+                        height: 48,
+                        flexShrink: 0,
+                        display: 'block',
+                      }}
+                    />
+                  </div>
 
+                  <div style={mobileDivider0}>
+                    <span>◆</span>
+                  </div>
                 </div>
 
+              <div
+                style={{
+                  color: '#ffffff',
+                  fontSize: 15,
+                  fontWeight: 700,
+                  textShadow:
+                          '1px 1px 0 #c99a32, 1px 1px 0 #c99a32, 0 2px 10px rgba(201,154,50,0.35)',
+                  letterSpacing: '0.11em',
+                  lineHeight: 2,
+                }}
+              >
+                INTELIGENCIA PARA DECISIONES DEL MERCADO INMOBILIARIO
+              </div>
+
+                <div style={mobileDivider}>
+                    <span>◆</span>
+                  </div>
+
+            </section>
+
+            {/* ENGINE EXAMPLES */}
+            <section
+              style={{
+                border: '1px solid rgba(201, 154, 50, 0.45)',
+                borderRadius: 24,
+                padding: '8px 16px',
+                background: '#101820',
+              }}
+            >
+              {mobileEngineExamples.map(
+                ({ id, title, Icon, color, question, answer }, index) => (
+                  <article
+                    key={id}
+                    style={{
+                      padding: '28px 0 30px',
+                      borderBottom:
+                        index < mobileEngineExamples.length - 1
+                          ? '1px solid rgba(201, 154, 50, 0.35)'
+                          : 'none',
+                    }}
+                  >
+                    {/* CLICKABLE ENGINE CARD */}
+                    <Link
+                      href={`/es/inteligencia-de-mercado?tab=${id}`}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 14,
+                        width: '100%',
+                        boxSizing: 'border-box',
+                        padding: '14px 16px',
+                        marginBottom: 18,
+                        border: `2px solid ${color}`,
+                        borderRadius: 18,
+                        background: '#171717',
+                        color,
+                        textDecoration: 'none',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: 58,
+                          height: 58,
+                          flexShrink: 0,
+                          border: `1px solid ${color}`,
+                          borderRadius: 15,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <Icon size={32} strokeWidth={1.35} />
+                      </div>
+
+                      <div
+                        style={{
+                          textAlign: 'left',
+                          fontFamily: 'var(--font-cinzel), serif',
+                          fontSize: 20,
+                          lineHeight: 1.15,
+                          color: '#ffffff',
+                        }}
+                      >
+                        {title}
+                      </div>
+                    </Link>
+
+                    {/* QUESTION */}
+                    <div
+                      style={{
+                        fontSize: 14,
+                        lineHeight: 1.5,
+                        color: '#f4f4f4',
+                        marginBottom: 12,
+                      }}
+                    >
+                      <strong style={{ color }}>Pregunta Hipotética:</strong>{' '}
+                      {question}
+                    </div>
+
+                    {/* ANSWER */}
+                    <div
+                      style={{
+                        fontSize: 14,
+                        lineHeight: 1.55,
+                        color: '#dddddd',
+                      }}
+                    >
+                      <strong style={{ color }}>Respuesta Potencial:</strong>{' '}
+                      {answer}
+                    </div>
+                  </article>
+                )
               )}
+            </section>
+
+            {/* CONTINUE */}
+            <button
+              type="button"
+              onClick={() => {
+                setShowPoster(false)
+                setShowMainOverlay(true)
+              }}
+              style={{
+                width: '100%',
+                minHeight: 62,
+                marginTop: 24,
+                border: '1px solid #e0b65a',
+                borderRadius: 999,
+                background:
+                  'linear-gradient(180deg, #efc76c 0%, #c99632 100%)',
+                color: '#07111d',
+                fontSize: 22,
+                fontWeight: 800,
+                letterSpacing: '0.08em',
+                cursor: 'pointer',
+              }}
+            >
+              CONTINUAR →
+            </button>
+          </main>
+        </div>
+      )}
 
             </div>
 
@@ -967,7 +1138,7 @@ const [showMainOverlay, setShowMainOverlay] =
                   <div>
 
                     <h3 style={filterHeading}>
-                      precio
+                      Precio
                     </h3>
 
                     <div style={pillWrap}>
@@ -1319,7 +1490,7 @@ const [showMainOverlay, setShowMainOverlay] =
                       {filteredProperties.map((property) => (
 
                         <Link
-                          href={`/en/buy/listing/${property.id}`}
+                          href={`/es/comprar/listing/${property.id}`}
                           key={property.id}
                           style={{
                             textDecoration: 'none',
@@ -1379,73 +1550,54 @@ const [showMainOverlay, setShowMainOverlay] =
                               </div>
 
                             )}
-                                    <button
-                                        onClick={(e) => {
+                <button
+                    onClick={e => {
+                      e.preventDefault()
+                      e.stopPropagation()
 
-                                          e.preventDefault()
-                                          e.stopPropagation()
+                      toggleFavorite(
+                        property.id
+                      )
 
-                                          const existingFavorites =
-                                            JSON.parse(
-                                              localStorage.getItem('favorites') || '[]'
-                                            )
-
-                                          const alreadySaved =
-                                            existingFavorites.includes(property.id)
-
-                                          let updatedFavorites = []
-
-                                          if (alreadySaved) {
-
-                                            updatedFavorites =
-                                              existingFavorites.filter(
-                                                (id: string) => id !== property.id
-                                              )
-
-                                          } else {
-
-                                            updatedFavorites = [
-                                              ...existingFavorites,
-                                              property.id
-                                            ]
-
-                                          }
-
-                                          localStorage.setItem(
-                                            'favorites',
-                                            JSON.stringify(updatedFavorites)
-                                          )
-
-                                          window.location.reload()
-
-                                        }}
-                                        style={{
-                                          position: 'absolute',
-                                          top: '1rem',
-                                          right: '1rem',
-                                          width: '2.75rem',
-                                          height: '2.75rem',
-                                          borderRadius: '999px',
-                                          border: '1px solid rgba(255,255,255,.15)',
-                                          background: 'rgba(0,0,0,.55)',
-                                          backdropFilter: 'blur(8px)',
-                                          display: 'flex',
-                                          justifyContent: 'center',
-                                          alignItems: 'center',
-                                          cursor: 'pointer',
-                                          zIndex: 20
-                                        }}
-                                      >
-
-                                        <span style={{
-                                            fontSize: '1.25rem',
-                                            color: '#fff',
-                                            transition: 'all .2s ease'
-                                            }}>
-                                          ♥
-                                        </span>
-
-                                      </button>
+                      window.location.reload()
+                    }}
+                    style={{
+                      position: 'absolute',
+                      top: '1rem',
+                      right: '1rem',
+                      width: '2.75rem',
+                      height: '2.75rem',
+                      borderRadius: '999px',
+                      border:
+                        '1px solid rgba(255,255,255,.15)',
+                      background:
+                        'rgba(0,0,0,.55)',
+                      backdropFilter:
+                        'blur(8px)',
+                      display: 'flex',
+                      justifyContent:
+                        'center',
+                      alignItems:
+                        'center',
+                      cursor: 'pointer',
+                      zIndex: 20
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: '1.25rem',
+                        color: isFavorite(
+                          property.id
+                        )
+                          ? '#D4AF37'
+                          : '#fff',
+                        transition:
+                          'all .2s ease'
+                      }}
+                    >
+                      ♥
+                    </span>
+                  </button>
                           </div>
 
 {/* CONTENT */}
@@ -1717,7 +1869,60 @@ const sellButton = {
                     homePageSchema: any[]
                     }
 
-                    export default function HomePageClient(
+const mobileEngineExamples = [
+  {
+    id: 'explorer',
+    title: 'MOTOR DE EXPLORACIÓN DE MERCADO',
+    Icon: Compass,
+    color: '#3ddc84',
+    question:
+      '¿Cómo se ve el mercado de condominios con 100–180 m² de construcción, vista a la montaña y un rango de año de construcción de 2015 o más reciente en Escazú, San José?',
+    answer:
+      'Con base en los 463 listados actuales en la provincia de San José, 187 listados en el cantón de Escazú y 74 listados en el distrito de San Rafael, el inventario actual de condominios se concentra entre 120–165 m² de construcción. Las propiedades con vista a la montaña forman un segmento más pequeño del mercado, mientras que las propiedades construidas desde 2015 se concentran de manera desproporcionada hacia el extremo superior del rango de área de construcción.',
+  },
+  {
+    id: 'valuation',
+    title: 'MOTOR DE VALORACIÓN',
+    Icon: BadgeDollarSign,
+    color: '#1687ff',
+    question:
+      '¿Cuánto vale una casa en San José con 1.000 m² de área de propiedad, 124 m² de construcción, 4 dormitorios, 3 baños, 2 espacios de estacionamiento, vista a la montaña y acceso por calle pavimentada?',
+    answer:
+      'Con base en los 512 listados actuales en la provincia de San José, 146 listados en el cantón de Santa Ana y 61 listados en el distrito de Santa Ana, las propiedades comparables indican un valor de mercado de aproximadamente ₡148–₡162 millones. Los 1.000 m² de área de propiedad y el acceso por calle pavimentada ejercen presión al alza sobre el valor, mientras que la cobertura del terreno relativamente baja de 12,4% y los 124 m² de construcción distinguen la propiedad de comparables con un mayor nivel de construcción.',
+  },
+  {
+    id: 'pricing',
+    title: 'MOTOR DE ESTRATEGIA DE PRECIOS',
+    Icon: CircleDot,
+    color: '#1687ff',
+    question:
+      '¿A qué precio debería publicar una casa en Heredia con 450 m² de área de propiedad, 210 m² de construcción, vista a la montaña, acceso por calle pavimentada, servicio de agua pública y un rango de año de construcción de 2015 o más reciente?',
+    answer:
+      'Con base en los 387 listados actuales en la provincia de Heredia, 121 listados en el cantón de Heredia y 48 listados en el distrito de San Francisco, un precio de publicación de ₡185 millones posicionaría la propiedad por encima de la mayoría del inventario comparable. Un precio cercano a ₡169 millones la colocaría dentro del rango competitivo de publicación, mientras que sus 210 m² de construcción, vista a la montaña, acceso por calle pavimentada y construcción más reciente mantienen su diferenciación frente al inventario de menor precio.',
+  },
+  {
+    id: 'scarcity',
+    title: 'MOTOR DE FRECUENCIA DE MERCADO',
+    Icon: ChartNoAxesColumnIncreasing,
+    color: '#ff3b00',
+    question:
+      '¿Qué tan comunes son las casas en Guanacaste con al menos 1.500 m² de área de propiedad, 250+ m² de construcción, entorno frente a un río, electricidad, agua pública, acceso por calle pavimentada y condición legal titulada?',
+    answer:
+      'Con base en los 624 listados actuales en la provincia de Guanacaste, 138 listados en el cantón de Santa Cruz y 52 listados en el distrito de Tamarindo, solo el 4,8% de los listados comparables contiene esa combinación completa de atributos. Un área de propiedad grande y el acceso a servicios aparecen de manera independiente con una frecuencia razonable, pero combinar 250+ m² de construcción, entorno frente a un río, acceso por calle pavimentada y condición legal titulada hace que el perfil completo de la propiedad sea escaso.',
+  },
+  {
+    id: 'price-meter',
+    title: 'MOTOR DE INTELIGENCIA DE PRECIO / M²',
+    Icon: Ruler,
+    color: '#ffd500',
+    question:
+      '¿Es caro pagar ₡365 millones por una propiedad mejorada en Escazú con 600 m² de terreno, 250 m² de construcción, 41,7% de cobertura del terreno, vista a la montaña, acceso por calle pavimentada y un rango de año de construcción de 2015 o más reciente?',
+    answer:
+      'Con base en los 463 listados actuales en la provincia de San José, 187 listados en el cantón de Escazú y 74 listados en el distrito de San Rafael, las propiedades mejoradas comparables tienen un precio mediano normalizado por construcción de ₡1,21 millones/m². A ₡1,46 millones/m², esta propiedad se encuentra aproximadamente un 21% por encima del centro del mercado y pertenece al grupo de propiedades caras. Su vista a la montaña, acceso por calle pavimentada, construcción más reciente y cobertura del terreno de 41,7% pueden evaluarse frente a grupos comparables para determinar qué atributos parecen estar asociados con esa prima.',
+  },
+]
+
+export default function HomePageClient(
                     props: HomePageClientProps
                     ) {
 
@@ -1733,4 +1938,54 @@ const sellButton = {
 
   )
 
+}
+
+const mobileDivider: React.CSSProperties = {
+  width: '72%',
+  margin: '22px auto',
+  height: 1,
+  background:
+    'linear-gradient(90deg, transparent, rgba(201,154,50,.8), transparent)',
+  position: 'relative',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: '#c99a32',
+  fontSize: 10,
+}
+
+const mobileDivider0: React.CSSProperties = {
+  width: '72%',
+  margin: '22px auto',
+  height: 1,
+  background:
+    'linear-gradient(90deg, transparent, rgba(255, 59, 0, 0.8), transparent)',
+  position: 'relative',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: '#ff3b00',
+  fontSize: 10,
+}
+
+const mobileDivider1: React.CSSProperties = {
+  width: '72%',
+  margin: '22px auto',
+  height: 1,
+  background:
+    'linear-gradient(90deg, transparent, rgba(252, 252, 252, 252), transparent)',
+  position: 'relative',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: '#ffffff',
+  fontSize: 10,
+}
+
+const mobileHeroStatement: React.CSSProperties = {
+  color: '#ffffff',
+  fontSize: 12,
+  fontWeight: 700,
+  letterSpacing: '0.06em',
+  lineHeight: 1.45,
 }

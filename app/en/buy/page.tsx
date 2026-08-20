@@ -111,6 +111,7 @@ const navButton = {
     legal_status: '',
     environment: [] as string[],
     accessibility: '',
+    distance_to_paved_road_range: '',
     terrain: [] as string[]
   })
 
@@ -965,6 +966,23 @@ const filteredProperties = properties.filter((property) => {
           return false
         }
       }
+
+      /*
+        * DISTANCE TO PAVED ROAD
+        */
+
+        if (
+          filters.accessibility ===
+            'Unpaved Road to Property' &&
+          filters.distance_to_paved_road_range
+        ) {
+          if (
+            property.distance_to_paved_road_range !==
+            filters.distance_to_paved_road_range
+          ) {
+            return false
+          }
+        }
 
       /*
       * TERRAIN

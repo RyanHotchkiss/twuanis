@@ -17,6 +17,7 @@ type ExplorerFilters = {
   environment?: string
   terrain?: string
   accessibility?: string
+  distance_to_paved_road_range?: string
   legal_status?: string
 }
 
@@ -33,9 +34,7 @@ const PRIMARY_ENTITY_PRIORITY: Array<keyof ExplorerFilters> = [
   'bedrooms',
   'bathrooms',
   'parking',
-  'year_built',
-  'property_area',
-  'construction_area'
+  'year_built'
 ]
 
 function getPrimaryEntity(filters: ExplorerFilters) {

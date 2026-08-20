@@ -1,4 +1,4 @@
-import TopBarES from '@/app/components/TopBarES'
+import TopBar from '@/app/components/TopBar'
 
 import ComparisonShell from '@/app/components/comparisons/ComparisonShell'
 import EntityComparisonPanel from '@/app/components/comparisons/EntityComparisonPanel'
@@ -6,7 +6,7 @@ import EntityComparisonPanel from '@/app/components/comparisons/EntityComparison
 export default function ComparacionesDeEntidadesPage() {
   return (
     <main style={main}>
-      <TopBarES />
+      <TopBar />
 
       <ComparisonShell
         language="es"

@@ -1,11 +1,11 @@
-import TopBarES from '@/app/components/TopBarES'
+import TopBar from '@/app/components/TopBar'
 
 import PaquetesInteligenciaMercado from './PaquetesInteligenciaMercado'
 
 export default function PaquetesInteligenciaMercadoPage() {
   return (
     <main style={main}>
-      <TopBarES />
+      <TopBar />
       <PaquetesInteligenciaMercado />
     </main>
   )

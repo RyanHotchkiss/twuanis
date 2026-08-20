@@ -5,6 +5,30 @@ import {
   recordListingCreated
 } from '@/lib/activity'
 
+import {
+  resolveListingGeography
+} from '@/lib/geography/resolve-listing-geography'
+
+function optionalNumber(
+  value: unknown
+): number | null {
+
+  if (
+    value === null ||
+    value === undefined ||
+    value === ''
+  ) {
+    return null
+  }
+
+  const number =
+    Number(value)
+
+  return Number.isFinite(number)
+    ? number
+    : null
+}
+
 export async function publishRentLeaseCsvListings(
   csvListings: any[],
   setShowCsvStaging: (value: boolean) => void,
@@ -23,35 +47,78 @@ export async function publishRentLeaseCsvListings(
     continue
   }
 
-  console.log(
-    'RENT CSV RECORD:',
-    listing,
-    'MONTHLY:',
-    listing.monthly_price
-  )
-  
-    console.log(
-        'RENT CSV RECORD:',
-        listing,
-        'MONTHLY:',
-        listing.monthly_price
-)
-
     const uploadedImageUrls =
-  typeof listing.images === 'string'
-    ? listing.images.split('|').filter(Boolean)
-    : []
+      typeof listing.images === 'string'
+        ? listing.images.split('|').filter(Boolean)
+        : []
 
-console.log(
-  'CSV IMAGE FIELD:',
-  listing.images
-)
+    const geography =
+      await resolveListingGeography({
+        supabase,
+
+        province:
+          listing.province,
+
+        canton:
+          listing.canton,
+
+        district:
+          listing.district
+      })
+
+      if (!geography.complete) {
+
+        console.warn(
+          'SCRAPED RENT LISTING REJECTED: unresolved canonical geography',
+          {
+            title:
+              listing.title,
+
+            sourceUrl:
+              listing.source_url,
+
+            source:
+              geography.source,
+
+            reasons:
+              geography.reasons
+          }
+        )
+
+        continue
+      }
 
     const finalListing = {
 
-      province: listing.province,
-      canton: listing.canton,
-      district: listing.district,
+      listing_origin:
+        'scraped',
+
+      listing_source_type:
+        'realtor',
+
+      source_url:
+        listing.source_url ||
+        null,
+
+      source_name:
+        listing.source_name ||
+        null,
+
+      source_listing_id:
+        listing.source_listing_id ||
+        null,
+
+      province:
+        geography.province?.term_name ??
+        null,
+
+      canton:
+        geography.canton?.term_name ??
+        null,
+
+      district:
+        geography.district?.term_name ??
+        null,
 
       property_type:
         listing.property_type,
@@ -69,10 +136,14 @@ console.log(
         listing.year_built_range,
 
       construction_area:
-        listing.construction_area,
+        optionalNumber(
+          listing.construction_area
+        ),
 
       property_area:
-        listing.property_area,
+        optionalNumber(
+          listing.property_area
+        ),
 
       utility:
         listing.utility || [],
@@ -82,6 +153,18 @@ console.log(
 
       accessibility:
         listing.accessibility || [],
+
+      distance_to_paved_road_range:
+        (
+          Array.isArray(listing.accessibility)
+            ? listing.accessibility.includes(
+                'Unpaved Road to Property'
+              )
+            : listing.accessibility ===
+                'Unpaved Road to Property'
+        )
+          ? listing.distance_to_paved_road_range || null
+          : null,
 
       terrain:
         listing.terrain || [],
@@ -108,11 +191,6 @@ console.log(
         uploadedImageUrls
 
     }
-
-console.log(
-  'FINAL LISTING:',
-  finalListing
-)
 
     const response = await supabase
       .from('listings')

@@ -2,6 +2,10 @@
 
 import { useMemo } from 'react'
 
+import {
+  pavedRoadDistanceRangeOptions
+} from '@/data/property-data'
+
 import FilterSelect from './FilterSelect'
 
 import type {
@@ -147,6 +151,22 @@ export default function FilterColumn({
     }
   ]
 
+  const pavedRoadDistanceOptions =
+  pavedRoadDistanceRangeOptions.map(
+    option => ({
+      slug: option.value,
+      term_name_en: option.en,
+      term_name_es: option.es
+    })
+  )
+
+  const accessibilityKey =
+  `${prefix}accessibility`
+
+const showPavedRoadDistance =
+  filters[accessibilityKey] ===
+  'Unpaved Road to Property'
+
   const marketFields = [
     {
       key: 'transaction_type',
@@ -215,6 +235,15 @@ export default function FilterColumn({
       label: text.accessibility,
       options: options.accessibility
     },
+    ...(showPavedRoadDistance
+      ? [
+          {
+            key: 'distance_to_paved_road_range',
+            label: text.distanceToPavedRoad,
+            options: pavedRoadDistanceOptions
+          }
+        ]
+      : []),
     {
       key: 'legal_status',
       label: text.legalStatus,

@@ -1,5 +1,10 @@
 import { supabase } from '@/lib/supabase'
 
+import {
+  resolveCanonicalGeography,
+  type CanonicalGeographyTerm
+} from '@/lib/geography/canonical-geography'
+
 function normalize(value: any): string {
   return String(value || '')
     .toLowerCase()
@@ -70,7 +75,8 @@ export async function assignListingOntology(
               term_name_es,
               slug,
               slug_en,
-              slug_es
+              slug_es,
+              official_code
             `)
 
         if (error) {
@@ -144,90 +150,108 @@ export async function assignListingOntology(
 
   }
 
-  const matchedTerms = new Map()
-
-                const matchedProvince =
-                  ontologyTerms.find(
-                    term =>
-                      term.term_type === 'province'
-                      &&
-                      normalize(
-                        term.term_name_en ||
-                        term.term_name
-                      ) === normalize(
-                        listingData.province
-                      )
-                  )
-
-                if (matchedProvince) {
-
-                  matchedTerms.set(
-                    matchedProvince.id,
-                    matchedProvince
-                  )
-
-                }
+    const matchedTerms = new Map()
+        const geographyTerms =
+          ontologyTerms.filter(
+            term =>
+              term.term_type === 'province' ||
+              term.term_type === 'canton' ||
+              term.term_type === 'district'
+          ) as CanonicalGeographyTerm[]
 
 
-console.log('MATCHED PROVINCE', matchedProvince)
+        const geography =
+          resolveCanonicalGeography({
+            province:
+              listingData.province ??
+              null,
+
+            canton:
+              listingData.canton ??
+              null,
+
+            district:
+              listingData.district ??
+              null,
+
+            terms:
+              geographyTerms
+          })
 
 
-                const matchedCanton =
-                  ontologyTerms.find(
-                    term =>
-                      term.term_type === 'canton'
-                      &&
-                      matchedProvince
-                      &&
-                      term.parent_id === matchedProvince.id
-                      &&
-                      normalize(
-                        term.term_name_en ||
-                        term.term_name
-                      ) === normalize(
-                        listingData.canton
-                      )
-                  )
-
-                if (matchedCanton) {
-
-                  matchedTerms.set(
-                    matchedCanton.id,
-                    matchedCanton
-                  )
-
-                }
-
-console.log('MATCHED CANTON', matchedCanton)
+        if (geography.province) {
+          matchedTerms.set(
+            geography.province.id,
+            geography.province
+          )
+        }
 
 
-                  const matchedDistrict =
-                    ontologyTerms.find(
-                      term =>
-                        term.term_type === 'district'
-                        &&
-                        matchedCanton
-                        &&
-                        term.parent_id === matchedCanton.id
-                        &&
-                        normalize(
-                          term.term_name_en ||
-                          term.term_name
-                        ) === normalize(
-                          listingData.district
-                        )
-                    )
+        if (geography.canton) {
+          matchedTerms.set(
+            geography.canton.id,
+            geography.canton
+          )
+        }
 
-                  if (matchedDistrict) {
 
-                    matchedTerms.set(
-                      matchedDistrict.id,
-                      matchedDistrict
-                    )
+        if (geography.district) {
+          matchedTerms.set(
+            geography.district.id,
+            geography.district
+          )
+        }
 
+
+        console.log(
+          'CANONICAL GEOGRAPHY',
+          {
+            source:
+              geography.source,
+
+            province:
+              geography.province
+                ? {
+                    id:
+                      geography.province.id,
+                    name:
+                      geography.province.term_name,
+                    officialCode:
+                      geography.province.official_code
                   }
+                : null,
 
-console.log('MATCHED DISTRICT', matchedDistrict) 
+            canton:
+              geography.canton
+                ? {
+                    id:
+                      geography.canton.id,
+                    name:
+                      geography.canton.term_name,
+                    officialCode:
+                      geography.canton.official_code
+                  }
+                : null,
+
+            district:
+              geography.district
+                ? {
+                    id:
+                      geography.district.id,
+                    name:
+                      geography.district.term_name,
+                    officialCode:
+                      geography.district.official_code
+                  }
+                : null,
+
+            reasons:
+              geography.reasons,
+
+            complete:
+              geography.complete
+          }
+        )
 
 
 

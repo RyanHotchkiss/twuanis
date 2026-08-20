@@ -548,25 +548,40 @@ const {
 
                     />
 
-<AccessibilityFilter
+                <AccessibilityFilter
+                    selectedaccessibility={
+                        filters.accessibility
+                    }
 
-                selectedaccessibility={filters.accessibility}
-
-                setSelectedaccessibility={(value: string) => {
-                    setFilters((prev: any) => ({
+                    setSelectedaccessibility={(value: string) => {
+                        setFilters((prev: any) => ({
                         ...prev,
-                        accessibility: value
-                    }))
-                }}
+                        accessibility: value,
+                        distance_to_paved_road_range:
+                            value === 'Unpaved Road to Property'
+                            ? prev.distance_to_paved_road_range
+                            : ''
+                        }))
+                    }}
 
-                showAccessibilityOptions={
-                    showAccessibilityOptions
-                }
+                    selectedPavedRoadDistanceRange={
+                        filters.distance_to_paved_road_range
+                    }
 
-                setShowAccessibilityOptions={
-                    setShowAccessibilityOptions
-                }
+                    setSelectedPavedRoadDistanceRange={(value: string) => {
+                        setFilters((prev: any) => ({
+                        ...prev,
+                        distance_to_paved_road_range: value
+                        }))
+                    }}
 
+                    showAccessibilityOptions={
+                        showAccessibilityOptions
+                    }
+
+                    setShowAccessibilityOptions={
+                        setShowAccessibilityOptions
+                    }
                 />
 
 <TerrainFilter

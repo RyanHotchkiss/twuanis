@@ -1,8 +1,16 @@
 'use client'
 
+import {
+  accessibilityOptions,
+  pavedRoadDistanceRangeOptions
+} from '@/data/property-data'
+
 type AccessibilityFilterProps = {
   selectedaccessibility: string
   setSelectedaccessibility: (value: string) => void
+
+  selectedPavedRoadDistanceRange: string
+  setSelectedPavedRoadDistanceRange: (value: string) => void
 
   showAccessibilityOptions: boolean
   setShowAccessibilityOptions: (value: boolean) => void
@@ -11,16 +19,11 @@ type AccessibilityFilterProps = {
 export default function AccessibilityFilter({
   selectedaccessibility,
   setSelectedaccessibility,
+  selectedPavedRoadDistanceRange,
+  setSelectedPavedRoadDistanceRange,
   showAccessibilityOptions,
   setShowAccessibilityOptions
 }: AccessibilityFilterProps) {
-  const accessibilityOptions = [
-    '2WD Accessible',
-    'Paved Road',
-    '4x4 Required',
-    'Walkable',
-    'Boat Access Only'
-  ]
 
   return (
     <div>
@@ -32,50 +35,59 @@ export default function AccessibilityFilter({
         <div style={pillWrap}>
           {accessibilityOptions.map((option) => (
             <button
-              key={option}
+              key={option.en}
               onClick={() => {
-                setSelectedaccessibility(option)
+                setSelectedaccessibility(option.en)
                 setShowAccessibilityOptions(false)
               }}
               style={
-                selectedaccessibility === option
+                selectedaccessibility === option.en
                   ? activePill
                   : pill
               }
             >
-              {option}
+              {option.en}
             </button>
           ))}
         </div>
       )}
 
-      {!showAccessibilityOptions &&
-        selectedaccessibility && (
-          <div style={summaryCard}>
-            <span
-              onClick={() =>
-                setShowAccessibilityOptions(true)
-              }
-              style={{
-                ...breadcrumbText,
-                cursor: 'pointer'
-              }}
-            >
-              {selectedaccessibility}
-            </span>
+      {selectedaccessibility ===
+        'Unpaved Road to Property' && (
 
-            <button
-              type="button"
-              onClick={() => {
-                setSelectedaccessibility('')
-                setShowAccessibilityOptions(true)
-              }}
-              style={resetButton}
-            >
-              ✕
-            </button>
+        <div style={distanceRangeSection}>
+
+          <div style={distanceRangeHeading}>
+            DISTANCE TO PAVED ROAD
           </div>
-        )}
+
+          <div style={pillWrap}>
+            {pavedRoadDistanceRangeOptions.map(
+              (option) => (
+                <button
+                  type="button"
+                  key={option.value}
+                  onClick={() =>
+                    setSelectedPavedRoadDistanceRange(
+                      option.value
+                    )
+                  }
+                  style={
+                    selectedPavedRoadDistanceRange ===
+                    option.value
+                      ? activePill
+                      : pill
+                  }
+                >
+                  {option.en}
+                </button>
+              )
+            )}
+          </div>
+
+        </div>
+
+      )}
     </div>
   )
 }
@@ -131,4 +143,14 @@ const resetButton = {
   color: '#ff6666',
   cursor: 'pointer',
   fontSize: '1rem'
+}
+
+const distanceRangeSection = {
+  marginTop: '1rem'
+}
+
+const distanceRangeHeading = {
+  fontSize: '.85rem',
+  color: '#aaa',
+  marginBottom: '.75rem'
 }

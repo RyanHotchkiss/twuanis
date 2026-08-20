@@ -1,4 +1,10 @@
 import { supabase } from '@/lib/supabase'
+import {
+  matchesConstructionAreaConstraint,
+  matchesPropertyAreaConstraint,
+  resolveConstructionAreaConstraint,
+  resolvePropertyAreaConstraint
+} from '@/lib/market-intelligence-area-ranges'
 
 const MIN_SAMPLE_SIZE = 10
 const CRC_PER_USD = 500
@@ -37,6 +43,7 @@ type MarketFilters = {
   environment?: string
   terrain?: string
   accessibility?: string
+  distance_to_paved_road_range?: string
   legal_status?: string
 }
 
@@ -53,6 +60,7 @@ type Listing = {
   property_area: number | null
   construction_area: number | null
   created_at: string | null
+  distance_to_paved_road_range: string | null
 }
 
 type DistributionRow = {
@@ -60,6 +68,25 @@ type DistributionRow = {
   count: number
   percentage: number
 }
+
+const PROPERTY_AREA_COHORTS = [
+  { value: 'under-100m2', label: '<100m²' },
+  { value: '100-500m2', label: '100–500m²' },
+  { value: '500-1000m2', label: '500–1,000m²' },
+  { value: '1000-5000m2', label: '1,000–5,000m²' },
+  { value: '5000m2-1-hectare', label: '5,000m²–1 Hectare' },
+  { value: '1-5-hectares', label: '1–5 Hectares' },
+  { value: 'over-5-hectares', label: '5 Hectares+' }
+] as const
+
+const CONSTRUCTION_AREA_COHORTS = [
+  { value: 'under-50m2', label: '<50m²' },
+  { value: '50-100m2', label: '50–100m²' },
+  { value: '100-200m2', label: '100–200m²' },
+  { value: '200-400m2', label: '200–400m²' },
+  { value: '400-800m2', label: '400–800m²' },
+  { value: '800m2-plus', label: '800m²+' }
+] as const
 
 function normalize(value?: string) {
   return value?.trim().toLowerCase()
@@ -197,6 +224,82 @@ function average(values: number[]) {
                   .sort((a, b) => b.count - a.count)
               }
 
+              function calculatePropertyAreaDistribution(
+                listings: Listing[]
+              ): DistributionRow[] {
+                const validListings = listings.filter(
+                  listing =>
+                    typeof listing.property_area === 'number' &&
+                    Number.isFinite(listing.property_area)
+                )
+
+                if (!validListings.length) return []
+
+                return PROPERTY_AREA_COHORTS.map(cohort => {
+                  const constraint =
+                    resolvePropertyAreaConstraint(cohort.value)
+
+                  if (!constraint) {
+                    throw new Error(
+                      `Unknown property area cohort: ${cohort.value}`
+                    )
+                  }
+
+                  const count = validListings.filter(listing =>
+                    matchesPropertyAreaConstraint(
+                      listing.property_area,
+                      cohort.value
+                    )
+                  ).length
+
+                  return {
+                    value: cohort.label,
+                    count,
+                    percentage: Number(
+                      ((count / validListings.length) * 100).toFixed(2)
+                    )
+                  }
+                })
+              }
+
+              function calculateConstructionAreaDistribution(
+                listings: Listing[]
+              ): DistributionRow[] {
+                const validListings = listings.filter(
+                  listing =>
+                    typeof listing.construction_area === 'number' &&
+                    Number.isFinite(listing.construction_area)
+                )
+
+                if (!validListings.length) return []
+
+                return CONSTRUCTION_AREA_COHORTS.map(cohort => {
+                  const constraint =
+                    resolveConstructionAreaConstraint(cohort.value)
+
+                  if (!constraint) {
+                    throw new Error(
+                      `Unknown construction area cohort: ${cohort.value}`
+                    )
+                  }
+
+                  const count = validListings.filter(listing =>
+                    matchesConstructionAreaConstraint(
+                      listing.construction_area,
+                      cohort.value
+                    )
+                  ).length
+
+                  return {
+                    value: cohort.label,
+                    count,
+                    percentage: Number(
+                      ((count / validListings.length) * 100).toFixed(2)
+                    )
+                  }
+                })
+              }
+
           function applyTransactionFilter(
             listings: Listing[],
             transactionType?: string
@@ -230,12 +333,15 @@ function average(values: number[]) {
                 filters: MarketFilters
               ) {
                 const {
-                  transaction_type,
-                  province,
-                  canton,
-                  district,
-                  ...ontologyFilters
-                } = filters
+                transaction_type,
+                province,
+                canton,
+                district,
+                property_area,
+                construction_area,
+                distance_to_paved_road_range,
+                ...ontologyFilters
+              } = filters
 
                 const listingSelect = `
                     id,
@@ -246,6 +352,7 @@ function average(values: number[]) {
                     monthly_price,
                     property_area,
                     construction_area,
+                    distance_to_paved_road_range,
                     province,
                     canton,
                     district,
@@ -374,6 +481,32 @@ function average(values: number[]) {
                         )
                       )
                     })
+                  }
+
+                  if (property_area) {
+                    listings = listings.filter(listing =>
+                      matchesPropertyAreaConstraint(
+                        listing.property_area,
+                        property_area
+                      )
+                    )
+                  }
+
+                  if (construction_area) {
+                    listings = listings.filter(listing =>
+                      matchesConstructionAreaConstraint(
+                        listing.construction_area,
+                        construction_area
+                      )
+                    )
+                  }
+
+                  if (distance_to_paved_road_range) {
+                    listings = listings.filter(
+                      listing =>
+                        listing.distance_to_paved_road_range ===
+                        distance_to_paved_road_range
+                    )
                   }
 
                 return applyTransactionFilter(
@@ -572,8 +705,11 @@ export async function getMarketStatistics(filters: MarketFilters) {
 
             year_built: await calculateDistribution(listingIds, 'year_built'),
 
-            property_area: await calculateDistribution(listingIds, 'property_area'),
-            construction_area: await calculateDistribution(listingIds, 'construction_area'),
+            property_area:
+            calculatePropertyAreaDistribution(listings),
+
+            construction_area:
+            calculateConstructionAreaDistribution(listings),
 
             utility: await calculateDistribution(listingIds, 'utility'),
             environment: await calculateDistribution(listingIds, 'environment'),

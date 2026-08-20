@@ -45,7 +45,7 @@ import RentalPropertyDefinitionPanel from '@/app/components/RentalPropertyDefini
 import TopBar from '@/app/components/TopBar'
 import ExactConstructionAreaInput
 from '@/app/components/listing-input/ExactConstructionAreaInput'
-import TopBarES from '@/app/components/TopBarES'
+
 import PropertyTypeFilterES from '@/app/components/filter-bar/PropertyTypeFilterES'
 import BedroomFilterSES from '@/app/components/filter-bar/BedroomFilterSES'
 import BathroomFilterSES from '@/app/components/filter-bar/BathroomFilterSES'
@@ -364,6 +364,9 @@ export default function RentalListingEditForm({
         normalizeAccessibility(
           listing.accessibility
         ),
+
+      distance_to_paved_road_range:
+        listing.distance_to_paved_road_range || '',
 
       terrain:
         normalizeStringArray(
@@ -693,6 +696,13 @@ export default function RentalListingEditForm({
             propertyData.accessibility ||
             null,
 
+          distance_to_paved_road_range:
+            propertyData.accessibility ===
+              'Unpaved Road to Property'
+                ? propertyData.distance_to_paved_road_range ||
+                  null
+                : null,
+
           terrain:
             propertyData.terrain,
 
@@ -766,10 +776,7 @@ export default function RentalListingEditForm({
   return (
     <main style={page}>
       <div style={container}>
-        {language === 'es'
-              ? <TopBarES />
-              : <TopBar />
-            }
+        <TopBar />
 
         <header style={header}>
           <div>
@@ -1286,58 +1293,39 @@ export default function RentalListingEditForm({
                   selectedaccessibility={
                     propertyData.accessibility
                   }
-                  setSelectedaccessibility={
-                    (value: string) =>
-                      setField(
-                        'accessibility',
-                        value
-                      )
-                  }
-                  showAccessibilityOptions={
-                    showAccessibilityOptions
-                  }
-                  setShowAccessibilityOptions={
-                    setShowAccessibilityOptions
-                  }
-                />
-              ) : (
-                <AccessibilityFilter
-                  selectedaccessibility={
-                    propertyData.accessibility
-                  }
-                  setSelectedaccessibility={
-                    (value: string) =>
-                      setField(
-                        'accessibility',
-                        value
-                      )
-                  }
-                  showAccessibilityOptions={
-                    showAccessibilityOptions
-                  }
-                  setShowAccessibilityOptions={
-                    setShowAccessibilityOptions
-                  }
-                />
-              )}
 
-              {language === 'es' ? (
-                <TerrainFilterES
-                  selectedterrain={
-                    propertyData.terrain
+                  setSelectedaccessibility={
+                    (value: string) => {
+                      setPropertyData(prev => ({
+                        ...prev,
+                        accessibility: value,
+                        distance_to_paved_road_range:
+                          value ===
+                          'Unpaved Road to Property'
+                            ? prev.distance_to_paved_road_range
+                            : ''
+                      }))
+                    }
                   }
-                  setSelectedterrain={
-                    (value: string[]) =>
+
+                  selectedPavedRoadDistanceRange={
+                    propertyData.distance_to_paved_road_range
+                  }
+
+                  setSelectedPavedRoadDistanceRange={
+                    (value: string) =>
                       setField(
-                        'terrain',
+                        'distance_to_paved_road_range',
                         value
                       )
                   }
-                  showTerrainOptions={
-                    showTerrainOptions
+
+                  showAccessibilityOptions={
+                    showAccessibilityOptions
                   }
-                  setShowTerrainOptions={
-                    setShowTerrainOptions
+
+                  setShowAccessibilityOptions={
+                    setShowAccessibilityOptions
                   }
                 />
               ) : (

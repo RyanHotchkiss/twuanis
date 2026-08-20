@@ -77,31 +77,33 @@ export default function ExactPropertyAreaInput({
     }
   }, [])
 
-  const labels =
+    const labels =
     language === 'es'
       ? {
-          heading: 'Área de Propiedad',
+          heading: 'Área de Terreno',
           none: 'Ninguna Seleccionada',
-          exact: 'Ingrese el área exacta',
+          exact:
+            'Ingrese el área exacta del terreno o parcela',
           squareMeters: 'm²',
           hectares: 'Hectáreas',
           clear: 'Borrar',
           collapse:
-            'Contraer área de propiedad',
+            'Contraer área de terreno',
           expand:
-            'Expandir área de propiedad'
+            'Expandir área de terreno'
         }
       : {
-          heading: 'Property Area',
+          heading: 'Land Area',
           none: 'None Selected',
-          exact: 'Enter the exact area',
+          exact:
+            'Enter the exact land or parcel area',
           squareMeters: 'm²',
           hectares: 'Hectares',
           clear: 'Clear',
           collapse:
-            'Collapse property area',
+            'Collapse land area',
           expand:
-            'Expand property area'
+            'Expand land area'
         }
 
   const currentSquareMeters =

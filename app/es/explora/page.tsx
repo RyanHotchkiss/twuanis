@@ -3,7 +3,7 @@ import { exploreMarket } from '@/lib/explorer-engine'
 import { getExplorerOptions } from '@/lib/explorer-options-engine'
 import ExploreFilters from './FiltrosExplora'
 import ExploreResults from './ResultadosExplora'
-import TopBarES from '@/app/components/TopBarES'
+import TopBar from '@/app/components/TopBar'
 import GraphExplorer from '@/app/components/GraphExplorer'
 import {
   supabase
@@ -29,7 +29,8 @@ type ExplorePageProps = {
     terrain?: string
     utility?: string
     accessibility?: string
-    legal_status?: string
+    distance_to_paved_road_range?: string
+    legal_status?: string   
   }>
 }
 
@@ -52,6 +53,8 @@ export default async function ExplorePage({
     terrain: params.terrain,
     utility: params.utility,
     accessibility: params.accessibility,
+    distance_to_paved_road_range:
+      params.distance_to_paved_road_range,
     legal_status: params.legal_status
   }
 
@@ -94,7 +97,7 @@ export default async function ExplorePage({
           color: '#ededed'
         }}
       >
-      <TopBarES />
+      <TopBar />
 
       <GraphExplorer />
 

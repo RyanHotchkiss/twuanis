@@ -73,20 +73,22 @@ function getCanonicalArea(
     return value
   }
 
+  if (typeof value !== 'string') {
+    return null
+  }
+
   const normalized =
-    String(value ?? '')
+    value
       .replace(/,/g, '')
+      .replace(/\s*m²\s*$/i, '')
       .trim()
 
-  const match =
-    normalized.match(/\d+(\.\d+)?/)
-
-  if (!match) {
+  if (!/^\d+(?:\.\d+)?$/.test(normalized)) {
     return null
   }
 
   const area =
-    Number(match[0])
+    Number(normalized)
 
   return Number.isFinite(area)
     ? area

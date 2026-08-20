@@ -60,7 +60,7 @@ import CsvStagingModal from '@/app/components/CsvStagingModal'
 import PropertyDefinitionPanelES from '@/app/components/PropertyDefinitionPanelES'
 import PropertyTypeFilterSES from
 '@/app/components/filter-bar/PropertyTypeFilterSES'
-import TopBarES from '@/app/components/TopBarES'
+import TopBar from '@/app/components/TopBar'
 import CreateListingButtonSXL from '@/app/components/CreateListingButtonSXL'
 import AuthOverlay
 from '@/app/AuthOverlay'
@@ -112,6 +112,7 @@ const [showAuthOverlay, setShowAuthOverlay] = useState(false)
     connectivity: '',
     environment: '',
     accessibility: '',
+    distance_to_paved_road_range: '',
     terrain: [] as string[],
     priceMillions: 0,
     images: [] as {
@@ -227,7 +228,7 @@ const [showAuthOverlay, setShowAuthOverlay] = useState(false)
                     flexWrap: 'wrap'
                     }}>
 
-                                        <TopBarES
+                                        <TopBar
                                             onFilterClick={() =>
                                                 setShowMobileFilters(true)
                                             }
@@ -343,6 +344,9 @@ const [showAuthOverlay, setShowAuthOverlay] = useState(false)
                                         accessibility: row.accessibility
                                             ? row.accessibility
                                             : '',
+
+                                        distance_to_paved_road_range:
+                                        row.distance_to_paved_road_range || null,
 
                                         terrain: row.terrain
                                             ? [row.terrain]
@@ -660,18 +664,40 @@ const [showAuthOverlay, setShowAuthOverlay] = useState(false)
                     />
 
 
-<AccessibilityFilterES
-                        selectedaccessibility={propertyData.accessibility}
-                        setSelectedaccessibility={(value: string) =>
-                            setPropertyData({
-                                ...propertyData,
-                                accessibility: value
-                            })
-                        }
-                        showAccessibilityOptions={showAccessibilityOptions}
-                        setShowAccessibilityOptions={
-                            setShowAccessibilityOptions
-                        }
+                    <AccessibilityFilterES
+                    selectedaccessibility={
+                        propertyData.accessibility
+                    }
+
+                    setSelectedaccessibility={(value: string) =>
+                        setPropertyData(prev => ({
+                        ...prev,
+                        accessibility: value,
+                        distance_to_paved_road_range:
+                            value === 'Unpaved Road to Property'
+                            ? prev.distance_to_paved_road_range
+                            : ''
+                        }))
+                    }
+
+                    selectedPavedRoadDistanceRange={
+                        propertyData.distance_to_paved_road_range
+                    }
+
+                    setSelectedPavedRoadDistanceRange={(value: string) =>
+                        setPropertyData(prev => ({
+                        ...prev,
+                        distance_to_paved_road_range: value
+                        }))
+                    }
+
+                    showAccessibilityOptions={
+                        showAccessibilityOptions
+                    }
+
+                    setShowAccessibilityOptions={
+                        setShowAccessibilityOptions
+                    }
                     />
 
 {/* TERRAIN */}

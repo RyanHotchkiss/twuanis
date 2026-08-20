@@ -48,7 +48,7 @@ import WhatsAppInputS from '@/app/components/WhatsAppInputS'
 import CsvStagingModal from '@/app/components/CsvStagingModal'
 import RentalPropertyDefinitionPanelES from '@/app/components/RentalPropertyDefinitionPanelES'
 import PropertyTypeFilterES from '@/app/components/filter-bar/PropertyTypeFilterES'
-import TopBarES from '@/app/components/TopBarES'
+import TopBar from '@/app/components/TopBar'
 import MarketHubAuthGate from '@/app/components/MarketHubAuthGate'
 import CreateListingButtonSXL from '@/app/components/CreateListingButtonSXL'
 import AuthOverlay
@@ -104,6 +104,7 @@ export default function SellPage() {
                     connectivity: '',
                     environment: '',
                     accessibility: '',
+                    distance_to_paved_road_range: '',
                     terrain: [] as string[],
                     monthly_price: '',
 
@@ -219,7 +220,7 @@ export default function SellPage() {
                     flexWrap: 'wrap'
                     }}>
 
-                                        <TopBarES
+                                        <TopBar
                                             onFilterClick={() =>
                                                 setShowMobileFilters(true)
                                             }
@@ -335,6 +336,9 @@ export default function SellPage() {
                                         accessibility: row.accessibility
                                             ? [row.accessibility]
                                             : [],
+
+                                        distance_to_paved_road_range:
+                                        row.distance_to_paved_road_range || null,
 
                                         terrain: row.terrain
                                             ? [row.terrain]
@@ -711,20 +715,41 @@ formattedData
 
 {/* accessibility */}
 
-<AccessibilityFilterES
-                        selectedaccessibility={propertyData.accessibility}
-                        setSelectedaccessibility={(value) =>
-                            setPropertyData({
-                            ...propertyData,
-                            accessibility: value
-                            })
-                        }
+            <AccessibilityFilterES
+                selectedaccessibility={
+                    propertyData.accessibility
+                }
 
-                        showAccessibilityOptions={showAccessibilityOptions}
-                        setShowAccessibilityOptions={
-                            setShowAccessibilityOptions
-                        }
-                        />
+                setSelectedaccessibility={(value: string) =>
+                    setPropertyData(prev => ({
+                    ...prev,
+                    accessibility: value,
+                    distance_to_paved_road_range:
+                        value === 'Unpaved Road to Property'
+                        ? prev.distance_to_paved_road_range
+                        : ''
+                    }))
+                }
+
+                selectedPavedRoadDistanceRange={
+                    propertyData.distance_to_paved_road_range
+                }
+
+                setSelectedPavedRoadDistanceRange={(value: string) =>
+                    setPropertyData(prev => ({
+                    ...prev,
+                    distance_to_paved_road_range: value
+                    }))
+                }
+
+                showAccessibilityOptions={
+                    showAccessibilityOptions
+                }
+
+                setShowAccessibilityOptions={
+                    setShowAccessibilityOptions
+                }
+            />
 
 {/* TERRAIN */}
 <TerrainFilterES
@@ -927,10 +952,11 @@ formattedData
                  {showCsvStaging && (
  
                  <CsvStagingModal
-                     csvListings={csvListings}
-                     setCsvListings={setCsvListings}
-                     setShowCsvStaging={setShowCsvStaging}
-                 />
+                csvListings={csvListings}
+                setCsvListings={setCsvListings}
+                setShowCsvStaging={setShowCsvStaging}
+                isRentLease={true}
+                />
  
                  )}
  

@@ -23,6 +23,7 @@ export const ui = {
     terrain: 'Terrain',
     utilities: 'Utilities',
     accessibility: 'Accessibility',
+    distanceToPavedRoad: 'Distance to Paved Road',
     legalStatus: 'Legal Status'
   },
 
@@ -48,6 +49,7 @@ export const ui = {
     terrain: 'Terreno',
     utilities: 'Servicios',
     accessibility: 'Accesibilidad',
+    distanceToPavedRoad: 'Distancia a Calle Pavimentada',
     legalStatus: 'Estado Legal'
   }
 }

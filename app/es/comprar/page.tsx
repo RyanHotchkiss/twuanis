@@ -11,7 +11,7 @@ import { createListingId } from '@/lib/createListingId'
 import { supabase } from '@/lib/supabase'
 import FilterButton from '@/app/components/FilterButton'
 
-import TopBarES from '@/app/components/TopBarES'
+import TopBar from '@/app/components/TopBar'
 import BuyHeaderES from '@/app/components/BuyHeaderES'
 import BuySidebarES from '@/app/components/BuySidebarES'
 import { normalizeText } from '@/lib/normalizeText' 
@@ -112,6 +112,7 @@ const navButton = {
     legal_status: '',
     environment: [] as string[],
     accessibility: '',
+    distance_to_paved_road_range: '',
     terrain: [] as string[]
   })
 
@@ -877,6 +878,23 @@ const filteredProperties = properties.filter((property) => {
       }
 
       /*
+        * DISTANCE TO PAVED ROAD
+        */
+
+        if (
+          filters.accessibility ===
+            'Unpaved Road to Property' &&
+          filters.distance_to_paved_road_range
+        ) {
+          if (
+            property.distance_to_paved_road_range !==
+            filters.distance_to_paved_road_range
+          ) {
+            return false
+          }
+        }
+
+      /*
       * TERRAIN
       */
 
@@ -932,7 +950,7 @@ const filteredProperties = properties.filter((property) => {
               borderBottom: '1px solid #151515'
             }}>
 
-                    <TopBarES
+                    <TopBar
                       onFilterClick={() =>
                         setShowMobileFilters(true)
                       }

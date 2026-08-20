@@ -19,6 +19,7 @@ type MarketFilters = {
   terrain?: string
   accessibility?: string
   legal_status?: string
+  distance_to_paved_road_range?: string
 }
 
 type ScarcityCombination = {

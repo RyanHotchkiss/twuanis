@@ -3,9 +3,18 @@
 import { buildHomePageSchema }
 from '@/lib/schema/buildHomePageSchema'
 import JsonLd from '@/app/components/JsonLd'
-
-import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import TopBar from '@/app/components/TopBar'
+import {
+  Compass,
+  BadgeDollarSign,
+  CircleDot,
+  HandHeart,
+  Scale,
+  ChartNoAxesColumnIncreasing,
+  Ruler,
+} from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { createListingId } from '@/lib/createListingId'
 import { supabase } from '@/lib/supabase'
 import {
@@ -30,6 +39,10 @@ import {
 import {
   resolveListingImages
 } from '@/app/utils/resolveListingImages'
+
+import {
+  matchesPropertyAreaRange
+} from '@/lib/marketplace-area-ranges'
 
 function HomePageContent({
                 ontologyTerms,
@@ -60,7 +73,7 @@ function HomePageContent({
   const [selectedutility, setSelectedutility] = useState('')
 
   const [showMobileFilters, setShowMobileFilters] = useState(false)
-  const [countdown, setCountdown] = useState(12)
+ 
   const [showPoster, setShowPoster] = useState(true)
 
 const [showMainOverlay, setShowMainOverlay] =
@@ -85,25 +98,7 @@ const [showMainOverlay, setShowMainOverlay] =
                 handleResize
               )
             }
-          }, [])
-
-          useEffect(() => {
-                if (
-                  searchParams.get('overlay')
-                ) {
-                  setShowPoster(false)
-                  setShowMainOverlay(true)
-                  return
-                }
-                const timer = setTimeout(() => {
-                  setShowPoster(false)
-                  setTimeout(() => {
-                    setShowMainOverlay(true)
-                  }, 600)
-                }, 20000)
-                return () => clearTimeout(timer)
-              }, [searchParams])
-    
+          }, [])   
 
   const [selectedlegal_status, setSelectedlegal_status] = useState('')
   const [selectedenvironment, setSelectedenvironment] = useState('')
@@ -202,7 +197,10 @@ const [showMainOverlay, setShowMainOverlay] =
 
                     if (
                       selectedproperty_area &&
-                      property.property_area !== selectedproperty_area
+                      !matchesPropertyAreaRange(
+                        property.property_area,
+                        selectedproperty_area
+                      )
                     ) {
                       return false
                     }
@@ -330,61 +328,230 @@ const [showMainOverlay, setShowMainOverlay] =
                     }}
                   >
 
-  {/* TOP RIGHT BUTTONS */}
+{/* MOBILE EN INTRO */}
+      {showPoster && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 9998,
+            background: '#080808',
+            overflowY: 'auto',
+            WebkitOverflowScrolling: 'touch',
+          }}
+        >
+          <TopBar />
 
-              {showPoster && (
-
-                <div
+          <main
+            style={{
+              width: '100%',
+              maxWidth: 720,
+              margin: '0 auto',
+              padding: '24px 18px 42px',
+              boxSizing: 'border-box',
+            }}
+          >
+            {/* TWUANIS INTRO */}
+            <section
+              style={{
+                textAlign: 'center',
+                padding: '30px 12px 38px',
+              }}
+            >
+              <div
                   style={{
-                    position:'absolute',
-                    top:'1rem',
-                    right:'1rem',
-                    display:'flex',
-                    gap:'.5rem'
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    width: '100%',
+                    marginBottom: 20,
                   }}
                 >
-
-                  <Link
-                    href="/es"
+                  {/* TWUANIS + MOBIUS */}
+                  <div
                     style={{
-                      background:'#000',
-                      color:'#fff',
-                      border:'2px solid #C9A86A',
-                      borderRadius:'999px',
-                      padding:'.45rem .9rem',
-                      fontSize:'.8rem',
-                      fontWeight:'bold',
-                      textDecoration:'none'
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: 12,
+                      width: '100%',
                     }}
                   >
-                    Español
-                  </Link>
+                    <div
+                      style={{
+                        color: '#ffffff',
+                        fontFamily: 'var(--font-cinzel), serif',
+                        fontSize: 'clamp(52px, 16vw, 82px)',
+                        lineHeight: 0.95,
+                        letterSpacing: '-0.04em',
+                        textShadow:
+                          '1px 1px 0 #c99a32, -1px -1px 0 #c99a32, 0 2px 10px rgba(201,154,50,0.35)',
+                      }}
+                    >
+                      Twuanis
+                    </div>
 
-                  <button
-                    onClick={() => {
-                          setShowPoster(false)
-                          setTimeout(() => {
-                            setShowMainOverlay(true)
-                          }, 600)
-                        }}
-                    
-                    style={{
-                      background:'#000',
-                      color:'#fff',
-                      border:'2px solid #C9A86A',
-                      borderRadius:'999px',
-                      padding:'.45rem .9rem',
-                      fontSize:'.8rem',
-                      fontWeight:'bold',
-                      cursor:'pointer'
-                    }}
-                  >
-                    Skip →
-                  </button>
+                    <img
+                      src="/images/twuanis-mobius.svg"
+                      alt=""
+                      aria-hidden="true"
+                      style={{
+                        width: 48,
+                        height: 48,
+                        flexShrink: 0,
+                        display: 'block',
+                      }}
+                    />
+                  </div>
 
+                  <div style={mobileDivider0}>
+                    <span>◆</span>
+                  </div>
                 </div>
 
+              <div
+                style={{
+                  color: '#ffffff',
+                  fontSize: 15,
+                  fontWeight: 700,
+                  textShadow:
+                          '1px 1px 0 #c99a32, 1px 1px 0 #c99a32, 0 2px 10px rgba(201,154,50,0.35)',
+                  letterSpacing: '0.11em',
+                  lineHeight: 2,
+                }}
+              >
+                REAL ESTATE MARKET DECISION INTELLIGENCE
+              </div>
+
+                <div style={mobileDivider}>
+                    <span>◆</span>
+                  </div>
+
+            </section>
+
+            {/* ENGINE EXAMPLES */}
+            <section
+              style={{
+                border: '1px solid rgba(201, 154, 50, 0.45)',
+                borderRadius: 24,
+                padding: '8px 16px',
+                background: '#101820',
+              }}
+            >
+              {mobileEngineExamples.map(
+                ({ id, title, Icon, color, question, answer }, index) => (
+                  <article
+                    key={id}
+                    style={{
+                      padding: '28px 0 30px',
+                      borderBottom:
+                        index < mobileEngineExamples.length - 1
+                          ? '1px solid rgba(201, 154, 50, 0.35)'
+                          : 'none',
+                    }}
+                  >
+                    {/* CLICKABLE ENGINE CARD */}
+                    <Link
+                      href={`/en/market-intelligence?tab=${id}`}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 14,
+                        width: '100%',
+                        boxSizing: 'border-box',
+                        padding: '14px 16px',
+                        marginBottom: 18,
+                        border: `2px solid ${color}`,
+                        borderRadius: 18,
+                        background: '#171717',
+                        color,
+                        textDecoration: 'none',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: 58,
+                          height: 58,
+                          flexShrink: 0,
+                          border: `1px solid ${color}`,
+                          borderRadius: 15,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <Icon size={32} strokeWidth={1.35} />
+                      </div>
+
+                      <div
+                        style={{
+                          textAlign: 'left',
+                          fontFamily: 'var(--font-cinzel), serif',
+                          fontSize: 20,
+                          lineHeight: 1.15,
+                          color: '#ffffff',
+                        }}
+                      >
+                        {title}
+                      </div>
+                    </Link>
+
+                    {/* QUESTION */}
+                    <div
+                      style={{
+                        fontSize: 14,
+                        lineHeight: 1.5,
+                        color: '#f4f4f4',
+                        marginBottom: 12,
+                      }}
+                    >
+                      <strong style={{ color }}>Hypothetical Question:</strong>{' '}
+                      {question}
+                    </div>
+
+                    {/* ANSWER */}
+                    <div
+                      style={{
+                        fontSize: 14,
+                        lineHeight: 1.55,
+                        color: '#dddddd',
+                      }}
+                    >
+                      <strong style={{ color }}>Potential Answer:</strong>{' '}
+                      {answer}
+                    </div>
+                  </article>
+                )
               )}
+            </section>
+
+            {/* CONTINUE */}
+            <button
+              type="button"
+              onClick={() => {
+                setShowPoster(false)
+                setShowMainOverlay(true)
+              }}
+              style={{
+                width: '100%',
+                minHeight: 62,
+                marginTop: 24,
+                border: '1px solid #e0b65a',
+                borderRadius: 999,
+                background:
+                  'linear-gradient(180deg, #efc76c 0%, #c99632 100%)',
+                color: '#07111d',
+                fontSize: 22,
+                fontWeight: 800,
+                letterSpacing: '0.08em',
+                cursor: 'pointer',
+              }}
+            >
+              CONTINUE →
+            </button>
+          </main>
+        </div>
+      )}
 
             </div>
 
@@ -1702,7 +1869,60 @@ const sellButton = {
                     homePageSchema: any[]
                     }
 
-                    export default function HomePageClient(
+const mobileEngineExamples = [
+  {
+    id: 'explorer',
+    title: 'MARKET EXPLORER ENGINE',
+    Icon: Compass,
+    color: '#3ddc84',
+    question:
+      'What does the market for condominiums with 100–180 m² of construction, mountain views, and year-built range of 2015 or newer look like in Escazú, San José?',
+    answer:
+      'Based on the current 463 listings in San José Province, 187 listings in Escazú Canton, and 74 listings in San Rafael District, current condominium inventory is concentrated between 120–165 m² of construction. Mountain-view properties form a smaller segment of the market, while properties built since 2015 are disproportionately concentrated toward the upper end of the construction-area range.',
+  },
+  {
+    id: 'valuation',
+    title: 'VALUATION ENGINE',
+    Icon: BadgeDollarSign,
+    color: '#1687ff',
+    question:
+      'What is a house in San José with 1,000 m² of property area, 124 m² of construction, 4 bedrooms, 3 bathrooms, 2 parking spaces, mountain views, and paved-road access worth?',
+    answer:
+      'Based on the current 512 listings in San José Province, 146 listings in Santa Ana Canton, and 61 listings in Santa Ana District, comparable properties indicate a market value of approximately ₡148–₡162 million. The 1,000 m² property area and paved-road access place upward pressure on value, while the relatively low 12.4% site coverage and 124 m² construction area distinguish the property from more heavily improved comparables.',
+  },
+  {
+    id: 'pricing',
+    title: 'PRICING STRATEGY ENGINE',
+    Icon: CircleDot,
+    color: '#1687ff',
+    question:
+      'What should I list a house in Heredia with 450 m² of property area, 210 m² of construction, mountain views, paved-road access, public-water service, and a year-built range of 2015 or newer for?',
+    answer:
+      'Based on the current 387 listings in Heredia Province, 121 listings in Heredia Canton, and 48 listings in San Francisco District, a ₡185 million asking price would position the property above most comparable inventory. A price near ₡169 million places it within the competitive listing range, while its 210 m² of construction, mountain views, paved-road access, and newer construction preserve differentiation from lower-priced inventory.',
+  },
+  {
+    id: 'scarcity',
+    title: 'MARKET FREQUENCY ENGINE',
+    Icon: ChartNoAxesColumnIncreasing,
+    color: '#ff3b00',
+    question:
+      'How common are houses in Guanacaste with at least 1,500 m² of property area, 250+ m² of construction, riverfront environment, electricity, public water, paved-road access, and titled legal status?',
+    answer:
+      'Based on the current 624 listings in Guanacaste Province, 138 listings in Santa Cruz Canton, and 52 listings in Tamarindo District, only 4.8% of comparable listings contain that complete attribute combination. Large property area and utility access occur independently with reasonable frequency, but combining 250+ m² of construction, riverfront environment, paved-road access, and titled legal status makes the complete property profile scarce.',
+  },
+  {
+    id: 'price-meter',
+    title: 'PRICE / M² INTELLIGENCE ENGINE',
+    Icon: Ruler,
+    color: '#ffd500',
+    question:
+      'Is ₡365 million expensive for an improved property in Escazú with 600 m² of land, 250 m² of construction, 41.7% site coverage, mountain views, paved-road access, and a year-built range of 2015 or newer?',
+    answer:
+      'Based on the current 463 listings in San José Province, 187 listings in Escazú Canton, and 74 listings in San Rafael District, comparable improved properties have a median construction-normalized price of ₡1.21 million/m². At ₡1.46 million/m², this property sits approximately 21% above the market center and falls within the expensive cohort. Its mountain views, paved-road access, newer construction, and 41.7% site coverage can then be evaluated against comparable cohorts to determine which attributes appear associated with that premium.',
+  },
+]
+
+export default function HomePageClient(
                     props: HomePageClientProps
                     ) {
 
@@ -1718,4 +1938,54 @@ const sellButton = {
 
   )
 
+}
+
+const mobileDivider: React.CSSProperties = {
+  width: '72%',
+  margin: '22px auto',
+  height: 1,
+  background:
+    'linear-gradient(90deg, transparent, rgba(201,154,50,.8), transparent)',
+  position: 'relative',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: '#c99a32',
+  fontSize: 10,
+}
+
+const mobileDivider0: React.CSSProperties = {
+  width: '72%',
+  margin: '22px auto',
+  height: 1,
+  background:
+    'linear-gradient(90deg, transparent, rgba(255, 59, 0, 0.8), transparent)',
+  position: 'relative',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: '#ff3b00',
+  fontSize: 10,
+}
+
+const mobileDivider1: React.CSSProperties = {
+  width: '72%',
+  margin: '22px auto',
+  height: 1,
+  background:
+    'linear-gradient(90deg, transparent, rgba(252, 252, 252, 252), transparent)',
+  position: 'relative',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: '#ffffff',
+  fontSize: 10,
+}
+
+const mobileHeroStatement: React.CSSProperties = {
+  color: '#ffffff',
+  fontSize: 12,
+  fontWeight: 700,
+  letterSpacing: '0.06em',
+  lineHeight: 1.45,
 }

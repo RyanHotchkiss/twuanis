@@ -22,6 +22,7 @@ type MarketMatchingFilters = {
   environment?: string
   terrain?: string
   accessibility?: string
+  distance_to_paved_road_range?: string
   legal_status?: string
 }
 
@@ -101,6 +102,11 @@ const matchFields = [
   { key: 'terrain', label: 'Terrain', weight: 6 },
   { key: 'utility', label: 'Utility', weight: 7 },
   { key: 'accessibility', label: 'Accessibility', weight: 4 },
+  {
+    key: 'distance_to_paved_road_range',
+    label: 'Distance to Paved Road',
+    weight: 4
+  },
   { key: 'legal_status', label: 'Legal Status', weight: 7 }
 ]
 
@@ -208,8 +214,10 @@ export async function getMarketMatches(
     transaction_type: filters.transaction_type,
     province: filters.province,
     canton: filters.canton,
-    district: filters.district
-    }
+    district: filters.district,
+    property_area: filters.property_area,
+    construction_area: filters.construction_area
+  }
 
     const market =
     await getMarketStatistics(broadFilters)

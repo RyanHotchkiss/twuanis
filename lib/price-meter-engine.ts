@@ -13,8 +13,30 @@ import {
 } from '@/lib/fx/fx-service'
 
 import type {
+  PriceMeterAnalyticalIdentity,
   PriceMeterFxIdentity
 } from '@/lib/price-meter-identity'
+
+import {
+  buildPriceMeterObservations,
+  type PriceMeterObservation
+} from '@/lib/price-meter-observation-builder'
+
+import {
+  buildPriceMeterTransactionCohorts
+} from '@/lib/price-meter-transaction-cohort'
+
+import {
+  buildPriceMeterAnalyticalCohort
+} from '@/lib/price-meter-analytical-cohort'
+
+import {
+  buildPriceMeterDistribution
+} from '@/lib/price-meter-distribution'
+
+import {
+  buildPriceMeterGeographicDistributions
+} from '@/lib/price-meter-geographic-distribution'
 
 import {
   createPriceMeterStatistic,
@@ -44,6 +66,7 @@ type MarketFilters = {
   terrain?: string
   accessibility?: string
   legal_status?: string
+  distance_to_paved_road_range?: string
 }
 
 const SQM_TO_SQFT = 10.7639
@@ -255,153 +278,6 @@ function decorateListing(
   }
 }
 
-type PriceMeterObservation = {
-  listingId:
-    string | null
-
-  transactionType:
-    'sale' | 'rent'
-
-  propertyBasis:
-    'land_only' | 'improved_property'
-
-  normalizationBasis:
-    'land' | 'construction'
-
-  analyticalPrice:
-    number
-
-  fx:
-    PriceMeterFxIdentity | null
-
-  areaM2:
-    number
-
-  pricePerM2:
-    number
-}
-
-
-function buildPriceMeterObservations(
-  listings: any[]
-): PriceMeterObservation[] {
-
-  const observations:
-    PriceMeterObservation[] =
-      []
-
-
-  for (
-    const listing of listings
-  ) {
-
-    const identity =
-      listing.analyticalIdentity
-
-
-    if (
-      !identity ||
-      !identity.eligibility.eligible ||
-      !identity.price.analyticallyUsable ||
-      identity.price.analyticalAmount === null ||
-      identity.transactionType === null ||
-      identity.propertyBasis === 'unknown'
-    ) {
-      continue
-    }
-
-
-    const analyticalPrice =
-      identity.price
-        .analyticalAmount
-
-
-    const listingId =
-      typeof listing.id === 'string'
-        ? listing.id
-        : null
-
-
-    if (
-      identity
-        .availableNormalizationBases
-        .includes('land') &&
-      identity.propertyArea.exactM2 !== null
-    ) {
-
-      const areaM2 =
-        identity.propertyArea
-          .exactM2
-
-
-      observations.push({
-        listingId,
-
-        transactionType:
-          identity.transactionType,
-
-        propertyBasis:
-          identity.propertyBasis,
-
-        normalizationBasis:
-          'land',
-
-        analyticalPrice,
-
-        fx:
-          identity.price.fx,
-
-        areaM2,
-
-        pricePerM2:
-          analyticalPrice /
-          areaM2
-      })
-    }
-
-
-    if (
-      identity
-        .availableNormalizationBases
-        .includes('construction') &&
-      identity.constructionArea.exactM2 !== null
-    ) {
-
-      const areaM2 =
-        identity.constructionArea
-          .exactM2
-
-
-      observations.push({
-        listingId,
-
-        transactionType:
-          identity.transactionType,
-
-        propertyBasis:
-          identity.propertyBasis,
-
-        normalizationBasis:
-          'construction',
-
-        analyticalPrice,
-
-        fx:
-          identity.price.fx,
-
-        areaM2,
-
-        pricePerM2:
-          analyticalPrice /
-          areaM2
-      })
-    }
-  }
-
-
-  return observations
-}
-
 function resolveStatisticMonetaryIdentity(
   observations:
     PriceMeterObservation[],
@@ -593,59 +469,157 @@ export async function getPriceMeterAnalysis(
       decoratedListings
     )
 
+    const transactionCohorts =
+      buildPriceMeterTransactionCohorts(
+        observations
+      )
+
+
+    const saleVacantLandCohort =
+      buildPriceMeterAnalyticalCohort({
+        transactionCohort:
+          transactionCohorts.sale,
+
+        propertyBasis:
+          'land_only',
+
+        normalizationBasis:
+          'land'
+      })
+
+
+    const saleImprovedLandCohort =
+      buildPriceMeterAnalyticalCohort({
+        transactionCohort:
+          transactionCohorts.sale,
+
+        propertyBasis:
+          'improved_property',
+
+        normalizationBasis:
+          'land'
+      })
+
+
+    const saleImprovedConstructionCohort =
+      buildPriceMeterAnalyticalCohort({
+        transactionCohort:
+          transactionCohorts.sale,
+
+        propertyBasis:
+          'improved_property',
+
+        normalizationBasis:
+          'construction'
+      })
+
+    const saleVacantLandDistribution =
+      buildPriceMeterDistribution(
+        saleVacantLandCohort
+      )
+
+
+    const saleImprovedLandDistribution =
+      buildPriceMeterDistribution(
+        saleImprovedLandCohort
+      )
+
+
+    const saleImprovedConstructionDistribution =
+      buildPriceMeterDistribution(
+        saleImprovedConstructionCohort
+      )
+
+    const saleVacantLandGeography =
+      buildPriceMeterGeographicDistributions({
+        observations:
+          saleVacantLandCohort.observations,
+
+        transactionType:
+          'sale'
+      })
+
+
+    const saleImprovedLandGeography =
+      buildPriceMeterGeographicDistributions({
+        observations:
+          saleImprovedLandCohort.observations,
+
+        transactionType:
+          'sale'
+      })
+
+
+    const saleImprovedConstructionGeography =
+      buildPriceMeterGeographicDistributions({
+        observations:
+          saleImprovedConstructionCohort.observations,
+
+        transactionType:
+          'sale'
+      })
+
+    const rentVacantLandCohort =
+      buildPriceMeterAnalyticalCohort({
+        transactionCohort:
+          transactionCohorts.rent,
+
+        propertyBasis:
+          'land_only',
+
+        normalizationBasis:
+          'land'
+      })
+
+
+    const rentImprovedLandCohort =
+      buildPriceMeterAnalyticalCohort({
+        transactionCohort:
+          transactionCohorts.rent,
+
+        propertyBasis:
+          'improved_property',
+
+        normalizationBasis:
+          'land'
+      })
+
+
+    const rentImprovedConstructionCohort =
+      buildPriceMeterAnalyticalCohort({
+        transactionCohort:
+          transactionCohorts.rent,
+
+        propertyBasis:
+          'improved_property',
+
+        normalizationBasis:
+          'construction'
+      })
+
 
     const saleVacantLandObservations =
-    observations.filter(
-      observation =>
-        observation.transactionType === 'sale' &&
-        observation.propertyBasis === 'land_only' &&
-        observation.normalizationBasis === 'land'
-    )
+      saleVacantLandCohort.observations
 
 
-  const saleImprovedLandObservations =
-    observations.filter(
-      observation =>
-        observation.transactionType === 'sale' &&
-        observation.propertyBasis === 'improved_property' &&
-        observation.normalizationBasis === 'land'
-    )
+    const saleImprovedLandObservations =
+      saleImprovedLandCohort.observations
 
 
-  const saleImprovedConstructionObservations =
-    observations.filter(
-      observation =>
-        observation.transactionType === 'sale' &&
-        observation.propertyBasis === 'improved_property' &&
-        observation.normalizationBasis === 'construction'
-    )
+    const saleImprovedConstructionObservations =
+      saleImprovedConstructionCohort.observations
 
 
-  const rentVacantLandObservations =
-    observations.filter(
-      observation =>
-        observation.transactionType === 'rent' &&
-        observation.propertyBasis === 'land_only' &&
-        observation.normalizationBasis === 'land'
-    )
+    const rentVacantLandObservations =
+      rentVacantLandCohort.observations
 
 
-  const rentImprovedLandObservations =
-    observations.filter(
-      observation =>
-        observation.transactionType === 'rent' &&
-        observation.propertyBasis === 'improved_property' &&
-        observation.normalizationBasis === 'land'
-    )
+    const rentImprovedLandObservations =
+      rentImprovedLandCohort.observations
 
 
-  const rentImprovedConstructionObservations =
-    observations.filter(
-      observation =>
-        observation.transactionType === 'rent' &&
-        observation.propertyBasis === 'improved_property' &&
-        observation.normalizationBasis === 'construction'
-    )
+    const rentImprovedConstructionObservations =
+      rentImprovedConstructionCohort.observations
 
     const saleVacantLandPrices =
     saleVacantLandObservations.map(
@@ -704,9 +678,20 @@ export async function getPriceMeterAnalysis(
    */
 
   const selectedTransactionType =
-    filters.transaction_type === 'rent'
+  filters.transaction_type === 'sale'
+    ? 'sale'
+    : filters.transaction_type === 'rent'
       ? 'rent'
-      : 'sale'
+      : null
+
+      if (
+      selectedTransactionType ===
+        null
+    ) {
+      throw new Error(
+        'Price / m² analysis requires an explicit Sale or Rent transaction type.'
+      )
+    }
 
     const selectedGeography = {
     province:
@@ -1089,6 +1074,30 @@ const constructionMonetaryIdentity =
 
   return {
     filters,
+
+    saleIntelligence: {
+      distributions: {
+        vacantLandLandNormalized:
+          saleVacantLandDistribution,
+
+        improvedLandNormalized:
+          saleImprovedLandDistribution,
+
+        improvedConstructionNormalized:
+          saleImprovedConstructionDistribution
+      },
+
+      geography: {
+        vacantLandLandNormalized:
+          saleVacantLandGeography,
+
+        improvedLandNormalized:
+          saleImprovedLandGeography,
+
+        improvedConstructionNormalized:
+          saleImprovedConstructionGeography
+      }
+    },
 
     summary: {
       /*

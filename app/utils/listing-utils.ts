@@ -42,7 +42,7 @@
                     if (propertyData.property_area) {
 
                         sentences.push(
-                        `The property falls within the ${propertyData.property_area} size range.`
+                        `The property area is ${propertyData.property_area} m².`
                         )
 
                     }
@@ -82,9 +82,9 @@
 
                         if (propertyData.construction_area) {
 
-                        sentences.push(
-                            `Construction area falls within the ${propertyData.construction_area} range.`
-                        )
+                            sentences.push(
+                            `The construction area is ${propertyData.construction_area} m².`
+                            )
 
                         }
 

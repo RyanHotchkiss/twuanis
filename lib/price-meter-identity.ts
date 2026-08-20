@@ -14,7 +14,7 @@
  * - Is this Vacant Land or Improved Property?
  * - Which normalization bases are analytically valid?
  * - What exact land and construction areas are known?
- * - What is the site's construction coverage?
+ * - Is Site Coverage analytically available from canonical footprint evidence?
  * - What geography does the listing belong to?
  * - What currency was the listing originally expressed in?
  *
@@ -38,6 +38,20 @@ export type PriceMeterPropertyBasis =
   | 'improved_property'
   | 'unknown'
 
+  export type PriceMeterPropertyBasisIntegrityReason =
+  | 'missing_construction_evidence'
+  | 'invalid_construction_evidence'
+  | 'unrecognized_property_type'
+  | 'contradictory_land_construction_evidence'
+
+
+export type PriceMeterPropertyBasisIntegrity = {
+  classified:
+    boolean
+
+  reasons:
+    PriceMeterPropertyBasisIntegrityReason[]
+}
 
 export type PriceMeterNormalizationBasis =
   | 'land'
@@ -167,6 +181,9 @@ export type PriceMeterAnalyticalIdentity = {
 
   propertyBasis:
     PriceMeterPropertyBasis
+
+  propertyBasisIntegrity:
+    PriceMeterPropertyBasisIntegrity
 
   availableNormalizationBases:
     PriceMeterNormalizationBasis[]
@@ -883,6 +900,7 @@ const LAND_ONLY_PROPERTY_TYPES =
 
 const IMPROVED_PROPERTY_TYPES =
   new Set<string>([
+    'cabin',
     'condo',
     'house',
     'commercial-property',
@@ -912,35 +930,44 @@ export function resolvePriceMeterPropertyBasis({
     'exact'
 
 
-  /*
-   * Land Only requires affirmative Land semantics
-   * and no affirmative construction evidence.
-   *
-   * A construction range or threshold still proves
-   * that construction exists, even though it cannot
-   * supply an exact normalization denominator.
-   */
+    /*
+    * Land Only requires:
+    *
+    * 1. affirmative Land semantics from the canonical
+    *    property type
+    * 2. construction area to be genuinely missing
+    *
+    * Missing construction data alone NEVER establishes
+    * Land Only.
+    *
+    * Invalid construction data is not evidence that
+    * construction is absent. Contradictory or invalid
+    * evidence therefore fails closed to unknown.
+    */
 
-  if (
-    LAND_ONLY_PROPERTY_TYPES.has(
-      normalizedPropertyType
-    )
-  ) {
+    if (
+      LAND_ONLY_PROPERTY_TYPES.has(
+        normalizedPropertyType
+      )
+    ) {
 
-    return hasConstructionEvidence
-      ? 'unknown'
-      : 'land_only'
-  }
+      return constructionArea.kind ===
+        'missing'
+        ? 'land_only'
+        : 'unknown'
+    }
 
 
-  /*
-   * Improved Property requires affirmative
-   * improved-property semantics plus affirmative
-   * construction evidence.
-   *
-   * Exact construction area is NOT required merely
-   * to classify Property Basis.
-   */
+      /*
+    * Improved Property requires:
+    *
+    * 1. affirmative improved-property semantics from
+    *    the canonical property type
+    * 2. an exact positive construction-area observation
+    *
+    * Missing or invalid construction evidence fails
+    * closed to unknown.
+    */
 
   if (
     IMPROVED_PROPERTY_TYPES.has(
@@ -1017,6 +1044,124 @@ function resolveAvailableNormalizationBases({
  * ---------------------------------------------------------
  */
 
+export function resolvePriceMeterPropertyBasisIntegrity({
+  propertyType,
+  constructionArea,
+  propertyBasis
+}: {
+  propertyType:
+    unknown
+
+  constructionArea:
+    PriceMeterAreaIdentity
+
+  propertyBasis:
+    PriceMeterPropertyBasis
+}): PriceMeterPropertyBasisIntegrity {
+
+  if (
+    propertyBasis !==
+      'unknown'
+  ) {
+    return {
+      classified:
+        true,
+
+      reasons:
+        []
+    }
+  }
+
+
+  const normalizedPropertyType =
+    normalizeText(
+      propertyType
+    )
+
+
+  if (
+    LAND_ONLY_PROPERTY_TYPES.has(
+      normalizedPropertyType
+    )
+  ) {
+
+    if (
+      constructionArea.kind ===
+        'exact'
+    ) {
+      return {
+        classified:
+          false,
+
+        reasons: [
+          'contradictory_land_construction_evidence'
+        ]
+      }
+    }
+
+
+    if (
+      constructionArea.kind ===
+        'invalid'
+    ) {
+      return {
+        classified:
+          false,
+
+        reasons: [
+          'invalid_construction_evidence'
+        ]
+      }
+    }
+  }
+
+
+  if (
+    IMPROVED_PROPERTY_TYPES.has(
+      normalizedPropertyType
+    )
+  ) {
+
+    if (
+      constructionArea.kind ===
+        'missing'
+    ) {
+      return {
+        classified:
+          false,
+
+        reasons: [
+          'missing_construction_evidence'
+        ]
+      }
+    }
+
+
+    if (
+      constructionArea.kind ===
+        'invalid'
+    ) {
+      return {
+        classified:
+          false,
+
+        reasons: [
+          'invalid_construction_evidence'
+        ]
+      }
+    }
+  }
+
+
+  return {
+    classified:
+      false,
+
+    reasons: [
+      'unrecognized_property_type'
+    ]
+  }
+}
 
 export function calculatePriceMeterSiteCoverage({
   propertyAreaM2,
@@ -1208,6 +1353,15 @@ export function resolvePriceMeterAnalyticalIdentity(
     constructionArea
   })
 
+  const propertyBasisIntegrity =
+  resolvePriceMeterPropertyBasisIntegrity({
+    propertyType:
+      listing.property_type,
+
+    constructionArea,
+
+    propertyBasis
+  })
 
   const availableNormalizationBases =
     resolveAvailableNormalizationBases({
@@ -1275,9 +1429,8 @@ export function resolvePriceMeterAnalyticalIdentity(
 
   return {
     transactionType,
-
     propertyBasis,
-
+    propertyBasisIntegrity,
     availableNormalizationBases,
 
         geography: {

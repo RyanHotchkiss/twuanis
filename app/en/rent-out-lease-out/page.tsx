@@ -102,6 +102,7 @@ export default function SellPage() {
                     connectivity: '',
                     environment: '',
                     accessibility: '',
+                    distance_to_paved_road_range: '',
                     terrain: [] as string[],
                     monthly_price: '',
 
@@ -331,6 +332,9 @@ export default function SellPage() {
                                         accessibility: row.accessibility
                                             ? row.accessibility
                                             : '',
+
+                                        distance_to_paved_road_range:
+                                        row.distance_to_paved_road_range || null,
 
                                         terrain: row.terrain
                                             ? [row.terrain]
@@ -692,20 +696,41 @@ formattedData
 
 {/* accessibility */}
 
-<AccessibilityFilter
-                        selectedaccessibility={propertyData.accessibility}
-                        setSelectedaccessibility={(value) =>
-                            setPropertyData({
-                            ...propertyData,
-                            accessibility: value
-                            })
-                        }
+            <AccessibilityFilter
+                selectedaccessibility={
+                    propertyData.accessibility
+                }
 
-                        showAccessibilityOptions={showAccessibilityOptions}
-                        setShowAccessibilityOptions={
-                            setShowAccessibilityOptions
-                        }
-                        />
+                setSelectedaccessibility={(value: string) =>
+                    setPropertyData(prev => ({
+                    ...prev,
+                    accessibility: value,
+                    distance_to_paved_road_range:
+                        value === 'Unpaved Road to Property'
+                        ? prev.distance_to_paved_road_range
+                        : ''
+                    }))
+                }
+
+                selectedPavedRoadDistanceRange={
+                    propertyData.distance_to_paved_road_range
+                }
+
+                setSelectedPavedRoadDistanceRange={(value: string) =>
+                    setPropertyData(prev => ({
+                    ...prev,
+                    distance_to_paved_road_range: value
+                    }))
+                }
+
+                showAccessibilityOptions={
+                    showAccessibilityOptions
+                }
+
+                setShowAccessibilityOptions={
+                    setShowAccessibilityOptions
+                }
+            />
 
 {/* TERRAIN */}
 <TerrainFilter
@@ -909,9 +934,10 @@ formattedData
                 {showCsvStaging && (
 
                 <CsvStagingModal
-                    csvListings={csvListings}
-                    setCsvListings={setCsvListings}
-                    setShowCsvStaging={setShowCsvStaging}
+                csvListings={csvListings}
+                setCsvListings={setCsvListings}
+                setShowCsvStaging={setShowCsvStaging}
+                isRentLease={true}
                 />
 
                 )}

@@ -1,4 +1,4 @@
-import TopBarES from '@/app/components/TopBarES'
+import TopBar from '@/app/components/TopBar'
 
 import ComparisonShell from '@/app/components/comparisons/ComparisonShell'
 import MarketComparisonPanel from '@/app/components/comparisons/MarketComparisonPanel'
@@ -6,7 +6,7 @@ import MarketComparisonPanel from '@/app/components/comparisons/MarketComparison
 export default function ComparacionesDeMercadosPage() {
   return (
     <main style={main}>
-      <TopBarES />
+      <TopBar />
 
       <ComparisonShell
         language="es"
