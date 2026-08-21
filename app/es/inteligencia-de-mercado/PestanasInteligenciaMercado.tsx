@@ -17,15 +17,15 @@ import {
 } from '@/lib/market-comparisons'
 
 
-import ExploreResults from '@/app/explore/ExploreResults'
-import PriceMeterResults from '@/app/price-per-square-meter/PriceMeterResults'
-import PricingStrategyResults from '@/app/pricing-strategy/PricingStrategyResults'
-import MarketScarcityResults from '@/app/market-scarcity/MarketScarcityResults'
-import BuyerDemandResults from '@/app/buyer-demand/BuyerDemandResults'
-import MarketMatchingResults from '@/app/market-matching/MarketMatchingResults'
-import ValuationResults from '@/app/valuation/ValuationResults'
+import ExploreResults from '@/app/es/explora/ResultadosExplora'
+import PriceMeterResults from '@/app/es/precio-por-metro-cuadrado/ResultadosPrecioMetro'
+import PricingStrategyResults from '@/app/es/estrategia-de-precios/ResultadosEstrategiaPrecios'
+import MarketScarcityResults from '@/app/es/escasez-de-mercado/ResultadosEscasezMercado'
+import BuyerDemandResults from '@/app/es/demanda-del-comprador/ResultadosDemandaComprador'
+import MarketMatchingResults from '@/app/es/coincidencia-de-mercado/ResultadosCoincidenciaMercado'
+import ValuationResults from '@/app/es/valoracion/ResultadosValoracion'
 import MarketFilters from '@/app/components/MarketFilters'
-import MarketComparisonResults from '@/app/market-comparison/MarketComparisonResults'
+import MarketComparisonResults from '@/app/es/comparacion-de-mercado/ResultadosComparacionMercado'
 import {
   Compass,
   BadgeDollarSign,
@@ -294,7 +294,7 @@ const tabs = [
                   `explorer:${queryString}`,
                   {
                     title: getAnalysisName(),
-                    href: `/en/market-intelligence?${queryString}&tab=${activeTab}`,
+                    href: `/es/inteligencia-de-mercado?${queryString}&tab=${activeTab}`,
                     engine: activeTab,
                     filters
                   }
@@ -605,6 +605,7 @@ const tabs = [
           <MarketScarcityResults
             filters={filters}
             scarcity={marketScarcity}
+            options={options}
           />
         )}
 

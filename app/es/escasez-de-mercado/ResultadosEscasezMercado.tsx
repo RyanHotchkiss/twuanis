@@ -1,10 +1,13 @@
 export default function ResultadosEscasezMercado({
-  filters,
-  scarcity
-}: {
-  filters: any
-  scarcity: any
-}) {
+    filters,
+    scarcity,
+    options
+  }: {
+    filters: any
+    scarcity: any
+    options: any
+  }) {
+
   const selected = scarcity.selectedCombination
 
   return (
@@ -80,7 +83,11 @@ export default function ResultadosEscasezMercado({
                       key={`${attribute.category}-${attribute.value}-${index}`}
                       style={attribute}
                     >
-                      {translateValue(attribute.value)}
+                      {translateValue(
+                        attribute.category,
+                        attribute.value,
+                        options
+                      )}
                     </span>
                   )
                 )}
@@ -152,7 +159,10 @@ export default function ResultadosEscasezMercado({
                     </p>
 
                     <h3 style={combinationTitle}>
-                      {renderCombination(item.attributes)}
+                      {renderCombination(
+                        item.attributes,
+                        options
+                      )}
                     </h3>
 
                     <p style={combinationExplanation}>
@@ -209,35 +219,6 @@ function translateCategory(category: string) {
   return labels[category] || category
 }
 
-function normalizeKey(value: string) {
-  return String(value || '')
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, '_')
-    .replace(/-/g, '_')
-}
-
-function translateValue(value: string) {
-  const key = normalizeKey(value)
-
-  const labels: Record<string, string> = {
-    cabin: 'Cabaña',
-    commercial_property: 'Propiedad Comercial',
-    condo: 'Condominio',
-    farm: 'Finca',
-    house: 'Casa',
-    land: 'Terreno',
-    beachfront: 'Frente a la Playa',
-    riverfront: 'Frente al Río',
-    mountain_view: 'Vista a la Montaña',
-    fiber_internet: 'Internet de Fibra',
-    municipal_water: 'Agua Municipal',
-    titled_property: 'Propiedad Titulada'
-  }
-
-  return labels[key] || value
-}
-
 function renderCategory(attributes: any[]) {
   return attributes
     ?.map(attribute =>
@@ -246,10 +227,43 @@ function renderCategory(attributes: any[]) {
     .join(' + ')
 }
 
-function renderCombination(attributes: any[]) {
+function translateValue(
+  category: string,
+  value: string,
+  options: any
+) {
+  const categoryOptions =
+    options?.[category] || []
+
+  const match =
+    categoryOptions.find(
+      (option: any) =>
+        option.term_name === value ||
+        option.term_name_en === value ||
+        option.term_name_es === value ||
+        option.slug === value ||
+        option.slug_en === value ||
+        option.slug_es === value
+    )
+
+  return (
+    match?.term_name_es ||
+    match?.term_name ||
+    value
+  )
+}
+
+function renderCombination(
+  attributes: any[],
+  options: any
+) {
   return attributes
     ?.map(attribute =>
-      translateValue(attribute.value)
+      translateValue(
+        attribute.category,
+        attribute.value,
+        options
+      )
     )
     .join(' · ')
 }

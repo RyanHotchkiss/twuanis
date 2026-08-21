@@ -89,6 +89,7 @@ export default async function EscasezMercadoPage({
       <ResultadosEscasezMercado
         filters={filters}
         scarcity={scarcity}
+        options={options}
       />
     </main>
   )

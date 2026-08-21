@@ -24,7 +24,7 @@ export default function PricingStrategyResults({
 
         <div style={heroValue}>
           {recommendedCRC ||
-            'No matching data'}
+            'No hay datos coincidentes'}
         </div>
 
         {recommendedUSD && (
@@ -41,14 +41,14 @@ export default function PricingStrategyResults({
 
           <EvidenceMetric
             label="Muestra"
-            value={`${strategy.sampleSize} listings`}
+            value={`${strategy.sampleSize} propiedades`}
           />
 
           <EvidenceMetric
             label="Posición"
             value={
               strategy.summary.pricingPosition ||
-              'Not available'
+              'No disponible'
             }
           />
         </div>
@@ -131,7 +131,7 @@ export default function PricingStrategyResults({
         <div style={sectionHeader}>
           <div>
             <div style={eyebrow}>
-              videncia del Mercado
+              Evidencia del Mercado
             </div>
 
             <h2 style={sectionTitle}>
@@ -223,7 +223,7 @@ export default function PricingStrategyResults({
                       src={listing.images[0]}
                       alt={
                         listing.title ||
-                        'Listing image'
+                        'Imagen de la propiedad'
                       }
                       style={listingImage}
                     />
@@ -353,7 +353,7 @@ function PricingPosition({
 
         {primary && (
           <div style={recommendedBadge}>
-            Recommended
+            Recomendado
           </div>
         )}
       </div>
@@ -401,7 +401,7 @@ function SignalCard({
 
       <div style={signalValue}>
         {primary ||
-          'No matching data'}
+          'No hay datos coincidentes'}
       </div>
 
       {secondary && (
