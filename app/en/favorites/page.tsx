@@ -33,6 +33,10 @@ import {
   resolveListingImages
 } from '@/app/utils/resolveListingImages'
 
+import {
+  getListingFavoriteIds
+} from '@/lib/account-storage'
+
 export default function FavoritesPage() {
       return (
         <Suspense fallback={null}>
@@ -90,15 +94,7 @@ export default function FavoritesPage() {
     async function fetchFavorites() {
 
             const favoriteIds =
-              collectionId
-                ? await getCollectionListingIds(
-                    collectionId
-                  )
-                : JSON.parse(
-                    localStorage.getItem(
-                      'favorites'
-                    ) || '[]'
-                  )
+              await getListingFavoriteIds()
 
       if (favoriteIds.length === 0) {
 

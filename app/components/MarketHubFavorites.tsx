@@ -12,8 +12,8 @@ import {
 } from '@/lib/supabase'
 
 import {
-  getFavorites
-} from '@/lib/favorites'
+  getListingFavoriteIds
+} from '@/lib/account-storage'
 
 import {
   deleteFavoriteCollection,
@@ -522,7 +522,7 @@ export default function MarketHubFavorites({
       async function loadSavedProperties():
         Promise<void> {
         const favoriteIds =
-          getFavorites()
+          await getListingFavoriteIds()
 
         if (
           favoriteIds.length === 0

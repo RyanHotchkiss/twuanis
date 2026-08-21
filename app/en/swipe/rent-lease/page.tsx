@@ -19,8 +19,15 @@ import {
 } from '@/app/utils/resolveListingImages'
 
 import TopBar from '@/app/components/TopBar'
+import EmailAuthModal
+  from '@/app/components/EmailAuthModal'
 
 export default function SwipePage() {
+
+  const [
+    showAuth,
+    setShowAuth
+  ] = useState(false)
 
   const [properties, setProperties] = useState<any[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -63,13 +70,13 @@ async function fetchProperties() {
           ])
         }
 
-function saveProperty(
-      propertyId: string
-    ): void {
-      saveFavorite(
-        propertyId
-      )
-    }
+      async function saveProperty(
+          propertyId: string
+        ): Promise<void> {
+          await saveFavorite(
+            propertyId
+          )
+        }
 
   const filteredProperties = useMemo(() => {
 
@@ -143,10 +150,29 @@ function saveProperty(
     if (!currentProperty) return
 
     if (direction === 'right') {
-      saveProperty(currentProperty.id)
+      const {
+        data: {
+          session
+        }
+      } =
+        await supabase.auth.getSession()
+
+      if (!session?.user) {
+        setDragX(0)
+        setShowAuth(true)
+        return
+      }
+
+      await saveProperty(
+        currentProperty.id
+      )
     }
 
-    setDragX(direction === 'right' ? 1000 : -1000)
+    setDragX(
+      direction === 'right'
+        ? 1000
+        : -1000
+    )
 
     setTimeout(() => {
 
@@ -204,19 +230,258 @@ function saveProperty(
 
   const rotation = dragX / 20
 
+  const [
+  showMobileFilters,
+  setShowMobileFilters
+] = useState(false)
+
+const [
+  isMobile,
+  setIsMobile
+] = useState(false)
+
+useEffect(() => {
+
+  function handleResize() {
+
+    setIsMobile(
+      window.innerWidth <= 768
+    )
+
+  }
+
+  handleResize()
+
+  window.addEventListener(
+    'resize',
+    handleResize
+  )
+
+  return () => {
+
+    window.removeEventListener(
+      'resize',
+      handleResize
+    )
+
+  }
+
+}, [])
+
   const topNav = (
-    <div
+      <div
+        style={{
+          position: 'fixed',
+          top: '1.25rem',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 3000
+        }}
+      >
+        <TopBar
+          onFilterClick={() =>
+            setShowMobileFilters(true)
+          }
+        />
+      </div>
+    )
+
+    const filterSidebar = (
+  <div
+    style={{
+      position: 'fixed',
+      top: 0,
+      left:
+        showMobileFilters
+          ? '0'
+          : '-100%',
+      width: isMobile
+        ? '85vw'
+        : '320px',
+      height: '100vh',
+      background: '#000000ee',
+      backdropFilter: 'blur(14px)',
+      borderRight: '1px solid #222',
+      padding: '25px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '1.25rem',
+      overflowY: 'auto',
+      zIndex: 4000,
+      transition: 'left .3s ease'
+    }}
+  >
+
+    <button
+      onClick={() =>
+        setShowMobileFilters(false)
+      }
       style={{
-        position: 'fixed',
-        top: '1.25rem',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        zIndex: 3000
+        background: '#FFFFFF80',
+        border: '1px solid #333',
+        color: '#fff',
+        fontSize: '18px',
+        padding: '12px',
+        borderRadius: '12px',
+        marginBottom: '10px',
+        cursor: 'pointer'
       }}
     >
-      <TopBar />
-    </div>
-  )
+      Close Filters
+    </button>
+
+    <select
+      value={selectedProvince}
+      onChange={(e) => {
+        setSelectedProvince(
+          e.target.value
+        )
+        setCurrentIndex(0)
+      }}
+      style={filterSelect}
+    >
+      <option value="">
+        All Provinces
+      </option>
+
+      {[...new Set(
+        properties.map(
+          (p) => p.province
+        )
+      )]
+      .filter(Boolean)
+      .map((province, index) => (
+        <option
+          key={`${province}-${index}`}
+          value={province}
+        >
+          {province}
+        </option>
+      ))}
+    </select>
+
+    <select
+      value={selectedCanton}
+      onChange={(e) => {
+        setSelectedCanton(
+          e.target.value
+        )
+        setCurrentIndex(0)
+      }}
+      style={filterSelect}
+    >
+      <option value="">
+        All Cantons
+      </option>
+
+      {[...new Set(
+        properties
+          .filter((p) =>
+            !selectedProvince ||
+            p.province === selectedProvince
+          )
+          .map((p) => p.canton)
+      )]
+      .filter(Boolean)
+      .map((canton, index) => (
+        <option
+          key={`${canton}-${index}`}
+          value={canton}
+        >
+          {canton}
+        </option>
+      ))}
+    </select>
+
+    <select
+      value={selectedPropertyType}
+      onChange={(e) => {
+        setSelectedPropertyType(
+          e.target.value
+        )
+        setCurrentIndex(0)
+      }}
+      style={filterSelect}
+    >
+      <option value="">
+        All Property Types
+      </option>
+
+      {[...new Set(
+        properties.map(
+          (p) => p.property_type
+        )
+      )]
+      .filter(Boolean)
+      .map((type, index) => (
+        <option
+          key={`${type}-${index}`}
+          value={type}
+        >
+          {type}
+        </option>
+      ))}
+    </select>
+
+    <select
+      value={selectedEnvironment}
+      onChange={(e) => {
+        setSelectedEnvironment(
+          e.target.value
+        )
+        setCurrentIndex(0)
+      }}
+      style={filterSelect}
+    >
+      <option value="">
+        All Environments
+      </option>
+
+      {[...new Set(
+        properties.map(
+          (p) => p.environment
+        )
+      )]
+      .filter(Boolean)
+      .map((environment, index) => (
+        <option
+          key={`${environment}-${index}`}
+          value={environment}
+        >
+          {environment}
+        </option>
+      ))}
+    </select>
+
+    <select
+      value={selectedPriceRange}
+      onChange={(e) => {
+        setSelectedPriceRange(
+          e.target.value
+        )
+        setCurrentIndex(0)
+      }}
+      style={filterSelect}
+    >
+      <option value="">
+        All Prices
+      </option>
+
+      <option value="under-50">
+        Under ₡50M
+      </option>
+
+      <option value="50-100">
+        ₡50M – ₡100M
+      </option>
+
+      <option value="100-plus">
+        ₡100M+
+      </option>
+    </select>
+
+  </div>
+)
 
   // END
   if (!currentProperty) {
@@ -236,163 +501,7 @@ function saveProperty(
 
       {topNav}
 
-      {/* FILTER BAR */}
-      <div style={{
-        position: 'absolute',
-        top: '6rem',
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        gap: '.75rem',
-        flexWrap: 'wrap',
-        zIndex: 20,
-        padding: '0 1rem'
-      }}>
-
-        <select
-          value={selectedProvince}
-          onChange={(e) => {
-            setSelectedProvince(e.target.value)
-            setCurrentIndex(0)
-          }}
-          style={filterSelect}
-        >
-          <option value="">
-            All Provinces
-          </option>
-
-          {[...new Set(
-            properties.map((p) => p.province)
-          )].map((province) => (
-
-            <option
-              key={province}
-              value={province}
-            >
-              {province}
-            </option>
-
-          ))}
-
-        </select>
-
-        <select
-          value={selectedCanton}
-          onChange={(e) => {
-            setSelectedCanton(e.target.value)
-            setCurrentIndex(0)
-          }}
-          style={filterSelect}
-        >
-          <option value="">
-            All Cantons
-          </option>
-
-          {[...new Set(
-            properties
-              .filter((p) =>
-                !selectedProvince ||
-                p.province === selectedProvince
-              )
-              .map((p) => p.canton)
-          )].map((canton) => (
-
-            <option
-              key={canton}
-              value={canton}
-            >
-              {canton}
-            </option>
-
-          ))}
-
-        </select>
-
-        <select
-          value={selectedPropertyType}
-          onChange={(e) => {
-            setSelectedPropertyType(e.target.value)
-            setCurrentIndex(0)
-          }}
-          style={filterSelect}
-        >
-          <option value="">
-            All Property Types
-          </option>
-
-          {[...new Set(
-            properties.map(
-              (p) => p.property_type
-            )
-          )].map((type) => (
-
-            <option
-              key={type}
-              value={type}
-            >
-              {type}
-            </option>
-
-          ))}
-
-        </select>
-
-        <select
-          value={selectedEnvironment}
-          onChange={(e) => {
-            setSelectedEnvironment(e.target.value)
-            setCurrentIndex(0)
-          }}
-          style={filterSelect}
-        >
-          <option value="">
-            All Environments
-          </option>
-
-          {[...new Set(
-            properties.map(
-              (p) => p.environment
-            )
-          )].map((environment) => (
-
-            <option
-              key={environment}
-              value={environment}
-            >
-              {environment}
-            </option>
-
-          ))}
-
-        </select>
-
-        <select
-          value={selectedPriceRange}
-          onChange={(e) => {
-            setSelectedPriceRange(e.target.value)
-            setCurrentIndex(0)
-          }}
-          style={filterSelect}
-        >
-          <option value="">
-            All Prices
-          </option>
-
-          <option value="under-50">
-            Under ₡50M
-          </option>
-
-          <option value="50-100">
-            ₡50M – ₡100M
-          </option>
-
-          <option value="100-plus">
-            ₡100M+
-          </option>
-
-        </select>
-
-      </div>
+      {filterSidebar}
 
       {/* EMPTY STATE */}
       <div style={{
@@ -452,6 +561,19 @@ function saveProperty(
 }
 
   return (
+  <>
+    {showAuth && (
+      <EmailAuthModal
+        onClose={() =>
+          setShowAuth(false)
+        }
+        redirectTo={
+          typeof window !== 'undefined'
+            ? window.location.pathname
+            : '/en/swipe/rent-lease'
+        }
+      />
+    )}
 
     <main style={{
       background: '#000',
@@ -466,163 +588,7 @@ function saveProperty(
 
       {topNav}
 
-      {/* FILTER BAR */}
-      <div style={{
-        position: 'absolute',
-        top: '6rem',
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        gap: '.75rem',
-        flexWrap: 'wrap',
-        zIndex: 20,
-        padding: '0 1rem'
-      }}>
-
-        <select
-          value={selectedProvince}
-          onChange={(e) => {
-            setSelectedProvince(e.target.value)
-            setCurrentIndex(0)
-          }}
-          style={filterSelect}
-        >
-          <option value="">
-            All Provinces
-          </option>
-
-          {[...new Set(
-            properties.map((p) => p.province)
-          )].map((province) => (
-
-            <option
-              key={province}
-              value={province}
-            >
-              {province}
-            </option>
-
-          ))}
-
-        </select>
-
-        <select
-          value={selectedCanton}
-          onChange={(e) => {
-            setSelectedCanton(e.target.value)
-            setCurrentIndex(0)
-          }}
-          style={filterSelect}
-        >
-          <option value="">
-            All Cantons
-          </option>
-
-          {[...new Set(
-            properties
-              .filter((p) =>
-                !selectedProvince ||
-                p.province === selectedProvince
-              )
-              .map((p) => p.canton)
-          )].map((canton) => (
-
-            <option
-              key={canton}
-              value={canton}
-            >
-              {canton}
-            </option>
-
-          ))}
-
-        </select>
-
-        <select
-          value={selectedPropertyType}
-          onChange={(e) => {
-            setSelectedPropertyType(e.target.value)
-            setCurrentIndex(0)
-          }}
-          style={filterSelect}
-        >
-          <option value="">
-            All Property Types
-          </option>
-
-          {[...new Set(
-            properties.map(
-              (p) => p.property_type
-            )
-          )].map((type) => (
-
-            <option
-              key={type}
-              value={type}
-            >
-              {type}
-            </option>
-
-          ))}
-
-        </select>
-
-        <select
-          value={selectedEnvironment}
-          onChange={(e) => {
-            setSelectedEnvironment(e.target.value)
-            setCurrentIndex(0)
-          }}
-          style={filterSelect}
-        >
-          <option value="">
-            All Environments
-          </option>
-
-          {[...new Set(
-            properties.map(
-              (p) => p.environment
-            )
-          )].map((environment) => (
-
-            <option
-              key={environment}
-              value={environment}
-            >
-              {environment}
-            </option>
-
-          ))}
-
-        </select>
-
-        <select
-          value={selectedPriceRange}
-          onChange={(e) => {
-            setSelectedPriceRange(e.target.value)
-            setCurrentIndex(0)
-          }}
-          style={filterSelect}
-        >
-          <option value="">
-            All Prices
-          </option>
-
-          <option value="under-50">
-            Under ₡50M
-          </option>
-
-          <option value="50-100">
-            ₡50M – ₡100M
-          </option>
-
-          <option value="100-plus">
-            ₡100M+
-          </option>
-
-        </select>
-
-      </div>
+    {filterSidebar}
 
       {/* NEXT CARD */}
       {nextProperty && (
@@ -824,11 +790,11 @@ function saveProperty(
 
       </div>
 
-    </main>
+        </main>
+      </>
+      )
 
-  )
-
-}
+    }
 
 const navButton = {
   background: '#181818',

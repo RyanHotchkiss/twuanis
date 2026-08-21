@@ -1,15 +1,33 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
-import { supabase } from '@/lib/supabase'
+import {
+  useEffect,
+  useMemo,
+  useState
+} from 'react'
+
+import {
+  supabase
+} from '@/lib/supabase'
+
+import {
+  saveFavorite
+} from '@/lib/favorites'
 
 import {
   resolveListingImages
 } from '@/app/utils/resolveListingImages'
 
 import TopBar from '@/app/components/TopBar'
+import EmailAuthModal
+  from '@/app/components/EmailAuthModal'
 
 export default function SwipePage() {
+
+  const [
+    showAuth,
+    setShowAuth
+  ] = useState(false)
 
   const [properties, setProperties] = useState<any[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -28,64 +46,37 @@ export default function SwipePage() {
     fetchProperties()
         }, [])
 
-        async function fetchProperties() {
-
-
+async function fetchProperties() {
   const { data, error } = await supabase
             .from('listings')
             .select('*')
-
           if (error) {
-
             console.error(
               JSON.stringify(error, null, 2)
             )
-
-
             return
-
           }
-
           const normalizedSupabaseListings = (data || []).map(
             (listing: any) => ({
-
               ...listing,
-
-              images:
-                resolveListingImages(
-                  listing.images
-                )
-
+             images:
+              resolveListingImages(
+                listing.images
+              )
             })
           )
-
           setProperties([
-            
             ...normalizedSupabaseListings
           ])
-
         }
 
-  function saveProperty(propertyId: string) {
-
-    const existingrent_lease_favorites =
-      JSON.parse(
-        localStorage.getItem('rent_lease_favorites') || '[]'
-      )
-
-    if (!existingrent_lease_favorites.includes(propertyId)) {
-
-      localStorage.setItem(
-        'rent_lease_favorites',
-        JSON.stringify([
-          ...existingrent_lease_favorites,
-          propertyId
-        ])
-      )
-
-    }
-
-  }
+      async function saveProperty(
+          propertyId: string
+        ): Promise<void> {
+          await saveFavorite(
+            propertyId
+          )
+        }
 
   const filteredProperties = useMemo(() => {
 
@@ -159,10 +150,29 @@ export default function SwipePage() {
     if (!currentProperty) return
 
     if (direction === 'right') {
-      saveProperty(currentProperty.id)
+      const {
+        data: {
+          session
+        }
+      } =
+        await supabase.auth.getSession()
+
+      if (!session?.user) {
+        setDragX(0)
+        setShowAuth(true)
+        return
+      }
+
+      await saveProperty(
+        currentProperty.id
+      )
     }
 
-    setDragX(direction === 'right' ? 1000 : -1000)
+    setDragX(
+      direction === 'right'
+        ? 1000
+        : -1000
+    )
 
     setTimeout(() => {
 
@@ -220,19 +230,258 @@ export default function SwipePage() {
 
   const rotation = dragX / 20
 
-  const topNav = (
-    <div
-      style={{
-        position: 'fixed',
-        top: '1.25rem',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        zIndex: 3000
-      }}
-    >
-      <TopBar />
-    </div>
+  const [
+  showMobileFilters,
+  setShowMobileFilters
+] = useState(false)
+
+const [
+  isMobile,
+  setIsMobile
+] = useState(false)
+
+useEffect(() => {
+
+  function handleResize() {
+
+    setIsMobile(
+      window.innerWidth <= 768
+    )
+
+  }
+
+  handleResize()
+
+  window.addEventListener(
+    'resize',
+    handleResize
   )
+
+  return () => {
+
+    window.removeEventListener(
+      'resize',
+      handleResize
+    )
+
+  }
+
+}, [])
+
+  const topNav = (
+      <div
+        style={{
+          position: 'fixed',
+          top: '1.25rem',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 3000
+        }}
+      >
+        <TopBar
+          onFilterClick={() =>
+            setShowMobileFilters(true)
+          }
+        />
+      </div>
+    )
+
+    const filterSidebar = (
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left:
+            showMobileFilters
+              ? '0'
+              : '-100%',
+          width: isMobile
+            ? '85vw'
+            : '320px',
+          height: '100vh',
+          background: '#000000ee',
+          backdropFilter: 'blur(14px)',
+          borderRight: '1px solid #222',
+          padding: '25px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1.25rem',
+          overflowY: 'auto',
+          zIndex: 4000,
+          transition: 'left .3s ease'
+        }}
+      >
+
+        <button
+          onClick={() =>
+            setShowMobileFilters(false)
+          }
+          style={{
+            background: '#FFFFFF80',
+            border: '1px solid #333',
+            color: '#fff',
+            fontSize: '18px',
+            padding: '12px',
+            borderRadius: '12px',
+            marginBottom: '10px',
+            cursor: 'pointer'
+          }}
+        >
+          Cerrar filtros
+        </button>
+
+        <select
+          value={selectedProvince}
+          onChange={(e) => {
+            setSelectedProvince(
+              e.target.value
+            )
+            setCurrentIndex(0)
+          }}
+          style={filterSelect}
+        >
+          <option value="">
+            Todas las provincias
+          </option>
+
+          {[...new Set(
+            properties.map(
+              (p) => p.province
+            )
+          )]
+          .filter(Boolean)
+          .map((province, index) => (
+            <option
+              key={`${province}-${index}`}
+              value={province}
+            >
+              {province}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={selectedCanton}
+          onChange={(e) => {
+            setSelectedCanton(
+              e.target.value
+            )
+            setCurrentIndex(0)
+          }}
+          style={filterSelect}
+        >
+          <option value="">
+            Todos los cantones
+          </option>
+
+          {[...new Set(
+            properties
+              .filter((p) =>
+                !selectedProvince ||
+                p.province === selectedProvince
+              )
+              .map((p) => p.canton)
+          )]
+          .filter(Boolean)
+          .map((canton, index) => (
+            <option
+              key={`${canton}-${index}`}
+              value={canton}
+            >
+              {canton}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={selectedPropertyType}
+          onChange={(e) => {
+            setSelectedPropertyType(
+              e.target.value
+            )
+            setCurrentIndex(0)
+          }}
+          style={filterSelect}
+        >
+          <option value="">
+            Todos los tipos de propiedad
+          </option>
+
+          {[...new Set(
+            properties.map(
+              (p) => p.property_type
+            )
+          )]
+          .filter(Boolean)
+          .map((type, index) => (
+            <option
+              key={`${type}-${index}`}
+              value={type}
+            >
+              {type}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={selectedEnvironment}
+          onChange={(e) => {
+            setSelectedEnvironment(
+              e.target.value
+            )
+            setCurrentIndex(0)
+          }}
+          style={filterSelect}
+        >
+          <option value="">
+            Todos los entornos
+          </option>
+
+          {[...new Set(
+            properties.map(
+              (p) => p.environment
+            )
+          )]
+          .filter(Boolean)
+          .map((environment, index) => (
+            <option
+              key={`${environment}-${index}`}
+              value={environment}
+            >
+              {environment}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={selectedPriceRange}
+          onChange={(e) => {
+            setSelectedPriceRange(
+              e.target.value
+            )
+            setCurrentIndex(0)
+          }}
+          style={filterSelect}
+        >
+          <option value="">
+            Todos los precios
+          </option>
+
+          <option value="under-50">
+            Menos de ₡50M
+          </option>
+
+          <option value="50-100">
+            ₡50M – ₡100M
+          </option>
+
+          <option value="100-plus">
+            ₡100M+
+          </option>
+        </select>
+
+      </div>
+    )
 
   // END
   if (!currentProperty) {
@@ -252,163 +501,7 @@ export default function SwipePage() {
 
       {topNav}
 
-      {/* FILTER BAR */}
-      <div style={{
-        position: 'absolute',
-        top: '6rem',
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        gap: '.75rem',
-        flexWrap: 'wrap',
-        zIndex: 20,
-        padding: '0 1rem'
-      }}>
-
-        <select
-          value={selectedProvince}
-          onChange={(e) => {
-            setSelectedProvince(e.target.value)
-            setCurrentIndex(0)
-          }}
-          style={filterSelect}
-        >
-          <option value="">
-            Todas las Provincias
-          </option>
-
-          {[...new Set(
-            properties.map((p) => p.province)
-          )].map((province) => (
-
-            <option
-              key={province}
-              value={province}
-            >
-              {province}
-            </option>
-
-          ))}
-
-        </select>
-
-        <select
-          value={selectedCanton}
-          onChange={(e) => {
-            setSelectedCanton(e.target.value)
-            setCurrentIndex(0)
-          }}
-          style={filterSelect}
-        >
-          <option value="">
-            Todos los Cantones
-          </option>
-
-          {[...new Set(
-            properties
-              .filter((p) =>
-                !selectedProvince ||
-                p.province === selectedProvince
-              )
-              .map((p) => p.canton)
-          )].map((canton) => (
-
-            <option
-              key={canton}
-              value={canton}
-            >
-              {canton}
-            </option>
-
-          ))}
-
-        </select>
-
-        <select
-          value={selectedPropertyType}
-          onChange={(e) => {
-            setSelectedPropertyType(e.target.value)
-            setCurrentIndex(0)
-          }}
-          style={filterSelect}
-        >
-          <option value="">
-            Todos los Tipos de Propiedad
-          </option>
-
-          {[...new Set(
-            properties.map(
-              (p) => p.property_type
-            )
-          )].map((type) => (
-
-            <option
-              key={type}
-              value={type}
-            >
-              {type}
-            </option>
-
-          ))}
-
-        </select>
-
-        <select
-          value={selectedEnvironment}
-          onChange={(e) => {
-            setSelectedEnvironment(e.target.value)
-            setCurrentIndex(0)
-          }}
-          style={filterSelect}
-        >
-          <option value="">
-            Todos los Entornos
-          </option>
-
-          {[...new Set(
-            properties.map(
-              (p) => p.environment
-            )
-          )].map((environment) => (
-
-            <option
-              key={environment}
-              value={environment}
-            >
-              {environment}
-            </option>
-
-          ))}
-
-        </select>
-
-        <select
-          value={selectedPriceRange}
-          onChange={(e) => {
-            setSelectedPriceRange(e.target.value)
-            setCurrentIndex(0)
-          }}
-          style={filterSelect}
-        >
-          <option value="">
-            Todos los Precios
-          </option>
-
-          <option value="under-50">
-            Menos de ₡50M
-          </option>
-
-          <option value="50-100">
-            ₡50M – ₡100M
-          </option>
-
-          <option value="100-plus">
-            ₡100M+
-          </option>
-
-        </select>
-
-      </div>
+      {filterSidebar}
 
       {/* EMPTY STATE */}
       <div style={{
@@ -424,7 +517,7 @@ export default function SwipePage() {
           fontSize: '3rem',
           margin: 0
         }}>
-          No Hay Más Propiedades
+          No hay más propiedades
         </h1>
 
         <p style={{
@@ -432,7 +525,7 @@ export default function SwipePage() {
           fontSize: '1.2rem',
           lineHeight: '1.7'
         }}>
-          Quita filtros para ver más resultados.
+          Elimina filtros para ver más resultados.
         </p>
 
         <button
@@ -456,7 +549,7 @@ export default function SwipePage() {
             cursor: 'pointer'
           }}
         >
-          Limpiar Filtros
+          Limpiar filtros
         </button>
 
       </div>
@@ -468,6 +561,19 @@ export default function SwipePage() {
 }
 
   return (
+  <>
+    {showAuth && (
+      <EmailAuthModal
+        onClose={() =>
+          setShowAuth(false)
+        }
+        redirectTo={
+          typeof window !== 'undefined'
+            ? window.location.pathname
+            : '/es/deslizar/alquilar'
+        }
+      />
+    )}
 
     <main style={{
       background: '#000',
@@ -482,163 +588,7 @@ export default function SwipePage() {
 
       {topNav}
 
-      {/* FILTER BAR */}
-      <div style={{
-        position: 'absolute',
-        top: '6rem',
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        gap: '.75rem',
-        flexWrap: 'wrap',
-        zIndex: 20,
-        padding: '0 1rem'
-      }}>
-
-        <select
-          value={selectedProvince}
-          onChange={(e) => {
-            setSelectedProvince(e.target.value)
-            setCurrentIndex(0)
-          }}
-          style={filterSelect}
-        >
-          <option value="">
-            Todas las Provincias
-          </option>
-
-          {[...new Set(
-            properties.map((p) => p.province)
-          )].map((province) => (
-
-            <option
-              key={province}
-              value={province}
-            >
-              {province}
-            </option>
-
-          ))}
-
-        </select>
-
-        <select
-          value={selectedCanton}
-          onChange={(e) => {
-            setSelectedCanton(e.target.value)
-            setCurrentIndex(0)
-          }}
-          style={filterSelect}
-        >
-          <option value="">
-            Todos los Cantones
-          </option>
-
-          {[...new Set(
-            properties
-              .filter((p) =>
-                !selectedProvince ||
-                p.province === selectedProvince
-              )
-              .map((p) => p.canton)
-          )].map((canton) => (
-
-            <option
-              key={canton}
-              value={canton}
-            >
-              {canton}
-            </option>
-
-          ))}
-
-        </select>
-
-        <select
-          value={selectedPropertyType}
-          onChange={(e) => {
-            setSelectedPropertyType(e.target.value)
-            setCurrentIndex(0)
-          }}
-          style={filterSelect}
-        >
-          <option value="">
-            Todos los Tipos de Propiedad
-          </option>
-
-          {[...new Set(
-            properties.map(
-              (p) => p.property_type
-            )
-          )].map((type) => (
-
-            <option
-              key={type}
-              value={type}
-            >
-              {type}
-            </option>
-
-          ))}
-
-        </select>
-
-        <select
-          value={selectedEnvironment}
-          onChange={(e) => {
-            setSelectedEnvironment(e.target.value)
-            setCurrentIndex(0)
-          }}
-          style={filterSelect}
-        >
-          <option value="">
-            Todos los Entornos
-          </option>
-
-          {[...new Set(
-            properties.map(
-              (p) => p.environment
-            )
-          )].map((environment) => (
-
-            <option
-              key={environment}
-              value={environment}
-            >
-              {environment}
-            </option>
-
-          ))}
-
-        </select>
-
-        <select
-          value={selectedPriceRange}
-          onChange={(e) => {
-            setSelectedPriceRange(e.target.value)
-            setCurrentIndex(0)
-          }}
-          style={filterSelect}
-        >
-          <option value="">
-            Todos los Precios
-          </option>
-
-          <option value="under-50">
-            Menos de ₡50M
-          </option>
-
-          <option value="50-100">
-            ₡50M – ₡100M
-          </option>
-
-          <option value="100-plus">
-            ₡100M+
-          </option>
-
-        </select>
-
-      </div>
+      {filterSidebar}
 
       {/* NEXT CARD */}
       {nextProperty && (
@@ -692,7 +642,7 @@ export default function SwipePage() {
         }}
       >
 
-        {/* GUARDAR */}
+        {/* SAVE */}
         {dragX > 40 && (
 
           <div style={{
@@ -709,7 +659,7 @@ export default function SwipePage() {
 
         )}
 
-        {/* NO */}
+        {/* NOPE */}
         {dragX < -40 && (
 
           <div style={{
@@ -754,7 +704,7 @@ export default function SwipePage() {
               alignItems: 'center',
               color: '#555'
             }}>
-              Sin Imagen
+              Sin imagen
             </div>
 
           )}
@@ -811,7 +761,7 @@ export default function SwipePage() {
               ? `₡${Number(
                   currentProperty.price_millions
                 ).toLocaleString()}M`
-              : 'Precio No Disponible'}
+              : 'Precio no disponible'}
           </div>
 
           {/* BUTTONS */}
@@ -824,7 +774,7 @@ export default function SwipePage() {
               onClick={() => completeSwipe('left')}
               style={rejectButton}
             >
-              Reject
+              Rechazar
             </button>
 
             <button
@@ -840,11 +790,11 @@ export default function SwipePage() {
 
       </div>
 
-    </main>
+        </main>
+      </>
+      )
 
-  )
-
-}
+    }
 
 const navButton = {
   background: '#181818',

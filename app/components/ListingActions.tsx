@@ -1,6 +1,7 @@
 'use client'
 
 import {
+  useEffect,
   useState
 } from 'react'
 
@@ -47,9 +48,28 @@ export default function ListingActions({
   language  
 }: ListingActionsProps) {
   const [saved, setSaved] =
-    useState(
-      isFavorite(listingId)
-    )
+   useState(false)
+
+  useEffect(() => {
+  let active = true
+
+  async function loadSavedState() {
+        const favorite =
+          await isFavorite(listingId)
+
+        if (!active) {
+          return
+        }
+
+        setSaved(favorite)
+      }
+
+      void loadSavedState()
+
+      return () => {
+        active = false
+      }
+    }, [listingId])
 
   const [message, setMessage] =
     useState('')
@@ -89,18 +109,23 @@ export default function ListingActions({
 
   async function handleSave() {
 
-  toggleFavorite(listingId)
-
-  const nowSaved =
-    !saved
-
-  setSaved(nowSaved)
-
-  if (!nowSaved) {
-    return
-  }
-
   try {
+
+    await toggleFavorite(
+      listingId
+    )
+
+    const nowSaved =
+      await isFavorite(
+        listingId
+      )
+
+    setSaved(nowSaved)
+
+    if (!nowSaved) {
+      setMessage('')
+      return
+    }
 
     await recordListingSaved({
       listingId,

@@ -24,9 +24,12 @@ import {
     } from '@/data/property-data'
 
 import {
-  getFavorites,
   toggleFavorite
 } from '@/lib/favorites'
+
+import {
+  getListingFavoriteIds
+} from '@/lib/account-storage'
 
 import {
   recordListingSaved
@@ -215,23 +218,36 @@ const navButton = {
     }, [savedSearchId])
 
   useEffect(() => {
-      function syncFavorites() {
-        setFavoriteIds(
-          getFavorites()
-        )
+  let active = true
+
+  async function syncFavorites() {
+        const ids =
+          await getListingFavoriteIds()
+
+        if (!active) {
+          return
+        }
+
+        setFavoriteIds(ids)
       }
 
-      syncFavorites()
+      void syncFavorites()
+
+      function handleFavoritesUpdated() {
+        void syncFavorites()
+      }
 
       window.addEventListener(
         'favorites-updated',
-        syncFavorites
+        handleFavoritesUpdated
       )
 
       return () => {
+        active = false
+
         window.removeEventListener(
           'favorites-updated',
-          syncFavorites
+          handleFavoritesUpdated
         )
       }
     }, [])
@@ -1235,9 +1251,9 @@ const filteredProperties = properties.filter((property) => {
                                                   property.id
                                                 )
 
-                                              toggleFavorite(
-                                                property.id
-                                              )
+                                              await toggleFavorite(
+                                                  property.id
+                                                )
 
                                               const metadata = {
                                                 title: property.title,

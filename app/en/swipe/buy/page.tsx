@@ -7,12 +7,19 @@ import {
 } from '@/lib/favorites'
 
 import TopBar from '@/app/components/TopBar'
+import EmailAuthModal
+  from '@/app/components/EmailAuthModal'
 
 import {
   resolveListingImages
 } from '@/app/utils/resolveListingImages'
 
 export default function SwipePage() {
+
+  const [
+      showAuth,
+      setShowAuth
+    ] = useState(false)
 
   const [properties, setProperties] = useState<any[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -66,13 +73,13 @@ export default function SwipePage() {
 
     setProperties(normalizedSupabaseListings)}
 
-function saveProperty(
-      propertyId: string
-    ): void {
-      saveFavorite(
-        propertyId
-      )
-    }
+    async function saveProperty(
+          propertyId: string
+        ): Promise<void> {
+          await saveFavorite(
+            propertyId
+          )
+        }
 
   const filteredProperties = useMemo(() => {
 
@@ -146,10 +153,29 @@ function saveProperty(
     if (!currentProperty) return
 
     if (direction === 'right') {
-      saveProperty(currentProperty.id)
+      const {
+        data: {
+          session
+        }
+      } =
+        await supabase.auth.getSession()
+
+      if (!session?.user) {
+        setDragX(0)
+        setShowAuth(true)
+        return
+      }
+
+      await saveProperty(
+        currentProperty.id
+      )
     }
 
-    setDragX(direction === 'right' ? 1000 : -1000)
+    setDragX(
+      direction === 'right'
+        ? 1000
+        : -1000
+    )
 
     setTimeout(() => {
 
@@ -580,8 +606,21 @@ if (!currentProperty) {
 }
 
 return (
+  <>
+    {showAuth && (
+      <EmailAuthModal
+        onClose={() =>
+          setShowAuth(false)
+        }
+        redirectTo={
+          typeof window !== 'undefined'
+            ? window.location.pathname
+            : '/en/swipe/buy'
+        }
+      />
+    )}
 
-  <main style={{
+    <main style={{
     background: '#000',
     minHeight: '100vh',
     overflow: 'hidden',
@@ -797,11 +836,11 @@ return (
 
       </div>
 
-    </main>
+        </main>
+      </>
+      )
 
-  )
-
-}
+    }
 
 const navButton = {
   background: '#18181899',

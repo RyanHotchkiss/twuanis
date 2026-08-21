@@ -18,9 +18,12 @@ import { useEffect, useState } from 'react'
 import { createListingId } from '@/lib/createListingId'
 import { supabase } from '@/lib/supabase'
 import {
-  isFavorite,
   toggleFavorite
 } from '@/lib/favorites'
+
+import {
+  getListingFavoriteIds
+} from '@/lib/account-storage'
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 
@@ -104,7 +107,12 @@ const [showMainOverlay, setShowMainOverlay] =
   const [selectedenvironment, setSelectedenvironment] = useState('')
   const [selectedaccessibility, setSelectedaccessibility] = useState('')
   const [selectedterrain, setSelectedterrain] = useState('')
-  
+  const [
+      favoriteIds,
+      setFavoriteIds
+    ] = useState<Set<string>>(
+      new Set()
+    )
 
   const initialOverlayState =  
     searchParams.get('overlay') === 'looking'
@@ -127,6 +135,29 @@ const [showMainOverlay, setShowMainOverlay] =
   useState<'initial' | 'looking' | 'posting' | null>(
     initialOverlayState
   )
+
+useEffect(() => {
+      let active = true
+
+      async function loadFavoriteIds() {
+        const ids =
+          await getListingFavoriteIds()
+
+        if (!active) {
+          return
+        }
+
+        setFavoriteIds(
+          new Set(ids)
+        )
+      }
+
+      void loadFavoriteIds()
+
+      return () => {
+        active = false
+      }
+    }, [])
 
   useEffect(() => {
   const overlayParam =
@@ -1570,16 +1601,21 @@ const [showMainOverlay, setShowMainOverlay] =
 
                             )}
                 <button
-                    onClick={e => {
-                      e.preventDefault()
-                      e.stopPropagation()
+                    onClick={async e => {
+                        e.preventDefault()
+                        e.stopPropagation()
 
-                      toggleFavorite(
-                        property.id
-                      )
+                        await toggleFavorite(
+                          property.id
+                        )
 
-                      window.location.reload()
-                    }}
+                        const ids =
+                          await getListingFavoriteIds()
+
+                        setFavoriteIds(
+                          new Set(ids)
+                        )
+                      }}
                     style={{
                       position: 'absolute',
                       top: '1rem',
@@ -1605,11 +1641,11 @@ const [showMainOverlay, setShowMainOverlay] =
                     <span
                       style={{
                         fontSize: '1.25rem',
-                        color: isFavorite(
-                          property.id
-                        )
-                          ? '#D4AF37'
-                          : '#fff',
+                        color: favoriteIds.has(
+                            property.id
+                          )
+                            ? '#D4AF37'
+                            : '#fff',
                         transition:
                           'all .2s ease'
                       }}
