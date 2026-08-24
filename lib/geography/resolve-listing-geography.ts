@@ -28,25 +28,10 @@ function resolveSourceValue(
     null
 }
 
-export async function resolveListingGeography({
-  supabase,
-  province,
-  canton,
-  district
-}: {
+export async function loadCanonicalGeographyTerms(
   supabase:
     SupabaseClient
-
-  province?:
-    unknown
-
-  canton?:
-    unknown
-
-  district?:
-    unknown
-
-}): Promise<CanonicalGeographyResolution> {
+): Promise<CanonicalGeographyTerm[]> {
 
   const {
     data,
@@ -83,11 +68,36 @@ export async function resolveListingGeography({
   }
 
 
+  return (
+    data ??
+    []
+  ) as CanonicalGeographyTerm[]
+}
+
+export async function resolveListingGeography({
+  supabase,
+  province,
+  canton,
+  district
+}: {
+  supabase:
+    SupabaseClient
+
+  province?:
+    unknown
+
+  canton?:
+    unknown
+
+  district?:
+    unknown
+
+}): Promise<CanonicalGeographyResolution> {
+
   const terms =
-    (
-      data ??
-      []
-    ) as CanonicalGeographyTerm[]
+  await loadCanonicalGeographyTerms(
+    supabase
+  )
 
 
   return resolveCanonicalGeography({

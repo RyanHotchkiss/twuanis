@@ -59,6 +59,71 @@ import ParkingFilterS from '@/app/components/filter-bar/ParkingFilterS'
 import YearBuiltFilterS from '@/app/components/filter-bar/YearBuiltFilterS'
 import ConstructionAreaFilterS from '@/app/components/filter-bar/ConstructionAreaFilterS'
 
+function normalizeCsvTextArray(
+  value: unknown
+): string[] {
+
+  if (Array.isArray(value)) {
+    return value
+      .map(item =>
+        String(item).trim()
+      )
+      .filter(item =>
+        item &&
+        item !== '{}' &&
+        item !== '[]'
+      )
+  }
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+    return []
+  }
+
+  const text =
+    String(value).trim()
+
+  if (
+    !text ||
+    text === '{}' ||
+    text === '[]'
+  ) {
+    return []
+  }
+
+  return text
+    .split('|')
+    .map(item => item.trim())
+    .filter(Boolean)
+}
+
+function normalizeCsvText(
+  value: unknown
+): string {
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+    return ''
+  }
+
+  const text =
+    String(value).trim()
+
+  if (
+    !text ||
+    text === '{}' ||
+    text === '[]'
+  ) {
+    return ''
+  }
+
+  return text
+}
+
 export default function SellPage() {
 
     const [showLocationOptions, setShowLocationOptions] = useState(true)
@@ -321,44 +386,54 @@ export default function SellPage() {
                                                 row.district ||
                                                 row.property_type
                                             )
-                                            .map((row: any) => ({
+                                            .map((row: any) => {
 
-                                        ...row,
+                                                const utility =
+                                                normalizeCsvTextArray(
+                                                    row.utility
+                                                )
 
-                                        utility: row.utility
-                                            ? [row.utility]
-                                            : [],
+                                                const terrain =
+                                                normalizeCsvTextArray(
+                                                    row.terrain
+                                                )
 
-                                        accessibility: row.accessibility
-                                            ? row.accessibility
-                                            : '',
+                                                const accessibility =
+                                                normalizeCsvText(
+                                                    row.accessibility
+                                                )
 
-                                        distance_to_paved_road_range:
-                                        row.distance_to_paved_road_range || null,
-
-                                        terrain: row.terrain
-                                            ? [row.terrain]
-                                            : [],
-
-                                        title: generateListingTitle(row),
-
-                                        description: generateListingDescription({
-
+                                                const normalizedRow = {
                                                 ...row,
 
-                                                utility: row.utility
-                                                ? [row.utility]
-                                                : [],
+                                                utility,
 
-                                                terrain: row.terrain
-                                                ? [row.terrain]
-                                                : []
+                                                accessibility,
 
-                                            }),
+                                                distance_to_paved_road_range:
+                                                    row.distance_to_paved_road_range ||
+                                                    null,
 
-                                            images: row.images
+                                                terrain,
 
-                                        }))
+                                                images:
+                                                    row.images
+                                                }
+
+                                                return {
+                                                ...normalizedRow,
+
+                                                title:
+                                                    generateListingTitle(
+                                                    normalizedRow
+                                                    ),
+
+                                                description:
+                                                    generateListingDescription(
+                                                    normalizedRow
+                                                    )
+                                                }
+                                            })
 
                                     
 console.log(

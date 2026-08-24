@@ -78,6 +78,115 @@ const CONSTRUCTION_AREA_CONSTRAINTS: Record<
   }
 }
 
+export const PROPERTY_AREA_RANGE_OPTIONS = [
+  {
+    value:
+      'under-100m2',
+
+    label:
+      'Under 100 m²'
+  },
+
+  {
+    value:
+      '100-500m2',
+
+    label:
+      '100–<500 m²'
+  },
+
+  {
+    value:
+      '500-1000m2',
+
+    label:
+      '500–<1,000 m²'
+  },
+
+  {
+    value:
+      '1000-5000m2',
+
+    label:
+      '1,000–<5,000 m²'
+  },
+
+  {
+    value:
+      '5000m2-1-hectare',
+
+    label:
+      '5,000–<10,000 m²'
+  },
+
+  {
+    value:
+      '1-5-hectares',
+
+    label:
+      '1–<5 hectares'
+  },
+
+  {
+    value:
+      'over-5-hectares',
+
+    label:
+      '5 hectares+'
+  }
+] as const
+
+
+export const CONSTRUCTION_AREA_RANGE_OPTIONS = [
+  {
+    value:
+      'under-50m2',
+
+    label:
+      'Under 50 m²'
+  },
+
+  {
+    value:
+      '50-100m2',
+
+    label:
+      '50–<100 m²'
+  },
+
+  {
+    value:
+      '100-200m2',
+
+    label:
+      '100–<200 m²'
+  },
+
+  {
+    value:
+      '200-400m2',
+
+    label:
+      '200–<400 m²'
+  },
+
+  {
+    value:
+      '400-800m2',
+
+    label:
+      '400–<800 m²'
+  },
+
+  {
+    value:
+      '800m2-plus',
+
+    label:
+      '800 m²+'
+  }
+] as const
+
 function matchesAreaConstraint(
   exactM2: number | null | undefined,
   constraint: MarketIntelligenceAreaConstraint

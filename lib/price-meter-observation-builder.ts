@@ -10,16 +10,8 @@ export type PriceMeterObservation = {
   analyticalIdentity:
     PriceMeterAnalyticalIdentity
 
-  geography: {
-    province:
-      string | null
-
-    canton:
-      string | null
-
-    district:
-      string | null
-  }
+  geography:
+    PriceMeterAnalyticalIdentity['geography']
 
   transactionType:
     'sale' | 'rent'

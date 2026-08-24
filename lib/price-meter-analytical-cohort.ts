@@ -53,7 +53,7 @@ export type PriceMeterAnalyticalCohort<
  * Sale + Improved Property + Construction
  *
  * These populations MUST NOT be merged into one
- * distribution, premium calculation, or value signal.
+* distribution or comparison calculation.
  */
 
 export function buildPriceMeterAnalyticalCohort<

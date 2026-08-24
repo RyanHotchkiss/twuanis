@@ -38,7 +38,7 @@ export type PriceMeterTransactionCohorts = {
  * Sale observations represent asset price.
  * Rent observations represent monthly occupancy price.
  *
- * No percentile, premium, value signal, or other
+ * No percentile, comparison percentage, or other
  * Price / m² intelligence calculation may operate on
  * an unpartitioned Sale + Rent observation population.
  */

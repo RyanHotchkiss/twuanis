@@ -31,6 +31,46 @@ function optionalNumber(
     : null
 }
 
+function normalizeTextArray(
+  value: unknown
+): string[] {
+
+  if (Array.isArray(value)) {
+    return value
+      .map(item =>
+        String(item).trim()
+      )
+      .filter(item =>
+        item &&
+        item !== '{}' &&
+        item !== '[]'
+      )
+  }
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+    return []
+  }
+
+  const text =
+    String(value).trim()
+
+  if (
+    !text ||
+    text === '{}' ||
+    text === '[]'
+  ) {
+    return []
+  }
+
+  return text
+    .split('|')
+    .map(item => item.trim())
+    .filter(Boolean)
+}
+
 export async function publishCsvListings(
   csvListings: any[],
   setShowCsvStaging: (value: boolean) => void,
@@ -114,8 +154,21 @@ console.log(
 
       listing_origin:
         'scraped',
+
       listing_source_type:
         'realtor',
+
+      source_url:
+        listing.source_url ||
+        null,
+
+      source_name:
+        listing.source_name ||
+        null,
+
+      source_listing_id:
+        listing.source_listing_id ||
+        null,
 
       province:
         geography.province?.term_name ??
@@ -155,13 +208,26 @@ console.log(
         ),
 
       utility:
-        listing.utility || [],
+        normalizeTextArray(
+          listing.utility
+        ),
 
       environment:
         listing.environment,
 
       accessibility:
-        listing.accessibility || [],
+        Array.isArray(
+          listing.accessibility
+        )
+          ? listing.accessibility
+              .map((value: unknown) =>
+                String(value).trim()
+              )
+              .filter(Boolean)
+              .join('|') || null
+          : String(
+              listing.accessibility || ''
+            ).trim() || null,
 
       distance_to_paved_road_range:
         (
@@ -176,15 +242,20 @@ console.log(
           : null,
 
       terrain:
-        listing.terrain || [],
+        normalizeTextArray(
+          listing.terrain
+        ),
 
       legal_status:
         listing.legal_status,
 
-      price_millions:
+      current_price:
         optionalNumber(
-          listing.price_millions
+          listing.current_price
         ),
+
+      currency:
+        listing.currency,
 
       whatsapp:
         listing.whatsapp,
@@ -227,7 +298,13 @@ console.log(
 
   const response = await supabase
     .from('listings')
-    .insert([finalListing])
+    .insert([
+      {
+        ...finalListing,
+        transaction_type: 'sale',
+        listing_status: 'active'
+      }
+    ])
     .select()
 
 console.log(
@@ -285,11 +362,16 @@ console.log(
               .filter(Boolean)
               .join(', '),
             price:
-              insertedListing.price_millions,
+              insertedListing.current_price,
+
             source:
               'publish-csv-listings',
+
             transactionType:
-              'sale'
+              'sale',
+
+            currency:
+              insertedListing.currency
           }
         })
       } catch (activityError) {

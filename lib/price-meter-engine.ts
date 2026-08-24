@@ -39,6 +39,10 @@ import {
 } from '@/lib/price-meter-geographic-distribution'
 
 import {
+  buildPriceMeterCharacteristicDistributions
+} from '@/lib/price-meter-characteristic-distribution'
+
+import {
   createPriceMeterStatistic,
   type PriceMeterStatisticMonetaryIdentity
 } from '@/lib/price-meter-statistic-identity'
@@ -46,6 +50,52 @@ import {
 import {
   resolveListingImages
 } from '@/app/utils/resolveListingImages'
+
+import {
+  buildPriceMeterCharacteristicRelationships
+} from '@/lib/price-meter-characteristic-relationship'
+
+import {
+  buildPriceMeterPropertyPricesVsMedian
+} from '@/lib/price-meter-property-price-vs-median'
+
+import {
+  buildPriceMeterDistributionInterpretation
+} from '@/lib/price-meter-distribution-interpretation'
+
+import { supabase } from '@/lib/supabase'
+
+import {
+  loadCanonicalGeographyTerms
+} from '@/lib/geography/resolve-listing-geography'
+
+import {
+  resolveCanonicalGeography
+} from '@/lib/geography/canonical-geography'
+
+import {
+  resolvePriceMeterGeographicScope
+} from '@/lib/price-meter-geographic-scope'
+
+import {
+  buildPriceMeterGeographicStatistics
+} from '@/lib/price-meter-geographic-statistics'
+
+import {
+  buildPriceMeterGeographicConclusions
+} from '@/lib/price-meter-geographic-conclusions'
+
+import {
+  getPriceMeterConfidence
+} from '@/lib/price-meter-confidence'
+
+import {
+  buildPriceMeterSizeRelationshipPopulation
+} from '@/lib/price-meter-size-relationship-population'
+
+import {
+  buildPriceMeterSizeRelationshipResult
+} from '@/lib/price-meter-size-relationship-math'
 
 type PriceMeterLanguage = 'en' | 'es'
 
@@ -145,49 +195,6 @@ function formatStatisticFt2(
     ),
     ' / ft²'
   )
-}
-
-function getConfidence(
-  sampleSize: number,
-  language: PriceMeterLanguage
-) {
-  if (sampleSize >= 25) {
-    return {
-      score: 90,
-      label:
-        language === 'es'
-          ? 'Confianza Alta'
-          : 'High Confidence'
-    }
-  }
-
-  if (sampleSize >= 15) {
-    return {
-      score: 75,
-      label:
-        language === 'es'
-          ? 'Confianza Moderada'
-          : 'Moderate Confidence'
-    }
-  }
-
-  if (sampleSize >= 8) {
-    return {
-      score: 60,
-      label:
-        language === 'es'
-          ? 'Confianza Baja'
-          : 'Low Confidence'
-    }
-  }
-
-  return {
-    score: 35,
-    label:
-      language === 'es'
-        ? 'Confianza Muy Baja'
-        : 'Very Low Confidence'
-  }
 }
 
 function decorateListing(
@@ -382,18 +389,62 @@ export async function getPriceMeterAnalysis(
       filters
     )
 
+  const geographicScope =
+    resolvePriceMeterGeographicScope({
+      province:
+        filters.province,
+
+      canton:
+        filters.canton,
+
+      district:
+        filters.district
+    })
 
   const listings =
     market.listings ||
     []
 
+  const canonicalGeographyTerms =
+  await loadCanonicalGeographyTerms(
+    supabase
+  )
+
+
+const listingsWithCanonicalGeography =
+  listings.map(
+    listing => {
+
+      const canonicalGeography =
+        resolveCanonicalGeography({
+          province:
+            listing.province,
+
+          canton:
+            listing.canton,
+
+          district:
+            listing.district,
+
+          terms:
+            canonicalGeographyTerms
+        })
+
+
+      return {
+        ...listing,
+
+        canonicalGeography
+      }
+    }
+  )
 
   const analyticalDate =
     getCurrentAnalyticalDate()
 
 
   const containsUsdListings =
-    listings.some(
+  listingsWithCanonicalGeography.some(
       listing =>
         String(
           listing.currency ??
@@ -452,7 +503,7 @@ export async function getPriceMeterAnalysis(
 
 
   const decoratedListings =
-    listings.map(
+    listingsWithCanonicalGeography.map(
       listing =>
         decorateListing(
           listing,
@@ -559,6 +610,178 @@ export async function getPriceMeterAnalysis(
           'sale'
       })
 
+  const saleVacantLandGeographicStatistics =
+    geographicScope.comparisonLevel
+      ? buildPriceMeterGeographicStatistics({
+          selectedMarketDistribution:
+            saleVacantLandDistribution,
+
+          geographicDistributions:
+            saleVacantLandGeography[
+              geographicScope.comparisonLevel
+            ],
+
+          comparisonLevel:
+            geographicScope.comparisonLevel
+        })
+      : []
+
+
+const saleImprovedLandGeographicStatistics =
+  geographicScope.comparisonLevel
+    ? buildPriceMeterGeographicStatistics({
+        selectedMarketDistribution:
+          saleImprovedLandDistribution,
+
+        geographicDistributions:
+          saleImprovedLandGeography[
+            geographicScope.comparisonLevel
+          ],
+
+        comparisonLevel:
+          geographicScope.comparisonLevel
+      })
+    : []
+
+
+      const saleImprovedConstructionGeographicStatistics =
+        geographicScope.comparisonLevel
+          ? buildPriceMeterGeographicStatistics({
+              selectedMarketDistribution:
+                saleImprovedConstructionDistribution,
+
+              geographicDistributions:
+                saleImprovedConstructionGeography[
+                  geographicScope.comparisonLevel
+                ],
+
+              comparisonLevel:
+                geographicScope.comparisonLevel
+            })
+          : []
+
+      const saleVacantLandGeographicConclusions =
+        buildPriceMeterGeographicConclusions({
+          statistics:
+            saleVacantLandGeographicStatistics,
+
+          scope:
+            geographicScope,
+
+          language
+        })
+
+
+      const saleImprovedLandGeographicConclusions =
+        buildPriceMeterGeographicConclusions({
+          statistics:
+            saleImprovedLandGeographicStatistics,
+
+          scope:
+            geographicScope,
+
+          language
+        })
+
+
+      const saleImprovedConstructionGeographicConclusions =
+        buildPriceMeterGeographicConclusions({
+          statistics:
+            saleImprovedConstructionGeographicStatistics,
+
+          scope:
+            geographicScope,
+
+          language
+        })
+
+      const saleVacantLandCharacteristics =
+        await buildPriceMeterCharacteristicDistributions({
+          observations:
+            saleVacantLandCohort.observations,
+
+          transactionType:
+            'sale'
+        })
+
+
+      const saleImprovedLandCharacteristics =
+        await buildPriceMeterCharacteristicDistributions({
+          observations:
+            saleImprovedLandCohort.observations,
+
+          transactionType:
+            'sale'
+        })
+
+
+      const saleImprovedConstructionCharacteristics =
+        await buildPriceMeterCharacteristicDistributions({
+          observations:
+            saleImprovedConstructionCohort.observations,
+
+          transactionType:
+            'sale'
+        })
+
+      const saleVacantLandCharacteristicRelationships =
+        buildPriceMeterCharacteristicRelationships({
+          parentDistribution:
+            saleVacantLandDistribution,
+
+          characteristicDistributions:
+            saleVacantLandCharacteristics
+        })
+
+
+      const saleImprovedLandCharacteristicRelationships =
+        buildPriceMeterCharacteristicRelationships({
+          parentDistribution:
+            saleImprovedLandDistribution,
+
+          characteristicDistributions:
+            saleImprovedLandCharacteristics
+        })
+
+
+      const saleImprovedConstructionCharacteristicRelationships =
+        buildPriceMeterCharacteristicRelationships({
+          parentDistribution:
+            saleImprovedConstructionDistribution,
+
+          characteristicDistributions:
+            saleImprovedConstructionCharacteristics
+        })
+
+      const saleVacantLandPropertyPricesVsMedian =
+        buildPriceMeterPropertyPricesVsMedian({
+          observations:
+            saleVacantLandCohort.observations,
+
+          distribution:
+            saleVacantLandDistribution
+        })
+
+
+      const saleImprovedLandPropertyPricesVsMedian =
+        buildPriceMeterPropertyPricesVsMedian({
+          observations:
+            saleImprovedLandCohort.observations,
+
+          distribution:
+            saleImprovedLandDistribution
+        })
+
+
+      const saleImprovedConstructionPropertyPricesVsMedian =
+        buildPriceMeterPropertyPricesVsMedian({
+          observations:
+            saleImprovedConstructionCohort.observations,
+
+          distribution:
+            saleImprovedConstructionDistribution
+        })
+
     const rentVacantLandCohort =
       buildPriceMeterAnalyticalCohort({
         transactionCohort:
@@ -597,6 +820,114 @@ export async function getPriceMeterAnalysis(
           'construction'
       })
 
+
+        /*
+     * -------------------------------------------------------
+     * PHASE 8 — SIZE RELATIONSHIP POPULATIONS
+     * -------------------------------------------------------
+     *
+     * Construction-area relationships MUST consume
+     * Improved Property + Construction normalization.
+     *
+     * Property-area relationships MUST consume
+     * Improved Property + Land normalization.
+     *
+     * Sale and Rent remain analytically isolated.
+     */
+
+    const saleConstructionSizeRelationshipPopulation =
+      buildPriceMeterSizeRelationshipPopulation({
+        cohort:
+          saleImprovedConstructionCohort,
+
+        relationshipKind:
+          'construction_area_to_construction_normalized_ratio'
+      })
+
+
+    const salePropertySizeRelationshipPopulation =
+      buildPriceMeterSizeRelationshipPopulation({
+        cohort:
+          saleImprovedLandCohort,
+
+        relationshipKind:
+          'property_area_to_land_normalized_ratio'
+      })
+
+
+    const rentConstructionSizeRelationshipPopulation =
+      buildPriceMeterSizeRelationshipPopulation({
+        cohort:
+          rentImprovedConstructionCohort,
+
+        relationshipKind:
+          'construction_area_to_construction_normalized_ratio'
+      })
+
+
+    const rentPropertySizeRelationshipPopulation =
+      buildPriceMeterSizeRelationshipPopulation({
+        cohort:
+          rentImprovedLandCohort,
+
+        relationshipKind:
+          'property_area_to_land_normalized_ratio'
+      })
+
+
+        /*
+     * -------------------------------------------------------
+     * PHASE 8 — SIZE RELATIONSHIP RESULTS
+     * -------------------------------------------------------
+     */
+
+    const saleConstructionSizeRelationship =
+      buildPriceMeterSizeRelationshipResult({
+        coordinates:
+          saleConstructionSizeRelationshipPopulation
+            .coordinates,
+
+        representedObservationCount:
+          saleConstructionSizeRelationshipPopulation
+            .representedObservationCount
+      })
+
+
+    const salePropertySizeRelationship =
+      buildPriceMeterSizeRelationshipResult({
+        coordinates:
+          salePropertySizeRelationshipPopulation
+            .coordinates,
+
+        representedObservationCount:
+          salePropertySizeRelationshipPopulation
+            .representedObservationCount
+      })
+
+
+    const rentConstructionSizeRelationship =
+      buildPriceMeterSizeRelationshipResult({
+        coordinates:
+          rentConstructionSizeRelationshipPopulation
+            .coordinates,
+
+        representedObservationCount:
+          rentConstructionSizeRelationshipPopulation
+            .representedObservationCount
+      })
+
+
+    const rentPropertySizeRelationship =
+      buildPriceMeterSizeRelationshipResult({
+        coordinates:
+          rentPropertySizeRelationshipPopulation
+            .coordinates,
+
+        representedObservationCount:
+          rentPropertySizeRelationshipPopulation
+            .representedObservationCount
+      })
+    
 
     const saleVacantLandObservations =
       saleVacantLandCohort.observations
@@ -641,6 +972,25 @@ export async function getPriceMeterAnalysis(
         observation.pricePerM2
     )
 
+  const saleVacantLandConfidenceBasedOnNumberOfProperties =
+    getPriceMeterConfidence(
+      saleVacantLandCohort.observations.length,
+      language
+    )
+
+
+  const saleImprovedLandConfidenceBasedOnNumberOfProperties =
+    getPriceMeterConfidence(
+      saleImprovedLandCohort.observations.length,
+      language
+    )
+
+
+  const saleImprovedConstructionConfidenceBasedOnNumberOfProperties =
+    getPriceMeterConfidence(
+      saleImprovedConstructionCohort.observations.length,
+      language
+    )
 
   const rentVacantLandPrices =
     rentVacantLandObservations.map(
@@ -661,6 +1011,305 @@ export async function getPriceMeterAnalysis(
       observation =>
         observation.pricePerM2
     )
+
+  const rentVacantLandDistribution =
+    buildPriceMeterDistribution(
+      rentVacantLandCohort
+    )
+
+
+  const rentImprovedLandDistribution =
+    buildPriceMeterDistribution(
+      rentImprovedLandCohort
+    )
+
+
+  const rentImprovedConstructionDistribution =
+    buildPriceMeterDistribution(
+      rentImprovedConstructionCohort
+    )
+
+  const rentVacantLandConfidenceBasedOnNumberOfProperties =
+    getPriceMeterConfidence(
+      rentVacantLandCohort.observations.length,
+      language
+    )
+
+
+  const rentImprovedLandConfidenceBasedOnNumberOfProperties =
+    getPriceMeterConfidence(
+      rentImprovedLandCohort.observations.length,
+      language
+    )
+
+
+  const rentImprovedConstructionConfidenceBasedOnNumberOfProperties =
+    getPriceMeterConfidence(
+      rentImprovedConstructionCohort.observations.length,
+      language
+    )
+
+
+  const rentVacantLandGeography =
+    buildPriceMeterGeographicDistributions({
+      observations:
+        rentVacantLandCohort.observations,
+
+      transactionType:
+        'rent'
+    })
+
+
+  const rentImprovedLandGeography =
+    buildPriceMeterGeographicDistributions({
+      observations:
+        rentImprovedLandCohort.observations,
+
+      transactionType:
+        'rent'
+    })
+
+
+  const rentImprovedConstructionGeography =
+    buildPriceMeterGeographicDistributions({
+      observations:
+        rentImprovedConstructionCohort.observations,
+
+      transactionType:
+        'rent'
+    })
+
+  const rentVacantLandGeographicStatistics =
+  geographicScope.comparisonLevel
+    ? buildPriceMeterGeographicStatistics({
+        selectedMarketDistribution:
+          rentVacantLandDistribution,
+
+        geographicDistributions:
+          rentVacantLandGeography[
+            geographicScope.comparisonLevel
+          ],
+
+        comparisonLevel:
+          geographicScope.comparisonLevel
+      })
+    : []
+
+
+const rentImprovedLandGeographicStatistics =
+  geographicScope.comparisonLevel
+    ? buildPriceMeterGeographicStatistics({
+        selectedMarketDistribution:
+          rentImprovedLandDistribution,
+
+        geographicDistributions:
+          rentImprovedLandGeography[
+            geographicScope.comparisonLevel
+          ],
+
+        comparisonLevel:
+          geographicScope.comparisonLevel
+      })
+    : []
+
+
+    const rentImprovedConstructionGeographicStatistics =
+      geographicScope.comparisonLevel
+        ? buildPriceMeterGeographicStatistics({
+            selectedMarketDistribution:
+              rentImprovedConstructionDistribution,
+
+            geographicDistributions:
+              rentImprovedConstructionGeography[
+                geographicScope.comparisonLevel
+              ],
+
+            comparisonLevel:
+              geographicScope.comparisonLevel
+          })
+        : []
+
+      const rentVacantLandGeographicConclusions =
+        buildPriceMeterGeographicConclusions({
+          statistics:
+            rentVacantLandGeographicStatistics,
+
+          scope:
+            geographicScope,
+
+          language
+        })
+
+
+      const rentImprovedLandGeographicConclusions =
+        buildPriceMeterGeographicConclusions({
+          statistics:
+            rentImprovedLandGeographicStatistics,
+
+          scope:
+            geographicScope,
+
+          language
+        })
+
+
+      const rentImprovedConstructionGeographicConclusions =
+        buildPriceMeterGeographicConclusions({
+          statistics:
+            rentImprovedConstructionGeographicStatistics,
+
+          scope:
+            geographicScope,
+
+          language
+        })
+
+  const rentVacantLandCharacteristics =
+    await buildPriceMeterCharacteristicDistributions({
+      observations:
+        rentVacantLandCohort.observations,
+
+      transactionType:
+        'rent'
+    })
+
+
+  const rentImprovedLandCharacteristics =
+    await buildPriceMeterCharacteristicDistributions({
+      observations:
+        rentImprovedLandCohort.observations,
+
+      transactionType:
+        'rent'
+    })
+
+
+  const rentImprovedConstructionCharacteristics =
+    await buildPriceMeterCharacteristicDistributions({
+      observations:
+        rentImprovedConstructionCohort.observations,
+
+      transactionType:
+        'rent'
+    })
+
+
+  const rentVacantLandCharacteristicRelationships =
+    buildPriceMeterCharacteristicRelationships({
+      parentDistribution:
+        rentVacantLandDistribution,
+
+      characteristicDistributions:
+        rentVacantLandCharacteristics
+    })
+
+
+  const rentImprovedLandCharacteristicRelationships =
+    buildPriceMeterCharacteristicRelationships({
+      parentDistribution:
+        rentImprovedLandDistribution,
+
+      characteristicDistributions:
+        rentImprovedLandCharacteristics
+    })
+
+
+  const rentImprovedConstructionCharacteristicRelationships =
+    buildPriceMeterCharacteristicRelationships({
+      parentDistribution:
+        rentImprovedConstructionDistribution,
+
+      characteristicDistributions:
+        rentImprovedConstructionCharacteristics
+    })
+
+  const rentVacantLandPropertyPricesVsMedian =
+    buildPriceMeterPropertyPricesVsMedian({
+      observations:
+        rentVacantLandCohort.observations,
+
+      distribution:
+        rentVacantLandDistribution
+    })
+
+
+  const rentImprovedLandPropertyPricesVsMedian =
+    buildPriceMeterPropertyPricesVsMedian({
+      observations:
+        rentImprovedLandCohort.observations,
+
+      distribution:
+        rentImprovedLandDistribution
+    })
+
+
+  const rentImprovedConstructionPropertyPricesVsMedian =
+    buildPriceMeterPropertyPricesVsMedian({
+      observations:
+        rentImprovedConstructionCohort.observations,
+
+      distribution:
+        rentImprovedConstructionDistribution
+    })
+
+  const saleVacantLandDistributionInterpretation =
+    buildPriceMeterDistributionInterpretation({
+      observations:
+        saleVacantLandCohort.observations,
+
+      distribution:
+        saleVacantLandDistribution
+    })
+
+
+  const saleImprovedLandDistributionInterpretation =
+    buildPriceMeterDistributionInterpretation({
+      observations:
+        saleImprovedLandCohort.observations,
+
+      distribution:
+        saleImprovedLandDistribution
+    })
+
+
+  const saleImprovedConstructionDistributionInterpretation =
+    buildPriceMeterDistributionInterpretation({
+      observations:
+        saleImprovedConstructionCohort.observations,
+
+      distribution:
+        saleImprovedConstructionDistribution
+    })
+
+
+  const rentVacantLandDistributionInterpretation =
+    buildPriceMeterDistributionInterpretation({
+      observations:
+        rentVacantLandCohort.observations,
+
+      distribution:
+        rentVacantLandDistribution
+    })
+
+
+  const rentImprovedLandDistributionInterpretation =
+    buildPriceMeterDistributionInterpretation({
+      observations:
+        rentImprovedLandCohort.observations,
+
+      distribution:
+        rentImprovedLandDistribution
+    })
+
+
+  const rentImprovedConstructionDistributionInterpretation =
+    buildPriceMeterDistributionInterpretation({
+      observations:
+        rentImprovedConstructionCohort.observations,
+
+      distribution:
+        rentImprovedConstructionDistribution
+    })
 
   /*
    * -------------------------------------------------------
@@ -802,14 +1451,14 @@ export async function getPriceMeterAnalysis(
     sampleListingIds.size
 
   const landConfidence =
-    getConfidence(
+    getPriceMeterConfidence(
       selectedLandObservations.length,
       language
     )
 
 
   const constructionConfidence =
-    getConfidence(
+    getPriceMeterConfidence(
       selectedConstructionObservations.length,
       language
     )
@@ -1073,9 +1722,29 @@ const constructionMonetaryIdentity =
   }
 
   return {
-    filters,
+  filters,
 
-    saleIntelligence: {
+  geographicScope,
+
+  saleIntelligence: {
+      sizeRelationships: {
+        constructionArea: {
+          population:
+            saleConstructionSizeRelationshipPopulation,
+
+          result:
+            saleConstructionSizeRelationship
+        },
+
+        propertyArea: {
+          population:
+            salePropertySizeRelationshipPopulation,
+
+          result:
+            salePropertySizeRelationship
+        }
+      },
+
       distributions: {
         vacantLandLandNormalized:
           saleVacantLandDistribution,
@@ -1096,10 +1765,242 @@ const constructionMonetaryIdentity =
 
         improvedConstructionNormalized:
           saleImprovedConstructionGeography
-      }
-    },
+      },
 
-    summary: {
+      geographicStatistics: {
+        vacantLandLandNormalized:
+          saleVacantLandGeographicStatistics,
+
+        improvedLandNormalized:
+          saleImprovedLandGeographicStatistics,
+
+        improvedConstructionNormalized:
+          saleImprovedConstructionGeographicStatistics
+      },
+
+      geographicConclusions: {
+        vacantLandLandNormalized:
+          saleVacantLandGeographicConclusions,
+
+        improvedLandNormalized:
+          saleImprovedLandGeographicConclusions,
+
+        improvedConstructionNormalized:
+          saleImprovedConstructionGeographicConclusions
+      },
+
+      characteristics: {
+        vacantLandLandNormalized:
+          saleVacantLandCharacteristics,
+
+        improvedLandNormalized:
+          saleImprovedLandCharacteristics,
+
+        improvedConstructionNormalized:
+          saleImprovedConstructionCharacteristics
+      },
+
+      characteristicRelationships: {
+        vacantLandLandNormalized:
+          saleVacantLandCharacteristicRelationships,
+
+        improvedLandNormalized:
+          saleImprovedLandCharacteristicRelationships,
+
+        improvedConstructionNormalized:
+          saleImprovedConstructionCharacteristicRelationships
+      },
+
+      propertyPriceAboveOrBelowMedian: {
+        vacantLandLandNormalized:
+          saleVacantLandPropertyPricesVsMedian,
+
+        improvedLandNormalized:
+          saleImprovedLandPropertyPricesVsMedian,
+
+        improvedConstructionNormalized:
+          saleImprovedConstructionPropertyPricesVsMedian
+      },
+
+      confidenceBasedOnNumberOfProperties: {
+        vacantLandLandNormalized: {
+          numberOfProperties:
+            saleVacantLandCohort.observations.length,
+
+          confidence:
+            saleVacantLandConfidenceBasedOnNumberOfProperties
+        },
+
+        improvedLandNormalized: {
+          numberOfProperties:
+            saleImprovedLandCohort.observations.length,
+
+          confidence:
+            saleImprovedLandConfidenceBasedOnNumberOfProperties
+        },
+
+          improvedConstructionNormalized: {
+          numberOfProperties:
+            saleImprovedConstructionCohort.observations.length,
+
+          confidence:
+            saleImprovedConstructionConfidenceBasedOnNumberOfProperties
+        }
+      },
+
+          distributionInterpretation: {
+            vacantLandLandNormalized:
+              saleVacantLandDistributionInterpretation,
+
+            improvedLandNormalized:
+              saleImprovedLandDistributionInterpretation,
+
+            improvedConstructionNormalized:
+              saleImprovedConstructionDistributionInterpretation
+          }
+        },
+
+        rentIntelligence: {
+
+            sizeRelationships: {
+              constructionArea: {
+                population:
+                  rentConstructionSizeRelationshipPopulation,
+
+                result:
+                  rentConstructionSizeRelationship
+              },
+
+              propertyArea: {
+                population:
+                  rentPropertySizeRelationshipPopulation,
+
+                result:
+                  rentPropertySizeRelationship
+              }
+            },
+
+            distributions: {
+              vacantLandLandNormalized:
+                rentVacantLandDistribution,
+
+              improvedLandNormalized:
+                rentImprovedLandDistribution,
+
+              improvedConstructionNormalized:
+                rentImprovedConstructionDistribution
+            },
+
+            geography: {
+              vacantLandLandNormalized:
+                rentVacantLandGeography,
+
+              improvedLandNormalized:
+                rentImprovedLandGeography,
+
+              improvedConstructionNormalized:
+                rentImprovedConstructionGeography
+            },
+
+            geographicStatistics: {
+              vacantLandLandNormalized:
+                rentVacantLandGeographicStatistics,
+
+              improvedLandNormalized:
+                rentImprovedLandGeographicStatistics,
+
+              improvedConstructionNormalized:
+                rentImprovedConstructionGeographicStatistics
+            },
+
+            geographicConclusions: {
+              vacantLandLandNormalized:
+                rentVacantLandGeographicConclusions,
+
+              improvedLandNormalized:
+                rentImprovedLandGeographicConclusions,
+
+              improvedConstructionNormalized:
+                rentImprovedConstructionGeographicConclusions
+            },
+
+          characteristics: {
+            vacantLandLandNormalized:
+              rentVacantLandCharacteristics,
+
+            improvedLandNormalized:
+              rentImprovedLandCharacteristics,
+
+            improvedConstructionNormalized:
+              rentImprovedConstructionCharacteristics
+          },
+
+          characteristicRelationships: {
+                vacantLandLandNormalized:
+                  rentVacantLandCharacteristicRelationships,
+
+                improvedLandNormalized:
+                  rentImprovedLandCharacteristicRelationships,
+
+                improvedConstructionNormalized:
+                  rentImprovedConstructionCharacteristicRelationships
+              },
+
+          propertyPriceAboveOrBelowMedian: {
+                vacantLandLandNormalized:
+                  rentVacantLandPropertyPricesVsMedian,
+
+                improvedLandNormalized:
+                  rentImprovedLandPropertyPricesVsMedian,
+
+                improvedConstructionNormalized:
+                  rentImprovedConstructionPropertyPricesVsMedian
+              },
+
+              confidenceBasedOnNumberOfProperties: {
+                vacantLandLandNormalized: {
+                  numberOfProperties:
+                    rentVacantLandCohort.observations.length,
+
+                  confidence:
+                    rentVacantLandConfidenceBasedOnNumberOfProperties
+                },
+
+                improvedLandNormalized: {
+                  numberOfProperties:
+                    rentImprovedLandCohort.observations.length,
+
+                  confidence:
+                    rentImprovedLandConfidenceBasedOnNumberOfProperties
+                },
+
+                improvedConstructionNormalized: {
+                  numberOfProperties:
+                    rentImprovedConstructionCohort.observations.length,
+
+                  confidence:
+                    rentImprovedConstructionConfidenceBasedOnNumberOfProperties
+                },
+
+                distributionInterpretation: {
+                  vacantLandLandNormalized:
+                    rentVacantLandDistributionInterpretation,
+
+                  improvedLandNormalized:
+                    rentImprovedLandDistributionInterpretation,
+
+                  improvedConstructionNormalized:
+                    rentImprovedConstructionDistributionInterpretation
+                },
+
+
+
+
+              }
+                  
+      },
+
+        summary: {
       /*
       * PRESENTATION COMPATIBILITY VIEW
       *

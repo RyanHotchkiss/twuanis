@@ -149,6 +149,10 @@ async function main() {
       .saleIntelligence
       .geography
 
+  const relationships =
+    analysis
+      .saleIntelligence
+      .characteristicRelationships
 
   printGeography(
     'SALE · VACANT LAND · LAND NORMALIZED',
@@ -169,8 +173,104 @@ async function main() {
     geography
       .improvedConstructionNormalized
   )
+
+    printCharacteristicRelationships(
+    'SALE · VACANT LAND · LAND NORMALIZED · CHARACTERISTIC RELATIONSHIPS',
+    relationships
+      .vacantLandLandNormalized
+  )
+
+
+  printCharacteristicRelationships(
+    'SALE · IMPROVED PROPERTY · LAND NORMALIZED · CHARACTERISTIC RELATIONSHIPS',
+    relationships
+      .improvedLandNormalized
+  )
+
+
+  printCharacteristicRelationships(
+    'SALE · IMPROVED PROPERTY · CONSTRUCTION NORMALIZED · CHARACTERISTIC RELATIONSHIPS',
+    relationships
+      .improvedConstructionNormalized
+  )
+
 }
 
+function printCharacteristicRelationships(
+  label: string,
+  relationships: any[]
+) {
+
+  console.log(
+    `\n\n========================================`
+  )
+
+  console.log(
+    label
+  )
+
+  console.log(
+    `========================================`
+  )
+
+
+  if (!relationships.length) {
+    console.log(
+      '\nNo characteristic relationships.'
+    )
+
+    return
+  }
+
+
+  for (
+    const relationship
+    of relationships
+  ) {
+
+    const characteristic =
+      relationship.characteristic
+
+    console.log(
+      `\n${characteristic.termType} · ${characteristic.termNameEn || characteristic.termName}`
+    )
+
+    console.log(
+      '  characteristic n:',
+      relationship.sampleSize
+    )
+
+    console.log(
+      '  parent n:',
+      relationship.parentSampleSize
+    )
+
+    console.log(
+      '  characteristic median:',
+      relationship.characteristicMedian
+    )
+
+    console.log(
+      '  parent median:',
+      relationship.parentMedian
+    )
+
+    console.log(
+      '  absolute difference:',
+      relationship.absoluteDifference
+    )
+
+    console.log(
+      '  relative difference %:',
+      relationship.relativeDifferencePct
+    )
+
+    console.log(
+      '  direction:',
+      relationship.direction
+    )
+  }
+}
 
 main()
   .catch(

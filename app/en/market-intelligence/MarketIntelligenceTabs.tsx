@@ -562,12 +562,20 @@ const tabs = [
         )}
 
         {activeTab ===
-          'price-meter' && (
-          <PriceMeterResults
-            filters={filters}
-            analysis={priceMeterAnalysis}
-          />
-        )}
+            'price-meter' && (
+            priceMeterAnalysis
+              ? (
+                <PriceMeterResults
+                  filters={filters}
+                  analysis={
+                    priceMeterAnalysis
+                  }
+                />
+              )
+              : (
+                <EmptyState />
+              )
+          )}
 
         {activeTab === 'pricing' && (
           <PricingStrategyResults

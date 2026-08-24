@@ -27,6 +27,9 @@
  * - calculate confidence
  */
 
+import type {
+  CanonicalGeographyResolution
+} from '@/lib/geography/canonical-geography'
 
 export type PriceMeterTransactionType =
   | 'sale'
@@ -158,6 +161,9 @@ export type PriceMeterIdentityListing = {
   district?:
     string | null
 
+  canonicalGeography?:
+    CanonicalGeographyResolution
+
   property_area?:
   number | null
 
@@ -190,14 +196,19 @@ export type PriceMeterAnalyticalIdentity = {
 
   geography: {
     province:
-      string | null
+      CanonicalGeographyResolution['province']
 
     canton:
-      string | null
+      CanonicalGeographyResolution['canton']
 
     district:
-      string | null
-      
+      CanonicalGeographyResolution['district']
+
+    reasons:
+      CanonicalGeographyResolution['reasons']
+
+    complete:
+      boolean
   }
 
     propertyArea:
@@ -1433,18 +1444,45 @@ export function resolvePriceMeterAnalyticalIdentity(
     propertyBasisIntegrity,
     availableNormalizationBases,
 
-        geography: {
+      geography: {
       province:
-        listing.province ??
+        listing.canonicalGeography
+          ?.province ??
         null,
 
       canton:
-        listing.canton ??
+        listing.canonicalGeography
+          ?.canton ??
         null,
 
       district:
-        listing.district ??
-        null
+        listing.canonicalGeography
+          ?.district ??
+        null,
+
+      reasons:
+        listing.canonicalGeography
+          ?.reasons ?? {
+            province:
+              listing.province
+                ? 'unrecognized'
+                : 'missing',
+
+            canton:
+              listing.canton
+                ? 'unrecognized'
+                : 'missing',
+
+            district:
+              listing.district
+                ? 'unrecognized'
+                : 'missing'
+          },
+
+      complete:
+        listing.canonicalGeography
+          ?.complete ??
+        false
     },
 
     propertyArea,

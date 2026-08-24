@@ -32,8 +32,17 @@ export default async function PrecioPorMetroCuadradoPage({
   const filters = await searchParams
   const options = await getExplorerOptions()
 
+  const hasTransactionType =
+    filters.transaction_type === 'sale' ||
+    filters.transaction_type === 'rent'
+
   const analysis =
-    await getPriceMeterAnalysis(filters, 'es')
+    hasTransactionType
+      ? await getPriceMeterAnalysis(
+          filters,
+          'es'
+        )
+      : null
 
   return (
     <main
@@ -59,18 +68,22 @@ export default async function PrecioPorMetroCuadradoPage({
         basePath="/es/precio-por-metro-cuadrado"
       />
 
-      <AnalysisActions
-        engineType="price-meter"
-        language="es"
-        filters={filters}
-        result={analysis}
-        defaultName="Precio por Metro Cuadrado"
-      />
+      {analysis && (
+        <>
+          <AnalysisActions
+            engineType="price-meter"
+            language="es"
+            filters={filters}
+            result={analysis}
+            defaultName="Precio por Metro Cuadrado"
+          />
 
-      <PriceMeterResults
-        filters={filters}
-        analysis={analysis}
-      />
+          <PriceMeterResults
+            filters={filters}
+            analysis={analysis}
+          />
+        </>
+      )}
     </main>
   )
 }

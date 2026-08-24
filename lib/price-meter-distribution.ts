@@ -16,13 +16,22 @@ export type PriceMeterDistribution<
   minimum:
     number | null
 
+  p10:
+    number | null
+
   p25:
     number | null
 
   median:
     number | null
 
+  average:
+    number | null
+
   p75:
+    number | null
+
+  p90:
     number | null
 
   maximum:
@@ -172,33 +181,47 @@ export function buildPriceMeterDistribution<
     values.length ===
       0
   ) {
-    return {
-      transactionType:
-        cohort.transactionType,
+      return {
+        transactionType:
+          cohort.transactionType,
 
-      sampleSize:
-        0,
+        sampleSize:
+          0,
 
-      minimum:
-        null,
+        minimum:
+          null,
 
-      p25:
-        null,
+        p10:
+          null,
 
-      median:
-        null,
+        p25:
+          null,
 
-      p75:
-        null,
+        median:
+          null,
 
-      maximum:
-        null,
+        average:
+          null,
 
-      iqr:
-        null
-    }
+        p75:
+          null,
+
+        p90:
+          null,
+
+        maximum:
+          null,
+
+        iqr:
+          null
+      }
   }
 
+  const p10 =
+    percentile(
+      values,
+      0.1
+    )
 
   const p25 =
     percentile(
@@ -213,6 +236,13 @@ export function buildPriceMeterDistribution<
       0.5
     )
 
+  const average =
+    values.reduce(
+      (sum, value) =>
+        sum + value,
+      0
+    ) /
+    values.length  
 
   const p75 =
     percentile(
@@ -220,32 +250,43 @@ export function buildPriceMeterDistribution<
       0.75
     )
 
+  const p90 =
+    percentile(
+      values,
+      0.9
+    )
 
   return {
-    transactionType:
-      cohort.transactionType,
+  transactionType:
+    cohort.transactionType,
 
-    sampleSize:
-      values.length,
+  sampleSize:
+    values.length,
 
-    minimum:
-      values[0],
+  minimum:
+    values[0],
 
-    p25,
+  p10,
 
-    median,
+  p25,
 
-    p75,
+  median,
 
-    maximum:
-      values[
-        values.length - 1
-      ],
+  average,
 
-    iqr:
-      p25 !== null &&
-      p75 !== null
-        ? p75 - p25
-        : null
-  }
+  p75,
+
+  p90,
+
+  maximum:
+    values[
+      values.length - 1
+    ],
+
+  iqr:
+    p25 !== null &&
+    p75 !== null
+      ? p75 - p25
+      : null
+}
 }

@@ -580,8 +580,7 @@ function normalizeRow(row) {
 
     property_area:
       normalizeAreaValue(
-        row.raw_property_area ||
-        row.raw_construction_area
+        row.raw_property_area
       ),
 
     utility: toPostgresArray(inferUtilities(row)),

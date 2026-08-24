@@ -32,8 +32,17 @@ export default async function PricePerSquareMeterPage({
   const filters = await searchParams
   const options = await getExplorerOptions()
 
+  const hasTransactionType =
+    filters.transaction_type === 'sale' ||
+    filters.transaction_type === 'rent'
+
   const analysis =
-    await getPriceMeterAnalysis(filters, 'en')
+    hasTransactionType
+      ? await getPriceMeterAnalysis(
+          filters,
+          'en'
+        )
+      : null
 
   return (
     <main
@@ -58,18 +67,22 @@ export default async function PricePerSquareMeterPage({
         basePath="/price-per-square-meter"
       />
 
-      <AnalysisActions
-        engineType="price-meter"
-        language="en"
-        filters={filters}
-        result={analysis}
-        defaultName="Price per Square Meter"
-      />
+      {analysis && (
+        <>
+          <AnalysisActions
+            engineType="price-meter"
+            language="en"
+            filters={filters}
+            result={analysis}
+            defaultName="Price per Square Meter"
+          />
 
-      <PriceMeterResults
-        filters={filters}
-        analysis={analysis}
-      />
+          <PriceMeterResults
+            filters={filters}
+            analysis={analysis}
+          />
+        </>
+      )}
     </main>
   )
 }

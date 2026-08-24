@@ -100,8 +100,14 @@ const intelligenceTabMap:
     matching:
       'matching',
 
+    comparison:
+      'comparison',
+
     scarcity:
-      'scarcity'
+      'scarcity',
+
+    'price-meter':
+      'price-meter'
   }
 
 

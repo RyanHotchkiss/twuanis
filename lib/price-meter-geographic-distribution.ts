@@ -11,11 +11,27 @@ import {
   type PriceMeterDistribution
 } from '@/lib/price-meter-distribution'
 
+import type {
+  CanonicalGeographyTerm
+} from '@/lib/geography/canonical-geography'
+
 
 export type PriceMeterGeographyLevel =
   | 'province'
   | 'canton'
   | 'district'
+
+
+export type PriceMeterGeographicIdentity = {
+  province:
+    CanonicalGeographyTerm | null
+
+  canton:
+    CanonicalGeographyTerm | null
+
+  district:
+    CanonicalGeographyTerm | null
+}
 
 
 export type PriceMeterGeographicDistribution<
@@ -24,20 +40,34 @@ export type PriceMeterGeographicDistribution<
   level:
     PriceMeterGeographyLevel
 
-  geography: {
-    province:
-      string | null
-
-    canton:
-      string | null
-
-    district:
-      string | null
-  }
+  geography:
+    PriceMeterGeographicIdentity
 
   distribution:
     PriceMeterDistribution<T>
 }
+
+
+/*
+ * ---------------------------------------------------------
+ * CANONICAL GEOGRAPHIC GROUPING KEY
+ * ---------------------------------------------------------
+ *
+ * Geographic identity is based on canonical ontology IDs,
+ * never geographic display names.
+ *
+ * This allows identically named geographic entities at
+ * different hierarchy levels to remain distinct.
+ *
+ * Example:
+ *
+ * Canton Escazú
+ * and
+ * District Escazú
+ *
+ * may share a display name but cannot share canonical
+ * geographic identity.
+ */
 
 
 function geographyKey({
@@ -64,7 +94,7 @@ function geographyKey({
   ) {
 
     return province
-      ? `province:${province}`
+      ? `province:${province.id}`
       : null
   }
 
@@ -73,23 +103,57 @@ function geographyKey({
     level === 'canton'
   ) {
 
+    if (
+      !province ||
+      !canton
+    ) {
+
+      return null
+    }
+
+
     return (
-      province &&
-      canton
+      `province:${province.id}` +
+      `|canton:${canton.id}`
     )
-      ? `province:${province}|canton:${canton}`
-      : null
+  }
+
+
+  if (
+    !province ||
+    !canton ||
+    !district
+  ) {
+
+    return null
   }
 
 
   return (
-    province &&
-    canton &&
-    district
+    `province:${province.id}` +
+    `|canton:${canton.id}` +
+    `|district:${district.id}`
   )
-    ? `province:${province}|canton:${canton}|district:${district}`
-    : null
 }
+
+
+/*
+ * ---------------------------------------------------------
+ * CANONICAL GEOGRAPHIC IDENTITY
+ * ---------------------------------------------------------
+ *
+ * Every geographic distribution preserves the canonical
+ * geographic entities required for that level.
+ *
+ * Province:
+ *   Province
+ *
+ * Canton:
+ *   Province → Canton
+ *
+ * District:
+ *   Province → Canton → District
+ */
 
 
 function geographyIdentity({
@@ -101,7 +165,7 @@ function geographyIdentity({
 
   level:
     PriceMeterGeographyLevel
-}) {
+}): PriceMeterGeographicIdentity {
 
   const {
     province,
@@ -117,8 +181,10 @@ function geographyIdentity({
 
     return {
       province,
-      canton: null,
-      district: null
+      canton:
+        null,
+      district:
+        null
     }
   }
 
@@ -130,7 +196,8 @@ function geographyIdentity({
     return {
       province,
       canton,
-      district: null
+      district:
+        null
     }
   }
 
@@ -141,6 +208,72 @@ function geographyIdentity({
     district
   }
 }
+
+
+/*
+ * ---------------------------------------------------------
+ * DISPLAY NAME
+ * ---------------------------------------------------------
+ *
+ * Display names are presentation metadata.
+ *
+ * They are used here only to provide deterministic,
+ * human-readable ordering.
+ *
+ * They are NEVER used as geographic identity.
+ */
+
+
+function geographyDisplayName(
+  geography:
+    PriceMeterGeographicIdentity
+): string {
+
+  const term =
+    geography.district ??
+    geography.canton ??
+    geography.province
+
+
+  return (
+    term?.term_name_en ??
+    term?.term_name ??
+    term?.term_name_es ??
+    ''
+  )
+}
+
+
+/*
+ * ---------------------------------------------------------
+ * CANONICAL TERM ID
+ * ---------------------------------------------------------
+ *
+ * Used only as a deterministic tie-breaker when two
+ * geographic entities have the same display name.
+ */
+
+
+function geographyTermId(
+  geography:
+    PriceMeterGeographicIdentity
+): number {
+
+  const term =
+    geography.district ??
+    geography.canton ??
+    geography.province
+
+
+  return term?.id ?? 0
+}
+
+
+/*
+ * ---------------------------------------------------------
+ * GEOGRAPHIC DISTRIBUTIONS
+ * ---------------------------------------------------------
+ */
 
 
 export function buildPriceMeterGeographicDistributions<
@@ -165,6 +298,10 @@ export function buildPriceMeterGeographicDistributions<
     PriceMeterGeographicDistribution<T>[]
 } {
 
+  /*
+   * Sale and Rent must remain analytically isolated.
+   */
+
   if (
     observations.some(
       observation =>
@@ -172,6 +309,7 @@ export function buildPriceMeterGeographicDistributions<
           transactionType
     )
   ) {
+
     throw new Error(
       'Price / m² geographic distribution contains mixed Sale/Rent observations.'
     )
@@ -203,7 +341,33 @@ export function buildPriceMeterGeographicDistributions<
         })
 
 
-      if (!key) {
+      /*
+       * Geographic analysis fails closed at the level
+       * whose canonical identity cannot be established.
+       *
+       * This does NOT invalidate the observation for
+       * unrelated Price / m² analysis.
+       *
+       * Example:
+       *
+       * Province resolved
+       * Canton unresolved
+       * District unresolved
+       *
+       * Province analysis:
+       *   admissible
+       *
+       * Canton analysis:
+       *   excluded
+       *
+       * District analysis:
+       *   excluded
+       */
+
+      if (
+        key === null
+      ) {
+
         continue
       }
 
@@ -211,75 +375,119 @@ export function buildPriceMeterGeographicDistributions<
       const existing =
         groups.get(
           key
-        ) ??
-        []
+        )
 
 
-      existing.push(
-        observation
-      )
+      if (
+        existing
+      ) {
+
+        existing.push(
+          observation
+        )
+
+        continue
+      }
 
 
       groups.set(
         key,
-        existing
+        [
+          observation
+        ]
       )
     }
 
 
-    return Array.from(
-      groups.values()
-    )
-      .map(
-        groupObservations => {
-
-          const first =
-            groupObservations[0]
+    const distributions:
+      PriceMeterGeographicDistribution<T>[] =
+      []
 
 
-          const distribution =
-            buildPriceMeterDistribution({
-              transactionType,
-              observations:
-                groupObservations
-            })
+    for (
+      const groupObservations
+      of groups.values()
+    ) {
+
+      const first =
+        groupObservations[0]
 
 
-          return {
-            level,
+      if (
+        !first
+      ) {
 
-            geography:
-              geographyIdentity({
-                observation:
-                  first,
+        continue
+      }
 
-                level
-              }),
 
-            distribution
-          }
-        }
-      )
-      .sort(
-        (a, b) => {
+      const distribution =
+        buildPriceMeterDistribution({
+          transactionType,
 
-          const aName =
-            a.geography.district ??
-            a.geography.canton ??
-            a.geography.province ??
-            ''
+          observations:
+            groupObservations
+        })
 
-          const bName =
-            b.geography.district ??
-            b.geography.canton ??
-            b.geography.province ??
-            ''
 
-          return aName.localeCompare(
+      distributions.push({
+        level,
+
+        geography:
+          geographyIdentity({
+            observation:
+              first,
+
+            level
+          }),
+
+        distribution
+      })
+    }
+
+
+    distributions.sort(
+      (a, b) => {
+
+        const aName =
+          geographyDisplayName(
+            a.geography
+          )
+
+        const bName =
+          geographyDisplayName(
+            b.geography
+          )
+
+
+        const nameComparison =
+          aName.localeCompare(
             bName
           )
+
+
+        if (
+          nameComparison !==
+            0
+        ) {
+
+          return nameComparison
         }
-      )
+
+
+        return (
+          geographyTermId(
+            a.geography
+          ) -
+          geographyTermId(
+            b.geography
+          )
+        )
+      }
+    )
+
+
+    return distributions
   }
 
 

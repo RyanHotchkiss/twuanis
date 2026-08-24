@@ -3,13 +3,15 @@ const cheerio = require('cheerio')
 const puppeteer = require('puppeteer')
 
 const fs = require('fs')
+const path = require('path')
+const os = require('os')
 const crypto = require('crypto')
 
 const { isObservationValid } = require('./quality/isObservationValid')
 const SOURCE_NAME = 'encuentra24'
 const TRANSACTION_TYPE = 'rent'
-const MAX_LISTINGS = 10
-const MAX_PAGES = 2
+const MAX_LISTINGS = 120
+const MAX_PAGES = 20
 
 const USER_AGENT =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
@@ -751,24 +753,105 @@ function validRoomCount(value) {
     return ''
   }
 function cleanAreaNumber(value) {
-    return String(value || '')
+  let text =
+    String(value || '')
       .replace(/\s*m²?/gi, '')
-      .replace(/\./g, '')
-      .replace(/,/g, '')
-      .replace(/[^\d]/g, '')
+      .replace(/\s*m2/gi, '')
+      .replace(/[^\d.,]/g, '')
+      .trim()
+
+  if (!text) {
+    return ''
   }
 
-function extractJsonArea(html, patterns) {
-      for (const pattern of patterns) {
-        const match = String(html || '').match(pattern)
+  const lastDot =
+    text.lastIndexOf('.')
 
-        if (match?.[1]) {
-          return cleanAreaNumber(match[1])
-        }
-      }
+  const lastComma =
+    text.lastIndexOf(',')
 
-      return ''
+  /*
+   * Both separators:
+   *
+   * 1.611,40 -> 1611.40
+   * 1,611.40 -> 1611.40
+   */
+  if (
+    lastDot !== -1 &&
+    lastComma !== -1
+  ) {
+    if (lastComma > lastDot) {
+      text =
+        text
+          .replace(/\./g, '')
+          .replace(',', '.')
+    } else {
+      text =
+        text.replace(/,/g, '')
     }
+  }
+
+  /*
+   * Comma only:
+   *
+   * 1611,40 -> 1611.40
+   * 1,611    -> 1611
+   */
+  else if (lastComma !== -1) {
+    const parts =
+      text.split(',')
+
+    if (
+      parts.length === 2 &&
+      parts[1].length <= 2
+    ) {
+      text =
+        `${parts[0]}.${parts[1]}`
+    } else {
+      text =
+        text.replace(/,/g, '')
+    }
+  }
+
+  /*
+   * Dot only:
+   *
+   * 990.72 -> 990.72
+   * 1.611  -> 1611
+   *
+   * Three digits after the dot are treated
+   * as a thousands grouping.
+   */
+  else if (lastDot !== -1) {
+    const parts =
+      text.split('.')
+
+    if (
+      parts.length === 2 &&
+      parts[1].length === 3
+    ) {
+      text =
+        `${parts[0]}${parts[1]}`
+    } else if (parts.length > 2) {
+      text =
+        parts.join('')
+    }
+  }
+
+  const parsed =
+    Number(text)
+
+  if (
+    !Number.isFinite(parsed) ||
+    parsed <= 0
+  ) {
+    return ''
+  }
+
+  return String(parsed)
+}
+
+
 
 async function scrapeListing({
   browser,
@@ -845,59 +928,160 @@ const flightAd = extractFlightAd(html)
     /parking\s*([\d.]+)/i
   ])
 
-const rawConstructionArea =
-      flightAd?.square
-        ? cleanAreaNumber(flightAd.square)
-        : extractJsonArea(html, [
-            /"projectModels"\s*:\s*\{.*?"square"\s*:\s*\{.*?"from"\s*:\s*"?([\d.,]+)"?/s,
-            /\\"projectModels\\"\s*:\s*\{.*?\\"square\\"\s*:\s*\{.*?\\"from\\"\s*:\s*"?([\d.,]+)"?/s,
-            /"square"\s*:\s*"([\d.,]+)"/,
-            /\\"square\\"\s*:\s*\\"([\d.,]+)\\"/
-          ]) ||
-      extractRawConstructionArea(
-        {},
-        detailAttributes
-      ) ||
-      extractRawConstructionArea(
-        insightAttributes,
-        {}
-      ) ||
-      extractAreaFromDescription(description, [
-        /Construcción:\s*([\d,.]+)\s*m²?/i,
-        /Construccion:\s*([\d,.]+)\s*m²?/i,
-        /Construcci[oó]n:\s*([\d,.]+)\s*m2/i,
-        /Área construida\s*([\d,.]+)\s*m²/i,
-        /Area construida\s*([\d,.]+)\s*m²/i,
-        /Area de Construcci[oó]n,\s*m2:\s*([\d,.]+)/i,
-        /Construcci[oó]n\s+\d{4}\s*[–-]\s*([\d,.]+)\s*m²?/i,
-      ]) ||
-      extractFromBodyText(bodyText, [
-        /Área construida\s*([\d,.]+)\s*m²/i,
-        /Area construida\s*([\d,.]+)\s*m²/i
-      ])
+const rawConstructionAreaResult =
+  flightAd?.square
+    ? {
+        value:
+          cleanAreaNumber(
+            flightAd.square
+          ),
+        source:
+          'flightAd',
+        field:
+          'square'
+      }
+    : (() => {
+        const detailValue =
+          extractRawConstructionArea(
+            {},
+            detailAttributes
+          )
 
-  const rawPropertyArea =
-      flightAd?.lotSize
-        ? cleanAreaNumber(flightAd.lotSize)
-        : extractJsonArea(html, [
-            /"lotSize"\s*:\s*"([\d.,]+)"/,
-            /\\"lotSize\\"\s*:\s*\\"([\d.,]+)\\"/,
-            /"lotSize"\s*:\s*([\d.,]+)/,
-            /\\"lotSize\\"\s*:\s*([\d.,]+)/
-          ]) ||
-      extractAreaFromDescription(description, [
-        /Área total[:\s]*([\d.,]+)\s*m²?/i,
-        /Area total[:\s]*([\d.,]+)\s*m²?/i,
-        /^(?:Lote|Área total|Area total)[:\s]*([\d.,]+)\s*m²?/im,
-        /Área[:\s]*([\d.,]+)\s*m²?/i,
-        /Area[:\s]*([\d.,]+)\s*m²?/i,
-        /Area de lote,\s*m2:\s*([\d,.]+)/i
-      ]) ||
-      extractFromBodyText(bodyText, [
-        /Área total[:\s]*([\d.,]+)\s*m²?/i,
-        /Area total[:\s]*([\d.,]+)\s*m²?/i,
-        /Lote[:\s]*([\d.,]+)\s*m²?/i
-      ])
+        if (detailValue) {
+          return {
+            value:
+              cleanAreaNumber(
+                detailValue
+              ),
+            source:
+              'detail_attribute',
+            field:
+              'construction'
+          }
+        }
+
+        const insightValue =
+          extractRawConstructionArea(
+            insightAttributes,
+            {}
+          )
+
+        if (insightValue) {
+          return {
+            value:
+              cleanAreaNumber(
+                insightValue
+              ),
+            source:
+              'insight_attribute',
+            field:
+              'construction'
+          }
+        }
+
+        const descriptionValue =
+          extractAreaFromDescription(
+            description,
+            [
+              /Construcción:\s*([\d,.]+)\s*m²?/i,
+              /Construccion:\s*([\d,.]+)\s*m²?/i,
+              /Construcci[oó]n:\s*([\d,.]+)\s*m2/i,
+              /Área construida\s*([\d,.]+)\s*m²/i,
+              /Area construida\s*([\d,.]+)\s*m²/i,
+              /Area de Construcci[oó]n,\s*m2:\s*([\d,.]+)/i,
+              /([\d.,]+)\s*m²?\s+de\s+construcci[oó]n/i,
+              /([\d.,]+)\s*m2\s+de\s+construcci[oó]n/i,
+              /([\d.,]+)\s*m²?\s+construidos/i,
+              /Construcci[oó]n\s+\d{4}\s*[–-]\s*([\d,.]+)\s*m²?/i
+            ]
+          )
+
+        if (descriptionValue) {
+          return {
+            value:
+              descriptionValue,
+            source:
+              'description',
+            field:
+              'explicit_construction'
+          }
+        }
+
+        
+
+        return {
+          value:
+            '',
+          source:
+            '',
+          field:
+            ''
+        }
+      })()
+
+const rawConstructionArea =
+  rawConstructionAreaResult.value
+
+  const rawPropertyAreaResult =
+  flightAd?.lotSize
+    ? {
+        value:
+          cleanAreaNumber(
+            flightAd.lotSize
+          ),
+        source:
+          'flightAd',
+        field:
+          'lotSize'
+      }
+    : (() => {
+        const descriptionValue =
+          extractAreaFromDescription(
+            description,
+            [
+              /(?:Área|Area)\s+de\s+lote[:\s,]*([\d.,]+)\s*m²?/i,
+              /(?:Área|Area)\s+del\s+lote[:\s,]*([\d.,]+)\s*m²?/i,
+              /Lote[:\s]*([\d.,]+)\s*m²?/i,
+              /(?:Informaci[oó]n\s+del\s+lote[\s\S]{0,120}?|Lote\s+#?\w+[\s\S]{0,80}?)[ÁA]rea:\s*([\d.,]+)\s*m²?/i,
+              /Lote\s+de\s+([\d.,]+)\s*m²?/i,
+              /Terreno[:\s]*([\d.,]+)\s*m²?/i,
+              /Terreno\s+de\s+([\d.,]+)\s*m²?/i,
+              /(?:Área|Area)\s+de\s+terreno[:\s,]*([\d.,]+)\s*m²?/i,
+              /(?:Área|Area)\s+del\s+terreno[:\s,]*([\d.,]+)\s*m²?/i,
+              /Parcela[:\s]*([\d.,]+)\s*m²?/i,
+              /([\d.,]+)\s*m²?\s+de\s+terreno/i,
+              /([\d.,]+)\s*m2\s+de\s+terreno/i,
+              /([\d.,]+)\s*m²?\s+de\s+lote/i,
+              /([\d.,]+)\s*m2\s+de\s+lote/i,
+              /Parcela\s+de\s+([\d.,]+)\s*m²?/i
+            ]
+          )
+
+        if (descriptionValue) {
+          return {
+            value:
+              descriptionValue,
+            source:
+              'description',
+            field:
+              'explicit_land'
+          }
+        }
+
+        
+
+        return {
+          value:
+            '',
+          source:
+            '',
+          field:
+            ''
+        }
+      })()
+
+const rawPropertyArea =
+  rawPropertyAreaResult.value
 
   const rawYearBuilt =
       flightAd?.age ||
@@ -967,6 +1151,19 @@ const rawConstructionArea =
 
   raw_construction_area: rawConstructionArea,
 
+
+  raw_property_area_source:
+    rawPropertyAreaResult.source,
+
+  raw_property_area_field:
+    rawPropertyAreaResult.field,
+
+  raw_construction_area_source:
+    rawConstructionAreaResult.source,
+
+  raw_construction_area_field:
+    rawConstructionAreaResult.field,
+
   current_price: '',
 
   monthly_price:
@@ -1017,6 +1214,10 @@ function getCsvHeaders() {
     'raw_year_built',
     'raw_property_area',
     'raw_construction_area',
+    'raw_property_area_source',
+    'raw_property_area_field',
+    'raw_construction_area_source',
+    'raw_construction_area_field',
     'current_price',
     'currency',
     'monthly_price',
@@ -1201,7 +1402,11 @@ console.log('FINISHED LISTING:', listingUrl)
     
 
     const fileName =
-      `${regionSlug}-rent-raw.csv`
+      path.join(
+        os.homedir(),
+        'Downloads',
+        `${regionSlug}-rent-raw.csv`
+      )
 
 console.log('ROWS COLLECTED:', rows.length)
       
@@ -1210,7 +1415,10 @@ console.log('ROWS COLLECTED:', rows.length)
       fileName
     })
     
-console.log('WRITECSV COMPLETE')
+console.log(
+  'WRITECSV COMPLETE:',
+  fileName
+)
 
     console.log(
       JSON.stringify(

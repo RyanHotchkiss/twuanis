@@ -15,15 +15,9 @@ function normalize(value: any): string {
     .replace(/\s+/g, ' ')
 }
 
-export async function assignListingOntology(
-  listingId: string,
+export async function resolveListingOntology(
   listingData: any
 ) {
-
-  console.log(
-    'ASSIGN ONTOLOGY CALLED',
-    listingId
-  )
 
   const valuesToMatch = [
 
@@ -42,7 +36,19 @@ export async function assignListingOntology(
     listingData.property_area,
     listingData.construction_area,
 
-    listingData.environment,
+    ...(
+      typeof listingData.environment ===
+        'string'
+        ? listingData.environment
+            .split('|')
+            .map(
+              (value: string) =>
+                value.trim()
+            )
+            .filter(Boolean)
+        : []
+    ),
+
     listingData.accessibility,
     listingData.legal_status,
 
@@ -56,7 +62,7 @@ export async function assignListingOntology(
     valuesToMatch
   )
 
-  if (valuesToMatch.length === 0) {
+    if (valuesToMatch.length === 0) {
     return
   }
 
@@ -86,7 +92,7 @@ export async function assignListingOntology(
             error
           )
 
-          return
+          return []
 
         }
 
@@ -109,18 +115,13 @@ export async function assignListingOntology(
             relationshipError
           )
 
-          return
+          return []
 
         }
 
         if (!ontologyTerms?.length) {
-          return
+          return []
         }
-
-  console.log(
-    'ONTOLOGY TERMS FOUND',
-    ontologyTerms.length
-  )
 
   const termMap = new Map()
 
@@ -303,7 +304,7 @@ export async function assignListingOntology(
       valuesToMatch
     )
 
-    return
+    return []
 
   }
 
@@ -436,27 +437,49 @@ console.log(
 
       }
 
-console.log(
-  'EXPANDED TERM IDS',
-  Array.from(
-    expandedTerms.keys()
+      return Array.from(
+        expandedTerms.values()
+      )
+
+}
+
+export async function assignListingOntology(
+  listingId: string,
+  listingData: any
+) {
+
+  console.log(
+    'ASSIGN ONTOLOGY CALLED',
+    listingId
   )
-)
+
+  const resolvedTerms =
+    await resolveListingOntology(
+      listingData
+    )
+
+  if (!resolvedTerms?.length) {
+
+    console.log(
+      'NO ONTOLOGY TERMS TO ASSIGN',
+      listingId
+    )
+
+    return
+
+  }
 
   const inserts =
-    Array.from(
-      expandedTerms.values()
+    resolvedTerms.map(
+      term => ({
+        listing_id: listingId,
+        ontology_term_id: term.id
+      })
     )
-    .map(term => ({
-      listing_id: listingId,
-      ontology_term_id: term.id
-    }))
 
   console.log(
     'MATCHED TERMS',
-    Array.from(
-      expandedTerms.values()
-    )
+    resolvedTerms
   )
 
   console.log(
@@ -465,31 +488,31 @@ console.log(
   )
 
   const deleteResponse =
-          await supabase
-            .from('listings_ontology_terms')
-            .delete()
-            .eq(
-              'listing_id',
-              listingId
-            )
+    await supabase
+      .from('listings_ontology_terms')
+      .delete()
+      .eq(
+        'listing_id',
+        listingId
+      )
 
-        if (deleteResponse.error) {
+  if (deleteResponse.error) {
 
-          console.error(
-            'DELETE ERROR',
-            deleteResponse.error
-          )
+    console.error(
+      'DELETE ERROR',
+      deleteResponse.error
+    )
 
-          return
+    return
 
-        }
+  }
 
   const response =
     await supabase
       .from('listings_ontology_terms')
       .insert(
-          inserts
-        )
+        inserts
+      )
 
   console.log(
     'ONTOLOGY INSERT RESPONSE',
@@ -498,7 +521,7 @@ console.log(
 
   if (response.error) {
 
-    console.error(    
+    console.error(
       'ONTOLOGY INSERT ERROR',
       response.error
     )

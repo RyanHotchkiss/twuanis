@@ -29,6 +29,46 @@ function optionalNumber(
     : null
 }
 
+function normalizeTextArray(
+  value: unknown
+): string[] {
+
+  if (Array.isArray(value)) {
+    return value
+      .map(item =>
+        String(item).trim()
+      )
+      .filter(item =>
+        item &&
+        item !== '{}' &&
+        item !== '[]'
+      )
+  }
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+    return []
+  }
+
+  const text =
+    String(value).trim()
+
+  if (
+    !text ||
+    text === '{}' ||
+    text === '[]'
+  ) {
+    return []
+  }
+
+  return text
+    .split('|')
+    .map(item => item.trim())
+    .filter(Boolean)
+}
+
 export async function publishRentLeaseCsvListings(
   csvListings: any[],
   setShowCsvStaging: (value: boolean) => void,
@@ -146,13 +186,26 @@ export async function publishRentLeaseCsvListings(
         ),
 
       utility:
-        listing.utility || [],
+        normalizeTextArray(
+          listing.utility
+        ),
 
       environment:
         listing.environment,
 
       accessibility:
-        listing.accessibility || [],
+        Array.isArray(
+          listing.accessibility
+        )
+          ? listing.accessibility
+              .map((value: unknown) =>
+                String(value).trim()
+              )
+              .filter(Boolean)
+              .join('|') || null
+          : String(
+              listing.accessibility || ''
+            ).trim() || null,
 
       distance_to_paved_road_range:
         (
@@ -167,13 +220,17 @@ export async function publishRentLeaseCsvListings(
           : null,
 
       terrain:
-        listing.terrain || [],
+        normalizeTextArray(
+          listing.terrain
+        ),
 
       legal_status:
         listing.legal_status,
 
       monthly_price:
-        Number(listing.monthly_price),
+        optionalNumber(
+          listing.monthly_price
+        ),
 
       currency:
         listing.currency,

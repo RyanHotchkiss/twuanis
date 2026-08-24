@@ -67,6 +67,71 @@ from '@/app/AuthOverlay'
 
 console.log('BedroomFilterS =', BedroomFilterS)
 
+function normalizeCsvTextArray(
+  value: unknown
+): string[] {
+
+  if (Array.isArray(value)) {
+    return value
+      .map(item =>
+        String(item).trim()
+      )
+      .filter(item =>
+        item &&
+        item !== '{}' &&
+        item !== '[]'
+      )
+  }
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+    return []
+  }
+
+  const text =
+    String(value).trim()
+
+  if (
+    !text ||
+    text === '{}' ||
+    text === '[]'
+  ) {
+    return []
+  }
+
+  return text
+    .split('|')
+    .map(item => item.trim())
+    .filter(Boolean)
+}
+
+function normalizeCsvText(
+  value: unknown
+): string {
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+    return ''
+  }
+
+  const text =
+    String(value).trim()
+
+  if (
+    !text ||
+    text === '{}' ||
+    text === '[]'
+  ) {
+    return ''
+  }
+
+  return text
+}
+
 export default function SellPage() {
 
     const [showLocationOptions, setShowLocationOptions] = useState(true)
@@ -325,50 +390,60 @@ console.log('BedroomFilterS', BedroomFilterS)
                                     complete: async (results) => {
 
                                         const formattedData = results.data
-                                        .filter((row: any) =>
-                                            row.province ||
-                                            row.canton ||
-                                            row.district ||
-                                            row.property_type
-                                        )
-                                        .map((row: any) => ({
+                                            .filter((row: any) =>
+                                                row.province ||
+                                                row.canton ||
+                                                row.district ||
+                                                row.property_type
+                                            )
+                                            .map((row: any) => {
 
-                                            ...row,
+                                                const utility =
+                                                normalizeCsvTextArray(
+                                                    row.utility
+                                                )
 
-                                            utility: row.utility
-                                            ? [row.utility]
-                                            : [],
+                                                const terrain =
+                                                normalizeCsvTextArray(
+                                                    row.terrain
+                                                )
 
-                                            accessibility: row.accessibility
-                                            ? [row.accessibility]
-                                            : [],
+                                                const accessibility =
+                                                normalizeCsvText(
+                                                    row.accessibility
+                                                )
 
-                                            distance_to_paved_road_range:
-                                            row.distance_to_paved_road_range || null,
+                                                const normalizedRow = {
+                                                ...row,
 
-                                            terrain: row.terrain
-                                            ? [row.terrain]
-                                            : [],
+                                                utility,
 
-                                            title: generateListingTitle(row),
+                                                accessibility,
 
-                                            description: generateListingDescription({
+                                                distance_to_paved_road_range:
+                                                    row.distance_to_paved_road_range ||
+                                                    null,
 
-                                            ...row,
+                                                terrain,
 
-                                            utility: row.utility
-                                                ? [row.utility]
-                                                : [],
+                                                images:
+                                                    row.images
+                                                }
 
-                                            terrain: row.terrain
-                                                ? [row.terrain]
-                                                : []
+                                                return {
+                                                ...normalizedRow,
 
-                                            }),
+                                                title:
+                                                    generateListingTitle(
+                                                    normalizedRow
+                                                    ),
 
-                                            images: row.images
-
-                                        }))
+                                                description:
+                                                    generateListingDescription(
+                                                    normalizedRow
+                                                    )
+                                                }
+                                            })
 
 
                                         setCsvListings(formattedData)
