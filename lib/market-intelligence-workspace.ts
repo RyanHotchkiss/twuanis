@@ -525,67 +525,82 @@ export async function resolveMarketIntelligenceWorkspace({
    * -----------------------------------------------------
    */
 
-  const [
-    explorerResult,
-    priceMeterAnalysis,
-    pricingStrategy,
-    marketScarcity,
-    marketMatches,
-    valuation,
-    buyerDemand,
-    comparison
-  ] =
-    await Promise.all([
+  let explorerResult = null
+  let priceMeterAnalysis = null
+  let pricingStrategy = null
+  let marketScarcity = null
+  let marketMatches = null
+  let valuation = null
+  let buyerDemand = null
+  let comparison = null
 
-      hasFilters
-        ? exploreMarket(
-            engineFilters
-          )
-        : Promise.resolve(
-            null
-          ),
+  switch (activeTab) {
+    case 'explorer':
+      explorerResult = hasFilters
+        ? await exploreMarket(engineFilters)
+        : null
+      break
 
-      engineFilters.transaction_type === 'sale' ||
-      engineFilters.transaction_type === 'rent'
-        ? getPriceMeterAnalysis(
-            engineFilters,
-            language
-          )
-        : Promise.resolve(
-            null
-          ),
+    case 'price-meter':
+      priceMeterAnalysis =
+        engineFilters.transaction_type === 'sale' ||
+        engineFilters.transaction_type === 'rent'
+          ? await getPriceMeterAnalysis(
+              engineFilters,
+              language
+            )
+          : null
+      break
 
-      getPricingStrategy(
-        engineFilters,
-        language
-      ),
+    case 'pricing':
+      pricingStrategy =
+        await getPricingStrategy(
+          engineFilters,
+          language
+        )
+      break
 
-      getMarketScarcity(
-        engineFilters,
-        language
-      ),
+    case 'scarcity':
+      marketScarcity =
+        await getMarketScarcity(
+          engineFilters,
+          language
+        )
+      break
 
-      getMarketMatches(
-        engineFilters,
-        language
-      ),
+    case 'matching':
+      marketMatches =
+        await getMarketMatches(
+          engineFilters,
+          language
+        )
+      break
 
-      getValuation(
-        engineFilters,
-        language
-      ),
+    case 'valuation':
+      valuation =
+        await getValuation(
+          engineFilters,
+          language
+        )
+      break
 
-      getBuyerDemand(
-        engineFilters,
-        language
-      ),
+    case 'buyer-demand':
+      buyerDemand =
+        await getBuyerDemand(
+          engineFilters,
+          language
+        )
+      break
 
-      getMarketComparison(
-        comparisonFilters,
-        comparisonFilters,
-        language
-      )
-    ])
+    case 'comparison':
+      comparison =
+        await getMarketComparison(
+          comparisonFilters,
+          comparisonFilters,
+          language
+        )
+      break
+  }
 
 
   /*
