@@ -256,40 +256,14 @@ export async function getMarketIntelligence(filters: MarketFilters) {
     }
   }
 
-console.log('ABOUT TO READ COMBO CACHE')
-const cachedCombination = await getCachedCombination(filters)
-console.log('READ COMBO CACHE DONE')
-
-    if (false && cachedCombination) {
-      const live = await getMarketStatistics(filters)
-
-      return {
-        title: createMarketTitle(filters),
-        filters,
-        cacheHit: true,
-        mode: 'cached-combination',
-        data: {
-          ...cachedCombination,
-          listings: live.listings
-        }
-      }
-    }
-
-console.log('ABOUT TO GET LIVE STATS')
 const live = await getMarketStatistics(filters)
-console.log('LIVE STATS DONE')
-
-console.log('ABOUT TO SAVE COMBO STATS')
-const combinationHash = await saveCombinationStatistics(filters, live)
-console.log('SAVE COMBO STATS DONE')
 
 
   return {
-    title: createMarketTitle(filters),
-    filters,
-    cacheHit: false,
-    mode: 'live-combination-saved',
-    combinationHash,
-    data: live
-  }
+  title: createMarketTitle(filters),
+  filters,
+  cacheHit: false,
+  mode: 'live',
+  data: live
+}
 }

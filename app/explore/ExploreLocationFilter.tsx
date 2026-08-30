@@ -290,18 +290,21 @@ export default function ExploreLocationFilter({
                 : [...selectedDistricts, districtSlug]
 
               return (
-                <a
-                  key={districtSlug}
-                  href={buildExploreUrl(
-                    filters,
-                    'district',
-                    nextDistricts.join(','),
-                    basePath
-                  )}
-                  style={isSelected ? activePill : pill}
-                >
-                  {district}
-                </a>
+                  <button
+                    type="button"
+                    key={districtSlug}
+                    onClick={() => {
+                      window.location.href = buildExploreUrl(
+                        filters,
+                        'district',
+                        nextDistricts.join(','),
+                        basePath
+                      )
+                    }}
+                    style={isSelected ? activePill : pill}
+                  >
+                    {district}
+                  </button>                
               )
             })}
           </div>
