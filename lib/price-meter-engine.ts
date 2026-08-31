@@ -291,7 +291,15 @@ function decorateListing(
 
 function resolveStatisticMonetaryIdentity(
   observations:
-    PriceMeterObservation[],
+    {
+      fx?:
+        PriceMeterFxIdentity | null
+
+      price?: {
+        fx:
+          PriceMeterFxIdentity | null
+      }
+    }[],
 
   analyticalDate:
     string
@@ -312,7 +320,9 @@ function resolveStatisticMonetaryIdentity(
   ) {
 
     const fx =
-      observation.fx
+      observation.fx ??
+      observation.price?.fx ??
+      null
 
 
     /*
@@ -868,7 +878,6 @@ const saleImprovedLandGeographicStatistics =
           'construction_area_to_construction_normalized_ratio'
       })
 
-
     const rentPropertySizeRelationshipPopulation =
       buildPriceMeterSizeRelationshipPopulation({
         cohort:
@@ -877,7 +886,6 @@ const saleImprovedLandGeographicStatistics =
         relationshipKind:
           'property_area_to_land_normalized_ratio'
       })
-
 
         /*
      * -------------------------------------------------------
@@ -907,8 +915,6 @@ const saleImprovedLandGeographicStatistics =
           salePropertySizeRelationshipPopulation
             .representedObservationCount
       })
-
-
 
     const rentConstructionSizeRelationship =
       buildPriceMeterSizeRelationshipResult({
@@ -970,6 +976,37 @@ const saleImprovedLandGeographicStatistics =
 
         analyticalIdentities
       })
+
+      const saleConstructionLandConfidence =
+        getPriceMeterConfidence(
+          saleConstructionLandAnalysis
+            .representedObservationCount,
+          language
+        )
+
+
+            const rentConstructionLandConfidence =
+        getPriceMeterConfidence(
+          rentConstructionLandAnalysis
+            .representedObservationCount,
+          language
+        )
+
+
+      const saleConstructionLandMonetaryIdentity =
+        resolveStatisticMonetaryIdentity(
+          saleConstructionLandAnalysis
+            .identities,
+          analyticalDate
+        )
+
+
+      const rentConstructionLandMonetaryIdentity =
+        resolveStatisticMonetaryIdentity(
+          rentConstructionLandAnalysis
+            .identities,
+          analyticalDate
+        )
 
 
     const saleVacantLandObservations =
@@ -1771,8 +1808,38 @@ const constructionMonetaryIdentity =
   geographicScope,
 
   saleIntelligence: {
-      constructionToLand:
-        saleConstructionLandAnalysis,
+            constructionToLand: {
+        analysis:
+          saleConstructionLandAnalysis,
+
+        confidence:
+          saleConstructionLandConfidence,
+
+        identity: {
+          transactionType:
+            'sale' as const,
+
+          propertyBasis:
+            'improved_property' as const,
+
+          geography: {
+            province:
+              filters.province ??
+              null,
+
+            canton:
+              filters.canton ??
+              null,
+
+            district:
+              filters.district ??
+              null
+          },
+
+          monetary:
+            saleConstructionLandMonetaryIdentity
+        }
+      },
 
       sizeRelationships: {
         constructionArea: {
@@ -1908,8 +1975,38 @@ const constructionMonetaryIdentity =
         },
 
         rentIntelligence: {
-          constructionToLand:
-            rentConstructionLandAnalysis,
+                        constructionToLand: {
+              analysis:
+                rentConstructionLandAnalysis,
+
+              confidence:
+                rentConstructionLandConfidence,
+
+              identity: {
+                transactionType:
+                  'rent' as const,
+
+                propertyBasis:
+                  'improved_property' as const,
+
+                geography: {
+                  province:
+                    filters.province ??
+                    null,
+
+                  canton:
+                    filters.canton ??
+                    null,
+
+                  district:
+                    filters.district ??
+                    null
+                },
+
+                monetary:
+                  rentConstructionLandMonetaryIdentity
+              }
+            },
 
           sizeRelationships: {
               constructionArea: {
