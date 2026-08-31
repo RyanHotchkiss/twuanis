@@ -97,6 +97,10 @@ import {
   buildPriceMeterSizeRelationshipResult
 } from '@/lib/price-meter-size-relationship-math'
 
+import {
+  buildPriceMeterConstructionLandAnalysis
+} from '@/lib/price-meter-construction-land-analysis'
+
 type PriceMeterLanguage = 'en' | 'es'
 
 type MarketFilters = {
@@ -905,6 +909,7 @@ const saleImprovedLandGeographicStatistics =
       })
 
 
+
     const rentConstructionSizeRelationship =
       buildPriceMeterSizeRelationshipResult({
         coordinates:
@@ -928,6 +933,44 @@ const saleImprovedLandGeographicStatistics =
             .representedObservationCount
       })
     
+          /*
+     * -------------------------------------------------------
+     * PHASE 9 — CONSTRUCTION-TO-LAND INTELLIGENCE
+     * -------------------------------------------------------
+     *
+     * Construction-to-Land Ratio:
+     *
+     *   reported construction area / property area
+     *
+     * This is NOT physical Site Coverage.
+     *
+     * Sale and Rent remain analytically isolated.
+     */
+
+    const analyticalIdentities =
+      decoratedListings.map(
+        listing =>
+          listing.analyticalIdentity
+      )
+
+
+    const saleConstructionLandAnalysis =
+      buildPriceMeterConstructionLandAnalysis({
+        transactionType:
+          'sale',
+
+        analyticalIdentities
+      })
+
+
+    const rentConstructionLandAnalysis =
+      buildPriceMeterConstructionLandAnalysis({
+        transactionType:
+          'rent',
+
+        analyticalIdentities
+      })
+
 
     const saleVacantLandObservations =
       saleVacantLandCohort.observations
@@ -952,11 +995,12 @@ const saleImprovedLandGeographicStatistics =
     const rentImprovedConstructionObservations =
       rentImprovedConstructionCohort.observations
 
+
     const saleVacantLandPrices =
-    saleVacantLandObservations.map(
-      observation =>
-        observation.pricePerM2
-    )
+      saleVacantLandObservations.map(
+        observation =>
+          observation.pricePerM2
+      )
 
 
   const saleImprovedLandPrices =
@@ -1727,6 +1771,9 @@ const constructionMonetaryIdentity =
   geographicScope,
 
   saleIntelligence: {
+      constructionToLand:
+        saleConstructionLandAnalysis,
+
       sizeRelationships: {
         constructionArea: {
           population:
@@ -1861,8 +1908,10 @@ const constructionMonetaryIdentity =
         },
 
         rentIntelligence: {
+          constructionToLand:
+            rentConstructionLandAnalysis,
 
-            sizeRelationships: {
+          sizeRelationships: {
               constructionArea: {
                 population:
                   rentConstructionSizeRelationshipPopulation,

@@ -1,6 +1,9 @@
 import PriceMeterSizeRelationshipChart
   from './PriceMeterSizeRelationshipChart'
 
+import PriceMeterConstructionLandRelationshipChart from './PriceMeterConstructionLandRelationshipChart'
+import PriceMeterConstructionLandDistributionChart from './PriceMeterConstructionLandDistributionChart'
+
 type Distribution = {
   transactionType:
     'sale' | 'rent'
@@ -129,6 +132,161 @@ type SizeRelationship = {
           number
       } | null
   }
+}
+
+type ConstructionLandCohortDefinition = {
+  key:
+    string
+
+  label:
+    string
+
+  minimumInclusive:
+    number | null
+
+  maximumExclusive:
+    number | null
+}
+
+
+type ConstructionLandCohortStatistic = {
+  definition:
+    ConstructionLandCohortDefinition
+
+  observationCount:
+    number
+
+  medianExactRatio:
+    number | null
+
+  landNormalized:
+    Distribution
+
+  constructionNormalized:
+    Distribution
+}
+
+
+type ConstructionLandAdjacentComparison = {
+  lowerCohort:
+    ConstructionLandCohortDefinition
+
+  higherCohort:
+    ConstructionLandCohortDefinition
+
+  lowerObservationCount:
+    number
+
+  higherObservationCount:
+    number
+
+  landNormalized: {
+    lowerMedian:
+      number | null
+
+    higherMedian:
+      number | null
+
+    absoluteDifference:
+      number | null
+
+    percentageDifference:
+      number | null
+  }
+
+  constructionNormalized: {
+    lowerMedian:
+      number | null
+
+    higherMedian:
+      number | null
+
+    absoluteDifference:
+      number | null
+
+    percentageDifference:
+      number | null
+  }
+}
+
+
+type ConstructionLandRelationship = {
+  coordinates: {
+    constructionToLandRatio:
+      number
+
+    normalizedPricePerM2:
+      number
+
+    observationCount:
+      number
+  }[]
+
+  evidence: {
+    populatedCohortCount:
+      number
+
+    representedObservationCount:
+      number
+
+    requiredPopulatedCohortCount:
+      number
+
+    requiredObservationCount:
+      number
+
+    hasSufficientCohortEvidence:
+      boolean
+
+    hasSufficientObservationEvidence:
+      boolean
+
+    hasSufficientEvidence:
+      boolean
+  }
+
+  spearmanRho:
+    number | null
+
+  regression:
+    null
+
+  regressionWithheldReason:
+    string
+}
+
+
+type ConstructionLandAnalysis = {
+  transactionType:
+    'sale' | 'rent'
+
+  distribution:
+    Distribution
+
+  statistics: {
+    cohorts:
+      ConstructionLandCohortStatistic[]
+
+    populatedCohorts:
+      ConstructionLandCohortStatistic[]
+
+    adjacentComparisons:
+      ConstructionLandAdjacentComparison[]
+
+    representedObservationCount:
+      number
+  }
+
+  relationships: {
+    landNormalized:
+      ConstructionLandRelationship
+
+    constructionNormalized:
+      ConstructionLandRelationship
+  }
+
+  representedObservationCount:
+    number
 }
 
 type CohortKey =
@@ -309,6 +467,52 @@ function formatRSquared(
   )
 }
 
+function formatConstructionLandRatio(
+  value:
+    number | null
+) {
+  if (
+    value === null ||
+    Number.isNaN(value)
+  ) {
+    return 'Not available'
+  }
+
+
+  return `${new Intl.NumberFormat(
+    'en-US',
+    {
+      maximumFractionDigits:
+        3
+    }
+  ).format(
+    value
+  )} : 1`
+}
+
+
+function formatConstructionPerLand(
+  value:
+    number | null
+) {
+  if (
+    value === null ||
+    Number.isNaN(value)
+  ) {
+    return 'Not available'
+  }
+
+  return `${new Intl.NumberFormat(
+    'en-US',
+    {
+      maximumFractionDigits:
+        1
+    }
+  ).format(
+    value * 100
+  )} m² construction per 100 m² property area`
+}
+
 function relationshipDirection(
   beta:
     number
@@ -326,103 +530,6 @@ function relationshipDirection(
   }
 
   return 'remains approximately unchanged'
-}
-
-
-function relationshipDirectionLabel(
-  beta:
-    number
-) {
-  if (
-    beta < 0
-  ) {
-    return 'Negative'
-  }
-
-  if (
-    beta > 0
-  ) {
-    return 'Positive'
-  }
-
-  return 'Neutral'
-}
-
-
-function relationshipStrengthLabel(
-  spearmanRho:
-    number
-) {
-  const magnitude =
-    Math.abs(
-      spearmanRho
-    )
-
-  if (
-    magnitude >=
-    0.8
-  ) {
-    return 'Very strong'
-  }
-
-  if (
-    magnitude >=
-    0.6
-  ) {
-    return 'Strong'
-  }
-
-  if (
-    magnitude >=
-    0.4
-  ) {
-    return 'Moderate'
-  }
-
-  if (
-    magnitude >=
-    0.2
-  ) {
-    return 'Weak'
-  }
-
-  return 'Very weak'
-}
-
-
-function modelFitLabel(
-  rSquared:
-    number
-) {
-  if (
-    rSquared >=
-    0.8
-  ) {
-    return 'Very high'
-  }
-
-  if (
-    rSquared >=
-    0.6
-  ) {
-    return 'High'
-  }
-
-  if (
-    rSquared >=
-    0.4
-  ) {
-    return 'Moderate'
-  }
-
-  if (
-    rSquared >=
-    0.2
-  ) {
-    return 'Low'
-  }
-
-  return 'Very low'
 }
 
 function MarketStatisticCard({
@@ -618,6 +725,819 @@ function CohortDistribution({
           </div>
         </>
       )}
+    </section>
+  )
+}
+ function ConstructionLandDistribution({
+  analysis
+}: {
+  analysis:
+    ConstructionLandAnalysis
+}) {
+  const {
+    distribution
+  } =
+    analysis
+
+
+  return (
+    <section style={relationshipSection}>
+      <div style={relationshipHeader}>
+        <div>
+          <h3 style={cohortTitle}>
+            Construction-to-Land Distribution
+          </h3>
+
+          <p style={relationshipDescription}>
+            The Construction-to-Land Ratio compares
+            reported construction area with property
+            area for improved properties in this
+            selected market.
+          </p>
+        </div>
+
+        <div style={sampleBadge}>
+          {distribution.sampleSize}{' '}
+          {
+            distribution.sampleSize === 1
+              ? 'property'
+              : 'properties'
+          }
+        </div>
+      </div>
+
+
+      {distribution.sampleSize === 0 ? (
+        <div style={emptyCard}>
+          No eligible Construction-to-Land
+          observations are available for this
+          selected market.
+        </div>
+      ) : (
+        <>
+          <div style={cardGrid}>
+            <MarketStatisticCard
+              label="Median Construction-to-Land Ratio"
+              value={
+                formatConstructionLandRatio(
+                  distribution.median
+                )
+              }
+              description={
+                formatConstructionPerLand(
+                  distribution.median
+                )
+              }
+            />
+
+
+            <MarketStatisticCard
+              label="25th Percentile"
+              value={
+                formatConstructionLandRatio(
+                  distribution.p25
+                )
+              }
+              description={
+                formatConstructionPerLand(
+                  distribution.p25
+                )
+              }
+            />
+
+
+            <MarketStatisticCard
+              label="75th Percentile"
+              value={
+                formatConstructionLandRatio(
+                  distribution.p75
+                )
+              }
+              description={
+                formatConstructionPerLand(
+                  distribution.p75
+                )
+              }
+            />
+
+
+            <MarketStatisticCard
+              label="10th Percentile"
+              value={
+                formatConstructionLandRatio(
+                  distribution.p10
+                )
+              }
+              description={
+                formatConstructionPerLand(
+                  distribution.p10
+                )
+              }
+            />
+
+
+            <MarketStatisticCard
+              label="90th Percentile"
+              value={
+                formatConstructionLandRatio(
+                  distribution.p90
+                )
+              }
+              description={
+                formatConstructionPerLand(
+                  distribution.p90
+                )
+              }
+            />
+
+
+            <MarketStatisticCard
+              label="Average Construction-to-Land Ratio"
+              value={
+                formatConstructionLandRatio(
+                  distribution.average
+                )
+              }
+              description={
+                formatConstructionPerLand(
+                  distribution.average
+                )
+              }
+            />
+          </div>
+
+
+          <div style={internalRangeNote}>
+            <strong>
+              Observed internal range:
+            </strong>{' '}
+            {
+              formatConstructionLandRatio(
+                distribution.minimum
+              )
+            }{' '}
+            to{' '}
+            {
+              formatConstructionLandRatio(
+                distribution.maximum
+              )
+            }
+          </div>
+
+
+          <div style={evidenceGateNote}>
+            <strong>
+              Measurement boundary:
+            </strong>{' '}
+            Construction-to-Land Ratio is reported
+            construction area divided by property
+            area. It does not represent physical
+            Site Coverage or building footprint.
+          </div>
+        </>
+      )}
+    </section>
+  )
+}
+
+function ConstructionLandCohortEvidence({
+  analysis
+}: {
+  analysis:
+    ConstructionLandAnalysis
+}) {
+  const {
+    statistics
+  } =
+    analysis
+
+
+  const formatMedian =
+    (
+      distribution:
+        Distribution,
+
+      normalizationUnitLabel:
+        string
+    ) =>
+      formatPricePerM2(
+        distribution.median,
+        analysis.transactionType,
+        normalizationUnitLabel
+      )
+
+
+  return (
+    <section style={relationshipSection}>
+      <div style={relationshipHeader}>
+        <div>
+          <h3 style={cohortTitle}>
+            Construction-to-Land Cohorts
+          </h3>
+
+          <p style={relationshipDescription}>
+            Every eligible improved property is
+            assigned to exactly one structural
+            Construction-to-Land cohort. Price /
+            m² evidence remains separate for
+            land-normalized and
+            construction-normalized measurements.
+          </p>
+        </div>
+
+        <div style={sampleBadge}>
+          {
+            statistics
+              .representedObservationCount
+          }{' '}
+          {
+            statistics
+              .representedObservationCount === 1
+              ? 'property'
+              : 'properties'
+          }
+        </div>
+      </div>
+
+
+      <div style={relationshipTableWrap}>
+        <table style={constructionLandTable}>
+          <thead>
+            <tr>
+              <th style={relationshipTh}>
+                Construction-to-Land Cohort
+              </th>
+
+              <th style={relationshipTh}>
+                Properties
+              </th>
+
+              <th style={relationshipTh}>
+                Median Observed Ratio
+              </th>
+
+              <th style={relationshipTh}>
+                Median Price / land m²
+              </th>
+
+              <th style={relationshipTh}>
+                Median Price / construction m²
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {statistics
+              .cohorts
+              .map(
+                cohort => (
+                  <tr
+                    key={
+                      cohort.definition.key
+                    }
+                  >
+                    <td style={relationshipTd}>
+                      <strong>
+                        {
+                          cohort
+                            .definition
+                            .label
+                        }
+                      </strong>
+                    </td>
+
+                    <td style={relationshipTd}>
+                      {
+                        cohort
+                          .observationCount
+                      }
+                    </td>
+
+                    <td style={relationshipTd}>
+                      {
+                        cohort
+                          .observationCount >
+                          0
+                          ? (
+                            <>
+                              {
+                                formatConstructionLandRatio(
+                                  cohort
+                                    .medianExactRatio
+                                )
+                              }
+
+                              <div style={tableSecondary}>
+                                {
+                                  formatConstructionPerLand(
+                                    cohort
+                                      .medianExactRatio
+                                  )
+                                }
+                              </div>
+                            </>
+                          )
+                          : 'Not available'
+                      }
+                    </td>
+
+                    <td style={relationshipTd}>
+                      {
+                        cohort
+                          .observationCount >
+                          0
+                          ? formatMedian(
+                              cohort
+                                .landNormalized,
+                              'land m²'
+                            )
+                          : 'Not available'
+                      }
+                    </td>
+
+                    <td style={relationshipTd}>
+                      {
+                        cohort
+                          .observationCount >
+                          0
+                          ? formatMedian(
+                              cohort
+                                .constructionNormalized,
+                              'construction m²'
+                            )
+                          : 'Not available'
+                      }
+                    </td>
+                  </tr>
+                )
+              )}
+          </tbody>
+        </table>
+      </div>
+
+
+      <div style={evidenceGateNote}>
+        All five structural cohorts remain visible,
+        including cohorts containing 0 properties.
+        Empty cohorts do not contribute coordinates
+        to relationship calculations.
+      </div>
+    </section>
+  )
+}
+
+function ConstructionLandAdjacentComparisons({
+  analysis
+}: {
+  analysis:
+    ConstructionLandAnalysis
+}) {
+  const {
+    adjacentComparisons
+  } =
+    analysis.statistics
+
+
+  const formatDifference =
+    (
+      value:
+        number | null,
+
+      normalizationUnitLabel:
+        string
+    ) =>
+      formatPricePerM2(
+        value,
+        analysis.transactionType,
+        normalizationUnitLabel
+      )
+
+
+  if (
+    adjacentComparisons.length ===
+      0
+  ) {
+    return (
+      <section style={relationshipSection}>
+        <h3 style={cohortTitle}>
+          Differences Between Consecutive Populated Cohorts
+        </h3>
+
+        <div style={statisticsUnavailable}>
+          No comparison between consecutive populated cohorts
+          is available for this selected market.
+        </div>
+      </section>
+    )
+  }
+
+
+  return (
+    <section style={relationshipSection}>
+      <div style={relationshipHeader}>
+        <div>
+          <h3 style={cohortTitle}>
+            Differences Between Consecutive Populated Cohorts
+          </h3>
+
+          <p style={relationshipDescription}>
+            Consecutive populated
+            Construction-to-Land cohorts are
+            compared using their median
+            land-normalized and
+            construction-normalized Price / m².
+            Absolute and percentage differences
+            are shown separately.
+          </p>
+        </div>
+      </div>
+
+
+      <div style={relationshipTableWrap}>
+        <table style={adjacentComparisonTable}>
+          <thead>
+            <tr>
+              <th style={relationshipTh}>
+                Cohort Comparison
+              </th>
+
+              <th style={relationshipTh}>
+                Properties
+              </th>
+
+              <th style={relationshipTh}>
+                Land-Normalized Difference
+              </th>
+
+              <th style={relationshipTh}>
+                Land-Normalized % Difference
+              </th>
+
+              <th style={relationshipTh}>
+                Construction-Normalized Difference
+              </th>
+
+              <th style={relationshipTh}>
+                Construction-Normalized % Difference
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {adjacentComparisons.map(
+              (
+                comparison,
+                index
+              ) => (
+                <tr
+                  key={
+                    `${comparison.lowerCohort.key}-${comparison.higherCohort.key}-${index}`
+                  }
+                >
+                  <td style={relationshipTd}>
+                    <strong>
+                      {
+                        comparison
+                          .lowerCohort
+                          .label
+                      }
+                    </strong>
+
+                    {' → '}
+
+                    <strong>
+                      {
+                        comparison
+                          .higherCohort
+                          .label
+                      }
+                    </strong>
+                  </td>
+
+                  <td style={relationshipTd}>
+                    {
+                      comparison
+                        .lowerObservationCount
+                    }{' '}
+                    →{' '}
+                    {
+                      comparison
+                        .higherObservationCount
+                    }
+                  </td>
+
+                  <td style={relationshipTd}>
+                    {
+                      formatDifference(
+                        comparison
+                          .landNormalized
+                          .absoluteDifference,
+                        'land m²'
+                      )
+                    }
+                  </td>
+
+                  <td style={relationshipTd}>
+                    {
+                      formatPercentChange(
+                        comparison
+                          .landNormalized
+                          .percentageDifference
+                      )
+                    }
+                  </td>
+
+                  <td style={relationshipTd}>
+                    {
+                      formatDifference(
+                        comparison
+                          .constructionNormalized
+                          .absoluteDifference,
+                        'construction m²'
+                      )
+                    }
+                  </td>
+
+                  <td style={relationshipTd}>
+                    {
+                      formatPercentChange(
+                        comparison
+                          .constructionNormalized
+                          .percentageDifference
+                      )
+                    }
+                  </td>
+                </tr>
+              )
+            )}
+          </tbody>
+        </table>
+      </div>
+
+
+      <div style={evidenceGateNote}>
+        Differences are calculated from the lower
+        populated cohort to the next populated
+        cohort shown in the comparison. A positive
+        value means the higher cohort has a larger
+        median Price / m²; a negative value means
+        it has a smaller median Price / m².
+      </div>
+    </section>
+  )
+}
+
+function ConstructionLandRelationshipCoordinates({
+  title,
+  description,
+  relationship,
+  normalizationUnitLabel,
+  transactionType
+}: {
+  title:
+    string
+
+  description:
+    string
+
+  relationship:
+    ConstructionLandRelationship
+
+  normalizationUnitLabel:
+    string
+
+  transactionType:
+    'sale' | 'rent'
+}) {
+  return (
+    <section style={relationshipSection}>
+      <div style={relationshipHeader}>
+        <div>
+          <h3 style={cohortTitle}>
+            {title}
+          </h3>
+
+          <p style={relationshipDescription}>
+            {description}
+          </p>
+        </div>
+
+        <div style={sampleBadge}>
+          {
+            relationship
+              .evidence
+              .representedObservationCount
+          }{' '}
+          {
+            relationship
+              .evidence
+              .representedObservationCount ===
+                1
+                ? 'property'
+                : 'properties'
+          }
+        </div>
+      </div>
+
+
+      <div style={relationshipTableWrap}>
+        <table style={relationshipTable}>
+          <thead>
+            <tr>
+              <th style={relationshipTh}>
+                Median Construction-to-Land Ratio
+              </th>
+
+              <th style={relationshipTh}>
+                Properties
+              </th>
+
+              <th style={relationshipTh}>
+                Median Price / {normalizationUnitLabel}
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {relationship
+              .coordinates
+              .map(
+                (
+                  coordinate,
+                  index
+                ) => (
+                  <tr
+                    key={
+                      `${coordinate.constructionToLandRatio}-${index}`
+                    }
+                  >
+                    <td style={relationshipTd}>
+                      {
+                        formatConstructionLandRatio(
+                          coordinate
+                            .constructionToLandRatio
+                        )
+                      }
+
+                      <div style={tableSecondary}>
+                        {
+                          formatConstructionPerLand(
+                            coordinate
+                              .constructionToLandRatio
+                          )
+                        }
+                      </div>
+                    </td>
+
+                    <td style={relationshipTd}>
+                      {
+                        coordinate
+                          .observationCount
+                      }
+                    </td>
+
+                    <td style={relationshipTd}>
+                      {
+                        formatPricePerM2(
+                          coordinate
+                            .normalizedPricePerM2,
+                          transactionType,
+                          normalizationUnitLabel
+                        )
+                      }
+                    </td>
+                  </tr>
+                )
+              )}
+          </tbody>
+        </table>
+      </div>
+
+
+      {relationship.coordinates.length ===
+        0 && (
+        <div style={evidenceGateNote}>
+          No populated Construction-to-Land
+          cohort coordinates are available for
+          this relationship.
+        </div>
+      )}
+    </section>
+  )
+}
+
+function ConstructionLandRelationshipStatistics({
+  title,
+  relationship,
+  couplingDescription
+}: {
+  title:
+    string
+
+  relationship:
+    ConstructionLandRelationship
+
+  couplingDescription:
+    string
+}) {
+  const {
+    evidence
+  } =
+    relationship
+
+
+  return (
+    <section style={relationshipStatisticsSection}>
+      <h3 style={cohortTitle}>
+        {title}
+      </h3>
+
+
+      <div style={statisticsGrid}>
+        <MarketStatisticCard
+          label="Populated Cohorts"
+          value={
+            `${evidence.populatedCohortCount}`
+          }
+          description={
+            `${evidence.requiredPopulatedCohortCount} populated cohorts are required for Spearman ρ.`
+          }
+        />
+
+
+        <MarketStatisticCard
+          label="Represented Properties"
+          value={
+            `${evidence.representedObservationCount}`
+          }
+          description={
+            `${evidence.requiredObservationCount} represented properties are required for Spearman ρ.`
+          }
+        />
+
+
+        <MarketStatisticCard
+          label="Spearman Rank Correlation (ρ)"
+          value={
+            formatCorrelation(
+              relationship
+                .spearmanRho
+            )
+          }
+          description={
+            evidence.hasSufficientEvidence
+              ? 'Calculated from the ranked populated Construction-to-Land cohort coordinates.'
+              : 'Not calculated because the complete evidence threshold is not satisfied.'
+          }
+        />
+      </div>
+
+
+      {!evidence.hasSufficientEvidence && (
+        <div style={evidenceGateNote}>
+          This selected market contains{' '}
+          <strong>
+            {evidence.populatedCohortCount}
+          </strong>{' '}
+          populated Construction-to-Land{' '}
+          {
+            evidence.populatedCohortCount === 1
+              ? 'cohort'
+              : 'cohorts'
+          }{' '}
+          representing{' '}
+          <strong>
+            {evidence.representedObservationCount}
+          </strong>{' '}
+          {
+            evidence.representedObservationCount === 1
+              ? 'property'
+              : 'properties'
+          }.
+          {' '}Spearman ρ requires at least{' '}
+          <strong>
+            {evidence.requiredPopulatedCohortCount}
+          </strong>{' '}
+          populated cohorts and{' '}
+          <strong>
+            {evidence.requiredObservationCount}
+          </strong>{' '}
+          represented properties.
+        </div>
+      )}
+
+
+      <div style={couplingBoundary}>
+        <strong>
+          Mathematical coupling boundary:
+        </strong>{' '}
+        {couplingDescription}
+        {' '}Spearman ρ is therefore presented as
+        descriptive rank association only. Twuanis
+        does not calculate log-log regression,
+        modeled percentage change, or R² for this
+        relationship.
+      </div>
     </section>
   )
 }
@@ -954,7 +1874,7 @@ function SizeRelationshipStatistics({
               rSquared
             )
           }
-          description="Shows how closely the log-log model fits the observed cohort coordinates. Higher values indicate a closer fit."
+          description="Reports R² for the fitted log-log model across the observed cohort coordinates."
         />
       </div>
     </section>
@@ -1009,12 +1929,8 @@ function SizeRelationshipSynthesis({
 
 
         <div style={synthesisCard}>
-          <div style={synthesisStatus}>
-            Observed pattern · Insufficient evidence
-          </div>
-
           <p style={synthesisText}>
-            Twuanis currently observes{' '}
+            This selected market contains{' '}
             <strong>
               {populatedBandCount}{' '}
               {
@@ -1024,7 +1940,7 @@ function SizeRelationshipSynthesis({
                   : 'populated cohorts'
               }
             </strong>{' '}
-            across{' '}
+            representing{' '}
             <strong>
               {representedObservationCount}{' '}
               {
@@ -1041,12 +1957,11 @@ function SizeRelationshipSynthesis({
           {population.coordinates.length >=
             2 && (
             <p style={synthesisText}>
-              The observed cohort coordinates can
-              be compared visually, but Twuanis
-              does not treat that pattern as an
-              established relationship because at
-              least 3 populated cohorts are
-              required.
+              The available cohort coordinates can
+              be compared numerically and visually,
+              but at least 3 populated cohorts are
+              required before Twuanis calculates
+              the overall relationship.
             </p>
           )}
 
@@ -1054,9 +1969,10 @@ function SizeRelationshipSynthesis({
           {population.coordinates.length ===
             1 && (
             <p style={synthesisText}>
-              A single populated cohort establishes
-              an observed market coordinate, but it
-              cannot establish how Price /{' '}
+              One populated cohort provides one
+              observed market coordinate. At least
+              3 populated cohorts are required to
+              calculate how normalized Price /{' '}
               {ratioLabel} changes as area changes.
             </p>
           )}
@@ -1065,17 +1981,18 @@ function SizeRelationshipSynthesis({
           {population.coordinates.length ===
             0 && (
             <p style={synthesisText}>
-              No populated cohort coordinates are
-              available from which to evaluate a
-              size relationship.
+              There are 0 populated cohort
+              coordinates available for relationship
+              calculation.
             </p>
           )}
 
 
-          <div style={synthesisBoundary}>
-            Conclusion withheld until sufficient
-            cohort evidence exists.
-          </div>
+          <p style={synthesisText}>
+            Insufficient cohort evidence to calculate
+            the overall {areaLabel.toLowerCase()} and
+            Price / {ratioLabel} relationship.
+          </p>
         </div>
       </section>
     )
@@ -1096,24 +2013,6 @@ function SizeRelationshipSynthesis({
     )
 
 
-  const directionLabel =
-    relationshipDirectionLabel(
-      beta
-    )
-
-
-  const strengthLabel =
-    relationshipStrengthLabel(
-      result.spearmanRho
-    )
-
-
-  const fitLabel =
-    modelFitLabel(
-      rSquared
-    )
-
-
   return (
     <section style={synthesisSection}>
       <h3 style={cohortTitle}>
@@ -1122,29 +2021,41 @@ function SizeRelationshipSynthesis({
 
 
       <div style={synthesisCard}>
-        <div style={synthesisStatus}>
-          Supported relationship · {directionLabel}
-        </div>
-
-
-        <p style={synthesisLead}>
-          Across the observed {areaLabel.toLowerCase()}{' '}
-          cohorts, normalized Price / {ratioLabel}{' '}
+        <p style={synthesisText}>
+          Across{' '}
           <strong>
-            {direction}
+            {populatedBandCount} populated cohorts
           </strong>{' '}
-          as area increases.
+          representing{' '}
+          <strong>
+            {representedObservationCount}{' '}
+            {
+              representedObservationCount ===
+                1
+                ? 'property'
+                : 'properties'
+            }
+          </strong>
+          , Spearman ρ is{' '}
+          <strong>
+            {formatCorrelation(
+              result.spearmanRho
+            )}
+          </strong>
+          .
         </p>
 
 
         <div style={synthesisFacts}>
           <div>
             <div style={synthesisFactValue}>
-              {strengthLabel}
+              {formatCorrelation(
+                result.spearmanRho
+              )}
             </div>
 
             <div style={cardLabel}>
-              Ranked relationship
+              Spearman ρ
             </div>
           </div>
 
@@ -1157,34 +2068,23 @@ function SizeRelationshipSynthesis({
             </div>
 
             <div style={cardLabel}>
-              Modeled change with +10% area
+              Modeled Price / m² change with +10% area
             </div>
           </div>
 
 
           <div>
             <div style={synthesisFactValue}>
-              {fitLabel}
+              {formatRSquared(
+                rSquared
+              )}
             </div>
 
             <div style={cardLabel}>
-              Model fit
+              R²
             </div>
           </div>
         </div>
-
-
-        <p style={synthesisText}>
-          Spearman rank correlation is{' '}
-          <strong>
-            {formatCorrelation(
-              result.spearmanRho
-            )}
-          </strong>
-          , indicating a {strengthLabel.toLowerCase()}{' '}
-          ranked relationship across the populated
-          cohorts.
-        </p>
 
 
         <p style={synthesisText}>
@@ -1196,9 +2096,8 @@ function SizeRelationshipSynthesis({
               modeledTenPercentAreaChange
             )}
           </strong>{' '}
-          change in normalized Price / {ratioLabel}.
-          Model fit is {fitLabel.toLowerCase()} with
-          an R² of{' '}
+          change in normalized Price / {ratioLabel},
+          with R² ={' '}
           <strong>
             {formatRSquared(
               rSquared
@@ -1208,11 +2107,18 @@ function SizeRelationshipSynthesis({
         </p>
 
 
+        <p style={synthesisConclusion}>
+          As {areaLabel.toLowerCase()} increases,
+          normalized Price / {ratioLabel} {direction}{' '}
+          in this selected market.
+        </p>
+
+
         <div style={synthesisBoundary}>
-          This synthesis describes the selected
-          market evidence. It does not imply that
-          area alone causes the observed Price /{' '}
-          {ratioLabel} relationship.
+          This synthesis describes an association
+          within the selected market evidence. It
+          does not imply that area alone causes the
+          observed Price / {ratioLabel} relationship.
         </div>
       </div>
     </section>
@@ -1441,6 +2347,11 @@ export default function PriceMeterResults({
       intelligence
         .sizeRelationships
         .propertyArea
+
+  const constructionLandAnalysis:
+    ConstructionLandAnalysis =
+    intelligence
+      .constructionToLand
 
   return (
     <section>
@@ -1717,7 +2628,216 @@ export default function PriceMeterResults({
 
 
       </div>
+      <div style={constructionLandPresentation}>
+        <div style={presentationHeader}>
+          <div>
+            <h2 style={sectionTitle}>
+              Construction-to-Land Intelligence
+            </h2>
 
+            <p style={sectionDescription}>
+              Twuanis evaluates the numerical
+              relationship between reported
+              construction area and property area
+              for improved properties, then
+              compares Price / m² evidence across
+              the observed Construction-to-Land
+              distribution.
+            </p>
+          </div>
+        </div>
+
+        <ConstructionLandDistribution
+          analysis={
+            constructionLandAnalysis
+          }
+        />
+
+        <ConstructionLandCohortEvidence
+          analysis={
+            constructionLandAnalysis
+          }
+        />
+
+
+        <ConstructionLandAdjacentComparisons
+          analysis={
+            constructionLandAnalysis
+          }
+        />
+
+        <div style={statisticsPresentation}>
+          <div style={presentationHeader}>
+            <div>
+              <h2 style={sectionTitle}>
+                Construction-to-Land Relationship Coordinates
+              </h2>
+
+              <p style={sectionDescription}>
+                Populated Construction-to-Land cohorts
+                provide the observed coordinates used to
+                evaluate the relationship with each
+                Price / m² normalization basis.
+              </p>
+            </div>
+          </div>
+
+
+          <ConstructionLandRelationshipCoordinates
+            title="Land-Normalized Relationship Coordinates"
+            description="Median Construction-to-Land Ratio plotted against median land-normalized Price / m² for each populated cohort."
+            relationship={
+              constructionLandAnalysis
+                .relationships
+                .landNormalized
+            }
+            normalizationUnitLabel="land m²"
+            transactionType={
+              transactionType
+            }
+          />
+
+          <section style={relationshipSection}>
+            <div style={relationshipHeader}>
+              <div>
+                <h3 style={cohortTitle}>
+                  Land-Normalized Relationship Visualization
+                </h3>
+
+                <p style={relationshipDescription}>
+                  Each point shows one populated
+                  Construction-to-Land cohort using its
+                  median observed ratio and median
+                  land-normalized Price / m².
+                </p>
+              </div>
+            </div>
+
+            <section style={relationshipSection}>
+          <div style={relationshipHeader}>
+            <div>
+              <h3 style={cohortTitle}>
+                Construction-to-Land Distribution Visualization
+              </h3>
+
+              <p style={relationshipDescription}>
+                The five structural Construction-to-Land
+                cohorts show how eligible improved
+                properties are distributed across the
+                observed ratio ranges.
+              </p>
+            </div>
+          </div>
+
+
+          <PriceMeterConstructionLandDistributionChart
+            cohorts={
+              constructionLandAnalysis
+                .statistics
+                .cohorts
+            }
+          />
+        </section>
+
+            <PriceMeterConstructionLandRelationshipChart
+              coordinates={
+                constructionLandAnalysis
+                  .relationships
+                  .landNormalized
+                  .coordinates
+              }
+              normalizationUnitLabel="land m²"
+              transactionType={
+                transactionType
+              }
+            />
+          </section>
+
+          <ConstructionLandRelationshipCoordinates
+            title="Construction-Normalized Relationship Coordinates"
+            description="Median Construction-to-Land Ratio plotted against median construction-normalized Price / m² for each populated cohort."
+            relationship={
+              constructionLandAnalysis
+                .relationships
+                .constructionNormalized
+            }
+            normalizationUnitLabel="construction m²"
+            transactionType={
+              transactionType
+            }
+          />
+        </div>
+
+        <div style={statisticsPresentation}>
+          <div style={presentationHeader}>
+            <div>
+              <h2 style={sectionTitle}>
+                Construction-to-Land Relationship Statistics
+              </h2>
+
+              <p style={sectionDescription}>
+                Twuanis calculates Spearman rank
+                correlation only when both the populated
+                cohort threshold and represented-property
+                threshold are satisfied.
+              </p>
+            </div>
+          </div>
+
+          <section style={relationshipSection}>
+            <div style={relationshipHeader}>
+              <div>
+                <h3 style={cohortTitle}>
+                  Construction-Normalized Relationship Visualization
+                </h3>
+
+                <p style={relationshipDescription}>
+                  Each point shows one populated
+                  Construction-to-Land cohort using its
+                  median observed ratio and median
+                  construction-normalized Price / m².
+                </p>
+              </div>
+            </div>
+
+
+            <PriceMeterConstructionLandRelationshipChart
+              coordinates={
+                constructionLandAnalysis
+                  .relationships
+                  .constructionNormalized
+                  .coordinates
+              }
+              normalizationUnitLabel="construction m²"
+              transactionType={
+                transactionType
+              }
+            />
+          </section>
+
+          <ConstructionLandRelationshipStatistics
+            title="Land-Normalized Relationship"
+            relationship={
+              constructionLandAnalysis
+                .relationships
+                .landNormalized
+            }
+            couplingDescription="Construction-to-Land Ratio is C / L and land-normalized Price / m² is P / L, so both measurements share Property Area (L)."
+          />
+
+
+          <ConstructionLandRelationshipStatistics
+            title="Construction-Normalized Relationship"
+            relationship={
+              constructionLandAnalysis
+                .relationships
+                .constructionNormalized
+            }
+            couplingDescription="Construction-to-Land Ratio is C / L and construction-normalized Price / m² is P / C, so Construction Area (C) appears in both measurements."
+          />
+        </div>
+
+      </div>
     </section>
   )
 }
@@ -1953,6 +3073,17 @@ const emptyCard = {
     '#888'
 }
 
+const constructionLandPresentation = {
+  marginTop:
+    '4rem',
+
+  paddingTop:
+    '3rem',
+
+  borderTop:
+    '1px solid #222'
+}
+
 const relationshipPresentation = {
   marginTop:
     '4rem',
@@ -2060,6 +3191,43 @@ const relationshipTable = {
     '720px'
 }
 
+const constructionLandTable = {
+  width:
+    '100%',
+
+  borderCollapse:
+    'collapse' as const,
+
+  minWidth:
+    '980px'
+}
+
+
+const adjacentComparisonTable = {
+  width:
+    '100%',
+
+  borderCollapse:
+    'collapse' as const,
+
+  minWidth:
+    '1180px'
+}
+
+
+const tableSecondary = {
+  marginTop:
+    '.35rem',
+
+  color:
+    '#777',
+
+  fontSize:
+    '.78rem',
+
+  lineHeight:
+    1.4
+}
 
 const relationshipTh = {
   textAlign:
@@ -2121,6 +3289,32 @@ const evidenceGateNote = {
 
   lineHeight:
     1.6
+}
+
+const couplingBoundary = {
+  marginTop:
+    '1.25rem',
+
+  padding:
+    '1rem 1.25rem',
+
+  background:
+    '#111',
+
+  border:
+    '1px solid #333',
+
+  borderRadius:
+    '1rem',
+
+  color:
+    '#888',
+
+  fontSize:
+    '.88rem',
+
+  lineHeight:
+    1.7
 }
 
 const statisticsPresentation = {
@@ -2318,6 +3512,26 @@ const synthesisFactValue = {
     700
 }
 
+
+const synthesisConclusion = {
+  margin:
+    '1.5rem 0 0',
+
+  color:
+    '#ff3b00',
+
+  fontSize:
+    '1rem',
+
+  fontWeight:
+    700,
+
+  fontStyle:
+    'italic' as const,
+
+  lineHeight:
+    1.6
+}
 
 const synthesisBoundary = {
   marginTop:
