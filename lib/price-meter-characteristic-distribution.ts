@@ -1,9 +1,11 @@
-import { supabase } from '@/lib/supabase'
-
 import {
   buildPriceMeterDistribution,
   type PriceMeterDistribution
 } from '@/lib/price-meter-distribution'
+
+import {
+  loadPriceMeterOntologyMemberships
+} from '@/lib/price-meter-ontology-membership'
 
 import type {
   PriceMeterObservation
@@ -13,38 +15,18 @@ import type {
   PriceMeterTransactionType
 } from '@/lib/price-meter-transaction-cohort'
 
-export const PRICE_METER_CHARACTERISTIC_TYPES = [
-  'property_type',
-  'bedrooms',
-  'bathrooms',
-  'parking',
-  'year_built',
-  'utility',
-  'environment',
-  'terrain',
-  'accessibility',
-  'legal_status'
-] as const
+import type {
+  PriceMeterCharacteristicIdentity
+} from '@/lib/price-meter-characteristic-identity'
+export {
+  PRICE_METER_CHARACTERISTIC_TYPES,
+  isPriceMeterCharacteristicType
+} from '@/lib/price-meter-characteristic-identity'
 
-
-export type PriceMeterCharacteristicType =
-  typeof PRICE_METER_CHARACTERISTIC_TYPES[number]
-
-
-export type PriceMeterCharacteristicIdentity = {
-  ontologyTermId: number
-  termType: PriceMeterCharacteristicType
-
-  termName: string
-  termNameEn: string | null
-  termNameEs: string | null
-
-  slug: string
-  slugEn: string | null
-  slugEs: string | null
-}
-
-
+export type {
+  PriceMeterCharacteristicType,
+  PriceMeterCharacteristicIdentity
+} from '@/lib/price-meter-characteristic-identity'
 export type PriceMeterCharacteristicDistribution<
   T extends PriceMeterTransactionType
 > = {
@@ -60,56 +42,6 @@ export type PriceMeterCharacteristicDistribution<
   distribution:
     PriceMeterDistribution<T>
 }
-
-
-type ListingOntologyAssignmentRow = {
-  listing_id: string
-
-  ontology_terms:
-    | {
-        id: number
-        term_name: string
-        term_name_en: string | null
-        term_name_es: string | null
-        term_type: string
-        slug: string
-        slug_en: string | null
-        slug_es: string | null
-      }
-    | Array<{
-        id: number
-        term_name: string
-        term_name_en: string | null
-        term_name_es: string | null
-        term_type: string
-        slug: string
-        slug_en: string | null
-        slug_es: string | null
-      }>
-    | null
-}
-
-
-function isPriceMeterCharacteristicType(
-  value: string
-): value is PriceMeterCharacteristicType {
-  return (
-    PRICE_METER_CHARACTERISTIC_TYPES as
-      readonly string[]
-  ).includes(value)
-}
-
-
-function resolveOntologyTerm(
-  row: ListingOntologyAssignmentRow
-) {
-  if (Array.isArray(row.ontology_terms)) {
-    return row.ontology_terms[0] ?? null
-  }
-
-  return row.ontology_terms
-}
-
 
 export async function buildPriceMeterCharacteristicDistributions<
   T extends PriceMeterTransactionType
@@ -186,48 +118,24 @@ export async function buildPriceMeterCharacteristicDistributions<
     return []
   }
 
-
-  /*
+    /*
    * -------------------------------------------------------
-   * ONTOLOGY MEMBERSHIP
+   * CANONICAL ONTOLOGY MEMBERSHIP
    * -------------------------------------------------------
    *
-   * Twuanis already knows which listings instantiate which
-   * canonical ontology concepts through
-   * listings_ontology_terms.
+   * Ontology retrieval belongs to the dedicated Price / m²
+   * ontology-membership layer.
    *
-   * Preserve that identity here. Do not recreate
-   * characteristic meaning from raw listing strings.
+   * This distribution layer consumes canonical positive
+   * membership. It does not query or reconstruct ontology
+   * identity itself.
    */
 
 
-  const {
-    data,
-    error
-  } = await supabase
-    .from('listings_ontology_terms')
-    .select(`
-      listing_id,
-      ontology_terms (
-        id,
-        term_name,
-        term_name_en,
-        term_name_es,
-        term_type,
-        slug,
-        slug_en,
-        slug_es
-      )
-    `)
-    .in(
-      'listing_id',
+  const memberships =
+    await loadPriceMeterOntologyMemberships(
       listingIds
     )
-
-
-  if (error) {
-    throw error
-  }
 
 
   /*
@@ -251,92 +159,47 @@ export async function buildPriceMeterCharacteristicDistributions<
 
 
   for (
-    const rawRow of
-      (data || [])
+    const membership of
+      memberships
   ) {
-    const row =
-      rawRow as
-        ListingOntologyAssignmentRow
 
-    const term =
-      resolveOntologyTerm(row)
-
-
-    if (!term) {
-      continue
-    }
-
-
-    if (
-      !isPriceMeterCharacteristicType(
-        term.term_type
-      )
+    for (
+      const characteristic of
+        membership.characteristics
     ) {
-      continue
-    }
+
+      const existing =
+        characteristicMap.get(
+          characteristic
+            .ontologyTermId
+        )
 
 
-    if (
-      !observationsByListingId.has(
-        row.listing_id
-      )
-    ) {
-      continue
-    }
+      if (
+        existing
+      ) {
+        existing.listingIds.add(
+          membership.listingId
+        )
 
-
-    const existing =
-      characteristicMap.get(
-        term.id
-      )
-
-
-    if (existing) {
-      existing.listingIds.add(
-        row.listing_id
-      )
-
-      continue
-    }
-
-
-    characteristicMap.set(
-      term.id,
-      {
-        characteristic: {
-          ontologyTermId:
-            term.id,
-
-          termType:
-            term.term_type,
-
-          termName:
-            term.term_name,
-
-          termNameEn:
-            term.term_name_en,
-
-          termNameEs:
-            term.term_name_es,
-
-          slug:
-            term.slug,
-
-          slugEn:
-            term.slug_en,
-
-          slugEs:
-            term.slug_es
-        },
-
-        listingIds:
-          new Set([
-            row.listing_id
-          ])
+        continue
       }
-    )
-  }
 
+
+      characteristicMap.set(
+        characteristic
+          .ontologyTermId,
+        {
+          characteristic,
+
+          listingIds:
+            new Set([
+              membership.listingId
+            ])
+        }
+      )
+    }
+  }
 
   /*
    * -------------------------------------------------------
