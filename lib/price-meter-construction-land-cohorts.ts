@@ -18,7 +18,6 @@
  * They DO NOT represent physical Site Coverage.
  */
 
-
 export type PriceMeterConstructionLandCohortDefinition = {
   key:
     string

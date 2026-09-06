@@ -288,6 +288,104 @@ type ConstructionLandAnalysis = {
     number
 }
 
+type GeographicLevel =
+  | 'province'
+  | 'canton'
+  | 'district'
+
+
+type GeographicScope = {
+  selectedLevel:
+    | 'national'
+    | 'province'
+    | 'canton'
+    | 'district'
+
+  comparisonLevel:
+    GeographicLevel | null
+}
+
+
+type CanonicalGeographyTerm = {
+  term_name?:
+    string | null
+
+  term_name_en?:
+    string | null
+
+  term_name_es?:
+    string | null
+}
+
+
+type GeographicIdentity = {
+  province:
+    CanonicalGeographyTerm | null
+
+  canton:
+    CanonicalGeographyTerm | null
+
+  district:
+    CanonicalGeographyTerm | null
+}
+
+
+type GeographicConfidence = {
+  score:
+    number
+
+  label:
+    | 'very_low'
+    | 'low'
+    | 'moderate'
+    | 'high'
+}
+
+
+type GeographicStatistic = {
+  rank:
+    number
+
+  level:
+    GeographicLevel
+
+  geography:
+    GeographicIdentity
+
+  distribution:
+    Distribution
+
+  confidence:
+    GeographicConfidence
+
+  medianDifferenceFromSelectedMarket:
+    number | null
+
+  medianPercentAboveOrBelowSelectedMarket:
+    number | null
+}
+
+
+type GeographicConclusion = {
+  scope:
+    GeographicScope
+
+  highestPriceGeography:
+    GeographicStatistic | null
+
+  lowestPriceGeography:
+    GeographicStatistic | null
+
+  largestPercentAboveSelectedMarketMedian:
+    GeographicStatistic | null
+
+  largestPercentBelowSelectedMarketMedian:
+    GeographicStatistic | null
+
+  explanation:
+    string | null
+}
+
 type CohortKey =
   | 'vacantLandLandNormalized'
   | 'improvedLandNormalized'
@@ -729,6 +827,547 @@ function CohortDistribution({
     </section>
   )
 }
+
+function geographicLevelLabel(
+  level:
+    GeographicLevel
+) {
+  if (
+    level ===
+      'province'
+  ) {
+    return 'Provincia'
+  }
+
+  if (
+    level ===
+      'canton'
+  ) {
+    return 'Cantón'
+  }
+
+  return 'Distrito'
+}
+
+
+function geographicLevelPluralLabel(
+  level:
+    GeographicLevel
+) {
+  if (
+    level ===
+      'province'
+  ) {
+    return 'Provincias'
+  }
+
+  if (
+    level ===
+      'canton'
+  ) {
+    return 'Cantones'
+  }
+
+  return 'Distritos'
+}
+
+
+function geographicDisplayName(
+  statistic:
+    GeographicStatistic
+) {
+  const term =
+    statistic.geography.district ??
+    statistic.geography.canton ??
+    statistic.geography.province
+
+  return (
+    term?.term_name_es ??
+    term?.term_name ??
+    term?.term_name_en ??
+    'Geografía desconocida'
+  )
+}
+
+
+function geographicConfidenceLabel(
+  label:
+    GeographicConfidence['label']
+) {
+  if (
+    label ===
+      'high'
+  ) {
+    return 'Confianza Alta'
+  }
+
+  if (
+    label ===
+      'moderate'
+  ) {
+    return 'Confianza Moderada'
+  }
+
+  if (
+    label ===
+      'low'
+  ) {
+    return 'Confianza Baja'
+  }
+
+  return 'Confianza Muy Baja'
+}
+
+
+function formatSignedGeographicPrice(
+  value:
+    number | null,
+
+  transactionType:
+    'sale' | 'rent',
+
+  normalizationUnitLabel:
+    string
+) {
+  if (
+    value === null ||
+    Number.isNaN(value)
+  ) {
+    return 'No calculado'
+  }
+
+  const absolute =
+    Math.abs(
+      value
+    )
+
+  const formatted =
+    formatPricePerM2(
+      absolute,
+      transactionType,
+      normalizationUnitLabel
+    )
+
+  if (
+    value > 0
+  ) {
+    return `+${formatted}`
+  }
+
+  if (
+    value < 0
+  ) {
+    return `−${formatted}`
+  }
+
+  return formatted
+}
+
+
+function formatSignedGeographicPercent(
+  value:
+    number | null
+) {
+  if (
+    value === null ||
+    Number.isNaN(value)
+  ) {
+    return 'No calculado'
+  }
+
+  if (
+    value > 0
+  ) {
+    return `+${value.toFixed(1)}%`
+  }
+
+  if (
+    value < 0
+  ) {
+    return `−${Math.abs(value).toFixed(1)}%`
+  }
+
+  return '0.0%'
+}
+
+
+function geographicComparisonPhrase(
+  value:
+    number | null
+) {
+  if (
+    value === null ||
+    Number.isNaN(value)
+  ) {
+    return null
+  }
+
+  if (
+    value > 0
+  ) {
+    return `${Math.abs(value).toFixed(1)}% por encima de`
+  }
+
+  if (
+    value < 0
+  ) {
+    return `${Math.abs(value).toFixed(1)}% por debajo de`
+  }
+
+  return 'igual a'
+}
+
+
+function GeographicPriceComparison({
+  scope,
+  statistics,
+  conclusion,
+  definition,
+  transactionType
+}: {
+  scope:
+    GeographicScope
+
+  statistics:
+    GeographicStatistic[]
+
+  conclusion:
+    GeographicConclusion
+
+  definition:
+    CohortDefinition
+
+  transactionType:
+    'sale' | 'rent'
+}) {
+  if (
+    scope.comparisonLevel ===
+      null
+  ) {
+    return null
+  }
+
+
+  const comparisonLevel =
+    scope.comparisonLevel
+
+
+  const formatMedian =
+    (
+      value:
+        number | null
+    ) =>
+      formatPricePerM2(
+        value,
+        transactionType,
+        definition.normalizationUnitLabel
+      )
+
+
+  const highest =
+    conclusion.highestPriceGeography
+
+
+  const lowest =
+    conclusion.lowestPriceGeography
+
+
+  const highestComparison =
+    highest
+      ? geographicComparisonPhrase(
+          highest
+            .medianPercentAboveOrBelowSelectedMarket
+        )
+      : null
+
+
+  const lowestComparison =
+    lowest
+      ? geographicComparisonPhrase(
+          lowest
+            .medianPercentAboveOrBelowSelectedMarket
+        )
+      : null
+
+
+  return (
+    <section style={geographicCohortSection}>
+      <div style={relationshipHeader}>
+        <div>
+          <h3 style={cohortTitle}>
+            {geographicLevelPluralLabel(
+              comparisonLevel
+            )} · {definition.propertyBasisLabel} · {definition.normalizationBasisLabel}
+          </h3>
+
+          <p style={relationshipDescription}>
+            La mediana del Precio / m² de cada{' '}
+            {geographicLevelLabel(
+              comparisonLevel
+            ).toLowerCase()}{' '}
+            observado se compara con la mediana
+            del Precio / m² del mercado
+            seleccionado. El ranking, la
+            diferencia absoluta y la diferencia
+            porcentual utilizan la mediana.
+          </p>
+        </div>
+
+        <div style={sampleBadge}>
+          {statistics.length}{' '}
+          {
+            statistics.length === 1
+              ? geographicLevelLabel(
+                  comparisonLevel
+                ).toLowerCase()
+              : geographicLevelPluralLabel(
+                  comparisonLevel
+                ).toLowerCase()
+          }
+        </div>
+      </div>
+
+
+      {statistics.length === 0 ? (
+        <div style={emptyCard}>
+          No hay poblaciones geográficas de
+          Precio / m² disponibles para esta
+          cohorte analítica.
+        </div>
+      ) : (
+        <>
+          <div style={relationshipTableWrap}>
+            <table style={geographicTable}>
+              <thead>
+                <tr>
+                  <th style={relationshipTh}>
+                    Ranking
+                  </th>
+
+                  <th style={relationshipTh}>
+                    {geographicLevelLabel(
+                      comparisonLevel
+                    )}
+                  </th>
+
+                  <th style={relationshipTh}>
+                    Propiedades
+                  </th>
+
+                  <th style={relationshipTh}>
+                    Mediana de Precio / {definition.normalizationUnitLabel}
+                  </th>
+
+                  <th style={relationshipTh}>
+                    Diferencia frente a la Mediana del Mercado Seleccionado
+                  </th>
+
+                  <th style={relationshipTh}>
+                    Diferencia % frente a la Mediana del Mercado Seleccionado
+                  </th>
+
+                  <th style={relationshipTh}>
+                    Confianza de Twuanis
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {statistics.map(
+                  statistic => (
+                    <tr
+                      key={
+                        `${statistic.level}-${geographicDisplayName(
+                          statistic
+                        )}-${statistic.rank}`
+                      }
+                    >
+                      <td style={relationshipTd}>
+                        <strong>
+                          {statistic.rank}
+                        </strong>
+                      </td>
+
+                      <td style={relationshipTd}>
+                        <strong>
+                          {
+                            geographicDisplayName(
+                              statistic
+                            )
+                          }
+                        </strong>
+                      </td>
+
+                      <td style={relationshipTd}>
+                        {
+                          statistic
+                            .distribution
+                            .sampleSize
+                        }
+                      </td>
+
+                      <td style={relationshipTd}>
+                        {
+                          formatMedian(
+                            statistic
+                              .distribution
+                              .median
+                          )
+                        }
+                      </td>
+
+                      <td style={relationshipTd}>
+                        {
+                          formatSignedGeographicPrice(
+                            statistic
+                              .medianDifferenceFromSelectedMarket,
+                            transactionType,
+                            definition
+                              .normalizationUnitLabel
+                          )
+                        }
+                      </td>
+
+                      <td style={relationshipTd}>
+                        {
+                          formatSignedGeographicPercent(
+                            statistic
+                              .medianPercentAboveOrBelowSelectedMarket
+                          )
+                        }
+                      </td>
+
+                      <td style={relationshipTd}>
+                        {
+                          statistic
+                            .confidence
+                            .score
+                        }% ·{' '}
+                        {
+                          geographicConfidenceLabel(
+                            statistic
+                              .confidence
+                              .label
+                          )
+                        }
+                      </td>
+                    </tr>
+                  )
+                )}
+              </tbody>
+            </table>
+          </div>
+
+
+          {(highest || lowest) && (
+            <div style={geographicSynthesisCard}>
+              {highest && (
+                <p style={synthesisConclusion}>
+                  {
+                    geographicDisplayName(
+                      highest
+                    )
+                  } tiene la mediana observada de
+                  Precio / m² más alta, con{' '}
+                  <strong>
+                    {
+                      formatMedian(
+                        highest
+                          .distribution
+                          .median
+                      )
+                    }
+                  </strong>{' '}
+                  entre{' '}
+                  <strong>
+                    {
+                      highest
+                        .distribution
+                        .sampleSize
+                    }{' '}
+                    {
+                      highest
+                        .distribution
+                        .sampleSize === 1
+                        ? 'propiedad'
+                        : 'propiedades'
+                    }
+                  </strong>
+                  {
+                    highestComparison
+                      ? `, ${highestComparison} la mediana del mercado seleccionado.`
+                      : '.'
+                  }
+                </p>
+              )}
+
+
+              {lowest &&
+                (
+                  !highest ||
+                  geographicDisplayName(
+                    lowest
+                  ) !==
+                    geographicDisplayName(
+                      highest
+                    )
+                ) && (
+                <p style={synthesisConclusion}>
+                  {
+                    geographicDisplayName(
+                      lowest
+                    )
+                  } tiene la mediana observada de
+                  Precio / m² más baja, con{' '}
+                  <strong>
+                    {
+                      formatMedian(
+                        lowest
+                          .distribution
+                          .median
+                      )
+                    }
+                  </strong>{' '}
+                  entre{' '}
+                  <strong>
+                    {
+                      lowest
+                        .distribution
+                        .sampleSize
+                    }{' '}
+                    {
+                      lowest
+                        .distribution
+                        .sampleSize === 1
+                        ? 'propiedad'
+                        : 'propiedades'
+                    }
+                  </strong>
+                  {
+                    lowestComparison
+                      ? `, ${lowestComparison} la mediana del mercado seleccionado.`
+                      : '.'
+                  }
+                </p>
+              )}
+
+
+              <div style={synthesisBoundary}>
+                Estas afirmaciones describen
+                diferencias geográficas observadas
+                dentro de esta cohorte analítica
+                exacta. No atribuyen las
+                diferencias a la geografía misma
+                ni establecen una relación causal.
+              </div>
+            </div>
+          )}
+        </>
+      )}
+    </section>
+  )
+}
+
 function ConstructionLandDistribution({
     analysis,
     confidence
@@ -2596,6 +3235,26 @@ export default function PriceMeterResults({
       ? analysis.saleIntelligence
       : analysis.rentIntelligence
 
+  const geographicScope:
+    GeographicScope =
+      analysis.geographicScope
+
+
+  const geographicStatistics =
+    intelligence
+      .geographicStatistics as Record<
+        CohortKey,
+        GeographicStatistic[]
+      >
+
+
+  const geographicConclusions =
+    intelligence
+      .geographicConclusions as Record<
+        CohortKey,
+        GeographicConclusion
+      >
+
     const constructionSizeRelationship:
     SizeRelationship =
       intelligence
@@ -2733,6 +3392,60 @@ export default function PriceMeterResults({
             />
           )
         }
+      )}
+
+            {geographicScope.comparisonLevel !==
+        null && (
+        <div style={geographicPresentation}>
+          <div style={presentationHeader}>
+            <div>
+              <h2 style={sectionTitle}>
+                Inteligencia Geográfica de Precio / m²
+              </h2>
+
+              <p style={sectionDescription}>
+                Twuanis compara la mediana del
+                Precio / m² de las subdivisiones
+                geográficas dentro del mercado
+                seleccionado con la mediana del
+                Precio / m² de ese mercado
+                seleccionado. Cada resultado
+                geográfico reporta la población
+                que lo produjo.
+              </p>
+            </div>
+          </div>
+
+
+          {cohortDefinitions.map(
+            definition => (
+              <GeographicPriceComparison
+                key={
+                  definition.key
+                }
+                scope={
+                  geographicScope
+                }
+                statistics={
+                  geographicStatistics[
+                    definition.key
+                  ]
+                }
+                conclusion={
+                  geographicConclusions[
+                    definition.key
+                  ]
+                }
+                definition={
+                  definition
+                }
+                transactionType={
+                  transactionType
+                }
+              />
+            )
+          )}
+        </div>
       )}
 
       <div style={relationshipPresentation}>
@@ -3492,6 +4205,53 @@ const constructionLandPresentation = {
 
   borderTop:
     '1px solid #222'
+}
+
+const geographicPresentation = {
+  marginTop:
+    '4rem',
+
+  paddingTop:
+    '3rem',
+
+  borderTop:
+    '1px solid #222'
+}
+
+
+const geographicCohortSection = {
+  marginBottom:
+    '3.5rem'
+}
+
+
+const geographicTable = {
+  width:
+    '100%',
+
+  borderCollapse:
+    'collapse' as const,
+
+  minWidth:
+    '1180px'
+}
+
+
+const geographicSynthesisCard = {
+  marginTop:
+    '1.25rem',
+
+  padding:
+    '1.25rem 1.5rem',
+
+  background:
+    '#111',
+
+  border:
+    '1px solid #222',
+
+  borderRadius:
+    '1rem'
 }
 
 const relationshipPresentation = {

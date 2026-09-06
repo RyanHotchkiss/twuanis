@@ -10,14 +10,14 @@ export type Filters = Record<
 export type FilterOption =
   | string
   | {
-      id?: string
-      parent_id?: string
+      id?: number
+      parent_id?: number | null
       slug?: string
-      slug_en?: string
-      slug_es?: string
+      slug_en?: string | null
+      slug_es?: string | null
       term_name?: string
-      term_name_en?: string
-      term_name_es?: string
+      term_name_en?: string | null
+      term_name_es?: string | null
     }
 
 export type ExplorerOptions = {

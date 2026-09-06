@@ -43,10 +43,10 @@ export type PriceMeterGeographicStatistic<
   confidence:
     PriceMeterGeographicConfidence
 
-  averageDifferenceFromSelectedMarket:
+    medianDifferenceFromSelectedMarket:
     number | null
 
-  averagePercentAboveOrBelowSelectedMarket:
+  medianPercentAboveOrBelowSelectedMarket:
     number | null
 }
 
@@ -134,28 +134,28 @@ function resolveGeographicConfidence(
  * DIFFERENCE FROM SELECTED MARKET
  * ---------------------------------------------------------
  *
- * This compares the child's average Price / m² against
- * the average Price / m² of the selected market.
+ * This compares the child's median Price / m² against
+ * the median Price / m² of the selected market.
  *
  * Positive:
- *   child geography is above selected-market average.
+ *   child geography is above selected-market median.
  *
  * Negative:
- *   child geography is below selected-market average.
+ *   child geography is below selected-market median.
  *
  * Zero:
- *   child geography equals selected-market average.
+ *   child geography equals selected-market median.
  */
 
 
-function calculateAverageDifference({
-  childAverage,
-  selectedMarketAverage
+function calculateMedianDifference({
+  childMedian,
+  selectedMarketMedian
 }: {
-  childAverage:
+  childMedian:
     number | null
 
-  selectedMarketAverage:
+  selectedMarketMedian:
     number | null
 }): {
   absolute:
@@ -166,17 +166,17 @@ function calculateAverageDifference({
 } {
 
   if (
-    childAverage ===
+    childMedian ===
       null ||
-    selectedMarketAverage ===
+    selectedMarketMedian ===
       null ||
     !Number.isFinite(
-      childAverage
+      childMedian
     ) ||
     !Number.isFinite(
-      selectedMarketAverage
+      selectedMarketMedian
     ) ||
-    selectedMarketAverage <=
+    selectedMarketMedian <=
       0
   ) {
 
@@ -191,14 +191,14 @@ function calculateAverageDifference({
 
 
   const absolute =
-    childAverage -
-    selectedMarketAverage
+    childMedian -
+    selectedMarketMedian
 
 
   const percent =
     (
       absolute /
-      selectedMarketAverage
+      selectedMarketMedian
     ) *
     100
 
@@ -292,16 +292,16 @@ export function buildPriceMeterGeographicStatistics<
     geographicDistributions.map(
       geographicDistribution => {
 
-        const difference =
-          calculateAverageDifference({
-            childAverage:
+                const difference =
+          calculateMedianDifference({
+            childMedian:
               geographicDistribution
                 .distribution
-                .average,
+                .median,
 
-            selectedMarketAverage:
+            selectedMarketMedian:
               selectedMarketDistribution
-                .average
+                .median
           })
 
 
@@ -328,25 +328,25 @@ export function buildPriceMeterGeographicStatistics<
                 .sampleSize
             ),
 
-          averageDifferenceFromSelectedMarket:
+          medianDifferenceFromSelectedMarket:
             difference.absolute,
 
-          averagePercentAboveOrBelowSelectedMarket:
+          medianPercentAboveOrBelowSelectedMarket:
             difference.percent
         }
       }
     )
 
 
-  /*
+    /*
    * -------------------------------------------------------
    * GEOGRAPHIC RANKING
    * -------------------------------------------------------
    *
-   * Rank geographic cohorts by average Price / m²,
+   * Rank geographic cohorts by median Price / m²,
    * highest first.
    *
-   * Null averages sort last.
+   * Null medians sort last.
    *
    * Ranking uses the same statistic as the above/below
    * selected-market comparison so the relationship and
@@ -357,17 +357,17 @@ export function buildPriceMeterGeographicStatistics<
   statistics.sort(
     (a, b) => {
 
-      const aAverage =
-        a.distribution.average
+      const aMedian =
+        a.distribution.median
 
-      const bAverage =
-        b.distribution.average
+      const bMedian =
+        b.distribution.median
 
 
       if (
-        aAverage ===
+        aMedian ===
           null &&
-        bAverage ===
+        bMedian ===
           null
       ) {
 
@@ -376,7 +376,7 @@ export function buildPriceMeterGeographicStatistics<
 
 
       if (
-        aAverage ===
+        aMedian ===
           null
       ) {
 
@@ -385,7 +385,7 @@ export function buildPriceMeterGeographicStatistics<
 
 
       if (
-        bAverage ===
+        bMedian ===
           null
       ) {
 
@@ -394,8 +394,8 @@ export function buildPriceMeterGeographicStatistics<
 
 
       return (
-        bAverage -
-        aAverage
+        bMedian -
+        aMedian
       )
     }
   )

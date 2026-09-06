@@ -32,10 +32,10 @@ export type PriceMeterGeographicConclusion<
   lowestPriceGeography:
     PriceMeterGeographicStatistic<T> | null
 
-  largestPercentAboveSelectedMarketAverage:
+  largestPercentAboveSelectedMarketMedian:
     PriceMeterGeographicStatistic<T> | null
 
-  largestPercentBelowSelectedMarketAverage:
+  largestPercentBelowSelectedMarketMedian:
     PriceMeterGeographicStatistic<T> | null
 
   explanation:
@@ -388,7 +388,7 @@ function formatPercent(
  * Largest above/below:
  *   determined from the already-calculated signed
  *   percentage relationship to the selected-market
- *   average.
+ *   median.
  *
  * Geographic presentation names are derived only from
  * canonical geographic identity.
@@ -435,10 +435,10 @@ export function buildPriceMeterGeographicConclusions<
       lowestPriceGeography:
         null,
 
-      largestPercentAboveSelectedMarketAverage:
+      largestPercentAboveSelectedMarketMedian:
         null,
 
-      largestPercentBelowSelectedMarketAverage:
+      largestPercentBelowSelectedMarketMedian:
         null,
 
       explanation:
@@ -448,7 +448,7 @@ export function buildPriceMeterGeographicConclusions<
 
 
   /*
-   * Step 2 ranks geographic statistics by average
+   * Step 2 ranks geographic statistics by median
    * Price / m² from highest to lowest.
    *
    * We consume that established ordering rather than
@@ -460,8 +460,10 @@ export function buildPriceMeterGeographicConclusions<
     statistics
       .filter(
         statistic =>
-          statistic.distribution.average !==
-            null
+          statistic
+            .distribution
+            .median !==
+          null
       )
       .sort(
         (a, b) =>
@@ -486,7 +488,7 @@ export function buildPriceMeterGeographicConclusions<
 
   /*
    * Find the largest already-calculated positive and
-   * negative relationships to the selected-market average.
+   * negative relationships to the selected-market median.
    */
 
 
@@ -497,7 +499,7 @@ export function buildPriceMeterGeographicConclusions<
 
           const percent =
             statistic
-              .averagePercentAboveOrBelowSelectedMarket
+              .medianPercentAboveOrBelowSelectedMarket
 
 
           return (
@@ -511,11 +513,11 @@ export function buildPriceMeterGeographicConclusions<
       .sort(
         (a, b) =>
           (
-            b.averagePercentAboveOrBelowSelectedMarket ??
+            b.medianPercentAboveOrBelowSelectedMarket ??
             0
           ) -
           (
-            a.averagePercentAboveOrBelowSelectedMarket ??
+            a.medianPercentAboveOrBelowSelectedMarket ??
             0
           )
       )
@@ -528,7 +530,7 @@ export function buildPriceMeterGeographicConclusions<
 
           const percent =
             statistic
-              .averagePercentAboveOrBelowSelectedMarket
+              .medianPercentAboveOrBelowSelectedMarket
 
 
           return (
@@ -542,22 +544,22 @@ export function buildPriceMeterGeographicConclusions<
       .sort(
         (a, b) =>
           (
-            a.averagePercentAboveOrBelowSelectedMarket ??
+            a.medianPercentAboveOrBelowSelectedMarket ??
             0
           ) -
           (
-            b.averagePercentAboveOrBelowSelectedMarket ??
+            b.medianPercentAboveOrBelowSelectedMarket ??
             0
           )
       )
 
 
-  const largestPercentAboveSelectedMarketAverage =
+  const largestPercentAboveSelectedMarketMedian =
     aboveSelectedMarket[0] ??
     null
 
 
-  const largestPercentBelowSelectedMarketAverage =
+  const largestPercentBelowSelectedMarketMedian =
     belowSelectedMarket[0] ??
     null
 
@@ -610,18 +612,18 @@ export function buildPriceMeterGeographicConclusions<
             highestPriceGeography,
 
           language
-        })} tiene el Precio / m² promedio más alto entre los ${comparisonLabel} observados en el ${marketDescription}.`
+        })} tiene la mediana de Precio / m² más alta entre los ${comparisonLabel} observados en el ${marketDescription}.`
       )
     }
 
 
     if (
-      largestPercentAboveSelectedMarketAverage
+      largestPercentAboveSelectedMarketMedian
     ) {
 
       const percent =
-        largestPercentAboveSelectedMarketAverage
-          .averagePercentAboveOrBelowSelectedMarket
+        largestPercentAboveSelectedMarketMedian
+          .medianPercentAboveOrBelowSelectedMarket
 
 
       if (
@@ -632,12 +634,12 @@ export function buildPriceMeterGeographicConclusions<
         explanationParts.push(
           `${geographyDisplayName({
             statistic:
-              largestPercentAboveSelectedMarketAverage,
+              largestPercentAboveSelectedMarketMedian,
 
             language
           })} está ${formatPercent(
             percent
-          )}% por encima del promedio del mercado seleccionado.`
+          )}% por encima de la mediana del mercado seleccionado.`
         )
       }
     }
@@ -653,17 +655,18 @@ export function buildPriceMeterGeographicConclusions<
             lowestPriceGeography,
 
           language
-        })} tiene el Precio / m² promedio más bajo entre los ${comparisonLabel} observados.`
+        })} tiene la mediana de Precio / m² más baja entre los ${comparisonLabel} observados.`
       )
     }
 
-        if (
-      largestPercentBelowSelectedMarketAverage
+
+    if (
+      largestPercentBelowSelectedMarketMedian
     ) {
 
       const percent =
-        largestPercentBelowSelectedMarketAverage
-          .averagePercentAboveOrBelowSelectedMarket
+        largestPercentBelowSelectedMarketMedian
+          .medianPercentAboveOrBelowSelectedMarket
 
 
       if (
@@ -674,12 +677,12 @@ export function buildPriceMeterGeographicConclusions<
         explanationParts.push(
           `${geographyDisplayName({
             statistic:
-              largestPercentBelowSelectedMarketAverage,
+              largestPercentBelowSelectedMarketMedian,
 
             language
           })} está ${formatPercent(
             percent
-          )}% por debajo del promedio del mercado seleccionado.`
+          )}% por debajo de la mediana del mercado seleccionado.`
         )
       }
     }
@@ -695,18 +698,18 @@ export function buildPriceMeterGeographicConclusions<
             highestPriceGeography,
 
           language
-        })} has the highest average Price / m² among the observed ${comparisonLabel} in the ${marketDescription}.`
+        })} has the highest median Price / m² among the observed ${comparisonLabel} in the ${marketDescription}.`
       )
     }
 
 
     if (
-      largestPercentAboveSelectedMarketAverage
+      largestPercentAboveSelectedMarketMedian
     ) {
 
       const percent =
-        largestPercentAboveSelectedMarketAverage
-          .averagePercentAboveOrBelowSelectedMarket
+        largestPercentAboveSelectedMarketMedian
+          .medianPercentAboveOrBelowSelectedMarket
 
 
       if (
@@ -717,12 +720,12 @@ export function buildPriceMeterGeographicConclusions<
         explanationParts.push(
           `${geographyDisplayName({
             statistic:
-              largestPercentAboveSelectedMarketAverage,
+              largestPercentAboveSelectedMarketMedian,
 
             language
           })} is ${formatPercent(
             percent
-          )}% above the selected-market average.`
+          )}% above the selected-market median.`
         )
       }
     }
@@ -738,57 +741,57 @@ export function buildPriceMeterGeographicConclusions<
             lowestPriceGeography,
 
           language
-        })} has the lowest average Price / m² among the observed ${comparisonLabel}.`
+        })} has the lowest median Price / m² among the observed ${comparisonLabel}.`
       )
     }
 
 
     if (
-            largestPercentBelowSelectedMarketAverage
-            ) {
+      largestPercentBelowSelectedMarketMedian
+    ) {
 
-            const percent =
-                largestPercentBelowSelectedMarketAverage
-                .averagePercentAboveOrBelowSelectedMarket
-
-
-            if (
-                percent !==
-                null
-            ) {
-
-                explanationParts.push(
-                `${geographyDisplayName({
-                    statistic:
-                    largestPercentBelowSelectedMarketAverage,
-
-                    language
-                })} is ${formatPercent(
-                    percent
-                )}% below the selected-market average.`
-                )
-            }
-            }
-        }
+      const percent =
+        largestPercentBelowSelectedMarketMedian
+          .medianPercentAboveOrBelowSelectedMarket
 
 
-        return {
-            scope,
+      if (
+        percent !==
+          null
+      ) {
 
-            highestPriceGeography,
+        explanationParts.push(
+          `${geographyDisplayName({
+            statistic:
+              largestPercentBelowSelectedMarketMedian,
 
-            lowestPriceGeography,
+            language
+          })} is ${formatPercent(
+            percent
+          )}% below the selected-market median.`
+        )
+      }
+    }
+  }
 
-            largestPercentAboveSelectedMarketAverage,
 
-            largestPercentBelowSelectedMarketAverage,
+  return {
+    scope,
 
-            explanation:
-            explanationParts.length >
-                0
-                ? explanationParts.join(
-                    ' '
-                )
-                : null
-        }
-        }
+    highestPriceGeography,
+
+    lowestPriceGeography,
+
+    largestPercentAboveSelectedMarketMedian,
+
+    largestPercentBelowSelectedMarketMedian,
+
+    explanation:
+      explanationParts.length >
+        0
+        ? explanationParts.join(
+            ' '
+          )
+        : null
+  }
+}

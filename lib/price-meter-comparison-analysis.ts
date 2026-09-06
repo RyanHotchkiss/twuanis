@@ -26,7 +26,6 @@
  * - establish Property Basis compatibility
  * - establish Normalization Basis compatibility
  * - query ontology membership
- * - calculate confidence
  * - attribute the observed difference to any characteristic
  * - describe the difference as a premium or discount
  */
@@ -49,6 +48,11 @@ import {
   type PriceMeterConfidence,
   type PriceMeterConfidenceLanguage
 } from '@/lib/price-meter-confidence'
+
+import {
+  PRICE_METER_COMPARISON_MINIMUM_SAMPLE_SIZE,
+  hasSufficientPriceMeterComparisonEvidence
+} from '@/lib/price-meter-comparison-evidence'
 
 export type PriceMeterComparisonReferenceCohort =
   | 'A'
@@ -82,6 +86,30 @@ export type PriceMeterComparisonAnalysis<
     confidence:
         PriceMeterConfidence
     }
+
+  evidence: {
+    minimumSampleSize:
+      number
+
+    cohortA: {
+      sampleSize:
+        number
+
+      sufficient:
+        boolean
+    }
+
+    cohortB: {
+      sampleSize:
+        number
+
+      sufficient:
+        boolean
+    }
+
+    comparisonSufficient:
+      boolean
+  }
 
   medianDifference: {
     cohortAMedian:
@@ -212,6 +240,39 @@ export function buildPriceMeterComparisonAnalysis<
         language
     )
 
+    /*
+    * -------------------------------------------------------
+    * COMPARISON EVIDENCE
+    * -------------------------------------------------------
+    *
+    * Distribution mathematics remain available for each
+    * resolved cohort regardless of comparison authorization.
+    *
+    * Phase 10 authorizes median-difference evidence only
+    * when BOTH cohorts satisfy the canonical comparison
+    * evidence requirement.
+    *
+    * Insufficient evidence is an analytical result.
+    * It is not a software error and does not broaden or
+    * alter either user-defined cohort.
+    */
+
+    const cohortAEvidenceSufficient =
+      hasSufficientPriceMeterComparisonEvidence(
+        distributionA.sampleSize
+      )
+
+
+    const cohortBEvidenceSufficient =
+      hasSufficientPriceMeterComparisonEvidence(
+        distributionB.sampleSize
+      )
+
+
+    const comparisonSufficient =
+      cohortAEvidenceSufficient &&
+      cohortBEvidenceSufficient
+
   /*
    * -------------------------------------------------------
    * MEDIAN DIFFERENCE
@@ -245,12 +306,13 @@ export function buildPriceMeterComparisonAnalysis<
       null
 
 
-  if (
-    cohortAMedian !==
-      null &&
-    cohortBMedian !==
-      null
-  ) {
+    if (
+      comparisonSufficient &&
+      cohortAMedian !==
+        null &&
+      cohortBMedian !==
+        null
+    ) {
 
     absoluteDifference =
       cohortAMedian -
@@ -292,7 +354,7 @@ export function buildPriceMeterComparisonAnalysis<
             confidenceA
         },
 
-    cohortB: {
+        cohortB: {
         population:
             cohortB,
 
@@ -303,7 +365,30 @@ export function buildPriceMeterComparisonAnalysis<
             confidenceB
         },
 
-    medianDifference: {
+    evidence: {
+      minimumSampleSize:
+        PRICE_METER_COMPARISON_MINIMUM_SAMPLE_SIZE,
+
+      cohortA: {
+        sampleSize:
+          distributionA.sampleSize,
+
+        sufficient:
+          cohortAEvidenceSufficient
+      },
+
+      cohortB: {
+          sampleSize:
+            distributionB.sampleSize,
+
+          sufficient:
+            cohortBEvidenceSufficient
+        },
+
+        comparisonSufficient
+      },
+
+      medianDifference: {
       cohortAMedian,
 
       cohortBMedian,
