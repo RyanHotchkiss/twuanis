@@ -1,3 +1,9 @@
+import { Fragment }
+  from 'react'
+
+import PriceMeterCrossDimensionalAnalysis
+  from './PriceMeterCrossDimensionalAnalysis'
+
 import PriceMeterSizeRelationshipChart
   from './PriceMeterSizeRelationshipChart'
 
@@ -452,6 +458,97 @@ const cohortDefinitions:
         'construction m²'
     }
   ]
+
+const geographicCrossDimensionalOptions = [
+  {
+    questionKey:
+      'geography_by_property_area',
+
+    label:
+      'Property Area'
+  },
+
+  {
+    questionKey:
+      'geography_by_construction_area',
+
+    label:
+      'Construction Area'
+  },
+
+  {
+    questionKey:
+      'geography_by_construction_to_land',
+
+    label:
+      'Construction-to-Land'
+  }
+] as const
+
+
+const propertyAreaCrossDimensionalOptions = [
+  {
+    questionKey:
+      'property_area_by_geography',
+
+    label:
+      'Geography'
+  },
+
+  {
+    questionKey:
+      'property_area_by_construction_to_land',
+
+    label:
+      'Construction-to-Land'
+  }
+] as const
+
+
+const constructionAreaCrossDimensionalOptions = [
+  {
+    questionKey:
+      'construction_area_by_geography',
+
+    label:
+      'Geography'
+  },
+
+  {
+    questionKey:
+      'construction_area_by_construction_to_land',
+
+    label:
+      'Construction-to-Land'
+  }
+] as const
+
+
+const constructionLandCrossDimensionalOptions = [
+  {
+    questionKey:
+      'construction_to_land_by_geography',
+
+    label:
+      'Geography'
+  },
+
+  {
+    questionKey:
+      'construction_to_land_by_property_area',
+
+    label:
+      'Property Area'
+  },
+
+  {
+    questionKey:
+      'construction_to_land_by_construction_area',
+
+    label:
+      'Construction Area'
+  }
+] as const
 
 function formatPricePerM2(
   value:
@@ -3388,32 +3485,48 @@ export default function PriceMeterResults({
           </div>
 
 
-          {cohortDefinitions.map(
+                    {cohortDefinitions.map(
             definition => (
-              <GeographicPriceComparison
+              <Fragment
                 key={
                   definition.key
                 }
-                scope={
-                  geographicScope
-                }
-                statistics={
-                  geographicStatistics[
+              >
+                <GeographicPriceComparison
+                  scope={
+                    geographicScope
+                  }
+                  statistics={
+                    geographicStatistics[
+                      definition.key
+                    ]
+                  }
+                  conclusion={
+                    geographicConclusions[
+                      definition.key
+                    ]
+                  }
+                  definition={
+                    definition
+                  }
+                  transactionType={
+                    transactionType
+                  }
+                />
+
+
+                <PriceMeterCrossDimensionalAnalysis
+                  options={
+                    geographicCrossDimensionalOptions
+                  }
+                  filters={
+                    filters
+                  }
+                  cohortKey={
                     definition.key
-                  ]
-                }
-                conclusion={
-                  geographicConclusions[
-                    definition.key
-                  ]
-                }
-                definition={
-                  definition
-                }
-                transactionType={
-                  transactionType
-                }
-              />
+                  }
+                />
+              </Fragment>
             )
           )}
         </div>
@@ -3589,13 +3702,23 @@ export default function PriceMeterResults({
           </div>
 
 
-          <SizeRelationshipSynthesis
+                    <SizeRelationshipSynthesis
             title="Construction Area Synthesis"
             relationship={
               constructionSizeRelationship
             }
             areaLabel="Construction Area"
             ratioLabel="construction m²"
+          />
+
+
+          <PriceMeterCrossDimensionalAnalysis
+            options={
+              constructionAreaCrossDimensionalOptions
+            }
+            filters={
+              filters
+            }
           />
 
 
@@ -3606,6 +3729,16 @@ export default function PriceMeterResults({
             }
             areaLabel="Property Area"
             ratioLabel="land m²"
+          />
+
+
+          <PriceMeterCrossDimensionalAnalysis
+            options={
+              propertyAreaCrossDimensionalOptions
+            }
+            filters={
+              filters
+            }
           />
         </div>
 
@@ -3875,7 +4008,7 @@ export default function PriceMeterResults({
           </div>
 
 
-          <ConstructionLandRelationshipSynthesis
+                    <ConstructionLandRelationshipSynthesis
             title="Land-Normalized Relationship Synthesis"
             relationship={
               constructionLandAnalysis
@@ -3884,6 +4017,17 @@ export default function PriceMeterResults({
             }
             normalizationLabel="land-normalized"
             couplingDescription="Construction-to-Land Ratio is C / L and land-normalized Price / m² is P / L, so both measurements contain Property Area (L)."
+          />
+
+
+          <PriceMeterCrossDimensionalAnalysis
+            options={
+              constructionLandCrossDimensionalOptions
+            }
+            filters={
+              filters
+            }
+            cohortKey="improvedLandNormalized"
           />
 
 
@@ -3896,6 +4040,17 @@ export default function PriceMeterResults({
             }
             normalizationLabel="construction-normalized"
             couplingDescription="Construction-to-Land Ratio is C / L and construction-normalized Price / m² is P / C, so Construction Area (C) appears in both measurements."
+          />
+
+
+          <PriceMeterCrossDimensionalAnalysis
+            options={
+              constructionLandCrossDimensionalOptions
+            }
+            filters={
+              filters
+            }
+            cohortKey="improvedConstructionNormalized"
           />
         </div>
 
