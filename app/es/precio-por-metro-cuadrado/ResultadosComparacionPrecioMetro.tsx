@@ -566,52 +566,48 @@ function MedianDifferenceEvidence({
     analysis
 
 
-    if (
+      if (
         !analysis
-        .evidence
-        .comparisonSufficient
-    ) {
-        const insufficientCohorts =
-        [
-            !analysis.evidence.cohortA.sufficient
-            ? `La Cohorte A tiene ${analysis.evidence.cohortA.sampleSize} propiedades elegibles`
-            : null,
-
-            !analysis.evidence.cohortB.sufficient
-            ? `La Cohorte B tiene ${analysis.evidence.cohortB.sampleSize} propiedades elegibles`
-            : null
-        ].filter(
-            (
-            value
-            ): value is string =>
-            value !== null
-        )
-
-
+          .evidence
+          .comparisonSufficient
+      ) {
         return (
-        <section style={differenceSection}>
+          <section style={differenceSection}>
             <h3 style={cohortTitle}>
-            Datos insuficientes
+              Diferencia de Medianas No Calculada
             </h3>
 
             <p style={insufficientEvidenceText}>
-            {insufficientCohorts.join(
-                '. '
-            )}
-            . Se requiere un mínimo de{' '}
-            {
-                analysis
-                .evidence
-                .minimumSampleSize
-            }{' '}
-            propiedades elegibles en cada cohorte
-            para calcular la diferencia observada
-            entre las medianas de la Cohorte A y la
-            Cohorte B.
+              La Cohorte A contiene{' '}
+              <strong>
+                {analysis.evidence.cohortA.sampleSize}
+              </strong>{' '}
+              {
+                analysis.evidence.cohortA.sampleSize === 1
+                  ? 'propiedad elegible'
+                  : 'propiedades elegibles'
+              }
+              , y la Cohorte B contiene{' '}
+              <strong>
+                {analysis.evidence.cohortB.sampleSize}
+              </strong>{' '}
+              {
+                analysis.evidence.cohortB.sampleSize === 1
+                  ? 'propiedad elegible'
+                  : 'propiedades elegibles'
+              }.
+              {' '}Se requieren al menos{' '}
+              <strong>
+                {analysis.evidence.minimumSampleSize}
+              </strong>{' '}
+              propiedades elegibles en cada cohorte
+              para calcular la diferencia observada
+              entre las medianas de la Cohorte A y la
+              Cohorte B.
             </p>
-        </section>
+          </section>
         )
-    }
+      }
 
 
   const referenceLabel =

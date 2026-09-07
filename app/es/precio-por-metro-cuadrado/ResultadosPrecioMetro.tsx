@@ -2194,7 +2194,7 @@ function ConstructionLandRelationshipStatistics({
         />
 
 
-        <MarketStatisticCard
+                <MarketStatisticCard
           label="Correlación de Rangos de Spearman (ρ)"
           value={
             formatCorrelation(
@@ -2204,8 +2204,8 @@ function ConstructionLandRelationshipStatistics({
           }
           description={
             evidence.hasSufficientEvidence
-              ? 'Calculada a partir de los rangos de las coordenadas de las cohortes con datos de Construcción a Terreno.'
-              : 'No calculada porque no se cumple el umbral completo de evidencia.'
+              ? `Calculada a partir de ${evidence.populatedCohortCount} cohortes con datos que representan ${evidence.representedObservationCount} propiedades.`
+              : `No calculada: hay ${evidence.populatedCohortCount} cohortes con datos y ${evidence.representedObservationCount} propiedades; se requieren al menos ${evidence.requiredPopulatedCohortCount} cohortes con datos y ${evidence.requiredObservationCount} propiedades.`
           }
         />
       </div>
@@ -2295,12 +2295,10 @@ function ConstructionLandRelationshipSynthesis({
 
 
         <div style={synthesisCard}>
-          <p style={synthesisText}>
-            <strong>
-              Datos insuficientes
-            </strong>
-            {' · '}
-            Este mercado seleccionado contiene{' '}
+                    <p style={synthesisText}>
+            Spearman ρ no se calcula para esta
+            relación. Este mercado seleccionado
+            contiene{' '}
             <strong>
               {evidence.populatedCohortCount}
             </strong>{' '}
@@ -2318,7 +2316,7 @@ function ConstructionLandRelationshipSynthesis({
                 ? 'propiedad'
                 : 'propiedades'
             }.
-            {' '}Spearman ρ requiere al menos{' '}
+            {' '}El cálculo requiere al menos{' '}
             <strong>
               {evidence.requiredPopulatedCohortCount}
             </strong>{' '}
@@ -2331,9 +2329,9 @@ function ConstructionLandRelationshipSynthesis({
 
 
           <div style={synthesisBoundary}>
-            No se presenta una conclusión sobre
-            la relación porque no se cumple el
-            umbral completo de evidencia.
+            No se calcula una conclusión sobre la
+            relación a menos que se cumplan ambos
+            requisitos de población mostrados arriba.
           </div>
         </div>
       </section>
@@ -2557,18 +2555,13 @@ function SizeRelationshipEvidence({
           </div>
         </div>
 
-        <div>
+      <div>
           <div style={evidenceValue}>
-            {
-              result.evidence
-                .hasSufficientBandEvidence
-                ? 'Suficiente'
-                : 'Insuficiente'
-            }
+            3
           </div>
 
           <div style={cardLabel}>
-            Evidencia de la relación
+            Cohortes con datos requeridas
           </div>
         </div>
       </div>
@@ -2879,13 +2872,6 @@ function SizeRelationshipSynthesis({
             </p>
           )}
 
-
-          <p style={synthesisText}>
-            Evidencia insuficiente entre cohortes
-            para calcular la relación general entre{' '}
-            {areaLabel.toLowerCase()} y el Precio /{' '}
-            {ratioLabel}.
-          </p>
         </div>
       </section>
     )
@@ -3074,20 +3060,20 @@ function SizeRelationshipMethodology() {
           3
         </div>
 
-        <div>
+       <div>
           <h3 style={methodologyTitle}>
-            Exigir Evidencia Suficiente entre Cohortes
+            Aplicar el Requisito de Cálculo de la Relación
           </h3>
 
           <p style={methodologyText}>
             Twuanis requiere al menos 3 cohortes
             de área con datos antes de calcular
             una relación general con el tamaño.
-            Los mercados con menos cohortes con
-            datos aún pueden mostrar sus
-            coordenadas observadas, pero las
-            estadísticas de la relación y las
-            conclusiones estadísticas se reservan.
+            Cuando hay menos de 3 cohortes con
+            datos, Twuanis presenta las coordenadas
+            observadas y sus poblaciones de
+            propiedades, pero no calcula las
+            estadísticas de la relación general.
           </p>
         </div>
       </div>
@@ -3104,16 +3090,16 @@ function SizeRelationshipMethodology() {
           </h3>
 
           <p style={methodologyText}>
-            Cuando existe evidencia suficiente,
-            la correlación de rangos de Spearman
-            (ρ) mide si el Precio / m² normalizado
-            tiende a aumentar o disminuir a medida
-            que aumenta el área. Debido a que opera
-            sobre rangos, evalúa la relación
-            monotónica entre las coordenadas
-            observadas de las cohortes sin requerir
-            una relación lineal en las unidades
-            originales.
+            Cuando hay al menos 3 cohortes de área
+            con datos, la correlación de rangos de
+            Spearman (ρ) mide si el Precio / m²
+            normalizado tiende a aumentar o
+            disminuir a medida que aumenta el área.
+            Debido a que opera sobre rangos, evalúa
+            la relación monotónica entre las
+            coordenadas observadas de las cohortes
+            sin requerir una relación lineal en las
+            unidades originales.
           </p>
         </div>
       </div>

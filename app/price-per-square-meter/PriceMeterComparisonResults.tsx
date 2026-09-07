@@ -568,52 +568,49 @@ function MedianDifferenceEvidence({
     analysis
 
 
-    if (
+      if (
         !analysis
-        .evidence
-        .comparisonSufficient
-    ) {
-        const insufficientCohorts =
-        [
-            !analysis.evidence.cohortA.sufficient
-            ? `Cohort A has ${analysis.evidence.cohortA.sampleSize} eligible properties`
-            : null,
-
-            !analysis.evidence.cohortB.sufficient
-            ? `Cohort B has ${analysis.evidence.cohortB.sampleSize} eligible properties`
-            : null
-        ].filter(
-            (
-            value
-            ): value is string =>
-            value !== null
-        )
-
-
+          .evidence
+          .comparisonSufficient
+      ) {
         return (
-        <section style={differenceSection}>
+          <section style={differenceSection}>
             <h3 style={cohortTitle}>
-            Insufficient Data
+              Median Difference Not Calculated
             </h3>
 
             <p style={insufficientEvidenceText}>
-            {insufficientCohorts.join(
-                '. '
-            )}
-            . A minimum of{' '}
-            {
-                analysis
-                .evidence
-                .minimumSampleSize
-            }{' '}
-            eligible properties is required in each
-            cohort to calculate the observed median
-            difference between Cohort A and Cohort B.
+              Cohort A contains{' '}
+              <strong>
+                {analysis.evidence.cohortA.sampleSize}
+              </strong>{' '}
+              eligible{' '}
+              {
+                analysis.evidence.cohortA.sampleSize === 1
+                  ? 'property'
+                  : 'properties'
+              }
+              , and Cohort B contains{' '}
+              <strong>
+                {analysis.evidence.cohortB.sampleSize}
+              </strong>{' '}
+              eligible{' '}
+              {
+                analysis.evidence.cohortB.sampleSize === 1
+                  ? 'property'
+                  : 'properties'
+              }.
+              {' '}At least{' '}
+              <strong>
+                {analysis.evidence.minimumSampleSize}
+              </strong>{' '}
+              eligible properties are required in each
+              cohort to calculate the observed median
+              difference between Cohort A and Cohort B.
             </p>
-        </section>
+          </section>
         )
-    }
-
+      }
 
   const referenceLabel =
     medianDifference

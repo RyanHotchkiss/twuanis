@@ -2186,7 +2186,7 @@ function ConstructionLandRelationshipStatistics({
         />
 
 
-        <MarketStatisticCard
+      <MarketStatisticCard
           label="Spearman Rank Correlation (ρ)"
           value={
             formatCorrelation(
@@ -2196,8 +2196,8 @@ function ConstructionLandRelationshipStatistics({
           }
           description={
             evidence.hasSufficientEvidence
-              ? 'Calculated from the ranked populated Construction-to-Land cohort coordinates.'
-              : 'Not calculated because the complete evidence threshold is not satisfied.'
+              ? `Calculated from ${evidence.populatedCohortCount} populated cohorts representing ${evidence.representedObservationCount} properties.`
+              : `Not calculated: ${evidence.populatedCohortCount} populated cohorts and ${evidence.representedObservationCount} properties are available; at least ${evidence.requiredPopulatedCohortCount} populated cohorts and ${evidence.requiredObservationCount} properties are required.`
           }
         />
       </div>
@@ -2289,46 +2289,44 @@ function ConstructionLandRelationshipSynthesis({
 
 
         <div style={synthesisCard}>
-          <p style={synthesisText}>
-            <strong>
-              Insufficient Data
-            </strong>
-            {' · '}
-            This selected market contains{' '}
-            <strong>
-              {evidence.populatedCohortCount}
-            </strong>{' '}
-            populated Construction-to-Land{' '}
-            {
-              evidence.populatedCohortCount === 1
-                ? 'cohort'
-                : 'cohorts'
-            }{' '}
-            representing{' '}
-            <strong>
-              {evidence.representedObservationCount}
-            </strong>{' '}
-            {
-              evidence.representedObservationCount === 1
-                ? 'property'
-                : 'properties'
-            }.
-            {' '}Spearman ρ requires at least{' '}
-            <strong>
-              {evidence.requiredPopulatedCohortCount}
-            </strong>{' '}
-            populated cohorts and{' '}
-            <strong>
-              {evidence.requiredObservationCount}
-            </strong>{' '}
-            represented properties.
-          </p>
+            <p style={synthesisText}>
+                Spearman ρ is not calculated for this
+                relationship. This selected market
+                contains{' '}
+                <strong>
+                  {evidence.populatedCohortCount}
+                </strong>{' '}
+                populated Construction-to-Land{' '}
+                {
+                  evidence.populatedCohortCount === 1
+                    ? 'cohort'
+                    : 'cohorts'
+                }{' '}
+                representing{' '}
+                <strong>
+                  {evidence.representedObservationCount}
+                </strong>{' '}
+                {
+                  evidence.representedObservationCount === 1
+                    ? 'property'
+                    : 'properties'
+                }.
+                {' '}The calculation requires at least{' '}
+                <strong>
+                  {evidence.requiredPopulatedCohortCount}
+                </strong>{' '}
+                populated cohorts and{' '}
+                <strong>
+                  {evidence.requiredObservationCount}
+                </strong>{' '}
+                represented properties.
+              </p>
 
 
           <div style={synthesisBoundary}>
-            No relationship conclusion is
-            presented because the complete
-            evidence threshold is not satisfied.
+            No relationship conclusion is calculated
+            unless both population requirements shown
+            above are met.
           </div>
         </div>
       </section>
@@ -2553,18 +2551,13 @@ function SizeRelationshipEvidence({
           </div>
         </div>
 
-        <div>
+      <div>
           <div style={evidenceValue}>
-            {
-              result.evidence
-                .hasSufficientBandEvidence
-                ? 'Sufficient'
-                : 'Insufficient'
-            }
+            3
           </div>
 
           <div style={cardLabel}>
-            Relationship evidence
+            Populated cohorts required
           </div>
         </div>
       </div>
@@ -2871,12 +2864,6 @@ function SizeRelationshipSynthesis({
             </p>
           )}
 
-
-          <p style={synthesisText}>
-            Insufficient cohort evidence to calculate
-            the overall {areaLabel.toLowerCase()} and
-            Price / {ratioLabel} relationship.
-          </p>
         </div>
       </section>
     )
@@ -3018,20 +3005,19 @@ function SizeRelationshipMethodology() {
         </div>
 
         <div>
-          <h3 style={methodologyTitle}>
-            Construct Area Cohorts
-          </h3>
+            <h3 style={methodologyTitle}>
+              Build Canonical Area Cohorts
+            </h3>
 
-          <p style={methodologyText}>
-            Twuanis groups comparable properties
-            into predefined area cohorts separately
-            for construction area and property
-            area. Empty cohorts remain part of the
-            analytical structure but do not
-            contribute coordinates to the
-            relationship analysis.
-          </p>
-        </div>
+            <p style={methodologyText}>
+              Twuanis assigns each eligible property to
+              exactly one canonical area cohort using its
+              exact reported area. Cohort boundaries are
+              applied directly without tolerance,
+              midpoint substitution, nearest-band
+              matching, or estimated area values.
+            </p>
+          </div>
       </div>
 
 
@@ -3065,17 +3051,18 @@ function SizeRelationshipMethodology() {
 
         <div>
           <h3 style={methodologyTitle}>
-            Require Sufficient Cohort Evidence
+            Apply the Relationship Calculation Requirement
           </h3>
 
           <p style={methodologyText}>
             Twuanis requires at least 3 populated
             area cohorts before calculating an
-            overall size relationship. Markets with
-            fewer populated cohorts may still show
-            their observed coordinates, but
-            relationship statistics and statistical
-            conclusions are withheld.
+            overall size relationship. When fewer
+            than 3 populated cohorts are available,
+            Twuanis reports the observed coordinates
+            and their property populations but does
+            not calculate the overall relationship
+            statistics.
           </p>
         </div>
       </div>
@@ -3092,12 +3079,12 @@ function SizeRelationshipMethodology() {
           </h3>
 
           <p style={methodologyText}>
-            When sufficient evidence exists,
-            Spearman rank correlation (ρ) measures
-            whether normalized Price / m² tends to
-            increase or decrease as area increases.
-            Because it operates on ranks, it
-            evaluates the monotonic relationship
+            When at least 3 populated area cohorts
+            are available, Spearman rank correlation
+            (ρ) measures whether normalized Price /
+            m² tends to increase or decrease as area
+            increases. Because it operates on ranks,
+            it evaluates the monotonic relationship
             across the observed cohort coordinates
             without requiring a linear relationship
             in the original units.
