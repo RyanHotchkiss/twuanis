@@ -1,6 +1,7 @@
 'use client'
 
 import {
+  useRef,
   useState
 } from 'react'
 
@@ -15,6 +16,10 @@ import PriceMeterCrossDimensionalResults
 import type {
   PriceMeterCrossDimensionalEvidenceSet
 } from '@/lib/price-meter-cross-dimensional-evidence'
+
+import type {
+  PriceMeterCrossDimensionalLanguage
+} from '@/lib/price-meter-cross-dimensional-presentation'
 
 type CrossDimensionalOption = {
   questionKey:
@@ -46,6 +51,9 @@ type PriceMeterCrossDimensionalResponse = {
 
 
 type Props = {
+  language?:
+    PriceMeterCrossDimensionalLanguage
+
   options:
     readonly CrossDimensionalOption[]
 
@@ -77,6 +85,7 @@ type Props = {
 
 
 export default function PriceMeterCrossDimensionalAnalysis({
+  language = 'en',
   options,
   filters,
   cohortKey,
@@ -84,6 +93,32 @@ export default function PriceMeterCrossDimensionalAnalysis({
   onCollapse,
   children
 }: Props) {
+
+    const isSpanish =
+      language ===
+        'es'
+
+    const transactionType =
+      filters.transaction_type ===
+        'sale' ||
+      filters.transaction_type ===
+        'rent'
+        ? filters.transaction_type
+        : null
+
+    const requestSequence =
+    useRef(
+      0
+    )
+
+
+  const activeRequestController =
+    useRef<
+      AbortController |
+      null
+    >(
+      null
+    )
 
   const [
     activeQuestionKey,
@@ -130,10 +165,49 @@ export default function PriceMeterCrossDimensionalAnalysis({
     )
 
 
-  async function handleSelection(
-    questionKey:
-      PriceMeterCrossDimensionalQuestionKey
-  ) {
+    async function handleSelection(
+        questionKey:
+          PriceMeterCrossDimensionalQuestionKey
+      ) {
+
+    if (
+        transactionType ===
+          null
+      ) {
+        setResult(
+          null
+        )
+
+        setError(
+          isSpanish
+            ? 'El Análisis Multidimensional requiere un tipo de transacción explícito de Venta o Alquiler.'
+            : 'Cross-Dimensional analysis requires an explicit Sale or Rent transaction type.'
+        )
+
+        return
+      }
+
+    /*
+     * Every selection invalidates the response authority
+     * of any earlier request.
+     */
+
+    requestSequence.current +=
+      1
+
+
+    const requestId =
+      requestSequence.current
+
+
+    activeRequestController
+      .current
+      ?.abort()
+
+
+    activeRequestController.current =
+      null
+
 
     /*
      * Clicking the active question again collapses the
@@ -202,9 +276,17 @@ export default function PriceMeterCrossDimensionalAnalysis({
       null
     )
 
-    setLoading(
+        setLoading(
       true
     )
+
+
+    const controller =
+      new AbortController()
+
+
+    activeRequestController.current =
+      controller
 
 
     try {
@@ -233,6 +315,9 @@ export default function PriceMeterCrossDimensionalAnalysis({
             method:
               'POST',
 
+            signal:
+              controller.signal,
+
             headers: {
               'Content-Type':
                 'application/json'
@@ -260,26 +345,26 @@ export default function PriceMeterCrossDimensionalAnalysis({
        * dimensions before an earlier request completes.
        */
 
-      if (
-        activeQuestionKey !==
-          null &&
-        activeQuestionKey !==
-          questionKey
-      ) {
-        return
-      }
+        if (
+          requestId !==
+            requestSequence.current
+        ) {
+          return
+        }
 
 
       if (
-        !response.ok
-      ) {
-        throw new Error(
-          typeof payload?.error ===
-            'string'
-            ? payload.error
-            : 'Cross-Dimensional analysis failed.'
-        )
-      }
+          !response.ok
+        ) {
+          throw new Error(
+            isSpanish
+              ? 'No se pudo completar el Análisis Multidimensional para la población seleccionada.'
+              : typeof payload?.error ===
+                  'string'
+                ? payload.error
+                : 'Cross-Dimensional analysis failed.'
+          )
+        }
 
 
       const nextResult =
@@ -296,9 +381,27 @@ export default function PriceMeterCrossDimensionalAnalysis({
         nextResult
       )
     }
-    catch (
+        catch (
       caughtError
     ) {
+
+      if (
+        requestId !==
+          requestSequence.current
+      ) {
+        return
+      }
+
+
+      if (
+        caughtError instanceof
+          DOMException &&
+        caughtError.name ===
+          'AbortError'
+      ) {
+        return
+      }
+
 
       setResult(
         null
@@ -308,13 +411,24 @@ export default function PriceMeterCrossDimensionalAnalysis({
       setError(
         caughtError instanceof Error
           ? caughtError.message
-          : 'Cross-Dimensional analysis failed.'
+          : isSpanish
+          ? 'Falló el Análisis Multidimensional.'
+          : 'Cross-Dimensional analysis failed.'
       )
     }
     finally {
-      setLoading(
-        false
-      )
+
+      if (
+        requestId ===
+          requestSequence.current
+      ) {
+        activeRequestController.current =
+          null
+
+        setLoading(
+          false
+        )
+      }
     }
   }
 
@@ -323,18 +437,23 @@ export default function PriceMeterCrossDimensionalAnalysis({
     <section style={container}>
       <div style={header}>
         <h3 style={title}>
-          Cross-Dimensional Analysis
+          {isSpanish
+            ? 'Análisis Multidimensional'
+            : 'Cross-Dimensional Analysis'}
         </h3>
 
         <p style={description}>
-          Examine this Price / m² relationship
-          across one additional market dimension.
+          {isSpanish
+            ? 'Examine esta relación de Precio / m² a través de una dimensión adicional del mercado.'
+            : 'Examine this Price / m² relationship across one additional market dimension.'}
         </p>
       </div>
 
 
       <div style={selectorLabel}>
-        Analyze across:
+        {isSpanish
+          ? 'Analizar a través de:'
+          : 'Analyze across:'}
       </div>
 
 
@@ -393,7 +512,9 @@ export default function PriceMeterCrossDimensionalAnalysis({
 
           {loading && (
             <div style={statusText}>
-              Calculating Cross-Dimensional evidence…
+              {isSpanish
+                ? 'Calculando evidencia multidimensional…'
+                : 'Calculating Cross-Dimensional evidence…'}
             </div>
           )}
 
@@ -406,11 +527,18 @@ export default function PriceMeterCrossDimensionalAnalysis({
           )}
 
 
-                    {!loading &&
+          {!loading &&
             !error &&
-            result && (
+            result &&
+            transactionType !== null && (
             <>
               <PriceMeterCrossDimensionalResults
+                language={
+                  language
+                }
+                transactionType={
+                    transactionType
+                  }
                 question={
                   result.question
                 }

@@ -281,25 +281,24 @@ const navButton = {
 
       async function fetchListings() {
 
-const { data, error } = await supabase
-  .from('listings')
-  .select('*')
-  .eq('transaction_type', 'sale')
-  .eq('listing_status', 'active')
+const response =
+  await fetch(
+    '/api/public-listings?transaction=sale'
+  )
 
-  if (error) {
+if (!response.ok) {
+  throw new Error(
+    `Listing request failed: ${response.status}`
+  )
+}
 
-    console.error(
-      JSON.stringify(error, null, 2)
-    )
+const payload =
+  await response.json()
 
-    setProperties([])
-
-    setLoading(false)
-
-    return
-
-  }
+const data =
+  Array.isArray(payload.listings)
+    ? payload.listings
+    : []
 
 
 

@@ -1,5 +1,8 @@
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
+import {
+  getPublicListingById
+} from '@/lib/public-listings-server'
 import JsonLd from '@/app/components/JsonLd'
 import TopBar from '@/app/components/TopBar'
 import ListingActivityTracker from '@/app/components/ListingActivityTracker'
@@ -30,6 +33,9 @@ import {
   resolveListingImages
 } from '@/app/utils/resolveListingImages'
 
+import PriceMeterComparableListing
+  from '@/app/components/PriceMeterComparableListing'
+
 export default async function ListingPage({
   params
 }: {
@@ -37,26 +43,25 @@ export default async function ListingPage({
 }) {
   const { id } = await params
 
-const { data, error } = await supabase
-                    .from('listings')
-                    .select('*')
-                    .eq('id', id)
-                    .single()
+const data =
+  await getPublicListingById(
+    id
+  )
 
-                    if (error || !data) {
-                    return (
-                        <main
-                        style={{
-                            background: '#000',
-                            minHeight: '100vh',
-                            color: '#fff',
-                            padding: '2rem'
-                        }}
-                        >
-                        Propiedad No Encontrada
-                        </main>
-                    )
-                    }
+if (!data) {
+  return (
+    <main
+      style={{
+        background: '#000',
+        minHeight: '100vh',
+        color: '#fff',
+        padding: '2rem'
+      }}
+    >
+      Propiedad No Encontrada
+    </main>
+  )
+}
 
                     const listing = {
                     ...data,
@@ -320,7 +325,6 @@ return (
               canton={listing.canton}
               district={listing.district}
               propertyType={listing.property_type}
-              whatsapp={listing.whatsapp}
               transactionType="buy"
               language="es"
             />
@@ -648,19 +652,6 @@ return (
 
             </div>
 
-            {/* WHATSAPP */}
-            <div>
-
-            <span style={label}>
-                WhatsApp
-            </span>
-
-            <div style={entityCard}>
-                {listing.whatsapp}
-            </div>
-
-            </div>
-
             </div>
 
             {/* CONTACT BUTTON */}
@@ -746,11 +737,16 @@ return (
                   }
                 />
 
-                <StatCard
+              <StatCard
                   label="Confianza"
                   value={`${valuation.summary.confidenceScore} · ${valuation.summary.confidenceLabel}`}
                 />
               </div>
+
+              <PriceMeterComparableListing
+                listingId={listing.id}
+                lang="es"
+              />
 
     </main>
 

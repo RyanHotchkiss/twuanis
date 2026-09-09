@@ -17,10 +17,6 @@ import type {
 } from '@/lib/comparisons/types'
 
 import {
-  supabase
-} from '@/lib/supabase'
-
-import {
   getUserPropertyNotes
 } from '@/lib/property-notes'
 
@@ -72,7 +68,6 @@ type PropertyComparisonListing = {
     | string[]
     | string
     | null
-  source_url: string | null
 }
 
 type ComparisonRow = {
@@ -148,44 +143,39 @@ export default function PropertyComparisonEngine({
         setLoading(true)
         setError(null)
 
-        const {
-          data,
-          error: listingsError
-        } = await supabase
-          .from('listings')
-          .select(`
-            id,
-            title,
-            images,
-            province,
-            canton,
-            district,
-            transaction_type,
-            currency,
-            price_millions,
-            monthly_price,
-            property_type,
-            bedrooms,
-            bathrooms,
-            parking,
-            year_built_range,
-            construction_area,
-            property_area,
-            utility,
-            environment,
-            accessibility,
-            terrain,
-            legal_status,
-            source_url
-          `)
-          .in(
-            'id',
-            propertyIds
-          )
+    const response =
+        await fetch(
+          '/api/public-listings/by-ids',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type':
+                'application/json'
+            },
+            body: JSON.stringify({
+              listingIds:
+                propertyIds
+            })
+          }
+        )
 
-        if (listingsError) {
-          throw listingsError
-        }
+      if (!response.ok) {
+        throw new Error(
+          'Unable to load comparison listings.'
+        )
+      }
+
+      const result =
+        await response.json()
+
+      const data:
+        PropertyComparisonListing[] =
+        Array.isArray(
+          result?.listings
+        )
+          ? result.listings as
+              PropertyComparisonListing[]
+          : []
 
         const listingMap =
           new Map(
@@ -662,18 +652,6 @@ const image =
           </div>
         )}
 
-        {listing.source_url && (
-          <a
-            href={listing.source_url}
-            target="_blank"
-            rel="noreferrer"
-            style={sourceLink}
-          >
-            {spanish
-                ? 'Ver propiedad'
-                : 'View listing'}
-          </a>
-        )}
       </div>
     </article>
   )
@@ -1039,13 +1017,6 @@ const propertyPrice = {
   paddingTop: '1rem',
   color: '#fff',
   fontSize: '1.05rem'
-}
-
-const sourceLink = {
-  marginTop: '.75rem',
-  color: '#bbb',
-  fontSize: '.8rem',
-  textDecoration: 'none'
 }
 
 const rowLabel = {

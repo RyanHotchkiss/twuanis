@@ -2,6 +2,14 @@ import PrecioMetroRelacionTamanoChart
   from './PrecioMetroRelacionTamanoChart'
 import PrecioMetroRelacionConstruccionTerrenoChart from './PrecioMetroRelacionConstruccionTerrenoChart'
 import PrecioMetroDistribucionConstruccionTerrenoChart from './PrecioMetroDistribucionConstruccionTerrenoChart'
+import PriceMeterCrossDimensionalAnalysis
+  from '@/app/price-per-square-meter/PriceMeterCrossDimensionalAnalysis'
+
+import type {
+  PriceMeterCrossDimensionalQuestionKey
+} from '@/lib/price-meter-cross-dimensional-question'
+
+
 type Distribution = {
   transactionType:
     'sale' | 'rent'
@@ -452,6 +460,142 @@ const cohortDefinitions:
     }
   ]
 
+const geographicCrossDimensionalOptions:
+  readonly {
+    questionKey:
+      PriceMeterCrossDimensionalQuestionKey
+
+    label:
+      string
+  }[] = [
+    {
+      questionKey:
+        'geography_by_property_area',
+
+      label:
+        'Área de la Propiedad'
+    },
+
+    {
+      questionKey:
+        'geography_by_construction_area',
+
+      label:
+        'Área de Construcción'
+    },
+
+    {
+      questionKey:
+        'geography_by_construction_to_land',
+
+      label:
+        'Construcción a Terreno'
+    }
+  ]
+
+
+const vacantLandGeographicCrossDimensionalOptions:
+  readonly {
+    questionKey:
+      PriceMeterCrossDimensionalQuestionKey
+
+    label:
+      string
+  }[] = [
+    {
+      questionKey:
+        'geography_by_property_area',
+
+      label:
+        'Área de la Propiedad'
+    }
+  ]
+
+
+const propertyAreaCrossDimensionalOptions:
+  readonly {
+    questionKey:
+      PriceMeterCrossDimensionalQuestionKey
+
+    label:
+      string
+  }[] = [
+    {
+      questionKey:
+        'property_area_by_geography',
+
+      label:
+        'Geografía'
+    },
+
+    {
+      questionKey:
+        'property_area_by_construction_to_land',
+
+      label:
+        'Construcción a Terreno'
+    }
+  ]
+
+
+const constructionAreaCrossDimensionalOptions:
+  readonly {
+    questionKey:
+      PriceMeterCrossDimensionalQuestionKey
+
+    label:
+      string
+  }[] = [
+    {
+      questionKey:
+        'construction_area_by_geography',
+
+      label:
+        'Geografía'
+    },
+
+    {
+      questionKey:
+        'construction_area_by_construction_to_land',
+
+      label:
+        'Construcción a Terreno'
+    }
+  ]
+
+
+const constructionLandCrossDimensionalOptions:
+  readonly {
+    questionKey:
+      PriceMeterCrossDimensionalQuestionKey
+
+    label:
+      string
+  }[] = [
+    {
+      questionKey:
+        'construction_to_land_by_geography',
+
+      label:
+        'Geografía'
+    },
+
+    {
+      questionKey:
+        'construction_to_land_by_property_area',
+
+      label:
+        'Área de la Propiedad'
+    },
+
+    {
+      questionKey:
+        'construction_to_land_by_construction_area',
+
+      label:
+        'Área de Construcción'
+    }
+  ]
 
 function formatPricePerM2(
   value:
@@ -3403,32 +3547,51 @@ export default function PriceMeterResults({
           </div>
 
 
-          {cohortDefinitions.map(
+                    {cohortDefinitions.map(
             definition => (
-              <GeographicPriceComparison
+              <div
                 key={
                   definition.key
                 }
-                scope={
-                  geographicScope
-                }
-                statistics={
-                  geographicStatistics[
+              >
+                <GeographicPriceComparison
+                  scope={
+                    geographicScope
+                  }
+                  statistics={
+                    geographicStatistics[
+                      definition.key
+                    ]
+                  }
+                  conclusion={
+                    geographicConclusions[
+                      definition.key
+                    ]
+                  }
+                  definition={
+                    definition
+                  }
+                  transactionType={
+                    transactionType
+                  }
+                />
+
+                <PriceMeterCrossDimensionalAnalysis
+                  language="es"
+                  options={
+                    definition.key ===
+                      'vacantLandLandNormalized'
+                      ? vacantLandGeographicCrossDimensionalOptions
+                      : geographicCrossDimensionalOptions
+                  }
+                  filters={
+                    filters
+                  }
+                  cohortKey={
                     definition.key
-                  ]
-                }
-                conclusion={
-                  geographicConclusions[
-                    definition.key
-                  ]
-                }
-                definition={
-                  definition
-                }
-                transactionType={
-                  transactionType
-                }
-              />
+                  }
+                />
+              </div>
             )
           )}
         </div>
@@ -3622,19 +3785,40 @@ export default function PriceMeterResults({
             ratioLabel="m² de construcción"
           />
 
+            <PriceMeterCrossDimensionalAnalysis
+              language="es"
+              options={
+                constructionAreaCrossDimensionalOptions
+              }
+              filters={
+                filters
+              }
+              cohortKey="improvedConstructionNormalized"
+            />
 
-                    <SizeRelationshipSynthesis
-            title="Síntesis del Área de la Propiedad"
-            relationship={
-              propertySizeRelationship
-            }
-            areaLabel="Área de la Propiedad"
-            ratioLabel="m² de terreno"
-          />
+        <SizeRelationshipSynthesis
+          title="Síntesis del Área de la Propiedad"
+          relationship={
+            propertySizeRelationship
+          }
+          areaLabel="Área de la Propiedad"
+          ratioLabel="m² de terreno"
+        />
+
+        <PriceMeterCrossDimensionalAnalysis
+          language="es"
+          options={
+            propertyAreaCrossDimensionalOptions
+          }
+          filters={
+            filters
+          }
+          cohortKey="improvedLandNormalized"
+        />
+        </div>
         </div>
 
-
-        <div style={methodologyPresentation}>
+        <div style={methodologyPresentation}><div style={methodologyPresentation}>
           <div style={presentationHeader}>
             <div>
               <h2 style={sectionTitle}>
@@ -3873,6 +4057,16 @@ export default function PriceMeterResults({
             couplingDescription="La Relación de Construcción a Terreno es C / L y el Precio / m² normalizado por terreno es P / L, por lo que ambas mediciones comparten el Área de la Propiedad (L)."
           />
 
+          <PriceMeterCrossDimensionalAnalysis
+            language="es"
+            options={
+              constructionLandCrossDimensionalOptions
+            }
+            filters={
+              filters
+            }
+            cohortKey="improvedLandNormalized"
+          />
 
           <ConstructionLandRelationshipStatistics
             title="Relación Normalizada por Construcción"
@@ -3916,15 +4110,15 @@ export default function PriceMeterResults({
           />
 
 
-          <ConstructionLandRelationshipSynthesis
-            title="Síntesis de la Relación Normalizada por Construcción"
-            relationship={
-              constructionLandAnalysis
-                .relationships
-                .constructionNormalized
+          <PriceMeterCrossDimensionalAnalysis
+            language="es"
+            options={
+              constructionLandCrossDimensionalOptions
             }
-            normalizationLabel="normalizado por construcción"
-            couplingDescription="la Relación de Construcción a Terreno es C / L y el Precio / m² normalizado por construcción es P / C, por lo que el Área de Construcción (C) aparece en ambas mediciones."
+            filters={
+              filters
+            }
+            cohortKey="improvedConstructionNormalized"
           />
         </div>
 

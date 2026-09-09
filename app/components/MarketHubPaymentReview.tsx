@@ -287,16 +287,12 @@ export default function MarketHubPaymentReview({
           return
         }
 
-        const {
+      const {
           data: reviewerData,
           error: reviewerError
         } =
           await supabase.rpc(
-            'is_payment_reviewer',
-            {
-              p_user_id:
-                user.id
-            }
+            'is_current_user_payment_reviewer'
           )
 
         if (

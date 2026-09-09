@@ -97,6 +97,31 @@ type SupportedLanguage =
   | 'en'
   | 'es'
 
+type PublicSavedListing = {
+  id: string
+  title: string | null
+  images: unknown
+  province: string | null
+  canton: string | null
+  district: string | null
+  transaction_type: string | null
+  currency: string | null
+  price_millions:
+    | number
+    | string
+    | null
+  monthly_price:
+    | number
+    | string
+    | null
+}
+
+type PublicNoteListing = {
+  id: string
+  title: string | null
+  transaction_type: string | null
+}
+
 export type MarketHubSavedProperty = {
   id: string
   title: string
@@ -556,36 +581,42 @@ export default function MarketHubFavorites({
           return
         }
 
-        const {
-          data,
-          error
-        } = await supabase
-          .from('listings')
-          .select(`
-            id,
-            title,
-            images,
-            province,
-            canton,
-            district,
-            transaction_type,
-            currency,
-            price_millions,
-            monthly_price
-          `)
-          .in(
-            'id',
-            supabaseIds
-          )
+        const response =
+            await fetch(
+              '/api/public-listings/by-ids',
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type':
+                    'application/json'
+                },
+                body: JSON.stringify({
+                  listingIds:
+                    supabaseIds
+                })
+              }
+            )
 
-        if (error) {
-          console.error(
-            'MARKETHUB FAVORITES ERROR:',
-            error
-          )
+          if (!response.ok) {
+            console.error(
+              'MARKETHUB FAVORITES ERROR:',
+              response.status
+            )
 
-          return
-        }
+            return
+          }
+
+          const result =
+            await response.json()
+
+          const data:
+            PublicSavedListing[] =
+            Array.isArray(
+              result?.listings
+            )
+              ? result.listings as
+                  PublicSavedListing[]
+              : []
 
         const properties:
           MarketHubSavedProperty[] =
@@ -671,29 +702,41 @@ export default function MarketHubFavorites({
               )
             ]
 
-            const {
-              data: listings,
-              error
-            } = await supabase
-              .from('listings')
-              .select(`
-                id,
-                title,
-                transaction_type
-              `)
-              .in(
-                'id',
-                listingIds
-              )
+        const response =
+            await fetch(
+              '/api/public-listings/by-ids',
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type':
+                    'application/json'
+                },
+                body: JSON.stringify({
+                  listingIds
+                })
+              }
+            )
 
-            if (error) {
-              console.error(
-                'MARKETHUB PROPERTY NOTES LISTINGS ERROR:',
-                error
-              )
+          if (!response.ok) {
+            console.error(
+              'MARKETHUB PROPERTY NOTES LISTINGS ERROR:',
+              response.status
+            )
 
-              return
-            }
+            return
+          }
+
+          const result =
+            await response.json()
+
+          const listings:
+            PublicNoteListing[] =
+            Array.isArray(
+              result?.listings
+            )
+              ? result.listings as
+                  PublicNoteListing[]
+              : []
 
             const listingsById =
               new Map(

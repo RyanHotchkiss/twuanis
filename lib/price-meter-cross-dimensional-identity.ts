@@ -119,11 +119,15 @@ export type PriceMeterCrossDimensionalIdentity<
 
 function assertOwningPhaseIdentity({
   owningPhase,
+  secondaryDimension,
   propertyBasis,
   normalizationBasis
 }: {
   owningPhase:
     PriceMeterCrossDimensionalOwningPhase
+
+  secondaryDimension:
+    PriceMeterCrossDimensionalSecondaryDimension
 
   propertyBasis:
     PriceMeterPropertyBasis
@@ -131,6 +135,19 @@ function assertOwningPhaseIdentity({
   normalizationBasis:
     PriceMeterNormalizationBasis
 }): void {
+
+  if (
+    owningPhase ===
+      'phase_7_geography' &&
+    propertyBasis ===
+      'land_only' &&
+    secondaryDimension !==
+      'property_area'
+  ) {
+    throw new Error(
+      'Phase 7 Vacant Land Cross-Dimensional analysis permits Property Area as its only secondary dimension.'
+    )
+  }
 
   if (
     owningPhase ===
@@ -263,6 +280,9 @@ export function resolvePriceMeterCrossDimensionalIdentity<
   assertOwningPhaseIdentity({
     owningPhase:
       question.owningPhase,
+
+    secondaryDimension:
+      question.secondaryDimension,
 
     propertyBasis:
       cohort.propertyBasis,

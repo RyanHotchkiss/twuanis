@@ -1,8 +1,10 @@
 import HomePageClient from './HomePageClient'
-import { supabase } from '@/lib/supabase'
 import {
   supabaseAdmin
 } from '@/lib/supabase-admin'
+import {
+  getPublicListings
+} from '@/lib/public-listings-server'
 import { buildHomePageSchema }
 from '@/lib/schema/buildHomePageSchema'
 
@@ -12,22 +14,20 @@ import {
 
 export default async function HomePage() {
 
-  const { data: ontologyTerms }
-    = await supabase
-        .from('ontology_terms')
-        .select('*')
+const { data: ontologyTerms }
+  = await supabaseAdmin
+      .from('ontology_terms')
+      .select('*')
 
-  const { data: ontologyRelationships }
-    = await supabase
-        .from('ontology_relationships')
-        .select('*')
+const { data: ontologyRelationships }
+  = await supabaseAdmin
+      .from('ontology_relationships')
+      .select('*')
 
-  const { data: listings }
-    = await supabase
-        .from('listings')
-        .select('*')
-        .eq('transaction_type', 'sale')
-        .eq('listing_status', 'active')
+const listings =
+  await getPublicListings(
+    'sale'
+  )
 
   const homepagePlacement =
     await resolveMarketplacePlacement({

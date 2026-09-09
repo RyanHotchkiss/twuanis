@@ -1,5 +1,10 @@
 
 import { supabase } from '@/lib/supabase'
+
+import {
+  getPublicListingsByIds
+} from '@/lib/public-listings-server'
+
 import { createListingId } from '@/lib/createListingId'
 
 import {
@@ -89,22 +94,31 @@ export async function getEntity(
   let listings: any[] = []
 
   if (listingIds.length > 0) {
-    const { data: listingData } = await supabase
-      .from('listings')
-      .select('*')
-      .in('id', listingIds)
-      .order('id', { ascending: false })
+  const listingData =
+    await getPublicListingsByIds(
+      listingIds
+    )
 
-    listings =
-      listingData?.map((listing: any) => ({
+  listings =
+    listingData
+      .map((listing: any) => ({
         ...listing,
-        id: createListingId(listing),
+        id: createListingId(
+          listing
+        ),
         images:
           resolveListingImages(
             listing.images
           )
-    })) || []
-  }
+      }))
+      .sort(
+        (left, right) =>
+          String(right.id)
+            .localeCompare(
+              String(left.id)
+            )
+      )
+}
 
   let relatedEntities: any[] = []
 

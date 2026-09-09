@@ -4,8 +4,8 @@ import {
 } from 'next/server'
 
 import {
-  getPriceMeterAnalysis
-} from '@/lib/price-meter-engine'
+  loadPriceMeterObservations
+} from '@/lib/price-meter-observation-loader'
 
 import {
   buildPriceMeterTransactionCohorts
@@ -49,36 +49,6 @@ type RequestBody = {
     | 'improvedConstructionNormalized'
 }
 
-
-const AUTHORIZED_QUESTION_KEYS =
-  new Set<
-    PriceMeterCrossDimensionalQuestionKey
-  >([
-    'geography_by_property_area',
-    'geography_by_construction_area',
-    'geography_by_construction_to_land',
-    'property_area_by_geography',
-    'property_area_by_construction_to_land',
-    'construction_area_by_geography',
-    'construction_area_by_construction_to_land',
-    'construction_to_land_by_geography',
-    'construction_to_land_by_property_area',
-    'construction_to_land_by_construction_area'
-  ])
-
-
-function isAuthorizedQuestionKey(
-  value:
-    string
-): value is PriceMeterCrossDimensionalQuestionKey {
-
-  return AUTHORIZED_QUESTION_KEYS.has(
-    value as
-      PriceMeterCrossDimensionalQuestionKey
-  )
-}
-
-
 export async function POST(
   request:
     NextRequest
@@ -89,12 +59,42 @@ export async function POST(
         RequestBody
 
 
-    if (
-      !body.questionKey ||
-      !isAuthorizedQuestionKey(
-        body.questionKey
-      )
+        if (
+      !body.questionKey
     ) {
+      return NextResponse.json(
+        {
+          error:
+            'An authorized Cross-Dimensional question is required.'
+        },
+        {
+          status:
+            400
+        }
+      )
+    }
+
+
+    let questionKey:
+      PriceMeterCrossDimensionalQuestionKey
+
+    let question:
+      ReturnType<
+        typeof getPriceMeterCrossDimensionalQuestion
+      >
+
+
+        try {
+          questionKey =
+            body.questionKey as
+              PriceMeterCrossDimensionalQuestionKey
+
+          question =
+            getPriceMeterCrossDimensionalQuestion(
+              questionKey
+            )
+        }
+    catch {
       return NextResponse.json(
         {
           error:
@@ -158,35 +158,37 @@ export async function POST(
      * No alternative questions are calculated here.
      */
 
-    const question =
-      getPriceMeterCrossDimensionalQuestion(
-        body.questionKey
-      )
+          /*
+     * The canonical question was resolved above before
+     * any market loading occurred.
+     *
+     * Invalid questions therefore fail before the
+     * computational boundary is crossed.
+     */
 
-
-    /*
+        /*
      * -----------------------------------------------------
-     * RECONSTRUCT THE EXISTING BOUNDED MARKET
+     * LOAD THE EXISTING BOUNDED MARKET
      * -----------------------------------------------------
      *
      * This executes only after the explicit POST generated
      * by a user selection.
      *
-     * The ordinary Price / m² engine applies the same
-     * upstream market filters and canonical observation
-     * construction used by the owning Phase 7–9 analysis.
+     * The canonical Price / m² observation loader applies
+     * the bounded market filters, canonical geography,
+     * analytical date, FX identity, analytical identity,
+     * and observation construction.
+     *
+     * It does NOT execute the ordinary Phase 6–10
+     * analytical pipeline.
      */
 
-    const marketAnalysis =
-      await getPriceMeterAnalysis(
-        body.filters,
-        'en'
+        const {
+      observations
+    } =
+      await loadPriceMeterObservations(
+        body.filters
       )
-
-
-    const observations =
-      marketAnalysis
-        .observations
 
 
     /*
@@ -377,8 +379,7 @@ export async function POST(
 
     const identity =
       resolvePriceMeterCrossDimensionalIdentity({
-        questionKey:
-          body.questionKey,
+        questionKey,
 
         cohort:
           analyticalCohort,

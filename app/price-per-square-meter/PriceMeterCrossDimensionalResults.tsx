@@ -14,12 +14,23 @@ import {
   type PriceMeterCrossDimensionalNonEstablishment
 } from '@/lib/price-meter-cross-dimensional-outcomes'
 
+import {
+  buildPriceMeterCrossDimensionalSynthesis,
+  type PriceMeterCrossDimensionalSynthesis
+} from '@/lib/price-meter-cross-dimensional-synthesis'
+
 import type {
   PriceMeterCrossDimensionalQuestionDefinition
 } from '@/lib/price-meter-cross-dimensional-question'
 
 
 type Props = {
+  language:
+    PriceMeterCrossDimensionalLanguage
+
+  transactionType:
+    'sale' | 'rent'
+
   question:
     PriceMeterCrossDimensionalQuestionDefinition
 
@@ -27,6 +38,10 @@ type Props = {
     PriceMeterCrossDimensionalEvidenceSet
 }
 
+import {
+  getPriceMeterCrossDimensionalPresentation,
+  type PriceMeterCrossDimensionalLanguage
+} from '@/lib/price-meter-cross-dimensional-presentation'
 
 function formatInteger(
   value:
@@ -163,7 +178,13 @@ function formatSignedPercent(
 
 function formatPricePerM2(
   value:
-    number | null
+    number | null,
+
+  transactionType:
+    'sale' | 'rent',
+
+  language:
+    PriceMeterCrossDimensionalLanguage
 ): string {
 
   if (
@@ -177,21 +198,42 @@ function formatPricePerM2(
   }
 
 
-  return `₡${new Intl.NumberFormat(
-    'en-US',
-    {
-      maximumFractionDigits:
-        0
-    }
-  ).format(
-    value
-  )}/m²`
+  const formatted =
+    `₡${new Intl.NumberFormat(
+      'en-US',
+      {
+        maximumFractionDigits:
+          0
+      }
+    ).format(
+      value
+    )}/m²`
+
+
+  if (
+    transactionType ===
+      'sale'
+  ) {
+    return formatted
+  }
+
+
+  return language ===
+    'es'
+      ? `${formatted}/mes`
+      : `${formatted}/month`
 }
 
 
 function formatSignedPricePerM2(
   value:
-    number | null
+    number | null,
+
+  transactionType:
+    'sale' | 'rent',
+
+  language:
+    PriceMeterCrossDimensionalLanguage
 ): string {
 
   if (
@@ -205,7 +247,7 @@ function formatSignedPricePerM2(
   }
 
 
-  const absolute =
+  const absoluteBase =
     `₡${new Intl.NumberFormat(
       'en-US',
       {
@@ -217,6 +259,16 @@ function formatSignedPricePerM2(
         value
       )
     )}/m²`
+
+
+  const absolute =
+    transactionType ===
+      'rent'
+      ? language ===
+          'es'
+        ? `${absoluteBase}/mes`
+        : `${absoluteBase}/month`
+      : absoluteBase
 
 
   if (
@@ -277,29 +329,52 @@ function formatRatio(
 
 
 function EvidenceStatus({
-  status
+  status,
+  language
 }: {
   status:
     PriceMeterCrossDimensionalEvidence['status']
+
+  language:
+    PriceMeterCrossDimensionalLanguage
 }) {
 
   return (
     <span style={statusValue}>
       {status ===
         'established'
-        ? 'Established'
-        : 'Not established'}
+        ? language ===
+            'es'
+          ? 'Establecida'
+          : 'Established'
+        : language ===
+            'es'
+          ? 'No establecida'
+          : 'Not established'}
     </span>
   )
 }
 
 
 function GeographicEvidence({
-  evidence
+  evidence,
+  transactionType,
+  language
 }: {
   evidence:
     PriceMeterCrossDimensionalGeographicEvidence
+
+  transactionType:
+    'sale' | 'rent'
+
+  language:
+    PriceMeterCrossDimensionalLanguage
 }) {
+
+  const isSpanish =
+    language ===
+      'es'
+
 
   return (
     <div style={evidenceCard}>
@@ -314,7 +389,9 @@ function GeographicEvidence({
               evidence
                 .representedObservationCount
             )}{' '}
-            represented properties
+            {isSpanish
+              ? 'propiedades representadas'
+              : 'represented properties'}
           </div>
         </div>
 
@@ -322,31 +399,52 @@ function GeographicEvidence({
           status={
             evidence.status
           }
+          language={
+            language
+          }
         />
       </div>
 
 
       <div style={evidenceSummaryGrid}>
         <EvidenceMetric
-          label="Selected-market median"
+          label={
+            isSpanish
+              ? 'Mediana del mercado seleccionado'
+              : 'Selected-market median'
+          }
           value={
             formatPricePerM2(
               evidence
-                .selectedMarketMedianPricePerM2
+                .selectedMarketMedianPricePerM2,
+              transactionType,
+              language
             )
           }
         />
 
         <EvidenceMetric
-          label="Selected-market population"
+          label={
+            isSpanish
+              ? 'Población del mercado seleccionado'
+              : 'Selected-market population'
+          }
           value={`${formatInteger(
             evidence
               .selectedMarketSampleSize
-          )} properties`}
+          )} ${
+            isSpanish
+              ? 'propiedades'
+              : 'properties'
+          }`}
         />
 
         <EvidenceMetric
-          label="Compared geographies"
+          label={
+            isSpanish
+              ? 'Geografías comparadas'
+              : 'Compared geographies'
+          }
           value={
             formatInteger(
               evidence
@@ -366,27 +464,39 @@ function GeographicEvidence({
             <thead>
               <tr>
                 <th style={tableHeader}>
-                  Rank
+                  {isSpanish
+                    ? 'Posición'
+                    : 'Rank'}
                 </th>
 
                 <th style={tableHeader}>
-                  Geography
+                  {isSpanish
+                    ? 'Geografía'
+                    : 'Geography'}
                 </th>
 
                 <th style={tableHeaderRight}>
-                  Properties
+                  {isSpanish
+                    ? 'Propiedades'
+                    : 'Properties'}
                 </th>
 
                 <th style={tableHeaderRight}>
-                  Median Price / m²
+                  {isSpanish
+                    ? 'Precio / m² mediano'
+                    : 'Median Price / m²'}
                 </th>
 
                 <th style={tableHeaderRight}>
-                  Difference
+                  {isSpanish
+                    ? 'Diferencia'
+                    : 'Difference'}
                 </th>
 
                 <th style={tableHeaderRight}>
-                  % Difference
+                  % {isSpanish
+                    ? 'Diferencia'
+                    : 'Difference'}
                 </th>
               </tr>
             </thead>
@@ -421,17 +531,21 @@ function GeographicEvidence({
                       </td>
 
                       <td style={tableCellRight}>
-                        {formatPricePerM2(
+                        formatPricePerM2(
                           statistic
-                            .medianPricePerM2
-                        )}
+                            .medianPricePerM2,
+                          transactionType,
+                          language
+                        )
                       </td>
 
                       <td style={tableCellRight}>
-                        {formatSignedPricePerM2(
+                        formatSignedPricePerM2(
                           statistic
-                            .medianDifferenceFromSelectedMarket
-                        )}
+                            .medianDifferenceFromSelectedMarket,
+                          transactionType,
+                          language
+                        )
                       </td>
 
                       <td style={tableCellRight}>
@@ -453,11 +567,24 @@ function GeographicEvidence({
 
 
 function SizeEvidence({
-  evidence
+  evidence,
+  transactionType,
+  language
 }: {
   evidence:
     PriceMeterCrossDimensionalSizeEvidence
+
+  transactionType:
+    'sale' | 'rent'
+
+  language:
+    PriceMeterCrossDimensionalLanguage
 }) {
+
+  const isSpanish =
+    language ===
+      'es'
+
 
   return (
     <div style={evidenceCard}>
@@ -472,7 +599,9 @@ function SizeEvidence({
               evidence
                 .representedObservationCount
             )}{' '}
-            represented properties
+            {isSpanish
+              ? 'propiedades representadas'
+              : 'represented properties'}
           </div>
         </div>
 
@@ -480,20 +609,31 @@ function SizeEvidence({
           status={
             evidence.status
           }
+          language={
+            language
+          }
         />
       </div>
 
 
       <div style={evidenceSummaryGrid}>
         <EvidenceMetric
-          label="Populated area bands"
+          label={
+            isSpanish
+              ? 'Bandas de área con datos'
+              : 'Populated area bands'
+          }
           value={`${formatInteger(
             evidence
               .populatedBandCount
           )} / ${formatInteger(
             evidence
               .requiredPopulatedBandCount
-          )} required`}
+          )} ${
+            isSpanish
+              ? 'requeridas'
+              : 'required'
+          }`}
         />
 
         <EvidenceMetric
@@ -507,7 +647,11 @@ function SizeEvidence({
         />
 
         <EvidenceMetric
-          label="Log-log slope"
+          label={
+            isSpanish
+              ? 'Pendiente log-log'
+              : 'Log-log slope'
+          }
           value={
             formatSignedDecimal(
               evidence
@@ -517,7 +661,11 @@ function SizeEvidence({
         />
 
         <EvidenceMetric
-          label="Modeled 10% area change"
+          label={
+            isSpanish
+              ? 'Cambio modelado ante +10% de área'
+              : 'Modeled 10% area change'
+          }
           value={
             formatSignedPercent(
               evidence
@@ -542,12 +690,9 @@ function SizeEvidence({
         .modeledStatisticsAuthorization ===
         'withheld_mathematical_coupling' && (
         <div style={withheldNotice}>
-          Regression, modeled percentage
-          change, and R² are withheld for
-          this pairing because the selected
-          secondary dimension is
-          mathematically coupled to the
-          owning size relationship.
+          {isSpanish
+            ? 'La regresión, el cambio porcentual modelado y R² no se presentan para este emparejamiento porque la dimensión secundaria seleccionada está matemáticamente acoplada a la relación de tamaño analizada.'
+            : 'Regression, modeled percentage change, and R² are withheld for this pairing because the selected secondary dimension is mathematically coupled to the owning size relationship.'}
         </div>
       )}
 
@@ -559,15 +704,21 @@ function SizeEvidence({
             <thead>
               <tr>
                 <th style={tableHeader}>
-                  Area Coordinate
+                  {isSpanish
+                    ? 'Coordenada de Área'
+                    : 'Area Coordinate'}
                 </th>
 
                 <th style={tableHeaderRight}>
-                  Median Price / m²
+                  {isSpanish
+                    ? 'Precio / m² mediano'
+                    : 'Median Price / m²'}
                 </th>
 
                 <th style={tableHeaderRight}>
-                  Properties
+                  {isSpanish
+                    ? 'Propiedades'
+                    : 'Properties'}
                 </th>
               </tr>
             </thead>
@@ -593,7 +744,9 @@ function SizeEvidence({
                       <td style={tableCellRight}>
                         {formatPricePerM2(
                           coordinate
-                            .normalizedPricePerM2
+                            .normalizedPricePerM2,
+                          transactionType,
+                          language
                         )}
                       </td>
 
@@ -616,11 +769,24 @@ function SizeEvidence({
 
 
 function ConstructionLandEvidence({
-  evidence
+  evidence,
+  transactionType,
+  language
 }: {
   evidence:
     PriceMeterCrossDimensionalConstructionLandEvidence
+
+  transactionType:
+    'sale' | 'rent'
+
+  language:
+    PriceMeterCrossDimensionalLanguage
 }) {
+
+  const isSpanish =
+    language ===
+      'es'
+
 
   return (
     <div style={evidenceCard}>
@@ -635,7 +801,9 @@ function ConstructionLandEvidence({
               evidence
                 .representedObservationCount
             )}{' '}
-            represented properties
+            {isSpanish
+              ? 'propiedades representadas'
+              : 'represented properties'}
           </div>
         </div>
 
@@ -643,42 +811,69 @@ function ConstructionLandEvidence({
           status={
             evidence.status
           }
+          language={
+            language
+          }
         />
       </div>
 
 
       <div style={evidenceSummaryGrid}>
         <EvidenceMetric
-          label="Normalization"
+          label={
+            isSpanish
+              ? 'Normalización'
+              : 'Normalization'
+          }
           value={
             evidence
               .normalizationBasis ===
               'land'
-              ? 'Land'
-              : 'Construction'
+              ? isSpanish
+                ? 'Terreno'
+                : 'Land'
+              : isSpanish
+                ? 'Construcción'
+                : 'Construction'
           }
         />
 
         <EvidenceMetric
-          label="Populated ratio cohorts"
+          label={
+            isSpanish
+              ? 'Cohortes de razón con datos'
+              : 'Populated ratio cohorts'
+          }
           value={`${formatInteger(
             evidence
               .populatedCohortCount
           )} / ${formatInteger(
             evidence
               .requiredPopulatedCohortCount
-          )} required`}
+          )} ${
+            isSpanish
+              ? 'requeridas'
+              : 'required'
+          }`}
         />
 
         <EvidenceMetric
-          label="Properties represented"
+          label={
+            isSpanish
+              ? 'Propiedades representadas'
+              : 'Properties represented'
+          }
           value={`${formatInteger(
             evidence
               .representedObservationCount
           )} / ${formatInteger(
             evidence
               .requiredObservationCount
-          )} required`}
+          )} ${
+            isSpanish
+              ? 'requeridas'
+              : 'required'
+          }`}
         />
 
         <EvidenceMetric
@@ -694,11 +889,9 @@ function ConstructionLandEvidence({
 
 
       <div style={withheldNotice}>
-        Regression, modeled percentage
-        change, and R² are withheld because
-        the Construction-to-Land relationship
-        shares a mathematical component with
-        the normalized Price / m² calculation.
+        {isSpanish
+          ? 'La regresión, el cambio porcentual modelado y R² no se presentan porque la relación Construcción a Terreno comparte un componente matemático con el cálculo normalizado de Precio / m².'
+          : 'Regression, modeled percentage change, and R² are withheld because the Construction-to-Land relationship shares a mathematical component with the normalized Price / m² calculation.'}
       </div>
 
 
@@ -709,15 +902,21 @@ function ConstructionLandEvidence({
             <thead>
               <tr>
                 <th style={tableHeader}>
-                  Construction-to-Land
+                  {isSpanish
+                    ? 'Construcción a Terreno'
+                    : 'Construction-to-Land'}
                 </th>
 
                 <th style={tableHeaderRight}>
-                  Median Price / m²
+                  {isSpanish
+                    ? 'Precio / m² mediano'
+                    : 'Median Price / m²'}
                 </th>
 
                 <th style={tableHeaderRight}>
-                  Properties
+                  {isSpanish
+                    ? 'Propiedades'
+                    : 'Properties'}
                 </th>
               </tr>
             </thead>
@@ -743,7 +942,9 @@ function ConstructionLandEvidence({
                       <td style={tableCellRight}>
                         {formatPricePerM2(
                           coordinate
-                            .normalizedPricePerM2
+                            .normalizedPricePerM2,
+                          transactionType,
+                          language
                         )}
                       </td>
 
@@ -791,11 +992,24 @@ function EvidenceMetric({
 
 
 function EvidenceSection({
-  evidenceSet
+  evidenceSet,
+  transactionType,
+  language
 }: {
   evidenceSet:
     PriceMeterCrossDimensionalEvidenceSet
+
+  transactionType:
+    'sale' | 'rent'
+
+  language:
+    PriceMeterCrossDimensionalLanguage
 }) {
+
+  const isSpanish =
+    language ===
+      'es'
+
 
   if (
     evidenceSet.evidence.length ===
@@ -803,8 +1017,9 @@ function EvidenceSection({
   ) {
     return (
       <div style={emptyEvidence}>
-        No populated secondary populations
-        were represented in this analysis.
+        {isSpanish
+          ? 'No se representaron poblaciones secundarias con datos en este análisis.'
+          : 'No populated secondary populations were represented in this analysis.'}
       </div>
     )
   }
@@ -830,6 +1045,12 @@ function EvidenceSection({
                   evidence={
                     evidence
                   }
+                  transactionType={
+                    transactionType
+                  }
+                  language={
+                    language
+                  }
                 />
               )
             }
@@ -848,6 +1069,12 @@ function EvidenceSection({
                   evidence={
                     evidence
                   }
+                  transactionType={
+                    transactionType
+                  }
+                  language={
+                    language
+                  }
                 />
               )
             }
@@ -862,6 +1089,12 @@ function EvidenceSection({
                 evidence={
                   evidence
                 }
+                transactionType={
+                  transactionType
+                }
+                language={
+                  language
+                }
               />
             )
           }
@@ -872,11 +1105,19 @@ function EvidenceSection({
 
 
 function PersistenceSection({
-  outcomes
+  outcomes,
+  language
 }: {
   outcomes:
     PriceMeterCrossDimensionalOutcomes
+
+  language:
+    PriceMeterCrossDimensionalLanguage
 }) {
+
+  const isSpanish =
+    language ===
+      'es'
 
   const persistence =
     outcomes.persistence
@@ -884,23 +1125,32 @@ function PersistenceSection({
 
   return (
     <OutcomeCard
-      title="Persistence"
+      title={
+        isSpanish
+          ? 'Persistencia'
+          : 'Persistence'
+      }
     >
       <p style={outcomeText}>
-        The owning relationship was
-        established in{' '}
+        {isSpanish
+          ? 'La relación analizada se estableció en '
+          : 'The owning relationship was established in '}
         <strong>
           {formatInteger(
             persistence
               .establishedSecondaryCohortCount
           )}{' '}
-          of{' '}
+          {isSpanish
+            ? 'de'
+            : 'of'}{' '}
           {formatInteger(
             persistence
               .examinedSecondaryCohortCount
           )}
         </strong>{' '}
-        examined secondary populations
+        {isSpanish
+          ? 'poblaciones secundarias examinadas'
+          : 'examined secondary populations'}
         {persistence
           .persistenceRatePercent !==
           null
@@ -913,18 +1163,23 @@ function PersistenceSection({
       </p>
 
       <p style={outcomeDetail}>
-        Established populations represent{' '}
+        {isSpanish
+          ? 'Las poblaciones en las que se estableció la relación representan '
+          : 'Established populations represent '}
         {formatInteger(
           persistence
             .establishedObservationCount
         )}{' '}
-        properties. The complete represented
-        population contains{' '}
+        {isSpanish
+          ? 'propiedades. La población representada completa contiene '
+          : 'properties. The complete represented population contains '}
         {formatInteger(
           persistence
             .representedObservationCount
         )}{' '}
-        properties.
+        {isSpanish
+          ? 'propiedades.'
+          : 'properties.'}
       </p>
     </OutcomeCard>
   )
@@ -932,11 +1187,24 @@ function PersistenceSection({
 
 
 function VariationSection({
-  variation
+  variation,
+  transactionType,
+  language
 }: {
   variation:
     PriceMeterCrossDimensionalVariation | null
+
+  transactionType:
+    'sale' | 'rent'
+
+  language:
+    PriceMeterCrossDimensionalLanguage
 }) {
+
+  const isSpanish =
+    language ===
+      'es'
+
 
   if (
     variation ===
@@ -944,13 +1212,16 @@ function VariationSection({
   ) {
     return (
       <OutcomeCard
-        title="Variation"
+        title={
+          isSpanish
+            ? 'Variación'
+            : 'Variation'
+        }
       >
         <p style={outcomeText}>
-          No established secondary population
-          produced numerical relationship
-          evidence from which variation could
-          be calculated.
+          {isSpanish
+            ? 'Ninguna población secundaria en la que se estableció la relación produjo evidencia numérica de la relación a partir de la cual pudiera calcularse la variación.'
+            : 'No established secondary population produced numerical relationship evidence from which variation could be calculated.'}
         </p>
       </OutcomeCard>
     )
@@ -963,11 +1234,19 @@ function VariationSection({
   ) {
     return (
       <OutcomeCard
-        title="Variation"
+        title={
+          isSpanish
+            ? 'Variación'
+            : 'Variation'
+        }
       >
         <div style={outcomeMetricGrid}>
           <EvidenceMetric
-            label="Established populations"
+            label={
+              isSpanish
+                ? 'Poblaciones establecidas'
+                : 'Established populations'
+            }
             value={
               formatInteger(
                 variation
@@ -977,37 +1256,59 @@ function VariationSection({
           />
 
           <EvidenceMetric
-            label="Median-difference minimum"
+            label={
+              isSpanish
+                ? 'Diferencia mediana mínima'
+                : 'Median-difference minimum'
+            }
             value={
               formatSignedPricePerM2(
                 variation
-                  .observedMedianDifferenceMinimum
+                  .observedMedianDifferenceMinimum,
+                transactionType,
+                language
               )
             }
           />
 
           <EvidenceMetric
-            label="Median-difference maximum"
+            label={
+              isSpanish
+                ? 'Diferencia mediana máxima'
+                : 'Median-difference maximum'
+            }
             value={
               formatSignedPricePerM2(
                 variation
-                  .observedMedianDifferenceMaximum
+                  .observedMedianDifferenceMaximum,
+                transactionType,
+                language
               )
             }
           />
 
           <EvidenceMetric
-            label="Median-difference range"
+            label={
+              isSpanish
+                ? 'Rango de diferencia mediana'
+                : 'Median-difference range'
+            }
             value={
               formatPricePerM2(
                 variation
-                  .observedMedianDifferenceRange
+                  .observedMedianDifferenceRange,
+                transactionType,
+                language
               )
             }
           />
 
           <EvidenceMetric
-            label="% difference minimum"
+            label={
+              isSpanish
+                ? 'Diferencia % mínima'
+                : '% difference minimum'
+            }
             value={
               formatSignedPercent(
                 variation
@@ -1017,7 +1318,11 @@ function VariationSection({
           />
 
           <EvidenceMetric
-            label="% difference maximum"
+            label={
+              isSpanish
+                ? 'Diferencia % máxima'
+                : '% difference maximum'
+            }
             value={
               formatSignedPercent(
                 variation
@@ -1027,7 +1332,11 @@ function VariationSection({
           />
 
           <EvidenceMetric
-            label="% difference range"
+            label={
+              isSpanish
+                ? 'Rango de diferencia %'
+                : '% difference range'
+            }
             value={
               formatPercent(
                 variation
@@ -1047,11 +1356,19 @@ function VariationSection({
   ) {
     return (
       <OutcomeCard
-        title="Variation"
+        title={
+          isSpanish
+            ? 'Variación'
+            : 'Variation'
+        }
       >
         <div style={outcomeMetricGrid}>
           <EvidenceMetric
-            label="Established populations"
+            label={
+              isSpanish
+                ? 'Poblaciones establecidas'
+                : 'Established populations'
+            }
             value={
               formatInteger(
                 variation
@@ -1061,7 +1378,7 @@ function VariationSection({
           />
 
           <EvidenceMetric
-            label="ρ minimum"
+            label="ρ mínimo"
             value={
               formatSignedDecimal(
                 variation
@@ -1071,7 +1388,7 @@ function VariationSection({
           />
 
           <EvidenceMetric
-            label="ρ maximum"
+            label="ρ máximo"
             value={
               formatSignedDecimal(
                 variation
@@ -1081,7 +1398,11 @@ function VariationSection({
           />
 
           <EvidenceMetric
-            label="ρ range"
+            label={
+              isSpanish
+                ? 'Rango de ρ'
+                : 'ρ range'
+            }
             value={
               formatDecimal(
                 variation
@@ -1091,7 +1412,11 @@ function VariationSection({
           />
 
           <EvidenceMetric
-            label="Log-log slope minimum"
+            label={
+              isSpanish
+                ? 'Pendiente log-log mínima'
+                : 'Log-log slope minimum'
+            }
             value={
               formatSignedDecimal(
                 variation
@@ -1101,7 +1426,11 @@ function VariationSection({
           />
 
           <EvidenceMetric
-            label="Log-log slope maximum"
+            label={
+              isSpanish
+                ? 'Pendiente log-log máxima'
+                : 'Log-log slope maximum'
+            }
             value={
               formatSignedDecimal(
                 variation
@@ -1111,7 +1440,11 @@ function VariationSection({
           />
 
           <EvidenceMetric
-            label="Log-log slope range"
+            label={
+              isSpanish
+                ? 'Rango de pendiente log-log'
+                : 'Log-log slope range'
+            }
             value={
               formatDecimal(
                 variation
@@ -1121,7 +1454,11 @@ function VariationSection({
           />
 
           <EvidenceMetric
-            label="Modeled 10% change minimum"
+            label={
+              isSpanish
+                ? 'Cambio modelado mínimo ante +10% de área'
+                : 'Modeled 10% change minimum'
+            }
             value={
               formatSignedPercent(
                 variation
@@ -1131,7 +1468,11 @@ function VariationSection({
           />
 
           <EvidenceMetric
-            label="Modeled 10% change maximum"
+            label={
+              isSpanish
+                ? 'Cambio modelado máximo ante +10% de área'
+                : 'Modeled 10% change maximum'
+            }
             value={
               formatSignedPercent(
                 variation
@@ -1141,7 +1482,11 @@ function VariationSection({
           />
 
           <EvidenceMetric
-            label="Modeled 10% change range"
+            label={
+              isSpanish
+                ? 'Rango del cambio modelado ante +10% de área'
+                : 'Modeled 10% change range'
+            }
             value={
               formatPercent(
                 variation
@@ -1151,7 +1496,7 @@ function VariationSection({
           />
 
           <EvidenceMetric
-            label="R² minimum"
+            label="R² mínimo"
             value={
               formatDecimal(
                 variation
@@ -1161,7 +1506,7 @@ function VariationSection({
           />
 
           <EvidenceMetric
-            label="R² maximum"
+            label="R² máximo"
             value={
               formatDecimal(
                 variation
@@ -1171,7 +1516,11 @@ function VariationSection({
           />
 
           <EvidenceMetric
-            label="R² range"
+            label={
+              isSpanish
+                ? 'Rango de R²'
+                : 'R² range'
+            }
             value={
               formatDecimal(
                 variation
@@ -1187,11 +1536,19 @@ function VariationSection({
 
   return (
     <OutcomeCard
-      title="Variation"
+      title={
+        isSpanish
+          ? 'Variación'
+          : 'Variation'
+      }
     >
       <div style={outcomeMetricGrid}>
         <EvidenceMetric
-          label="Established populations"
+          label={
+            isSpanish
+              ? 'Poblaciones establecidas'
+              : 'Established populations'
+          }
           value={
             formatInteger(
               variation
@@ -1201,7 +1558,11 @@ function VariationSection({
         />
 
         <EvidenceMetric
-          label="ρ minimum"
+          label={
+            isSpanish
+              ? 'ρ mínimo'
+              : 'ρ minimum'
+          }
           value={
             formatSignedDecimal(
               variation
@@ -1211,7 +1572,11 @@ function VariationSection({
         />
 
         <EvidenceMetric
-          label="ρ maximum"
+          label={
+            isSpanish
+              ? 'ρ máximo'
+              : 'ρ maximum'
+          }
           value={
             formatSignedDecimal(
               variation
@@ -1221,7 +1586,11 @@ function VariationSection({
         />
 
         <EvidenceMetric
-          label="ρ range"
+          label={
+            isSpanish
+              ? 'Rango de ρ'
+              : 'ρ range'
+          }
           value={
             formatDecimal(
               variation
@@ -1236,22 +1605,39 @@ function VariationSection({
 
 
 function ReversalSection({
-  reversals
+  reversals,
+  transactionType,
+  language
 }: {
   reversals:
     PriceMeterCrossDimensionalReversal[]
+
+  transactionType:
+    'sale' | 'rent'
+
+  language:
+    PriceMeterCrossDimensionalLanguage
 }) {
+
+  const isSpanish =
+    language ===
+      'es'
+
 
   return (
     <OutcomeCard
-      title="Reversal"
+      title={
+        isSpanish
+          ? 'Reversión'
+          : 'Reversal'
+      }
     >
       {reversals.length ===
         0 ? (
         <p style={outcomeText}>
-          No reversal was observed between
-          the established secondary
-          populations.
+          {isSpanish
+            ? 'No se observó ninguna reversión entre las poblaciones secundarias en las que se estableció la relación.'
+            : 'No reversal was observed between the established secondary populations.'}
         </p>
       ) : (
         <div style={reversalList}>
@@ -1259,12 +1645,17 @@ function ReversalSection({
             {formatInteger(
               reversals.length
             )}{' '}
-            reversal
-            {reversals.length ===
-              1
-              ? ''
-              : 's'}{' '}
-            observed.
+            {isSpanish
+              ? reversals.length ===
+                  1
+                ? 'reversión observada.'
+                : 'reversiones observadas.'
+              : `reversal${
+                  reversals.length ===
+                    1
+                    ? ''
+                    : 's'
+                } observed.`}
           </p>
 
           {reversals.map(
@@ -1277,6 +1668,12 @@ function ReversalSection({
                 reversal={
                   reversal
                 }
+                transactionType={
+                  transactionType
+                }
+                language={
+                  language
+                }
               />
             )
           )}
@@ -1288,10 +1685,18 @@ function ReversalSection({
 
 
 function ReversalEvidence({
-  reversal
+  reversal,
+  transactionType,
+  language
 }: {
   reversal:
     PriceMeterCrossDimensionalReversal
+
+  transactionType:
+    'sale' | 'rent'
+
+  language:
+    PriceMeterCrossDimensionalLanguage
 }) {
 
   if (
@@ -1331,53 +1736,131 @@ function ReversalEvidence({
 
   return (
     <div style={reversalItem}>
-      Relative geographic ordering changed
-      between{' '}
       <strong>
         {
           reversal
             .firstSecondaryCohortLabel
         }
-      </strong>{' '}
-      and{' '}
+      </strong>
+      {': '}
+      {
+        reversal
+          .firstCohortFirstGeography
+          .geographyLabel
+      }{' '}
+      {formatPricePerM2(
+        reversal
+          .firstCohortFirstGeography
+          .medianPricePerM2,
+        transactionType,
+        language
+      )}{' '}
+      (n=
+      {formatInteger(
+        reversal
+          .firstCohortFirstGeography
+          .sampleSize
+      )})
+      {' > '}
+      {
+        reversal
+          .firstCohortSecondGeography
+          .geographyLabel
+      }{' '}
+      {formatPricePerM2(
+        reversal
+          .firstCohortSecondGeography
+          .medianPricePerM2,
+        transactionType,
+        language
+      )}{' '}
+      (n=
+      {formatInteger(
+        reversal
+          .firstCohortSecondGeography
+          .sampleSize
+      )})
+      {' → '}
       <strong>
         {
           reversal
             .secondSecondaryCohortLabel
         }
-      </strong>{' '}
-      for{' '}
+      </strong>
+      {': '}
       {
         reversal
-          .firstGeographyKey
+          .secondCohortFirstGeography
+          .geographyLabel
       }{' '}
-      and{' '}
+      {formatPricePerM2(
+        reversal
+          .secondCohortFirstGeography
+          .medianPricePerM2,
+        transactionType,
+        language
+      )}{' '}
+      (n=
+      {formatInteger(
+        reversal
+          .secondCohortFirstGeography
+          .sampleSize
+      )})
+      {' > '}
       {
         reversal
-          .secondGeographyKey
-      }.
+          .secondCohortSecondGeography
+          .geographyLabel
+      }{' '}
+      {formatPricePerM2(
+        reversal
+          .secondCohortSecondGeography
+          .medianPricePerM2,
+        transactionType,
+        language
+      )}{' '}
+      (n=
+      {formatInteger(
+        reversal
+          .secondCohortSecondGeography
+          .sampleSize
+      )})
+      .
     </div>
   )
 }
 
 
 function NonEstablishmentSection({
-  nonEstablishment
+  nonEstablishment,
+  language
 }: {
   nonEstablishment:
     PriceMeterCrossDimensionalNonEstablishment[]
+
+  language:
+    PriceMeterCrossDimensionalLanguage
 }) {
+
+  const isSpanish =
+    language ===
+      'es'
+
 
   return (
     <OutcomeCard
-      title="Non-establishment"
+      title={
+        isSpanish
+          ? 'No establecimiento'
+          : 'Non-establishment'
+      }
     >
       {nonEstablishment.length ===
         0 ? (
         <p style={outcomeText}>
-          The relationship was established
-          in every examined secondary
-          population.
+          {isSpanish
+            ? 'La relación se estableció en cada población secundaria examinada.'
+            : 'The relationship was established in every examined secondary population.'}
         </p>
       ) : (
         <div style={nonEstablishmentList}>
@@ -1391,6 +1874,9 @@ function NonEstablishmentSection({
                 item={
                   item
                 }
+                language={
+                  language
+                }
               />
             )
           )}
@@ -1402,11 +1888,19 @@ function NonEstablishmentSection({
 
 
 function NonEstablishmentEvidence({
-  item
+  item,
+  language
 }: {
   item:
     PriceMeterCrossDimensionalNonEstablishment
+
+  language:
+    PriceMeterCrossDimensionalLanguage
 }) {
+
+  const isSpanish =
+    language ===
+      'es'
 
   const reason =
     item.reason
@@ -1421,19 +1915,30 @@ function NonEstablishmentEvidence({
         <strong>
           {item.secondaryCohortLabel}
         </strong>
-        : the geographic relationship was
-        not established. The population
-        contains{' '}
+        {isSpanish
+          ? ': la relación geográfica no se estableció. La población contiene '
+          : ': the geographic relationship was not established. The population contains '}
         {formatInteger(
           reason
             .representedObservationCount
         )}{' '}
-        properties across{' '}
+        {isSpanish
+          ? 'propiedades distribuidas entre '
+          : 'properties across '}
         {formatInteger(
           reason
             .comparisonGeographyCount
         )}{' '}
-        compared geographies.
+        {isSpanish
+          ? 'geografías comparadas. El cálculo requiere '
+          : 'compared geographies. The calculation requires '}
+        {formatInteger(
+          reason
+            .requiredComparisonGeographyCount
+        )}{' '}
+        {isSpanish
+          ? 'geografías comparadas.'
+          : 'compared geographies.'}
       </div>
     )
   }
@@ -1448,24 +1953,30 @@ function NonEstablishmentEvidence({
         <strong>
           {item.secondaryCohortLabel}
         </strong>
-        : the size relationship was not
-        established. The population contains{' '}
+        {isSpanish
+          ? ': la relación de tamaño no se estableció. La población contiene '
+          : ': the size relationship was not established. The population contains '}
         {formatInteger(
           reason
             .representedObservationCount
         )}{' '}
-        properties across{' '}
+        {isSpanish
+          ? 'propiedades distribuidas entre '
+          : 'properties across '}
         {formatInteger(
           reason
             .populatedBandCount
         )}{' '}
-        populated area bands; the calculation
-        requires{' '}
+        {isSpanish
+          ? 'bandas de área con datos; el cálculo requiere '
+          : 'populated area bands; the calculation requires '}
         {formatInteger(
           reason
             .requiredPopulatedBandCount
         )}{' '}
-        populated area bands.
+        {isSpanish
+          ? 'bandas de área con datos.'
+          : 'populated area bands.'}
       </div>
     )
   }
@@ -1476,30 +1987,37 @@ function NonEstablishmentEvidence({
       <strong>
         {item.secondaryCohortLabel}
       </strong>
-      : the Construction-to-Land relationship
-      was not established. The population
-      contains{' '}
+      {isSpanish
+        ? ': la relación Construcción a Terreno no se estableció. La población contiene '
+        : ': the Construction-to-Land relationship was not established. The population contains '}
       {formatInteger(
         reason
           .representedObservationCount
       )}{' '}
-      properties across{' '}
+      {isSpanish
+        ? 'propiedades distribuidas entre '
+        : 'properties across '}
       {formatInteger(
         reason
           .populatedCohortCount
       )}{' '}
-      populated ratio cohorts. The calculation
-      requires{' '}
+      {isSpanish
+        ? 'cohortes de razón con datos. El cálculo requiere '
+        : 'populated ratio cohorts. The calculation requires '}
       {formatInteger(
         reason
           .requiredPopulatedCohortCount
       )}{' '}
-      populated ratio cohorts and{' '}
+      {isSpanish
+        ? 'cohortes de razón con datos y '
+        : 'populated ratio cohorts and '}
       {formatInteger(
         reason
           .requiredObservationCount
       )}{' '}
-      represented properties.
+      {isSpanish
+        ? 'propiedades representadas.'
+        : 'represented properties.'}
     </div>
   )
 }
@@ -1528,89 +2046,170 @@ function OutcomeCard({
 }
 
 
-function buildSynthesis(
-  outcomes:
-    PriceMeterCrossDimensionalOutcomes
+function formatSynthesis(
+  synthesis:
+    PriceMeterCrossDimensionalSynthesis,
+
+  transactionType:
+    'sale' | 'rent',
+
+  language:
+    PriceMeterCrossDimensionalLanguage
 ): string {
 
-  const persistence =
-    outcomes.persistence
+  const isSpanish =
+    language ===
+      'es'
 
 
   if (
-    persistence
+    synthesis
       .examinedSecondaryCohortCount ===
       0
   ) {
-    return (
-      'No populated secondary populations were represented, so the Cross-Dimensional relationship was not examined.'
-    )
+    return isSpanish
+      ? `No se examinaron poblaciones secundarias con datos. La población delimitada contiene ${synthesis.representedObservationCount} propiedades representadas.`
+      : `No populated secondary populations were examined. The bounded population contains ${synthesis.representedObservationCount} represented properties.`
   }
 
 
-  const persistenceStatement =
-    `The relationship was established in ${
-      persistence
-        .establishedSecondaryCohortCount
-    } of ${
-      persistence
-        .examinedSecondaryCohortCount
-    } examined secondary populations representing ${
-      persistence
-        .establishedObservationCount
-    } properties`
+  const statements:
+    string[] = [
+      isSpanish
+        ? `La relación se estableció en ${synthesis.establishedSecondaryCohortCount} de ${synthesis.examinedSecondaryCohortCount} poblaciones secundarias examinadas, que representan ${synthesis.establishedObservationCount} propiedades`
+        : `The relationship was established in ${synthesis.establishedSecondaryCohortCount} of ${synthesis.examinedSecondaryCohortCount} examined secondary populations representing ${synthesis.establishedObservationCount} properties`
+    ]
+
+
+  const variation =
+    synthesis.variation
 
 
   if (
-    outcomes.reversals.length >
-      0
+    variation?.kind ===
+      'geographic' &&
+    variation
+      .observedMedianDifferenceMinimum !==
+      null &&
+    variation
+      .observedMedianDifferenceMaximum !==
+      null
   ) {
-    return (
-      `${persistenceStatement}; ${
-        outcomes.reversals.length
-      } reversal${
-        outcomes.reversals.length ===
-          1
-          ? ' was'
-          : 's were'
-      } observed across the established populations.`
+    statements.push(
+      isSpanish
+        ? `las diferencias medianas geográficas observadas variaron de ${formatSignedPricePerM2(
+            variation
+              .observedMedianDifferenceMinimum,
+            transactionType,
+            language
+          )} a ${formatSignedPricePerM2(
+            variation
+              .observedMedianDifferenceMaximum,
+            transactionType,
+            language
+          )}`
+        : `observed geographic median differences ranged from ${formatSignedPricePerM2(
+            variation
+              .observedMedianDifferenceMinimum,
+            transactionType,
+            language
+          )} to ${formatSignedPricePerM2(
+            variation
+              .observedMedianDifferenceMaximum,
+            transactionType,
+            language
+          )}`
     )
   }
 
 
   if (
-    outcomes
-      .nonEstablishment
-      .length >
-      0
+    (
+      variation?.kind ===
+        'size_relationship' ||
+      variation?.kind ===
+        'construction_to_land_relationship'
+    ) &&
+    variation
+      .spearmanRhoMinimum !==
+      null &&
+    variation
+      .spearmanRhoMaximum !==
+      null
   ) {
-    return (
-      `${persistenceStatement}; the relationship was not established in ${
-        outcomes
-          .nonEstablishment
-          .length
-      } examined secondary population${
-        outcomes
-          .nonEstablishment
-          .length ===
-          1
-          ? ''
-          : 's'
-      }.`
+    statements.push(
+      isSpanish
+        ? `Spearman ρ varió de ${formatSignedDecimal(
+            variation
+              .spearmanRhoMinimum
+          )} a ${formatSignedDecimal(
+            variation
+              .spearmanRhoMaximum
+          )}`
+        : `Spearman ρ ranged from ${formatSignedDecimal(
+            variation
+              .spearmanRhoMinimum
+          )} to ${formatSignedDecimal(
+            variation
+              .spearmanRhoMaximum
+          )}`
     )
   }
 
 
-  return (
-    `${persistenceStatement}; no reversal was observed across the established populations.`
-  )
+  if (
+    synthesis.hasReversal
+  ) {
+    statements.push(
+      isSpanish
+        ? `se ${synthesis.reversalCount === 1 ? 'observó' : 'observaron'} ${synthesis.reversalCount} ${synthesis.reversalCount === 1 ? 'reversión' : 'reversiones'}`
+        : `${synthesis.reversalCount} reversal${synthesis.reversalCount === 1 ? ' was' : 's were'} observed`
+    )
+  }
+  else {
+    statements.push(
+      isSpanish
+        ? 'no se observó ninguna reversión entre las poblaciones en las que se estableció la relación'
+        : 'no reversal was observed across the established populations'
+    )
+  }
+
+
+  if (
+    synthesis
+      .hasNonEstablishment
+  ) {
+    statements.push(
+      isSpanish
+        ? `la relación no se estableció en ${synthesis.nonEstablishmentCount} ${synthesis.nonEstablishmentCount === 1 ? 'población secundaria examinada' : 'poblaciones secundarias examinadas'}`
+        : `the relationship was not established in ${synthesis.nonEstablishmentCount} examined secondary population${synthesis.nonEstablishmentCount === 1 ? '' : 's'}`
+    )
+  }
+
+
+  return `${statements.join(
+    '; '
+  )}.`
 }
 
-
 export default function PriceMeterCrossDimensionalResults({
+  language,
+  transactionType,
   question,
   evidence
 }: Props) {
+
+  const isSpanish =
+    language ===
+      'es'
+
+
+  const presentation =
+    getPriceMeterCrossDimensionalPresentation({
+      question,
+      language
+    })
+
 
   const outcomes =
     evaluatePriceMeterCrossDimensionalOutcomes(
@@ -1619,9 +2218,12 @@ export default function PriceMeterCrossDimensionalResults({
 
 
   const synthesis =
-    buildSynthesis(
+    buildPriceMeterCrossDimensionalSynthesis({
+      question,
+      evidenceSet:
+        evidence,
       outcomes
-    )
+    })
 
 
   return (
@@ -1629,44 +2231,48 @@ export default function PriceMeterCrossDimensionalResults({
 
       <header style={header}>
         <div style={eyebrow}>
-          Cross-Dimensional Analysis
+          {isSpanish
+            ? 'Análisis Multidimensional'
+            : 'Cross-Dimensional Analysis'}
         </div>
-
-        <h4 style={title}>
-          {question.definition}
-        </h4>
       </header>
 
 
       <section style={section}>
         <div style={sectionLabel}>
-          Definition
+          {isSpanish
+            ? 'Definición'
+            : 'Definition'}
         </div>
 
         <p style={sectionText}>
-          {question.definition}
+          {presentation.definition}
         </p>
       </section>
 
 
       <section style={section}>
         <div style={sectionLabel}>
-          Question
+          {isSpanish
+            ? 'Pregunta'
+            : 'Question'}
         </div>
 
         <p style={questionText}>
-          {question.question}
+          {presentation.question}
         </p>
       </section>
 
 
       <section style={section}>
         <div style={sectionLabel}>
-          This Analysis Reports
+          {isSpanish
+            ? 'Este Análisis Reporta'
+            : 'This Analysis Reports'}
         </div>
 
         <ul style={reportsList}>
-          {question.reports.map(
+          {presentation.reports.map(
             report => (
               <li
                 key={report}
@@ -1682,36 +2288,66 @@ export default function PriceMeterCrossDimensionalResults({
 
       <section style={section}>
         <div style={sectionLabel}>
-          Evidence
+          {isSpanish
+            ? 'Evidencia'
+            : 'Evidence'}
         </div>
 
         <div style={populationSummary}>
           <EvidenceMetric
-            label="Input population"
+            label={
+              isSpanish
+                ? 'Población de entrada'
+                : 'Input population'
+            }
             value={`${formatInteger(
               evidence
                 .inputObservationCount
-            )} properties`}
+            )} ${
+              isSpanish
+                ? 'propiedades'
+                : 'properties'
+            }`}
           />
 
           <EvidenceMetric
-            label="Represented population"
+            label={
+              isSpanish
+                ? 'Población representada'
+                : 'Represented population'
+            }
             value={`${formatInteger(
               evidence
                 .representedObservationCount
-            )} properties`}
+            )} ${
+              isSpanish
+                ? 'propiedades'
+                : 'properties'
+            }`}
           />
 
           <EvidenceMetric
-            label="Excluded"
+            label={
+              isSpanish
+                ? 'Excluidas'
+                : 'Excluded'
+            }
             value={`${formatInteger(
               evidence
                 .excludedObservationCount
-            )} properties`}
+            )} ${
+              isSpanish
+                ? 'propiedades'
+                : 'properties'
+            }`}
           />
 
           <EvidenceMetric
-            label="Populated secondary populations"
+            label={
+              isSpanish
+                ? 'Poblaciones secundarias con datos'
+                : 'Populated secondary populations'
+            }
             value={
               formatInteger(
                 evidence
@@ -1725,19 +2361,30 @@ export default function PriceMeterCrossDimensionalResults({
           evidenceSet={
             evidence
           }
+          transactionType={
+            transactionType
+          }
+          language={
+            language
+          }
         />
       </section>
 
 
       <section style={section}>
         <div style={sectionLabel}>
-          Cross-Dimensional Outcomes
+          {isSpanish
+            ? 'Resultados Multidimensionales'
+            : 'Cross-Dimensional Outcomes'}
         </div>
 
         <div style={outcomeList}>
           <PersistenceSection
             outcomes={
               outcomes
+            }
+            language={
+              language
             }
           />
 
@@ -1746,12 +2393,24 @@ export default function PriceMeterCrossDimensionalResults({
               outcomes
                 .variation
             }
+            transactionType={
+              transactionType
+            }
+            language={
+              language
+            }
           />
 
           <ReversalSection
             reversals={
               outcomes
                 .reversals
+            }
+            transactionType={
+              transactionType
+            }
+            language={
+              language
             }
           />
 
@@ -1760,6 +2419,9 @@ export default function PriceMeterCrossDimensionalResults({
               outcomes
                 .nonEstablishment
             }
+            language={
+              language
+            }
           />
         </div>
       </section>
@@ -1767,22 +2429,25 @@ export default function PriceMeterCrossDimensionalResults({
 
       <section style={synthesisSection}>
         <div style={synthesisLabel}>
-          Synthesis
+          {isSpanish
+            ? 'Síntesis'
+            : 'Synthesis'}
         </div>
 
         <p style={synthesisText}>
-          {synthesis}
+          {formatSynthesis(
+            synthesis,
+            transactionType,
+            language
+          )}
         </p>
       </section>
 
 
       <div style={attributionBoundary}>
-        These results describe observed
-        Price / m² relationships within the
-        represented populations. They do not
-        establish that the secondary dimension
-        caused the observed differences or
-        relationships.
+        {isSpanish
+          ? 'Estos resultados describen relaciones observadas de Precio / m² dentro de las poblaciones representadas. No establecen que la dimensión secundaria haya causado las diferencias o relaciones observadas.'
+          : 'These results describe observed Price / m² relationships within the represented populations. They do not establish that the secondary dimension caused the observed differences or relationships.'}
       </div>
 
     </div>
@@ -1824,22 +2489,6 @@ const eyebrow = {
   textTransform:
     'uppercase' as const
 }
-
-
-const title = {
-  margin:
-    0,
-
-  color:
-    '#f5f5f5',
-
-  fontSize:
-    '1.1rem',
-
-  lineHeight:
-    1.45
-}
-
 
 const section = {
   display:

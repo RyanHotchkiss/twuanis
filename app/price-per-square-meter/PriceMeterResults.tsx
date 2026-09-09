@@ -485,6 +485,15 @@ const geographicCrossDimensionalOptions = [
   }
 ] as const
 
+const vacantLandGeographicCrossDimensionalOptions = [
+  {
+    questionKey:
+      'geography_by_property_area',
+
+    label:
+      'Property Area'
+  }
+] as const
 
 const propertyAreaCrossDimensionalOptions = [
   {
@@ -3516,8 +3525,11 @@ export default function PriceMeterResults({
 
 
                 <PriceMeterCrossDimensionalAnalysis
-                  options={
-                    geographicCrossDimensionalOptions
+                    options={
+                    definition.key ===
+                      'vacantLandLandNormalized'
+                      ? vacantLandGeographicCrossDimensionalOptions
+                      : geographicCrossDimensionalOptions
                   }
                   filters={
                     filters

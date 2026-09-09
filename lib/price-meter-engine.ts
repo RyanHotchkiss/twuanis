@@ -1,26 +1,8 @@
 import { getMarketStatistics } from '@/lib/statistics-engine'
 
-import {
-  resolvePriceMeterAnalyticalIdentity
-} from '@/lib/price-meter-identity'
-
-import {
-  getCurrentAnalyticalDate
-} from '@/lib/analysis-date'
-
-import {
-  getHistoricalUsdToCrcRate
-} from '@/lib/fx/fx-service'
-
 import type {
-  PriceMeterAnalyticalIdentity,
   PriceMeterFxIdentity
 } from '@/lib/price-meter-identity'
-
-import {
-  buildPriceMeterObservations,
-  type PriceMeterObservation
-} from '@/lib/price-meter-observation-builder'
 
 import {
   buildPriceMeterTransactionCohorts
@@ -48,10 +30,6 @@ import {
 } from '@/lib/price-meter-statistic-identity'
 
 import {
-  resolveListingImages
-} from '@/app/utils/resolveListingImages'
-
-import {
   buildPriceMeterCharacteristicRelationships
 } from '@/lib/price-meter-characteristic-relationship'
 
@@ -62,16 +40,6 @@ import {
 import {
   buildPriceMeterDistributionInterpretation
 } from '@/lib/price-meter-distribution-interpretation'
-
-import { supabase } from '@/lib/supabase'
-
-import {
-  loadCanonicalGeographyTerms
-} from '@/lib/geography/resolve-listing-geography'
-
-import {
-  resolveCanonicalGeography
-} from '@/lib/geography/canonical-geography'
 
 import {
   resolvePriceMeterGeographicScope
@@ -101,27 +69,15 @@ import {
   buildPriceMeterConstructionLandAnalysis
 } from '@/lib/price-meter-construction-land-analysis'
 
+import {
+  loadPriceMeterObservations,
+  type PriceMeterMarketFilters
+} from '@/lib/price-meter-observation-loader'
+
 type PriceMeterLanguage = 'en' | 'es'
 
-type MarketFilters = {
-  transaction_type?: string
-  province?: string
-  canton?: string
-  district?: string
-  property_type?: string
-  bedrooms?: string
-  bathrooms?: string
-  parking?: string
-  year_built?: string
-  property_area?: string
-  construction_area?: string
-  utility?: string
-  environment?: string
-  terrain?: string
-  accessibility?: string
-  legal_status?: string
-  distance_to_paved_road_range?: string
-}
+type MarketFilters =
+  PriceMeterMarketFilters
 
 const SQM_TO_SQFT = 10.7639
 
@@ -199,94 +155,6 @@ function formatStatisticFt2(
     ),
     ' / ft²'
   )
-}
-
-function decorateListing(
-    listing:
-      any,
-
-    context: {
-      analyticalDate:
-        string
-
-      fxIdentity:
-        PriceMeterFxIdentity | null
-    }
-  ) {
-
-    const analyticalIdentity =
-      resolvePriceMeterAnalyticalIdentity(
-        listing,
-        context
-      )
-
-  const price =
-  analyticalIdentity
-    .price
-    .analyticalAmount
-
-    const propertyArea =
-    analyticalIdentity
-      .propertyArea
-      .exactM2
-
-  const constructionArea =
-    analyticalIdentity
-      .constructionArea
-      .exactM2
-
-  const pricePerLandM2 =
-
-    price && propertyArea
-      ? price / propertyArea
-      : null
-
-  const pricePerConstructionM2 =
-    price && constructionArea
-      ? price / constructionArea
-      : null
-
-  return {
-    ...listing,
-
-    analyticalIdentity,
-
-    images:
-      resolveListingImages(
-        listing.images
-      ),
-
-       formattedPrice:
-          analyticalIdentity
-            .price
-            .originalAmount !== null
-            ? analyticalIdentity
-                .price
-                .originalCurrency === 'USD'
-              ? formatUSD(
-                  analyticalIdentity
-                    .price
-                    .originalAmount
-                )
-              : formatCRC(
-                  analyticalIdentity
-                    .price
-                    .originalAmount
-                )
-            : null,
-
-    pricePerLandM2:
-      formatCRC(pricePerLandM2, ' / m²'),
-
-    pricePerLandFt2:
-      formatCRC(pricePerFt2(pricePerLandM2), ' / ft²'),
-
-    pricePerConstructionM2:
-      formatCRC(pricePerConstructionM2, ' / m²'),
-
-    pricePerConstructionFt2:
-      formatCRC(pricePerFt2(pricePerConstructionM2), ' / ft²')
-  }
 }
 
 function resolveStatisticMonetaryIdentity(
@@ -398,10 +266,16 @@ export async function getPriceMeterAnalysis(
   filters: MarketFilters,
   language: PriceMeterLanguage = 'en'
 ) {
-  const market =
-    await getMarketStatistics(
+      const {
+    analyticalDate,
+    observations,
+    listings:
+      decoratedListings
+  } =
+    await loadPriceMeterObservations(
       filters
     )
+
 
   const geographicScope =
     resolvePriceMeterGeographicScope({
@@ -415,129 +289,11 @@ export async function getPriceMeterAnalysis(
         filters.district
     })
 
-  const listings =
-    market.listings ||
-    []
 
-  const canonicalGeographyTerms =
-  await loadCanonicalGeographyTerms(
-    supabase
-  )
-
-
-const listingsWithCanonicalGeography =
-  listings.map(
-    listing => {
-
-      const canonicalGeography =
-        resolveCanonicalGeography({
-          province:
-            listing.province,
-
-          canton:
-            listing.canton,
-
-          district:
-            listing.district,
-
-          terms:
-            canonicalGeographyTerms
-        })
-
-
-      return {
-        ...listing,
-
-        canonicalGeography
-      }
-    }
-  )
-
-  const analyticalDate =
-    getCurrentAnalyticalDate()
-
-
-  const containsUsdListings =
-  listingsWithCanonicalGeography.some(
-      listing =>
-        String(
-          listing.currency ??
-          ''
-        )
-          .trim()
-          .toUpperCase() ===
-        'USD'
+  const transactionCohorts =
+    buildPriceMeterTransactionCohorts(
+      observations
     )
-
-
-  let fxIdentity:
-    PriceMeterFxIdentity | null =
-      null
-
-
-  if (
-    containsUsdListings
-  ) {
-
-    const resolvedFx =
-      await getHistoricalUsdToCrcRate(
-        analyticalDate
-      )
-
-
-    fxIdentity = {
-      conversionApplied:
-        true,
-
-      analyticalDate:
-        resolvedFx.analyticalDate,
-
-      baseCurrency:
-        'USD',
-
-      quoteCurrency:
-        'CRC',
-
-      rate:
-        resolvedFx.rate,
-
-      rateType:
-        'reference_sale',
-
-      effectiveDate:
-        resolvedFx.effectiveDate,
-
-      source:
-        'BCCR',
-
-      resolutionMode:
-        resolvedFx.resolutionMode
-    }
-  }
-
-
-  const decoratedListings =
-    listingsWithCanonicalGeography.map(
-      listing =>
-        decorateListing(
-          listing,
-          {
-            analyticalDate,
-            fxIdentity
-          }
-        )
-    )
-
-
-   const observations =
-    buildPriceMeterObservations(
-      decoratedListings
-    )
-
-    const transactionCohorts =
-      buildPriceMeterTransactionCohorts(
-        observations
-      )
 
 
     const saleVacantLandCohort =

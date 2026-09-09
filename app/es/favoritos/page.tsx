@@ -26,8 +26,6 @@ import {
 
 import TopBar from '@/app/components/TopBar'
 
-import { supabase } from '@/lib/supabase'
-
 import {
   resolveListingImages
 } from '@/app/utils/resolveListingImages'
@@ -116,20 +114,43 @@ export default function FavoritesPage() {
             }
         )
 
-        let data = []
-        let error = null
+        let data: any[] = []
 
-        if (supabaseFavoriteIds.length > 0) {
+if (
+  supabaseFavoriteIds.length > 0
+) {
+  const response =
+    await fetch(
+      '/api/public-listings/by-ids',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type':
+            'application/json'
+        },
+        body: JSON.stringify({
+          listingIds:
+            supabaseFavoriteIds
+        })
+      }
+    )
 
-        const response = await supabase
-            .from('listings')
-            .select('*')
-            .in('id', supabaseFavoriteIds)
+  if (!response.ok) {
+        throw new Error(
+          'Unable to load favorite listings.'
+        )
+      }
 
-        data = response.data || []
-        error = response.error
+      const result =
+        await response.json()
 
-        }       
+      data =
+        Array.isArray(
+          result?.listings
+        )
+          ? result.listings
+          : []
+    }
 
 
         useEffect(() => {

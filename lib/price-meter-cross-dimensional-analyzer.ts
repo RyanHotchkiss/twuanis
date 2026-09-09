@@ -404,7 +404,7 @@ function buildGeographicEvidence<
    * This introduces no qualitative sufficiency label.
    */
 
-  const comparisonGeographyCount =
+    const comparisonGeographyCount =
     geographicStatistics.filter(
       statistic =>
         statistic
@@ -413,12 +413,16 @@ function buildGeographicEvidence<
     ).length
 
 
+  const requiredComparisonGeographyCount =
+    2 as const
+
+
   const established =
     selectedMarketDistribution
       .median !==
       null &&
     comparisonGeographyCount >=
-      2
+      requiredComparisonGeographyCount
 
 
   return {
@@ -448,6 +452,8 @@ function buildGeographicEvidence<
         .median,
 
     comparisonGeographyCount,
+
+    requiredComparisonGeographyCount,
 
     geographicStatistics
   }

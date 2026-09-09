@@ -43,7 +43,7 @@ type Listing = {
   parking?: string | null
   construction_area?: number | null
   year_built_range?: string | null
-  images?: string | null
+  images?: string | string[] | null
   whatsapp?: string | null
 }
 

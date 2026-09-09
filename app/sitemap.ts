@@ -1,5 +1,12 @@
 import type { MetadataRoute } from 'next'
-import { supabase } from '@/lib/supabase'
+
+import {
+  supabaseAdmin
+} from '@/lib/supabase-admin'
+
+import {
+  getPublicListingSitemapRows
+} from '@/lib/public-listings-server'
 
 const SITE_URL = 'https://twuanis.com'
 
@@ -21,13 +28,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route === '' ? 1 : 0.8
   }))
 
-  const { data: listings, error: listingsError } = await supabase
-    .from('listings')
-    .select('id, created_at')
-
-  if (listingsError) {
-    console.error('Sitemap listings error:', listingsError)
-  }
+const listings =
+  await getPublicListingSitemapRows()
 
   const listingUrls =
     listings?.flatMap((listing) => [
@@ -49,9 +51,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }
     ]) ?? []
 
-  const { data: terms, error: termsError } = await supabase
+const { data: terms, error: termsError } =
+  await supabaseAdmin
     .from('ontology_terms')
-    .select('term_type, slug, slug_en, slug_es, created_at')
+    .select(
+      'term_type, slug, slug_en, slug_es, created_at'
+    )
 
   if (termsError) {
     console.error('Sitemap ontology error:', termsError)

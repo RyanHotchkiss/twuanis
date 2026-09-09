@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation'
 
-import { supabase } from '@/lib/supabase'
+import {
+  createServerSupabaseClient
+} from '@/lib/supabase-server'
 
 import RentalListingEditForm from '@/app/components/RentalListingEditForm'
 
@@ -10,6 +12,9 @@ export default async function EditRentalListingPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
+
+  const supabase =
+    await createServerSupabaseClient()
 
   const {
     data: listing,

@@ -26,7 +26,6 @@ type ListingActionsProps = {
   canton?: string | null
   district?: string | null
   propertyType?: string | null
-  whatsapp?: string | null
   transactionType:
     | 'buy'
     | 'rent'
@@ -43,7 +42,6 @@ export default function ListingActions({
   canton,
   district,
   propertyType,
-  whatsapp,
   transactionType,
   language  
 }: ListingActionsProps) {
@@ -201,30 +199,69 @@ async function handleShare()
     }
 
     async function handleWhatsApp() {
-      if (!whatsapp) {
-        return
-      }
+  try {
+    const response =
+      await fetch(
+        `/api/public-listing-contact?listingId=${encodeURIComponent(
+          listingId
+        )}`,
+        {
+          method: 'GET',
+          cache: 'no-store'
+        }
+      )
 
-      try {
-        await trackListingWhatsAppClicked({
-          listingId,
+    if (!response.ok) {
+      setMessage(
+        labels.error
+      )
+      return
+    }
 
-          metadata: getMetadata()
-        })
-      } catch (error) {
-        console.error(
-          'WHATSAPP TRACKING ERROR:',
-          error
-        )
-      }
+    const contact =
+      await response.json()
 
-      window.open(
-        `https://wa.me/${whatsapp}`,
-        '_blank',
-        'noopener,noreferrer'
+    const whatsapp =
+      typeof contact?.whatsapp === 'string'
+        ? contact.whatsapp
+        : null
+
+    if (!whatsapp) {
+      setMessage(
+        labels.error
+      )
+      return
+    }
+
+    try {
+      await trackListingWhatsAppClicked({
+        listingId,
+        metadata: getMetadata()
+      })
+    } catch (error) {
+      console.error(
+        'WHATSAPP TRACKING ERROR:',
+        error
       )
     }
 
+    window.open(
+      `https://wa.me/${whatsapp}`,
+      '_blank',
+      'noopener,noreferrer'
+    )
+  } catch (error) {
+    console.error(
+      'WHATSAPP CONTACT ERROR:',
+      error
+    )
+
+    setMessage(
+      labels.error
+    )
+  }
+}
+ 
   return (
     <div
       style={{

@@ -1,7 +1,9 @@
 import Link from 'next/link'
 
 import { supabase } from '@/lib/supabase'
-
+import {
+  getPublicListingById
+} from '@/lib/public-listings-server'
 import JsonLd from '@/app/components/JsonLd'
 import TopBar from '@/app/components/TopBar'
 import ListingActivityTracker from '@/app/components/ListingActivityTracker'
@@ -26,6 +28,9 @@ import PropertyNotes
 import {
   resolveListingImages
 } from '@/app/utils/resolveListingImages'
+
+import PriceMeterComparableListing
+  from '@/app/components/PriceMeterComparableListing'
 
 export default async function ListingPage({
   params
@@ -70,20 +75,21 @@ function StatCard({
       )
     }
 
-const { data, error } = await supabase
-  .from('listings')
-  .select('*')
-  .eq('id', id)
-  .single()
+const data =
+  await getPublicListingById(
+    id
+  )
 
-if (error || !data) {
+if (!data) {
   return (
-    <main style={{
-      background: '#000',
-      minHeight: '100vh',
-      color: '#fff',
-      padding: '2rem'
-    }}>
+    <main
+      style={{
+        background: '#000',
+        minHeight: '100vh',
+        color: '#fff',
+        padding: '2rem'
+      }}
+    >
       Property Not Found
     </main>
   )
@@ -333,7 +339,6 @@ const schema = buildListingSchema({
               canton={listing.canton}
               district={listing.district}
               propertyType={listing.property_type}
-              whatsapp={listing.whatsapp}
               transactionType="buy"
               language="en"
             />
@@ -647,19 +652,6 @@ const schema = buildListingSchema({
 
             </div>
 
-            {/* WHATSAPP */}
-            <div>
-
-            <span style={label}>
-                WhatsApp
-            </span>
-
-            <div style={entityCard}>
-               {listing.whatsapp}
-            </div>
-
-            </div>
-
             </div>
 
             {/* CONTACT BUTTON */}
@@ -747,11 +739,16 @@ const schema = buildListingSchema({
                 }
               />
 
-            <StatCard
+          <StatCard
               label="Confidence"
               value={`${valuation.summary.confidenceScore} · ${valuation.summary.confidenceLabel}`}
             />
           </div>
+
+          <PriceMeterComparableListing
+              listingId={listing.id}
+              lang="en"
+          />
 
     </main>
 </>

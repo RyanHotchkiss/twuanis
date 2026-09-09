@@ -34,6 +34,10 @@
  * ---------------------------------------------------------
  */
 
+import type {
+  PriceMeterCrossDimensionalQuestionKey
+} from '@/lib/price-meter-cross-dimensional-question'
+
 export type PriceMeterCrossDimensionalEvidenceStatus =
   | 'established'
   | 'not_established'
@@ -102,6 +106,9 @@ export type PriceMeterCrossDimensionalGeographicEvidence =
 
     comparisonGeographyCount:
       number
+
+    requiredComparisonGeographyCount:
+      2
 
     geographicStatistics:
       PriceMeterCrossDimensionalGeographicCohortStatistic[]
@@ -302,7 +309,7 @@ export type PriceMeterCrossDimensionalEvidence =
 
 export type PriceMeterCrossDimensionalEvidenceSet = {
   questionKey:
-    string
+    PriceMeterCrossDimensionalQuestionKey
 
   inputObservationCount:
     number

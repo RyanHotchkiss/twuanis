@@ -280,90 +280,24 @@ const navButton = {
 
       async function fetchListings() {
 
- const { data, error } = await supabase
-  .from('listings')
-  .select('*')
-  .eq('transaction_type', 'sale')
-  .eq('listing_status', 'active')
-
-  console.log(
-  JSON.stringify(
-    data?.slice(0, 3),
-    null,
-    2
-  )
-)
-
-
-if (error) {
-  console.error(
-    'SUPABASE ERROR:',
-    {
-      message: error.message,
-      details: error.details,
-      hint: error.hint,
-      code: error.code
-    }
+ const response =
+  await fetch(
+    '/api/public-listings?transaction=sale'
   )
 
-  setProperties([])
-
-  setLoading(false)
-
-  return
-
+if (!response.ok) {
+  throw new Error(
+    `Listing request failed: ${response.status}`
+  )
 }
 
-console.log(
-  'TOTAL RECORDS:',
-  data?.length
-)
+const payload =
+  await response.json()
 
-console.table(
-  (data || []).map(listing => ({
-    title: listing.title,
-    images: listing.images
-  }))
-)
-
-data?.forEach(listing => {
-
-  console.log(
-    'TITLE:',
-    listing.title
-  )
-
-  console.log(
-    'RAW IMAGES:',
-    listing.images
-  )
-
-})
-
-console.log(
-  'FIRST RECORD:',
-  data?.[0]
-)
-
-console.log(
-  'FIRST RECORD IMAGES:',
-  data?.[0]?.images
-)
-
-console.log(
-  'FIRST RECORD IMAGES TYPE:',
-  typeof data?.[0]?.images
-)
-
-console.log(
-  'FIRST RECORD PROPERTY AREA:',
-  data?.[0]?.property_area
-)
-
-console.log(
-  'FIRST RECORD CONSTRUCTION AREA:',
-  data?.[0]?.construction_area
-)
+const data =
+  Array.isArray(payload.listings)
+    ? payload.listings
+    : []
 
 
 

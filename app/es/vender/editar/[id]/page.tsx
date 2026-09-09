@@ -3,8 +3,8 @@ import {
 } from 'next/navigation'
 
 import {
-  supabase
-} from '@/lib/supabase'
+  createServerSupabaseClient
+} from '@/lib/supabase-server'
 
 import SaleListingEditForm from '@/app/components/SaleListingEditForm'
 
@@ -19,10 +19,13 @@ export default async function EditSaleListingPage({
     id
   } = await params
 
+  const supabase =
+      await createServerSupabaseClient()
+
   const {
-    data: listing,
-    error
-  } = await supabase
+      data: listing,
+      error
+    } = await supabase
     .from('listings')
     .select('*')
     .eq('id', id)

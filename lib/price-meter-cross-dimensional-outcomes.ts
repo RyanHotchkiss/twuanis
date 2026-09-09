@@ -838,6 +838,21 @@ export type PriceMeterCrossDimensionalDirectionalReversal = {
 }
 
 
+export type PriceMeterCrossDimensionalGeographicReversalStatistic = {
+  geographyKey:
+    string
+
+  geographyLabel:
+    string
+
+  medianPricePerM2:
+    number
+
+  sampleSize:
+    number
+}
+
+
 export type PriceMeterCrossDimensionalGeographicReversal = {
   kind:
     'geographic_ordering'
@@ -854,23 +869,17 @@ export type PriceMeterCrossDimensionalGeographicReversal = {
   secondSecondaryCohortLabel:
     string
 
-  firstGeographyKey:
-    string
+  firstCohortFirstGeography:
+    PriceMeterCrossDimensionalGeographicReversalStatistic
 
-  secondGeographyKey:
-    string
+  firstCohortSecondGeography:
+    PriceMeterCrossDimensionalGeographicReversalStatistic
 
-  firstCohortOrdering:
-    [
-      string,
-      string
-    ]
+  secondCohortFirstGeography:
+    PriceMeterCrossDimensionalGeographicReversalStatistic
 
-  secondCohortOrdering:
-    [
-      string,
-      string
-    ]
+  secondCohortSecondGeography:
+    PriceMeterCrossDimensionalGeographicReversalStatistic
 }
 
 
@@ -1229,6 +1238,27 @@ function evaluateGeographicReversals(
           }
 
 
+          const firstCohortFirst =
+            firstAAboveB
+              ? firstA
+              : firstB
+
+          const firstCohortSecond =
+            firstAAboveB
+              ? firstB
+              : firstA
+
+          const secondCohortFirst =
+            secondAAboveB
+              ? secondA
+              : secondB
+
+          const secondCohortSecond =
+            secondAAboveB
+              ? secondB
+              : secondA
+
+
           reversals.push({
             kind:
               'geographic_ordering',
@@ -1249,33 +1279,77 @@ function evaluateGeographicReversals(
               second
                 .secondaryCohortLabel,
 
-            firstGeographyKey:
-              firstKey,
+            firstCohortFirstGeography: {
+              geographyKey:
+                firstCohortFirst
+                  .geographyKey,
 
-            secondGeographyKey:
-              secondKey,
+              geographyLabel:
+                firstCohortFirst
+                  .geographyLabel,
 
-            firstCohortOrdering:
-              firstAAboveB
-                ? [
-                    firstKey,
-                    secondKey
-                  ]
-                : [
-                    secondKey,
-                    firstKey
-                  ],
+              medianPricePerM2:
+                firstCohortFirst
+                  .medianPricePerM2 as number,
 
-            secondCohortOrdering:
-              secondAAboveB
-                ? [
-                    firstKey,
-                    secondKey
-                  ]
-                : [
-                    secondKey,
-                    firstKey
-                  ]
+              sampleSize:
+                firstCohortFirst
+                  .sampleSize
+            },
+
+            firstCohortSecondGeography: {
+              geographyKey:
+                firstCohortSecond
+                  .geographyKey,
+
+              geographyLabel:
+                firstCohortSecond
+                  .geographyLabel,
+
+              medianPricePerM2:
+                firstCohortSecond
+                  .medianPricePerM2 as number,
+
+              sampleSize:
+                firstCohortSecond
+                  .sampleSize
+            },
+
+            secondCohortFirstGeography: {
+              geographyKey:
+                secondCohortFirst
+                  .geographyKey,
+
+              geographyLabel:
+                secondCohortFirst
+                  .geographyLabel,
+
+              medianPricePerM2:
+                secondCohortFirst
+                  .medianPricePerM2 as number,
+
+              sampleSize:
+                secondCohortFirst
+                  .sampleSize
+            },
+
+            secondCohortSecondGeography: {
+              geographyKey:
+                secondCohortSecond
+                  .geographyKey,
+
+              geographyLabel:
+                secondCohortSecond
+                  .geographyLabel,
+
+              medianPricePerM2:
+                secondCohortSecond
+                  .medianPricePerM2 as number,
+
+              sampleSize:
+                secondCohortSecond
+                  .sampleSize
+            }
           })
         }
       }
@@ -1369,6 +1443,9 @@ export type PriceMeterCrossDimensionalNonEstablishmentReason =
 
       comparisonGeographyCount:
         number
+
+      requiredComparisonGeographyCount:
+        number
     }
   | {
       kind:
@@ -1449,7 +1526,11 @@ export function evaluatePriceMeterCrossDimensionalNonEstablishment(
 
               comparisonGeographyCount:
                 evidence
-                  .comparisonGeographyCount
+                  .comparisonGeographyCount,
+
+              requiredComparisonGeographyCount:
+                evidence
+                  .requiredComparisonGeographyCount
             }
           }
         }

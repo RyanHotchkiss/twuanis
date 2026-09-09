@@ -1,5 +1,8 @@
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
+import {
+  getPublicListingById
+} from '@/lib/public-listings-server'
 import JsonLd from '@/app/components/JsonLd'
 import ListingActivityTracker from '@/app/components/ListingActivityTracker'
 import ListingActions from '@/app/components/ListingActions'
@@ -20,6 +23,9 @@ import {
   resolveListingImages
 } from '@/app/utils/resolveListingImages'
 
+import PriceMeterComparableListing
+  from '@/app/components/PriceMeterComparableListing'
+
 export default async function ListingPage({
   params
 }: {
@@ -27,13 +33,12 @@ export default async function ListingPage({
 }) {
   const { id } = await params
 
-const { data, error } = await supabase
-  .from('listings')
-  .select('*')
-  .eq('id', id)
-  .single()
+const data =
+  await getPublicListingById(
+    id
+  )
 
-if (error || !data) {
+if (!data) {
   return (
     <main
       style={{
@@ -334,7 +339,6 @@ return (
               canton={listing.canton}
               district={listing.district}
               propertyType={listing.property_type}
-              whatsapp={listing.whatsapp}
               transactionType="rent"
               language="es"
             />
@@ -653,19 +657,6 @@ return (
 
             </div>
 
-            {/* WHATSAPP */}
-            <div>
-
-            <span style={label}>
-                WhatsApp
-            </span>
-
-            <div style={entityCard}>
-                 {listing.whatsapp}
-            </div>
-
-            </div>
-
             </div>
 
             {/* CONTACT BUTTON */}
@@ -748,11 +739,16 @@ return (
                 }
               />
 
-            <StatCard
+          <StatCard
               label="Confianza"
               value={`${valuation.summary.confidenceScore} · ${valuation.summary.confidenceLabel}`}
             />
           </div>
+
+          <PriceMeterComparableListing
+            listingId={listing.id}
+            lang="es"
+          />
 
     </main>
    </>

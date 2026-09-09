@@ -47,28 +47,48 @@ export default function SwipePage() {
         }, [])
 
 async function fetchProperties() {
-  const { data, error } = await supabase
-            .from('listings')
-            .select('*')
-          if (error) {
-            console.error(
-              JSON.stringify(error, null, 2)
+  try {
+    const response =
+      await fetch(
+        '/api/public-listings?transaction=rent'
+      )
+
+    if (!response.ok) {
+      throw new Error(
+        `Listing request failed: ${response.status}`
+      )
+    }
+
+    const payload =
+      await response.json()
+
+    const normalizedListings =
+      (
+        Array.isArray(payload.listings)
+          ? payload.listings
+          : []
+      ).map(
+        (listing: any) => ({
+          ...listing,
+          images:
+            resolveListingImages(
+              listing.images
             )
-            return
-          }
-          const normalizedSupabaseListings = (data || []).map(
-            (listing: any) => ({
-              ...listing,
-             images:
-              resolveListingImages(
-                listing.images
-              )
-            })
-          )
-          setProperties([
-            ...normalizedSupabaseListings
-          ])
-        }
+        })
+      )
+
+    setProperties(
+      normalizedListings
+    )
+  } catch (error) {
+    console.error(
+      'Unable to load rent listings',
+      error
+    )
+
+    setProperties([])
+  }
+}
 
       async function saveProperty(
           propertyId: string

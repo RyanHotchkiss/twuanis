@@ -20,10 +20,6 @@ import {
   updatePropertyNote
 } from '@/lib/property-notes'
 
-import {
-  supabase
-} from '@/lib/supabase'
-
 import PropertyNoteEditor
   from '@/app/components/PropertyNoteEditor'
 
@@ -254,28 +250,36 @@ export default function MarketHubPropertyNotes({
             )
           ]
 
-          const {
-            data: listingData,
-            error: listingError
-          } = await supabase
-            .from('listings')
-            .select(`
-              id,
-              title,
-              transaction_type,
-              property_type,
-              province,
-              canton,
-              district
-            `)
-            .in(
-              'id',
-              listingIds
+      const response =
+            await fetch(
+              '/api/public-listings/by-ids',
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type':
+                    'application/json'
+                },
+                body: JSON.stringify({
+                  listingIds
+                })
+              }
             )
 
-          if (listingError) {
-            throw listingError
+          if (!response.ok) {
+            throw new Error(
+              'Unable to load property listings.'
+            )
           }
+
+          const result =
+            await response.json()
+
+          const listingData =
+            Array.isArray(
+              result?.listings
+            )
+              ? result.listings
+              : []
 
           const listingsById =
             new Map<
