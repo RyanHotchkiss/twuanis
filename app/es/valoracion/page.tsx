@@ -1,7 +1,7 @@
 
 import ValuationResults from './ResultadosValoracion'
 import { getValuation } from '@/lib/valuation-engine'
-import MarketFilters from '@/app/components/FiltrosMercado'
+import MarketFilters from '@/app/components/MarketFilters'
 import { getExplorerOptions } from '@/lib/explorer-options-engine'
 
 type PageProps = {
@@ -51,9 +51,11 @@ export default async function ValuationPage({
       </p>
 
         <MarketFilters
+            workspace="valuation"
             options={options}
             filters={filters}
             basePath="/es/valoracion"
+            language="es"
             />
 
       <ValuationResults

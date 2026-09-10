@@ -57,10 +57,64 @@ export function normalize(
     .trim()
 }
 
-export function buildUrl(
+export function applyFilterChange(
   filters: Filters,
   key: string,
-  value: string,
+  value: string
+): Filters {
+  const next: Filters = {
+    ...filters
+  }
+
+  if (value) {
+    next[key] = value
+  } else {
+    delete next[key]
+  }
+
+  const prefix: Prefix =
+    key.startsWith('a_')
+      ? 'a_'
+      : key.startsWith('b_')
+        ? 'b_'
+        : ''
+
+  const plainKey =
+    prefix
+      ? key.slice(2)
+      : key
+
+  if (plainKey === 'province') {
+    delete next[
+      `${prefix}canton`
+    ]
+
+    delete next[
+      `${prefix}district`
+    ]
+  }
+
+  if (plainKey === 'canton') {
+    delete next[
+      `${prefix}district`
+    ]
+  }
+
+  if (
+    plainKey === 'accessibility' &&
+    value !==
+      'Unpaved Road to Property'
+  ) {
+    delete next[
+      `${prefix}distance_to_paved_road_range`
+    ]
+  }
+
+  return next
+}
+
+export function serializeFiltersUrl(
+  filters: Filters,
   basePath: string
 ) {
   const params =
@@ -77,42 +131,6 @@ export function buildUrl(
     }
   )
 
-  if (value) {
-    params.set(key, value)
-  } else {
-    params.delete(key)
-  }
-
-  const prefix: Prefix =
-    key.startsWith('a_')
-      ? 'a_'
-      : key.startsWith('b_')
-        ? 'b_'
-        : ''
-
-  const plainKey =
-    prefix
-      ? key.slice(2)
-      : key
-
-  if (plainKey === 'province') {
-    params.delete(`${prefix}canton`)
-    params.delete(`${prefix}district`)
-  }
-
-  if (plainKey === 'canton') {
-    params.delete(`${prefix}district`)
-  }
-
-  if (
-    plainKey === 'accessibility' &&
-    value !== 'Unpaved Road to Property'
-  ) {
-    params.delete(
-      `${prefix}distance_to_paved_road_range`
-    )
-  }
-
   const query =
     params.toString()
 
@@ -124,4 +142,20 @@ export function buildUrl(
   return query
     ? `${basePath}${separator}${query}`
     : basePath
+}
+
+export function buildUrl(
+  filters: Filters,
+  key: string,
+  value: string,
+  basePath: string
+) {
+  return serializeFiltersUrl(
+    applyFilterChange(
+      filters,
+      key,
+      value
+    ),
+    basePath
+  )
 }

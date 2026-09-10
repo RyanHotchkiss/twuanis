@@ -1,4 +1,4 @@
-import MarketComparisonFilters from '@/app/components/MarketComparisonFilters'
+import MarketFilters from '@/app/components/MarketFilters'
 import MarketComparisonResults from '@/app/market-comparison/MarketComparisonResults'
 
 import { getExplorerOptions } from '@/lib/explorer-options-engine'
@@ -54,6 +54,11 @@ export default async function ComparacionDeMercadoPage({
     b_legal_status: params.b_legal_status
   }
 
+  const filters = {
+    ...leftFilters,
+    ...rightFilters
+  }
+
   const comparison =
     await getMarketComparison(leftFilters, rightFilters, 'es')
 
@@ -75,11 +80,12 @@ export default async function ComparacionDeMercadoPage({
         conocimiento.
       </p>
 
-      <MarketComparisonFilters
+      <MarketFilters
         language="es"
+        workspace="comparison"
         options={options}
-        leftFilters={leftFilters}
-        rightFilters={rightFilters}
+        filters={filters}
+        basePath="/es/comparacion-de-mercado"
       />
 
       <MarketComparisonResults

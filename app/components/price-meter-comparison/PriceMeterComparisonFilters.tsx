@@ -1,6 +1,6 @@
 'use client'
 
-import FilterSelect from '@/app/components/market-filters/FilterSelect'
+import UrlFilterSelect from '@/app/components/market-filters/UrlFilterSelect'
 
 import type {
   ExplorerOption
@@ -219,7 +219,7 @@ export default function PriceMeterComparisonFilters({
         {text.analyticalIdentity}
       </h2>
 
-      <FilterSelect
+      <UrlFilterSelect
         label={text.transactionType}
         filterKey="transaction_type"
         options={transactionOptions}
@@ -228,7 +228,7 @@ export default function PriceMeterComparisonFilters({
         language={language}
       />
 
-      <FilterSelect
+      <UrlFilterSelect
         label={text.propertyBasis}
         filterKey="property_basis"
         options={propertyBasisOptions}
@@ -237,7 +237,7 @@ export default function PriceMeterComparisonFilters({
         language={language}
       />
 
-      <FilterSelect
+      <UrlFilterSelect
         label={text.normalizationBasis}
         filterKey="normalization_basis"
         options={normalizationBasisOptions}
@@ -246,7 +246,7 @@ export default function PriceMeterComparisonFilters({
         language={language}
       />
 
-    <FilterSelect
+    <UrlFilterSelect
         label={text.referenceCohort}
         filterKey="reference_cohort"
         options={referenceCohortOptions}

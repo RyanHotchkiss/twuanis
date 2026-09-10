@@ -112,6 +112,7 @@ export default async function ExplorePage({
       <br></br>
 
       <MarketFilters
+        workspace="explorer"
         options={options}
         filters={filters}
       />

@@ -229,6 +229,7 @@ export default async function PricePerSquareMeterPage({
       />
     ) : (
       <MarketFilters
+        workspace="price-meter"
         options={options}
         filters={filters}
         basePath="/price-per-square-meter"

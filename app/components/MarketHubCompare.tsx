@@ -25,8 +25,8 @@ import MarketComparisonPanel
 import EntityComparisonPanel
   from '@/app/components/comparisons/EntityComparisonPanel'
 
-import MarketComparisonFilters
-from '@/app/components/MarketComparisonFilters'
+import MarketFilters
+  from '@/app/components/MarketFilters'
 
 import MarketComparisonResults
   from '@/app/market-comparison/MarketComparisonResults'
@@ -107,120 +107,6 @@ export default function MarketHubCompare({
     activeMode ===
       'properties' &&
     propertyIds.length >= 2
-
-  const leftMarketFilters = {
-    a_transaction_type:
-      marketFilters?.a_transaction_type,
-
-    a_province:
-      marketFilters?.a_province,
-
-    a_canton:
-      marketFilters?.a_canton,
-
-    a_district:
-      marketFilters?.a_district,
-
-    a_property_type:
-      marketFilters?.a_property_type,
-
-    a_bedrooms:
-      marketFilters?.a_bedrooms,
-
-    a_bathrooms:
-      marketFilters?.a_bathrooms,
-
-    a_parking:
-      marketFilters?.a_parking,
-
-    a_price_range:
-      marketFilters?.a_price_range,
-
-    a_property_area:
-      marketFilters?.a_property_area,
-
-    a_construction_area:
-      marketFilters?.a_construction_area,
-
-    a_year_built:
-      marketFilters?.a_year_built,
-
-    a_environment:
-      marketFilters?.a_environment,
-
-    a_terrain:
-      marketFilters?.a_terrain,
-
-    a_utility:
-      marketFilters?.a_utility,
-
-    a_accessibility:
-      marketFilters?.a_accessibility,
-
-    a_distance_to_paved_road_range:
-      marketFilters?.a_distance_to_paved_road_range,
-
-    a_legal_status:
-      marketFilters?.a_legal_status
-  }
-
-
-  const rightMarketFilters = {
-    b_transaction_type:
-      marketFilters?.b_transaction_type,
-
-    b_province:
-      marketFilters?.b_province,
-
-    b_canton:
-      marketFilters?.b_canton,
-
-    b_district:
-      marketFilters?.b_district,
-
-    b_property_type:
-      marketFilters?.b_property_type,
-
-    b_bedrooms:
-      marketFilters?.b_bedrooms,
-
-    b_bathrooms:
-      marketFilters?.b_bathrooms,
-
-    b_parking:
-      marketFilters?.b_parking,
-
-    b_price_range:
-      marketFilters?.b_price_range,
-
-    b_property_area:
-      marketFilters?.b_property_area,
-
-    b_construction_area:
-      marketFilters?.b_construction_area,
-
-    b_year_built:
-      marketFilters?.b_year_built,
-
-    b_environment:
-      marketFilters?.b_environment,
-
-    b_terrain:
-      marketFilters?.b_terrain,
-
-    b_utility:
-      marketFilters?.b_utility,
-
-    b_accessibility:
-      marketFilters?.b_accessibility,
-
-    b_distance_to_paved_road_range:
-      marketFilters?.b_distance_to_paved_road_range,
-
-    b_legal_status:
-      marketFilters?.b_legal_status
-  }
-
 
   const labels =
     language === 'es'
@@ -660,17 +546,17 @@ export default function MarketHubCompare({
                     </p>
                   </div>
 
-                  <MarketComparisonFilters
-                    language={language}
-                    options={marketOptions}
-                    leftFilters={
-                      leftMarketFilters
-                    }
-                    rightFilters={
-                      rightMarketFilters
-                    }
-                    embedded
-                  />
+                  <MarketFilters
+                      language={language}
+                      workspace="comparison"
+                      options={marketOptions}
+                      filters={marketFilters ?? {}}
+                      basePath={
+                        language === 'es'
+                          ? '/es/centro-de-mercado?intelligence=comparison&compare=markets'
+                          : '/en/market-hub?intelligence=comparison&compare=markets'
+                      }
+                    />
 
                 </section>
               )}

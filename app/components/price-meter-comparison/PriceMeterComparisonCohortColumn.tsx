@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react'
 
-import FilterSelect from '@/app/components/market-filters/FilterSelect'
+import UrlFilterSelect from '@/app/components/market-filters/UrlFilterSelect'
 
 import {
   normalize,
@@ -306,7 +306,7 @@ export default function PriceMeterComparisonCohortColumn({
         {text.location}
       </h3>
 
-      <FilterSelect
+      <UrlFilterSelect
         label={text.province}
         filterKey={provinceKey}
         options={options.province}
@@ -315,7 +315,7 @@ export default function PriceMeterComparisonCohortColumn({
         language={language}
       />
 
-      <FilterSelect
+      <UrlFilterSelect
         label={text.canton}
         filterKey={cantonKey}
         options={cantons}
@@ -324,7 +324,7 @@ export default function PriceMeterComparisonCohortColumn({
         language={language}
       />
 
-      <FilterSelect
+      <UrlFilterSelect
         label={text.district}
         filterKey={districtKey}
         options={districts}
@@ -333,7 +333,7 @@ export default function PriceMeterComparisonCohortColumn({
         language={language}
       />
 
-      <FilterSelect
+      <UrlFilterSelect
         label={text.propertyType}
         filterKey={
           `${prefix}property_type`
@@ -350,7 +350,7 @@ export default function PriceMeterComparisonCohortColumn({
         {text.characteristic1}
       </h3>
 
-      <FilterSelect
+      <UrlFilterSelect
         label={text.characteristicType}
         filterKey={characteristic1TypeKey}
         options={characteristicTypeOptions}
@@ -359,7 +359,7 @@ export default function PriceMeterComparisonCohortColumn({
         language={language}
       />
 
-      <FilterSelect
+      <UrlFilterSelect
         label={text.characteristicValue}
         filterKey={characteristic1Key}
         options={characteristic1Options}
@@ -372,7 +372,7 @@ export default function PriceMeterComparisonCohortColumn({
         {text.characteristic2}
       </h3>
 
-      <FilterSelect
+      <UrlFilterSelect
         label={text.characteristicType}
         filterKey={characteristic2TypeKey}
         options={characteristicTypeOptions}
@@ -381,7 +381,7 @@ export default function PriceMeterComparisonCohortColumn({
         language={language}
       />
 
-      <FilterSelect
+      <UrlFilterSelect
         label={text.characteristicValue}
         filterKey={characteristic2Key}
         options={characteristic2Options}
@@ -390,7 +390,7 @@ export default function PriceMeterComparisonCohortColumn({
         language={language}
       />
 
-      <FilterSelect
+      <UrlFilterSelect
         label={text.propertyArea}
         filterKey={
           `${prefix}property_area`
@@ -403,7 +403,7 @@ export default function PriceMeterComparisonCohortColumn({
         language={language}
       />
 
-      <FilterSelect
+      <UrlFilterSelect
         label={text.constructionArea}
         filterKey={
           `${prefix}construction_area`
@@ -416,7 +416,7 @@ export default function PriceMeterComparisonCohortColumn({
         language={language}
       />
 
-      <FilterSelect
+      <UrlFilterSelect
         label={text.constructionLand}
         filterKey={
           `${prefix}construction_land_cohort`

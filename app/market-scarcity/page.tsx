@@ -73,6 +73,7 @@ export default async function MarketScarcityPage({
       </p>
 
       <MarketFilters
+        workspace="scarcity"
         options={options}
         filters={filters}
         basePath="/market-scarcity"

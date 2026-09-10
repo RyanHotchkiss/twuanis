@@ -74,6 +74,7 @@ export default async function BuyerDemandPage({
       </p>
 
       <MarketFilters
+        workspace="buyer-demand"
         options={options}
         filters={filters}
         basePath="/buyer-demand"

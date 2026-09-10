@@ -1,4 +1,4 @@
-import MarketFilters from '@/app/components/FiltrosMercado'
+import MarketFilters from '@/app/components/MarketFilters'
 import PriceMeterResults from './ResultadosPrecioMetro'
 import { getExplorerOptions } from '@/lib/explorer-options-engine'
 import { getPriceMeterAnalysis } from '@/lib/price-meter-engine'
@@ -232,9 +232,11 @@ export default async function PrecioPorMetroCuadradoPage({
         />
       ) : (
         <MarketFilters
+          workspace="price-meter"
           options={options}
           filters={filters}
           basePath="/es/precio-por-metro-cuadrado"
+          language="es"
         />
       )}
 

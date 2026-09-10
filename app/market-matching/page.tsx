@@ -69,6 +69,7 @@ export default async function MarketMatchingPage({
       </p>
 
       <MarketFilters
+        workspace="matching"
         options={options}
         filters={filters}
         basePath="/market-matching"

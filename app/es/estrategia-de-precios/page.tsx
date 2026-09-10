@@ -1,4 +1,4 @@
-import MarketFilters from '@/app/components/FiltrosMercado'
+import MarketFilters from '@/app/components/MarketFilters'
 import PricingStrategyResults from './ResultadosEstrategiaPrecios'
 
 import { getExplorerOptions } from '@/lib/explorer-options-engine'
@@ -70,9 +70,11 @@ export default async function EstrategiaDePreciosPage({
       </p>
 
       <MarketFilters
+        workspace="pricing"
         options={options}
         filters={filters}
         basePath="/es/estrategia-de-precios"
+        language="es"
       />
 
       <PricingStrategyResults

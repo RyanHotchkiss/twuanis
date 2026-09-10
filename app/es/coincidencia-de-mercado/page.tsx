@@ -70,6 +70,7 @@ export default async function CoincidenciaMercadoPage({
       </p>
 
       <MarketFilters
+        workspace="matching"
         options={options}
         filters={filters}
         basePath="/es/coincidencia-de-mercado"

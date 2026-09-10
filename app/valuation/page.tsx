@@ -50,6 +50,7 @@ export default async function ValuationPage({
       </p>
 
         <MarketFilters
+            workspace="valuation"
             options={options}
             filters={filters}
             basePath="/valuation"

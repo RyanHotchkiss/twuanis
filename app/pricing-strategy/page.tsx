@@ -71,6 +71,7 @@ export default async function PricingStrategyPage({
       </p>
 
       <MarketFilters
+        workspace="pricing"
         options={options}
         filters={filters}
         basePath="/pricing-strategy"

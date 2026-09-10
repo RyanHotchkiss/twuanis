@@ -1,4 +1,4 @@
-import MarketFilters from '@/app/components/FiltrosMercado'
+import MarketFilters from '@/app/components/MarketFilters'
 import ResultadosDemandaComprador from './ResultadosDemandaComprador'
 
 import { getExplorerOptions } from '@/lib/explorer-options-engine'
@@ -74,9 +74,11 @@ export default async function DemandaCompradorPage({
       </p>
 
       <MarketFilters
+        workspace="buyer-demand"
         options={options}
         filters={filters}
         basePath="/es/demanda-del-comprador"
+        language="es"
       />
 
         <AnalysisActions

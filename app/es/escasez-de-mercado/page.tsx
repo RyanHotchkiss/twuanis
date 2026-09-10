@@ -1,4 +1,4 @@
-import MarketFilters from '@/app/components/FiltrosMercado'
+import MarketFilters from '@/app/components/MarketFilters'
 import ResultadosEscasezMercado from './ResultadosEscasezMercado'
 
 import { getExplorerOptions } from '@/lib/explorer-options-engine'
@@ -73,9 +73,11 @@ export default async function EscasezMercadoPage({
       </p>
 
       <MarketFilters
+        workspace="scarcity"
         options={options}
         filters={filters}
         basePath="/es/escasez-de-mercado"
+        language="es"
       />
 
         <AnalysisActions

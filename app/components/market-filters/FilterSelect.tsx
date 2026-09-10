@@ -1,7 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-
 import type {
   FilterOption,
   Filters,
@@ -9,7 +7,6 @@ import type {
 } from './types'
 
 import {
-  buildUrl,
   optionLabel,
   optionValue
 } from './utils'
@@ -25,8 +22,12 @@ type Props = {
   filterKey: string
   options?: FilterOption[]
   filters: Filters
-  basePath: string
   language: Language
+
+  onFilterChange: (
+    key: string,
+    value: string
+  ) => void
 }
 
 export default function FilterSelect({
@@ -34,11 +35,9 @@ export default function FilterSelect({
   filterKey,
   options = [],
   filters,
-  basePath,
-  language
+  language,
+  onFilterChange
 }: Props) {
-  const router = useRouter()
-
   return (
     <div style={assetSection}>
       <h3 style={assetHeading}>
@@ -50,13 +49,9 @@ export default function FilterSelect({
           filters[filterKey] || ''
         }
         onChange={event =>
-          router.push(
-            buildUrl(
-              filters,
-              filterKey,
-              event.target.value,
-              basePath
-            )
+          onFilterChange(
+            filterKey,
+            event.target.value
           )
         }
         style={select}

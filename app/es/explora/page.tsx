@@ -1,7 +1,7 @@
-import Link from 'next/link'
+
 import { exploreMarket } from '@/lib/explorer-engine'
 import { getExplorerOptions } from '@/lib/explorer-options-engine'
-import ExploreFilters from './FiltrosExplora'
+import MarketFilters from '@/app/components/MarketFilters'
 import ExploreResults from './ResultadosExplora'
 import TopBar from '@/app/components/TopBar'
 import GraphExplorer from '@/app/components/GraphExplorer'
@@ -110,21 +110,13 @@ export default async function ExplorePage({
 
       <br />
 
-      <ExploreFilters
+      <MarketFilters
+        language="es"
+        workspace="explorer"
         options={options}
         filters={filters}
+        basePath="/es/explora"
       />
-
-      <Link
-        href="/es/explora"
-        style={{
-          ...explorerPill,
-          color: '#DC143C',
-          marginTop: '1rem'
-        }}
-      >
-        Restablecer Explorador
-      </Link>
 
       {!result && (
         <p>
@@ -148,15 +140,4 @@ const introText = {
   lineHeight: '1.6',
   fontSize: '1.05rem',
   textAlign: 'center' as const
-}
-
-const explorerPill = {
-  background: '#181818',
-  border: '.25px solid #D4AF3750',
-  padding: '.85rem 1rem',
-  borderRadius: '999rem',
-  cursor: 'pointer',
-  transition: 'all .2s ease',
-  textDecoration: 'none',
-  display: 'inline-block'
 }

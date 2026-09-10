@@ -44,6 +44,10 @@ import {
   recordRecentActivity
 } from '@/lib/account-storage'
 
+import type {
+  IntelligenceWorkspaceId
+} from '@/app/components/market-filters/filter-registry'
+
 type Props = {
   activeTab: string
   filters: any
@@ -471,12 +475,11 @@ const tabs = [
         </h2>
 
         <MarketFilters
-          language="en"
-          mode={
-            activeTab === 'comparison'
-              ? 'comparison'
-              : 'single'
-          }
+            language="en"
+            workspace={
+              activeTab as IntelligenceWorkspaceId
+            }
+          
           options={options}
           filters={filters}
           basePath={
