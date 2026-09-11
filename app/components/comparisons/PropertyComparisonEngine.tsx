@@ -35,14 +35,12 @@ type PropertyComparisonListing = {
   canton: string | null
   district: string | null
   transaction_type: string | null
-  currency: string | null
-  price_millions:
+    marketplace_original_price:
     | number
-    | string
     | null
-  monthly_price:
-    | number
-    | string
+  marketplace_original_currency:
+    | 'USD'
+    | 'CRC'
     | null
   property_type: string | null
   bedrooms: string | null
@@ -735,31 +733,17 @@ function getListingPrice(
   listing:
     PropertyComparisonListing
 ): number | null {
-  const transactionType =
-    listing.transaction_type
-      ?.toLowerCase()
+  const price =
+    listing
+      .marketplace_original_price
 
-  if (
-    transactionType === 'rent' ||
-    transactionType === 'lease'
-  ) {
-    return getNumericValue(
-      listing.monthly_price
-    )
-  }
-
-  const priceMillions =
-    getNumericValue(
-      listing.price_millions
-    )
-
-  if (
-    priceMillions === null
-  ) {
-    return null
-  }
-
-  return priceMillions * 1_000_000
+  return (
+    typeof price === 'number' &&
+    Number.isFinite(price) &&
+    price > 0
+  )
+    ? price
+    : null
 }
 
 function formatPrice(
@@ -778,9 +762,12 @@ function formatPrice(
         }
 
         const currency =
-            listing.currency === 'USD'
-            ? 'USD'
-            : 'CRC'
+            listing
+              .marketplace_original_currency
+
+        if (!currency) {
+            return '—'
+        }
 
         const formatted =
             new Intl.NumberFormat(
@@ -833,9 +820,12 @@ function formatPricePerM2(
         }
 
         const currency =
-            listing.currency === 'USD'
-            ? 'USD'
-            : 'CRC'
+            listing
+              .marketplace_original_currency
+
+        if (!currency) {
+            return '—'
+        }
 
         return `${
             new Intl.NumberFormat(

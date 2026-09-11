@@ -115,18 +115,25 @@ export default function SwipePage() {
         if (!selectedPriceRange) return true
 
         const price =
-          Number(property.price_millions)
+          Number(property.marketplace_price_crc)
+
+        if (!Number.isFinite(price)) {
+          return false
+        }
 
         if (selectedPriceRange === 'under-50') {
-          return price < 50
+          return price < 50_000_000
         }
 
         if (selectedPriceRange === '50-100') {
-          return price >= 50 && price <= 100
+          return (
+            price >= 50_000_000 &&
+            price <= 100_000_000
+          )
         }
 
         if (selectedPriceRange === '100-plus') {
-          return price > 100
+          return price > 100_000_000
         }
 
         return true
@@ -810,12 +817,15 @@ return (
             fontWeight: 'bold',
             marginBottom: '2rem'
           }}>
-           {currentProperty.price
-              ? currentProperty.price
-              : currentProperty.price_millions
-              ? `₡${Number(
-                  currentProperty.price_millions
-                ).toLocaleString()}M`
+           {currentProperty.marketplace_original_price != null &&
+            currentProperty.marketplace_original_currency
+              ? currentProperty.marketplace_original_currency === 'USD'
+                ? `$${Number(
+                    currentProperty.marketplace_original_price
+                  ).toLocaleString()}`
+                : `₡${Number(
+                    currentProperty.marketplace_original_price
+                  ).toLocaleString()}`
               : 'Price Unavailable'}
           </div>
 

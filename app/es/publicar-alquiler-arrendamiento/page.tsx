@@ -28,7 +28,6 @@ import {
   generateListingTitle,
   generateListingDescription,
   formatColones,
-  convertToUSD,
   formatWhatsAppNumber
 } from '@/app/utils/listing-utils'
 
@@ -59,6 +58,10 @@ import ParkingFilterSES from '@/app/components/filter-bar/ParkingFilterSES'
 import YearBuiltFilterSES from '@/app/components/filter-bar/YearBuiltFilterSES'
 import ExactConstructionAreaInput
 from '@/app/components/listing-input/ExactConstructionAreaInput'
+
+import {
+  useMarketplaceFx
+} from '@/app/hooks/useMarketplaceFx'
 
 function normalizeCsvTextArray(
   value: unknown
@@ -126,6 +129,12 @@ function normalizeCsvText(
 }
 
 export default function SellPage() {
+
+    const marketplaceFx =
+      useMarketplaceFx()
+
+    const usdToCrcRate =
+      marketplaceFx?.usdToCrcRate ?? null
 
     const [showLocationOptions, setShowLocationOptions] = useState(true)
     const [show_province_options, setShow_province_options] = useState(true)
@@ -1010,8 +1019,9 @@ formattedData
                  >
  
                  <RentalPropertyDefinitionPanelES
-                     propertyData={propertyData}
-                 />
+                    propertyData={propertyData}
+                    usdToCrcRate={usdToCrcRate}
+                    />
  
                  </div>
  

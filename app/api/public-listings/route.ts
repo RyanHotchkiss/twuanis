@@ -4,6 +4,14 @@ import {
 } from 'next/server'
 
 import {
+  resolveMarketAnalyticalContext
+} from '@/lib/market-analytical-context'
+
+import {
+  projectPublicListingMonetaryValues
+} from '@/lib/public-listing-monetary-projection'
+
+import {
   getPublicListings,
   type PublicListingTransaction
 } from '@/lib/public-listings-server'
@@ -40,16 +48,25 @@ export async function GET(
   }
 
   try {
-    const listings =
-      await getPublicListings(
-        transaction
-          ? transaction as PublicListingTransaction
-          : undefined
-      )
+    const analyticalContext =
+  await resolveMarketAnalyticalContext()
+
+const listings =
+  await getPublicListings(
+    transaction
+      ? transaction as PublicListingTransaction
+      : undefined
+  )
+
+const projectedListings =
+  projectPublicListingMonetaryValues(
+    listings,
+    analyticalContext
+  )
 
     return NextResponse.json(
       {
-        listings
+        listings: projectedListings
       },
       {
         headers: {

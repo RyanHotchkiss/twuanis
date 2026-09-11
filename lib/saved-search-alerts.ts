@@ -8,6 +8,15 @@ import {
   createNotification
 } from '@/lib/notifications'
 
+import {
+  resolveMarketAnalyticalContext
+} from '@/lib/market-analytical-context'
+
+import {
+  resolveListingAmountCrc,
+  resolveListingAmountUsd
+} from '@/lib/listing-monetary-value'
+
 type SavedSearchAlertFrequency =
   | 'daily'
   | 'weekly'
@@ -31,6 +40,16 @@ type SavedSearchAlert = {
 type MatchingListing = {
   id: string
   created_at: string
+  transaction_type:
+    string | null
+  currency:
+    string | null
+  current_price:
+    number | null
+  price_millions:
+    number | null
+  monthly_price:
+    number | null
 }
 
 export async function processSavedSearchAlerts():
@@ -168,7 +187,12 @@ async function findMatchingListings(
       .from('listings')
       .select(`
         id,
-        created_at
+        created_at,
+        transaction_type,
+        currency,
+        current_price,
+        price_millions,
+        monthly_price
       `)
       .gt(
         'created_at',
@@ -184,10 +208,9 @@ async function findMatchingListings(
       )
 
   query =
-    applySavedSearchFilters(
-        query,
-        savedSearch.filters,
-        savedSearch.transaction_type
+     applySavedSearchFilters(
+      query,
+      savedSearch.filters
     )
 
   const {
@@ -204,10 +227,269 @@ async function findMatchingListings(
     return []
   }
 
-  return (
-    data ??
-    []
-  ) as MatchingListing[]
+    const listings =
+    (
+      data ??
+      []
+    ) as MatchingListing[]
+
+    const priceResolution =
+  resolveSavedSearchPriceBounds(
+    savedSearch.transaction_type,
+    savedSearch.filters
+  )
+
+if (
+  priceResolution.status ===
+    'invalid'
+) {
+  console.error(
+    `Saved search ${savedSearch.id} has an invalid transaction type or price criterion.`
+  )
+
+  return []
+}
+
+if (
+  priceResolution.status ===
+    'none'
+) {
+  return listings
+}
+
+const {
+  minPrice,
+  maxPrice
+} = priceResolution
+
+    const {
+    fx
+  } =
+    await resolveMarketAnalyticalContext()
+
+  const usdToCrcRate =
+    fx.rate
+
+  const isRental =
+    savedSearch.transaction_type ===
+      'rent' ||
+    savedSearch.transaction_type ===
+      'lease'
+
+  return listings.filter(
+    listing => {
+      const monetaryInput = {
+        transaction_type:
+          listing.transaction_type,
+        currency:
+          listing.currency,
+        current_price:
+          listing.current_price,
+        price_millions:
+          listing.price_millions,
+        monthly_price:
+          listing.monthly_price
+      }
+
+      const comparablePrice =
+        isRental
+          ? resolveListingAmountUsd(
+              monetaryInput,
+              usdToCrcRate
+            )
+          : resolveListingAmountCrc(
+              monetaryInput,
+              usdToCrcRate
+            )
+
+      if (comparablePrice === null) {
+        return false
+      }
+
+      if (
+        minPrice !== null &&
+        comparablePrice < minPrice
+      ) {
+        return false
+      }
+
+      if (
+        maxPrice !== null &&
+        comparablePrice > maxPrice
+      ) {
+        return false
+      }
+
+      return true
+    }
+  )
+}
+
+type SavedSearchPriceResolution =
+  | {
+      status: 'none'
+    }
+  | {
+      status: 'valid'
+      minPrice: number | null
+      maxPrice: number | null
+    }
+  | {
+      status: 'invalid'
+    }
+
+function resolveSavedSearchPriceBounds(
+  transactionType: string,
+  filters: Record<string, unknown>
+): SavedSearchPriceResolution {
+  const isRental =
+    transactionType === 'rent' ||
+    transactionType === 'lease'
+
+  const isSale =
+    transactionType === 'sale' ||
+    transactionType === 'buy'
+
+  if (
+    !isRental &&
+    !isSale
+  ) {
+    return {
+      status: 'invalid'
+    }
+  }
+
+  if (isRental) {
+    const rawMonthlyPrice =
+      filters.monthly_price
+
+    if (
+      rawMonthlyPrice ===
+        undefined ||
+      rawMonthlyPrice ===
+        null ||
+      rawMonthlyPrice === ''
+    ) {
+      return {
+        status: 'none'
+      }
+    }
+
+    if (
+      typeof rawMonthlyPrice !==
+        'string'
+    ) {
+      return {
+        status: 'invalid'
+      }
+    }
+
+    switch (rawMonthlyPrice) {
+      case '$0 - $500/mo':
+        return {
+          status: 'valid',
+          minPrice: 0,
+          maxPrice: 500
+        }
+
+      case '$500 - $1K/mo':
+        return {
+          status: 'valid',
+          minPrice: 500,
+          maxPrice: 1_000
+        }
+
+      case '$1K - $2K/mo':
+        return {
+          status: 'valid',
+          minPrice: 1_000,
+          maxPrice: 2_000
+        }
+
+      case '$2K - $5K/mo':
+        return {
+          status: 'valid',
+          minPrice: 2_000,
+          maxPrice: 5_000
+        }
+
+      case '$5K+/mo':
+        return {
+          status: 'valid',
+          minPrice: 5_000,
+          maxPrice: null
+        }
+
+      default:
+        return {
+          status: 'invalid'
+        }
+    }
+  }
+
+  const rawPriceRange =
+    filters.price_range
+
+  if (
+    rawPriceRange === undefined ||
+    rawPriceRange === null ||
+    rawPriceRange === ''
+  ) {
+    return {
+      status: 'none'
+    }
+  }
+
+  if (
+    typeof rawPriceRange !==
+      'string'
+  ) {
+    return {
+      status: 'invalid'
+    }
+  }
+
+  switch (rawPriceRange) {
+    case '₡0 - ₡25M':
+      return {
+        status: 'valid',
+        minPrice: 0,
+        maxPrice: 25_000_000
+      }
+
+    case '₡25M - ₡75M':
+      return {
+        status: 'valid',
+        minPrice: 25_000_000,
+        maxPrice: 75_000_000
+      }
+
+    case '₡75M - ₡150M':
+      return {
+        status: 'valid',
+        minPrice: 75_000_000,
+        maxPrice: 150_000_000
+      }
+
+    case '₡150M - ₡250M':
+      return {
+        status: 'valid',
+        minPrice: 150_000_000,
+        maxPrice: 250_000_000
+      }
+
+    case '₡250M+':
+      return {
+        status: 'valid',
+        minPrice: 250_000_000,
+        maxPrice: null
+      }
+
+    default:
+      return {
+        status: 'invalid'
+      }
+  }
 }
 
 function applySavedSearchFilters(
@@ -215,8 +497,7 @@ function applySavedSearchFilters(
     filters: Record<
         string,
         unknown
-    >,
-    transactionType: string
+    >
     ): any {
   let filteredQuery =
     query
@@ -305,46 +586,7 @@ function applySavedSearchFilters(
       )
   }
 
-  if (
-    typeof filters.minPrice ===
-      'number'
-  ) {
-    filteredQuery =
-      filteredQuery.gte(
-        savedSearchPriceColumn(
-        transactionType
-        ),
-        filters.minPrice
-      )
-  }
-
-  if (
-    typeof filters.maxPrice ===
-      'number'
-  ) {
-    filteredQuery =
-      filteredQuery.lte(
-        savedSearchPriceColumn(
-        transactionType
-        ),
-        filters.maxPrice
-      )
-  }
-
   return filteredQuery
-}
-
-function savedSearchPriceColumn(
-    transactionType: string
-    ):
-    | 'monthly_price'
-    | 'price_millions' {
-    return (
-        transactionType === 'rent' ||
-        transactionType === 'lease'
-    )
-    ? 'monthly_price'
-    : 'price_millions'
 }
 
 async function recordNewMatches(

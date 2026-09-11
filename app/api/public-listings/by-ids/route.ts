@@ -7,6 +7,14 @@ import {
   getPublicListingsByIds
 } from '@/lib/public-listings-server'
 
+import {
+  resolveMarketAnalyticalContext
+} from '@/lib/market-analytical-context'
+
+import {
+  projectPublicListingMonetaryValues
+} from '@/lib/public-listing-monetary-projection'
+
 const MAX_LISTING_IDS = 100
 
 export async function POST(
@@ -60,13 +68,23 @@ export async function POST(
       )
     }
 
+        const analyticalContext =
+      await resolveMarketAnalyticalContext()
+
     const listings =
       await getPublicListingsByIds(
         uniqueListingIds
       )
 
+    const projectedListings =
+      projectPublicListingMonetaryValues(
+        listings,
+        analyticalContext
+      )
+
     return NextResponse.json({
-      listings
+      listings:
+        projectedListings
     })
   } catch (error) {
     console.error(

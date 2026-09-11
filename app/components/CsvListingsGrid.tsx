@@ -4,15 +4,69 @@ import {
   csvMetaPill
 } from '@/app/styles/sell-styles'
 
+import {
+  resolveListingOriginalMonetaryValue
+} from '@/lib/listing-monetary-value'
+
 type CsvListingsGridProps = {
   csvListings: any[]
   setCsvListings: (value: any[]) => void
+  isRentLease?: boolean
 }
 
 export default function CsvListingsGrid({
   csvListings,
-  setCsvListings
+  setCsvListings,
+  isRentLease = false
 }: CsvListingsGridProps) {
+
+  function formatOriginalPrice(
+    listing: any
+  ): string {
+
+        const monetaryValue =
+      resolveListingOriginalMonetaryValue({
+        transaction_type:
+          isRentLease
+            ? 'rent'
+            : 'sale',
+
+        currency:
+          listing.currency,
+
+        current_price:
+          listing.current_price,
+
+        price_millions:
+          listing.price_millions,
+
+        monthly_price:
+          listing.monthly_price
+      })
+
+    if (!monetaryValue) {
+      return 'Price unavailable'
+    }
+
+    const {
+      amount,
+      currency
+    } = monetaryValue
+
+    const formattedAmount =
+      new Intl.NumberFormat(
+        currency === 'USD'
+          ? 'en-US'
+          : 'es-CR',
+        {
+          maximumFractionDigits: 0
+        }
+      ).format(amount)
+
+    return currency === 'USD'
+      ? `$${formattedAmount}`
+      : `₡${formattedAmount}`
+  }
 
   return (
 
@@ -69,7 +123,7 @@ export default function CsvListingsGrid({
               </div>
 
               <div style={csvMetaPill}>
-                ₡{listing.price_millions}M
+                {formatOriginalPrice(listing)}
               </div>
 
             </div>

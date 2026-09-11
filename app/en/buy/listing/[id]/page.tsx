@@ -31,7 +31,15 @@ import {
 
 import PriceMeterComparableListing
   from '@/app/components/PriceMeterComparableListing'
+import {
+  resolveMarketAnalyticalContext
+} from '@/lib/market-analytical-context'
 
+import {
+  resolveListingOriginalMonetaryValue,
+  resolveListingAmountCrc,
+  resolveListingAmountUsd
+} from '@/lib/listing-monetary-value'
 export default async function ListingPage({
   params
 }: {
@@ -114,6 +122,7 @@ const listing = {
         canton: listing.canton,
         district: listing.district,
         property_type: listing.property_type,
+        subjectListing: listing,
       },
       'en'
     )
@@ -173,31 +182,58 @@ const schema = buildListingSchema({
         mode: 'buy'
         })
   
-        const USD_TO_CRC = 500
+        const analyticalContext =
+          await resolveMarketAnalyticalContext()
 
-          const listingPriceUSD =
-            listing.currency === 'USD'
-              ? Number(listing.current_price)
-              : Number(listing.current_price) / USD_TO_CRC
+        const originalMonetaryValue =
+          resolveListingOriginalMonetaryValue(
+            listing
+          )
 
-          const listingPriceCRC =
-            listing.currency === 'USD'
-              ? Number(listing.current_price) * USD_TO_CRC
-              : Number(listing.current_price)
+        const recentlyViewedPrice =
+          originalMonetaryValue
+            ? originalMonetaryValue.currency ===
+                'USD'
+              ? `$${Math.round(
+                  originalMonetaryValue.amount
+                ).toLocaleString()}`
+              : `₡${Math.round(
+                  originalMonetaryValue.amount
+                ).toLocaleString()}`
+            : null
 
-          const listingPricePerM2USD =
-            listing.current_price && listing.property_area
-              ? listingPriceUSD / Number(listing.property_area)
-              : null
+        const listingPriceUSD =
+          resolveListingAmountUsd(
+            listing,
+            analyticalContext.fx.rate
+          )
 
-          const listingPricePerM2CRC =
-            listing.current_price && listing.property_area
-              ? listingPriceCRC / Number(listing.property_area)
-              : null
+        const listingPriceCRC =
+          resolveListingAmountCrc(
+            listing,
+            analyticalContext.fx.rate
+          )
 
-  return (
+        const propertyArea =
+          Number(listing.property_area)
 
-    <>
+        const listingPricePerM2USD =
+          listingPriceUSD !== null &&
+          Number.isFinite(propertyArea) &&
+          propertyArea > 0
+            ? listingPriceUSD / propertyArea
+            : null
+
+        const listingPricePerM2CRC =
+          listingPriceCRC !== null &&
+          Number.isFinite(propertyArea) &&
+          propertyArea > 0
+            ? listingPriceCRC / propertyArea
+            : null
+
+          return (
+
+            <>
 
         {schema && (
             <JsonLd data={schema} />
@@ -217,6 +253,8 @@ const schema = buildListingSchema({
 
           <RecordRecentlyViewedProperty
             listing={listing}
+            price={recentlyViewedPrice}
+            href={`/en/buy/listing/${listing.id}`}
           />
 
     <main style={{
@@ -639,14 +677,11 @@ const schema = buildListingSchema({
 
             <div style={priceCard}>
 
-                {listing.current_price
-                  ? listing.currency === 'USD' ||
-                    listing.title?.toUpperCase().includes('USD')
-                    ? `$${Number(listing.current_price).toLocaleString()}`
-                    : `₡${Number(listing.current_price).toLocaleString()}`
-                  : listing.price_millions
-                  ? `₡${Number(listing.price_millions).toLocaleString()}M`
-                  : 'Precio No Disponible'}
+                {originalMonetaryValue
+                  ? originalMonetaryValue.currency === 'USD'
+                    ? `$${Math.round(originalMonetaryValue.amount).toLocaleString()}`
+                    : `₡${Math.round(originalMonetaryValue.amount).toLocaleString()}`
+                  : 'Price Not Available'}
 
             </div>
 
@@ -696,20 +731,22 @@ const schema = buildListingSchema({
             <StatCard
               label="Listing Price"
               value={
-                listing.current_price ? (
-                  <>
-                    <div>
-                      ${Math.round(listingPriceUSD).toLocaleString()}
-                    </div>
+              listingPriceUSD !== null &&
+              listingPriceCRC !== null ? (
+                <>
+                  <div>
+                    ${Math.round(listingPriceUSD).toLocaleString()}
+                  </div>
 
-                    <div style={secondaryValue}>
-                      ₡{Math.round(listingPriceCRC).toLocaleString()}
-                    </div>
-                  </>
-                ) : (
-                  'Not available'
-                )
-              }
+                  <div style={secondaryValue}>
+                    ₡{Math.round(listingPriceCRC).toLocaleString()}
+                  </div>
+                </>
+              ) : (
+                'Not available'
+              )
+            }
+                          
             />
 
             <StatCard
@@ -723,7 +760,8 @@ const schema = buildListingSchema({
             <StatCard
                 label="Price per m²"
                 value={
-                  listingPricePerM2USD && listingPricePerM2CRC ? (
+                listingPricePerM2USD !== null &&
+                listingPricePerM2CRC !== null ? (
                     <>
                       <div>
                         ${Math.round(listingPricePerM2USD).toLocaleString()}/m²

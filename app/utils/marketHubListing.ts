@@ -11,6 +11,10 @@ import {
 } from '@/app/utils/resolveListingImages'
 
 import {
+  resolveListingOriginalMonetaryValue
+} from '@/lib/listing-monetary-value'
+
+import {
   createEmptyListingPerformance,
   getListingPerformance,
   type ListingPerformance
@@ -31,6 +35,10 @@ export type DatabaseMarketHubListing = {
   district: string | null
   currency: string | null
   price_millions:
+    | number
+    | string
+    | null
+  current_price:
     | number
     | string
     | null
@@ -80,46 +88,17 @@ function normalizeTransactionType(
   return undefined
 }
 
-function numberValue(
-  value:
-    | number
-    | string
-    | null
-): number | null {
-  if (
-    value === null ||
-    value === ''
-  ) {
-    return null
-  }
-
-  const parsed =
-    Number(value)
-
-  return Number.isFinite(parsed)
-    ? parsed
-    : null
-}
-
 function formatCurrency(
   amount: number,
-  currency: string | null
+  currency: 'USD' | 'CRC'
 ): string {
-  const normalizedCurrency =
-    currency === 'USD'
-      ? 'USD'
-      : 'CRC'
-
   return new Intl.NumberFormat(
-    normalizedCurrency === 'USD'
+    currency === 'USD'
       ? 'en-US'
       : 'es-CR',
     {
       style: 'currency',
-
-      currency:
-        normalizedCurrency,
-
+      currency,
       maximumFractionDigits:
         0
     }
@@ -130,53 +109,29 @@ function formatListingPrice(
   listing:
     DatabaseMarketHubListing
 ): string | null {
+  const monetaryValue =
+    resolveListingOriginalMonetaryValue(
+      listing
+    )
+
+  if (!monetaryValue) {
+    return null
+  }
+
+  const formatted =
+    formatCurrency(
+      monetaryValue.amount,
+      monetaryValue.currency
+    )
+
   const transactionType =
     normalizeTransactionType(
       listing.transaction_type
     )
 
-  if (
-    transactionType === 'rent'
-  ) {
-    const monthlyPrice =
-      numberValue(
-        listing.monthly_price
-      )
-
-    if (monthlyPrice === null) {
-      return null
-    }
-
-    return `${formatCurrency(
-      monthlyPrice,
-      listing.currency
-    )} / month`
-  }
-
-  const priceMillions =
-    numberValue(
-      listing.price_millions
-    )
-
-  if (priceMillions === null) {
-    return null
-  }
-
-  const currency =
-    listing.currency === 'USD'
-      ? 'USD'
-      : 'CRC'
-
-  const fullPrice =
-    currency === 'CRC'
-      ? priceMillions *
-        1_000_000
-      : priceMillions
-
-  return formatCurrency(
-    fullPrice,
-    currency
-  )
+  return transactionType === 'rent'
+    ? `${formatted} / month`
+    : formatted
 }
 
 function daysSince(
@@ -357,6 +312,7 @@ export async function loadCanonicalMarketHubListing({
         district,
         currency,
         price_millions,
+        current_price,
         monthly_price,
         created_at,
         published_at,

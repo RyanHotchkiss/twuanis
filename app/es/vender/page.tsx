@@ -30,9 +30,12 @@ import {
   generateListingTitle,
   generateListingDescription,
   formatColones,
-  convertToUSD,
   formatWhatsAppNumber
 } from '@/app/utils/listing-utils'
+
+import {
+  useMarketplaceFx
+} from '@/app/hooks/useMarketplaceFx'
 
 import {
   trackListingWhatsAppClicked
@@ -179,6 +182,8 @@ const [showAuthOverlay, setShowAuthOverlay] = useState(false)
     distance_to_paved_road_range: '',
     terrain: [] as string[],
     priceMillions: 0,
+    transaction_type: 'sale',
+    currency: 'CRC',
     images: [] as {
         preview: string
         file: File
@@ -186,6 +191,12 @@ const [showAuthOverlay, setShowAuthOverlay] = useState(false)
         }[],
     whatsapp: '',
   })
+
+  const marketplaceFx =
+  useMarketplaceFx()
+
+const usdToCrcRate =
+  marketplaceFx?.usdToCrcRate ?? null
 
            const show_residential_fields =
                 residential_property_types.some(
@@ -825,7 +836,7 @@ const [showAuthOverlay, setShowAuthOverlay] = useState(false)
                         }))
                     }
                     formatColones={formatColones}
-                    convertToUSD={convertToUSD}
+                    usdToCrcRate={usdToCrcRate}
                     />
 
 {/* IMAGE UPLOADER */}
@@ -930,7 +941,8 @@ const [showAuthOverlay, setShowAuthOverlay] = useState(false)
                 >
 
                 <PropertyDefinitionPanelES
-                    propertyData={propertyData}
+                propertyData={propertyData}
+                usdToCrcRate={usdToCrcRate}
                 />
 
                 </div>

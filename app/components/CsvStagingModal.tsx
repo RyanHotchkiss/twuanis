@@ -39,9 +39,10 @@ export default function CsvStagingModal({
             </p>
 
           </div>
-<CsvListingsGrid
+          <CsvListingsGrid
             csvListings={csvListings}
             setCsvListings={setCsvListings}
+            isRentLease={isRentLease}
           />
 
           {isRentLease ? (

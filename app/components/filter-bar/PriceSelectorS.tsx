@@ -8,14 +8,14 @@ type PriceSelectorSProps = {
     updater: (prev: number) => number
   ) => void
   formatColones: (millions: number) => string
-  convertToUSD: (millions: number) => number
+  usdToCrcRate: number | null
 }
 
 export default function PriceSelectorS({
   priceMillions,
   setPriceMillions,
   formatColones,
-  convertToUSD
+  usdToCrcRate
 }: PriceSelectorSProps) {
 
   const [priceInterval, setPriceInterval] =
@@ -93,9 +93,12 @@ export default function PriceSelectorS({
     color: '#888',
     marginTop: '.35rem'
   }}>
-    $
-      {((priceMillions * 1000000) / 500).toLocaleString()}
-      {' '}USD
+    {usdToCrcRate !== null
+      ? `$${Math.round(
+          (priceMillions * 1_000_000) /
+            usdToCrcRate
+        ).toLocaleString()} USD`
+      : 'USD conversion unavailable'}
   </div>
 
 </div>

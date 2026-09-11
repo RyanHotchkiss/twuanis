@@ -105,14 +105,12 @@ type PublicSavedListing = {
   canton: string | null
   district: string | null
   transaction_type: string | null
-  currency: string | null
-  price_millions:
+  marketplace_original_price:
     | number
-    | string
     | null
-  monthly_price:
-    | number
-    | string
+  marketplace_original_currency:
+    | 'USD'
+    | 'CRC'
     | null
 }
 
@@ -650,17 +648,14 @@ export default function MarketHubFavorites({
 
               price:
                 formatSavedPropertyPrice({
+                  originalPrice:
+                    listing.marketplace_original_price,
+
+                  originalCurrency:
+                    listing.marketplace_original_currency,
+
                   transactionType:
-                    listing.transaction_type,
-
-                  currency:
-                    listing.currency,
-
-                  priceMillions:
-                    listing.price_millions,
-
-                  monthlyPrice:
-                    listing.monthly_price
+                    listing.transaction_type
                 }),
 
               transactionType:
@@ -3411,51 +3406,47 @@ function propertyNoteToPlainText(
 }
 
 function formatSavedPropertyPrice({
-  transactionType,
-  currency,
-  priceMillions,
-  monthlyPrice
+  originalPrice,
+  originalCurrency,
+  transactionType
 }: {
-  transactionType?:
-    string | null
-  currency?:
-    string | null
-  priceMillions?:
-    number | string | null
-  monthlyPrice?:
-    number | string | null
+  originalPrice:
+    | number
+    | null
+
+  originalCurrency:
+    | 'USD'
+    | 'CRC'
+    | null
+
+  transactionType:
+    | string
+    | null
 }): string | null {
-  const symbol =
-    currency === 'USD'
-      ? '$'
-      : '₡'
 
   if (
-    transactionType ===
-    'rent'
-  ) {
-    if (
-      monthlyPrice === null ||
-      monthlyPrice === undefined
-    ) {
-      return null
-    }
-
-    return `${symbol}${Number(
-      monthlyPrice
-    ).toLocaleString()} / month`
-  }
-
-  if (
-    priceMillions === null ||
-    priceMillions === undefined
+    originalPrice === null ||
+    !originalCurrency
   ) {
     return null
   }
 
-  return `₡${Number(
-    priceMillions
-  ).toLocaleString()}M`
+  const symbol =
+    originalCurrency === 'USD'
+      ? '$'
+      : '₡'
+
+  const formattedPrice =
+    `${symbol}${Math.round(
+      originalPrice
+    ).toLocaleString()}`
+
+  return (
+    transactionType === 'rent' ||
+    transactionType === 'lease'
+  )
+    ? `${formattedPrice} / month`
+    : formattedPrice
 }
 
 const summaryDashboardHeader = {

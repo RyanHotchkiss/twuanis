@@ -1,10 +1,24 @@
-import { getMarketStatistics } from '@/lib/statistics-engine'
+import {
+  getMarketStatistics
+} from '@/lib/statistics-engine'
+
+import {
+  resolveMarketAnalyticalContext,
+  type MarketAnalyticalContext
+} from '@/lib/market-analytical-context'
+
+import {
+  convertCrcToUsd
+} from '@/lib/currency-conversion'
+
+import {
+  resolveListingAmountCrc
+} from '@/lib/listing-monetary-value'
 
 type Language = 'en' | 'es'
 
-type SideFilters = Record<string, string | undefined>
-
-const CRC_TO_USD = 500
+type SideFilters =
+  Record<string, string | undefined>
 
 function formatCRC(value: number | null) {
   if (value === null || Number.isNaN(value)) return null
@@ -71,37 +85,6 @@ function parsePriceRange(value?: string) {
     .map(Number)
 
   return { min, max }
-}
-
-function getListingPrice(listing: any) {
-  if (listing.transaction_type === 'rent') {
-    return listing.monthly_price
-      ? Number(listing.monthly_price)
-      : null
-  }
-
-  if (
-    listing.price_millions === null ||
-    listing.price_millions === undefined
-  ) {
-    return null
-  }
-
-  const priceMillions = Number(listing.price_millions)
-
-  if (!priceMillions || Number.isNaN(priceMillions)) {
-    return null
-  }
-
-  if (listing.currency === 'USD') {
-    return priceMillions * 1000000 * CRC_TO_USD
-  }
-
-  const priceCRC = priceMillions * 1000000
-
-  if (priceCRC < 10000000) return null
-
-  return priceCRC
 }
 
 function parseNumber(value: unknown): number | null {
@@ -174,50 +157,93 @@ function mostCommon(values: any[]) {
   return entries.sort((a, b) => b[1] - a[1])[0][0]
 }
 
-function applyPriceRange(listings: any[], priceRange?: string) {
-  const range = parsePriceRange(priceRange)
+function applyPriceRange(
+  listings: any[],
+  priceRange: string | undefined,
+  usdToCrcRate: number
+) {
+  const range =
+    parsePriceRange(
+      priceRange
+    )
 
-  if (!range) return listings
+  if (!range) {
+    return listings
+  }
 
-  return listings.filter((listing) => {
-    const price = getListingPrice(listing)
+  return listings.filter(
+    (listing) => {
+      const price =
+        resolveListingAmountCrc(
+          listing,
+          usdToCrcRate
+        )
 
-    if (!price) return false
+      if (!price) {
+        return false
+      }
 
-    if (range.max === null) {
-      return price >= range.min
+      if (range.max === null) {
+        return price >= range.min
+      }
+
+      return (
+        price >= range.min &&
+        price <= range.max
+      )
     }
-
-    return price >= range.min && price <= range.max
-  })
+  )
 }
 
 async function analyzeMarket(
   sideFilters: SideFilters,
-  prefix: 'a' | 'b'
+  prefix: 'a' | 'b',
+  analyticalContext:
+    MarketAnalyticalContext
 ) {
   const filters =
     normalizeSideFilters(sideFilters, prefix)
 
   const market =
-    await getMarketStatistics(filters)
+  await getMarketStatistics(
+    filters,
+    analyticalContext
+  )
 
-  const listings =
-    applyPriceRange(
-      market.listings || [],
-      sideFilters[`${prefix}_price_range`]
-    )
+const usdToCrcRate =
+  analyticalContext.fx.rate
+
+const listings =
+  applyPriceRange(
+    market.listings || [],
+    sideFilters[
+      `${prefix}_price_range`
+    ],
+    usdToCrcRate
+  )
 
   const salePrices =
     listings
       .filter((listing: any) => listing.transaction_type !== 'rent')
-      .map(getListingPrice)
+      .map(
+            (listing: any) =>
+              resolveListingAmountCrc(
+                listing,
+                usdToCrcRate
+              )
+          )
       .filter((value: number | null): value is number => Boolean(value))
 
   const rentPrices =
     listings
       .filter((listing: any) => listing.transaction_type === 'rent')
-      .map(getListingPrice)
+      .map(
+            (listing: any) =>
+              resolveListingAmountCrc(
+                listing,       
+                usdToCrcRate
+              )
+          )
       .filter((value: number | null): value is number => Boolean(value))
 
   const propertyAreas =
@@ -259,7 +285,12 @@ async function analyzeMarket(
 
     averageSalePriceUSD:
       averageSalePrice
-        ? formatUSD(averageSalePrice / CRC_TO_USD)
+        ? formatUSD(
+          convertCrcToUsd(
+            averageSalePrice,
+            usdToCrcRate
+          )
+        )
         : null,
 
     medianSalePriceCRC:
@@ -267,7 +298,12 @@ async function analyzeMarket(
 
     medianSalePriceUSD:
       medianSalePrice
-        ? formatUSD(medianSalePrice / CRC_TO_USD)
+        ? formatUSD(
+          convertCrcToUsd(
+            medianSalePrice,
+            usdToCrcRate
+          )
+        )
         : null,
 
     averageRentCRC:
@@ -275,7 +311,12 @@ async function analyzeMarket(
 
     averageRentUSD:
       averageRent
-        ? formatUSD(averageRent / CRC_TO_USD)
+        ? formatUSD(
+          convertCrcToUsd(
+            averageRent,
+            usdToCrcRate
+          )
+        )
         : null,
 
     medianRentCRC:
@@ -283,7 +324,12 @@ async function analyzeMarket(
 
     medianRentUSD:
       medianRent
-        ? formatUSD(medianRent / CRC_TO_USD)
+        ? formatUSD(
+          convertCrcToUsd(
+            medianRent,
+            usdToCrcRate
+          )
+        )
         : null,
 
     averagePropertyArea:
@@ -317,11 +363,22 @@ export async function getMarketComparison(
   rightFilters: SideFilters,
   language: Language = 'en'
 ) {
+  const analyticalContext =
+    await resolveMarketAnalyticalContext()
+
   const left =
-    await analyzeMarket(leftFilters, 'a')
+    await analyzeMarket(
+      leftFilters,
+      'a',
+      analyticalContext
+    )
 
   const right =
-    await analyzeMarket(rightFilters, 'b')
+    await analyzeMarket(
+      rightFilters,
+      'b',
+      analyticalContext
+    )
 
   return {
     language,

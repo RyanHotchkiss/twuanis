@@ -2,6 +2,15 @@ import {
   getMatchingListings
 } from '@/lib/statistics-engine'
 
+import {
+  resolveListingAmountCrc
+} from '@/lib/listing-monetary-value'
+
+import {
+  resolveMarketAnalyticalContext,
+  type MarketAnalyticalContext
+} from '@/lib/market-analytical-context'
+
 
 /*
  * ---------------------------------------------------------
@@ -71,13 +80,10 @@ export type ComparableCohortListing = {
   constructionArea:
     number | null
 
-  currency:
-    string | null
+  analyticalCurrency:
+    'CRC'
 
-  currentPrice:
-    number | null
-
-  monthlyPrice:
+  analyticalPrice:
     number | null
 
   similarityScore:
@@ -526,173 +532,34 @@ function valuesAreSimilar({
 }
 
 
-function resolveComparablePrice(
+function resolveComparablePriceCrc(
   listing:
-    MarketListing
-): {
-  value:
-    number | null
-
-  currency:
-    string | null
-} {
-
-  const transaction =
-    normalizeTransactionType(
-      listing.transaction_type
-    )
-
-
-  if (
-    transaction ===
-      'rent'
-  ) {
-
-    return {
-      value:
-        parseNumericValue(
-          listing.monthly_price
-        ),
-
-      currency:
-        listing.currency ??
-        'CRC'
-    }
-  }
-
-
-  /*
-   * Prefer canonical current_price.
-   *
-   * price_millions is only used as a fallback because
-   * historical listing inventory may still expose it.
-   */
-
-  const currentPrice =
-    parseNumericValue(
-      listing.current_price
-    )
-
-
-  if (
-    currentPrice !==
-      null &&
-    currentPrice >
-      1
-  ) {
-
-    return {
-      value:
-        currentPrice,
-
-      currency:
-        listing.currency ??
-        null
-    }
-  }
-
-
-  const priceMillions =
-    parseNumericValue(
-      listing.price_millions
-    )
-
-
-  if (
-    priceMillions ===
-      null
-  ) {
-
-    return {
-      value:
-        null,
-
-      currency:
-        listing.currency ??
-        null
-    }
-  }
-
-
-  return {
-    value:
-      priceMillions *
-      1_000_000,
-
-    currency:
-      listing.currency ??
-      null
-  }
-}
-
-
-function canComparePrice(
-  target:
     MarketListing,
 
-  candidate:
-    MarketListing
-): boolean {
+  context:
+    MarketAnalyticalContext
+): number | null {
 
-  const targetPrice =
-    resolveComparablePrice(
-      target
-    )
-
-
-  const candidatePrice =
-    resolveComparablePrice(
-      candidate
-    )
-
-
-  if (
-    targetPrice.value ===
-      null ||
-    candidatePrice.value ===
-      null
-  ) {
-
-    return false
-  }
-
-
-  /*
-   * Do not invent exchange-rate normalization here.
-   *
-   * Different currencies mean the price dimension is
-   * unavailable unless a canonical currency resolver is
-   * introduced elsewhere.
-   */
-
-  if (
-    targetPrice.currency &&
-    candidatePrice.currency &&
-    normalizeText(
-      targetPrice.currency
-    ) !==
-      normalizeText(
-        candidatePrice.currency
-      )
-  ) {
-
-    return false
-  }
-
-
-  return true
+  return resolveListingAmountCrc(
+    listing,
+    context.fx.rate
+  )
 }
 
 
 function evaluateSimilarity({
   target,
-  candidate
+  candidate,
+  context
 }: {
   target:
     MarketListing
 
   candidate:
     MarketListing
+
+  context:
+    MarketAnalyticalContext
 }): SimilarityEvaluation {
 
   let matchedWeight =
@@ -964,48 +831,42 @@ function evaluateSimilarity({
   })
 
 
-  if (
-    canComparePrice(
+    const targetPriceCrc =
+    resolveComparablePriceCrc(
       target,
-      candidate
+      context
     )
-  ) {
-
-    const targetPrice =
-      resolveComparablePrice(
-        target
-      )
 
 
-    const candidatePrice =
-      resolveComparablePrice(
-        candidate
-      )
+  const candidatePriceCrc =
+    resolveComparablePriceCrc(
+      candidate,
+      context
+    )
 
 
-    evaluateNumericDimension({
-      dimension:
-        'price',
+  evaluateNumericDimension({
+    dimension:
+      'price',
 
-      targetValue:
-        targetPrice.value,
+    targetValue:
+      targetPriceCrc,
 
-      candidateValue:
-        candidatePrice.value,
+    candidateValue:
+      candidatePriceCrc,
 
-      weight:
-        DIMENSION_WEIGHTS
-          .price,
+    weight:
+      DIMENSION_WEIGHTS
+        .price,
 
-      /*
-       * Behavioral cohorts should tolerate reasonable
-       * market-price dispersion without comparing listings
-       * from completely different price strata.
-       */
-      maximumRelativeDifference:
-        0.30
-    })
-  }
+    /*
+     * Behavioral cohorts compare price only after canonical
+     * normalization to CRC using the shared analytical
+     * context resolved for this cohort operation.
+     */
+    maximumRelativeDifference:
+      0.30
+  })
 
 
   return {
@@ -1157,18 +1018,23 @@ function satisfiesHardRequirements({
 
 function normalizeCohortListing({
   listing,
-  similarity
+  similarity,
+  context
 }: {
   listing:
     MarketListing
 
   similarity:
     SimilarityEvaluation
+
+  context:
+    MarketAnalyticalContext
 }): ComparableCohortListing {
 
-  const price =
-    resolveComparablePrice(
-      listing
+    const analyticalPrice =
+    resolveComparablePriceCrc(
+      listing,
+      context
     )
 
 
@@ -1213,16 +1079,10 @@ function normalizeCohortListing({
       listing.construction_area ??
       null,
 
-    currency:
-      price.currency,
+    analyticalCurrency:
+      'CRC',
 
-    currentPrice:
-      price.value,
-
-    monthlyPrice:
-      parseNumericValue(
-        listing.monthly_price
-      ),
+    analyticalPrice,
 
     similarityScore:
       resolveSimilarityScore(
@@ -1309,8 +1169,21 @@ export async function resolveComparableCohort({
   let inventory:
     MarketListing[]
 
+  let context:
+    MarketAnalyticalContext
 
-  try {
+
+    try {
+
+    /*
+     * Resolve one authoritative analytical context for the
+     * entire cohort operation, then load canonical active
+     * marketplace inventory.
+     */
+
+    context =
+      await resolveMarketAnalyticalContext()
+
 
     /*
      * Canonical active marketplace inventory.
@@ -1429,7 +1302,8 @@ export async function resolveComparableCohort({
           const similarity =
             evaluateSimilarity({
               target,
-              candidate
+              candidate,
+              context
             })
 
 
@@ -1437,7 +1311,9 @@ export async function resolveComparableCohort({
             listing:
               candidate,
 
-            similarity
+            similarity,
+
+            context
           })
         }
       )
@@ -1517,7 +1393,7 @@ export async function resolveComparableCohort({
     'The promoted listing itself is always excluded from its comparable cohort.',
     'Canton, district, rooms, areas, and price strengthen similarity when comparable evidence exists.',
     'Missing optional dimensions do not fabricate mismatches; they are excluded from that listing pair’s similarity denominator.',
-    'Price similarity is evaluated only when comparable price evidence exists in the same currency.',
+    'Price similarity is evaluated from canonical CRC-normalized monetary evidence using one authoritative analytical context for the cohort operation.',
     'This engine resolves market peers only. It does not claim that cohort behavior explains or causes the promoted listing’s behavior.'
   ]
 

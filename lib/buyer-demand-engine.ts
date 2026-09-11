@@ -1,5 +1,13 @@
 import { getMarketStatistics } from '@/lib/statistics-engine'
 
+import {
+  convertCrcToUsd
+} from '@/lib/currency-conversion'
+
+import {
+  resolveListingAmountCrc
+} from '@/lib/listing-monetary-value'
+
 type BuyerDemandLanguage = 'en' | 'es'
 
 type MarketFilters = {
@@ -34,8 +42,6 @@ type DemandSignal = {
   confidence: string
   explanation: string
 }
-
-const CRC_TO_USD = 500
 
 const ontologyCategories = [
   'property_type',
@@ -93,35 +99,14 @@ function labelize(value: string) {
     .replace(/\b\w/g, letter => letter.toUpperCase())
 }
 
-function getListingPrice(listing: any) {
-  if (listing.transaction_type === 'rent') {
-    return null
-  }
-
-  if (
-    listing.price_millions === null ||
-    listing.price_millions === undefined
-  ) {
-    return null
-  }
-
-  const priceMillions = Number(listing.price_millions)
-
-  if (!priceMillions || Number.isNaN(priceMillions)) {
-    return null
-  }
-
-  if (listing.currency === 'USD') {
-    return priceMillions * 1000000 * CRC_TO_USD
-  }
-
-  const priceCRC = priceMillions * 1000000
-
-  if (priceCRC < 10000000) {
-    return null
-  }
-
-  return priceCRC
+function getListingPrice(
+  listing: any,
+  usdToCrcRate: number
+) {
+  return resolveListingAmountCrc(
+    listing,
+    usdToCrcRate
+  )
 }
 
 function getConfidence(
@@ -216,12 +201,14 @@ function analyzeCharacteristic({
   listings,
   category,
   characteristic,
-  language
+  language,
+  usdToCrcRate
 }: {
   listings: any[]
   category: string
   characteristic: string
   language: BuyerDemandLanguage
+  usdToCrcRate: number
 }): DemandSignal {
   const withListings =
     listings.filter((listing: any) =>
@@ -243,12 +230,22 @@ function analyzeCharacteristic({
 
   const withPrices =
     withListings
-      .map(getListingPrice)
+      .map(listing =>
+  getListingPrice(
+    listing,
+    usdToCrcRate
+  )
+)
       .filter((value: number | null): value is number => Boolean(value))
 
   const withoutPrices =
     withoutListings
-      .map(getListingPrice)
+      .map(listing =>
+  getListingPrice(
+    listing,
+    usdToCrcRate
+  )
+)
       .filter((value: number | null): value is number => Boolean(value))
 
   const withAveragePrice =
@@ -310,7 +307,8 @@ function analyzePair({
   firstCharacteristic,
   secondCategory,
   secondCharacteristic,
-  language
+  language,
+  usdToCrcRate
 }: {
   listings: any[]
   firstCategory: string
@@ -318,6 +316,7 @@ function analyzePair({
   secondCategory: string
   secondCharacteristic: string
   language: BuyerDemandLanguage
+  usdToCrcRate: number
 }): DemandSignal {
   const pairLabel =
     `${labelize(firstCharacteristic)} + ${labelize(secondCharacteristic)}`
@@ -351,11 +350,21 @@ function analyzePair({
     )
   const withPrices =
     withListings
-      .map(getListingPrice)
+      .map(listing =>
+  getListingPrice(
+    listing,
+    usdToCrcRate
+  )
+)
       .filter((value: number | null): value is number => Boolean(value))
   const withoutPrices =
     withoutListings
-      .map(getListingPrice)
+      .map(listing =>
+  getListingPrice(
+    listing,
+    usdToCrcRate
+  )
+)
       .filter((value: number | null): value is number => Boolean(value))
   const withAveragePrice =
     average(withPrices)
@@ -399,7 +408,8 @@ function analyzeSegment({
   segmentCharacteristic,
   targetCategory,
   targetCharacteristic,
-  language
+  language,
+  usdToCrcRate
 }: {
   listings: any[]
   segmentCategory: string
@@ -407,6 +417,7 @@ function analyzeSegment({
   targetCategory: string
   targetCharacteristic: string
   language: BuyerDemandLanguage
+  usdToCrcRate: number
 }): DemandSignal {
   const segmentListings =
     listings.filter((listing: any) =>
@@ -434,11 +445,21 @@ function analyzeSegment({
     )
   const withPrices =
     withListings
-      .map(getListingPrice)
+      .map(listing =>
+  getListingPrice(
+    listing,
+    usdToCrcRate
+  )
+)
       .filter((value: number | null): value is number => Boolean(value))
   const withoutPrices =
     withoutListings
-      .map(getListingPrice)
+      .map(listing =>
+  getListingPrice(
+    listing,
+    usdToCrcRate
+  )
+)
       .filter((value: number | null): value is number => Boolean(value))
   const withAveragePrice =
     average(withPrices)
@@ -493,11 +514,18 @@ export async function getBuyerDemand(
 ) {
   const market =
     await getMarketStatistics(filters)
+  const usdToCrcRate =
+    market.analyticalContext.fx.rate
   const listings =
     market.listings || []
   const prices =
     listings
-      .map(getListingPrice)
+      .map(listing =>
+  getListingPrice(
+    listing,
+    usdToCrcRate
+  )
+)
       .filter((value: number | null): value is number => Boolean(value))
   const marketAveragePrice =
     average(prices)
@@ -516,7 +544,8 @@ export async function getBuyerDemand(
           listings,
           category,
           characteristic,
-          language
+          language,
+          usdToCrcRate
         })
       )
     })
@@ -545,7 +574,8 @@ export async function getBuyerDemand(
                 firstCharacteristic,
                 secondCategory,
                 secondCharacteristic,
-                language
+                language,
+                usdToCrcRate
               })
             )
           })
@@ -575,7 +605,8 @@ export async function getBuyerDemand(
               segmentCharacteristic: propertyType,
               targetCategory,
               targetCharacteristic: characteristic,
-              language
+              language,
+              usdToCrcRate
             })
           )
         })
@@ -599,13 +630,23 @@ export async function getBuyerDemand(
       formatCRC(marketAveragePrice),
     marketAveragePriceUSD:
       marketAveragePrice
-        ? formatUSD(marketAveragePrice / CRC_TO_USD)
+        ? formatUSD(
+          convertCrcToUsd(
+            marketAveragePrice,
+            usdToCrcRate
+          )
+        )
         : null,
     marketMedianPriceCRC:
       formatCRC(marketMedianPrice),
     marketMedianPriceUSD:
       marketMedianPrice
-        ? formatUSD(marketMedianPrice / CRC_TO_USD)
+        ? formatUSD(
+          convertCrcToUsd(
+            marketMedianPrice,
+            usdToCrcRate
+          )
+        )
         : null,
     strongestSignal,
     signals:

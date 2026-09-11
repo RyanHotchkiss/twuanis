@@ -118,23 +118,65 @@ async function fetchProperties() {
         !selectedEnvironment ||
         property.environment === selectedEnvironment
 
-      const matchesPrice = (() => {
+            const matchesPrice = (() => {
 
-        if (!selectedPriceRange) return true
+        if (!selectedPriceRange) {
+          return true
+        }
 
         const price =
-          Number(property.price_millions)
+          Number(
+            property.marketplace_price_usd
+          )
 
-        if (selectedPriceRange === 'under-50') {
-          return price < 50
+        if (
+          !Number.isFinite(price)
+        ) {
+          return false
         }
 
-        if (selectedPriceRange === '50-100') {
-          return price >= 50 && price <= 100
+        if (
+          selectedPriceRange ===
+            'under-500'
+        ) {
+          return price < 500
         }
 
-        if (selectedPriceRange === '100-plus') {
-          return price > 100
+        if (
+          selectedPriceRange ===
+            '500-1000'
+        ) {
+          return (
+            price >= 500 &&
+            price < 1000
+          )
+        }
+
+        if (
+          selectedPriceRange ===
+            '1000-2000'
+        ) {
+          return (
+            price >= 1000 &&
+            price < 2000
+          )
+        }
+
+        if (
+          selectedPriceRange ===
+            '2000-5000'
+        ) {
+          return (
+            price >= 2000 &&
+            price < 5000
+          )
+        }
+
+        if (
+          selectedPriceRange ===
+            '5000-plus'
+        ) {
+          return price >= 5000
         }
 
         return true
@@ -487,16 +529,24 @@ useEffect(() => {
             Todos los precios
           </option>
 
-          <option value="under-50">
-            Menos de ₡50M
+                   <option value="under-500">
+            Menos de $500 / mes
           </option>
 
-          <option value="50-100">
-            ₡50M – ₡100M
+          <option value="500-1000">
+            $500 – $1.000 / mes
           </option>
 
-          <option value="100-plus">
-            ₡100M+
+          <option value="1000-2000">
+            $1.000 – $2.000 / mes
+          </option>
+
+          <option value="2000-5000">
+            $2.000 – $5.000 / mes
+          </option>
+
+          <option value="5000-plus">
+            $5.000+ / mes
           </option>
         </select>
 
@@ -775,12 +825,15 @@ useEffect(() => {
             fontWeight: 'bold',
             marginBottom: '2rem'
           }}>
-           {currentProperty.price
-              ? currentProperty.price
-              : currentProperty.price_millions
-              ? `₡${Number(
-                  currentProperty.price_millions
-                ).toLocaleString()}M`
+           {currentProperty.marketplace_original_price != null &&
+            currentProperty.marketplace_original_currency
+              ? currentProperty.marketplace_original_currency === 'USD'
+                ? `$${Number(
+                    currentProperty.marketplace_original_price
+                  ).toLocaleString()}`
+                : `₡${Number(
+                    currentProperty.marketplace_original_price
+                  ).toLocaleString()}`
               : 'Precio no disponible'}
           </div>
 

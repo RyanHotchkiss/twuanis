@@ -1,4 +1,4 @@
-import { getMarketStatistics } from '@/lib/statistics-engine'
+import { getMatchingListings } from '@/lib/statistics-engine'
 
 type ScarcityLanguage = 'en' | 'es'
 
@@ -555,13 +555,10 @@ export async function getMarketScarcity(
   language: ScarcityLanguage = 'en'
 ) {
 
-  const market =
-    await getMarketStatistics(
+  const listings =
+    await getMatchingListings(
       filters
     )
-
-  const listings =
-    market.listings || []
 
   const selected =
     generateSelectedCombination(

@@ -9,6 +9,10 @@ import {
   resolveListingImages
 } from '@/app/utils/resolveListingImages'
 
+import {
+  resolveListingOriginalMonetaryValue
+} from '@/lib/listing-monetary-value'
+
 import { buildRelationshipNode }
 from '@/lib/schema/buildRelationshipNode'
 
@@ -33,7 +37,11 @@ type Listing = {
   id: string
   title?: string | null
   description?: string | null
+  transaction_type?: string | null
+  currency?: string | null
+  current_price?: number | string | null
   price_millions?: number | string | null
+  monthly_price?: number | string | null
   province?: string | null
   canton?: string | null
   district?: string | null
@@ -151,7 +159,17 @@ export function buildListingSchema({
 
 
 {
-  const url = listingUrl(listing.id, lang, mode)
+  const url =
+    listingUrl(
+      listing.id,
+      lang,
+      mode
+    )
+
+  const originalMonetaryValue =
+    resolveListingOriginalMonetaryValue(
+      listing
+    )
 
 console.log(
   'BUILD SCHEMA',
@@ -265,15 +283,19 @@ const relationshipNodes =
             propertyID: ontologyId(term)
           }))
         },
-        offers: {
-          '@type': 'Offer',
-          priceCurrency: 'CRC',
-          price: listing.price_millions
-            ? Number(listing.price_millions) * 1000000
+               offers:
+          originalMonetaryValue
+            ? {
+                '@type': 'Offer',
+                priceCurrency:
+                  originalMonetaryValue.currency,
+                price:
+                  originalMonetaryValue.amount,
+                availability:
+                  'https://schema.org/InStock',
+                url
+              }
             : undefined,
-          availability: 'https://schema.org/InStock',
-          url
-        },
         address: {
           '@type': 'Place',
           address: {

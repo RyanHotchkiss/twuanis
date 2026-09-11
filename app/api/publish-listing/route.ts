@@ -560,13 +560,60 @@ console.log(
     }
 
     const transactionType =
-      propertyData
-        .transaction_type ===
-      'rent'
-        ? 'rent'
-        : 'sale'
+  propertyData.transaction_type ===
+    'sale' ||
+  propertyData.transaction_type ===
+    'rent'
+    ? propertyData.transaction_type
+    : null
 
-    const geography =
+if (!transactionType) {
+  await releasePublishToken(
+    claimedPublishTokenId
+  )
+
+  return NextResponse.json(
+    {
+      success: false,
+      code:
+        'INVALID_TRANSACTION_TYPE',
+      error:
+        'A listing requires an explicit sale or rent transaction type before it can be published.'
+    },
+    {
+      status: 400
+    }
+  )
+}
+
+const currency =
+  propertyData.currency ===
+    'CRC' ||
+  propertyData.currency ===
+    'USD'
+    ? propertyData.currency
+    : null
+
+if (!currency) {
+  await releasePublishToken(
+    claimedPublishTokenId
+  )
+
+  return NextResponse.json(
+    {
+      success: false,
+      code:
+        'INVALID_CURRENCY',
+      error:
+        'A listing requires an explicit CRC or USD currency before it can be published.'
+    },
+    {
+      status: 400
+    }
+  )
+}
+
+const geography =
   await resolveListingGeography({
     supabase:
       authenticatedSupabase,
@@ -747,9 +794,7 @@ console.log(
                 .listing_status ||
               'active',
 
-            currency:
-              propertyData.currency ||
-              'CRC',
+            currency,
 
             whatsapp:
               publishToken.phone,

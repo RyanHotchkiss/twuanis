@@ -570,25 +570,19 @@ const filteredProperties = properties.filter((property) => {
       */
 
       if (filters.price_range) {
-        const exchangeRate = 500
-
-        const rawPrice =
-          Number(property.current_price)
+        const priceInColones =
+          Number(
+            property.marketplace_price_crc
+          )
 
         if (
-          !Number.isFinite(rawPrice) ||
-          rawPrice <= 0
+          !Number.isFinite(
+            priceInColones
+          ) ||
+          priceInColones <= 0
         ) {
           return false
         }
-
-        const priceInColones =
-          property.currency === 'USD' ||
-          property.title
-            ?.toUpperCase()
-            .includes('USD')
-            ? rawPrice * exchangeRate
-            : rawPrice
 
         if (
           filters.price_range === '₡0 - ₡25M' &&
@@ -1379,12 +1373,11 @@ const filteredProperties = properties.filter((property) => {
                                         {property.property_type}
                                       </span>
 
-                                      {property.current_price && (
+                                      {property.marketplace_original_price && (
                                         <span style={pill}>
-                                          {property.currency === 'USD' ||
-                                          property.title?.toUpperCase().includes('USD')
-                                            ? `$${Number(property.current_price).toLocaleString()}`
-                                            : `₡${Number(property.current_price).toLocaleString()}`}
+                                          {property.marketplace_original_currency === 'USD'
+                                            ? `$${Number(property.marketplace_original_price).toLocaleString()}`
+                                            : `₡${Number(property.marketplace_original_price).toLocaleString()}`}
                                         </span>
                                       )}
 

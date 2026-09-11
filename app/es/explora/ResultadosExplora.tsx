@@ -6,6 +6,11 @@ import {
   resolveFirstListingImage
 } from '@/app/utils/resolveListingImages'
 
+import {
+  convertCrcToUsd,
+  convertUsdToCrc
+} from '@/lib/currency-conversion'
+
 function valueOrFallback(value: any) {
   return value ?? 'No hay suficientes datos confiables'
 }
@@ -57,7 +62,7 @@ function formatLabel(value: string) {
   return labels[value] || value
 }
 
-const CRC_PER_USD = 500
+
 
 function formatFullCRC(value: any) {
   if (value === null || value === undefined) return null
@@ -67,21 +72,6 @@ function formatFullCRC(value: any) {
 function formatFullUSD(value: any) {
   if (value === null || value === undefined) return null
   return `$${Number(value).toLocaleString()}`
-}
-
-function saleMillionsToCRC(value: any) {
-  if (value === null || value === undefined) return null
-  return Number(value) * 1000000
-}
-
-function crcToUSD(value: any) {
-  if (value === null || value === undefined) return null
-  return Math.round(Number(value) / CRC_PER_USD)
-}
-
-function usdToCRC(value: any) {
-  if (value === null || value === undefined) return null
-  return Math.round(Number(value) * CRC_PER_USD)
 }
 
 function formatCRC(value: any) {
@@ -183,6 +173,18 @@ function buildRefinementUrl(
           embedded?: boolean
         }) {
   const statistics = result.statistics || {}
+
+  const usdToCrcRate =
+    result.analyticalContext?.fx?.rate
+
+  if (
+    !Number.isFinite(usdToCrcRate) ||
+    usdToCrcRate <= 0
+  ) {
+    throw new Error(
+      'Explorer requires an authoritative USD to CRC exchange rate.'
+    )
+  }
 
   const transactionType =
     result.filters?.transaction_type
@@ -328,29 +330,275 @@ function buildRefinementUrl(
         gap: '1rem',
         marginBottom: '2rem'
       }}>
-        {(isSale || isAll) && (
-          <>
-            <StatCard label="Precio Promedio de Venta CRC" value={getStat(statistics, 'average_sale_price', 'averageSalePrice') ? <><div>{formatFullCRC(saleMillionsToCRC(getStat(statistics, 'average_sale_price', 'averageSalePrice')))}</div><div style={{ color: '#888', fontSize: '1rem' }}>{formatFullUSD(crcToUSD(saleMillionsToCRC(getStat(statistics, 'average_sale_price', 'averageSalePrice'))))}</div></> : null} />
+                {(isSale || isAll) && (() => {
+          const averageSale =
+            getStat(
+              statistics,
+              'average_sale_price',
+              'averageSalePrice'
+            )
 
-            <StatCard label="Precio Promedio de Venta USD" value={getStat(statistics, 'average_sale_price', 'averageSalePrice') ? <><div>{formatFullUSD(crcToUSD(saleMillionsToCRC(getStat(statistics, 'average_sale_price', 'averageSalePrice'))))}</div><div style={{ color: '#888', fontSize: '1rem' }}>{formatFullCRC(saleMillionsToCRC(getStat(statistics, 'average_sale_price', 'averageSalePrice')))}</div></> : null} />
+          const medianSale =
+            getStat(
+              statistics,
+              'median_sale_price',
+              'medianSalePrice'
+            )
 
-            <StatCard label="Precio Mediano de Venta CRC" value={getStat(statistics, 'median_sale_price', 'medianSalePrice') ? <><div>{formatFullCRC(saleMillionsToCRC(getStat(statistics, 'median_sale_price', 'medianSalePrice')))}</div><div style={{ color: '#888', fontSize: '1rem' }}>{formatFullUSD(crcToUSD(saleMillionsToCRC(getStat(statistics, 'median_sale_price', 'medianSalePrice'))))}</div></> : null} />
+          return (
+            <>
+              <StatCard
+                label="Precio Promedio de Venta CRC"
+                value={averageSale ? (
+                  <>
+                    <div>
+                      {formatFullCRC(averageSale)}
+                    </div>
 
-            <StatCard label="Precio Mediano de Venta USD" value={getStat(statistics, 'median_sale_price', 'medianSalePrice') ? <><div>{formatFullUSD(crcToUSD(saleMillionsToCRC(getStat(statistics, 'median_sale_price', 'medianSalePrice'))))}</div><div style={{ color: '#888', fontSize: '1rem' }}>{formatFullCRC(saleMillionsToCRC(getStat(statistics, 'median_sale_price', 'medianSalePrice')))}</div></> : null} />
-          </>
-        )}
+                    <div
+                      style={{
+                        color: '#888',
+                        fontSize: '1rem'
+                      }}
+                    >
+                      {formatFullUSD(
+                        Math.round(
+                          convertCrcToUsd(
+                            Number(averageSale),
+                            usdToCrcRate
+                          )
+                        )
+                      )}
+                    </div>
+                  </>
+                ) : null}
+              />
 
-        {(isRent || isAll) && (
-          <>
-            <StatCard label="Alquiler Mensual Promedio CRC" value={getStat(statistics, 'average_rent_crc', 'averageRentCRC') ? <><div>{formatFullCRC(getStat(statistics, 'average_rent_crc', 'averageRentCRC'))}</div><div style={{ color: '#888', fontSize: '1rem' }}>{formatFullUSD(crcToUSD(getStat(statistics, 'average_rent_crc', 'averageRentCRC')))}</div></> : null} />
+              <StatCard
+                label="Precio Promedio de Venta USD"
+                value={averageSale ? (
+                  <>
+                    <div>
+                      {formatFullUSD(
+                        Math.round(
+                          convertCrcToUsd(
+                            Number(averageSale),
+                            usdToCrcRate
+                          )
+                        )
+                      )}
+                    </div>
 
-            <StatCard label="Alquiler Mensual Promedio USD" value={getStat(statistics, 'average_rent_usd', 'averageRentUSD') ? <><div>{formatFullUSD(getStat(statistics, 'average_rent_usd', 'averageRentUSD'))}</div><div style={{ color: '#888', fontSize: '1rem' }}>{formatFullCRC(usdToCRC(getStat(statistics, 'average_rent_usd', 'averageRentUSD')))}</div></> : null} />
+                    <div
+                      style={{
+                        color: '#888',
+                        fontSize: '1rem'
+                      }}
+                    >
+                      {formatFullCRC(averageSale)}
+                    </div>
+                  </>
+                ) : null}
+              />
 
-            <StatCard label="Alquiler Mensual Mediano CRC" value={getStat(statistics, 'median_rent_crc', 'medianRentCRC') ? <><div>{formatFullCRC(getStat(statistics, 'median_rent_crc', 'medianRentCRC'))}</div><div style={{ color: '#888', fontSize: '1rem' }}>{formatFullUSD(crcToUSD(getStat(statistics, 'median_rent_crc', 'medianRentCRC')))}</div></> : null} />
+              <StatCard
+                label="Precio Mediano de Venta CRC"
+                value={medianSale ? (
+                  <>
+                    <div>
+                      {formatFullCRC(medianSale)}
+                    </div>
 
-            <StatCard label="Alquiler Mensual Mediano USD" value={getStat(statistics, 'median_rent_usd', 'medianRentUSD') ? <><div>{formatFullUSD(getStat(statistics, 'median_rent_usd', 'medianRentUSD'))}</div><div style={{ color: '#888', fontSize: '1rem' }}>{formatFullCRC(usdToCRC(getStat(statistics, 'median_rent_usd', 'medianRentUSD')))}</div></> : null} />
-          </>
-        )}
+                    <div
+                      style={{
+                        color: '#888',
+                        fontSize: '1rem'
+                      }}
+                    >
+                      {formatFullUSD(
+                        Math.round(
+                          convertCrcToUsd(
+                            Number(medianSale),
+                            usdToCrcRate
+                          )
+                        )
+                      )}
+                    </div>
+                  </>
+                ) : null}
+              />
+
+              <StatCard
+                label="Precio Mediano de Venta USD"
+                value={medianSale ? (
+                  <>
+                    <div>
+                      {formatFullUSD(
+                        Math.round(
+                          convertCrcToUsd(
+                            Number(medianSale),
+                            usdToCrcRate
+                          )
+                        )
+                      )}
+                    </div>
+
+                    <div
+                      style={{
+                        color: '#888',
+                        fontSize: '1rem'
+                      }}
+                    >
+                      {formatFullCRC(medianSale)}
+                    </div>
+                  </>
+                ) : null}
+              />
+            </>
+          )
+        })()}
+
+               {(isRent || isAll) && (() => {
+          const averageRentCRC =
+            getStat(
+              statistics,
+              'average_rent_crc',
+              'averageRentCRC'
+            )
+
+          const averageRentUSD =
+            getStat(
+              statistics,
+              'average_rent_usd',
+              'averageRentUSD'
+            )
+
+          const medianRentCRC =
+            getStat(
+              statistics,
+              'median_rent_crc',
+              'medianRentCRC'
+            )
+
+          const medianRentUSD =
+            getStat(
+              statistics,
+              'median_rent_usd',
+              'medianRentUSD'
+            )
+
+          return (
+            <>
+              <StatCard
+                label="Alquiler Mensual Promedio CRC"
+                value={averageRentCRC ? (
+                  <>
+                    <div>
+                      {formatFullCRC(averageRentCRC)}
+                    </div>
+
+                    <div
+                      style={{
+                        color: '#888',
+                        fontSize: '1rem'
+                      }}
+                    >
+                      {formatFullUSD(
+                        Math.round(
+                          convertCrcToUsd(
+                            Number(averageRentCRC),
+                            usdToCrcRate
+                          )
+                        )
+                      )}
+                    </div>
+                  </>
+                ) : null}
+              />
+
+              <StatCard
+                label="Alquiler Mensual Promedio USD"
+                value={averageRentUSD ? (
+                  <>
+                    <div>
+                      {formatFullUSD(averageRentUSD)}
+                    </div>
+
+                    <div
+                      style={{
+                        color: '#888',
+                        fontSize: '1rem'
+                      }}
+                    >
+                      {formatFullCRC(
+                        Math.round(
+                          convertUsdToCrc(
+                            Number(averageRentUSD),
+                            usdToCrcRate
+                          )
+                        )
+                      )}
+                    </div>
+                  </>
+                ) : null}
+              />
+
+              <StatCard
+                label="Alquiler Mensual Mediano CRC"
+                value={medianRentCRC ? (
+                  <>
+                    <div>
+                      {formatFullCRC(medianRentCRC)}
+                    </div>
+
+                    <div
+                      style={{
+                        color: '#888',
+                        fontSize: '1rem'
+                      }}
+                    >
+                      {formatFullUSD(
+                        Math.round(
+                          convertCrcToUsd(
+                            Number(medianRentCRC),
+                            usdToCrcRate
+                          )
+                        )
+                      )}
+                    </div>
+                  </>
+                ) : null}
+              />
+
+              <StatCard
+                label="Alquiler Mensual Mediano USD"
+                value={medianRentUSD ? (
+                  <>
+                    <div>
+                      {formatFullUSD(medianRentUSD)}
+                    </div>
+
+                    <div
+                      style={{
+                        color: '#888',
+                        fontSize: '1rem'
+                      }}
+                    >
+                      {formatFullCRC(
+                        Math.round(
+                          convertUsdToCrc(
+                            Number(medianRentUSD),
+                            usdToCrcRate
+                          )
+                        )
+                      )}
+                    </div>
+                  </>
+                ) : null}
+              />
+            </>
+          )
+        })()}
       </div>
 
             {Object.keys(distributionGroups).length > 0 && (

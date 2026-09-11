@@ -14,35 +14,50 @@ type Props = {
     province?: string
     canton?: string
     district?: string
-    current_price?: number
-    currency?: string
   }
+
+  price:
+    string | null
+
+  href:
+    string
 }
 
 export default function RecordRecentlyViewedProperty({
-  listing
+  listing,
+  price,
+  href
 }: Props) {
   useEffect(() => {
     recordPropertyViewed({
-      id: listing.id,
-      title: listing.title,
-      image: listing.images?.[0] ?? null,
-      location: [
-        listing.district,
-        listing.canton,
-        listing.province
-      ]
-        .filter(Boolean)
-        .join(', '),
-      price:
-        listing.current_price
-          ? `$${Number(
-              listing.current_price
-            ).toLocaleString()}`
-          : null,
-      href: `/en/buy/listing/${listing.id}`
+      id:
+        listing.id,
+
+      title:
+        listing.title,
+
+      image:
+        listing.images?.[0] ??
+        null,
+
+      location:
+        [
+          listing.district,
+          listing.canton,
+          listing.province
+        ]
+          .filter(Boolean)
+          .join(', '),
+
+      price,
+
+      href
     })
-  }, [listing])
+  }, [
+    listing,
+    price,
+    href
+  ])
 
   return null
 }

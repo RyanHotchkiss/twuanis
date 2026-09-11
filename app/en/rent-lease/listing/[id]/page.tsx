@@ -16,6 +16,9 @@ import {
   getOntologyTermsByIds
 } from '@/lib/graph-engine'
 
+import RecordRecentlyViewedProperty
+  from '@/app/components/RecordRecentlyViewedProperty'
+
 import ListingCompareButton
   from '@/app/components/comparisons/ListingCompareButton'
 
@@ -28,6 +31,16 @@ import {
 
 import PriceMeterComparableListing
   from '@/app/components/PriceMeterComparableListing'
+
+import {
+  resolveMarketAnalyticalContext
+} from '@/lib/market-analytical-context'
+
+import {
+  resolveListingOriginalMonetaryValue,
+  resolveListingAmountCrc,
+  resolveListingAmountUsd
+} from '@/lib/listing-monetary-value'
 
 export default async function ListingPage({
   params
@@ -73,7 +86,7 @@ const listing = {
         canton: listing.canton,
         district: listing.district,
         property_type: listing.property_type,
-        monthly_price: String(listing.monthly_price),
+        subjectListing: listing,
       },
       'en'
     )
@@ -149,27 +162,54 @@ let neighborTerms: any[] = []
                   mode: 'rent'
                   })
 
-  const USD_TO_CRC = 500
+  const analyticalContext =
+  await resolveMarketAnalyticalContext()
 
-  const monthlyPriceUSD =
-    listing.currency === 'USD'
-      ? Number(listing.monthly_price)
-      : Number(listing.monthly_price) / USD_TO_CRC
+const originalMonetaryValue =
+  resolveListingOriginalMonetaryValue(
+    listing
+  )
 
-  const monthlyPriceCRC =
-    listing.currency === 'USD'
-      ? Number(listing.monthly_price) * USD_TO_CRC
-      : Number(listing.monthly_price)
+  const recentlyViewedPrice =
+  originalMonetaryValue
+    ? originalMonetaryValue.currency ===
+        'USD'
+      ? `$${Math.round(
+          originalMonetaryValue.amount
+        ).toLocaleString()}`
+      : `₡${Math.round(
+          originalMonetaryValue.amount
+        ).toLocaleString()}`
+    : null
 
-  const monthlyPricePerM2USD =
-    listing.monthly_price && listing.property_area
-      ? monthlyPriceUSD / Number(listing.property_area)
-      : null
+const monthlyPriceUSD =
+  resolveListingAmountUsd(
+    listing,
+    analyticalContext.fx.rate
+  )
 
-  const monthlyPricePerM2CRC =
-    listing.monthly_price && listing.property_area
-      ? monthlyPriceCRC / Number(listing.property_area)
-      : null
+const monthlyPriceCRC =
+  resolveListingAmountCrc(
+    listing,
+    analyticalContext.fx.rate
+  )
+
+const propertyArea =
+  Number(listing.property_area)
+
+const monthlyPricePerM2USD =
+  monthlyPriceUSD !== null &&
+  Number.isFinite(propertyArea) &&
+  propertyArea > 0
+    ? monthlyPriceUSD / propertyArea
+    : null
+
+const monthlyPricePerM2CRC =
+  monthlyPriceCRC !== null &&
+  Number.isFinite(propertyArea) &&
+  propertyArea > 0
+    ? monthlyPriceCRC / propertyArea
+    : null
 
 return (
 
@@ -189,6 +229,12 @@ return (
               listing.property_type
             }
             transactionType="rent"
+          />
+
+          <RecordRecentlyViewedProperty
+            listing={listing}
+            price={recentlyViewedPrice}
+            href={`/en/rent-lease/listing/${listing.id}`}
           />
 
     <main style={{
@@ -629,10 +675,10 @@ return (
 
             <div style={priceCard}>
 
-                {listing.monthly_price
-                ? `${listing.currency || 'CRC'} ${Number(
-                    listing.monthly_price
-                  ).toLocaleString()} / month`
+                {originalMonetaryValue
+                ? originalMonetaryValue.currency === 'USD'
+                  ? `$${Math.round(originalMonetaryValue.amount).toLocaleString()} / month`
+                  : `₡${Math.round(originalMonetaryValue.amount).toLocaleString()} / month`
                 : 'Price Not Available'}
 
             </div>
@@ -682,16 +728,22 @@ return (
 
             <StatCard
               label="Monthly Asking Rent"
-              value={listing.monthly_price ? (
-                      <>
-                        <div>${Math.round(monthlyPriceUSD).toLocaleString()} / month</div>
-                        <div style={secondaryValue}>
-                          ₡{Math.round(monthlyPriceCRC).toLocaleString()} / month
-                        </div>
-                      </>
-                    ) : (
-                      'Price Not Available'
-                    )}
+              value={
+              monthlyPriceUSD !== null &&
+              monthlyPriceCRC !== null ? (
+                <>
+                  <div>
+                    ${Math.round(monthlyPriceUSD).toLocaleString()} / month
+                  </div>
+
+                  <div style={secondaryValue}>
+                    ₡{Math.round(monthlyPriceCRC).toLocaleString()} / month
+                  </div>
+                </>
+              ) : (
+                'Price Not Available'
+              )
+            }
             />
 
             <StatCard
@@ -705,7 +757,8 @@ return (
             <StatCard
                 label="Monthly Rent per m²"
                 value={
-                  monthlyPricePerM2USD && monthlyPricePerM2CRC ? (
+                  monthlyPricePerM2USD !== null &&
+monthlyPricePerM2CRC !== null ? (
                     <>
                       <div>
                         ${Math.round(monthlyPricePerM2USD).toLocaleString()}/m²

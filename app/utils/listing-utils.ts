@@ -142,20 +142,6 @@
 
                         }
 
-                        export function convertToUSD(
-                        amount: string | number
-                        ) {
-
-                        const crcValue = Number(
-                            String(amount).replace(/[^\d]/g, '')
-                        )
-
-                        const exchangeRate = 500
-
-                        return Math.round(crcValue / exchangeRate)
-
-                        }
-
                         export function formatWhatsAppNumber(
                         number: string
                         ) {

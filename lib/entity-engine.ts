@@ -11,6 +11,14 @@ import {
   resolveListingImages
 } from '@/app/utils/resolveListingImages'
 
+import {
+  resolveMarketAnalyticalContext
+} from '@/lib/market-analytical-context'
+
+import {
+  projectPublicListingMonetaryValues
+} from '@/lib/public-listing-monetary-projection'
+
 export type EntityType =
   | 'country'
   | 'province'
@@ -93,32 +101,46 @@ export async function getEntity(
 
   let listings: any[] = []
 
-  if (listingIds.length > 0) {
-  const listingData =
-    await getPublicListingsByIds(
-      listingIds
-    )
-
-  listings =
-    listingData
-      .map((listing: any) => ({
-        ...listing,
-        id: createListingId(
-          listing
-        ),
-        images:
-          resolveListingImages(
-            listing.images
-          )
-      }))
-      .sort(
-        (left, right) =>
-          String(right.id)
-            .localeCompare(
-              String(left.id)
-            )
+    if (
+    listingIds.length > 0
+  ) {
+    const listingData =
+      await getPublicListingsByIds(
+        listingIds
       )
-}
+
+    const analyticalContext =
+      await resolveMarketAnalyticalContext()
+
+    const projectedListings =
+      projectPublicListingMonetaryValues(
+        listingData,
+        analyticalContext
+      )
+
+    listings =
+      projectedListings
+        .map((listing: any) => ({
+          ...listing,
+
+          id:
+            createListingId(
+              listing
+            ),
+
+          images:
+            resolveListingImages(
+              listing.images
+            )
+        }))
+        .sort(
+          (left, right) =>
+            String(right.id)
+              .localeCompare(
+                String(left.id)
+              )
+        )
+  }
 
   let relatedEntities: any[] = []
 

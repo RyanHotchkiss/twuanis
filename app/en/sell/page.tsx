@@ -33,9 +33,12 @@ import {
   generateListingTitle,
   generateListingDescription,
   formatColones,
-  convertToUSD,
   formatWhatsAppNumber
 } from '@/app/utils/listing-utils'
+
+import {
+  useMarketplaceFx
+} from '@/app/hooks/useMarketplaceFx'
 
 import AccessibilityFilters from '@/app/components/filter-bar/AccessibilityFilterS'
 import EnvironmentFilterS from '@/app/components/filter-bar/EnvironmentFilterS'
@@ -178,6 +181,8 @@ export default function SellPage() {
     distance_to_paved_road_range: '',
     terrain: [] as string[],
     priceMillions: 0,
+    transaction_type: 'sale',
+    currency: 'CRC',
     images: [] as {
         preview: string
         file: File
@@ -185,6 +190,12 @@ export default function SellPage() {
         }[],
     whatsapp: '',
   })
+
+const marketplaceFx =
+  useMarketplaceFx()
+
+const usdToCrcRate =
+  marketplaceFx?.usdToCrcRate ?? null
 
            const show_residential_fields =
                 residential_property_types.some(
@@ -873,7 +884,7 @@ console.log('BedroomFilterS', BedroomFilterS)
                         }))
                     }
                     formatColones={formatColones}
-                    convertToUSD={convertToUSD}
+                    usdToCrcRate={usdToCrcRate}
                     />
 
 {/* IMAGE UPLOADER */}
@@ -983,7 +994,8 @@ console.log('BedroomFilterS', BedroomFilterS)
                 >
 
                 <PropertyDefinitionPanel
-                    propertyData={propertyData}
+                propertyData={propertyData}
+                usdToCrcRate={usdToCrcRate}
                 />
 
                 </div>

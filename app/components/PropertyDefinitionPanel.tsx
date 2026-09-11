@@ -12,7 +12,6 @@ import {
   generateListingTitle,
   generateListingDescription,
   formatColones,
-  convertToUSD,
   formatWhatsAppNumber
 } from '@/app/utils/listing-utils'
 
@@ -20,10 +19,12 @@ import DefinitionCard from '@/app/components/DefinitionCard'
 
 type PropertyDefinitionPanelProps = {
   propertyData: any
+  usdToCrcRate: number | null
 }
 
 export default function PropertyDefinitionPanel({
-  propertyData
+  propertyData,
+  usdToCrcRate
 }: PropertyDefinitionPanelProps) {
 
   const show_residential_fields =
@@ -199,9 +200,15 @@ export default function PropertyDefinitionPanel({
 
                 {' · '}
 
-                ${convertToUSD(
-                  propertyData.priceMillions
-                ).toLocaleString()} USD
+                {usdToCrcRate !== null
+                ? `$${Math.round(
+                    (
+                      Number(
+                        propertyData.priceMillions
+                      ) * 1_000_000
+                    ) / usdToCrcRate
+                  ).toLocaleString()} USD`
+                : 'USD conversion unavailable'}
               </>
             )
             : 'Not Yet Defined'

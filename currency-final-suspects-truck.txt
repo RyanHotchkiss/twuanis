@@ -1,4 +1,1254 @@
-'use client'
+]633;E;cat 'app/utils/createRentalListing.ts' 'app/utils/createListing.ts' 'app/utils/publishCsvListings.ts' 'app/utils/publishRentLeaseCsvListings.ts' 'app/components/RentalListingEditForm.tsx';9ee19458-e0d5-40ae-a260-0490818f0ab3]633;Cimport { supabase } from '@/lib/supabase'
+import {
+  assignListingOntology
+} from '@/lib/assign-listing-ontology'
+
+import {
+  recordListingCreated
+} from '@/lib/activity'
+
+import {
+  resolveListingGeography
+} from '@/lib/geography/resolve-listing-geography'
+
+export async function createRentalListing(
+  propertyData: any,
+  generateListingTitle: (data: any) => string,
+  generateListingDescription: (data: any) => string
+) {
+  const {
+    data: {
+      user
+    },
+    error: userError
+  } = await supabase.auth.getUser()
+
+  if (
+    userError ||
+    !user
+  ) {
+    throw new Error(
+      'You must be signed in to publish a listing.'
+    )
+  }
+
+  const uploadedImageUrls = []
+
+  for (const image of propertyData.images) {
+
+    const fileName =
+      `${Date.now()}-${image.file.name}`
+
+    const { error: uploadError } = await supabase
+      .storage
+      .from('listings-images')
+      .upload(fileName, image.file)
+
+    if (uploadError) {
+
+      console.error(
+        JSON.stringify(uploadError, null, 2)
+      )
+
+      continue
+
+    }
+
+    const publicUrlResponse = supabase
+      .storage
+      .from('listings-images')
+      .getPublicUrl(fileName)
+
+    uploadedImageUrls.push(
+      publicUrlResponse.data.publicUrl
+    )
+
+  }
+
+  const geography =
+  await resolveListingGeography({
+    supabase,
+
+    province:
+      propertyData.province,
+
+    canton:
+      propertyData.canton,
+
+    district:
+      propertyData.district
+  })
+
+  if (!geography.complete) {
+
+    console.error(
+      'CUSTOMER RENT LISTING REJECTED: unresolved canonical geography',
+      {
+        province:
+          propertyData.province,
+
+        canton:
+          propertyData.canton,
+
+        district:
+          propertyData.district,
+
+        source:
+          geography.source,
+
+        reasons:
+          geography.reasons
+      }
+    )
+
+    throw new Error(
+      'A listing requires a valid Province, Canton, and District before it can be published.'
+    )
+  }
+
+  const response = await supabase
+            .from('listings')
+            .insert([
+              {
+
+                owner_id:
+                user.id,
+                listing_origin:
+                  'customer',
+                listing_source_type:
+                  'customer',
+
+                province:
+                  geography.province?.term_name ??
+                  null,
+
+                canton:
+                  geography.canton?.term_name ??
+                  null,
+
+                district:
+                  geography.district?.term_name ??
+                  null,
+
+                property_type:
+                  propertyData.property_type || '',
+
+                bedrooms: propertyData.bedrooms,
+                bathrooms: propertyData.bathrooms,
+                parking: propertyData.parking,
+
+                year_built_range:
+                  propertyData.year_built_range,
+
+                construction_area:
+                  propertyData.construction_area,
+
+                utility:
+                  propertyData.utility || [],
+
+                property_area:
+                  propertyData.property_area,
+
+                environment:
+                  propertyData.environment,
+
+                accessibility:
+                  propertyData.accessibility,
+
+                terrain:
+                  propertyData.terrain || [],
+
+                legal_status:
+                  propertyData.legal_status,
+
+                price_millions: null,
+
+                monthly_price: Number(
+                  String(
+                    propertyData.monthly_price || ''
+                  ).replace(/[^\d]/g, '')
+                ),
+
+                transaction_type: 'rent',
+
+                listing_status: 'active',
+
+                currency:
+                  propertyData.currency || 'CRC',
+
+                whatsapp:
+                  propertyData.whatsapp,
+
+                title:
+                  generateListingTitle(
+                    propertyData
+                  ),
+
+                description:
+                  generateListingDescription(
+                    propertyData
+                  ),
+
+                images:
+                  uploadedImageUrls
+              }
+            ])
+            .select()
+
+    console.log(
+  'FULL RENTAL INSERT RESPONSE:',
+  JSON.stringify(response, null, 2)
+)
+
+  if (response.error) {
+
+  console.error(
+    JSON.stringify(response.error, null, 2)
+  )
+
+  alert('SUPABASE ERROR')
+
+  return
+
+}
+
+const insertedListing =
+  response.data?.[0]
+
+if (insertedListing?.id) {
+  await assignListingOntology(
+    insertedListing.id,
+    {
+      ...propertyData,
+
+      province:
+        geography.province?.term_name ??
+        null,
+
+      canton:
+        geography.canton?.term_name ??
+        null,
+
+      district:
+        geography.district?.term_name ??
+        null
+    }
+  )
+
+  try {
+    await recordListingCreated({
+      listingId: insertedListing.id,
+      metadata: {
+        title: insertedListing.title,
+        location: [
+          insertedListing.district,
+          insertedListing.canton,
+          insertedListing.province
+        ]
+          .filter(Boolean)
+          .join(', '),
+        price:
+          insertedListing.monthly_price,
+        currency:
+          insertedListing.currency,
+        source: 'create-rental-listing',
+        transactionType: 'rent'
+      }
+    })
+  } catch (activityError) {
+    console.error(
+      'Unable to record listing creation:',
+      activityError
+    )
+  }
+}
+
+console.log(response.data)
+
+alert('Listing Created Successfully')
+
+}import { supabase } from '@/lib/supabase'
+import {
+  assignListingOntology
+} from '@/lib/assign-listing-ontology'
+
+import {
+  recordListingCreated
+} from '@/lib/activity'
+
+import {
+  resolveListingGeography
+} from '@/lib/geography/resolve-listing-geography'
+
+export async function createListing(
+  propertyData: any,
+  generateListingTitle: (data: any) => string,
+  generateListingDescription: (data: any) => string
+) {
+
+  const {
+  data: {
+    user
+  },
+  error: userError
+} = await supabase.auth.getUser()
+
+if (
+  userError ||
+  !user
+) {
+  throw new Error(
+    'You must be signed in to publish a listing.'
+  )
+}
+
+  const uploadedImageUrls = []
+
+  for (const image of propertyData.images) {
+
+    const fileName =
+      `${Date.now()}-${image.file.name}`
+
+    const { error: uploadError } = await supabase
+      .storage
+      .from('listings-images')
+      .upload(fileName, image.file)
+
+    if (uploadError) {
+
+      console.error(
+        JSON.stringify(uploadError, null, 2)
+      )
+
+      continue
+
+    }
+
+    const publicUrlResponse = supabase
+      .storage
+      .from('listings-images')
+      .getPublicUrl(fileName)
+
+    uploadedImageUrls.push(
+      publicUrlResponse.data.publicUrl
+    )
+
+  }
+
+  const geography =
+  await resolveListingGeography({
+    supabase,
+
+    province:
+      propertyData.province,
+
+    canton:
+      propertyData.canton,
+
+    district:
+      propertyData.district
+  })
+
+  if (!geography.complete) {
+
+    console.error(
+      'CUSTOMER SALE LISTING REJECTED: unresolved canonical geography',
+      {
+        province:
+          propertyData.province,
+
+        canton:
+          propertyData.canton,
+
+        district:
+          propertyData.district,
+
+        source:
+          geography.source,
+
+        reasons:
+          geography.reasons
+      }
+    )
+
+    throw new Error(
+      'A listing requires a valid Province, Canton, and District before it can be published.'
+    )
+  }
+
+  const response = await supabase
+    .from('listings')
+    .insert([
+      {
+
+        owner_id:
+        user.id,
+        listing_origin:
+          'customer',
+        listing_source_type:
+          'customer',
+
+        province:
+          geography.province?.term_name ??
+          null,
+
+        canton:
+          geography.canton?.term_name ??
+          null,
+
+        district:
+          geography.district?.term_name ??
+          null,
+
+        property_type:
+          propertyData.property_type || '',
+
+        bedrooms: propertyData.bedrooms,
+        bathrooms: propertyData.bathrooms,
+        parking: propertyData.parking,
+        year_built_range:
+          propertyData.year_built_range,
+        construction_area:
+          propertyData.construction_area,
+
+        utility: propertyData.utility || [],
+
+        property_area:
+          propertyData.property_area,
+
+        environment:
+          propertyData.environment,
+
+        accessibility:
+          propertyData.accessibility,
+
+        terrain:
+          propertyData.terrain || [],
+
+        legal_status:
+          propertyData.legal_status,
+
+        price_millions:
+          propertyData.priceMillions,
+
+        whatsapp:
+          propertyData.whatsapp,
+
+        title:
+          generateListingTitle(propertyData),
+
+        description:
+          generateListingDescription(
+            propertyData
+          ),
+        images: uploadedImageUrls
+      }
+    ])
+.select()
+
+    console.log(
+
+        'FULL INSERT RESPONSE:',
+
+        JSON.stringify(response, null, 2)
+
+      )
+
+  if (response.error) {
+
+    console.error(
+      JSON.stringify(response.error, null, 2)
+    )
+
+    alert('SUPABASE ERROR')
+
+    return
+
+  }
+
+const insertedListing =
+  response.data?.[0]
+
+if (insertedListing?.id) {
+  console.log(
+    'CREATE LISTING CALLING ASSIGN ONTOLOGY'
+  )
+
+  await assignListingOntology(
+    insertedListing.id,
+    {
+      ...propertyData,
+
+      province:
+        geography.province?.term_name ??
+        null,
+
+      canton:
+        geography.canton?.term_name ??
+        null,
+
+      district:
+        geography.district?.term_name ??
+        null,
+
+      price_millions:
+        propertyData.priceMillions
+    }
+  )
+
+  try {
+    await recordListingCreated({
+      listingId: insertedListing.id,
+      metadata: {
+        title: insertedListing.title,
+        location: [
+          insertedListing.district,
+          insertedListing.canton,
+          insertedListing.province
+        ]
+          .filter(Boolean)
+          .join(', '),
+        price:
+          insertedListing.price_millions,
+        source: 'create-listing',
+        transactionType: 'sale'
+      }
+    })
+  } catch (activityError) {
+    console.error(
+      'Unable to record listing creation:',
+      activityError
+    )
+  }
+}
+
+console.log(response.data)
+
+alert('Listing Created Successfully')
+
+}import { supabase } from '@/lib/supabase'
+import {
+  assignListingOntology
+} from '@/lib/assign-listing-ontology'
+
+import {
+  recordListingCreated
+} from '@/lib/activity'
+
+import {
+  resolveListingGeography
+} from '@/lib/geography/resolve-listing-geography'
+
+function optionalNumber(
+  value: unknown
+): number | null {
+
+  if (
+    value === null ||
+    value === undefined ||
+    value === ''
+  ) {
+    return null
+  }
+
+  const number =
+    Number(value)
+
+  return Number.isFinite(number)
+    ? number
+    : null
+}
+
+function normalizeTextArray(
+  value: unknown
+): string[] {
+
+  if (Array.isArray(value)) {
+    return value
+      .map(item =>
+        String(item).trim()
+      )
+      .filter(item =>
+        item &&
+        item !== '{}' &&
+        item !== '[]'
+      )
+  }
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+    return []
+  }
+
+  const text =
+    String(value).trim()
+
+  if (
+    !text ||
+    text === '{}' ||
+    text === '[]'
+  ) {
+    return []
+  }
+
+  return text
+    .split('|')
+    .map(item => item.trim())
+    .filter(Boolean)
+}
+
+export async function publishCsvListings(
+  csvListings: any[],
+  setShowCsvStaging: (value: boolean) => void,
+  setCsvListings: (value: any[]) => void
+) {
+
+  for (const listing of csvListings) {
+
+  if (
+    !listing.province &&
+    !listing.canton &&
+    !listing.district &&
+    !listing.property_type
+  ) {
+    continue
+  }
+
+console.log(
+  'IMAGE STRING LENGTH:',
+  listing.images?.length
+)
+
+const uploadedImageUrls =
+  typeof listing.images === 'string'
+    ? listing.images
+        .split('|')
+        .filter((url: string) =>
+          url.includes(
+            'photos.encuentra24.com'
+          )
+        )
+    : [] 
+
+console.log(
+  'FINAL IMAGE URLS:',
+  uploadedImageUrls
+)
+
+console.log(
+  'IMAGE COUNT:',
+  uploadedImageUrls.length
+)
+
+    const geography =
+      await resolveListingGeography({
+        supabase,
+
+        province:
+          listing.province,
+
+        canton:
+          listing.canton,
+
+        district:
+          listing.district
+      })
+
+    if (!geography.complete) {
+
+      console.warn(
+        'SCRAPED SALE LISTING REJECTED: unresolved canonical geography',
+        {
+          title:
+            listing.title,
+
+          sourceUrl:
+            listing.source_url,
+
+          source:
+            geography.source,
+
+          reasons:
+            geography.reasons
+        }
+      )
+
+      continue
+    }
+
+    const finalListing = {
+
+      listing_origin:
+        'scraped',
+
+      listing_source_type:
+        'realtor',
+
+      source_url:
+        listing.source_url ||
+        null,
+
+      source_name:
+        listing.source_name ||
+        null,
+
+      source_listing_id:
+        listing.source_listing_id ||
+        null,
+
+      province:
+        geography.province?.term_name ??
+        null,
+
+      canton:
+        geography.canton?.term_name ??
+        null,
+
+      district:
+        geography.district?.term_name ??
+        null,
+
+      property_type:
+        listing.property_type,
+
+      bedrooms:
+        listing.bedrooms,
+
+      bathrooms:
+        listing.bathrooms,
+
+      parking:
+        listing.parking,
+
+      year_built_range:
+        listing.year_built_range,
+
+      property_area:
+        optionalNumber(
+          listing.property_area
+        ),
+
+      construction_area:
+        optionalNumber(
+          listing.construction_area
+        ),
+
+      utility:
+        normalizeTextArray(
+          listing.utility
+        ),
+
+      environment:
+        listing.environment,
+
+      accessibility:
+        Array.isArray(
+          listing.accessibility
+        )
+          ? listing.accessibility
+              .map((value: unknown) =>
+                String(value).trim()
+              )
+              .filter(Boolean)
+              .join('|') || null
+          : String(
+              listing.accessibility || ''
+            ).trim() || null,
+
+      distance_to_paved_road_range:
+        (
+          Array.isArray(listing.accessibility)
+            ? listing.accessibility.includes(
+                'Unpaved Road to Property'
+              )
+            : listing.accessibility ===
+                'Unpaved Road to Property'
+        )
+          ? listing.distance_to_paved_road_range || null
+          : null,
+
+      terrain:
+        normalizeTextArray(
+          listing.terrain
+        ),
+
+      legal_status:
+        listing.legal_status,
+
+      current_price:
+        optionalNumber(
+          listing.current_price
+        ),
+
+      currency:
+        listing.currency,
+
+      whatsapp:
+        listing.whatsapp,
+
+      title:
+        listing.title,
+
+      description:
+        listing.description,
+
+      images:
+        uploadedImageUrls
+
+    }
+
+console.log(
+  'GEOGRAPHY RESOLUTION:',
+  {
+    source:
+      geography.source,
+
+    resolved: {
+      province:
+        geography.province?.term_name ??
+        null,
+
+      canton:
+        geography.canton?.term_name ??
+        null,
+
+      district:
+        geography.district?.term_name ??
+        null
+    },
+
+    reasons:
+      geography.reasons
+  }
+)
+
+  const response = await supabase
+    .from('listings')
+    .insert([
+      {
+        ...finalListing,
+        transaction_type: 'sale',
+        listing_status: 'active'
+      }
+    ])
+    .select()
+
+console.log(
+  'SUPABASE RESPONSE:',
+  response
+)
+
+console.log(
+  'SUPABASE ERROR:',
+  response.error
+)
+
+console.log(
+  'SUPABASE DATA:',
+  response.data
+)
+
+    if (response.error) {
+
+      console.error(
+        JSON.stringify(response.error, null, 2)
+      )
+
+    }
+
+console.log(
+  'IMAGES:',
+  listing.images
+)
+
+        const insertedListing =
+      response.data?.[0]
+
+    if (insertedListing?.id) {
+      console.log(
+        'ABOUT TO CALL ASSIGN ONTOLOGY',
+        insertedListing.id
+      )
+
+      await assignListingOntology(
+        insertedListing.id,
+        finalListing
+      )
+
+      try {
+        await recordListingCreated({
+          listingId: insertedListing.id,
+          metadata: {
+            title: insertedListing.title,
+            location: [
+              insertedListing.district,
+              insertedListing.canton,
+              insertedListing.province
+            ]
+              .filter(Boolean)
+              .join(', '),
+            price:
+              insertedListing.current_price,
+
+            source:
+              'publish-csv-listings',
+
+            transactionType:
+              'sale',
+
+            currency:
+              insertedListing.currency
+          }
+        })
+      } catch (activityError) {
+        console.error(
+          'Unable to record listing creation:',
+          activityError
+        )
+      }
+    }
+  }
+
+  alert('Listings Published')
+
+  setShowCsvStaging(false)
+
+  setCsvListings([])
+}import { supabase } from '@/lib/supabase'
+import { assignListingOntology } from '@/lib/assign-listing-ontology'
+
+import {
+  recordListingCreated
+} from '@/lib/activity'
+
+import {
+  resolveListingGeography
+} from '@/lib/geography/resolve-listing-geography'
+
+function optionalNumber(
+  value: unknown
+): number | null {
+
+  if (
+    value === null ||
+    value === undefined ||
+    value === ''
+  ) {
+    return null
+  }
+
+  const number =
+    Number(value)
+
+  return Number.isFinite(number)
+    ? number
+    : null
+}
+
+function normalizeTextArray(
+  value: unknown
+): string[] {
+
+  if (Array.isArray(value)) {
+    return value
+      .map(item =>
+        String(item).trim()
+      )
+      .filter(item =>
+        item &&
+        item !== '{}' &&
+        item !== '[]'
+      )
+  }
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+    return []
+  }
+
+  const text =
+    String(value).trim()
+
+  if (
+    !text ||
+    text === '{}' ||
+    text === '[]'
+  ) {
+    return []
+  }
+
+  return text
+    .split('|')
+    .map(item => item.trim())
+    .filter(Boolean)
+}
+
+export async function publishRentLeaseCsvListings(
+  csvListings: any[],
+  setShowCsvStaging: (value: boolean) => void,
+  setCsvListings: (value: any[]) => void
+) {
+
+    
+ for (const listing of csvListings) {
+
+  if (
+    !listing.province &&
+    !listing.canton &&
+    !listing.district &&
+    !listing.property_type
+  ) {
+    continue
+  }
+
+    const uploadedImageUrls =
+      typeof listing.images === 'string'
+        ? listing.images.split('|').filter(Boolean)
+        : []
+
+    const geography =
+      await resolveListingGeography({
+        supabase,
+
+        province:
+          listing.province,
+
+        canton:
+          listing.canton,
+
+        district:
+          listing.district
+      })
+
+      if (!geography.complete) {
+
+        console.warn(
+          'SCRAPED RENT LISTING REJECTED: unresolved canonical geography',
+          {
+            title:
+              listing.title,
+
+            sourceUrl:
+              listing.source_url,
+
+            source:
+              geography.source,
+
+            reasons:
+              geography.reasons
+          }
+        )
+
+        continue
+      }
+
+    const finalListing = {
+
+      listing_origin:
+        'scraped',
+
+      listing_source_type:
+        'realtor',
+
+      source_url:
+        listing.source_url ||
+        null,
+
+      source_name:
+        listing.source_name ||
+        null,
+
+      source_listing_id:
+        listing.source_listing_id ||
+        null,
+
+      province:
+        geography.province?.term_name ??
+        null,
+
+      canton:
+        geography.canton?.term_name ??
+        null,
+
+      district:
+        geography.district?.term_name ??
+        null,
+
+      property_type:
+        listing.property_type,
+
+      bedrooms:
+        listing.bedrooms,
+
+      bathrooms:
+        listing.bathrooms,
+
+      parking:
+        listing.parking,
+
+      year_built_range:
+        listing.year_built_range,
+
+      construction_area:
+        optionalNumber(
+          listing.construction_area
+        ),
+
+      property_area:
+        optionalNumber(
+          listing.property_area
+        ),
+
+      utility:
+        normalizeTextArray(
+          listing.utility
+        ),
+
+      environment:
+        listing.environment,
+
+      accessibility:
+        Array.isArray(
+          listing.accessibility
+        )
+          ? listing.accessibility
+              .map((value: unknown) =>
+                String(value).trim()
+              )
+              .filter(Boolean)
+              .join('|') || null
+          : String(
+              listing.accessibility || ''
+            ).trim() || null,
+
+      distance_to_paved_road_range:
+        (
+          Array.isArray(listing.accessibility)
+            ? listing.accessibility.includes(
+                'Unpaved Road to Property'
+              )
+            : listing.accessibility ===
+                'Unpaved Road to Property'
+        )
+          ? listing.distance_to_paved_road_range || null
+          : null,
+
+      terrain:
+        normalizeTextArray(
+          listing.terrain
+        ),
+
+      legal_status:
+        listing.legal_status,
+
+      monthly_price:
+        optionalNumber(
+          listing.monthly_price
+        ),
+
+      currency:
+        listing.currency,
+
+      whatsapp:
+        listing.whatsapp,
+
+      title:
+        listing.title,
+
+      description:
+        listing.description,
+
+      images:
+        uploadedImageUrls
+
+    }
+
+    const response = await supabase
+      .from('listings')
+      .insert([
+        {
+          ...finalListing,
+          transaction_type: 'rent',
+          listing_status: 'active'
+        }
+      ])
+      .select()
+
+console.log(
+  'SUPABASE RESPONSE:',
+  response
+)
+
+console.log(
+  'SUPABASE ERROR:',
+  response.error
+)
+
+console.log(
+  'SUPABASE DATA:',
+  response.data
+)
+
+    if (response.error) {
+
+      console.error(
+        JSON.stringify(response.error, null, 2)
+      )
+
+    }
+
+    const insertedListing =
+      response.data?.[0]
+
+    if (insertedListing?.id) {
+
+      await assignListingOntology(
+        insertedListing.id,
+        finalListing
+      )
+
+      try {
+        await recordListingCreated({
+          listingId: insertedListing.id,
+          metadata: {
+            title: insertedListing.title,
+            location: [
+              insertedListing.district,
+              insertedListing.canton,
+              insertedListing.province
+            ]
+              .filter(Boolean)
+              .join(', '),
+            price:
+              insertedListing.monthly_price,
+            source:
+              'publish-rent-lease-csv-listings',
+            transactionType: 'rent',
+            currency:
+              insertedListing.currency
+          }
+        })
+      } catch (activityError) {
+        console.error(
+          'Unable to record listing creation:',
+          activityError
+        )
+      }
+
+    }
+  }
+
+  alert('Listings Published')
+
+  setShowCsvStaging(false)
+
+  setCsvListings([])
+
+}'use client'
 
 import {
   FormEvent,
@@ -216,9 +1466,6 @@ export default function RentalListingEditForm({
         rentRequired:
           'Ingrese un alquiler mensual válido.',
 
-        currencyRequired:
-          'Seleccione una moneda válida.',
-
         updateError:
           'No se pudo actualizar la publicación de alquiler.',
 
@@ -276,9 +1523,6 @@ export default function RentalListingEditForm({
 
         rentRequired:
           'Please enter a valid monthly rent.',
-
-        currencyRequired:
-          'Please select a valid currency.',
 
         updateError:
           'The rental listing could not be updated.',
@@ -401,10 +1645,7 @@ export default function RentalListingEditForm({
         'active',
 
       currency:
-        listing.currency === 'CRC' ||
-        listing.currency === 'USD'
-          ? listing.currency
-          : '',
+        listing.currency || 'CRC',
 
       whatsapp:
         listing.whatsapp || '',
@@ -652,23 +1893,12 @@ export default function RentalListingEditForm({
       return
     }
 
-        if (
+    if (
       !propertyData.monthly_price ||
       Number(propertyData.monthly_price) <= 0
     ) {
       setErrorMessage(
         labels.rentRequired
-      )
-
-      return
-    }
-
-    if (
-      propertyData.currency !== 'CRC' &&
-      propertyData.currency !== 'USD'
-    ) {
-      setErrorMessage(
-        labels.currencyRequired
       )
 
       return
@@ -1421,13 +2651,7 @@ export default function RentalListingEditForm({
                       )
                     }
                     style={input}
-                                    >
-                    <option value="">
-                      {language === 'es'
-                        ? 'Seleccione una moneda'
-                        : 'Select a currency'}
-                    </option>
-
+                  >
                     <option value="CRC">
                       {labels.crc}
                     </option>
@@ -1841,3 +3065,67 @@ const imageActionButton = {
   borderRadius: '.6rem',
   cursor: 'pointer'
 }
+
+===== CALLER SEARCH =====
+
+app/styles/sell-styles.ts:249:export const createListingButton = {
+app/en/rent-lease/page.tsx:10:import { createListingId } from '@/lib/createListingId'
+app/en/rent-lease/page.tsx:306:        createListingId(
+app/en/buy/page.tsx:10:import { createListingId } from '@/lib/createListingId'
+app/en/buy/page.tsx:310:        createListingId(
+app/en/sell/page.tsx:67:import CreateListingButtonSXL from '@/app/components/CreateListingButtonSXL'
+app/en/sell/page.tsx:922:<CreateListingButtonSXL
+app/en/sell/page.tsx:923:                onCreateListing={async () => {
+app/en/HomePageClient.tsx:18:import { createListingId } from '@/lib/createListingId'
+app/en/HomePageClient.tsx:192:                        id: createListingId(listing),
+app/en/rent-out-lease-out/page.tsx:52:import CreateListingButtonSXL from '@/app/components/CreateListingButtonSXL'
+app/en/rent-out-lease-out/page.tsx:930:<CreateListingButtonSXL
+app/en/rent-out-lease-out/page.tsx:931:                onCreateListing={async () => {
+app/es/alquilar-arrendar/page.tsx:10:import { createListingId } from '@/lib/createListingId'
+app/es/alquilar-arrendar/page.tsx:307:        createListingId(
+app/es/publicar-alquiler-arrendamiento/page.tsx:52:import CreateListingButtonSXL from '@/app/components/CreateListingButtonSXL'
+app/es/publicar-alquiler-arrendamiento/page.tsx:947: <CreateListingButtonSXL
+app/es/publicar-alquiler-arrendamiento/page.tsx:948:                 onCreateListing={async () => {
+app/es/HomePageClient.tsx:18:import { createListingId } from '@/lib/createListingId'
+app/es/HomePageClient.tsx:192:                        id: createListingId(listing),
+app/es/comprar/page.tsx:10:import { createListingId } from '@/lib/createListingId'
+app/es/comprar/page.tsx:311:        createListingId(
+app/es/vender/page.tsx:67:import CreateListingButtonSXL from '@/app/components/CreateListingButtonSXL'
+app/es/vender/page.tsx:874:<CreateListingButtonSXL
+app/es/vender/page.tsx:875:                onCreateListing={async () => {
+app/soporte/ayuda/page.tsx:9:import CreateListingButtonS from '@/app/components/CreateListingButtonS'
+app/soporte/ayuda/page.tsx:181:                  <CreateListingButtonS
+app/soporte/ayuda/page.tsx:182:                    onCreateListing={() => {}}
+app/support/help/page.tsx:9:import CreateListingButtonS from '@/app/components/CreateListingButtonS'
+app/support/help/page.tsx:181:                  <CreateListingButtonS
+app/support/help/page.tsx:182:                    onCreateListing={() => {}}
+app/utils/publishCsvListings.ts:74:export async function publishCsvListings(
+app/utils/publishRentLeaseCsvListings.ts:72:export async function publishRentLeaseCsvListings(
+app/utils/createRentalListing.ts:14:export async function createRentalListing(
+app/utils/createListing.ts:14:export async function createListing(
+app/components/CreateRentalListingButton.tsx:5:export default function CreateRentalListingButton() {
+app/components/CreateRentalListingButton.tsx:17:      style={createListingButton}
+app/components/CreateRentalListingButton.tsx:26:const createListingButton = {
+app/components/CsvPublishActionsRentLease.tsx:4:  publishRentLeaseCsvListings
+app/components/CsvPublishActionsRentLease.tsx:5:} from '@/app/utils/publishRentLeaseCsvListings'
+app/components/CsvPublishActionsRentLease.tsx:25:        publishRentLeaseCsvListings(
+app/components/CreateListingButtonSXL.tsx:3:type CreateListingButtonSXLProps = {
+app/components/CreateListingButtonSXL.tsx:4:  onCreateListing: () => void
+app/components/CreateListingButtonSXL.tsx:7:export default function CreateListingButtonSXL({
+app/components/CreateListingButtonSXL.tsx:8:  onCreateListing
+app/components/CreateListingButtonSXL.tsx:9:}: CreateListingButtonSXLProps) {
+app/components/CreateListingButtonSXL.tsx:14:      onClick={onCreateListing}
+app/components/CsvPublishActions.tsx:4:  publishCsvListings
+app/components/CsvPublishActions.tsx:5:} from '@/app/utils/publishCsvListings'
+app/components/CsvPublishActions.tsx:25:          publishCsvListings(
+app/components/CreateListingButtonS.tsx:3:type CreateListingButtonSProps = {
+app/components/CreateListingButtonS.tsx:4:  onCreateListing: () => void
+app/components/CreateListingButtonS.tsx:7:export default function CreateListingButtonS({
+app/components/CreateListingButtonS.tsx:8:  onCreateListing
+app/components/CreateListingButtonS.tsx:9:}: CreateListingButtonSProps) {
+app/components/CreateListingButtonS.tsx:15:  onClick={onCreateListing}
+app/components/CreateListingButtonS.tsx:16:  style={createListingButton}
+app/components/CreateListingButtonS.tsx:86:const createListingButton = {
+lib/entity-engine.ts:8:import { createListingId } from '@/lib/createListingId'
+lib/entity-engine.ts:127:            createListingId(
+lib/createListingId.ts:1:export function createListingId(listing: any) {

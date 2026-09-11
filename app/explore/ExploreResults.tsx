@@ -6,6 +6,11 @@ import {
   resolveFirstListingImage
 } from '@/app/utils/resolveListingImages'
 
+import {
+  convertCrcToUsd,
+  convertUsdToCrc
+} from '@/lib/currency-conversion'
+
 function valueOrFallback(value: any) {
   return value ?? 'Not enough reliable data'
 }
@@ -42,22 +47,14 @@ function formatLabel(value: string) {
     .replace(/_/g, ' ')
     .replace(/\b\w/g, char => char.toUpperCase())
         }
-        const CRC_PER_USD = 500
-        function formatFullCRC(value: any) {
+                function formatFullCRC(value: any) {
         if (value === null || value === undefined) return null
         return `₡${Number(value).toLocaleString()}`
         }
+
         function formatFullUSD(value: any) {
         if (value === null || value === undefined) return null
         return `$${Number(value).toLocaleString()}`
-        }
-        function crcToUSD(value: any) {
-        if (value === null || value === undefined) return null
-        return Math.round(Number(value) / CRC_PER_USD)
-        }
-        function usdToCRC(value: any) {
-        if (value === null || value === undefined) return null
-        return Math.round(Number(value) * CRC_PER_USD)
         }
         function formatCRC(value: any) {
             if (value === null || value === undefined) return null
@@ -145,7 +142,19 @@ function formatLabel(value: string) {
         embedded?: boolean
       }) {
 
-        const statistics = result.statistics || {}
+                const statistics = result.statistics || {}
+
+        const usdToCrcRate =
+            result.analyticalContext?.fx?.rate
+
+        if (
+          !Number.isFinite(usdToCrcRate) ||
+          usdToCrcRate <= 0
+        ) {
+          throw new Error(
+            'Explorer requires an authoritative USD to CRC exchange rate.'
+          )
+        }
 
         const transactionType =
             result.filters?.transaction_type
@@ -278,78 +287,146 @@ function formatLabel(value: string) {
       </div>
 
       <h2 style={{
-  color: '#ff3B00',
-  fontSize: '2rem',
-  marginBottom: '1rem'
-}}>
-  Pricing Signals
-</h2>
+            color: '#ff3B00',
+            fontSize: '2rem',
+            marginBottom: '1rem'
+          }}>
+            Pricing Signals
+          </h2>
 
-<div style={{
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-  gap: '1rem',
-  marginBottom: '2rem'
-}}>
-  {(isSale || isAll) && (() => {
-    const averageSale =
-      getStat(statistics, 'average_sale_price', 'averageSalePrice')
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+            gap: '1rem',
+            marginBottom: '2rem'
+          }}>
+      {(isSale || isAll) && (() => {
+        const averageSale =
+          getStat(
+            statistics,
+            'average_sale_price',
+            'averageSalePrice'
+          )
 
-    const medianSale =
-      getStat(statistics, 'median_sale_price', 'medianSalePrice')
+        const medianSale =
+          getStat(
+            statistics,
+            'median_sale_price',
+            'medianSalePrice'
+          )
 
-    return (
-      <>
-        <StatCard
-          label="Average Sale Price CRC"
-          value={averageSale ? (
-            <>
-              <div>{formatFullCRC(averageSale)}</div>
-              <div style={{ color: '#888', fontSize: '1rem' }}>
-                {formatFullUSD(crcToUSD(averageSale))}
-              </div>
-            </>
-          ) : null}
-        />
+        return (
+          <>
+            <StatCard
+              label="Average Sale Price CRC"
+              value={averageSale ? (
+                <>
+                  <div>
+                    {formatFullCRC(averageSale)}
+                  </div>
 
-        <StatCard
-          label="Average Sale Price USD"
-          value={averageSale ? (
-            <>
-              <div>{formatFullUSD(crcToUSD(averageSale))}</div>
-              <div style={{ color: '#888', fontSize: '1rem' }}>
-                {formatFullCRC(averageSale)}
-              </div>
-            </>
-          ) : null}
-        />
+                  <div
+                    style={{
+                      color: '#888',
+                      fontSize: '1rem'
+                    }}
+                  >
+                    {formatFullUSD(
+                      Math.round(
+                        convertCrcToUsd(
+                          Number(averageSale),
+                          usdToCrcRate
+                        )
+                      )
+                    )}
+                  </div>
+                </>
+              ) : null}
+            />
 
-        <StatCard
-          label="Median Sale Price CRC"
-          value={medianSale ? (
-            <>
-              <div>{formatFullCRC(medianSale)}</div>
-              <div style={{ color: '#888', fontSize: '1rem' }}>
-                {formatFullUSD(crcToUSD(medianSale))}
-              </div>
-            </>
-          ) : null}
-        />
+            <StatCard
+              label="Average Sale Price USD"
+              value={averageSale ? (
+                <>
+                  <div>
+                    {formatFullUSD(
+                      Math.round(
+                        convertCrcToUsd(
+                          Number(averageSale),
+                          usdToCrcRate
+                        )
+                      )
+                    )}
+                  </div>
 
-        <StatCard
-          label="Median Sale Price USD"
-          value={medianSale ? (
-            <>
-              <div>{formatFullUSD(crcToUSD(medianSale))}</div>
-              <div style={{ color: '#888', fontSize: '1rem' }}>
-                {formatFullCRC(medianSale)}
-              </div>
-            </>
-          ) : null}
-        />
-      </>
-    )
-  })()}
+                  <div
+                    style={{
+                      color: '#888',
+                      fontSize: '1rem'
+                    }}
+                  >
+                    {formatFullCRC(averageSale)}
+                  </div>
+                </>
+              ) : null}
+            />
+
+            <StatCard
+              label="Median Sale Price CRC"
+              value={medianSale ? (
+                <>
+                  <div>
+                    {formatFullCRC(medianSale)}
+                  </div>
+
+                  <div
+                    style={{
+                      color: '#888',
+                      fontSize: '1rem'
+                    }}
+                  >
+                    {formatFullUSD(
+                      Math.round(
+                        convertCrcToUsd(
+                          Number(medianSale),
+                          usdToCrcRate
+                        )
+                      )
+                    )}
+                  </div>
+                </>
+              ) : null}
+            />
+
+            <StatCard
+              label="Median Sale Price USD"
+              value={medianSale ? (
+                <>
+                  <div>
+                    {formatFullUSD(
+                      Math.round(
+                        convertCrcToUsd(
+                          Number(medianSale),
+                          usdToCrcRate
+                        )
+                      )
+                    )}
+                  </div>
+
+                  <div
+                    style={{
+                      color: '#888',
+                      fontSize: '1rem'
+                    }}
+                  >
+                    {formatFullCRC(medianSale)}
+                  </div>
+                </>
+              ) : null}
+            />
+          </>
+        )
+      })()}
 
   
 
@@ -363,7 +440,20 @@ function formatLabel(value: string) {
                                 <>
                                 <div>{formatFullCRC(getStat(statistics, 'average_rent_crc', 'averageRentCRC'))}</div>
                                 <div style={{ color: '#888', fontSize: '1rem' }}>
-                                    {formatFullUSD(crcToUSD(getStat(statistics, 'average_rent_crc', 'averageRentCRC')))}
+                                    {formatFullUSD(
+  Math.round(
+    convertCrcToUsd(
+      Number(
+        getStat(
+          statistics,
+          'average_rent_crc',
+          'averageRentCRC'
+        )
+      ),
+      usdToCrcRate
+    )
+  )
+)}
                                 </div>
                                 </>
                             )
@@ -379,7 +469,20 @@ function formatLabel(value: string) {
                                 <>
                                 <div>{formatFullUSD(getStat(statistics, 'average_rent_usd', 'averageRentUSD'))}</div>
                                 <div style={{ color: '#888', fontSize: '1rem' }}>
-                                    {formatFullCRC(usdToCRC(getStat(statistics, 'average_rent_usd', 'averageRentUSD')))}
+                                    {formatFullCRC(
+  Math.round(
+    convertUsdToCrc(
+      Number(
+        getStat(
+          statistics,
+          'average_rent_usd',
+          'averageRentUSD'
+        )
+      ),
+      usdToCrcRate
+    )
+  )
+)}
                                 </div>
                                 </>
                             )
@@ -395,7 +498,20 @@ function formatLabel(value: string) {
                                 <>
                                 <div>{formatFullCRC(getStat(statistics, 'median_rent_crc', 'medianRentCRC'))}</div>
                                 <div style={{ color: '#888', fontSize: '1rem' }}>
-                                    {formatFullUSD(crcToUSD(getStat(statistics, 'median_rent_crc', 'medianRentCRC')))}
+                                    {formatFullUSD(
+  Math.round(
+    convertCrcToUsd(
+      Number(
+        getStat(
+          statistics,
+          'median_rent_crc',
+          'medianRentCRC'
+        )
+      ),
+      usdToCrcRate
+    )
+  )
+)}
                                 </div>
                                 </>
                             )
@@ -411,7 +527,20 @@ function formatLabel(value: string) {
                                 <>
                                 <div>{formatFullUSD(getStat(statistics, 'median_rent_usd', 'medianRentUSD'))}</div>
                                 <div style={{ color: '#888', fontSize: '1rem' }}>
-                                    {formatFullCRC(usdToCRC(getStat(statistics, 'median_rent_usd', 'medianRentUSD')))}
+                                    {formatFullCRC(
+  Math.round(
+    convertUsdToCrc(
+      Number(
+        getStat(
+          statistics,
+          'median_rent_usd',
+          'medianRentUSD'
+        )
+      ),
+      usdToCrcRate
+    )
+  )
+)}
                                 </div>
                                 </>
                             )

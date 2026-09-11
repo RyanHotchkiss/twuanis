@@ -1,4 +1,14 @@
-import { getMarketStatistics } from '@/lib/statistics-engine'
+import {
+  getMarketStatistics
+} from '@/lib/statistics-engine'
+
+import {
+  convertCrcToUsd
+} from '@/lib/currency-conversion'
+
+import {
+  resolveListingAmountCrc
+} from '@/lib/listing-monetary-value'
 
 import {
   resolveListingImages
@@ -25,8 +35,6 @@ type PricingStrategyFilters = {
   distance_to_paved_road_range?: string
   legal_status?: string
 }
-
-const CRC_TO_USD = 500
 
 function formatCRC(value: number | null) {
   if (value === null || Number.isNaN(value)) return null
@@ -114,23 +122,6 @@ function getCopy(language: PricingStrategyLanguage) {
   }
 }
 
-function getListingPrice(listing: any) {
-      const price =
-        listing.transaction_type === 'rent'
-          ? Number(listing.monthly_price)
-          : Number(listing.current_price)
-
-      if (!price || Number.isNaN(price)) {
-        return null
-      }
-
-      if (listing.currency === 'USD') {
-        return price * CRC_TO_USD
-      }
-
-      return price
-    }
-
 function average(values: number[]) {
   if (!values.length) return null
 
@@ -150,8 +141,15 @@ function median(values: number[]) {
   return sorted[middle]
 }
 
-function decorateListing(listing: any) {
-  const price = getListingPrice(listing)
+function decorateListing(
+  listing: any,
+  usdToCrcRate: number
+) {
+  const priceCRC =
+    resolveListingAmountCrc(
+      listing,
+      usdToCrcRate
+    )
 
   return {
     ...listing,
@@ -162,10 +160,10 @@ function decorateListing(listing: any) {
       ),
 
     formattedPrice:
-      price
-        ? listing.currency === 'USD'
-          ? formatUSD(price)
-          : formatCRC(price)
+      priceCRC !== null
+        ? formatCRC(
+            priceCRC
+          )
         : null
   }
 }
@@ -174,38 +172,42 @@ export async function getPricingStrategy(
   filters: PricingStrategyFilters,
   language: PricingStrategyLanguage = 'en'
 ) {
-  const copy = getCopy(language)
+  const copy =
+    getCopy(language)
 
-  const market = await getMarketStatistics(filters)
+  const market =
+    await getMarketStatistics(
+      filters
+    )
 
-  const listings = market.listings || []
+  const usdToCrcRate =
+    market.analyticalContext.fx.rate
+
+  const listings =
+    market.listings || []
 
   const prices =
     listings
-      .map(getListingPrice)
+      .map(
+        (listing: any) =>
+         resolveListingAmountCrc(
+            listing,
+            usdToCrcRate
+          )
+      )
       .filter((value: number | null): value is number => Boolean(value))
 
   const sampleSize =
     prices.length
 
-  const averagePrice =
-  normalizePrice(average(prices))
+    const averagePrice =
+      average(prices)
 
     const medianPrice =
-    normalizePrice(median(prices))
+      median(prices)
 
     const recommendedPrice =
-    medianPrice || averagePrice
-
-  function normalizePrice(value: number | null) {
-        if (value === null || Number.isNaN(value)) return null
-
-        if (value < 100000) {
-        return value * 1000
-        }
-
-        return value
-        }
+      medianPrice ?? averagePrice
 
   const conservativePrice =
     recommendedPrice
@@ -240,7 +242,12 @@ export async function getPricingStrategy(
 
       conservativePriceUSD:
         conservativePrice
-          ? formatUSD(conservativePrice / CRC_TO_USD)
+          ? formatUSD(
+              convertCrcToUsd(
+                conservativePrice,
+                usdToCrcRate
+              )
+            )
           : null,
 
       recommendedPriceCRC:
@@ -248,7 +255,12 @@ export async function getPricingStrategy(
 
       recommendedPriceUSD:
         recommendedPrice
-          ? formatUSD(recommendedPrice / CRC_TO_USD)
+          ? formatUSD(
+              convertCrcToUsd(
+                recommendedPrice,
+                usdToCrcRate
+              )
+            )
           : null,
 
       premiumPriceCRC:
@@ -256,7 +268,12 @@ export async function getPricingStrategy(
 
       premiumPriceUSD:
         premiumPrice
-          ? formatUSD(premiumPrice / CRC_TO_USD)
+          ? formatUSD(
+              convertCrcToUsd(
+                premiumPrice,
+                usdToCrcRate
+              )
+            )
           : null,
 
       pricingPosition:
@@ -280,7 +297,12 @@ export async function getPricingStrategy(
 
       medianPriceUSD:
         medianPrice
-          ? formatUSD(medianPrice / CRC_TO_USD)
+          ? formatUSD(
+              convertCrcToUsd(
+                medianPrice,
+                usdToCrcRate
+              )
+            )
           : null,
 
       averagePriceCRC:
@@ -288,7 +310,12 @@ export async function getPricingStrategy(
 
       averagePriceUSD:
         averagePrice
-          ? formatUSD(averagePrice / CRC_TO_USD)
+          ? formatUSD(
+              convertCrcToUsd(
+                averagePrice,
+                usdToCrcRate
+              )
+            )
           : null,
 
       buyerCompetition,
@@ -303,7 +330,13 @@ export async function getPricingStrategy(
 
     comparables:
       listings
-        .map(decorateListing)
+        .map(
+          (listing: any) =>
+            decorateListing(
+              listing,
+              usdToCrcRate
+            )
+        )
         .filter((listing: any) => listing.formattedPrice)
         .slice(0, 6)
   }

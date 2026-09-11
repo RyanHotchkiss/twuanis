@@ -565,22 +565,19 @@ const filteredProperties = properties.filter((property) => {
       */
 
       if (filters.monthly_price) {
-        const exchangeRate = 500
-
-        const rawPrice =
-          Number(property.monthly_price)
+        const priceInDollars =
+          Number(
+            property.marketplace_price_usd
+          )
 
         if (
-          !Number.isFinite(rawPrice) ||
-          rawPrice <= 0
+          !Number.isFinite(
+            priceInDollars
+          ) ||
+          priceInDollars <= 0
         ) {
           return false
         }
-
-        const priceInDollars =
-          property.currency === 'CRC'
-            ? rawPrice / exchangeRate
-            : rawPrice
 
         if (
           filters.monthly_price === '$0 - $500/mo' &&
@@ -1406,11 +1403,11 @@ const filteredProperties = properties.filter((property) => {
                                           {property.property_type}
                                         </span>
 
-                                        {property.monthly_price && (
+                                        {property.marketplace_original_price && (
                                           <span style={pill}>
-                                            {property.currency === 'USD'
-                                              ? `$${Number(property.monthly_price).toLocaleString()}`
-                                              : `₡${Number(property.monthly_price).toLocaleString()}`}
+                                            {property.marketplace_original_currency === 'USD'
+                                              ? `$${Number(property.marketplace_original_price).toLocaleString()}`
+                                              : `₡${Number(property.marketplace_original_price).toLocaleString()}`}
                                             /mes
                                           </span>
                                         )}

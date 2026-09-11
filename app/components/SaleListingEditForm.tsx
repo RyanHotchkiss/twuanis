@@ -33,9 +33,12 @@ import {
 } from '@/data/property-data'
 
 import {
-  formatColones,
-  convertToUSD
+  formatColones
 } from '@/app/utils/listing-utils'
+
+import {
+  useMarketplaceFx
+} from '@/app/hooks/useMarketplaceFx'
 
 import LocationSelectorS from '@/app/components/filter-bar/LocationSelectorS'
 import PropertyTypeFilterS from '@/app/components/filter-bar/PropertyTypeFilterS'
@@ -202,6 +205,12 @@ export default function SaleListingEditForm({
   const router =
     useRouter()
 
+  const marketplaceFx =
+    useMarketplaceFx()
+
+  const usdToCrcRate =
+    marketplaceFx?.usdToCrcRate ?? null
+
   const labels =
   language === 'es'
     ? {
@@ -222,15 +231,6 @@ export default function SaleListingEditForm({
 
         updateError:
           'No se pudo actualizar la publicación en venta.',
-
-        currency:
-          'Moneda',
-
-        crc:
-          'CRC — Colón Costarricense',
-
-        usd:
-          'USD — Dólar Estadounidense',
 
         listingTitle:
           'Título de la Publicación',
@@ -280,15 +280,6 @@ export default function SaleListingEditForm({
 
         updateError:
           'The sale listing could not be updated.',
-
-        currency:
-          'Currency',
-
-        crc:
-          'CRC — Costa Rican Colón',
-
-        usd:
-          'USD — United States Dollar',
 
         listingTitle:
           'Listing Title',
@@ -412,8 +403,7 @@ export default function SaleListingEditForm({
         listing.listing_status ||
         'active',
 
-      currency:
-        listing.currency || 'CRC',
+      currency: 'CRC',
 
       whatsapp:
         listing.whatsapp || '',
@@ -787,8 +777,7 @@ export default function SaleListingEditForm({
           listing_status:
             propertyData.listing_status,
 
-          currency:
-            propertyData.currency,
+          currency: 'CRC',
 
           whatsapp:
             propertyData.whatsapp,
@@ -1642,38 +1631,12 @@ export default function SaleListingEditForm({
                 formatColones={
                   formatColones
                 }
-                convertToUSD={
-                  convertToUSD
+                usdToCrcRate={
+                  usdToCrcRate
                 }
               />
 
               <section style={textSection}>
-                <label style={fieldLabel}>
-                  {labels.currency}
-
-                  <select
-                    value={
-                      propertyData.currency
-                    }
-                    onChange={event =>
-                      setField(
-                        'currency',
-                        event.target.value
-                      )
-                    }
-                    style={input}
-                  >
-                   <option value="CRC">
-                      {labels.crc}
-                    </option>
-
-                    <option value="USD">
-                      {labels.usd}
-                    </option>
-
-                  </select>
-                </label>
-
                 <label style={fieldLabel}>
                   {labels.listingTitle}
 
@@ -1859,10 +1822,12 @@ export default function SaleListingEditForm({
               {language === 'es' ? (
                 <PropertyDefinitionPanelES
                   propertyData={propertyData}
+                  usdToCrcRate={usdToCrcRate}
                 />
               ) : (
                 <PropertyDefinitionPanel
                   propertyData={propertyData}
+                  usdToCrcRate={usdToCrcRate}
                 />
               )}
             </aside>

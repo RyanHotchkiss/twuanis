@@ -14,6 +14,9 @@ import {
   getOntologyTermsByIds
 } from '@/lib/graph-engine'
 
+import RecordRecentlyViewedProperty
+  from '@/app/components/RecordRecentlyViewedProperty'
+
 import ListingCompareButton
   from '@/app/components/comparisons/ListingCompareButton'
 
@@ -35,7 +38,15 @@ import {
 
 import PriceMeterComparableListing
   from '@/app/components/PriceMeterComparableListing'
+import {
+  resolveMarketAnalyticalContext
+} from '@/lib/market-analytical-context'
 
+import {
+  resolveListingOriginalMonetaryValue,
+  resolveListingAmountCrc,
+  resolveListingAmountUsd
+} from '@/lib/listing-monetary-value'
 export default async function ListingPage({
   params
 }: {
@@ -71,11 +82,6 @@ if (!data) {
                       )
                     }
 
-                    const listingPricePerM2 =
-                    listing.current_price && listing.property_area
-                      ? Number(listing.current_price) / Number(listing.property_area)
-                      : null
-
                   const valuation = await getValuation(
                     {
                       transaction_type:
@@ -87,30 +93,58 @@ if (!data) {
                       canton: listing.canton,
                       district: listing.district,
                       property_type: listing.property_type,
+                      subjectListing: listing,
                     },
                     'es'
                   )
 
-                  const USD_TO_CRC = 500
+                  const analyticalContext =
+                    await resolveMarketAnalyticalContext()
+
+                  const originalMonetaryValue =
+                    resolveListingOriginalMonetaryValue(
+                      listing
+                    )
+
+                    const recentlyViewedPrice =
+                      originalMonetaryValue
+                        ? originalMonetaryValue.currency ===
+                            'USD'
+                          ? `$${Math.round(
+                              originalMonetaryValue.amount
+                            ).toLocaleString()}`
+                          : `₡${Math.round(
+                              originalMonetaryValue.amount
+                            ).toLocaleString()}`
+                        : null
 
                   const listingPriceUSD =
-                    listing.currency === 'USD'
-                      ? Number(listing.current_price)
-                      : Number(listing.current_price) / USD_TO_CRC
+                    resolveListingAmountUsd(
+                      listing,
+                      analyticalContext.fx.rate
+                    )
 
                   const listingPriceCRC =
-                    listing.currency === 'USD'
-                      ? Number(listing.current_price) * USD_TO_CRC
-                      : Number(listing.current_price)
+                    resolveListingAmountCrc(
+                      listing,
+                      analyticalContext.fx.rate
+                    )
+
+                  const propertyArea =
+                    Number(listing.property_area)
 
                   const listingPricePerM2USD =
-                    listing.current_price && listing.property_area
-                      ? listingPriceUSD / Number(listing.property_area)
+                    listingPriceUSD !== null &&
+                    Number.isFinite(propertyArea) &&
+                    propertyArea > 0
+                      ? listingPriceUSD / propertyArea
                       : null
 
                   const listingPricePerM2CRC =
-                    listing.current_price && listing.property_area
-                      ? listingPriceCRC / Number(listing.property_area)
+                    listingPriceCRC !== null &&
+                    Number.isFinite(propertyArea) &&
+                    propertyArea > 0
+                      ? listingPriceCRC / propertyArea
                       : null
 
 const { data: ontologyRows } = await supabase
@@ -200,6 +234,24 @@ return (
 
   <>
     {schema && <JsonLd data={schema} />}
+
+    <ListingActivityTracker
+      listingId={listing.id}
+      title={listing.title}
+      province={listing.province}
+      canton={listing.canton}
+      district={listing.district}
+      propertyType={
+        listing.property_type
+      }
+      transactionType="buy"
+    />
+
+    <RecordRecentlyViewedProperty
+      listing={listing}
+      price={recentlyViewedPrice}
+      href={`/es/comprar/anuncio/${listing.id}`}
+    />
 
     <main
       style={{
@@ -632,21 +684,15 @@ return (
 
             <div style={priceCard}>
 
-                {listing.current_price ? (
-                    <>
-                      <div>
-                        ₡{Math.round(listingPriceCRC).toLocaleString()}
-                      </div>
-
-                      <div style={secondaryValue}>
-                        ${Math.round(listingPriceUSD).toLocaleString()}
-                      </div>
-                    </>
-                  ) : listing.price_millions ? (
-                    `₡${Number(listing.price_millions).toLocaleString()}M`
+                {originalMonetaryValue ? (
+                  originalMonetaryValue.currency === 'USD' ? (
+                    `$${Math.round(originalMonetaryValue.amount).toLocaleString()}`
                   ) : (
-                    'Precio No Disponible'
-                  )}
+                    `₡${Math.round(originalMonetaryValue.amount).toLocaleString()}`
+                  )
+                ) : (
+                  'Precio No Disponible'
+                )}
 
             </div>
 
@@ -694,20 +740,21 @@ return (
                 <StatCard
                   label="Precio Publicado"
                   value={
-                    listing.current_price ? (
-                      <>
-                        <div>
-                          ₡{Math.round(listingPriceCRC).toLocaleString()}
-                        </div>
+                  listingPriceUSD !== null &&
+                  listingPriceCRC !== null ? (
+                    <>
+                      <div>
+                        ₡{Math.round(listingPriceCRC).toLocaleString()}
+                      </div>
 
-                        <div style={secondaryValue}>
-                          ${Math.round(listingPriceUSD).toLocaleString()}
-                        </div>
-                      </>
-                    ) : (
-                      'No disponible'
-                    )
-                  }
+                      <div style={secondaryValue}>
+                        ${Math.round(listingPriceUSD).toLocaleString()}
+                      </div>
+                    </>
+                  ) : (
+                    'No disponible'
+                  )
+                }
                 />
 
                 <StatCard
@@ -721,7 +768,8 @@ return (
                 <StatCard
                   label="Precio por m²"
                   value={
-                    listingPricePerM2USD && listingPricePerM2CRC ? (
+                    listingPricePerM2USD !== null &&
+listingPricePerM2CRC !== null ? (
                       <>
                         <div>
                           ₡{Math.round(listingPricePerM2CRC).toLocaleString()}/m²

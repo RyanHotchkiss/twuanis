@@ -1,6 +1,18 @@
 import { getMarketStatistics } from '@/lib/statistics-engine'
 import { getComparableListings } from '@/lib/comparables-engine'
 
+import {
+  convertCrcToUsd
+} from '@/lib/currency-conversion'
+
+import {
+  resolveListingAmountCrc,
+  type ListingMonetaryInput
+} from '@/lib/listing-monetary-value'
+
+import {
+  resolveMarketAnalyticalContext
+} from '@/lib/market-analytical-context'
 
 import {
   getValuationConfidenceScore,
@@ -32,8 +44,7 @@ type ValuationFilters = {
   distance_to_paved_road_range?: string
   legal_status?: string
 
-  current_price?: string
-  monthly_price?: string
+    subjectListing?: ListingMonetaryInput
 }
 
 const valuationCopy = {
@@ -191,10 +202,16 @@ const marketFilters = {
     }
   ]
 
+  const analyticalContext =
+  await resolveMarketAnalyticalContext()
+
   const markets =
     await Promise.all(
       marketCandidates.map(candidate =>
-        getMarketStatistics(candidate)
+        getMarketStatistics(
+          candidate,
+          analyticalContext
+        )
       )
     )
 
@@ -208,6 +225,9 @@ const marketFilters = {
         candidate.statistics.medianRentCRC
       )
     ) || markets[0]
+
+  const usdToCrcRate =
+  analyticalContext.fx.rate
 
   const stats = market.statistics
   const listings = market.listings || []
@@ -248,20 +268,31 @@ const marketFilters = {
           ) * 100
         : null 
 
-   const comparisonPrice =
-      filters.transaction_type === 'rent'
-        ? Number(filters.monthly_price)
-        : Number(filters.current_price)
-        
+       const comparisonPrice =
+      filters.subjectListing
+        ? resolveListingAmountCrc(
+            filters.subjectListing,
+            usdToCrcRate
+          )
+        : null
 
     const comparisonTarget =
       isRent
         ? Number(estimatedRentalValue)
         : estimatedMarketValue
 
-    const comparisonDifference =
-      comparisonPrice && comparisonTarget
-        ? ((comparisonPrice - comparisonTarget) / comparisonTarget) * 100
+        const comparisonDifference =
+      comparisonPrice !== null &&
+      comparisonTarget !== null &&
+      Number.isFinite(comparisonTarget) &&
+      comparisonTarget > 0
+        ? (
+            (
+              comparisonPrice -
+              comparisonTarget
+            ) /
+            comparisonTarget
+          ) * 100
         : marketDifference
 
     const pricePosition =
@@ -331,9 +362,19 @@ const marketFilters = {
 
       estimatedMarketValueUSD:
         isRent && estimatedRentalValue
-          ? formatUSD(Number(estimatedRentalValue) / 500)
+          ? formatUSD(
+              convertCrcToUsd(
+                Number(estimatedRentalValue),
+                usdToCrcRate
+              )
+            )
           : estimatedMarketValue
-            ? formatUSD(estimatedMarketValue / 500)
+            ? formatUSD(
+                convertCrcToUsd(
+                  estimatedMarketValue,
+                  usdToCrcRate
+                )
+              )
             : null,
 
       confidenceScore:
@@ -346,7 +387,12 @@ const marketFilters = {
 
       estimatedSalePriceUSD:
         estimatedMarketValue
-          ? formatUSD(estimatedMarketValue / 500)
+          ? formatUSD(
+              convertCrcToUsd(
+                estimatedMarketValue,
+                usdToCrcRate
+              )
+            )
           : null,
 
       estimatedRentalValueCRC:
@@ -356,7 +402,12 @@ const marketFilters = {
 
       estimatedRentalValueUSD:
         estimatedRentalValue
-          ? formatUSD(Number(estimatedRentalValue) / 500)
+          ? formatUSD(
+              convertCrcToUsd(
+                Number(estimatedRentalValue),
+                usdToCrcRate
+              )
+            )
           : null
     },
 
@@ -385,17 +436,32 @@ const marketFilters = {
 
         lowUSD:
           activeRange.low
-            ? formatUSD(activeRange.low / 500)
+            ? formatUSD(
+                convertCrcToUsd(
+                  activeRange.low,
+                  usdToCrcRate
+                )
+              )
             : null,
 
         likelyUSD:
           activeRange.likely
-            ? formatUSD(activeRange.likely / 500)
+            ? formatUSD(
+                convertCrcToUsd(
+                  activeRange.likely,
+                  usdToCrcRate
+                )
+              )
             : null,
 
         highUSD:
           activeRange.high
-            ? formatUSD(activeRange.high / 500)
+            ? formatUSD(
+                convertCrcToUsd(
+                  activeRange.high,
+                  usdToCrcRate
+                )
+              )
             : null
       },
 

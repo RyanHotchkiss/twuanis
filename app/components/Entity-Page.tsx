@@ -385,9 +385,27 @@ export default async function EntityPage({
                 {listing.district}
               </p>
 
-              <p>
-                {listing.property_type} | ₡
-                {listing.price_millions}M
+                            <p>
+                {listing.property_type}
+                {' | '}
+                {
+                  listing.marketplace_original_price !==
+                    null &&
+                  listing.marketplace_original_currency
+                    ? listing.marketplace_original_currency ===
+                        'USD'
+                      ? `$${Math.round(
+                          Number(
+                            listing.marketplace_original_price
+                          )
+                        ).toLocaleString()}`
+                      : `₡${Math.round(
+                          Number(
+                            listing.marketplace_original_price
+                          )
+                        ).toLocaleString()}`
+                    : 'Price unavailable'
+                }
               </p>
             </Link>
           ))}

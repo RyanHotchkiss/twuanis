@@ -1,8 +1,6 @@
 export type ListingRankingSortMode =
   | 'default'
   | 'newest'
-  | 'price-low-high'
-  | 'price-high-low'
 
 
 export type ListingRankingTier =
@@ -25,12 +23,6 @@ export type RankableListing = {
 
   created_at?:
     string | null
-
-  current_price?:
-    number | null
-
-  monthly_price?:
-    number | null
 }
 
 
@@ -105,46 +97,6 @@ function parseCreatedAt(
   )
     ? timestamp
     : 0
-}
-
-
-function resolveComparablePrice(
-  listing:
-    RankableListing
-): number {
-
-  const currentPrice =
-    Number(
-      listing.current_price
-    )
-
-  if (
-    Number.isFinite(
-      currentPrice
-    ) &&
-    currentPrice > 0
-  ) {
-    return currentPrice
-  }
-
-
-  const monthlyPrice =
-    Number(
-      listing.monthly_price
-    )
-
-  if (
-    Number.isFinite(
-      monthlyPrice
-    ) &&
-    monthlyPrice > 0
-  ) {
-    return monthlyPrice
-  }
-
-
-  return Number
-    .POSITIVE_INFINITY
 }
 
 
@@ -317,82 +269,6 @@ function compareExplicitSort(
   switch (
     sortMode
   ) {
-
-    case 'price-low-high': {
-
-      const difference =
-        resolveComparablePrice(
-          left
-        ) -
-        resolveComparablePrice(
-          right
-        )
-
-      if (
-        difference !== 0
-      ) {
-        return difference
-      }
-
-      return compareNewest(
-        left,
-        right
-      )
-    }
-
-
-    case 'price-high-low': {
-
-      const leftPrice =
-        resolveComparablePrice(
-          left
-        )
-
-      const rightPrice =
-        resolveComparablePrice(
-          right
-        )
-
-
-      /*
-       * Listings without usable prices stay behind listings
-       * with canonical prices.
-       */
-
-      if (
-        leftPrice ===
-          Number.POSITIVE_INFINITY &&
-        rightPrice !==
-          Number.POSITIVE_INFINITY
-      ) {
-        return 1
-      }
-
-      if (
-        rightPrice ===
-          Number.POSITIVE_INFINITY &&
-        leftPrice !==
-          Number.POSITIVE_INFINITY
-      ) {
-        return -1
-      }
-
-
-      const difference =
-        rightPrice -
-        leftPrice
-
-      if (
-        difference !== 0
-      ) {
-        return difference
-      }
-
-      return compareNewest(
-        left,
-        right
-      )
-    }
 
 
     case 'newest':

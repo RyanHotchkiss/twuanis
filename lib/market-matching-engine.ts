@@ -1,6 +1,10 @@
 import { getMarketStatistics } from '@/lib/statistics-engine'
 
 import {
+  resolveListingAmountCrc
+} from '@/lib/listing-monetary-value'
+
+import {
   resolveListingImages
 } from '@/app/utils/resolveListingImages'
 
@@ -26,43 +30,12 @@ type MarketMatchingFilters = {
   legal_status?: string
 }
 
-const CRC_TO_USD = 500
+
 
 function formatCRC(value: number | null) {
   if (value === null || Number.isNaN(value)) return null
 
   return `₡${Math.round(value).toLocaleString()}`
-}
-
-function getListingPrice(listing: any) {
-  if (listing.transaction_type === 'rent') {
-    return listing.monthly_price
-      ? Number(listing.monthly_price)
-      : null
-  }
-
-  if (
-    listing.price_millions === null ||
-    listing.price_millions === undefined
-  ) {
-    return null
-  }
-
-  const priceMillions = Number(listing.price_millions)
-
-  if (!priceMillions || Number.isNaN(priceMillions)) {
-    return null
-  }
-
-  if (listing.currency === 'USD') {
-    return priceMillions * 1000000 * CRC_TO_USD
-  }
-
-  const priceCRC = priceMillions * 1000000
-
-  if (priceCRC < 10000000) return null
-
-  return priceCRC
 }
 
 function splitValues(value?: string) {
@@ -177,9 +150,14 @@ function scoreListing(
 function decorateListing(
   listing: any,
   filters: MarketMatchingFilters,
-  language: MatchingLanguage
+  language: MatchingLanguage,
+  usdToCrcRate: number
 ) {
-  const price = getListingPrice(listing)
+  const price =
+    resolveListingAmountCrc(
+      listing,
+      usdToCrcRate
+    )
 
   const scoring =
     scoreListing(listing, filters, language)
@@ -219,8 +197,13 @@ export async function getMarketMatches(
     construction_area: filters.construction_area
   }
 
-    const market =
-    await getMarketStatistics(broadFilters)
+  const market =
+    await getMarketStatistics(
+      broadFilters
+    )
+
+  const usdToCrcRate =
+    market.analyticalContext.fx.rate
 
   const listings =
     market.listings || []
@@ -228,7 +211,12 @@ export async function getMarketMatches(
   const decoratedListings =
     listings
       .map((listing: any) =>
-        decorateListing(listing, filters, language)
+        decorateListing(
+            listing,
+            filters,
+            language,
+            usdToCrcRate
+          )
       )
       .sort((a: any, b: any) =>
         b.matchScore - a.matchScore

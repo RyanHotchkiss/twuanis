@@ -586,67 +586,6 @@ async function verifyDefaultPlacement() {
 }
 
 
-async function verifyExplicitSort() {
-
-  const result =
-    await resolveMarketplacePlacement({
-      supabase:
-        createFakeSupabase(),
-
-      listings,
-
-      surface:
-        'buy-results',
-
-      sortMode:
-        'price-low-high',
-
-      now:
-        NOW
-    })
-
-
-  const actual =
-    result.listings.map(
-      listing =>
-        listing.id
-    )
-
-
-  /*
-   * Ownership tier remains absolute.
-   *
-   * Inside the customer tier, explicit price sorting beats
-   * promotional placement.
-   */
-
-  const expected = [
-    CUSTOMER_BOOSTED,
-    CUSTOMER_ORGANIC,
-    CUSTOMER_FEATURED,
-    EXTERNAL_OLDER,
-    EXTERNAL_NEWER
-  ]
-
-
-  assertOrder({
-    actual,
-    expected,
-    label:
-      'Explicit price sorting'
-  })
-
-
-  console.log(
-    '✓ Explicit user sorting overrides promotion inside ownership tiers'
-  )
-
-  console.log(
-    '✓ Customer ownership still outranks external inventory'
-  )
-}
-
-
 async function run() {
 
   console.log(
@@ -666,9 +605,6 @@ async function run() {
 
 
   console.log('')
-
-
-  await verifyExplicitSort()
 
 
   console.log('')

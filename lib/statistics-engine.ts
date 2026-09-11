@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase'
+
 import {
   matchesConstructionAreaConstraint,
   matchesPropertyAreaConstraint,
@@ -6,8 +7,17 @@ import {
   resolvePropertyAreaConstraint
 } from '@/lib/market-intelligence-area-ranges'
 
+import {
+  resolveListingAmountCrc,
+  resolveListingAmountUsd
+} from '@/lib/listing-monetary-value'
+
+import {
+  resolveMarketAnalyticalContext,
+  type MarketAnalyticalContext
+} from '@/lib/market-analytical-context'
+
 const MIN_SAMPLE_SIZE = 10
-const CRC_PER_USD = 500
 
 const INTELLIGENCE_TERM_TYPES = [
   'province',
@@ -136,20 +146,17 @@ async function getDistrictNamesFromSlugs(districtSlugs: string[]) {
 }
 
 function average(values: number[]) {
-            if (!values.length) return null
+    if (!values.length) return null
 
-            return values.reduce((sum, value) => sum + value, 0) / values.length
-          }
+    return values.reduce(
+      (sum, value) =>
+        sum + value,
+      0
+    ) / values.length
+  }
 
-          function usdToCRC(value: number) {
-            return value * CRC_PER_USD
-          }
 
-          function crcToUSD(value: number) {
-            return value / CRC_PER_USD
-          }
-
-          function validNumbers(values: Array<number | null>) {
+  function validNumbers(values: Array<number | null>) {
             return values.filter((value): value is number => {
               return typeof value === 'number' && Number.isFinite(value)
             })
@@ -515,109 +522,226 @@ function average(values: number[]) {
                 )
           }
 
-export function calculateStatistics(listings: Listing[]) {
-  const saleListings = listings.filter(listing => {
-    return listing.transaction_type === 'buy' || listing.transaction_type === 'sale'
-  })
+export function calculateStatistics(
+  listings:
+    Listing[],
 
-  const rentalListings = listings.filter(listing => {
-    return listing.transaction_type === 'rent' || listing.transaction_type === 'lease'
-  })
+  context:
+    MarketAnalyticalContext
+) {
 
-  const salePrices = validNumbers(
-      saleListings.map(listing => {
-        const price =
-          listing.current_price
+  const usdToCrcRate =
+    context.fx.rate
 
-        if (!price || price <= 1) return null
 
-        return listing.currency === 'CRC'
-          ? price
-          : usdToCRC(price)
-      })
+  const saleListings =
+    listings.filter(
+      listing =>
+        listing.transaction_type ===
+          'buy' ||
+        listing.transaction_type ===
+          'sale'
     )
 
-  const rentValuesCRC = validNumbers(
-      rentalListings.map(listing => {
-        if (listing.monthly_price === null) return null
 
-        const price = listing.monthly_price
-
-        if (price >= 100000) {
-          return price
-        }
-
-        return usdToCRC(price)
-      })
+  const rentalListings =
+    listings.filter(
+      listing =>
+        listing.transaction_type ===
+          'rent' ||
+        listing.transaction_type ===
+          'lease'
     )
 
-    const rentValuesUSD = rentValuesCRC.map(value =>
-      crcToUSD(value)
+
+  const salePrices =
+  validNumbers(
+    saleListings.map(
+      listing =>
+        resolveListingAmountCrc(
+          listing,
+          usdToCrcRate
+        )
+    )
+  )
+
+
+  const rentValuesCRC =
+  validNumbers(
+    rentalListings.map(
+      listing =>
+        resolveListingAmountCrc(
+          listing,
+          usdToCrcRate
+        )
+    )
+  )
+
+
+  const rentValuesUSD =
+  validNumbers(
+    rentalListings.map(
+      listing =>
+        resolveListingAmountUsd(
+          listing,
+          usdToCrcRate
+        )
+    )
+  )
+
+
+  const propertyAreas =
+    validNumbers(
+      listings.map(
+        listing =>
+          listing.property_area
+      )
     )
 
-  const propertyAreas = validNumbers(
-      listings.map(listing => listing.property_area)
+
+  const constructionAreas =
+    validNumbers(
+      listings.map(
+        listing =>
+          listing.construction_area
+      )
     )
 
-    const constructionAreas = validNumbers(
-      listings.map(listing => listing.construction_area)
-    )
 
-  const pricePerM2Values = saleListings
-      .map(listing => {
-        const price =
-          listing.current_price
+  const pricePerM2Values =
+  saleListings
+    .map(
+      listing => {
+        const priceCRC =
+          resolveListingAmountCrc(
+            listing,
+            usdToCrcRate
+          )
 
         const area =
           listing.property_area
 
-        if (!price || !area) return null
-
-        const priceCRC =
-          listing.currency === 'CRC'
-            ? price
-            : usdToCRC(price)
+        if (
+          priceCRC === null ||
+          area === null ||
+          !Number.isFinite(area) ||
+          area <= 0
+        ) {
+          return null
+        }
 
         return priceCRC / area
-      })
-      .filter((value): value is number => {
-        return typeof value === 'number' && Number.isFinite(value)
-      })
+      }
+    )
+    .filter(
+      (value): value is number =>
+        typeof value === 'number' &&
+        Number.isFinite(value)
+    )
 
-  const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000
 
-  const recentListingCount = listings.filter(listing => {
-    if (!listing.created_at) return false
+  const thirtyDaysAgo =
+    Date.now() -
+      30 *
+      24 *
+      60 *
+      60 *
+      1000
 
-    return new Date(listing.created_at).getTime() >= thirtyDaysAgo
-  }).length
+
+  const recentListingCount =
+    listings.filter(
+      listing => {
+
+        if (
+          !listing.created_at
+        ) {
+          return false
+        }
+
+
+        return (
+          new Date(
+            listing.created_at
+          ).getTime() >=
+          thirtyDaysAgo
+        )
+      }
+    ).length
+
 
   return {
-    totalListings: listings.length,
+    totalListings:
+      listings.length,
 
-    saleListings: saleListings.length,
-    rentalListings: rentalListings.length,
+    saleListings:
+      saleListings.length,
 
-    averageSalePrice: average(salePrices),
-    medianSalePrice: median(salePrices),
+    rentalListings:
+      rentalListings.length,
 
-    averageRentCRC: average(rentValuesCRC),
-    medianRentCRC: median(rentValuesCRC),
+    averageSalePrice:
+      average(
+        salePrices
+      ),
 
-    averageRentUSD: average(rentValuesUSD),
-    medianRentUSD: median(rentValuesUSD),
+    medianSalePrice:
+      median(
+        salePrices
+      ),
 
-    averagePropertyArea: metricWithMinimumSample(propertyAreas),
-    averageConstructionArea: metricWithMinimumSample(constructionAreas),
-    averagePricePerM2: metricWithMinimumSample(pricePerM2Values),
+    averageRentCRC:
+      average(
+        rentValuesCRC
+      ),
 
-    propertyAreaSampleSize: propertyAreas.length,
-    constructionAreaSampleSize: constructionAreas.length,
-    pricePerM2SampleSize: pricePerM2Values.length,
+    medianRentCRC:
+      median(
+        rentValuesCRC
+      ),
 
-    rentCRCSampleSize: rentValuesCRC.length,
-    rentUSDSampleSize: rentValuesUSD.length,
-    salePriceSampleSize: salePrices.length,
+    averageRentUSD:
+      average(
+        rentValuesUSD
+      ),
+
+    medianRentUSD:
+      median(
+        rentValuesUSD
+      ),
+
+    averagePropertyArea:
+      metricWithMinimumSample(
+        propertyAreas
+      ),
+
+    averageConstructionArea:
+      metricWithMinimumSample(
+        constructionAreas
+      ),
+
+    averagePricePerM2:
+      metricWithMinimumSample(
+        pricePerM2Values
+      ),
+
+    propertyAreaSampleSize:
+      propertyAreas.length,
+
+    constructionAreaSampleSize:
+      constructionAreas.length,
+
+    pricePerM2SampleSize:
+      pricePerM2Values.length,
+
+    rentCRCSampleSize:
+      rentValuesCRC.length,
+
+    rentUSDSampleSize:
+      rentValuesUSD.length,
+
+    salePriceSampleSize:
+      salePrices.length,
 
     recentListingCount
   }
@@ -684,13 +808,37 @@ export async function calculateDistribution(
     .sort((a, b) => b.count - a.count)
 }
 
-export async function getMarketStatistics(filters: MarketFilters) {
-  const listings = await getMatchingListings(filters)
+export async function getMarketStatistics(
+  filters:
+    MarketFilters,
+
+  suppliedContext?:
+    MarketAnalyticalContext
+) {
+
+  const context =
+    suppliedContext ??
+    await resolveMarketAnalyticalContext()
 
 
-  const listingIds = listings.map(listing => listing.id)
+  const listings =
+    await getMatchingListings(
+      filters
+    )
 
-  const statistics = calculateStatistics(listings)
+
+  const listingIds =
+    listings.map(
+      listing =>
+        listing.id
+    )
+
+
+  const statistics =
+    calculateStatistics(
+      listings,
+      context
+    )
 
  const distributions = {
             province: calculateListingFieldDistribution(listings, 'province'),
@@ -718,13 +866,16 @@ export async function getMarketStatistics(filters: MarketFilters) {
             legal_status: await calculateDistribution(listingIds, 'legal_status')
           }
 
-  return {
-    filters,
-    statistics,
-    distributions,
-    listings
-  }
-}
+    return {
+        filters,
+        statistics,
+        distributions,
+        listings,
+
+        analyticalContext:
+          context
+      }
+    }
 
 export async function saveMarketStatistics(
   entityType: string,
