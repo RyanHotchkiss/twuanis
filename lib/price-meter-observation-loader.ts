@@ -1,5 +1,5 @@
 import {
-  getMarketStatistics
+  getMatchingListings
 } from '@/lib/statistics-engine'
 
 import {
@@ -262,15 +262,10 @@ export async function loadPriceMeterObservations(
    * observations are constructed.
    */
 
-  const market =
-    await getMarketStatistics(
+  const listings =
+    await getMatchingListings(
       filters
     )
-
-
-  const listings =
-    market.listings ||
-    []
 
 
   /*

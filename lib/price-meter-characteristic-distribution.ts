@@ -3,8 +3,8 @@ import {
   type PriceMeterDistribution
 } from '@/lib/price-meter-distribution'
 
-import {
-  loadPriceMeterOntologyMemberships
+import type {
+  PriceMeterOntologyMembership
 } from '@/lib/price-meter-ontology-membership'
 
 import type {
@@ -47,8 +47,12 @@ export async function buildPriceMeterCharacteristicDistributions<
   T extends PriceMeterTransactionType
 >({
   observations,
-  transactionType
+  transactionType,
+  memberships
 }: {
+  memberships:
+    PriceMeterOntologyMembership[]
+
   observations:
     PriceMeterObservation[]
 
@@ -132,10 +136,14 @@ export async function buildPriceMeterCharacteristicDistributions<
    */
 
 
-  const memberships =
-    await loadPriceMeterOntologyMemberships(
-      listingIds
-    )
+  // Exclude other cohorts before constructing characteristic identities or IDs.
+  const membershipsByListingId = new Map(
+    memberships.map(membership => [membership.listingId, membership])
+  )
+  const cohortMemberships = listingIds.flatMap(listingId => {
+    const membership = membershipsByListingId.get(listingId)
+    return membership ? [membership] : []
+  })
 
 
   /*
@@ -160,7 +168,7 @@ export async function buildPriceMeterCharacteristicDistributions<
 
   for (
     const membership of
-      memberships
+      cohortMemberships
   ) {
 
     for (

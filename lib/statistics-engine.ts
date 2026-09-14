@@ -131,14 +131,69 @@ function normalizeText(value: any) {
     .trim()
 }
 
-async function getDistrictNamesFromSlugs(districtSlugs: string[]) {
-  const { data, error } = await supabase
-    .from('ontology_terms')
-    .select('term_name, term_name_en, slug')
-    .eq('term_type', 'district')
-    .in('slug', districtSlugs)
+// Client request budgets, not assumptions about PostgREST response limits.
+function populationInputChunks<T extends string | number>(values: T[]): T[][] {
+  const chunks: T[][] = []
+  let chunk: T[] = []
+  let encodedLength = 0
+  for (const value of new Set(values)) {
+    const length = encodeURIComponent(JSON.stringify(value)).length + 3
+    if (length > 1500) {
+      throw new Error('Population filter value exceeds the request budget.')
+    }
+    if (chunk.length && (chunk.length >= 25 || encodedLength + length > 1500)) {
+      chunks.push(chunk)
+      chunk = []
+      encodedLength = 0
+    }
+    chunk.push(value)
+    encodedLength += length
+  }
+  if (chunk.length) chunks.push(chunk)
+  return chunks
+}
 
-  if (error) throw error
+async function completePopulationRows<T>(
+  queryPage: (from: number, to: number) => PromiseLike<{
+    data: unknown[] | null
+    error: unknown
+    count: number | null
+  }>
+): Promise<T[]> {
+  const rows: T[] = []
+  let expectedCount: number | null = null
+  do {
+    const { data, error, count } = await queryPage(rows.length, rows.length + 499)
+    if (error) throw error
+    if (count === null || !Number.isSafeInteger(count) || count < 0) {
+      throw new Error('Population completeness requires an exact row count.')
+    }
+    if (expectedCount !== null && count !== expectedCount) {
+      throw new Error('Population evidence changed during pagination.')
+    }
+    expectedCount = count
+    const page = data ?? []
+    if (rows.length + page.length > count || (!page.length && rows.length < count)) {
+      throw new Error('Population pagination returned incomplete evidence.')
+    }
+    rows.push(...page as T[])
+    // Advance by rows actually received; a short page is not completion.
+  } while (rows.length < expectedCount)
+  return rows
+}
+
+async function getDistrictNamesFromSlugs(districtSlugs: string[]) {
+  const data: { term_name: string; term_name_en: string | null; slug: string }[] = []
+  for (const slugs of populationInputChunks(districtSlugs)) {
+    data.push(...await completePopulationRows<(typeof data)[number]>((from, to) =>
+      supabase.from('ontology_terms')
+        .select('term_name, term_name_en, slug', { count: 'exact' })
+        .eq('term_type', 'district')
+        .in('slug', slugs)
+        .order('id', { ascending: true })
+        .range(from, to)
+    ))
+  }
 
   return (data || []).map(term =>
     term.term_name_en || term.term_name || term.slug
@@ -186,13 +241,19 @@ function average(values: number[]) {
                 .map(value => normalize(value))
                 .filter(Boolean)
 
-              const { data, error } = await supabase
-                .from('ontology_terms')
-                .select('id, term_name, term_type, slug')
-                .eq('term_type', termType)
-                .in('slug', values)
-
-              if (error) throw error
+              const data: typeof resolvedTerms = []
+              for (const slugs of populationInputChunks(values.filter(
+                (value): value is string => value !== undefined
+              ))) {
+                data.push(...await completePopulationRows<(typeof resolvedTerms)[number]>((from, to) =>
+                  supabase.from('ontology_terms')
+                    .select('id, term_name, term_type, slug', { count: 'exact' })
+                    .eq('term_type', termType)
+                    .in('slug', slugs)
+                    .order('id', { ascending: true })
+                    .range(from, to)
+                ))
+              }
 
               if (!data || data.length === 0) {
                 throw new Error(
@@ -374,17 +435,24 @@ function average(values: number[]) {
 
                 const terms = await resolveFilterTerms(ontologyFilters)
 
+                const listingQuery = () => {
+                  let query = supabase.from('listings')
+                    .select(listingSelect, { count: 'exact' })
+                    .eq('listing_status', 'active')
+                  if (transaction_type === 'sale') {
+                    query = query.or('transaction_type.ilike.*sale*,transaction_type.ilike.*buy*')
+                  } else if (transaction_type === 'rent') {
+                    query = query.or('transaction_type.ilike.*rent*,transaction_type.ilike.*lease*')
+                  }
+                  return query.order('id', { ascending: true })
+                }
+
                 let listings: Listing[] = []
 
                 if (!terms.length) {
-                  const { data, error } = await supabase
-                    .from('listings')
-                    .select(listingSelect)
-                    .eq('listing_status', 'active')
-
-                  if (error) throw error
-
-                  listings = data || []
+                  listings = await completePopulationRows<Listing>((from, to) =>
+                    listingQuery().range(from, to)
+                  )
                 } else {
                   const termsByType = new Map<string, number[]>()
 
@@ -399,13 +467,17 @@ function average(values: number[]) {
 
                   const termIds = terms.map(term => term.id)
 
-                  const { data: assignedRows, error: assignmentError } =
-                    await supabase
-                      .from('listings_ontology_terms')
-                      .select('listing_id, ontology_term_id')
-                      .in('ontology_term_id', termIds)
-
-                  if (assignmentError) throw assignmentError
+                  const assignedRows: { listing_id: string; ontology_term_id: number }[] = []
+                  for (const ids of populationInputChunks(termIds)) {
+                    assignedRows.push(...await completePopulationRows<(typeof assignedRows)[number]>((from, to) =>
+                      supabase.from('listings_ontology_terms')
+                        .select('listing_id, ontology_term_id', { count: 'exact' })
+                        .in('ontology_term_id', ids)
+                        .order('listing_id', { ascending: true })
+                        .order('ontology_term_id', { ascending: true })
+                        .range(from, to)
+                    ))
+                  }
 
                   const listingsByType = new Map<string, Set<string>>()
 
@@ -439,15 +511,17 @@ function average(values: number[]) {
 
                   if (!matchingListingIds.length) return []
 
-                  const { data, error } = await supabase
-                    .from('listings')
-                    .select(listingSelect)
-                    .in('id', matchingListingIds)
-                    .eq('listing_status', 'active')
+                  for (const ids of populationInputChunks(matchingListingIds)) {
+                    listings.push(...await completePopulationRows<Listing>((from, to) =>
+                      listingQuery().in('id', ids).range(from, to)
+                    ))
+                  }
+                }
 
-                  if (error) throw error
-
-                  listings = data || []
+                // Recombine disjoint chunks into one stable population order.
+                listings.sort((a, b) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0)
+                if (new Set(listings.map(listing => listing.id)).size !== listings.length) {
+                  throw new Error('Population pagination returned duplicate listing IDs.')
                 }
 
                 if (province) {

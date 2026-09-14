@@ -172,14 +172,39 @@ export async function loadPriceMeterOntologyMemberships(
    * -------------------------------------------------------
    */
 
-  const {
-    data,
-    error
-  } = await supabase
-    .from(
-      'listings_ontology_terms'
-    )
-    .select(`
+  // Client request budgets, not assumptions about the server response limit.
+  const maxIdsPerChunk = 25
+  const maxEncodedIdsLength = 1500
+  const pageSize = 500
+  const chunks: string[][] = []
+  let chunk: string[] = []
+  let encodedLength = 0
+
+  for (const listingId of uniqueListingIds) {
+    // Include conservative allowance for IN-list quoting and separators.
+    const length = encodeURIComponent(JSON.stringify(listingId)).length + 3
+    if (length > maxEncodedIdsLength) {
+      throw new Error('PPM2 membership listing ID exceeds the request budget.')
+    }
+    if (chunk.length && (chunk.length >= maxIdsPerChunk ||
+        encodedLength + length > maxEncodedIdsLength)) {
+      chunks.push(chunk)
+      chunk = []
+      encodedLength = 0
+    }
+    chunk.push(listingId)
+    encodedLength += length
+  }
+  if (chunk.length) chunks.push(chunk)
+
+  const data: ListingOntologyAssignmentRow[] = []
+  for (const listingIdChunk of chunks) {
+    let offset = 0
+    let expectedCount: number | null = null
+    do {
+      const { data: page, error, count } = await supabase
+        .from('listings_ontology_terms')
+        .select(`
       listing_id,
       ontology_terms (
         id,
@@ -191,17 +216,29 @@ export async function loadPriceMeterOntologyMemberships(
         slug_en,
         slug_es
       )
-    `)
-    .in(
-      'listing_id',
-      uniqueListingIds
-    )
+    `, { count: 'exact' })
+        .in('listing_id', listingIdChunk)
+        .order('listing_id', { ascending: true })
+        .order('ontology_term_id', { ascending: true })
+        .range(offset, offset + pageSize - 1)
 
-
-  if (
-    error
-  ) {
-    throw error
+      if (error) throw error
+      if (count === null || !Number.isSafeInteger(count) || count < 0) {
+        throw new Error('PPM2 membership completeness requires an exact row count.')
+      }
+      if (expectedCount !== null && count !== expectedCount) {
+        throw new Error('PPM2 membership evidence changed during pagination.')
+      }
+      expectedCount = count
+      const rows = (page ?? []) as ListingOntologyAssignmentRow[]
+      if (offset + rows.length > count || (!rows.length && offset < count)) {
+        throw new Error('PPM2 membership pagination returned incomplete evidence.')
+      }
+      data.push(...rows)
+      // A server may return fewer than pageSize rows. Advance by rows received,
+      // and finish only when the exact total has been acquired.
+      offset += rows.length
+    } while (offset < expectedCount)
   }
 
 

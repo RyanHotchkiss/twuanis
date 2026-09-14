@@ -154,7 +154,9 @@ function mostCommon(values: any[]) {
 
   if (!entries.length) return null
 
-  return entries.sort((a, b) => b[1] - a[1])[0][0]
+  return entries.sort((a, b) =>
+    b[1] - a[1] || (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0)
+  )[0][0]
 }
 
 function applyPriceRange(

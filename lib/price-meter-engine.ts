@@ -25,6 +25,10 @@ import {
 } from '@/lib/price-meter-characteristic-distribution'
 
 import {
+  loadPriceMeterOntologyMemberships
+} from '@/lib/price-meter-ontology-membership'
+
+import {
   createPriceMeterStatistic,
   type PriceMeterStatisticMonetaryIdentity
 } from '@/lib/price-meter-statistic-identity'
@@ -334,6 +338,61 @@ export async function getPriceMeterAnalysis(
           'construction'
       })
 
+    const rentVacantLandCohort =
+      buildPriceMeterAnalyticalCohort({
+        transactionCohort:
+          transactionCohorts.rent,
+
+        propertyBasis:
+          'land_only',
+
+        normalizationBasis:
+          'land'
+      })
+
+
+    const rentImprovedLandCohort =
+      buildPriceMeterAnalyticalCohort({
+        transactionCohort:
+          transactionCohorts.rent,
+
+        propertyBasis:
+          'improved_property',
+
+        normalizationBasis:
+          'land'
+      })
+
+
+    const rentImprovedConstructionCohort =
+      buildPriceMeterAnalyticalCohort({
+        transactionCohort:
+          transactionCohorts.rent,
+
+        propertyBasis:
+          'improved_property',
+
+        normalizationBasis:
+          'construction'
+      })
+
+
+  // Share evidence only; the six analytical cohorts remain independent.
+  const characteristicListingIds = Array.from(new Set([
+    saleVacantLandCohort,
+    saleImprovedLandCohort,
+    saleImprovedConstructionCohort,
+    rentVacantLandCohort,
+    rentImprovedLandCohort,
+    rentImprovedConstructionCohort
+  ].flatMap(cohort => cohort.observations.flatMap(
+    observation => observation.listingId ? [observation.listingId] : []
+  ))))
+
+  const characteristicMemberships = characteristicListingIds.length
+    ? await loadPriceMeterOntologyMemberships(characteristicListingIds)
+    : []
+
     const saleVacantLandDistribution =
       buildPriceMeterDistribution(
         saleVacantLandCohort
@@ -467,6 +526,7 @@ const saleImprovedLandGeographicStatistics =
 
       const saleVacantLandCharacteristics =
         await buildPriceMeterCharacteristicDistributions({
+          memberships: characteristicMemberships,
           observations:
             saleVacantLandCohort.observations,
 
@@ -477,6 +537,7 @@ const saleImprovedLandGeographicStatistics =
 
       const saleImprovedLandCharacteristics =
         await buildPriceMeterCharacteristicDistributions({
+          memberships: characteristicMemberships,
           observations:
             saleImprovedLandCohort.observations,
 
@@ -487,6 +548,7 @@ const saleImprovedLandGeographicStatistics =
 
       const saleImprovedConstructionCharacteristics =
         await buildPriceMeterCharacteristicDistributions({
+          memberships: characteristicMemberships,
           observations:
             saleImprovedConstructionCohort.observations,
 
@@ -551,45 +613,6 @@ const saleImprovedLandGeographicStatistics =
           distribution:
             saleImprovedConstructionDistribution
         })
-
-    const rentVacantLandCohort =
-      buildPriceMeterAnalyticalCohort({
-        transactionCohort:
-          transactionCohorts.rent,
-
-        propertyBasis:
-          'land_only',
-
-        normalizationBasis:
-          'land'
-      })
-
-
-    const rentImprovedLandCohort =
-      buildPriceMeterAnalyticalCohort({
-        transactionCohort:
-          transactionCohorts.rent,
-
-        propertyBasis:
-          'improved_property',
-
-        normalizationBasis:
-          'land'
-      })
-
-
-    const rentImprovedConstructionCohort =
-      buildPriceMeterAnalyticalCohort({
-        transactionCohort:
-          transactionCohorts.rent,
-
-        propertyBasis:
-          'improved_property',
-
-        normalizationBasis:
-          'construction'
-      })
-
 
         /*
      * -------------------------------------------------------
@@ -1003,6 +1026,7 @@ const rentImprovedLandGeographicStatistics =
 
   const rentVacantLandCharacteristics =
     await buildPriceMeterCharacteristicDistributions({
+          memberships: characteristicMemberships,
       observations:
         rentVacantLandCohort.observations,
 
@@ -1013,6 +1037,7 @@ const rentImprovedLandGeographicStatistics =
 
   const rentImprovedLandCharacteristics =
     await buildPriceMeterCharacteristicDistributions({
+          memberships: characteristicMemberships,
       observations:
         rentImprovedLandCohort.observations,
 
@@ -1023,6 +1048,7 @@ const rentImprovedLandGeographicStatistics =
 
   const rentImprovedConstructionCharacteristics =
     await buildPriceMeterCharacteristicDistributions({
+          memberships: characteristicMemberships,
       observations:
         rentImprovedConstructionCohort.observations,
 

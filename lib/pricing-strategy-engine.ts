@@ -338,6 +338,7 @@ export async function getPricingStrategy(
             )
         )
         .filter((listing: any) => listing.formattedPrice)
+        .sort((a: any, b: any) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0)
         .slice(0, 6)
   }
 }

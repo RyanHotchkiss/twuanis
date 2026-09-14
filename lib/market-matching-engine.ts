@@ -219,7 +219,8 @@ export async function getMarketMatches(
           )
       )
       .sort((a: any, b: any) =>
-        b.matchScore - a.matchScore
+        b.matchScore - a.matchScore ||
+        (a.id < b.id ? -1 : a.id > b.id ? 1 : 0)
       )
 
   return {
