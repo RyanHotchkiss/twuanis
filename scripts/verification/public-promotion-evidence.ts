@@ -1,21 +1,6 @@
-import {
-  loadEnvConfig
-} from '@next/env'
-
-import {
-  createClient,
-  type SupabaseClient
-} from '@supabase/supabase-js'
-
-import type {
-  PublicPromotionEvidenceResult
-} from '../../lib/public-promotion-evidence'
-
-
-loadEnvConfig(
-  process.cwd()
-)
-
+import type { SupabaseClient } from '@supabase/supabase-js'
+import type { PublicPromotionEvidenceResult } from '../../lib/public-promotion-evidence'
+import { disposablePublicEvidenceContext } from './public-evidence-disposable-authority'
 
 const TEST_SUITE =
   'public-promotion-evidence-verification'
@@ -81,65 +66,8 @@ const artifacts:
 }
 
 
-function requireEnvironmentVariable(
-  name:
-    string
-): string {
-
-  const value =
-    process.env[
-      name
-    ]
-
-
-  if (
-    !value ||
-    !value.trim()
-  ) {
-
-    throw new Error(
-      `Missing required environment variable: ${name}`
-    )
-  }
-
-
-  return value.trim()
-}
-
-
-function createAdminClient():
-  SupabaseClient {
-
-  return createClient(
-    requireEnvironmentVariable(
-      'NEXT_PUBLIC_SUPABASE_URL'
-    ),
-
-    requireEnvironmentVariable(
-      'SUPABASE_SERVICE_ROLE_KEY'
-    ),
-
-    {
-      auth: {
-        persistSession:
-          false,
-
-        autoRefreshToken:
-          false
-      }
-    }
-  )
-}
-
-
-function requireTestUserId():
-  string {
-
-  return requireEnvironmentVariable(
-    'ACTIVATION_VERIFY_USER_ID'
-  )
-}
-
+function createAdminClient(): SupabaseClient { return disposablePublicEvidenceContext().client }
+function requireTestUserId(): string { return disposablePublicEvidenceContext().userId }
 
 function assertEqual(
   actual:
@@ -1670,7 +1598,7 @@ async function run() {
 }
 
 
-run()
+export const verification = run()
   .catch(
     error => {
 

@@ -1,0 +1,13 @@
+const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict'),r='/Users/cassidydaddy/twuanis',ts=require(r+'/node_modules/typescript');let checks=0;const ok=(v)=>{assert.ok(v);checks++};
+function load(src,state,old=false){const events=[];const client = {
+ from(t) {
+  events.push(['from',t]);
+  return { select(c) {
+   events.push(['select',c]);
+   return { or(f) { events.push(['or',f]); return Promise.resolve(state); } };
+  } };
+ }
+};const m={exports:{}};vm.runInNewContext(ts.transpileModule(src,{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,{module:m,exports:m.exports,console:{log(){},error(){}},require(k){if(k==='server-only')return{};if(k==='@/lib/supabase-admin')return{supabaseAdmin:client};if(k==='@/lib/supabase')return{supabase:old?client:{from(){throw Error('Anonymous acquisition forbidden')}}};throw Error(k)},fetch(){throw Error('Network forbidden')}});return{api:m.exports,events}}
+(async()=>{const source=fs.readFileSync(r+'/lib/graph-engine.ts','utf8'),old=fs.readFileSync(r+'/outputs/CG-S11-C-evidence/c2-r7-original-graph-engine.ts','utf8');const rows=[{source_term_id:2,target_term_id:1,relationship_type:'is_part_of'},{source_term_id:1,target_term_id:3,relationship_type:'related'}];for(const ids of [[],[1],[2,1],[1,1]])for(const state of [{data:rows,error:null},{data:[],error:null},{data:null,error:null},{data:null,error:{message:'denied'}}]){const a=load(source,state),b=load(old,state,true);assert.deepEqual(JSON.parse(JSON.stringify(await a.api.getGraphNeighbors(ids))),JSON.parse(JSON.stringify(await b.api.getGraphNeighbors(ids))));checks++;assert.deepEqual(a.events.filter(e=>e[0]!=='select'),b.events.filter(e=>e[0]!=='select'));checks++;if(ids.length){ok(a.events.find(e=>e[0]==='select')[1]==='source_term_id,target_term_id,relationship_type')}else ok(!a.events.length);ok(a.api.getTermRelationships===a.api.getGraphNeighbors)}
+for(const p of ['app/en/buy/listing/[id]/page.tsx','app/en/rent-lease/listing/[id]/page.tsx','app/es/comprar/anuncio/[id]/page.tsx','app/es/alquilar-arrendar/anuncio/[id]/page.tsx']){const s=fs.readFileSync(r+'/'+p,'utf8');ok(!/^['"]use client['"]/m.test(s));ok(s.includes('await getGraphNeighbors(termIds)'));ok(s.includes('graphRows,')&&s.includes('buildListingSchema'));ok(s.includes('source_term_id')&&s.includes('target_term_id'))}
+ok(source.includes("import 'server-only'"));ok(!source.includes('SERVICE_ROLE_KEY'));console.log(JSON.stringify({offline_checks:checks,network_requests:0,caller_count:4,behavior:'same row qualification/order, empty/null/error behavior; no anonymous fallback; three consumed fields only'}))})().catch(e=>{console.error(e);process.exitCode=1});

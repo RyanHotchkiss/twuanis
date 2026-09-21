@@ -1,0 +1,8 @@
+{
+  "source": "supabase/migrations/004_dormant_canonical_listing_foundation.sql",
+  "sha256": "b028db71b00a1f0af24c773b077ebf75e0f6be08b40889a5fcac4b2b6bcd3604",
+  "start": "2026-09-19T15:43:03.672564+00:00",
+  "end": "2026-09-19T15:43:07.731270+00:00",
+  "exit_code": 0,
+  "commit_output": true
+}

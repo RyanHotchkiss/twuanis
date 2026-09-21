@@ -1,0 +1,8 @@
+{
+  "source": "supabase/migrations/016_customer_measurement_clear.sql",
+  "sha256": "8ef18175572591fa21e807f0722882b42404f5ef5d9e325e0245cd9f140367f9",
+  "start": "2026-09-19T16:07:05.991355+00:00",
+  "end": "2026-09-19T16:07:07.028743+00:00",
+  "exit_code": 0,
+  "commit_output": true
+}

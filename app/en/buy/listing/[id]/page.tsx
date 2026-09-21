@@ -1,3 +1,4 @@
+import PriceMeterPropertyPositionListing from '@/app/components/PriceMeterPropertyPositionListing'
 import Link from 'next/link'
 
 import { supabase } from '@/lib/supabase'
@@ -782,6 +783,8 @@ const schema = buildListingSchema({
               value={`${valuation.summary.confidenceScore} · ${valuation.summary.confidenceLabel}`}
             />
           </div>
+
+          <PriceMeterPropertyPositionListing listingId={listing.id} lang="en" />
 
           <PriceMeterComparableListing
               listingId={listing.id}

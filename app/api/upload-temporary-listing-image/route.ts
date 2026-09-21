@@ -292,13 +292,7 @@ export async function POST(
         )
 
     if (updateError) {
-      await supabaseAdmin
-        .storage
-        .from(BUCKET_NAME)
-        .remove([
-          storagePath
-        ])
-
+      // An uncertain token update may have attached this source; retain it for retry.
       console.error(
         'TEMPORARY IMAGE TOKEN UPDATE ERROR:',
         updateError

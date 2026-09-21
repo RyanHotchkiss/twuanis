@@ -1,0 +1,23 @@
+[
+  {
+    "host": "twuanis.com",
+    "status": 200,
+    "final_host": "vercel.com",
+    "vercel_authentication_detected": true,
+    "checked_at": "2026-09-19T17:04:12.340932+00:00"
+  },
+  {
+    "host": "www.twuanis.com",
+    "status": 200,
+    "final_host": "vercel.com",
+    "vercel_authentication_detected": true,
+    "checked_at": "2026-09-19T17:04:13.957464+00:00"
+  },
+  {
+    "host": "twuanis-0.vercel.app",
+    "status": 200,
+    "final_host": "vercel.com",
+    "vercel_authentication_detected": true,
+    "checked_at": "2026-09-19T17:04:15.640905+00:00"
+  }
+]

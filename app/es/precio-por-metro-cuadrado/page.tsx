@@ -1,16 +1,7 @@
-import MarketFilters from '@/app/components/MarketFilters'
-import PriceMeterResults from './ResultadosPrecioMetro'
+import PriceMeterApplyPanel from '@/app/components/PriceMeterApplyPanel'
 import { getExplorerOptions } from '@/lib/explorer-options-engine'
-import { getPriceMeterAnalysis } from '@/lib/price-meter-engine'
-import AnalysisActions from '@/app/components/AnalysisActions'
 import PriceMeterComparisonFilters from '@/app/components/price-meter-comparison/PriceMeterComparisonFilters'
-import {
-  parsePriceMeterComparisonRequest
-} from '@/lib/price-meter-comparison-request-parser'
-import {
-  getPriceMeterComparisonAnalysis
-} from '@/lib/price-meter-comparison-engine'
-import PriceMeterComparisonResults from './ResultadosComparacionPrecioMetro'
+import PriceMeterComparisonApply from '@/app/components/price-meter-comparison/PriceMeterComparisonApply'
 import Link from 'next/link'
 
 
@@ -64,55 +55,6 @@ type PageProps = {
   }>
 }
 
-function hasCompleteComparisonRequest(
-  filters: Record<
-    string,
-    string | undefined
-  >
-) {
-  const hasSharedIdentity =
-    Boolean(
-      filters.transaction_type &&
-      filters.property_basis &&
-      filters.normalization_basis &&
-      filters.reference_cohort
-    )
-
-  const hasCohortA =
-    Boolean(
-      filters.a_province &&
-      filters.a_property_type &&
-      filters.a_characteristic_1_type &&
-      filters.a_characteristic_1 &&
-      filters.a_characteristic_2_type &&
-      filters.a_characteristic_2 &&
-      (
-        filters.a_property_area ||
-        filters.a_construction_area
-      )
-    )
-
-  const hasCohortB =
-    Boolean(
-      filters.b_province &&
-      filters.b_property_type &&
-      filters.b_characteristic_1_type &&
-      filters.b_characteristic_1 &&
-      filters.b_characteristic_2_type &&
-      filters.b_characteristic_2 &&
-      (
-        filters.b_property_area ||
-        filters.b_construction_area
-      )
-    )
-
-  return (
-    hasSharedIdentity &&
-    hasCohortA &&
-    hasCohortB
-  )
-}
-
 export default async function PrecioPorMetroCuadradoPage({
   searchParams
 }: PageProps) {
@@ -121,44 +63,6 @@ export default async function PrecioPorMetroCuadradoPage({
 
   const isComparisonMode =
     filters.mode === 'comparison'
-
-  const comparisonRequestComplete =
-    isComparisonMode &&
-    hasCompleteComparisonRequest(
-      filters
-    )
-
-  const comparisonRequest =
-    comparisonRequestComplete
-      ? parsePriceMeterComparisonRequest({
-          params:
-            filters,
-          options
-        })
-      : null
-
-  const comparisonAnalysis =
-    comparisonRequest
-      ? await getPriceMeterComparisonAnalysis({
-          request:
-            comparisonRequest,
-          language:
-            'es'
-        })
-      : null
-
-  const hasTransactionType =
-    filters.transaction_type === 'sale' ||
-    filters.transaction_type === 'rent'
-
-  const analysis =
-    !isComparisonMode &&
-    hasTransactionType
-      ? await getPriceMeterAnalysis(
-          filters,
-          'es'
-        )
-      : null
 
   return (
     <main
@@ -231,37 +135,10 @@ export default async function PrecioPorMetroCuadradoPage({
           language="es"
         />
       ) : (
-        <MarketFilters
-          workspace="price-meter"
-          options={options}
-          filters={filters}
-          basePath="/es/precio-por-metro-cuadrado"
-          language="es"
-        />
+      <PriceMeterApplyPanel options={options} filters={filters} language="es" source="standalone" />
       )}
 
-      {analysis && (
-        <>
-          <AnalysisActions
-            engineType="price-meter"
-            language="es"
-            filters={filters}
-            result={analysis}
-            defaultName="Precio por Metro Cuadrado"
-          />
-
-          <PriceMeterResults
-            filters={filters}
-            analysis={analysis}
-          />
-        </>
-      )}
-
-      {comparisonAnalysis && (
-        <PriceMeterComparisonResults
-          analysis={comparisonAnalysis}
-        />
-      )}
+      {isComparisonMode && <PriceMeterComparisonApply filters={filters} language="es" />}
     </main>
   )
 }

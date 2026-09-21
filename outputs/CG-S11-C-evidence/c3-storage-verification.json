@@ -1,0 +1,11 @@
+{
+  "manifest": 300,
+  "deleted": 300,
+  "alreadyAbsent": 0,
+  "replacements": 0,
+  "nonmanifestBefore": 0,
+  "failed": 0,
+  "bucketAndPoliciesUnchanged": true,
+  "allTerminalIdentitiesMatchManifest": true,
+  "stopPoint4": "ACCEPTED"
+}

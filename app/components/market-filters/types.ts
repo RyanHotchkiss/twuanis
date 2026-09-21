@@ -10,8 +10,9 @@ export type Filters = Record<
 export type FilterOption =
   | string
   | {
-      id?: number
-      parent_id?: number | null
+      id?: string | number
+      official_code?: string | null
+      parent_id?: string | number | null
       slug?: string
       slug_en?: string | null
       slug_es?: string | null

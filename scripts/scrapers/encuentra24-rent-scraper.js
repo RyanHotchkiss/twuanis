@@ -6,6 +6,7 @@ const fs = require('fs')
 const path = require('path')
 const os = require('os')
 const crypto = require('crypto')
+const { extractSourcePropertyType } = require('./encuentra24-property-type')
 
 const { isObservationValid } = require('./quality/isObservationValid')
 const SOURCE_NAME = 'encuentra24'
@@ -866,7 +867,12 @@ async function scrapeListing({
       baseUrl
     )
 
+// Capture the actual source-page observation, never a later CSV upload.
+  const observation_id = crypto.randomUUID()
+  const observed_at = new Date().toISOString()
+
 const flightAd = extractFlightAd(html)
+const sourcePropertyType = extractSourcePropertyType(html, createSourceListingId(listingUrl))
 
   const $ =
     cheerio.load(html)
@@ -1114,6 +1120,8 @@ const rawPropertyArea =
 
 
   return {
+  observation_id,
+  observed_at,
   source_name: SOURCE_NAME,
   source_listing_id: createSourceListingId(listingUrl),
   source_url: listingUrl,
@@ -1128,7 +1136,8 @@ const rawPropertyArea =
   title,
   description: clean(flightAd?.description || description),
 
-  raw_property_type: title,
+  property_type: sourcePropertyType,
+  raw_property_type: sourcePropertyType,
 
   raw_bedrooms:
     validRoomCount(flightAd?.rooms) ||
@@ -1196,6 +1205,8 @@ const rawPropertyArea =
 
 function getCsvHeaders() {
   return [
+    'observation_id',
+    'observed_at',
     'source_name',
     'source_listing_id',
     'source_url',
@@ -1207,6 +1218,7 @@ function getCsvHeaders() {
     'raw_breadcrumbs',
     'title',
     'description',
+    'property_type',
     'raw_property_type',
     'raw_bedrooms',
     'raw_bathrooms',

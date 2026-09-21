@@ -1,0 +1,75 @@
+{
+  "saved_rls": true,
+  "saved_policies": [
+    {
+      "cmd": "INSERT",
+      "qual": null,
+      "roles": [
+        "public"
+      ],
+      "tablename": "saved_analyses",
+      "permissive": "PERMISSIVE",
+      "policyname": "Users can create saved analyses",
+      "schemaname": "public",
+      "with_check": "(auth.uid() = user_id)"
+    },
+    {
+      "cmd": "DELETE",
+      "qual": "(auth.uid() = user_id)",
+      "roles": [
+        "public"
+      ],
+      "tablename": "saved_analyses",
+      "permissive": "PERMISSIVE",
+      "policyname": "Users can delete their saved analyses",
+      "schemaname": "public",
+      "with_check": null
+    },
+    {
+      "cmd": "UPDATE",
+      "qual": "(auth.uid() = user_id)",
+      "roles": [
+        "public"
+      ],
+      "tablename": "saved_analyses",
+      "permissive": "PERMISSIVE",
+      "policyname": "Users can update their saved analyses",
+      "schemaname": "public",
+      "with_check": "(auth.uid() = user_id)"
+    },
+    {
+      "cmd": "SELECT",
+      "qual": "(auth.uid() = user_id)",
+      "roles": [
+        "public"
+      ],
+      "tablename": "saved_analyses",
+      "permissive": "PERMISSIVE",
+      "policyname": "Users can view their saved analyses",
+      "schemaname": "public",
+      "with_check": null
+    },
+    {
+      "cmd": "ALL",
+      "qual": "(user_id = auth.uid())",
+      "roles": [
+        "authenticated"
+      ],
+      "tablename": "saved_analyses",
+      "permissive": "PERMISSIVE",
+      "policyname": "Users manage their saved analyses",
+      "schemaname": "public",
+      "with_check": "(user_id = auth.uid())"
+    }
+  ],
+  "signup_triggers": [
+    {
+      "name": "assign_default_market_package_on_signup",
+      "enabled": "O",
+      "function": "CREATE OR REPLACE FUNCTION public.assign_default_market_package()\n RETURNS trigger\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'pg_catalog', 'pg_temp'\nAS $function$\ndeclare\n    default_package_id uuid;\nbegin\n    PERFORM twuanis_canonical_private.ensure_publisher_account(new.id);\n    select id\n    into default_package_id\n    from public.packages\n    where slug = 'market-explorer'\n      and is_active = true\n    limit 1;\n\n    if default_package_id is null then\n        raise exception\n            'Default Market Explorer package was not found.';\n    end if;\n\n    insert into public.user_subscriptions (\n        user_id,\n        package_id,\n        status,\n        billing_cycle,\n        started_at,\n        current_period_start\n    )\n    values (\n        new.id,\n        default_package_id,\n        'active',\n        'free',\n        now(),\n        now()\n    )\n    on conflict do nothing;\n\n    return new;\nend;\n$function$\n",
+      "definition": "CREATE TRIGGER assign_default_market_package_on_signup AFTER INSERT ON auth.users FOR EACH ROW EXECUTE FUNCTION assign_default_market_package()"
+    }
+  ],
+  "anon_saved_select": false,
+  "auth_saved_select": true
+}

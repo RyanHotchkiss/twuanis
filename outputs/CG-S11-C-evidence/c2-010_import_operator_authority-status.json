@@ -1,0 +1,8 @@
+{
+  "source": "supabase/migrations/010_import_operator_authority.sql",
+  "sha256": "a083fd989c6d9848e7beb8ef10a0349b749164f7903f43f0afbb55899591e09e",
+  "start": "2026-09-19T16:05:33.241515+00:00",
+  "end": "2026-09-19T16:05:35.097490+00:00",
+  "exit_code": 0,
+  "commit_output": true
+}

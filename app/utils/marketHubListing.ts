@@ -27,6 +27,8 @@ type SupportedLanguage =
 export type DatabaseMarketHubListing = {
   id: string
   title: string | null
+  canonical_revision?: string
+  canonical_domain_version?: number | null
   listing_status: string | null
   transaction_type: string | null
   images: unknown
@@ -199,6 +201,9 @@ export function mapDatabaseListingToMarketHubListing({
           : 'Untitled Listing'
       ),
 
+    canonicalDomainVersion: listing.canonical_domain_version,
+    canonicalRevision: listing.canonical_revision,
+
     status:
       normalizeStatus(
         listing.listing_status
@@ -305,6 +310,8 @@ export async function loadCanonicalMarketHubListing({
         id,
         title,
         listing_status,
+        canonical_domain_version,
+        canonical_revision::text,
         transaction_type,
         images,
         province,

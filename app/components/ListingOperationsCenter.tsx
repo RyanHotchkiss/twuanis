@@ -56,6 +56,8 @@ export type {
 export type ManagedListing = {
   id: string
   title: string
+  canonicalRevision?: string
+  canonicalDomainVersion?: number | null
   status: ListingStatus
 
   transactionType?:
@@ -624,49 +626,54 @@ export default function ListingOperationsCenter({
           )
 
         const canPublish =
+          currentListing.canonicalDomainVersion === 1 &&
           lifecycle.availableActions.includes(
             'publish'
           )
 
         const canEdit =
+          currentListing.canonicalDomainVersion === 1 &&
           lifecycle.availableActions.includes(
             'edit'
           )
 
         const canDuplicate =
+          currentListing.canonicalDomainVersion === 1 &&
           lifecycle.availableActions.includes(
             'duplicate'
           )
 
         const canRenew =
+          currentListing.canonicalDomainVersion === 1 &&
           lifecycle.availableActions.includes(
             'renew'
           )
 
         const canUnpublish =
+          currentListing.canonicalDomainVersion === 1 &&
           lifecycle.availableActions.includes(
             'unpublish'
           )
 
         const canArchive =
+          currentListing.canonicalDomainVersion === 1 &&
           lifecycle.availableActions.includes(
             'archive'
           )
 
         const canRestore =
+          currentListing.canonicalDomainVersion === 1 &&
           lifecycle.availableActions.includes(
             'restore'
           )
 
         const canRemove =
+          currentListing.canonicalDomainVersion === 1 &&
           lifecycle.availableActions.includes(
             'soft-delete'
           )
         
-        const canPermanentDelete =
-          lifecycle.availableActions.includes(
-            'permanent-delete'
-          )
+        const canPermanentDelete = false
 
         const labels =
 
@@ -1221,7 +1228,7 @@ export default function ListingOperationsCenter({
     const editHref =
       language === 'es'
         ? isRental
-          ? `/es/alquilar-arrendar/editar/${currentListing.id}`
+          ? `/es/publicar-alquiler-arrendamiento/editar/${currentListing.id}`
           : `/es/vender/editar/${currentListing.id}`
         : isRental
           ? `/en/rent-out-lease-out/edit/${currentListing.id}`

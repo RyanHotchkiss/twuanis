@@ -17,6 +17,7 @@ Trash2
 
 import {
 useEffect,
+useRef,
 useState
 } from 'react'
 
@@ -65,6 +66,8 @@ type ListingsWorkspaceView =
 export type MarketHubListing = {
 id: string
 title: string
+canonicalRevision?: string
+  canonicalDomainVersion?: number | null
 status: ListingStatus
 
 transactionType?:
@@ -128,6 +131,8 @@ type RenewListingResponse = {
 }
 
 type PermanentDeleteListingResponse = {
+  storageCleanupPending?: boolean
+  warning?: string
 success?: boolean
 error?: string
 
@@ -462,6 +467,20 @@ function openOperationsCenter(
   )
 }
 
+// Same revision/action retains operation identity across retries in this workspace.
+const publicationAttempts = useRef(new Map<string, string>())
+function publicationCommand(listing: ManagedListing, event: 'publish' | 'renew') {
+  if (listing.canonicalDomainVersion !== 1) return { listingId: listing.id }
+  if (!listing.canonicalRevision) throw new Error('Refresh this listing before continuing.')
+  const key = `${listing.id}:${listing.canonicalRevision}:${event}`
+  let requestId = publicationAttempts.current.get(key)
+  if (!requestId) {
+    requestId = crypto.randomUUID()
+    publicationAttempts.current.set(key, requestId)
+  }
+  return { listingId: listing.id, expectedRevision: listing.canonicalRevision, requestId }
+}
+
 async function handlePublish(
   listing: ManagedListing
 ): Promise<void> {
@@ -505,10 +524,7 @@ async function handlePublish(
           },
 
           body:
-            JSON.stringify({
-              listingId:
-                listing.id
-            })
+            JSON.stringify(publicationCommand(listing, 'publish'))
         }
       )
 
@@ -873,6 +889,12 @@ language === 'es'
 )
 }
 
+if (result.storageCleanupPending) {
+setManagementError(language === 'es'
+? 'La publicación fue eliminada, pero la limpieza de imágenes está incompleta. Se requiere limpieza administrativa.'
+: 'The listing was deleted, but image cleanup is incomplete. Administrative cleanup is required.')
+}
+
 setCurrentListings(
 current =>
 removeListing(
@@ -940,6 +962,13 @@ async function handleDuplicate(
   'drafts'
 )
 
+    if (duplicate.mediaStatus === 'incomplete') {
+      setManagementError(language === 'es'
+        ? `Se creó el borrador ${duplicate.id}, pero sus imágenes están incompletas. Vuelve a pulsar Duplicar en la publicación original para completar este mismo borrador.`
+        : `Draft ${duplicate.id} was created, but its images are incomplete. Click Duplicate on the original listing again to finish this same draft.`)
+      return
+    }
+
     setOperationsCenterOpen(
       false
     )
@@ -1004,10 +1033,7 @@ async function handleRenew(
             },
 
             body:
-              JSON.stringify({
-                listingId:
-                  listing.id
-              })
+              JSON.stringify(publicationCommand(listing, 'renew'))
           }
         )
 

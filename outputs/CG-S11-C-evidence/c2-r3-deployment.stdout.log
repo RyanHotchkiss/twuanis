@@ -1,0 +1,19 @@
+{
+  "id": "dpl_Aw3ZJPye4Ls5BQz2f79KAXsdpDgK",
+  "url": "https://twuanis-0-6wau7tfa7-ryans-projects-71456f46.vercel.app",
+  "inspectorUrl": "https://vercel.com/ryans-projects-71456f46/twuanis-0/Aw3ZJPye4Ls5BQz2f79KAXsdpDgK",
+  "readyState": "ERROR",
+  "target": "production",
+  "deploymentApiUrl": "https://api.vercel.com/v13/deployments/dpl_Aw3ZJPye4Ls5BQz2f79KAXsdpDgK",
+  "buildMachine": {
+    "cores": 2,
+    "memory": 8192,
+    "machine": "basic",
+    "selectionType": "fixed",
+    "selectionSource": "plan-default"
+  },
+  "error": {
+    "name": "BUILD_ERROR",
+    "message": "Command \"npm run build\" exited with 1"
+  }
+}

@@ -1,0 +1,172 @@
+{
+  "acl": "{postgres=arwdDxtm/postgres,anon=rDxtm/postgres,authenticated=rDxtm/postgres,service_role=Dxtm/postgres}",
+  "oid": "18663",
+  "data": {
+    "count": 4690,
+    "digest": "754aaff90894c872525e43b98ae244bd"
+  },
+  "kind": "m",
+  "owner": "postgres",
+  "columns": [
+    {
+      "acl": null,
+      "name": "source_term_id"
+    },
+    {
+      "acl": null,
+      "name": "target_term_id"
+    },
+    {
+      "acl": null,
+      "name": "relationship_type"
+    },
+    {
+      "acl": null,
+      "name": "source_name"
+    },
+    {
+      "acl": null,
+      "name": "source_type"
+    },
+    {
+      "acl": null,
+      "name": "source_slug"
+    },
+    {
+      "acl": null,
+      "name": "target_name"
+    },
+    {
+      "acl": null,
+      "name": "target_type"
+    },
+    {
+      "acl": null,
+      "name": "target_slug"
+    }
+  ],
+  "effective": [
+    {
+      "role": "anon",
+      "allowed": true,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "anon",
+      "allowed": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "anon",
+      "allowed": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "anon",
+      "allowed": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "anon",
+      "allowed": true,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "anon",
+      "allowed": true,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "anon",
+      "allowed": true,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "anon",
+      "allowed": true,
+      "privilege": "MAINTAIN"
+    },
+    {
+      "role": "authenticated",
+      "allowed": true,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "authenticated",
+      "allowed": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "authenticated",
+      "allowed": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "authenticated",
+      "allowed": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "authenticated",
+      "allowed": true,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "authenticated",
+      "allowed": true,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "authenticated",
+      "allowed": true,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "authenticated",
+      "allowed": true,
+      "privilege": "MAINTAIN"
+    },
+    {
+      "role": "service_role",
+      "allowed": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "service_role",
+      "allowed": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "service_role",
+      "allowed": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "service_role",
+      "allowed": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "service_role",
+      "allowed": true,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "service_role",
+      "allowed": true,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "service_role",
+      "allowed": true,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "service_role",
+      "allowed": true,
+      "privilege": "MAINTAIN"
+    }
+  ],
+  "definition": " SELECT r.source_term_id,\n    r.target_term_id,\n    r.relationship_type,\n    source.term_name AS source_name,\n    source.term_type AS source_type,\n    source.slug AS source_slug,\n    target.term_name AS target_name,\n    target.term_type AS target_type,\n    target.slug AS target_slug\n   FROM ontology_relationships r\n     JOIN ontology_terms source ON source.id = r.source_term_id\n     JOIN ontology_terms target ON target.id = r.target_term_id;",
+  "refresh_functions": []
+}

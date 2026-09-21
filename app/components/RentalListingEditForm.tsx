@@ -2,7 +2,8 @@
 
 import {
   FormEvent,
-  useState
+  useState,
+  useRef
 } from 'react'
 
 import {
@@ -12,6 +13,8 @@ import {
 import {
   supabase
 } from '@/lib/supabase'
+
+import { submitCanonicalCustomerEdit } from '@/app/utils/canonicalCustomerEdit'
 
 import {
   updateListing
@@ -420,6 +423,8 @@ export default function RentalListingEditForm({
           listing.images
         )
     })
+  const initialPropertyData = useRef(propertyData)
+  const [measurementClears, setMeasurementClears] = useState<Record<string, boolean>>({})
       const [showLocationOptions, setShowLocationOptions] =
     useState(true)
 
@@ -487,11 +492,16 @@ export default function RentalListingEditForm({
     field: string,
     value: unknown
   ) {
+    if (field === 'property_area' || field === 'construction_area') {
+      setMeasurementClears(previous => ({ ...previous, [field]: false }))
+    }
     setPropertyData(previous => ({
       ...previous,
       [field]: value
     }))
   }
+
+  const [pendingImageCleanup, setPendingImageCleanup] = useState<string[]>([])
 
   async function getAccessToken() {
       const {
@@ -502,7 +512,7 @@ export default function RentalListingEditForm({
     }
 
     async function deleteImage(
-    imageValue: string
+    imageValue: string, operationId?: string
   ) {
     const token =
       await getAccessToken()
@@ -525,7 +535,7 @@ export default function RentalListingEditForm({
               `Bearer ${token}`
           },
 
-          body: JSON.stringify({
+          body: JSON.stringify(operationId ? { operationId } : {
             listingId: listing.id,
             imageValue
           })
@@ -539,6 +549,11 @@ export default function RentalListingEditForm({
       alert(result.error)
       return
     }
+
+    setPendingImageCleanup(previous => {
+      const remaining = previous.filter(id => id !== result.operationId)
+      return result.storageCleanupPending ? [...remaining, result.operationId] : remaining
+    })
 
     setField(
         'images',
@@ -678,6 +693,9 @@ export default function RentalListingEditForm({
     setErrorMessage('')
 
     try {
+      if (listing.canonical_domain_version === 1) {
+        await submitCanonicalCustomerEdit(supabase, listing, initialPropertyData.current, propertyData, measurementClears)
+      } else {
       await updateListing({
         supabase,
         listingId: listing.id,
@@ -764,15 +782,10 @@ export default function RentalListingEditForm({
             propertyData.title.trim(),
 
           description:
-            propertyData.description.trim(),
-
-          images:
-            propertyData.images.map(
-              image =>
-                image.storedValue
-            )
+            propertyData.description.trim()
         }
       })
+      }
 
       router.push(
         language === 'es'
@@ -1330,8 +1343,8 @@ export default function RentalListingEditForm({
                         ...prev,
                         accessibility: value,
                         distance_to_paved_road_range:
-                          value ===
-                          'Unpaved Road to Property'
+                          (listing.canonical_domain_version === 1 || value ===
+                          'Unpaved Road to Property')
                             ? prev.distance_to_paved_road_range
                             : ''
                       }))
@@ -1406,6 +1419,29 @@ export default function RentalListingEditForm({
                 }
               />
 
+              {listing.canonical_domain_version === 1 && (
+                <section style={textSection}>
+                  {(['property_area', 'construction_area'] as const).map(dimension => (
+                    <div key={dimension}>
+                      <span>{dimension === 'property_area'
+                        ? (language === 'es' ? 'Área del terreno' : 'Property area')
+                        : (language === 'es' ? 'Área de construcción' : 'Construction area')}</span>{' '}
+                      <button type="button" onClick={() => {
+                        const clear = !measurementClears[dimension]
+                        setMeasurementClears(previous => ({ ...previous, [dimension]: clear }))
+                        setPropertyData(previous => ({ ...previous, [dimension]: clear ? null : initialPropertyData.current[dimension] }))
+                      }}>
+                        {measurementClears[dimension]
+                          ? (language === 'es' ? 'Deshacer eliminación' : 'Undo clear')
+                          : (language === 'es' ? 'Eliminar medida' : 'Clear measurement')}
+                      </button>
+                      {measurementClears[dimension] && <p>{language === 'es'
+                        ? 'Se eliminará esta medida y su clasificación actual al guardar.'
+                        : 'Saving will remove this measurement and its current classification.'}</p>}
+                    </div>
+                  ))}
+                </section>
+              )}
               <section style={textSection}>
                 <label style={fieldLabel}>
                   {labels.currency}
@@ -1584,6 +1620,14 @@ export default function RentalListingEditForm({
                 </section>
               )}
 
+              {pendingImageCleanup.map(operationId => (
+                <div key={operationId} role="status">
+                  <p>{language === 'es' ? 'La imagen permanece retirada. La limpieza del almacenamiento está pendiente.' : 'The image remains detached. Storage cleanup is pending.'}</p>
+                  <button type="button" onClick={() => deleteImage('', operationId)}>
+                    {language === 'es' ? 'Reintentar limpieza' : 'Retry cleanup'}
+                  </button>
+                </div>
+              ))}
               {errorMessage && (
                 <div style={errorBox}>
                   {errorMessage}

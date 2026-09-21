@@ -1,3 +1,6 @@
+import 'server-only'
+import { consumePriceMeterApplyPermit, type PriceMeterApplyPermit } from '@/lib/price-meter-apply-permit'
+
 import { getMarketStatistics } from '@/lib/statistics-engine'
 
 import type {
@@ -57,9 +60,6 @@ import {
   buildPriceMeterGeographicConclusions
 } from '@/lib/price-meter-geographic-conclusions'
 
-import {
-  getPriceMeterConfidence
-} from '@/lib/price-meter-confidence'
 
 import {
   buildPriceMeterSizeRelationshipPopulation
@@ -268,8 +268,10 @@ function resolveStatisticMonetaryIdentity(
 
 export async function getPriceMeterAnalysis(
   filters: MarketFilters,
-  language: PriceMeterLanguage = 'en'
+  language: PriceMeterLanguage = 'en',
+  applyPermit?: PriceMeterApplyPermit
 ) {
+  consumePriceMeterApplyPermit(applyPermit, filters, language)
       const {
     analyticalDate,
     observations,
@@ -756,20 +758,8 @@ const saleImprovedLandGeographicStatistics =
         analyticalIdentities
       })
 
-      const saleConstructionLandConfidence =
-        getPriceMeterConfidence(
-          saleConstructionLandAnalysis
-            .representedObservationCount,
-          language
-        )
 
 
-            const rentConstructionLandConfidence =
-        getPriceMeterConfidence(
-          rentConstructionLandAnalysis
-            .representedObservationCount,
-          language
-        )
 
 
       const saleConstructionLandMonetaryIdentity =
@@ -832,25 +822,10 @@ const saleImprovedLandGeographicStatistics =
         observation.pricePerM2
     )
 
-  const saleVacantLandConfidenceBasedOnNumberOfProperties =
-    getPriceMeterConfidence(
-      saleVacantLandCohort.observations.length,
-      language
-    )
 
 
-  const saleImprovedLandConfidenceBasedOnNumberOfProperties =
-    getPriceMeterConfidence(
-      saleImprovedLandCohort.observations.length,
-      language
-    )
 
 
-  const saleImprovedConstructionConfidenceBasedOnNumberOfProperties =
-    getPriceMeterConfidence(
-      saleImprovedConstructionCohort.observations.length,
-      language
-    )
 
   const rentVacantLandPrices =
     rentVacantLandObservations.map(
@@ -889,25 +864,10 @@ const saleImprovedLandGeographicStatistics =
       rentImprovedConstructionCohort
     )
 
-  const rentVacantLandConfidenceBasedOnNumberOfProperties =
-    getPriceMeterConfidence(
-      rentVacantLandCohort.observations.length,
-      language
-    )
 
 
-  const rentImprovedLandConfidenceBasedOnNumberOfProperties =
-    getPriceMeterConfidence(
-      rentImprovedLandCohort.observations.length,
-      language
-    )
 
 
-  const rentImprovedConstructionConfidenceBasedOnNumberOfProperties =
-    getPriceMeterConfidence(
-      rentImprovedConstructionCohort.observations.length,
-      language
-    )
 
 
   const rentVacantLandGeography =
@@ -1313,18 +1273,8 @@ const rentImprovedLandGeographicStatistics =
   const sampleSize =
     sampleListingIds.size
 
-  const landConfidence =
-    getPriceMeterConfidence(
-      selectedLandObservations.length,
-      language
-    )
 
 
-  const constructionConfidence =
-    getPriceMeterConfidence(
-      selectedConstructionObservations.length,
-      language
-    )
 
   const landMonetaryIdentity =
   resolveStatisticMonetaryIdentity(
@@ -1364,10 +1314,7 @@ const constructionMonetaryIdentity =
           landMonetaryIdentity,
 
         sampleSize:
-          selectedLandObservations.length,
-
-        confidence:
-          landConfidence
+          selectedLandObservations.length
       }),
 
     median:
@@ -1394,10 +1341,7 @@ const constructionMonetaryIdentity =
           landMonetaryIdentity,
 
         sampleSize:
-          selectedLandObservations.length,
-
-        confidence:
-          landConfidence
+          selectedLandObservations.length
       }),
 
     lowest:
@@ -1424,10 +1368,7 @@ const constructionMonetaryIdentity =
           landMonetaryIdentity,
 
         sampleSize:
-          selectedLandObservations.length,
-
-        confidence:
-          landConfidence
+          selectedLandObservations.length
       }),
 
     highest:
@@ -1454,10 +1395,7 @@ const constructionMonetaryIdentity =
           landMonetaryIdentity,
 
         sampleSize:
-          selectedLandObservations.length,
-
-        confidence:
-          landConfidence
+          selectedLandObservations.length
       })
   }
 
@@ -1487,10 +1425,7 @@ const constructionMonetaryIdentity =
           constructionMonetaryIdentity,
 
         sampleSize:
-          selectedConstructionObservations.length,
-
-        confidence:
-          constructionConfidence
+          selectedConstructionObservations.length
       }),
 
     median:
@@ -1517,10 +1452,7 @@ const constructionMonetaryIdentity =
           constructionMonetaryIdentity,
 
         sampleSize:
-          selectedConstructionObservations.length,
-
-        confidence:
-          constructionConfidence
+          selectedConstructionObservations.length
       }),
 
     lowest:
@@ -1547,10 +1479,7 @@ const constructionMonetaryIdentity =
           constructionMonetaryIdentity,
 
         sampleSize:
-          selectedConstructionObservations.length,
-
-        confidence:
-          constructionConfidence
+          selectedConstructionObservations.length
       }),
 
     highest:
@@ -1577,10 +1506,7 @@ const constructionMonetaryIdentity =
           constructionMonetaryIdentity,
 
         sampleSize:
-          selectedConstructionObservations.length,
-
-        confidence:
-          constructionConfidence
+          selectedConstructionObservations.length
       })
   }
 
@@ -1594,8 +1520,6 @@ const constructionMonetaryIdentity =
         analysis:
           saleConstructionLandAnalysis,
 
-        confidence:
-          saleConstructionLandConfidence,
 
         identity: {
           transactionType:
@@ -1718,31 +1642,6 @@ const constructionMonetaryIdentity =
           saleImprovedConstructionPropertyPricesVsMedian
       },
 
-      confidenceBasedOnNumberOfProperties: {
-        vacantLandLandNormalized: {
-          numberOfProperties:
-            saleVacantLandCohort.observations.length,
-
-          confidence:
-            saleVacantLandConfidenceBasedOnNumberOfProperties
-        },
-
-        improvedLandNormalized: {
-          numberOfProperties:
-            saleImprovedLandCohort.observations.length,
-
-          confidence:
-            saleImprovedLandConfidenceBasedOnNumberOfProperties
-        },
-
-          improvedConstructionNormalized: {
-          numberOfProperties:
-            saleImprovedConstructionCohort.observations.length,
-
-          confidence:
-            saleImprovedConstructionConfidenceBasedOnNumberOfProperties
-        }
-      },
 
           distributionInterpretation: {
             vacantLandLandNormalized:
@@ -1761,8 +1660,6 @@ const constructionMonetaryIdentity =
               analysis:
                 rentConstructionLandAnalysis,
 
-              confidence:
-                rentConstructionLandConfidence,
 
               identity: {
                 transactionType:
@@ -1885,45 +1782,15 @@ const constructionMonetaryIdentity =
                   rentImprovedConstructionPropertyPricesVsMedian
               },
 
-              confidenceBasedOnNumberOfProperties: {
-                vacantLandLandNormalized: {
-                  numberOfProperties:
-                    rentVacantLandCohort.observations.length,
+              distributionInterpretation: {
+                vacantLandLandNormalized:
+                  rentVacantLandDistributionInterpretation,
 
-                  confidence:
-                    rentVacantLandConfidenceBasedOnNumberOfProperties
-                },
+                improvedLandNormalized:
+                  rentImprovedLandDistributionInterpretation,
 
-                improvedLandNormalized: {
-                  numberOfProperties:
-                    rentImprovedLandCohort.observations.length,
-
-                  confidence:
-                    rentImprovedLandConfidenceBasedOnNumberOfProperties
-                },
-
-                improvedConstructionNormalized: {
-                  numberOfProperties:
-                    rentImprovedConstructionCohort.observations.length,
-
-                  confidence:
-                    rentImprovedConstructionConfidenceBasedOnNumberOfProperties
-                },
-
-                distributionInterpretation: {
-                  vacantLandLandNormalized:
-                    rentVacantLandDistributionInterpretation,
-
-                  improvedLandNormalized:
-                    rentImprovedLandDistributionInterpretation,
-
-                  improvedConstructionNormalized:
-                    rentImprovedConstructionDistributionInterpretation
-                },
-
-
-
-
+                improvedConstructionNormalized:
+                  rentImprovedConstructionDistributionInterpretation
               }
                   
       },
@@ -2098,10 +1965,6 @@ const constructionMonetaryIdentity =
         null
     },
 
-    confidence:
-      landStatistics.median
-        .identity
-        .confidence,
 
     sampleSize:
       sampleListingIds.size,

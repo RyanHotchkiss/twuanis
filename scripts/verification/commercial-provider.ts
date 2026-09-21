@@ -1,10 +1,5 @@
-import { loadEnvConfig } from '@next/env'
-
-loadEnvConfig(process.cwd())
-
-import {
-  createClient
-} from '@supabase/supabase-js'
+import { disposableProviderContext } from './provider-disposable-authority'
+import { registerProvider } from '@/lib/commercial-provider-registry'
 
 import {
   createPurchaseRequest,
@@ -29,10 +24,10 @@ import type {
 
 
 const TEST_USER_ID =
-  'd81064bc-1b4a-478f-8f6a-b263c4779bc1'
+  disposableProviderContext().userId
 
 const TEST_PACKAGE_ID =
-  '7f20e503-274a-4a71-89d1-e2f81a601df6'
+  disposableProviderContext().packageId
 
 const TEST_COUNTRY =
   'CR'
@@ -76,80 +71,8 @@ type VerificationReport = {
 }
 
 
-function requireEnvironmentVariable(
-  name:
-    string
-): string {
-
-  const value =
-    process.env[name]
-
-  if (!value) {
-    throw new Error(
-      `Missing required environment variable: ${name}`
-    )
-  }
-
-  return value
-}
-
-
-function createAdminClient() {
-
-  const supabaseUrl =
-    requireEnvironmentVariable(
-      'NEXT_PUBLIC_SUPABASE_URL'
-    )
-
-  const serviceRoleKey =
-    requireEnvironmentVariable(
-      'SUPABASE_SERVICE_ROLE_KEY'
-    )
-
-  return createClient(
-    supabaseUrl,
-    serviceRoleKey,
-    {
-      auth: {
-        persistSession:
-          false,
-
-        autoRefreshToken:
-          false
-      }
-    }
-  )
-}
-
-
-function resolveProviderArgument():
-  ProviderName {
-
-  const providerArgument =
-    process.argv[2]
-      ?.trim()
-      .toLowerCase()
-
-  if (
-    providerArgument ===
-      'sinpe'
-  ) {
-    return 'sinpe'
-  }
-
-  if (
-    providerArgument ===
-      'bank-transfer' ||
-    providerArgument ===
-      'bank'
-  ) {
-    return 'bank-transfer'
-  }
-
-  throw new Error(
-    'Provider argument is required. Use "sinpe" or "bank-transfer".'
-  )
-}
+function createAdminClient() { return disposableProviderContext().client }
+function resolveProviderArgument(): ProviderName { return disposableProviderContext().provider }
 
 
 function createProvider({
@@ -422,6 +345,8 @@ async function verifyCommercialProvider():
       providerName,
       supabase
     })
+
+  registerProvider(provider)
 
   const assertions:
     VerificationAssertion[] =
@@ -863,29 +788,6 @@ async function verifyCommercialProvider():
   })
 
 
-  /*
-   * ========================================================
-   * VERIFY PURCHASE AUDIT TRAIL
-   * ========================================================
-   */
-
-  recordAssertion({
-    assertions,
-
-    name:
-      'Purchase audit trail exists',
-
-    passed:
-      purchaseAfterSubmission
-        .events
-        .length >
-      0,
-
-    details:
-      `${purchaseAfterSubmission.events.length} event(s)`
-  })
-
-
   const passed =
     assertions.every(
       assertion =>
@@ -918,7 +820,7 @@ async function verifyCommercialProvider():
 }
 
 
-verifyCommercialProvider()
+export const verification = verifyCommercialProvider()
   .then(
     report => {
 

@@ -1,3 +1,6 @@
+import 'server-only'
+import { supabaseAdmin } from '@/lib/supabase-admin'
+import { hydrateCanonicalPopulation, resolvePopulationGeography } from '@/lib/canonical-population'
 import { supabase } from '@/lib/supabase'
 
 import {
@@ -58,6 +61,9 @@ type MarketFilters = {
 }
 
 type Listing = {
+  canonical_domain_version?: number | null
+  canonicalGeography?: any
+  canonicalEvidence?: any
   province: string | null
   canton: string | null
   district: string | null
@@ -229,7 +235,7 @@ function average(values: number[]) {
             if (!entries.length) return []
 
             const resolvedTerms: {
-                id: number
+                id: string
                 term_name: string
                 term_type: string
                 slug: string
@@ -247,7 +253,7 @@ function average(values: number[]) {
               ))) {
                 data.push(...await completePopulationRows<(typeof resolvedTerms)[number]>((from, to) =>
                   supabase.from('ontology_terms')
-                    .select('id, term_name, term_type, slug', { count: 'exact' })
+                    .select('id::text, term_name, term_type, slug', { count: 'exact' })
                     .eq('term_type', termType)
                     .in('slug', slugs)
                     .order('id', { ascending: true })
@@ -255,9 +261,17 @@ function average(values: number[]) {
                 ))
               }
 
-              if (!data || data.length === 0) {
+              // Every selected identity must resolve exactly once. A partial
+              // dictionary match must not silently change the requested cohort.
+              const requestedSlugs = new Set(values)
+              const resolvedCounts = new Map<string, number>()
+              for (const term of data) {
+                resolvedCounts.set(term.slug, (resolvedCounts.get(term.slug) ?? 0) + 1)
+              }
+              if (!requestedSlugs.size || resolvedCounts.size !== requestedSlugs.size ||
+                  [...requestedSlugs].some(slug => !slug || resolvedCounts.get(slug) !== 1)) {
                 throw new Error(
-                  `No ontology term found for ${termType}: ${rawValue}`
+                  `Unresolved or ambiguous ontology selection for ${termType}: ${rawValue}`
                 )
               }
 
@@ -397,8 +411,9 @@ function average(values: number[]) {
             return listings
           }
 
-          export async function getMatchingListings(
-                filters: MarketFilters
+          async function getLegacyMatchingListings(
+                filters: MarketFilters,
+                resolvedTerms: Awaited<ReturnType<typeof resolveFilterTerms>>
               ) {
                 const {
                 transaction_type,
@@ -433,12 +448,25 @@ function average(values: number[]) {
                     created_at
                   `
 
-                const terms = await resolveFilterTerms(ontologyFilters)
+                const terms = resolvedTerms
+
+                const selectedDistrictNames = district
+                  ? await getDistrictNamesFromSlugs(district.split(',')) : []
+                const geographicIds = province || canton || district
+                  ? (await completePopulationRows<{listing_id:string}>((from,to) =>
+                      supabaseAdmin.rpc('read_legacy_geographic_candidates', {
+                        p_provinces:province?.split(',')??[],p_cantons:canton?.split(',')??[],
+                        p_districts:district?.split(',')??[],p_district_names:selectedDistrictNames,
+                        p_transaction:transaction_type==='sale'||transaction_type==='rent'?transaction_type:null,
+                      }, {count:'exact'}).range(from,to))).map(row=>row.listing_id)
+                  : null
+                if (geographicIds?.length === 0) return []
 
                 const listingQuery = () => {
                   let query = supabase.from('listings')
                     .select(listingSelect, { count: 'exact' })
                     .eq('listing_status', 'active')
+                    .is('canonical_domain_version', null)
                   if (transaction_type === 'sale') {
                     query = query.or('transaction_type.ilike.*sale*,transaction_type.ilike.*buy*')
                   } else if (transaction_type === 'rent') {
@@ -450,11 +478,13 @@ function average(values: number[]) {
                 let listings: Listing[] = []
 
                 if (!terms.length) {
-                  listings = await completePopulationRows<Listing>((from, to) =>
-                    listingQuery().range(from, to)
-                  )
+                  if (geographicIds === null) {
+                    listings = await completePopulationRows<Listing>((from,to)=>listingQuery().range(from,to))
+                  } else for (const ids of populationInputChunks(geographicIds)) {
+                    listings.push(...await completePopulationRows<Listing>((from,to)=>listingQuery().in('id',ids).range(from,to)))
+                  }
                 } else {
-                  const termsByType = new Map<string, number[]>()
+                  const termsByType = new Map<string, string[]>()
 
                   for (const term of terms) {
                     const existing =
@@ -467,16 +497,19 @@ function average(values: number[]) {
 
                   const termIds = terms.map(term => term.id)
 
-                  const assignedRows: { listing_id: string; ontology_term_id: number }[] = []
+                  const assignedRows: { listing_id: string; ontology_term_id: string }[] = []
+                  const candidateChunks = geographicIds === null ? [null] : populationInputChunks(geographicIds)
                   for (const ids of populationInputChunks(termIds)) {
-                    assignedRows.push(...await completePopulationRows<(typeof assignedRows)[number]>((from, to) =>
-                      supabase.from('listings_ontology_terms')
-                        .select('listing_id, ontology_term_id', { count: 'exact' })
-                        .in('ontology_term_id', ids)
-                        .order('listing_id', { ascending: true })
-                        .order('ontology_term_id', { ascending: true })
-                        .range(from, to)
-                    ))
+                    for (const candidates of candidateChunks) {
+                      assignedRows.push(...await completePopulationRows<(typeof assignedRows)[number]>((from,to)=> {
+                        let query = supabase.from('listings_ontology_terms')
+                          .select('listing_id, ontology_term_id::text, listings!inner(canonical_domain_version)', {count:'exact'})
+                          .is('listings.canonical_domain_version',null)
+                          .in('ontology_term_id',ids)
+                        if (candidates !== null) query=query.in('listing_id',candidates)
+                        return query.order('listing_id').order('ontology_term_id').range(from,to)
+                      }))
+                    }
                   }
 
                   const listingsByType = new Map<string, Set<string>>()
@@ -509,6 +542,10 @@ function average(values: number[]) {
                       )
                   }
 
+                  if (geographicIds !== null) {
+                    const bounded = new Set(geographicIds)
+                    matchingListingIds = matchingListingIds.filter(id=>bounded.has(id))
+                  }
                   if (!matchingListingIds.length) return []
 
                   for (const ids of populationInputChunks(matchingListingIds)) {
@@ -526,15 +563,15 @@ function average(values: number[]) {
 
                 if (province) {
                     listings = listings.filter(listing =>
-                      slugify(listing.province || '') === province ||
-                      slugify(listing.province || '').includes(province)
+                      province.split(',').some(value => slugify(listing.province || '') === value ||
+                      slugify(listing.province || '').includes(value))
                     )
                   }
 
                   if (canton) {
                     listings = listings.filter(listing =>
-                      slugify(listing.canton || '') === canton ||
-                      slugify(listing.canton || '').includes(canton)
+                      canton.split(',').some(value => slugify(listing.canton || '') === value ||
+                      slugify(listing.canton || '').includes(value))
                     )
                   }
 
@@ -542,8 +579,6 @@ function average(values: number[]) {
                     const selectedDistrictSlugs =
                       district.split(',')
 
-                    const selectedDistrictNames =
-                      await getDistrictNamesFromSlugs(selectedDistrictSlugs)
 
                     listings = listings.filter(listing => {
                       const listingDistrictSlug =
@@ -895,9 +930,10 @@ export async function getMarketStatistics(
     await resolveMarketAnalyticalContext()
 
 
+  let geographyLabels: Record<string,string> = {}
   const listings =
     await getMatchingListings(
-      filters
+      filters, labels=>{ geographyLabels=labels }
     )
 
 
@@ -945,6 +981,8 @@ export async function getMarketStatistics(
         statistics,
         distributions,
         listings,
+
+        geographyLabels,
 
         analyticalContext:
           context
@@ -1060,4 +1098,86 @@ export async function saveMarketStatistics(
       }
     }
 
-  
+
+export async function getMatchingListings(filters: MarketFilters, onGeographyLabels?: (labels:Record<string,string>)=>void, factDimensions: string[] = ['bedrooms','bathrooms','parking','year_built']): Promise<Listing[]> {
+  const {resolved,legacy,displayLabels} = await resolvePopulationGeography(filters)
+  onGeographyLabels?.(displayLabels ?? {})
+  const {province,canton,district,transaction_type,property_area,construction_area,
+    distance_to_paved_road_range,...semanticFilters}=filters
+  const terms = await resolveFilterTerms(semanticFilters)
+  const groups = new Map<string,Set<string>>()
+  for (const term of terms) {
+    const group=groups.get(term.term_type)??new Set<string>()
+    group.add(term.id);groups.set(term.term_type,group)
+  }
+  for (const [type,entities] of Object.entries(resolved)) {
+    groups.set(type,new Set(entities.map(entity=>entity.ontologyTermId)))
+  }
+  let ids: string[] | null = null
+  if (groups.size) {
+    type Assignment = {listing_id:string;ontology_term_id:string}
+    const readAssignments = async (termIds:string[], candidates:string[]|null) => {
+      const assignments:Assignment[]=[]
+      const candidateChunks = candidates===null ? [null] : populationInputChunks(candidates)
+      for (const termChunk of populationInputChunks(termIds)) {
+        for (const candidateChunk of candidateChunks) {
+          assignments.push(...await completePopulationRows<Assignment>((from,to)=>{
+            let query=supabaseAdmin.from('listings_ontology_terms')
+              .select('listing_id,ontology_term_id::text,listings!inner(canonical_domain_version)',{count:'exact'})
+              .eq('listings.canonical_domain_version',1)
+              .eq('listings.listing_status','active').in('ontology_term_id',termChunk)
+            if (transaction_type) query=query.eq('listings.transaction_type',transaction_type)
+            else query=query.in('listings.transaction_type',['sale','rent'])
+            if (candidateChunk!==null) query=query.in('listing_id',candidateChunk)
+            return query.order('listing_id').order('ontology_term_id').range(from,to)
+          }))
+        }
+      }
+      return assignments
+    }
+    // Establish the selected geography before fetching other memberships. All
+    // requested groups are still intersected below; no parent or semantic rule
+    // is dropped. Non-geographic callers start with their first selected group.
+    const anchorType = ['district','canton','province'].find(type=>groups.has(type))
+      ?? groups.keys().next().value!
+    const anchorTerms = groups.get(anchorType)!
+    const assignments = await readAssignments([...anchorTerms],null)
+    const candidates = [...new Set(assignments.map(row=>row.listing_id))]
+    const remainingTerms = [...new Set([...groups.values()].flatMap(group=>[...group]))]
+      .filter(term=>!anchorTerms.has(term))
+    assignments.push(...await readAssignments(remainingTerms,candidates))
+    for (const group of groups.values()) {
+      const matches=new Set(assignments.filter(a=>group.has(a.ontology_term_id)).map(a=>a.listing_id))
+      ids=ids===null?[...matches]:ids.filter(id=>matches.has(id))
+    }
+  }
+  const query=()=>{
+    let q=supabaseAdmin.from('listings').select(`id,title,images,canonical_domain_version,
+      transaction_type,currency,monthly_price,current_price,price_millions,
+      property_area,construction_area,created_at,province,canton,district`,{count:'exact'})
+      .eq('canonical_domain_version',1).eq('listing_status','active')
+    if (transaction_type) q=q.eq('transaction_type',transaction_type)
+    else q=q.in('transaction_type',['sale','rent'])
+    return q.order('id')
+  }
+  let canonical: Listing[]=[]
+  if (ids===null) canonical=await completePopulationRows<Listing>((from,to)=>query().range(from,to))
+  else for (const chunk of populationInputChunks(ids)) {
+    canonical.push(...await completePopulationRows<Listing>((from,to)=>query().in('id',chunk).range(from,to)))
+  }
+  if (new Set(canonical.map(l=>l.id)).size!==canonical.length) throw new Error('Duplicate canonical population evidence.')
+  canonical=await hydrateCanonicalPopulation(canonical,undefined,[...new Set([...factDimensions,...(distance_to_paved_road_range?['distance_to_paved_road']:[])])])
+  canonical=canonical.filter(l=>(!property_area||matchesPropertyAreaConstraint(l.property_area,property_area)) &&
+    (!construction_area||matchesConstructionAreaConstraint(l.construction_area,construction_area)))
+  if (distance_to_paved_road_range) {
+    canonical=canonical.filter(l=>{
+      const f=l.canonicalEvidence.facts.find((f:any)=>f.dimension==='distance_to_paved_road')
+      const value=f?.kind==='exact'?f.exact_value:f?.kind==='range'?
+        `${f.lower_inclusive?'[':'('}${f.range_lower??''},${f.range_upper??''}${f.upper_inclusive?']':')'}`:null
+      return value===distance_to_paved_road_range
+    })
+  }
+  const legacyRows=await getLegacyMatchingListings(legacy,terms)
+  return [...new Map([...legacyRows,...canonical].map(l=>[l.id,l])).values()]
+    .sort((a,b)=>a.id<b.id?-1:a.id>b.id?1:0)
+}

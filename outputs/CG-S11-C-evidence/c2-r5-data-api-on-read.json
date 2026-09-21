@@ -1,0 +1,35 @@
+[
+  {
+    "table": "ontology_terms",
+    "role": "service_role",
+    "operation": "SELECT",
+    "status": 503,
+    "rows": null,
+    "error": {
+      "code": "PGRST002",
+      "message": "Could not query the database for the schema cache. Retrying."
+    }
+  },
+  {
+    "table": "ontology_relationships",
+    "role": "service_role",
+    "operation": "SELECT",
+    "status": 503,
+    "rows": null,
+    "error": {
+      "code": "PGRST002",
+      "message": "Could not query the database for the schema cache. Retrying."
+    }
+  },
+  {
+    "table": "listings",
+    "role": "service_role",
+    "operation": "SELECT",
+    "status": 503,
+    "rows": null,
+    "error": {
+      "code": "PGRST002",
+      "message": "Could not query the database for the schema cache. Retrying."
+    }
+  }
+]

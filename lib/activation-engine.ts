@@ -471,21 +471,17 @@ switch (
 
       case 'package':
 
-        return activatePackagePurchase({
-
-            supabase,
-
-            purchase
+        return findExistingPackageActivation({
+          supabase,
+          purchaseId: purchase.purchase.id
         })
 
 
       case 'add_on':
 
-        return activateAddOnPurchase({
-
+        return findExistingAddOnActivation({
           supabase,
-
-          purchase
+          purchaseId: purchase.purchase.id
         })
 
 

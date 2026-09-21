@@ -1,3 +1,5 @@
+import type { CanonicalEvidence } from '@/lib/canonical-listing-reader'
+import { hydrateCanonicalPopulation } from '@/lib/canonical-population'
 import 'server-only'
 
 import {
@@ -25,6 +27,7 @@ export const PUBLIC_LISTING_DISCOVERY_COLUMNS = `
   price_millions,
   monthly_price,
   current_price,
+  canonical_domain_version,
   currency,
   transaction_type,
   images
@@ -52,6 +55,7 @@ export const PUBLIC_LISTING_DETAIL_COLUMNS = `
   price_millions,
   monthly_price,
   current_price,
+  canonical_domain_version,
   currency,
   transaction_type,
   images
@@ -94,7 +98,7 @@ export async function getPublicListings(
     )
   }
 
-  return data || []
+  return hydrateCanonicalPopulation(data || [])
 }
 
 export async function getPublicListingById(
@@ -125,7 +129,7 @@ export async function getPublicListingById(
     )
   }
 
-  return data
+  return data ? (await hydrateCanonicalPopulation([data]))[0] : null
 }
 
 export async function getPublicListingSitemapRows() {
@@ -187,7 +191,8 @@ export async function getPublicListingContact(
 }
 
 export async function getPublicListingsByIds(
-  listingIds: string[]
+  listingIds: string[],
+  existingEvidence?: ReadonlyMap<string,CanonicalEvidence>
 ) {
   const uniqueListingIds =
     [...new Set(
@@ -224,5 +229,5 @@ export async function getPublicListingsByIds(
     )
   }
 
-  return data || []
+  return hydrateCanonicalPopulation(data || [],existingEvidence)
 }

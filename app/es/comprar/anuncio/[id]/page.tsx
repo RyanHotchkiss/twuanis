@@ -1,3 +1,4 @@
+import PriceMeterPropertyPositionListing from '@/app/components/PriceMeterPropertyPositionListing'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import {
@@ -791,7 +792,9 @@ listingPricePerM2CRC !== null ? (
                 />
               </div>
 
-              <PriceMeterComparableListing
+              <PriceMeterPropertyPositionListing listingId={listing.id} lang="es" />
+
+          <PriceMeterComparableListing
                 listingId={listing.id}
                 lang="es"
               />

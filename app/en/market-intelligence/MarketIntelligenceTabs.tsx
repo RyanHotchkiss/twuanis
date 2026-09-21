@@ -16,13 +16,13 @@ import {
   saveMarketComparison
 } from '@/lib/market-comparisons'
 import ExploreResults from '@/app/explore/ExploreResults'
-import PriceMeterResults from '@/app/price-per-square-meter/PriceMeterResults'
 import PricingStrategyResults from '@/app/pricing-strategy/PricingStrategyResults'
 import MarketScarcityResults from '@/app/market-scarcity/MarketScarcityResults'
 import BuyerDemandResults from '@/app/buyer-demand/BuyerDemandResults'
 import MarketMatchingResults from '@/app/market-matching/MarketMatchingResults'
 import ValuationResults from '@/app/valuation/ValuationResults'
 import MarketFilters from '@/app/components/MarketFilters'
+import PriceMeterApplyPanel from '@/app/components/PriceMeterApplyPanel'
 import MarketComparisonResults from '@/app/market-comparison/MarketComparisonResults'
 
 import {
@@ -404,6 +404,7 @@ const tabs = [
                         return (
               <Link
                 key={tab.id}
+                prefetch={false}
                 href={`/en/market-intelligence?${query.toString()}&tab=${tab.id}`}
                 style={{
                   ...card,
@@ -474,6 +475,10 @@ const tabs = [
           Market Filters
         </h2>
 
+        <div hidden={activeTab !== 'price-meter'}>
+          <PriceMeterApplyPanel options={options} filters={filters} language="en" source="workspace" />
+        </div>
+        {activeTab !== 'price-meter' && (
         <MarketFilters
             language="en"
             workspace={
@@ -492,6 +497,7 @@ const tabs = [
               : `/en/market-intelligence?tab=${activeTab}`
           }
         />
+        )}
       </section>
 
            <div
@@ -503,6 +509,7 @@ const tabs = [
       >
         <button
           type="button"
+          hidden={activeTab === 'price-meter'}
           onClick={handleSaveAnalysis}
           disabled={
             saveStatus === 'saving' ||
@@ -563,22 +570,6 @@ const tabs = [
               <EmptyState />
             )
         )}
-
-        {activeTab ===
-            'price-meter' && (
-            priceMeterAnalysis
-              ? (
-                <PriceMeterResults
-                  filters={filters}
-                  analysis={
-                    priceMeterAnalysis
-                  }
-                />
-              )
-              : (
-                <EmptyState />
-              )
-          )}
 
         {activeTab === 'pricing' && (
           <PricingStrategyResults

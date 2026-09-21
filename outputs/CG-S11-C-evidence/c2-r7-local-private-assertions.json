@@ -1,0 +1,10 @@
+{
+  "file": "/Users/cassidydaddy/twuanis/outputs/CG-S11-C-evidence/c2-r7-local-private.stdout.log",
+  "true_assertions": 2958,
+  "errors": [],
+  "sections": {
+    "object,owner_verified,rls_verified,trusted_owner_verified,public_denied,r,p,api_denied": 588,
+    "nspname,r,usage_denied,create_denied,owner_verified": 6,
+    "tgrelid,tgname,tgenabled": 0
+  }
+}

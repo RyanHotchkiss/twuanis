@@ -1,0 +1,54 @@
+\set ON_ERROR_STOP on
+BEGIN;
+DO $$ BEGIN IF current_database()<>'cg_s7_duplicate_final' OR inet_server_addr() IS NOT NULL THEN RAISE EXCEPTION 'disposable only'; END IF; END $$;
+CREATE TEMP TABLE checks(label text PRIMARY KEY);
+CREATE FUNCTION pg_temp.ok(v boolean,label text) RETURNS void LANGUAGE plpgsql AS $$ BEGIN IF v IS NOT TRUE THEN RAISE EXCEPTION 'FAIL %',label;END IF;INSERT INTO checks VALUES(label);END $$;
+CREATE FUNCTION pg_temp.reject(q text,expected text,label text) RETURNS void LANGUAGE plpgsql AS $$ DECLARE code text;BEGIN BEGIN EXECUTE q;EXCEPTION WHEN OTHERS THEN GET STACKED DIAGNOSTICS code=RETURNED_SQLSTATE;END;PERFORM pg_temp.ok(code IS NOT DISTINCT FROM expected,label||' '||coalesce(code,'success'));END $$;
+INSERT INTO auth.users(id) VALUES('07000000-0000-0000-0000-000000001301');
+SELECT set_config('request.jwt.claim.sub','07000000-0000-0000-0000-000000001301',true);
+SELECT public.create_customer_canonical_listing(gen_random_uuid(),'{"transaction":"sale","geography":{"province":"3","canton":"304"},"semantics":{"property_type":["1"]},"facts":{"bedrooms":{"kind":"exact","value":"6"},"bathrooms":{"kind":"exact","value":"0.5"}},"measurements":{"property_area":{"value":"850.123"},"construction_area":{"value":"70.125"}},"money":{"amount":"0.5","currency":"USD"}}')->>'listing_id' AS source \gset
+SELECT twuanis_canonical_private.s3_command(:'source',1,'owner','07000000-0000-0000-0000-000000001301',gen_random_uuid(),'{"facts":{"bedrooms":{"kind":"exact","value":"6","source":"owner","rule_set":"80000000-0000-0000-0000-000000000002"}},"measurements":{"property_area":{"value":"850.123","rule_set":"80000000-0000-0000-0000-000000000001"}}}',NULL);
+UPDATE listings SET images=jsonb_build_array(owner_id::text||'/'||id::text||'/test.jpg')::text WHERE id=:'source';
+CREATE TEMP TABLE source_before AS SELECT to_jsonb(l) value FROM listings l WHERE id=:'source';
+SELECT public.prepare_customer_duplicate(:'source','07000000-0000-0000-0000-000000001302')->>'listing_id' AS duplicate \gset
+SELECT pg_temp.ok(:'duplicate'<>:'source','new identity');
+SELECT pg_temp.ok((SELECT listing_status='draft' AND canonical_domain_version=1 AND canonical_revision=2 FROM listings WHERE id=:'duplicate'),'new draft and fresh classification revision');
+SELECT pg_temp.ok((SELECT current_price=0.5 AND currency='USD' AND price_millions IS NULL FROM listings WHERE id=:'duplicate'),'positive sub-one canonical money');
+SELECT pg_temp.ok((SELECT count(*)=2 AND bool_and(evidence_source='owner') FROM listing_fact_evidence WHERE listing_id=:'duplicate'),'fresh owner facts');
+SELECT pg_temp.ok((SELECT exact_value=0.5 FROM listing_fact_evidence WHERE listing_id=:'duplicate' AND dimension='bathrooms'),'unclassified fact preserved');
+SELECT pg_temp.ok(NOT EXISTS(SELECT 1 FROM listing_membership_origins WHERE listing_id=:'duplicate' AND origin_domain='bathrooms'),'no default classification invented');
+SELECT pg_temp.ok((SELECT construction_area=70.125 FROM listings WHERE id=:'duplicate'),'unclassified measure preserved');
+SELECT pg_temp.ok(NOT EXISTS(SELECT 1 FROM listing_membership_origins WHERE listing_id=:'duplicate' AND origin_domain='construction_area'),'unclassified measure no membership');
+SELECT pg_temp.ok((SELECT count(DISTINCT origin_domain)=2 FROM listing_membership_origins WHERE listing_id=:'duplicate' AND classification_rule_id IS NOT NULL),'two rederived classifications');
+SELECT pg_temp.ok(NOT EXISTS(SELECT classification_rule_id FROM listing_membership_origins WHERE listing_id=:'duplicate' AND classification_rule_id IS NOT NULL EXCEPT SELECT classification_rule_id FROM listing_membership_origins WHERE listing_id=:'source' AND classification_rule_id IS NOT NULL),'same recorded sealed rules');
+SELECT pg_temp.ok((SELECT count(*)=1 AND bool_and(event_type='create') FROM listing_lifecycle_events WHERE listing_id=:'duplicate'),'only fresh creation lifecycle');
+SELECT pg_temp.ok((SELECT count(*)=1 AND bool_and(event_kind='initial_observation') FROM listing_monetary_events WHERE listing_id=:'duplicate'),'fresh initial money only');
+SELECT pg_temp.ok(NOT EXISTS(SELECT 1 FROM listing_source_observations WHERE listing_id=:'duplicate'),'no source observation cloned');
+SELECT pg_temp.ok((SELECT source_name IS NULL AND source_listing_id IS NULL FROM listings WHERE id=:'duplicate'),'no source identity');
+SELECT pg_temp.ok((SELECT to_jsonb(l)=(SELECT value FROM source_before) FROM listings l WHERE id=:'source'),'source unchanged');
+SELECT pg_temp.ok(public.prepare_customer_duplicate(:'source','07000000-0000-0000-0000-000000001302')->>'listing_id'=:'duplicate','same request same identity');
+SELECT pg_temp.ok((SELECT count(*)=2 FROM canonical_operation_receipts WHERE listing_id=:'duplicate'),'retry no receipt multiplication');
+SELECT pg_temp.ok((SELECT media->0->>'destination' LIKE owner_id::text||'/'||listing_id::text||'/%' AND media->0->>'source'<>media->0->>'destination' FROM twuanis_canonical_private.duplicate_commands WHERE listing_id=:'duplicate'),'independent destination');
+SELECT pg_temp.reject(format('UPDATE listings SET listing_status=''active'' WHERE id=%L',:'duplicate'),'55000','pending media cannot publish');
+SELECT public.attach_customer_duplicate_media(:'duplicate');
+SELECT pg_temp.ok((SELECT images::jsonb->>0 LIKE owner_id::text||'/'||id::text||'/%' FROM listings WHERE id=:'duplicate'),'only new owned paths attached');
+SELECT pg_temp.ok((public.attach_customer_duplicate_media(:'duplicate')->>'completed')::boolean,'attachment replay');
+SELECT pg_temp.ok((public.prepare_customer_duplicate(:'source','07000000-0000-0000-0000-000000001302')->>'completed')::boolean,'completion survives request retry');
+SELECT public.prepare_customer_duplicate(:'source',gen_random_uuid())->>'listing_id' AS edited \gset
+UPDATE listings SET images='["manual-edit"]' WHERE id=:'edited';
+SELECT pg_temp.reject(format('SELECT public.attach_customer_duplicate_media(%L)',:'edited'),'40001','media edits not overwritten');
+SELECT pg_temp.ok((SELECT images='["manual-edit"]' FROM listings WHERE id=:'edited'),'failed attach preserves edit');
+UPDATE listings SET images='["https://external.example/image.jpg"]' WHERE id=:'source';
+SELECT pg_temp.reject(format('SELECT public.prepare_customer_duplicate(%L,gen_random_uuid())',:'source'),'42501','external media fails closed');
+UPDATE listings SET images='["07000000-0000-0000-0000-000000001301/other/test.jpg"]' WHERE id=:'source';
+SELECT pg_temp.reject(format('SELECT public.prepare_customer_duplicate(%L,gen_random_uuid())',:'source'),'42501','other listing media denied');
+UPDATE listings SET images='[]',listing_origin='imported' WHERE id=:'source';
+SELECT pg_temp.reject(format('SELECT public.prepare_customer_duplicate(%L,gen_random_uuid())',:'source'),'42501','source provenance denied');
+SELECT set_config('request.jwt.claim.sub','',true);
+SELECT pg_temp.reject(format('SELECT public.prepare_customer_duplicate(%L,gen_random_uuid())',:'source'),'42501','anonymous denied');
+SELECT pg_temp.ok(NOT has_function_privilege('authenticated','public.attach_customer_duplicate_media(uuid)','EXECUTE'),'browser cannot assert copied completion');
+SELECT pg_temp.ok(NOT has_table_privilege('authenticated','twuanis_canonical_private.duplicate_commands','INSERT'),'browser cannot fabricate manifest');
+SELECT pg_temp.ok(NOT has_function_privilege('anon','public.prepare_customer_duplicate(uuid,uuid)','EXECUTE'),'anon no duplicate grant');
+SELECT pg_temp.ok(NOT has_function_privilege('service_role','public.prepare_customer_duplicate(uuid,uuid)','EXECUTE'),'creation requires customer authority');
+SELECT count(*) AS assertions FROM checks;
+ROLLBACK;

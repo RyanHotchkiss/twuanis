@@ -47,7 +47,6 @@ export type PriceMeterComparableDimension =
 export type PriceMeterComparableOntologyDimension =
   Exclude<
     PriceMeterComparableDimension,
-    'year_built' |
     'construction_land'
   >
 
@@ -57,6 +56,7 @@ export const PRICE_METER_COMPARABLE_ONTOLOGY_DIMENSIONS:
     'bedrooms',
     'bathrooms',
     'parking',
+    'year_built',
     'environment',
     'terrain',
     'utility',

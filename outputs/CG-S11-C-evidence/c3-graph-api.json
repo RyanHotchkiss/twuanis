@@ -1,0 +1,12 @@
+{
+  "server_reader_rows": 14,
+  "server_return_keys": [
+    "source_term_id",
+    "target_term_id",
+    "relationship_type"
+  ],
+  "anon_status": 401,
+  "anon_error_code": "42501",
+  "service_read": true,
+  "anonymous_fallback": false
+}

@@ -1,0 +1,333 @@
+{
+  "status": "DRAFT: exact child-first order requires remaining-purge-fk-evidence.sql export",
+  "tables": [
+    {
+      "table": "public.account_permissions",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.activities",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.activity_events",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.add_on_product_packages",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.add_on_products",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.bank_transfer_payments",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.engines",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.entitlements",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.entity_comparison_statistics",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.entity_distribution_statistics",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.entity_market_statistics",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.favorite_collection_items",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.favorite_collections",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.fx_rates",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.geography_import",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.lead_entity_statistics",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.lead_trend_snapshots",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.listing_entitlements",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.listing_events",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.listing_favorites",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.listing_measurement_provenance",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.listing_publish_tokens",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.listings",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.listings_ontology_terms",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.market_cache_rebuild_logs",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.market_combination_distribution_statistics",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.market_combination_statistics",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.market_comparisons",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.market_distribution_statistics",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.market_snapshots",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.market_statistics",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.notifications",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.ontology_relationships",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.ontology_terms",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.package_account_permissions",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.package_engines",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.package_entitlements",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.package_limits",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.packages",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.payment_reviewers",
+      "disposition": "DELETE IDENTITY-BOUND TEST ASSIGNMENTS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.promotion_events",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.promotion_intelligence_evidence",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.properties",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.property_comparisons",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.property_notes",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.purchase_request_events",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.purchase_requests",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.push_subscriptions",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.sale_listing",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.saved_analyses",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.saved_search_alert_deliveries",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.saved_searches",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.search_combination_statistics",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.search_entity_statistics",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.search_market_statistics",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.search_ontology_terms",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.search_statistics",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.search_trend_snapshots",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.sinpe_payments",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.user_favorites",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.user_recent_activity",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.user_subscriptions",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.verified_users",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.verified_whatsapp_numbers",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.whatsapp_otps",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    }
+  ],
+  "auth": "PRESERVE all auth identities and subsystem objects",
+  "target_private_tables": "new canonical structures: do not seed disposable assignments; exact final allowlist still pending",
+  "superseded_by": "purge-allowlist.json (query-71 + query-77 final union); retained only as historical draft"
+}

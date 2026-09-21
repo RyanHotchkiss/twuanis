@@ -1,3 +1,5 @@
+import 'server-only'
+
 /*
  * ---------------------------------------------------------
  * PRICE / M² PROPERTY POSITION POPULATION
@@ -73,7 +75,11 @@ export type PriceMeterPropertyPositionPopulationExclusion = {
 }
 
 
+export type PriceMeterPropertyPositionParticipation = 'SUBJECT_INCLUDED' | 'SUBJECT_EXTERNAL'
+
 export type PriceMeterPropertyPositionPopulation = {
+  participation: PriceMeterPropertyPositionParticipation
+
   subject:
     PriceMeterPropertyPositionIdentity
 
@@ -189,14 +195,21 @@ function getObservationIdentityKey(
 
 export function buildPriceMeterPropertyPositionPopulation({
   subject,
-  observations
+  observations,
+  participation
 }: {
+  participation: PriceMeterPropertyPositionParticipation
+
   subject:
     PriceMeterPropertyPositionIdentity
 
   observations:
     PriceMeterObservation[]
 }): PriceMeterPropertyPositionPopulation {
+  if (participation !== 'SUBJECT_INCLUDED' && participation !== 'SUBJECT_EXTERNAL') {
+    throw new Error('Phase 12 requires an explicit subject participation policy.')
+  }
+
 
   const includedObservations:
     PriceMeterObservation[] =
@@ -394,64 +407,8 @@ export function buildPriceMeterPropertyPositionPopulation({
   }
 
 
-  /*
-   * -------------------------------------------------------
-   * SUBJECT MEMBERSHIP
-   * -------------------------------------------------------
-   *
-   * The subject property must itself exist inside the
-   * comparison population.
-   *
-   * Phase 12 does not position an external property against
-   * a population from which that property was excluded.
-   */
-
-  const subjectObservation =
-    includedObservations.find(
-      observation =>
-        observation.listingId ===
-          subject.listingId &&
-        observation.transactionType ===
-          subject.transactionType &&
-        observation.propertyBasis ===
-          subject.propertyBasis &&
-        observation.normalizationBasis ===
-          subject.normalizationBasis
-    )
-
-
-  if (
-    !subjectObservation
-  ) {
-    throw new Error(
-      'Price / m² Property Position subject is not represented in the canonical comparison population.'
-    )
-  }
-
-
-  /*
-   * -------------------------------------------------------
-   * SUBJECT OBSERVATION CONSISTENCY
-   * -------------------------------------------------------
-   *
-   * The observation found inside the population must be the
-   * same canonical Price / m² observation represented by
-   * the Property Position identity.
-   */
-
-  if (
-    subjectObservation.pricePerM2 !==
-      subject.propertyPricePerM2 ||
-    subjectObservation.areaM2 !==
-      subject.normalizationAreaM2 ||
-    subjectObservation.analyticalPrice !==
-      subject.analyticalPrice
-  ) {
-    throw new Error(
-      'Price / m² Property Position subject identity does not match its canonical population observation.'
-    )
-  }
-
+  // Policy is supplied explicitly; equal values never establish listing identity.
+  assertPriceMeterPropertyPositionParticipation({ subject, observations: includedObservations, participation })
 
   /*
    * -------------------------------------------------------
@@ -471,6 +428,7 @@ export function buildPriceMeterPropertyPositionPopulation({
 
 
   return {
+    participation,
     subject,
 
     transactionType:
@@ -495,5 +453,30 @@ export function buildPriceMeterPropertyPositionPopulation({
       exclusions.length,
 
     exclusions
+  }
+}
+
+export function assertPriceMeterPropertyPositionParticipation({
+  subject, observations, participation
+}: Pick<PriceMeterPropertyPositionPopulation, 'subject' | 'observations' | 'participation'>): void {
+  if (participation !== 'SUBJECT_INCLUDED' && participation !== 'SUBJECT_EXTERNAL') {
+    throw new Error('Phase 12 requires an explicit subject participation policy.')
+  }
+  const matches = observations.filter(observation => observation.listingId === subject.listingId)
+  if (participation === 'SUBJECT_EXTERNAL') {
+    if (matches.length !== 0) throw new Error('Phase 12 external subject must not be represented in its reference population.')
+    return
+  }
+  if (matches.length !== 1) {
+    throw new Error('Price / m² Property Position subject is not represented exactly once in the canonical comparison population.')
+  }
+  const observation = matches[0]
+  if (observation.transactionType !== subject.transactionType ||
+      observation.propertyBasis !== subject.propertyBasis ||
+      observation.normalizationBasis !== subject.normalizationBasis ||
+      observation.pricePerM2 !== subject.propertyPricePerM2 ||
+      observation.areaM2 !== subject.normalizationAreaM2 ||
+      observation.analyticalPrice !== subject.analyticalPrice) {
+    throw new Error('Price / m² Property Position subject identity does not match its canonical population observation.')
   }
 }

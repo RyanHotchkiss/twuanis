@@ -1,3 +1,5 @@
+import 'server-only'
+import { supabaseAdmin } from '@/lib/supabase-admin'
 import { supabase } from '@/lib/supabase'
 
 export async function getGraphNeighbors(
@@ -26,11 +28,11 @@ export async function getGraphNeighbors(
 
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
 
     .from('ontology_graph_cache')
 
-    .select('*')
+    .select('source_term_id,target_term_id,relationship_type')
 
     .or(
 

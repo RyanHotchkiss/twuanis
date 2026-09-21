@@ -31,6 +31,7 @@
 import { supabase } from '@/lib/supabase'
 
 import {
+  PRICE_METER_CHARACTERISTIC_TYPES,
   isPriceMeterCharacteristicType,
   type PriceMeterCharacteristicIdentity
 } from '@/lib/price-meter-characteristic-identity'
@@ -206,7 +207,7 @@ export async function loadPriceMeterOntologyMemberships(
         .from('listings_ontology_terms')
         .select(`
       listing_id,
-      ontology_terms (
+      ontology_terms!inner (
         id,
         term_name,
         term_name_en,
@@ -218,6 +219,8 @@ export async function loadPriceMeterOntologyMemberships(
       )
     `, { count: 'exact' })
         .in('listing_id', listingIdChunk)
+        // Inner embedding scopes parent assignments and their exact count.
+        .in('ontology_terms.term_type', PRICE_METER_CHARACTERISTIC_TYPES)
         .order('listing_id', { ascending: true })
         .order('ontology_term_id', { ascending: true })
         .range(offset, offset + pageSize - 1)

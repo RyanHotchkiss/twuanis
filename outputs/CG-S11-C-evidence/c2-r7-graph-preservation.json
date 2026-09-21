@@ -1,0 +1,8 @@
+{
+  "oid": "18663",
+  "data": {
+    "count": 4690,
+    "digest": "754aaff90894c872525e43b98ae244bd"
+  },
+  "definition": " SELECT r.source_term_id,\n    r.target_term_id,\n    r.relationship_type,\n    source.term_name AS source_name,\n    source.term_type AS source_type,\n    source.slug AS source_slug,\n    target.term_name AS target_name,\n    target.term_type AS target_type,\n    target.slug AS target_slug\n   FROM ontology_relationships r\n     JOIN ontology_terms source ON source.id = r.source_term_id\n     JOIN ontology_terms target ON target.id = r.target_term_id;"
+}

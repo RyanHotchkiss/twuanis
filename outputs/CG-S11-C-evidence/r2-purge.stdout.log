@@ -1,0 +1,236 @@
+BEGIN
+SET
+SET
+SET
+DO
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+LOCK TABLE
+CREATE TABLE
+INSERT 0 51
+CREATE TABLE
+INSERT 0 70
+CREATE VIEW
+UPDATE 70
+DO
+CREATE TABLE
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+SELECT 452
+DO
+ALTER TABLE
+CREATE TABLE
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+ALTER TABLE
+DO
+                       name                        | deleted_count 
+---------------------------------------------------+---------------
+ public.activities                                 |             0
+ public.activity_events                            |           129
+ public.bank_transfer_payments                     |             0
+ public.entity_comparison_statistics               |             0
+ public.entity_distribution_statistics             |             0
+ public.entity_market_statistics                   |             0
+ public.favorite_collection_items                  |             0
+ public.lead_entity_statistics                     |             0
+ public.lead_trend_snapshots                       |             0
+ public.listing_events                             |             0
+ public.listing_favorites                          |             0
+ public.listing_measurement_provenance             |             0
+ public.listing_publish_tokens                     |             1
+ public.listings_ontology_terms                    |          2189
+ public.market_cache_rebuild_logs                  |             1
+ public.market_combination_distribution_statistics |             0
+ public.market_combination_statistics              |             0
+ public.market_comparisons                         |             0
+ public.market_distribution_statistics             |             0
+ public.market_snapshots                           |             0
+ public.market_statistics                          |             0
+ public.notifications                              |             0
+ public.payment_reviewers                          |             1
+ public.promotion_events                           |            23
+ public.promotion_intelligence_evidence            |             0
+ public.properties                                 |             5
+ public.property_comparisons                       |             1
+ public.property_notes                             |             0
+ public.purchase_request_events                    |            21
+ public.push_subscriptions                         |             1
+ public.sale_listing                               |             8
+ public.saved_analyses                             |             3
+ public.saved_search_alert_deliveries              |             0
+ public.search_combination_statistics              |             0
+ public.search_entity_statistics                   |             0
+ public.search_market_statistics                   |             0
+ public.search_ontology_terms                      |             0
+ public.search_trend_snapshots                     |             0
+ public.sinpe_payments                             |             5
+ public.user_favorites                             |             0
+ public.user_recent_activity                       |             0
+ public.verified_users                             |             2
+ public.verified_whatsapp_numbers                  |             0
+ public.whatsapp_otps                              |            55
+ public.favorite_collections                       |             0
+ public.listing_entitlements                       |            10
+ public.saved_searches                             |             0
+ public.search_statistics                          |             0
+ public.user_subscriptions                         |             7
+ public.purchase_requests                          |            10
+ public.listings                                   |           146
+(51 rows)
+
+                name                |  n   |              digest              
+------------------------------------+------+----------------------------------
+ auth.users                         |    2 | 15a988f3ac977dc8a8a05d285562d432
+ public.account_permissions         |    3 | 5bfa444af522201086e1857e1c1230eb
+ public.add_on_product_packages     |   46 | 08be02cadb22257507d6525567275186
+ public.add_on_products             |   13 | 8cbc35e707b49138d5f3e20a20dd9359
+ public.engines                     |    7 | dd06365f9c482aeff5ce5f87adc4613b
+ public.entitlements                |   14 | 35932fc9c5a35d1f5fcd0093fadef4d4
+ public.fx_rates                    |   25 | ffbdd8f052c0ca35af15b4c651512db8
+ public.geography_import            |  492 | 0a175f9d0889818ed25732c60176e382
+ public.ontology_relationships      | 4690 | 0cfe5fdff9e58af56e1b734ca476b447
+ public.ontology_terms              |  677 | 1767aba6cf2c40f681e9efae30849054
+ public.package_account_permissions |    7 | 02bbf4f85b58e4b22730d47a01d1f199
+ public.package_engines             |   18 | a8feb05dfb04d5e41e76a5023ede94bc
+ public.package_entitlements        |   34 | d9b427e9407cdf0e2fce405a0dc027a3
+ public.package_limits              |    4 | 6b714c28c6750f26a5eb05a9f47d278d
+ public.packages                    |    4 | 877639f3156fe472b3e13cb59a27dedd
+(15 rows)
+
+          checkpoint          
+------------------------------
+ S11_PURGE_PRECOMMIT_VERIFIED
+(1 row)
+
+COMMIT
+     checkpoint      
+---------------------
+ S11_PURGE_COMMITTED
+(1 row)
+

@@ -55,7 +55,6 @@ export const PRICE_METER_PROPERTY_POSITION_ALLOWED_EVIDENCE = [
   'difference_from_tail_threshold',
   'percent_difference_from_tail_threshold',
   'construction_to_land_ratio',
-  'confidence',
 ] as const
 
 

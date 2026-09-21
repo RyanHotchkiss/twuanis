@@ -1,0 +1,19 @@
+{
+  "new_rows": [
+    {
+      "id": "38834e5c-7476-4717-a43d-9eb2cbddaa2e",
+      "rate": 449.24,
+      "source": "BCCR",
+      "rate_type": "reference_sale",
+      "created_at": "2026-09-19T17:54:29.11034+00:00",
+      "retrieved_at": "2026-09-19T17:54:29.11034+00:00",
+      "base_currency": "USD",
+      "effective_date": "2026-09-19",
+      "quote_currency": "CRC"
+    }
+  ],
+  "prior_rows": {
+    "count": 25,
+    "digest": "d7508fe53e370b2255330a4f398d8924"
+  }
+}

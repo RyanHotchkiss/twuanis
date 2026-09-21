@@ -1,0 +1,66 @@
+{
+  "columns": [
+    {
+      "name": "id",
+      "type": "uuid",
+      "default": "gen_random_uuid()",
+      "not_null": true
+    },
+    {
+      "name": "phone",
+      "type": "text",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "token",
+      "type": "text",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "listing_data",
+      "type": "jsonb",
+      "default": null,
+      "not_null": true
+    },
+    {
+      "name": "verified",
+      "type": "boolean",
+      "default": "false",
+      "not_null": false
+    },
+    {
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "default": "now()",
+      "not_null": false
+    },
+    {
+      "name": "claimed_at",
+      "type": "timestamp with time zone",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "name": "published_at",
+      "type": "timestamp with time zone",
+      "default": null,
+      "not_null": false
+    },
+    {
+      "name": "published_listing_id",
+      "type": "uuid",
+      "default": null,
+      "not_null": false
+    }
+  ],
+  "triggers": [
+    "CREATE TRIGGER s7_token_snapshot_guard BEFORE UPDATE ON public.listing_publish_tokens FOR EACH ROW EXECUTE FUNCTION twuanis_canonical_private.guard_token_snapshot()"
+  ],
+  "constraints": [
+    "PRIMARY KEY (id)",
+    "FOREIGN KEY (published_listing_id) REFERENCES listings(id) ON DELETE SET NULL",
+    "UNIQUE (token)"
+  ]
+}

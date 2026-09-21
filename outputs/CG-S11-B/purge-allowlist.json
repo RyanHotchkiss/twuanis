@@ -1,0 +1,1079 @@
+{
+  "status": "Reviewed scope/order from union of query-71 and query-77; execution still requires catalog drift checks",
+  "tables": [
+    {
+      "table": "public.account_permissions",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.activities",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.activity_events",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.add_on_product_packages",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.add_on_products",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.bank_transfer_payments",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.engines",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.entitlements",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.entity_comparison_statistics",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.entity_distribution_statistics",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.entity_market_statistics",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.favorite_collection_items",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.favorite_collections",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.fx_rates",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.geography_import",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.lead_entity_statistics",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.lead_trend_snapshots",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.listing_entitlements",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.listing_events",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.listing_favorites",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.listing_measurement_provenance",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.listing_publish_tokens",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.listings",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.listings_ontology_terms",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.market_cache_rebuild_logs",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.market_combination_distribution_statistics",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.market_combination_statistics",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.market_comparisons",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.market_distribution_statistics",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.market_snapshots",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.market_statistics",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.notifications",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.ontology_relationships",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.ontology_terms",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.package_account_permissions",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.package_engines",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.package_entitlements",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.package_limits",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.packages",
+      "disposition": "PRESERVE SYSTEM / REFERENCE / CONFIGURATION",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.payment_reviewers",
+      "disposition": "DELETE IDENTITY-BOUND TEST ASSIGNMENTS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.promotion_events",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.promotion_intelligence_evidence",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.properties",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.property_comparisons",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.property_notes",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.purchase_request_events",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.purchase_requests",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.push_subscriptions",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.sale_listing",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.saved_analyses",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.saved_search_alert_deliveries",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.saved_searches",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.search_combination_statistics",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.search_entity_statistics",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.search_market_statistics",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.search_ontology_terms",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.search_statistics",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.search_trend_snapshots",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.sinpe_payments",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.user_favorites",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.user_recent_activity",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.user_subscriptions",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": true
+    },
+    {
+      "table": "public.verified_users",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.verified_whatsapp_numbers",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    },
+    {
+      "table": "public.whatsapp_otps",
+      "disposition": "DELETE DISPOSABLE ROWS",
+      "fk_scope_previously_exported": false
+    }
+  ],
+  "auth": "PRESERVE all auth identities and subsystem objects",
+  "target_private_tables": "new canonical structures: do not seed disposable assignments; exact final allowlist still pending",
+  "purge_order": [
+    "public.activities",
+    "public.activity_events",
+    "public.bank_transfer_payments",
+    "public.entity_comparison_statistics",
+    "public.entity_distribution_statistics",
+    "public.entity_market_statistics",
+    "public.favorite_collection_items",
+    "public.lead_entity_statistics",
+    "public.lead_trend_snapshots",
+    "public.listing_events",
+    "public.listing_favorites",
+    "public.listing_measurement_provenance",
+    "public.listing_publish_tokens",
+    "public.listings_ontology_terms",
+    "public.market_cache_rebuild_logs",
+    "public.market_combination_distribution_statistics",
+    "public.market_combination_statistics",
+    "public.market_comparisons",
+    "public.market_distribution_statistics",
+    "public.market_snapshots",
+    "public.market_statistics",
+    "public.notifications",
+    "public.payment_reviewers",
+    "public.promotion_events",
+    "public.promotion_intelligence_evidence",
+    "public.properties",
+    "public.property_comparisons",
+    "public.property_notes",
+    "public.purchase_request_events",
+    "public.push_subscriptions",
+    "public.sale_listing",
+    "public.saved_analyses",
+    "public.saved_search_alert_deliveries",
+    "public.search_combination_statistics",
+    "public.search_entity_statistics",
+    "public.search_market_statistics",
+    "public.search_ontology_terms",
+    "public.search_trend_snapshots",
+    "public.sinpe_payments",
+    "public.user_favorites",
+    "public.user_recent_activity",
+    "public.verified_users",
+    "public.verified_whatsapp_numbers",
+    "public.whatsapp_otps",
+    "public.favorite_collections",
+    "public.listing_entitlements",
+    "public.saved_searches",
+    "public.search_statistics",
+    "public.user_subscriptions",
+    "public.purchase_requests",
+    "public.listings"
+  ],
+  "foreign_keys": [
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "activities_user_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.activities"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "activity_events_user_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE SET NULL",
+      "delete_action": "n",
+      "initially_deferred": false,
+      "child": "public.activity_events"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "bank_transfer_payments_reviewed_by_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (reviewed_by) REFERENCES auth.users(id) ON DELETE SET NULL",
+      "delete_action": "n",
+      "initially_deferred": false,
+      "child": "public.bank_transfer_payments"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "bank_transfer_payments_user_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.bank_transfer_payments"
+    },
+    {
+      "parent": "public.purchase_requests",
+      "validated": true,
+      "constraint": "bank_transfer_payments_purchase_request_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (purchase_request_id) REFERENCES purchase_requests(id) ON DELETE RESTRICT",
+      "delete_action": "r",
+      "initially_deferred": false,
+      "child": "public.bank_transfer_payments"
+    },
+    {
+      "parent": "public.favorite_collections",
+      "validated": true,
+      "constraint": "favorite_collection_items_collection_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (collection_id) REFERENCES favorite_collections(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.favorite_collection_items"
+    },
+    {
+      "parent": "public.listings",
+      "validated": true,
+      "constraint": "favorite_collection_items_listing_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.favorite_collection_items"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "favorite_collections_user_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.favorite_collections"
+    },
+    {
+      "parent": "public.add_on_products",
+      "validated": true,
+      "constraint": "listing_entitlements_product_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (product_id) REFERENCES add_on_products(id) ON DELETE RESTRICT",
+      "delete_action": "r",
+      "initially_deferred": false,
+      "child": "public.listing_entitlements"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "listing_entitlements_assigned_by_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (assigned_by) REFERENCES auth.users(id) ON DELETE SET NULL",
+      "delete_action": "n",
+      "initially_deferred": false,
+      "child": "public.listing_entitlements"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "listing_entitlements_owner_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (owner_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.listing_entitlements"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "listing_entitlements_revoked_by_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (revoked_by) REFERENCES auth.users(id) ON DELETE SET NULL",
+      "delete_action": "n",
+      "initially_deferred": false,
+      "child": "public.listing_entitlements"
+    },
+    {
+      "parent": "public.listings",
+      "validated": true,
+      "constraint": "listing_entitlements_listing_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.listing_entitlements"
+    },
+    {
+      "parent": "public.purchase_requests",
+      "validated": true,
+      "constraint": "listing_entitlements_purchase_request_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (purchase_request_id) REFERENCES purchase_requests(id) ON DELETE RESTRICT",
+      "delete_action": "r",
+      "initially_deferred": false,
+      "child": "public.listing_entitlements"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "listing_events_user_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE SET NULL",
+      "delete_action": "n",
+      "initially_deferred": false,
+      "child": "public.listing_events"
+    },
+    {
+      "parent": "public.listings",
+      "validated": true,
+      "constraint": "listing_events_listing_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.listing_events"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "listing_favorites_user_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.listing_favorites"
+    },
+    {
+      "parent": "public.listings",
+      "validated": true,
+      "constraint": "listing_favorites_listing_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.listing_favorites"
+    },
+    {
+      "parent": "public.listings",
+      "validated": true,
+      "constraint": "listing_measurement_provenance_listing_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.listing_measurement_provenance"
+    },
+    {
+      "parent": "public.listings",
+      "validated": true,
+      "constraint": "listing_publish_tokens_published_listing_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (published_listing_id) REFERENCES listings(id) ON DELETE SET NULL",
+      "delete_action": "n",
+      "initially_deferred": false,
+      "child": "public.listing_publish_tokens"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "listings_owner_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (owner_id) REFERENCES auth.users(id) ON DELETE SET NULL",
+      "delete_action": "n",
+      "initially_deferred": false,
+      "child": "public.listings"
+    },
+    {
+      "parent": "public.listings",
+      "validated": true,
+      "constraint": "listings_ontology_terms_listing_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.listings_ontology_terms"
+    },
+    {
+      "parent": "public.ontology_terms",
+      "validated": true,
+      "constraint": "listings_ontology_terms_ontology_term_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (ontology_term_id) REFERENCES ontology_terms(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.listings_ontology_terms"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "market_comparisons_user_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.market_comparisons"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "notifications_user_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.notifications"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "payment_reviewers_user_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.payment_reviewers"
+    },
+    {
+      "parent": "public.add_on_products",
+      "validated": true,
+      "constraint": "promotion_events_product_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (product_id) REFERENCES add_on_products(id)",
+      "delete_action": "a",
+      "initially_deferred": false,
+      "child": "public.promotion_events"
+    },
+    {
+      "parent": "public.listing_entitlements",
+      "validated": true,
+      "constraint": "promotion_events_entitlement_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (entitlement_id) REFERENCES listing_entitlements(id)",
+      "delete_action": "a",
+      "initially_deferred": false,
+      "child": "public.promotion_events"
+    },
+    {
+      "parent": "public.listings",
+      "validated": true,
+      "constraint": "promotion_events_listing_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id)",
+      "delete_action": "a",
+      "initially_deferred": false,
+      "child": "public.promotion_events"
+    },
+    {
+      "parent": "public.purchase_requests",
+      "validated": true,
+      "constraint": "promotion_events_purchase_request_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (purchase_request_id) REFERENCES purchase_requests(id)",
+      "delete_action": "a",
+      "initially_deferred": false,
+      "child": "public.promotion_events"
+    },
+    {
+      "parent": "public.add_on_products",
+      "validated": true,
+      "constraint": "promotion_intelligence_evidence_product_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (product_id) REFERENCES add_on_products(id)",
+      "delete_action": "a",
+      "initially_deferred": false,
+      "child": "public.promotion_intelligence_evidence"
+    },
+    {
+      "parent": "public.listing_entitlements",
+      "validated": true,
+      "constraint": "promotion_intelligence_evidence_entitlement_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (entitlement_id) REFERENCES listing_entitlements(id)",
+      "delete_action": "a",
+      "initially_deferred": false,
+      "child": "public.promotion_intelligence_evidence"
+    },
+    {
+      "parent": "public.listings",
+      "validated": true,
+      "constraint": "promotion_intelligence_evidence_listing_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id)",
+      "delete_action": "a",
+      "initially_deferred": false,
+      "child": "public.promotion_intelligence_evidence"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "property_comparisons_user_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.property_comparisons"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "property_notes_user_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.property_notes"
+    },
+    {
+      "parent": "public.listings",
+      "validated": true,
+      "constraint": "property_notes_listing_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.property_notes"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "purchase_request_events_actor_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (actor_id) REFERENCES auth.users(id) ON DELETE SET NULL",
+      "delete_action": "n",
+      "initially_deferred": false,
+      "child": "public.purchase_request_events"
+    },
+    {
+      "parent": "public.purchase_requests",
+      "validated": true,
+      "constraint": "purchase_request_events_purchase_request_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (purchase_request_id) REFERENCES purchase_requests(id) ON DELETE RESTRICT",
+      "delete_action": "r",
+      "initially_deferred": false,
+      "child": "public.purchase_request_events"
+    },
+    {
+      "parent": "public.add_on_products",
+      "validated": true,
+      "constraint": "purchase_requests_add_on_product_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (add_on_product_id) REFERENCES add_on_products(id) ON DELETE RESTRICT",
+      "delete_action": "r",
+      "initially_deferred": false,
+      "child": "public.purchase_requests"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "purchase_requests_approved_by_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (approved_by) REFERENCES auth.users(id) ON DELETE SET NULL",
+      "delete_action": "n",
+      "initially_deferred": false,
+      "child": "public.purchase_requests"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "purchase_requests_cancelled_by_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (cancelled_by) REFERENCES auth.users(id) ON DELETE SET NULL",
+      "delete_action": "n",
+      "initially_deferred": false,
+      "child": "public.purchase_requests"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "purchase_requests_owner_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (owner_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.purchase_requests"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "purchase_requests_rejected_by_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (rejected_by) REFERENCES auth.users(id) ON DELETE SET NULL",
+      "delete_action": "n",
+      "initially_deferred": false,
+      "child": "public.purchase_requests"
+    },
+    {
+      "parent": "public.listings",
+      "validated": true,
+      "constraint": "purchase_requests_listing_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE RESTRICT",
+      "delete_action": "r",
+      "initially_deferred": false,
+      "child": "public.purchase_requests"
+    },
+    {
+      "parent": "public.packages",
+      "validated": true,
+      "constraint": "purchase_requests_package_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (package_id) REFERENCES packages(id) ON DELETE RESTRICT",
+      "delete_action": "r",
+      "initially_deferred": false,
+      "child": "public.purchase_requests"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "push_subscriptions_user_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.push_subscriptions"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "saved_analyses_user_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.saved_analyses"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "saved_search_alert_deliveries_user_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.saved_search_alert_deliveries"
+    },
+    {
+      "parent": "public.listings",
+      "validated": true,
+      "constraint": "saved_search_alert_deliveries_listing_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.saved_search_alert_deliveries"
+    },
+    {
+      "parent": "public.saved_searches",
+      "validated": true,
+      "constraint": "saved_search_alert_deliveries_saved_search_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (saved_search_id) REFERENCES saved_searches(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.saved_search_alert_deliveries"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "saved_searches_user_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.saved_searches"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "sinpe_payments_reviewed_by_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (reviewed_by) REFERENCES auth.users(id) ON DELETE SET NULL",
+      "delete_action": "n",
+      "initially_deferred": false,
+      "child": "public.sinpe_payments"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "sinpe_payments_user_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.sinpe_payments"
+    },
+    {
+      "parent": "public.purchase_requests",
+      "validated": true,
+      "constraint": "sinpe_payments_purchase_request_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (purchase_request_id) REFERENCES purchase_requests(id) ON DELETE RESTRICT",
+      "delete_action": "r",
+      "initially_deferred": false,
+      "child": "public.sinpe_payments"
+    },
+    {
+      "parent": "public.user_subscriptions",
+      "validated": true,
+      "constraint": "sinpe_payments_subscription_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (subscription_id) REFERENCES user_subscriptions(id) ON DELETE RESTRICT",
+      "delete_action": "r",
+      "initially_deferred": false,
+      "child": "public.sinpe_payments"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "user_favorites_user_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.user_favorites"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "user_recent_activity_user_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.user_recent_activity"
+    },
+    {
+      "parent": "auth.users",
+      "validated": true,
+      "constraint": "user_subscriptions_user_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE",
+      "delete_action": "c",
+      "initially_deferred": false,
+      "child": "public.user_subscriptions"
+    },
+    {
+      "parent": "public.packages",
+      "validated": true,
+      "constraint": "user_subscriptions_package_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (package_id) REFERENCES packages(id) ON DELETE RESTRICT",
+      "delete_action": "r",
+      "initially_deferred": false,
+      "child": "public.user_subscriptions"
+    },
+    {
+      "parent": "public.purchase_requests",
+      "validated": true,
+      "constraint": "user_subscriptions_purchase_request_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (purchase_request_id) REFERENCES purchase_requests(id) ON DELETE RESTRICT",
+      "delete_action": "r",
+      "initially_deferred": false,
+      "child": "public.user_subscriptions"
+    },
+    {
+      "child": "public.entity_distribution_statistics",
+      "parent": "public.ontology_terms",
+      "validated": true,
+      "constraint": "fk_distribution_entity",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (ontology_term_id) REFERENCES ontology_terms(id)",
+      "initially_deferred": false
+    },
+    {
+      "child": "public.entity_distribution_statistics",
+      "parent": "public.ontology_terms",
+      "validated": true,
+      "constraint": "fk_distribution_related",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (related_term_id) REFERENCES ontology_terms(id)",
+      "initially_deferred": false
+    },
+    {
+      "child": "public.entity_market_statistics",
+      "parent": "public.ontology_terms",
+      "validated": true,
+      "constraint": "fk_entity_market_statistics_term",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (ontology_term_id) REFERENCES ontology_terms(id)",
+      "initially_deferred": false
+    },
+    {
+      "child": "public.lead_entity_statistics",
+      "parent": "public.ontology_terms",
+      "validated": true,
+      "constraint": "lead_entity_statistics_ontology_term_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (ontology_term_id) REFERENCES ontology_terms(id)",
+      "initially_deferred": false
+    },
+    {
+      "child": "public.lead_trend_snapshots",
+      "parent": "public.ontology_terms",
+      "validated": true,
+      "constraint": "lead_trend_snapshots_ontology_term_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (ontology_term_id) REFERENCES ontology_terms(id)",
+      "initially_deferred": false
+    },
+    {
+      "child": "public.search_entity_statistics",
+      "parent": "public.ontology_terms",
+      "validated": true,
+      "constraint": "search_entity_statistics_ontology_term_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (ontology_term_id) REFERENCES ontology_terms(id)",
+      "initially_deferred": false
+    },
+    {
+      "child": "public.search_market_statistics",
+      "parent": "public.ontology_terms",
+      "validated": true,
+      "constraint": "search_market_statistics_ontology_term_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (ontology_term_id) REFERENCES ontology_terms(id)",
+      "initially_deferred": false
+    },
+    {
+      "child": "public.search_ontology_terms",
+      "parent": "public.search_statistics",
+      "validated": true,
+      "constraint": "fk_search_ontology_search",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (search_id) REFERENCES search_statistics(id) ON DELETE CASCADE",
+      "initially_deferred": false
+    },
+    {
+      "child": "public.search_ontology_terms",
+      "parent": "public.ontology_terms",
+      "validated": true,
+      "constraint": "fk_search_ontology_term",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (ontology_term_id) REFERENCES ontology_terms(id) ON DELETE CASCADE",
+      "initially_deferred": false
+    },
+    {
+      "child": "public.search_trend_snapshots",
+      "parent": "public.ontology_terms",
+      "validated": true,
+      "constraint": "search_trend_snapshots_ontology_term_id_fkey",
+      "deferrable": false,
+      "definition": "FOREIGN KEY (ontology_term_id) REFERENCES ontology_terms(id)",
+      "initially_deferred": false
+    }
+  ],
+  "preserve_auth": "all identities; auth subsystem excluded",
+  "timing": "BEFORE canonical installation, during maintained write quiescence"
+}

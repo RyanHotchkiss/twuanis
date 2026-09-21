@@ -1,0 +1,8 @@
+{
+  "source": "outputs/CG-S11-B/retained-auth-setup.sql",
+  "sha256": "8ca119b5a404f0450090973fa9c813a10036f39728c0241a63ed4a64298ced72",
+  "start": "2026-09-19T16:09:50.777882+00:00",
+  "end": "2026-09-19T16:09:51.882201+00:00",
+  "exit_code": 0,
+  "commit_output": true
+}

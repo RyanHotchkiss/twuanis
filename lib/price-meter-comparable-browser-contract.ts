@@ -130,10 +130,6 @@ export type PriceMeterComparableBrowserPresentation = {
 }
 
 
-export type PriceMeterComparableBrowserConfidence = {
-  score:
-    90 | 75 | 60 | 35
-}
 
 
 export type PriceMeterComparableBrowserDistribution = {
@@ -292,8 +288,6 @@ export type PriceMeterComparableBrowserSuccessEvidence =
     status:
       'ok'
 
-    confidence:
-      PriceMeterComparableBrowserConfidence
 
     distribution:
       PriceMeterComparableBrowserDistribution

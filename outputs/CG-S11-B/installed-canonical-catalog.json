@@ -1,0 +1,3611 @@
+{
+  "provenance": "Final disposable installation 003\u2013024 plus retained-auth setup; canonical-only tables, not a target catalog export. Full indexes/constraints/triggers reflect dynamic migration blocks.",
+  "tables": [
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "canonical_operation_receipts",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "default": "gen_random_uuid()",
+          "not_null": true
+        },
+        {
+          "name": "authority_kind",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "authority_identity",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "operation_type",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "request_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "payload_fingerprint",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "outcome",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "listing_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": false
+        },
+        {
+          "name": "result_code",
+          "type": "text",
+          "default": null,
+          "not_null": false
+        },
+        {
+          "name": "completed_at",
+          "type": "timestamp with time zone",
+          "default": "now()",
+          "not_null": true
+        },
+        {
+          "name": "result_revision",
+          "type": "bigint",
+          "default": null,
+          "not_null": false
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX canonical_operation_receipts_authority_kind_authority_ident_key ON public.canonical_operation_receipts USING btree (authority_kind, authority_identity, operation_type, request_id)",
+        "CREATE UNIQUE INDEX canonical_operation_receipts_pkey ON public.canonical_operation_receipts USING btree (id)",
+        "CREATE INDEX canonical_receipt_listing_idx ON public.canonical_operation_receipts USING btree (listing_id) WHERE (listing_id IS NOT NULL)"
+      ],
+      "triggers": [
+        {
+          "name": "reject_immutable_rows",
+          "state": "O",
+          "definition": "CREATE TRIGGER reject_immutable_rows BEFORE DELETE OR UPDATE ON public.canonical_operation_receipts FOR EACH ROW EXECUTE FUNCTION twuanis_canonical_private.reject_immutable_mutation()"
+        },
+        {
+          "name": "reject_immutable_truncate",
+          "state": "O",
+          "definition": "CREATE TRIGGER reject_immutable_truncate BEFORE TRUNCATE ON public.canonical_operation_receipts FOR EACH STATEMENT EXECUTE FUNCTION twuanis_canonical_private.reject_immutable_mutation()"
+        }
+      ],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "canonical_operation_receipts_authority_identity_check",
+          "definition": "CHECK ((((length(authority_identity) >= 1) AND (length(authority_identity) <= 256)) AND ((authority_identity COLLATE \"C\") ~ '[^[:space:]]'::text)))"
+        },
+        {
+          "name": "canonical_operation_receipts_authority_kind_authority_ident_key",
+          "definition": "UNIQUE (authority_kind, authority_identity, operation_type, request_id)"
+        },
+        {
+          "name": "canonical_operation_receipts_authority_kind_check",
+          "definition": "CHECK ((authority_kind = ANY (ARRAY['owner'::text, 'trusted'::text, 'system'::text, 'migration'::text])))"
+        },
+        {
+          "name": "canonical_operation_receipts_listing_id_fkey",
+          "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE RESTRICT"
+        },
+        {
+          "name": "canonical_operation_receipts_operation_type_check",
+          "definition": "CHECK ((operation_type ~ '^[a-z][a-z0-9_]{0,63}$'::text))"
+        },
+        {
+          "name": "canonical_operation_receipts_outcome_check",
+          "definition": "CHECK ((outcome = ANY (ARRAY['succeeded'::text, 'noop'::text, 'stale'::text, 'conflict'::text, 'rejected'::text])))"
+        },
+        {
+          "name": "canonical_operation_receipts_payload_fingerprint_check",
+          "definition": "CHECK ((payload_fingerprint ~ '^[0-9a-f]{64}$'::text))"
+        },
+        {
+          "name": "canonical_operation_receipts_pkey",
+          "definition": "PRIMARY KEY (id)"
+        },
+        {
+          "name": "canonical_operation_receipts_result_code_check",
+          "definition": "CHECK (((result_code IS NULL) OR ((length(result_code) >= 1) AND (length(result_code) <= 128))))"
+        },
+        {
+          "name": "canonical_operation_receipts_result_revision_check",
+          "definition": "CHECK ((result_revision >= 0))"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "capacity_policy_guard",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "type": "smallint",
+          "default": null,
+          "not_null": true
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX capacity_policy_guard_pkey ON public.capacity_policy_guard USING btree (id)"
+      ],
+      "triggers": [],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "capacity_policy_guard_id_check",
+          "definition": "CHECK ((id = 1))"
+        },
+        {
+          "name": "capacity_policy_guard_pkey",
+          "definition": "PRIMARY KEY (id)"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "listing_classification_rule_sets",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "default": "gen_random_uuid()",
+          "not_null": true
+        },
+        {
+          "name": "domain",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "version",
+          "type": "integer",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "recorded_at",
+          "type": "timestamp with time zone",
+          "default": "now()",
+          "not_null": true
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX listing_classification_rule_sets_domain_version_key ON public.listing_classification_rule_sets USING btree (domain, version)",
+        "CREATE UNIQUE INDEX listing_classification_rule_sets_pkey ON public.listing_classification_rule_sets USING btree (id)"
+      ],
+      "triggers": [
+        {
+          "name": "reject_immutable_rows",
+          "state": "O",
+          "definition": "CREATE TRIGGER reject_immutable_rows BEFORE DELETE OR UPDATE ON public.listing_classification_rule_sets FOR EACH ROW EXECUTE FUNCTION twuanis_canonical_private.reject_immutable_mutation()"
+        },
+        {
+          "name": "reject_immutable_truncate",
+          "state": "O",
+          "definition": "CREATE TRIGGER reject_immutable_truncate BEFORE TRUNCATE ON public.listing_classification_rule_sets FOR EACH STATEMENT EXECUTE FUNCTION twuanis_canonical_private.reject_immutable_mutation()"
+        }
+      ],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "listing_classification_rule_sets_domain_check",
+          "definition": "CHECK ((domain = ANY (ARRAY['property_area'::text, 'construction_area'::text, 'year_built'::text, 'bedrooms'::text, 'bathrooms'::text, 'parking'::text])))"
+        },
+        {
+          "name": "listing_classification_rule_sets_domain_version_key",
+          "definition": "UNIQUE (domain, version)"
+        },
+        {
+          "name": "listing_classification_rule_sets_pkey",
+          "definition": "PRIMARY KEY (id)"
+        },
+        {
+          "name": "listing_classification_rule_sets_version_check",
+          "definition": "CHECK ((version > 0))"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "listing_classification_rules",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "default": "gen_random_uuid()",
+          "not_null": true
+        },
+        {
+          "name": "rule_set_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "ontology_term_id",
+          "type": "bigint",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "bounds",
+          "type": "numrange",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "recorded_at",
+          "type": "timestamp with time zone",
+          "default": "now()",
+          "not_null": true
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX listing_classification_rules_pkey ON public.listing_classification_rules USING btree (id)",
+        "CREATE UNIQUE INDEX listing_classification_rules_rule_set_id_ontology_term_id_key ON public.listing_classification_rules USING btree (rule_set_id, ontology_term_id)",
+        "CREATE INDEX listing_classification_term_idx ON public.listing_classification_rules USING btree (ontology_term_id)"
+      ],
+      "triggers": [
+        {
+          "name": "reject_immutable_rows",
+          "state": "O",
+          "definition": "CREATE TRIGGER reject_immutable_rows BEFORE DELETE OR UPDATE ON public.listing_classification_rules FOR EACH ROW EXECUTE FUNCTION twuanis_canonical_private.reject_immutable_mutation()"
+        },
+        {
+          "name": "reject_immutable_truncate",
+          "state": "O",
+          "definition": "CREATE TRIGGER reject_immutable_truncate BEFORE TRUNCATE ON public.listing_classification_rules FOR EACH STATEMENT EXECUTE FUNCTION twuanis_canonical_private.reject_immutable_mutation()"
+        },
+        {
+          "name": "s3_sealed_rule_guard",
+          "state": "O",
+          "definition": "CREATE TRIGGER s3_sealed_rule_guard BEFORE INSERT ON public.listing_classification_rules FOR EACH ROW EXECUTE FUNCTION twuanis_canonical_private.s3_sealed_rule_guard()"
+        },
+        {
+          "name": "validate_classification_bounds",
+          "state": "O",
+          "definition": "CREATE TRIGGER validate_classification_bounds BEFORE INSERT ON public.listing_classification_rules FOR EACH ROW EXECUTE FUNCTION twuanis_canonical_private.validate_classification_rule()"
+        }
+      ],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "listing_classification_rules_bounds_check",
+          "definition": "CHECK ((NOT isempty(bounds)))"
+        },
+        {
+          "name": "listing_classification_rules_bounds_check1",
+          "definition": "CHECK ((twuanis_canonical_private.finite_numeric(lower(bounds)) AND twuanis_canonical_private.finite_numeric(upper(bounds))))"
+        },
+        {
+          "name": "listing_classification_rules_bounds_check2",
+          "definition": "CHECK ((((lower(bounds) IS NULL) OR (lower(bounds) >= (0)::numeric)) AND ((upper(bounds) IS NULL) OR (upper(bounds) >= (0)::numeric))))"
+        },
+        {
+          "name": "listing_classification_rules_ontology_term_id_fkey",
+          "definition": "FOREIGN KEY (ontology_term_id) REFERENCES ontology_terms(id) ON DELETE RESTRICT"
+        },
+        {
+          "name": "listing_classification_rules_pkey",
+          "definition": "PRIMARY KEY (id)"
+        },
+        {
+          "name": "listing_classification_rules_rule_set_id_fkey",
+          "definition": "FOREIGN KEY (rule_set_id) REFERENCES listing_classification_rule_sets(id) ON DELETE RESTRICT"
+        },
+        {
+          "name": "listing_classification_rules_rule_set_id_ontology_term_id_key",
+          "definition": "UNIQUE (rule_set_id, ontology_term_id)"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "listing_fact_evidence",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "listing_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "dimension",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "kind",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "exact_value",
+          "type": "numeric",
+          "default": null,
+          "not_null": false
+        },
+        {
+          "name": "category_term_id",
+          "type": "bigint",
+          "default": null,
+          "not_null": false
+        },
+        {
+          "name": "range_lower",
+          "type": "numeric",
+          "default": null,
+          "not_null": false
+        },
+        {
+          "name": "range_upper",
+          "type": "numeric",
+          "default": null,
+          "not_null": false
+        },
+        {
+          "name": "lower_inclusive",
+          "type": "boolean",
+          "default": null,
+          "not_null": false
+        },
+        {
+          "name": "upper_inclusive",
+          "type": "boolean",
+          "default": null,
+          "not_null": false
+        },
+        {
+          "name": "evidence_source",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "evidence_reference",
+          "type": "text",
+          "default": null,
+          "not_null": false
+        },
+        {
+          "name": "observed_at",
+          "type": "timestamp with time zone",
+          "default": null,
+          "not_null": false
+        },
+        {
+          "name": "recorded_at",
+          "type": "timestamp with time zone",
+          "default": "now()",
+          "not_null": true
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX listing_fact_category_idx ON public.listing_fact_evidence USING btree (category_term_id) WHERE (category_term_id IS NOT NULL)",
+        "CREATE UNIQUE INDEX listing_fact_evidence_pkey ON public.listing_fact_evidence USING btree (listing_id, dimension)"
+      ],
+      "triggers": [
+        {
+          "name": "validate_fact_category",
+          "state": "O",
+          "definition": "CREATE TRIGGER validate_fact_category BEFORE INSERT OR UPDATE ON public.listing_fact_evidence FOR EACH ROW EXECUTE FUNCTION twuanis_canonical_private.validate_new_term_reference()"
+        }
+      ],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "listing_fact_evidence_category_term_id_fkey",
+          "definition": "FOREIGN KEY (category_term_id) REFERENCES ontology_terms(id) ON DELETE RESTRICT"
+        },
+        {
+          "name": "listing_fact_evidence_check",
+          "definition": "CHECK ((((kind = 'exact'::text) AND (exact_value IS NOT NULL) AND (category_term_id IS NULL) AND (range_lower IS NULL) AND (range_upper IS NULL) AND (lower_inclusive IS NULL) AND (upper_inclusive IS NULL)) OR ((kind = 'category'::text) AND (exact_value IS NULL) AND (category_term_id IS NOT NULL) AND (range_lower IS NULL) AND (range_upper IS NULL) AND (lower_inclusive IS NULL) AND (upper_inclusive IS NULL) AND (dimension <> 'distance_to_paved_road'::text)) OR ((kind = 'range'::text) AND (exact_value IS NULL) AND (category_term_id IS NULL) AND ((range_lower IS NOT NULL) OR (range_upper IS NOT NULL)) AND (lower_inclusive IS NOT NULL) AND (upper_inclusive IS NOT NULL) AND ((range_lower IS NOT NULL) OR (NOT lower_inclusive)) AND ((range_upper IS NOT NULL) OR (NOT upper_inclusive)) AND (NOT isempty(numrange(range_lower, range_upper, (\nCASE\n    WHEN lower_inclusive THEN '['::text\n    ELSE '('::text\nEND ||\nCASE\n    WHEN upper_inclusive THEN ']'::text\n    ELSE ')'::text\nEND)))))))"
+        },
+        {
+          "name": "listing_fact_evidence_check1",
+          "definition": "CHECK ((twuanis_canonical_private.finite_numeric(exact_value) AND twuanis_canonical_private.finite_numeric(range_lower) AND twuanis_canonical_private.finite_numeric(range_upper)))"
+        },
+        {
+          "name": "listing_fact_evidence_check2",
+          "definition": "CHECK ((((exact_value IS NULL) OR (exact_value >= (0)::numeric)) AND ((range_lower IS NULL) OR (range_lower >= (0)::numeric)) AND ((range_upper IS NULL) OR (range_upper >= (0)::numeric))))"
+        },
+        {
+          "name": "listing_fact_evidence_check3",
+          "definition": "CHECK (((dimension <> 'bathrooms'::text) OR (kind <> 'exact'::text) OR (exact_value > (0)::numeric)))"
+        },
+        {
+          "name": "listing_fact_evidence_check4",
+          "definition": "CHECK (((dimension <> ALL (ARRAY['bedrooms'::text, 'parking'::text, 'year_built'::text])) OR (((exact_value IS NULL) OR (exact_value = trunc(exact_value))) AND ((range_lower IS NULL) OR (range_lower = trunc(range_lower))) AND ((range_upper IS NULL) OR (range_upper = trunc(range_upper))))))"
+        },
+        {
+          "name": "listing_fact_evidence_check5",
+          "definition": "CHECK (((dimension <> 'year_built'::text) OR (((exact_value IS NULL) OR ((exact_value >= (1)::numeric) AND (exact_value <= (9999)::numeric))) AND ((range_lower IS NULL) OR ((range_lower >= (1)::numeric) AND (range_lower <= (9999)::numeric))) AND ((range_upper IS NULL) OR ((range_upper >= (1)::numeric) AND (range_upper <= (9999)::numeric))))))"
+        },
+        {
+          "name": "listing_fact_evidence_dimension_check",
+          "definition": "CHECK ((dimension = ANY (ARRAY['bedrooms'::text, 'bathrooms'::text, 'parking'::text, 'year_built'::text, 'distance_to_paved_road'::text])))"
+        },
+        {
+          "name": "listing_fact_evidence_evidence_reference_check",
+          "definition": "CHECK (((evidence_reference IS NULL) OR ((length(evidence_reference) >= 1) AND (length(evidence_reference) <= 1024))))"
+        },
+        {
+          "name": "listing_fact_evidence_evidence_source_check",
+          "definition": "CHECK ((evidence_source = ANY (ARRAY['owner'::text, 'source'::text, 'manual'::text, 'migration'::text])))"
+        },
+        {
+          "name": "listing_fact_evidence_kind_check",
+          "definition": "CHECK ((kind = ANY (ARRAY['exact'::text, 'category'::text, 'range'::text])))"
+        },
+        {
+          "name": "listing_fact_evidence_listing_id_fkey",
+          "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE RESTRICT"
+        },
+        {
+          "name": "listing_fact_evidence_pkey",
+          "definition": "PRIMARY KEY (listing_id, dimension)"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "listing_lifecycle_events",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "default": "gen_random_uuid()",
+          "not_null": true
+        },
+        {
+          "name": "listing_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "operation_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "listing_revision",
+          "type": "bigint",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "event_type",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "previous_state",
+          "type": "text",
+          "default": null,
+          "not_null": false
+        },
+        {
+          "name": "resulting_state",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "recorded_at",
+          "type": "timestamp with time zone",
+          "default": "now()",
+          "not_null": true
+        },
+        {
+          "name": "actor_kind",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "actor_identity",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "reason",
+          "type": "text",
+          "default": null,
+          "not_null": false
+        },
+        {
+          "name": "publication_expires_at",
+          "type": "timestamp with time zone",
+          "default": null,
+          "not_null": false
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX listing_lifecycle_chronology_idx ON public.listing_lifecycle_events USING btree (listing_id, listing_revision, recorded_at)",
+        "CREATE UNIQUE INDEX listing_lifecycle_events_operation_id_event_type_key ON public.listing_lifecycle_events USING btree (operation_id, event_type)",
+        "CREATE UNIQUE INDEX listing_lifecycle_events_pkey ON public.listing_lifecycle_events USING btree (id)"
+      ],
+      "triggers": [
+        {
+          "name": "reject_immutable_rows",
+          "state": "O",
+          "definition": "CREATE TRIGGER reject_immutable_rows BEFORE DELETE OR UPDATE ON public.listing_lifecycle_events FOR EACH ROW EXECUTE FUNCTION twuanis_canonical_private.reject_immutable_mutation()"
+        },
+        {
+          "name": "reject_immutable_truncate",
+          "state": "O",
+          "definition": "CREATE TRIGGER reject_immutable_truncate BEFORE TRUNCATE ON public.listing_lifecycle_events FOR EACH STATEMENT EXECUTE FUNCTION twuanis_canonical_private.reject_immutable_mutation()"
+        }
+      ],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "listing_lifecycle_events_actor_identity_check",
+          "definition": "CHECK ((((length(actor_identity) >= 1) AND (length(actor_identity) <= 256)) AND ((actor_identity COLLATE \"C\") ~ '[^[:space:]]'::text)))"
+        },
+        {
+          "name": "listing_lifecycle_events_actor_kind_check",
+          "definition": "CHECK ((actor_kind = ANY (ARRAY['owner'::text, 'trusted'::text, 'system'::text, 'migration'::text])))"
+        },
+        {
+          "name": "listing_lifecycle_events_check",
+          "definition": "CHECK ((((event_type = 'create'::text) AND (previous_state IS NULL) AND (resulting_state = 'draft'::text)) OR ((previous_state IS NOT NULL) AND (((event_type = 'publish'::text) AND (previous_state = 'draft'::text) AND (resulting_state = 'active'::text)) OR ((event_type = 'renew'::text) AND (previous_state = ANY (ARRAY['active'::text, 'expired'::text])) AND (resulting_state = 'active'::text)) OR ((event_type = 'unpublish'::text) AND (previous_state = 'active'::text) AND (resulting_state = 'draft'::text)) OR ((event_type = 'expire'::text) AND (previous_state = 'active'::text) AND (resulting_state = 'expired'::text)) OR ((event_type = 'archive'::text) AND (previous_state = ANY (ARRAY['draft'::text, 'active'::text, 'expired'::text])) AND (resulting_state = 'archived'::text)) OR ((event_type = 'restore'::text) AND (previous_state = ANY (ARRAY['archived'::text, 'deleted'::text])) AND (resulting_state = 'draft'::text)) OR ((event_type = 'delete'::text) AND (previous_state = ANY (ARRAY['draft'::text, 'active'::text, 'expired'::text, 'archived'::text])) AND (resulting_state = 'deleted'::text))))))"
+        },
+        {
+          "name": "listing_lifecycle_events_event_type_check",
+          "definition": "CHECK ((event_type = ANY (ARRAY['create'::text, 'publish'::text, 'renew'::text, 'unpublish'::text, 'expire'::text, 'archive'::text, 'restore'::text, 'delete'::text])))"
+        },
+        {
+          "name": "listing_lifecycle_events_listing_id_fkey",
+          "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE RESTRICT"
+        },
+        {
+          "name": "listing_lifecycle_events_listing_revision_check",
+          "definition": "CHECK ((listing_revision >= 0))"
+        },
+        {
+          "name": "listing_lifecycle_events_operation_id_event_type_key",
+          "definition": "UNIQUE (operation_id, event_type)"
+        },
+        {
+          "name": "listing_lifecycle_events_operation_id_fkey",
+          "definition": "FOREIGN KEY (operation_id) REFERENCES canonical_operation_receipts(id) ON DELETE RESTRICT"
+        },
+        {
+          "name": "listing_lifecycle_events_pkey",
+          "definition": "PRIMARY KEY (id)"
+        },
+        {
+          "name": "listing_lifecycle_events_previous_state_check",
+          "definition": "CHECK ((previous_state = ANY (ARRAY['draft'::text, 'active'::text, 'expired'::text, 'archived'::text, 'deleted'::text])))"
+        },
+        {
+          "name": "listing_lifecycle_events_reason_check",
+          "definition": "CHECK (((reason IS NULL) OR ((length(reason) >= 1) AND (length(reason) <= 1024))))"
+        },
+        {
+          "name": "listing_lifecycle_events_resulting_state_check",
+          "definition": "CHECK ((resulting_state = ANY (ARRAY['draft'::text, 'active'::text, 'expired'::text, 'archived'::text, 'deleted'::text])))"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "listing_membership_origins",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "listing_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "ontology_term_id",
+          "type": "bigint",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "origin_domain",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "classification_rule_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": false
+        },
+        {
+          "name": "recorded_at",
+          "type": "timestamp with time zone",
+          "default": "now()",
+          "not_null": true
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX listing_membership_origin_rule_idx ON public.listing_membership_origins USING btree (classification_rule_id) WHERE (classification_rule_id IS NOT NULL)",
+        "CREATE INDEX listing_membership_origin_term_idx ON public.listing_membership_origins USING btree (ontology_term_id)",
+        "CREATE UNIQUE INDEX listing_membership_origins_pkey ON public.listing_membership_origins USING btree (listing_id, ontology_term_id, origin_domain)"
+      ],
+      "triggers": [],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "listing_membership_origins_classification_rule_id_fkey",
+          "definition": "FOREIGN KEY (classification_rule_id) REFERENCES listing_classification_rules(id) ON DELETE RESTRICT"
+        },
+        {
+          "name": "listing_membership_origins_listing_id_fkey",
+          "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE RESTRICT"
+        },
+        {
+          "name": "listing_membership_origins_ontology_term_id_fkey",
+          "definition": "FOREIGN KEY (ontology_term_id) REFERENCES ontology_terms(id) ON DELETE RESTRICT"
+        },
+        {
+          "name": "listing_membership_origins_origin_domain_check",
+          "definition": "CHECK ((origin_domain = ANY (ARRAY['geography'::text, 'property_type'::text, 'utility'::text, 'environment'::text, 'terrain'::text, 'accessibility'::text, 'legal_status'::text, 'bedrooms'::text, 'bathrooms'::text, 'parking'::text, 'year_built'::text, 'property_area'::text, 'construction_area'::text])))"
+        },
+        {
+          "name": "listing_membership_origins_pkey",
+          "definition": "PRIMARY KEY (listing_id, ontology_term_id, origin_domain)"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "listing_monetary_events",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "default": "gen_random_uuid()",
+          "not_null": true
+        },
+        {
+          "name": "listing_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "operation_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "listing_revision",
+          "type": "bigint",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "transaction_type",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "event_kind",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "old_amount",
+          "type": "numeric",
+          "default": null,
+          "not_null": false
+        },
+        {
+          "name": "old_currency",
+          "type": "text",
+          "default": null,
+          "not_null": false
+        },
+        {
+          "name": "new_amount",
+          "type": "numeric",
+          "default": null,
+          "not_null": false
+        },
+        {
+          "name": "new_currency",
+          "type": "text",
+          "default": null,
+          "not_null": false
+        },
+        {
+          "name": "recorded_at",
+          "type": "timestamp with time zone",
+          "default": "now()",
+          "not_null": true
+        },
+        {
+          "name": "source_observed_at",
+          "type": "timestamp with time zone",
+          "default": null,
+          "not_null": false
+        },
+        {
+          "name": "source_observation_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": false
+        },
+        {
+          "name": "actor_kind",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "actor_identity",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "reason",
+          "type": "text",
+          "default": null,
+          "not_null": false
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX listing_monetary_chronology_idx ON public.listing_monetary_events USING btree (listing_id, listing_revision, recorded_at)",
+        "CREATE UNIQUE INDEX listing_monetary_events_operation_id_key ON public.listing_monetary_events USING btree (operation_id)",
+        "CREATE UNIQUE INDEX listing_monetary_events_pkey ON public.listing_monetary_events USING btree (id)",
+        "CREATE INDEX listing_monetary_source_idx ON public.listing_monetary_events USING btree (source_observation_id) WHERE (source_observation_id IS NOT NULL)"
+      ],
+      "triggers": [
+        {
+          "name": "reject_immutable_rows",
+          "state": "O",
+          "definition": "CREATE TRIGGER reject_immutable_rows BEFORE DELETE OR UPDATE ON public.listing_monetary_events FOR EACH ROW EXECUTE FUNCTION twuanis_canonical_private.reject_immutable_mutation()"
+        },
+        {
+          "name": "reject_immutable_truncate",
+          "state": "O",
+          "definition": "CREATE TRIGGER reject_immutable_truncate BEFORE TRUNCATE ON public.listing_monetary_events FOR EACH STATEMENT EXECUTE FUNCTION twuanis_canonical_private.reject_immutable_mutation()"
+        }
+      ],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "listing_monetary_events_actor_identity_check",
+          "definition": "CHECK ((((length(actor_identity) >= 1) AND (length(actor_identity) <= 256)) AND ((actor_identity COLLATE \"C\") ~ '[^[:space:]]'::text)))"
+        },
+        {
+          "name": "listing_monetary_events_actor_kind_check",
+          "definition": "CHECK ((actor_kind = ANY (ARRAY['owner'::text, 'trusted'::text, 'system'::text, 'migration'::text])))"
+        },
+        {
+          "name": "listing_monetary_events_check",
+          "definition": "CHECK ((((old_amount IS NULL) AND (old_currency IS NULL)) OR ((old_amount IS NOT NULL) AND (old_currency IS NOT NULL) AND (old_amount > (0)::numeric) AND (old_currency = ANY (ARRAY['CRC'::text, 'USD'::text])))))"
+        },
+        {
+          "name": "listing_monetary_events_check1",
+          "definition": "CHECK ((((new_amount IS NULL) AND (new_currency IS NULL)) OR ((new_amount IS NOT NULL) AND (new_currency IS NOT NULL) AND (new_amount > (0)::numeric) AND (new_currency = ANY (ARRAY['CRC'::text, 'USD'::text])))))"
+        },
+        {
+          "name": "listing_monetary_events_check2",
+          "definition": "CHECK ((twuanis_canonical_private.finite_numeric(old_amount) AND twuanis_canonical_private.finite_numeric(new_amount)))"
+        },
+        {
+          "name": "listing_monetary_events_check3",
+          "definition": "CHECK ((((event_kind = ANY (ARRAY['initial_observation'::text, 'migration_baseline'::text])) AND (old_amount IS NULL) AND (new_amount IS NOT NULL)) OR ((event_kind = 'change'::text) AND (old_amount IS NOT NULL) AND (new_amount IS NOT NULL) AND ((old_amount IS DISTINCT FROM new_amount) OR (old_currency IS DISTINCT FROM new_currency))) OR ((event_kind = 'draft_removal'::text) AND (old_amount IS NOT NULL) AND (new_amount IS NULL))))"
+        },
+        {
+          "name": "listing_monetary_events_event_kind_check",
+          "definition": "CHECK ((event_kind = ANY (ARRAY['initial_observation'::text, 'change'::text, 'draft_removal'::text, 'migration_baseline'::text])))"
+        },
+        {
+          "name": "listing_monetary_events_listing_id_fkey",
+          "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE RESTRICT"
+        },
+        {
+          "name": "listing_monetary_events_listing_revision_check",
+          "definition": "CHECK ((listing_revision >= 0))"
+        },
+        {
+          "name": "listing_monetary_events_operation_id_fkey",
+          "definition": "FOREIGN KEY (operation_id) REFERENCES canonical_operation_receipts(id) ON DELETE RESTRICT"
+        },
+        {
+          "name": "listing_monetary_events_operation_id_key",
+          "definition": "UNIQUE (operation_id)"
+        },
+        {
+          "name": "listing_monetary_events_pkey",
+          "definition": "PRIMARY KEY (id)"
+        },
+        {
+          "name": "listing_monetary_events_reason_check",
+          "definition": "CHECK (((reason IS NULL) OR ((length(reason) >= 1) AND (length(reason) <= 1024))))"
+        },
+        {
+          "name": "listing_monetary_events_source_observation_id_fkey",
+          "definition": "FOREIGN KEY (source_observation_id) REFERENCES listing_source_observations(id) ON DELETE RESTRICT"
+        },
+        {
+          "name": "listing_monetary_events_transaction_type_check",
+          "definition": "CHECK ((transaction_type = ANY (ARRAY['sale'::text, 'rent'::text])))"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "listing_semantic_selections",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "listing_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "dimension",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "ontology_term_id",
+          "type": "bigint",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "recorded_at",
+          "type": "timestamp with time zone",
+          "default": "now()",
+          "not_null": true
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX listing_semantic_selections_pkey ON public.listing_semantic_selections USING btree (listing_id, dimension, ontology_term_id)",
+        "CREATE UNIQUE INDEX listing_semantic_singleton_idx ON public.listing_semantic_selections USING btree (listing_id, dimension) WHERE (dimension = ANY (ARRAY['property_type'::text, 'legal_status'::text]))",
+        "CREATE INDEX listing_semantic_term_idx ON public.listing_semantic_selections USING btree (ontology_term_id)"
+      ],
+      "triggers": [
+        {
+          "name": "validate_semantic_selection",
+          "state": "O",
+          "definition": "CREATE TRIGGER validate_semantic_selection BEFORE INSERT OR UPDATE ON public.listing_semantic_selections FOR EACH ROW EXECUTE FUNCTION twuanis_canonical_private.validate_new_term_reference()"
+        }
+      ],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "listing_semantic_selections_dimension_check",
+          "definition": "CHECK ((dimension = ANY (ARRAY['property_type'::text, 'utility'::text, 'environment'::text, 'terrain'::text, 'accessibility'::text, 'legal_status'::text])))"
+        },
+        {
+          "name": "listing_semantic_selections_listing_id_fkey",
+          "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE RESTRICT"
+        },
+        {
+          "name": "listing_semantic_selections_ontology_term_id_fkey",
+          "definition": "FOREIGN KEY (ontology_term_id) REFERENCES ontology_terms(id) ON DELETE RESTRICT"
+        },
+        {
+          "name": "listing_semantic_selections_pkey",
+          "definition": "PRIMARY KEY (listing_id, dimension, ontology_term_id)"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "listing_source_observations",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "default": "gen_random_uuid()",
+          "not_null": true
+        },
+        {
+          "name": "source_name",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "source_listing_id",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "source_observation_id",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "listing_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": false
+        },
+        {
+          "name": "source_observed_at",
+          "type": "timestamp with time zone",
+          "default": null,
+          "not_null": false
+        },
+        {
+          "name": "processed_at",
+          "type": "timestamp with time zone",
+          "default": "now()",
+          "not_null": true
+        },
+        {
+          "name": "outcome",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "payload_fingerprint",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "evidence_reference",
+          "type": "text",
+          "default": null,
+          "not_null": false
+        },
+        {
+          "name": "result_revision",
+          "type": "bigint",
+          "default": null,
+          "not_null": false
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX listing_source_observation_listing_idx ON public.listing_source_observations USING btree (listing_id, processed_at)",
+        "CREATE UNIQUE INDEX listing_source_observations_id_source_name_source_listing_i_key ON public.listing_source_observations USING btree (id, source_name, source_listing_id, listing_id)",
+        "CREATE UNIQUE INDEX listing_source_observations_pkey ON public.listing_source_observations USING btree (id)",
+        "CREATE UNIQUE INDEX listing_source_observations_source_name_source_listing_id_s_key ON public.listing_source_observations USING btree (source_name, source_listing_id, source_observation_id)"
+      ],
+      "triggers": [
+        {
+          "name": "reject_immutable_rows",
+          "state": "O",
+          "definition": "CREATE TRIGGER reject_immutable_rows BEFORE DELETE OR UPDATE ON public.listing_source_observations FOR EACH ROW EXECUTE FUNCTION twuanis_canonical_private.reject_immutable_mutation()"
+        },
+        {
+          "name": "reject_immutable_truncate",
+          "state": "O",
+          "definition": "CREATE TRIGGER reject_immutable_truncate BEFORE TRUNCATE ON public.listing_source_observations FOR EACH STATEMENT EXECUTE FUNCTION twuanis_canonical_private.reject_immutable_mutation()"
+        }
+      ],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "listing_source_observations_check",
+          "definition": "CHECK (((outcome <> ALL (ARRAY['accepted'::text, 'stale'::text, 'conflict'::text])) OR (listing_id IS NOT NULL)))"
+        },
+        {
+          "name": "listing_source_observations_evidence_reference_check",
+          "definition": "CHECK (((evidence_reference IS NULL) OR ((length(evidence_reference) >= 1) AND (length(evidence_reference) <= 1024))))"
+        },
+        {
+          "name": "listing_source_observations_id_source_name_source_listing_i_key",
+          "definition": "UNIQUE (id, source_name, source_listing_id, listing_id)"
+        },
+        {
+          "name": "listing_source_observations_listing_id_fkey",
+          "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE RESTRICT"
+        },
+        {
+          "name": "listing_source_observations_outcome_check",
+          "definition": "CHECK ((outcome = ANY (ARRAY['accepted'::text, 'stale'::text, 'conflict'::text, 'rejected'::text])))"
+        },
+        {
+          "name": "listing_source_observations_payload_fingerprint_check",
+          "definition": "CHECK ((payload_fingerprint ~ '^[0-9a-f]{64}$'::text))"
+        },
+        {
+          "name": "listing_source_observations_pkey",
+          "definition": "PRIMARY KEY (id)"
+        },
+        {
+          "name": "listing_source_observations_result_revision_check",
+          "definition": "CHECK ((result_revision >= 0))"
+        },
+        {
+          "name": "listing_source_observations_source_listing_id_check",
+          "definition": "CHECK ((((length(source_listing_id) >= 1) AND (length(source_listing_id) <= 256)) AND ((source_listing_id COLLATE \"C\") ~ '[^[:space:]]'::text)))"
+        },
+        {
+          "name": "listing_source_observations_source_name_check",
+          "definition": "CHECK ((((length(source_name) >= 1) AND (length(source_name) <= 128)) AND ((source_name COLLATE \"C\") ~ '[^[:space:]]'::text)))"
+        },
+        {
+          "name": "listing_source_observations_source_name_source_listing_id_s_key",
+          "definition": "UNIQUE (source_name, source_listing_id, source_observation_id)"
+        },
+        {
+          "name": "listing_source_observations_source_observation_id_check",
+          "definition": "CHECK ((((length(source_observation_id) >= 1) AND (length(source_observation_id) <= 256)) AND ((source_observation_id COLLATE \"C\") ~ '[^[:space:]]'::text)))"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "publisher_accounts",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "default": "gen_random_uuid()",
+          "not_null": true
+        },
+        {
+          "name": "owner_user_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "default": "now()",
+          "not_null": true
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX publisher_accounts_owner_user_id_key ON public.publisher_accounts USING btree (owner_user_id)",
+        "CREATE UNIQUE INDEX publisher_accounts_pkey ON public.publisher_accounts USING btree (id)"
+      ],
+      "triggers": [],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "publisher_accounts_owner_user_id_fkey",
+          "definition": "FOREIGN KEY (owner_user_id) REFERENCES auth.users(id) ON DELETE RESTRICT"
+        },
+        {
+          "name": "publisher_accounts_owner_user_id_key",
+          "definition": "UNIQUE (owner_user_id)"
+        },
+        {
+          "name": "publisher_accounts_pkey",
+          "definition": "PRIMARY KEY (id)"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "source_identity_conflicts",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "default": "gen_random_uuid()",
+          "not_null": true
+        },
+        {
+          "name": "listing_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "observation_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "source_name",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "source_listing_id",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "existing_transaction_type",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "observed_transaction_type",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "existing_province_code",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "existing_canton_code",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "observed_province_code",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "observed_canton_code",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "conflict_type",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "recorded_at",
+          "type": "timestamp with time zone",
+          "default": "now()",
+          "not_null": true
+        },
+        {
+          "name": "resolution_status",
+          "type": "text",
+          "default": "'open'::text",
+          "not_null": true
+        },
+        {
+          "name": "resolution_reference",
+          "type": "text",
+          "default": null,
+          "not_null": false
+        },
+        {
+          "name": "resolved_at",
+          "type": "timestamp with time zone",
+          "default": null,
+          "not_null": false
+        }
+      ],
+      "indexes": [
+        "CREATE INDEX source_identity_conflict_listing_idx ON public.source_identity_conflicts USING btree (listing_id, recorded_at)",
+        "CREATE UNIQUE INDEX source_identity_conflicts_observation_id_listing_id_key ON public.source_identity_conflicts USING btree (observation_id, listing_id)",
+        "CREATE UNIQUE INDEX source_identity_conflicts_pkey ON public.source_identity_conflicts USING btree (id)"
+      ],
+      "triggers": [],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "source_identity_conflicts_check",
+          "definition": "CHECK (((\"left\"(existing_canton_code, 1) = existing_province_code) AND (\"left\"(observed_canton_code, 1) = observed_province_code)))"
+        },
+        {
+          "name": "source_identity_conflicts_check1",
+          "definition": "CHECK (((conflict_type = ANY (ARRAY['transaction'::text, 'transaction_and_geography'::text])) = (existing_transaction_type <> observed_transaction_type)))"
+        },
+        {
+          "name": "source_identity_conflicts_check2",
+          "definition": "CHECK (((conflict_type = ANY (ARRAY['geography'::text, 'transaction_and_geography'::text])) = ((existing_province_code <> observed_province_code) OR (existing_canton_code <> observed_canton_code))))"
+        },
+        {
+          "name": "source_identity_conflicts_check3",
+          "definition": "CHECK ((((resolution_status = 'open'::text) AND (resolution_reference IS NULL) AND (resolved_at IS NULL)) OR ((resolution_status = ANY (ARRAY['resolved'::text, 'dismissed'::text])) AND (resolution_reference IS NOT NULL) AND (resolved_at IS NOT NULL))))"
+        },
+        {
+          "name": "source_identity_conflicts_conflict_type_check",
+          "definition": "CHECK ((conflict_type = ANY (ARRAY['transaction'::text, 'geography'::text, 'transaction_and_geography'::text])))"
+        },
+        {
+          "name": "source_identity_conflicts_existing_canton_code_check",
+          "definition": "CHECK ((existing_canton_code ~ '^[0-9]{3}$'::text))"
+        },
+        {
+          "name": "source_identity_conflicts_existing_province_code_check",
+          "definition": "CHECK ((existing_province_code ~ '^[0-9]$'::text))"
+        },
+        {
+          "name": "source_identity_conflicts_existing_transaction_type_check",
+          "definition": "CHECK ((existing_transaction_type = ANY (ARRAY['sale'::text, 'rent'::text])))"
+        },
+        {
+          "name": "source_identity_conflicts_listing_id_fkey",
+          "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE RESTRICT"
+        },
+        {
+          "name": "source_identity_conflicts_observation_id_listing_id_key",
+          "definition": "UNIQUE (observation_id, listing_id)"
+        },
+        {
+          "name": "source_identity_conflicts_observation_id_source_name_sourc_fkey",
+          "definition": "FOREIGN KEY (observation_id, source_name, source_listing_id, listing_id) REFERENCES listing_source_observations(id, source_name, source_listing_id, listing_id) ON DELETE RESTRICT"
+        },
+        {
+          "name": "source_identity_conflicts_observed_canton_code_check",
+          "definition": "CHECK ((observed_canton_code ~ '^[0-9]{3}$'::text))"
+        },
+        {
+          "name": "source_identity_conflicts_observed_province_code_check",
+          "definition": "CHECK ((observed_province_code ~ '^[0-9]$'::text))"
+        },
+        {
+          "name": "source_identity_conflicts_observed_transaction_type_check",
+          "definition": "CHECK ((observed_transaction_type = ANY (ARRAY['sale'::text, 'rent'::text])))"
+        },
+        {
+          "name": "source_identity_conflicts_pkey",
+          "definition": "PRIMARY KEY (id)"
+        },
+        {
+          "name": "source_identity_conflicts_resolution_reference_check",
+          "definition": "CHECK (((resolution_reference IS NULL) OR (((length(resolution_reference) >= 1) AND (length(resolution_reference) <= 1024)) AND ((resolution_reference COLLATE \"C\") ~ '[^[:space:]]'::text))))"
+        },
+        {
+          "name": "source_identity_conflicts_resolution_status_check",
+          "definition": "CHECK ((resolution_status = ANY (ARRAY['open'::text, 'resolved'::text, 'dismissed'::text])))"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "accessibility_identity",
+      "schema": "twuanis_canonical_private",
+      "columns": [
+        {
+          "name": "term_id",
+          "type": "bigint",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "code",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX accessibility_identity_code_key ON twuanis_canonical_private.accessibility_identity USING btree (code)",
+        "CREATE UNIQUE INDEX accessibility_identity_pkey ON twuanis_canonical_private.accessibility_identity USING btree (term_id)"
+      ],
+      "triggers": [],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "accessibility_identity_code_check",
+          "definition": "CHECK ((code = ANY (ARRAY['paved'::text, '2wd'::text, '4x4'::text, 'walkable'::text, 'boat'::text])))"
+        },
+        {
+          "name": "accessibility_identity_code_key",
+          "definition": "UNIQUE (code)"
+        },
+        {
+          "name": "accessibility_identity_pkey",
+          "definition": "PRIMARY KEY (term_id)"
+        },
+        {
+          "name": "accessibility_identity_term_id_fkey",
+          "definition": "FOREIGN KEY (term_id) REFERENCES ontology_terms(id) ON DELETE RESTRICT"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "classification_seals",
+      "schema": "twuanis_canonical_private",
+      "columns": [
+        {
+          "name": "rule_set_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX classification_seals_pkey ON twuanis_canonical_private.classification_seals USING btree (rule_set_id)"
+      ],
+      "triggers": [
+        {
+          "name": "immutable_seals",
+          "state": "O",
+          "definition": "CREATE TRIGGER immutable_seals BEFORE DELETE OR UPDATE ON twuanis_canonical_private.classification_seals FOR EACH ROW EXECUTE FUNCTION twuanis_canonical_private.reject_immutable_mutation()"
+        },
+        {
+          "name": "immutable_seals_truncate",
+          "state": "O",
+          "definition": "CREATE TRIGGER immutable_seals_truncate BEFORE TRUNCATE ON twuanis_canonical_private.classification_seals FOR EACH STATEMENT EXECUTE FUNCTION twuanis_canonical_private.reject_immutable_mutation()"
+        }
+      ],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "classification_seals_pkey",
+          "definition": "PRIMARY KEY (rule_set_id)"
+        },
+        {
+          "name": "classification_seals_rule_set_id_fkey",
+          "definition": "FOREIGN KEY (rule_set_id) REFERENCES listing_classification_rule_sets(id) ON DELETE RESTRICT"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "csv_initial_publication",
+      "schema": "twuanis_canonical_private",
+      "columns": [
+        {
+          "name": "creation_receipt",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "listing_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "publication_request",
+          "type": "uuid",
+          "default": "gen_random_uuid()",
+          "not_null": true
+        },
+        {
+          "name": "publication_expected",
+          "type": "bigint",
+          "default": null,
+          "not_null": false
+        },
+        {
+          "name": "established_at",
+          "type": "timestamp with time zone",
+          "default": "clock_timestamp()",
+          "not_null": true
+        },
+        {
+          "name": "source_references_evidence",
+          "type": "uuid",
+          "default": null,
+          "not_null": false
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX csv_initial_publication_listing_id_key ON twuanis_canonical_private.csv_initial_publication USING btree (listing_id)",
+        "CREATE UNIQUE INDEX csv_initial_publication_pkey ON twuanis_canonical_private.csv_initial_publication USING btree (creation_receipt)",
+        "CREATE UNIQUE INDEX csv_initial_publication_publication_request_key ON twuanis_canonical_private.csv_initial_publication USING btree (publication_request)"
+      ],
+      "triggers": [],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "csv_initial_publication_creation_receipt_fkey",
+          "definition": "FOREIGN KEY (creation_receipt) REFERENCES canonical_operation_receipts(id)"
+        },
+        {
+          "name": "csv_initial_publication_listing_id_fkey",
+          "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id)"
+        },
+        {
+          "name": "csv_initial_publication_listing_id_key",
+          "definition": "UNIQUE (listing_id)"
+        },
+        {
+          "name": "csv_initial_publication_pkey",
+          "definition": "PRIMARY KEY (creation_receipt)"
+        },
+        {
+          "name": "csv_initial_publication_publication_expected_check",
+          "definition": "CHECK ((publication_expected >= 1))"
+        },
+        {
+          "name": "csv_initial_publication_publication_request_key",
+          "definition": "UNIQUE (publication_request)"
+        },
+        {
+          "name": "csv_initial_publication_source_references_evidence_fkey",
+          "definition": "FOREIGN KEY (source_references_evidence) REFERENCES twuanis_canonical_private.csv_source_evidence(id)"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "csv_source_evidence",
+      "schema": "twuanis_canonical_private",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "default": "gen_random_uuid()",
+          "not_null": true
+        },
+        {
+          "name": "source_name",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "source_listing_id",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "source_observation_id",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "source_observed_at",
+          "type": "timestamp with time zone",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "raw_input",
+          "type": "jsonb",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "unresolved_review",
+          "type": "jsonb",
+          "default": null,
+          "not_null": true
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX csv_source_evidence_pkey ON twuanis_canonical_private.csv_source_evidence USING btree (id)",
+        "CREATE UNIQUE INDEX csv_source_evidence_source_name_source_listing_id_source_ob_key ON twuanis_canonical_private.csv_source_evidence USING btree (source_name, source_listing_id, source_observation_id)"
+      ],
+      "triggers": [
+        {
+          "name": "immutable_csv_evidence",
+          "state": "O",
+          "definition": "CREATE TRIGGER immutable_csv_evidence BEFORE DELETE OR UPDATE ON twuanis_canonical_private.csv_source_evidence FOR EACH ROW EXECUTE FUNCTION twuanis_canonical_private.reject_csv_evidence_change()"
+        },
+        {
+          "name": "immutable_csv_evidence_truncate",
+          "state": "O",
+          "definition": "CREATE TRIGGER immutable_csv_evidence_truncate BEFORE TRUNCATE ON twuanis_canonical_private.csv_source_evidence FOR EACH STATEMENT EXECUTE FUNCTION twuanis_canonical_private.reject_csv_evidence_change()"
+        }
+      ],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "csv_source_evidence_pkey",
+          "definition": "PRIMARY KEY (id)"
+        },
+        {
+          "name": "csv_source_evidence_raw_input_check",
+          "definition": "CHECK (((jsonb_typeof(raw_input) = 'object'::text) AND (octet_length((raw_input)::text) <= 262144)))"
+        },
+        {
+          "name": "csv_source_evidence_source_listing_id_check",
+          "definition": "CHECK ((((length(source_listing_id) >= 1) AND (length(source_listing_id) <= 256)) AND (btrim(source_listing_id) <> ''::text)))"
+        },
+        {
+          "name": "csv_source_evidence_source_name_check",
+          "definition": "CHECK ((((length(source_name) >= 1) AND (length(source_name) <= 128)) AND (btrim(source_name) <> ''::text)))"
+        },
+        {
+          "name": "csv_source_evidence_source_name_source_listing_id_source_ob_key",
+          "definition": "UNIQUE (source_name, source_listing_id, source_observation_id)"
+        },
+        {
+          "name": "csv_source_evidence_source_observation_id_check",
+          "definition": "CHECK ((((length(source_observation_id) >= 1) AND (length(source_observation_id) <= 256)) AND (btrim(source_observation_id) <> ''::text)))"
+        },
+        {
+          "name": "csv_source_evidence_source_observed_at_check",
+          "definition": "CHECK (isfinite(source_observed_at))"
+        },
+        {
+          "name": "csv_source_evidence_unresolved_review_check",
+          "definition": "CHECK (((jsonb_typeof(unresolved_review) = 'object'::text) AND (octet_length((unresolved_review)::text) <= 65536) AND ((unresolved_review ->> 'status'::text) = 'unresolved'::text) AND ((unresolved_review -> 'canonical_authority'::text) = 'false'::jsonb)))"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "customer_content_edits",
+      "schema": "twuanis_canonical_private",
+      "columns": [
+        {
+          "name": "owner_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "request_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "listing_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "expected_revision",
+          "type": "bigint",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "content",
+          "type": "jsonb",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "completed",
+          "type": "boolean",
+          "default": "false",
+          "not_null": true
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX customer_content_edits_pkey ON twuanis_canonical_private.customer_content_edits USING btree (owner_id, request_id)"
+      ],
+      "triggers": [],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "customer_content_edits_listing_id_fkey",
+          "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id)"
+        },
+        {
+          "name": "customer_content_edits_owner_id_fkey",
+          "definition": "FOREIGN KEY (owner_id) REFERENCES auth.users(id)"
+        },
+        {
+          "name": "customer_content_edits_pkey",
+          "definition": "PRIMARY KEY (owner_id, request_id)"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "customer_domain_edits",
+      "schema": "twuanis_canonical_private",
+      "columns": [
+        {
+          "name": "owner_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "request_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "listing_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "expected_revision",
+          "type": "bigint",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "input",
+          "type": "jsonb",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "derived",
+          "type": "jsonb",
+          "default": null,
+          "not_null": true
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX customer_domain_edits_pkey ON twuanis_canonical_private.customer_domain_edits USING btree (owner_id, request_id)"
+      ],
+      "triggers": [],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "customer_domain_edits_listing_id_fkey",
+          "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id)"
+        },
+        {
+          "name": "customer_domain_edits_owner_id_fkey",
+          "definition": "FOREIGN KEY (owner_id) REFERENCES auth.users(id)"
+        },
+        {
+          "name": "customer_domain_edits_pkey",
+          "definition": "PRIMARY KEY (owner_id, request_id)"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "customer_publication_commands",
+      "schema": "twuanis_canonical_private",
+      "columns": [
+        {
+          "name": "owner_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "request_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "listing_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "expected_revision",
+          "type": "bigint",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "event",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "duration_seconds",
+          "type": "bigint",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "package_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX customer_publication_commands_pkey ON twuanis_canonical_private.customer_publication_commands USING btree (owner_id, request_id)"
+      ],
+      "triggers": [],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "customer_publication_commands_duration_seconds_check",
+          "definition": "CHECK (((duration_seconds >= 1) AND (duration_seconds <= 315576000)))"
+        },
+        {
+          "name": "customer_publication_commands_event_check",
+          "definition": "CHECK ((event = ANY (ARRAY['publish'::text, 'renew'::text])))"
+        },
+        {
+          "name": "customer_publication_commands_listing_id_fkey",
+          "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id)"
+        },
+        {
+          "name": "customer_publication_commands_owner_id_fkey",
+          "definition": "FOREIGN KEY (owner_id) REFERENCES auth.users(id)"
+        },
+        {
+          "name": "customer_publication_commands_package_id_fkey",
+          "definition": "FOREIGN KEY (package_id) REFERENCES packages(id)"
+        },
+        {
+          "name": "customer_publication_commands_pkey",
+          "definition": "PRIMARY KEY (owner_id, request_id)"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "duplicate_commands",
+      "schema": "twuanis_canonical_private",
+      "columns": [
+        {
+          "name": "owner_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "request_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "source_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "listing_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "creation_receipt",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "media",
+          "type": "jsonb",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "completed",
+          "type": "boolean",
+          "default": "false",
+          "not_null": true
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX duplicate_commands_listing_id_key ON twuanis_canonical_private.duplicate_commands USING btree (listing_id)",
+        "CREATE UNIQUE INDEX duplicate_commands_pkey ON twuanis_canonical_private.duplicate_commands USING btree (owner_id, request_id)"
+      ],
+      "triggers": [],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "duplicate_commands_creation_receipt_fkey",
+          "definition": "FOREIGN KEY (creation_receipt) REFERENCES canonical_operation_receipts(id)"
+        },
+        {
+          "name": "duplicate_commands_listing_id_fkey",
+          "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id)"
+        },
+        {
+          "name": "duplicate_commands_listing_id_key",
+          "definition": "UNIQUE (listing_id)"
+        },
+        {
+          "name": "duplicate_commands_media_check",
+          "definition": "CHECK (((jsonb_typeof(media) = 'array'::text) AND (jsonb_array_length(media) <= 25)))"
+        },
+        {
+          "name": "duplicate_commands_owner_id_fkey",
+          "definition": "FOREIGN KEY (owner_id) REFERENCES auth.users(id)"
+        },
+        {
+          "name": "duplicate_commands_pkey",
+          "definition": "PRIMARY KEY (owner_id, request_id)"
+        },
+        {
+          "name": "duplicate_commands_source_id_fkey",
+          "definition": "FOREIGN KEY (source_id) REFERENCES listings(id)"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "image_detach_operations",
+      "schema": "twuanis_canonical_private",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "default": "gen_random_uuid()",
+          "not_null": true
+        },
+        {
+          "name": "owner_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "listing_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "image_value",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "managed",
+          "type": "boolean",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "cleanup_completed",
+          "type": "boolean",
+          "default": "false",
+          "not_null": true
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX image_detach_operations_owner_id_listing_id_image_value_key ON twuanis_canonical_private.image_detach_operations USING btree (owner_id, listing_id, image_value)",
+        "CREATE UNIQUE INDEX image_detach_operations_pkey ON twuanis_canonical_private.image_detach_operations USING btree (id)"
+      ],
+      "triggers": [],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "image_detach_operations_listing_id_fkey",
+          "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id)"
+        },
+        {
+          "name": "image_detach_operations_owner_id_listing_id_image_value_key",
+          "definition": "UNIQUE (owner_id, listing_id, image_value)"
+        },
+        {
+          "name": "image_detach_operations_pkey",
+          "definition": "PRIMARY KEY (id)"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "import_operator_grants",
+      "schema": "twuanis_canonical_private",
+      "columns": [
+        {
+          "name": "id",
+          "type": "bigint",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "user_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "granted_at",
+          "type": "timestamp with time zone",
+          "default": "clock_timestamp()",
+          "not_null": true
+        },
+        {
+          "name": "granted_by",
+          "type": "name",
+          "default": "SESSION_USER",
+          "not_null": true
+        },
+        {
+          "name": "revoked_at",
+          "type": "timestamp with time zone",
+          "default": null,
+          "not_null": false
+        },
+        {
+          "name": "revoked_by",
+          "type": "name",
+          "default": null,
+          "not_null": false
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX import_operator_grants_pkey ON twuanis_canonical_private.import_operator_grants USING btree (id)",
+        "CREATE UNIQUE INDEX import_operator_one_active ON twuanis_canonical_private.import_operator_grants USING btree (user_id) WHERE (revoked_at IS NULL)"
+      ],
+      "triggers": [],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "import_operator_grants_check",
+          "definition": "CHECK (((revoked_at IS NULL) = (revoked_by IS NULL)))"
+        },
+        {
+          "name": "import_operator_grants_check1",
+          "definition": "CHECK (((revoked_at IS NULL) OR (revoked_at >= granted_at)))"
+        },
+        {
+          "name": "import_operator_grants_pkey",
+          "definition": "PRIMARY KEY (id)"
+        },
+        {
+          "name": "import_operator_grants_user_id_fkey",
+          "definition": "FOREIGN KEY (user_id) REFERENCES auth.users(id)"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "ordinary_upload_operations",
+      "schema": "twuanis_canonical_private",
+      "columns": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "default": "gen_random_uuid()",
+          "not_null": true
+        },
+        {
+          "name": "owner_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "listing_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "storage_path",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "byte_size",
+          "type": "integer",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "completed",
+          "type": "boolean",
+          "default": "false",
+          "not_null": true
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX ordinary_upload_operations_pkey ON twuanis_canonical_private.ordinary_upload_operations USING btree (id)",
+        "CREATE UNIQUE INDEX ordinary_upload_operations_storage_path_key ON twuanis_canonical_private.ordinary_upload_operations USING btree (storage_path)"
+      ],
+      "triggers": [],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "ordinary_upload_operations_byte_size_check",
+          "definition": "CHECK (((byte_size >= 1) AND (byte_size <= 614400)))"
+        },
+        {
+          "name": "ordinary_upload_operations_listing_id_fkey",
+          "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id)"
+        },
+        {
+          "name": "ordinary_upload_operations_pkey",
+          "definition": "PRIMARY KEY (id)"
+        },
+        {
+          "name": "ordinary_upload_operations_storage_path_key",
+          "definition": "UNIQUE (storage_path)"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "s11_retained_auth_receipt",
+      "schema": "twuanis_canonical_private",
+      "columns": [
+        {
+          "name": "singleton",
+          "type": "boolean",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "operation_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "package_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "initialized_at",
+          "type": "timestamp with time zone",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "auth_ids",
+          "type": "jsonb",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "subscriptions",
+          "type": "jsonb",
+          "default": null,
+          "not_null": true
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX s11_retained_auth_receipt_operation_id_key ON twuanis_canonical_private.s11_retained_auth_receipt USING btree (operation_id)",
+        "CREATE UNIQUE INDEX s11_retained_auth_receipt_pkey ON twuanis_canonical_private.s11_retained_auth_receipt USING btree (singleton)"
+      ],
+      "triggers": [],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "s11_retained_auth_receipt_operation_id_key",
+          "definition": "UNIQUE (operation_id)"
+        },
+        {
+          "name": "s11_retained_auth_receipt_package_id_fkey",
+          "definition": "FOREIGN KEY (package_id) REFERENCES packages(id)"
+        },
+        {
+          "name": "s11_retained_auth_receipt_pkey",
+          "definition": "PRIMARY KEY (singleton)"
+        },
+        {
+          "name": "s11_retained_auth_receipt_singleton_check",
+          "definition": "CHECK (singleton)"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "source_ingestion_results",
+      "schema": "twuanis_canonical_private",
+      "columns": [
+        {
+          "name": "evidence_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "result",
+          "type": "jsonb",
+          "default": null,
+          "not_null": true
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX source_ingestion_results_pkey ON twuanis_canonical_private.source_ingestion_results USING btree (evidence_id)"
+      ],
+      "triggers": [],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "source_ingestion_results_evidence_id_fkey",
+          "definition": "FOREIGN KEY (evidence_id) REFERENCES twuanis_canonical_private.csv_source_evidence(id)"
+        },
+        {
+          "name": "source_ingestion_results_pkey",
+          "definition": "PRIMARY KEY (evidence_id)"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "source_ingestion_state",
+      "schema": "twuanis_canonical_private",
+      "columns": [
+        {
+          "name": "source_name",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "source_listing_id",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "listing_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "presentation_at",
+          "type": "timestamp with time zone",
+          "default": "clock_timestamp()",
+          "not_null": true
+        },
+        {
+          "name": "positive_at",
+          "type": "timestamp with time zone",
+          "default": "clock_timestamp()",
+          "not_null": true
+        },
+        {
+          "name": "misses",
+          "type": "integer",
+          "default": "0",
+          "not_null": true
+        },
+        {
+          "name": "archive_revision",
+          "type": "bigint",
+          "default": null,
+          "not_null": false
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX source_ingestion_state_listing_id_key ON twuanis_canonical_private.source_ingestion_state USING btree (listing_id)",
+        "CREATE UNIQUE INDEX source_ingestion_state_pkey ON twuanis_canonical_private.source_ingestion_state USING btree (source_name, source_listing_id)"
+      ],
+      "triggers": [],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "source_ingestion_state_listing_id_fkey",
+          "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id)"
+        },
+        {
+          "name": "source_ingestion_state_listing_id_key",
+          "definition": "UNIQUE (listing_id)"
+        },
+        {
+          "name": "source_ingestion_state_misses_check",
+          "definition": "CHECK (((misses >= 0) AND (misses <= 2)))"
+        },
+        {
+          "name": "source_ingestion_state_pkey",
+          "definition": "PRIMARY KEY (source_name, source_listing_id)"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "source_run_completions",
+      "schema": "twuanis_canonical_private",
+      "columns": [
+        {
+          "name": "source_name",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "run_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "payload",
+          "type": "jsonb",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "result",
+          "type": "jsonb",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "completed_at",
+          "type": "timestamp with time zone",
+          "default": "clock_timestamp()",
+          "not_null": true
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX source_run_completions_pkey ON twuanis_canonical_private.source_run_completions USING btree (source_name, run_id)"
+      ],
+      "triggers": [],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "source_run_completions_pkey",
+          "definition": "PRIMARY KEY (source_name, run_id)"
+        }
+      ]
+    },
+    {
+      "acl": "{postgres=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "table": "token_creation_commands",
+      "schema": "twuanis_canonical_private",
+      "columns": [
+        {
+          "name": "token",
+          "type": "text",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "owner_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "listing_id",
+          "type": "uuid",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "media",
+          "type": "jsonb",
+          "default": null,
+          "not_null": true
+        },
+        {
+          "name": "media_completed",
+          "type": "boolean",
+          "default": "false",
+          "not_null": true
+        },
+        {
+          "name": "publication_request",
+          "type": "uuid",
+          "default": "gen_random_uuid()",
+          "not_null": true
+        },
+        {
+          "name": "publication_result",
+          "type": "jsonb",
+          "default": null,
+          "not_null": false
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX token_creation_commands_listing_id_key ON twuanis_canonical_private.token_creation_commands USING btree (listing_id)",
+        "CREATE UNIQUE INDEX token_creation_commands_pkey ON twuanis_canonical_private.token_creation_commands USING btree (token)"
+      ],
+      "triggers": [],
+      "force_rls": false,
+      "constraints": [
+        {
+          "name": "token_creation_commands_listing_id_fkey",
+          "definition": "FOREIGN KEY (listing_id) REFERENCES listings(id)"
+        },
+        {
+          "name": "token_creation_commands_listing_id_key",
+          "definition": "UNIQUE (listing_id)"
+        },
+        {
+          "name": "token_creation_commands_media_check",
+          "definition": "CHECK (((jsonb_typeof(media) = 'array'::text) AND (jsonb_array_length(media) <= 25)))"
+        },
+        {
+          "name": "token_creation_commands_owner_id_fkey",
+          "definition": "FOREIGN KEY (owner_id) REFERENCES auth.users(id)"
+        },
+        {
+          "name": "token_creation_commands_pkey",
+          "definition": "PRIMARY KEY (token)"
+        }
+      ]
+    }
+  ],
+  "functions": [
+    {
+      "signature": "twuanis_private.normalize_geographic_projection(text)",
+      "migration": "003_canonical_listing_write_boundary.sql",
+      "line": 13,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog, pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_name text RETURNS text LANGUAGE sql STABLE STRICT SECURITY INVOKER\nSET search_path = pg_catalog, pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_private.write_listing_canonical(uuid,text,text,text,text,text,uuid,boolean)",
+      "migration": "003_canonical_listing_write_boundary.sql",
+      "line": 25,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog, pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "\n  p_listing_id uuid,\n  p_operation text,\n  p_province_code text,\n  p_canton_code text,\n  p_district_code text,\n  p_expected_status text,\n  p_actor_id uuid,\n  p_trusted_server boolean\n RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY INVOKER\nSET search_path = pg_catalog, pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "public.write_my_listing_canonical(uuid,text,text,text,text,text)",
+      "migration": "003_canonical_listing_write_boundary.sql",
+      "line": 198,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog, pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "\n  p_listing_id uuid, p_operation text, p_province_code text,\n  p_canton_code text, p_district_code text, p_expected_status text\n RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER\nSET search_path = pg_catalog, pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "public.write_listing_canonical_server(uuid,text,text,text,text,text)",
+      "migration": "003_canonical_listing_write_boundary.sql",
+      "line": 217,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog, pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "\n  p_listing_id uuid, p_operation text, p_province_code text,\n  p_canton_code text, p_district_code text, p_expected_status text\n RETURNS jsonb LANGUAGE sql VOLATILE SECURITY DEFINER\nSET search_path = pg_catalog, pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.finite_numeric(numeric)",
+      "migration": "004_dormant_canonical_listing_foundation.sql",
+      "line": 15,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog, pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "v numeric RETURNS boolean LANGUAGE sql IMMUTABLE SECURITY INVOKER\nSET search_path = pg_catalog, pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.reject_immutable_mutation()",
+      "migration": "004_dormant_canonical_listing_foundation.sql",
+      "line": 21,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog, pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": " RETURNS trigger LANGUAGE plpgsql SECURITY INVOKER\nSET search_path = pg_catalog, pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.validate_new_term_reference()",
+      "migration": "004_dormant_canonical_listing_foundation.sql",
+      "line": 274,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog, pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": " RETURNS trigger LANGUAGE plpgsql SECURITY INVOKER\nSET search_path = pg_catalog, pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.validate_classification_rule()",
+      "migration": "004_dormant_canonical_listing_foundation.sql",
+      "line": 300,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog, pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": " RETURNS trigger LANGUAGE plpgsql SECURITY INVOKER\nSET search_path = pg_catalog, pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.initialize_capacity_guard()",
+      "migration": "005_dormant_publisher_coordination.sql",
+      "line": 19,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": " RETURNS void LANGUAGE plpgsql VOLATILE SECURITY INVOKER\nSET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.lock_capacity_policy(boolean)",
+      "migration": "005_dormant_publisher_coordination.sql",
+      "line": 30,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_exclusive boolean DEFAULT false RETURNS void LANGUAGE plpgsql VOLATILE SECURITY INVOKER\nSET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.ensure_publisher_account(uuid)",
+      "migration": "005_dormant_publisher_coordination.sql",
+      "line": 46,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_owner uuid RETURNS uuid LANGUAGE plpgsql VOLATILE SECURITY INVOKER\nSET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.lock_publisher(uuid)",
+      "migration": "005_dormant_publisher_coordination.sql",
+      "line": 60,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_publisher uuid RETURNS uuid LANGUAGE plpgsql VOLATILE SECURITY INVOKER\nSET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.resolve_publisher(uuid)",
+      "migration": "005_dormant_publisher_coordination.sql",
+      "line": 71,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_owner uuid RETURNS uuid LANGUAGE plpgsql VOLATILE SECURITY INVOKER\nSET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.publisher_allowance(uuid,uuid)",
+      "migration": "005_dormant_publisher_coordination.sql",
+      "line": 83,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_publisher uuid,p_owner uuid RETURNS TABLE(subscription_id uuid,package_id uuid,allowance bigint,unlimited boolean,\n effective_start timestamptz,effective_end timestamptz,observed_at timestamptz)\nLANGUAGE plpgsql VOLATILE SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.publisher_consumption(uuid,uuid)",
+      "migration": "005_dormant_publisher_coordination.sql",
+      "line": 120,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_publisher uuid,p_owner uuid RETURNS bigint LANGUAGE plpgsql VOLATILE SECURITY INVOKER\nSET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.capacity_state(bigint,bigint)",
+      "migration": "005_dormant_publisher_coordination.sql",
+      "line": 134,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_allowance bigint,p_consumption bigint RETURNS TABLE(allowance bigint,consumption bigint,remaining bigint,over_capacity bigint,\n adding_one_exceeds boolean,is_over_capacity boolean,unlimited boolean)\nLANGUAGE plpgsql IMMUTABLE SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.s3_sealed_rule_guard()",
+      "migration": "006_canonical_domain_machinery.sql",
+      "line": 27,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": " RETURNS trigger\nLANGUAGE plpgsql SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.s3_seal_classification(uuid)",
+      "migration": "006_canonical_domain_machinery.sql",
+      "line": 43,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_set uuid RETURNS void\nLANGUAGE plpgsql VOLATILE SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.s3_keys(jsonb,text[],text[])",
+      "migration": "006_canonical_domain_machinery.sql",
+      "line": 54,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "v jsonb,allowed text[],required text[] DEFAULT '{}' RETURNS void\nLANGUAGE plpgsql IMMUTABLE SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.s3_decimal(jsonb)",
+      "migration": "006_canonical_domain_machinery.sql",
+      "line": 64,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "v jsonb RETURNS numeric\nLANGUAGE plpgsql IMMUTABLE SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.s3_term_ids(jsonb)",
+      "migration": "006_canonical_domain_machinery.sql",
+      "line": 72,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "v jsonb RETURNS bigint[]\nLANGUAGE plpgsql IMMUTABLE SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.s3_geography(jsonb)",
+      "migration": "006_canonical_domain_machinery.sql",
+      "line": 84,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "v jsonb RETURNS bigint[]\nLANGUAGE plpgsql VOLATILE SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.s3_origins(uuid,text,bigint[],uuid)",
+      "migration": "006_canonical_domain_machinery.sql",
+      "line": 115,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "lid uuid,dim text,ids bigint[],rule uuid DEFAULT NULL RETURNS void\nLANGUAGE plpgsql VOLATILE SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.s3_command(uuid,bigint,text,text,uuid,jsonb,jsonb)",
+      "migration": "016_customer_measurement_clear.sql",
+      "line": 54,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "\n p_listing uuid,p_expected bigint,p_actor_kind text,p_actor_identity text,p_request uuid,p_domains jsonb,p_source jsonb DEFAULT NULL\n RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.s4_domains(jsonb,text)",
+      "migration": "016_customer_measurement_clear.sql",
+      "line": 4,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "d jsonb,evidence_kind text RETURNS jsonb\nLANGUAGE plpgsql IMMUTABLE SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.s4_create_core(uuid,uuid,jsonb,jsonb)",
+      "migration": "007_canonical_creation_authority.sql",
+      "line": 55,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_owner uuid,p_request uuid,p_input jsonb,p_source jsonb DEFAULT NULL RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "public.create_customer_canonical_listing(uuid,jsonb)",
+      "migration": "007_canonical_creation_authority.sql",
+      "line": 266,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "authenticated"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_request uuid,p_input jsonb RETURNS jsonb\nLANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,authenticated=X/postgres}"
+    },
+    {
+      "signature": "public.create_trusted_canonical_listing(uuid,jsonb,jsonb)",
+      "migration": "007_canonical_creation_authority.sql",
+      "line": 273,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_request uuid,p_input jsonb,p_source jsonb DEFAULT NULL RETURNS jsonb\nLANGUAGE sql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.mutate_customer_canonical_listing(uuid,bigint,uuid,jsonb)",
+      "migration": "016_customer_measurement_clear.sql",
+      "line": 390,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "authenticated"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_listing uuid,p_expected bigint,p_request uuid,p_domains jsonb RETURNS jsonb\nLANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,authenticated=X/postgres}"
+    },
+    {
+      "signature": "public.mutate_trusted_canonical_listing(uuid,bigint,uuid,jsonb,jsonb)",
+      "migration": "007_canonical_creation_authority.sql",
+      "line": 290,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_listing uuid,p_expected bigint,p_request uuid,p_domains jsonb,p_source jsonb DEFAULT NULL RETURNS jsonb\nLANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.assign_default_market_package()",
+      "migration": "008_commercial_capacity_coordination.sql",
+      "line": 8,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "EXISTING \u2014 INTENTIONAL REPLACEMENT",
+      "definition_header": " RETURNS trigger\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "public.approve_sinpe_payment(uuid)",
+      "migration": "008_commercial_capacity_coordination.sql",
+      "line": 52,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "authenticated"
+      ],
+      "classification": "EXISTING \u2014 INTENTIONAL REPLACEMENT",
+      "definition_header": "p_payment_id uuid RETURNS TABLE(payment_id uuid, subscription_id uuid, previous_subscription_id uuid, user_id uuid, package_id uuid, payment_status text, subscription_status text, period_start timestamp with time zone, period_end timestamp with time zone)\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,authenticated=X/postgres}"
+    },
+    {
+      "signature": "public.activate_purchase(uuid)",
+      "migration": "008_commercial_capacity_coordination.sql",
+      "line": 257,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "EXISTING \u2014 INTENTIONAL REPLACEMENT",
+      "definition_header": "p_purchase_id uuid RETURNS TABLE(purchase_id uuid, owner_id uuid, product_type text, activation_type text, activation_id uuid, activated_at timestamp with time zone)\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.read_canonical_listing_evidence(uuid[],text[],text[])",
+      "migration": "009_canonical_reader_boundary.sql",
+      "line": 3,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "\n p_listing_ids uuid[], p_fact_dimensions text[], p_semantic_dimensions text[]\n RETURNS jsonb\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nSET search_path = pg_catalog",
+      "actual_settings": [
+        "search_path=pg_catalog"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.s6_legacy_normalize(text,boolean)",
+      "migration": "009_canonical_reader_boundary.sql",
+      "line": 52,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "v text, slug boolean DEFAULT false RETURNS text LANGUAGE sql IMMUTABLE SET search_path=pg_catalog",
+      "actual_settings": [
+        "search_path=pg_catalog"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "public.read_legacy_geographic_candidates(text[],text[],text[],text[],text)",
+      "migration": "009_canonical_reader_boundary.sql",
+      "line": 61,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "\n p_provinces text[],p_cantons text[],p_districts text[],p_district_names text[],p_transaction text\n RETURNS TABLE(listing_id uuid)\nLANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path=pg_catalog",
+      "actual_settings": [
+        "search_path=pg_catalog"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.read_legacy_geography_dictionary(uuid[])",
+      "migration": "009_canonical_reader_boundary.sql",
+      "line": 87,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_listing_ids uuid[] RETURNS jsonb\nLANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path=pg_catalog",
+      "actual_settings": [
+        "search_path=pg_catalog"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.set_import_operator(uuid,boolean)",
+      "migration": "010_import_operator_authority.sql",
+      "line": 20,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_user uuid,p_active boolean RETURNS void LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog",
+      "actual_settings": [
+        "search_path=pg_catalog"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "public.is_current_user_import_operator()",
+      "migration": "010_import_operator_authority.sql",
+      "line": 36,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog",
+      "roles": [
+        "authenticated"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": " RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog",
+      "actual_settings": [
+        "search_path=pg_catalog"
+      ],
+      "actual_acl": "{postgres=X/postgres,authenticated=X/postgres}"
+    },
+    {
+      "signature": "public.create_csv_canonical_listing(uuid,jsonb,jsonb)",
+      "migration": "011_csv_initial_publication.sql",
+      "line": 15,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_request uuid,p_input jsonb,p_source jsonb RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog",
+      "actual_settings": [
+        "search_path=pg_catalog"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.initially_publish_csv_listing(uuid)",
+      "migration": "011_csv_initial_publication.sql",
+      "line": 42,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_creation_receipt uuid RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog",
+      "actual_settings": [
+        "search_path=pg_catalog"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.guard_publication_entitlement()",
+      "migration": "012_customer_publication_entitlement.sql",
+      "line": 11,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": " RETURNS trigger LANGUAGE plpgsql SECURITY INVOKER SET search_path=pg_catalog",
+      "actual_settings": [
+        "search_path=pg_catalog"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "public.publish_customer_canonical_listing(uuid,bigint,uuid,text)",
+      "migration": "012_customer_publication_entitlement.sql",
+      "line": 37,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog",
+      "roles": [
+        "authenticated"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_listing uuid,p_expected bigint,p_request uuid,p_event text RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog",
+      "actual_settings": [
+        "search_path=pg_catalog"
+      ],
+      "actual_acl": "{postgres=X/postgres,authenticated=X/postgres}"
+    },
+    {
+      "signature": "public.prepare_customer_duplicate(uuid,uuid)",
+      "migration": "013_customer_duplicate.sql",
+      "line": 14,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "authenticated"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_source uuid,p_request uuid RETURNS jsonb\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,authenticated=X/postgres}"
+    },
+    {
+      "signature": "public.attach_customer_duplicate_media(uuid)",
+      "migration": "013_customer_duplicate.sql",
+      "line": 86,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_listing uuid RETURNS jsonb\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.guard_duplicate_publication()",
+      "migration": "013_customer_duplicate.sql",
+      "line": 107,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": " RETURNS trigger\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "public.edit_customer_canonical_listing(uuid,bigint,uuid,jsonb,jsonb)",
+      "migration": "015_customer_edit_content.sql",
+      "line": 11,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "authenticated"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_listing uuid,p_expected bigint,p_request uuid,p_domains jsonb,p_content jsonb RETURNS jsonb\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,authenticated=X/postgres}"
+    },
+    {
+      "signature": "public.prepare_token_canonical_listing(text,uuid,jsonb,jsonb)",
+      "migration": "017_token_canonical_creation.sql",
+      "line": 15,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_token text,p_owner uuid,p_snapshot jsonb,p_input jsonb RETURNS jsonb\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.get_token_canonical_operation(text,uuid)",
+      "migration": "017_token_canonical_creation.sql",
+      "line": 47,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_token text,p_owner uuid RETURNS jsonb\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.attach_token_canonical_media(text,uuid)",
+      "migration": "017_token_canonical_creation.sql",
+      "line": 59,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_token text,p_owner uuid RETURNS jsonb\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.publish_token_canonical_listing(text)",
+      "migration": "017_token_canonical_creation.sql",
+      "line": 77,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "authenticated"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_token text RETURNS jsonb\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,authenticated=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.guard_token_media_publication()",
+      "migration": "017_token_canonical_creation.sql",
+      "line": 95,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": " RETURNS trigger\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.guard_token_snapshot()",
+      "migration": "017_token_canonical_creation.sql",
+      "line": 102,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": " RETURNS trigger\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.reject_csv_evidence_change()",
+      "migration": "018_csv_source_evidence.sql",
+      "line": 15,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": " RETURNS trigger\nLANGUAGE plpgsql SECURITY INVOKER SET search_path=pg_catalog",
+      "actual_settings": [
+        "search_path=pg_catalog"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "public.retain_csv_source_evidence(jsonb,jsonb)",
+      "migration": "018_csv_source_evidence.sql",
+      "line": 19,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_raw jsonb,p_review jsonb RETURNS uuid\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.complete_csv_source_references(uuid,uuid)",
+      "migration": "019_csv_source_references.sql",
+      "line": 4,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_receipt uuid,p_evidence uuid RETURNS void\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.guard_csv_source_reference_completion()",
+      "migration": "019_csv_source_references.sql",
+      "line": 32,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": " RETURNS trigger\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "public.prepare_ordinary_upload(uuid,uuid,integer)",
+      "migration": "020_ordinary_upload_operations.sql",
+      "line": 13,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_owner uuid,p_listing uuid,p_bytes integer RETURNS jsonb\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.get_ordinary_upload(uuid,uuid)",
+      "migration": "020_ordinary_upload_operations.sql",
+      "line": 23,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_owner uuid,p_operation uuid RETURNS jsonb\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.attach_ordinary_upload(uuid,uuid)",
+      "migration": "020_ordinary_upload_operations.sql",
+      "line": 32,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_owner uuid,p_operation uuid RETURNS jsonb\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.detach_listing_image(uuid,uuid,text)",
+      "migration": "021_image_detach_cleanup.sql",
+      "line": 11,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_owner uuid,p_listing uuid,p_image text RETURNS jsonb\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.get_image_detach_operation(uuid,uuid)",
+      "migration": "021_image_detach_cleanup.sql",
+      "line": 36,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_owner uuid,p_operation uuid RETURNS jsonb\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.confirm_image_cleanup(uuid,uuid)",
+      "migration": "021_image_detach_cleanup.sql",
+      "line": 44,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_owner uuid,p_operation uuid RETURNS void\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.claim_abandoned_listing_token(uuid)",
+      "migration": "022_abandoned_token_cleanup.sql",
+      "line": 3,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_id uuid RETURNS jsonb\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.ingest_canonical_source_observation(uuid,jsonb)",
+      "migration": "023_source_observation_ingestion.sql",
+      "line": 29,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_evidence uuid,p_input jsonb RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.complete_canonical_source_run(text,uuid,timestamptz,jsonb,jsonb)",
+      "migration": "023_source_observation_ingestion.sql",
+      "line": 108,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_source text,p_run uuid,p_started_at timestamptz,p_completion jsonb,p_observed_ids jsonb RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.s11_image_trim(text)",
+      "migration": "024_image_reorder_boundary.sql",
+      "line": 4,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "v text RETURNS text\nLANGUAGE sql IMMUTABLE SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.s11_image_string(jsonb,boolean)",
+      "migration": "024_image_reorder_boundary.sql",
+      "line": 10,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "v jsonb,nested boolean DEFAULT false RETURNS text\nLANGUAGE plpgsql IMMUTABLE SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "public.reorder_listing_images(uuid,uuid,text,text[])",
+      "migration": "024_image_reorder_boundary.sql",
+      "line": 35,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_owner uuid,p_listing uuid,p_prior text,p_images text[] RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    }
+  ],
+  "existing_table_canonical_alterations": {
+    "columns": [
+      {
+        "type": "bigint",
+        "table": "listings",
+        "column": "canonical_revision",
+        "default": "0",
+        "not_null": true
+      },
+      {
+        "type": "smallint",
+        "table": "listings",
+        "column": "canonical_domain_version",
+        "default": null,
+        "not_null": false
+      },
+      {
+        "type": "numeric",
+        "table": "listings",
+        "column": "monthly_price",
+        "default": null,
+        "not_null": false
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "listings",
+        "column": "publication_expires_at",
+        "default": null,
+        "not_null": false
+      },
+      {
+        "type": "uuid",
+        "table": "listings",
+        "column": "publisher_account_id",
+        "default": null,
+        "not_null": false
+      },
+      {
+        "type": "bigint",
+        "table": "package_limits",
+        "column": "publication_duration_seconds",
+        "default": null,
+        "not_null": false
+      }
+    ],
+    "indexes": [
+      "CREATE INDEX listings_publisher_account_idx ON public.listings USING btree (publisher_account_id) WHERE (publisher_account_id IS NOT NULL)"
+    ],
+    "canonical_triggers": [
+      {
+        "name": "guard_publication_entitlement",
+        "state": "O",
+        "table": "package_limits",
+        "definition": "CREATE TRIGGER guard_publication_entitlement BEFORE INSERT OR UPDATE ON public.package_limits FOR EACH ROW EXECUTE FUNCTION twuanis_canonical_private.guard_publication_entitlement()"
+      },
+      {
+        "name": "s7_duplicate_publication_guard",
+        "state": "O",
+        "table": "listings",
+        "definition": "CREATE TRIGGER s7_duplicate_publication_guard BEFORE UPDATE OF listing_status ON public.listings FOR EACH ROW EXECUTE FUNCTION twuanis_canonical_private.guard_duplicate_publication()"
+      },
+      {
+        "name": "s7_token_media_guard",
+        "state": "O",
+        "table": "listings",
+        "definition": "CREATE TRIGGER s7_token_media_guard BEFORE UPDATE OF listing_status ON public.listings FOR EACH ROW EXECUTE FUNCTION twuanis_canonical_private.guard_token_media_publication()"
+      },
+      {
+        "name": "s7_token_snapshot_guard",
+        "state": "O",
+        "table": "listing_publish_tokens",
+        "definition": "CREATE TRIGGER s7_token_snapshot_guard BEFORE UPDATE ON public.listing_publish_tokens FOR EACH ROW EXECUTE FUNCTION twuanis_canonical_private.guard_token_snapshot()"
+      },
+      {
+        "name": "s7_csv_references_guard",
+        "state": "O",
+        "table": "listings",
+        "definition": "CREATE TRIGGER s7_csv_references_guard BEFORE UPDATE OF listing_status ON public.listings FOR EACH ROW EXECUTE FUNCTION twuanis_canonical_private.guard_csv_source_reference_completion()"
+      }
+    ],
+    "canonical_constraints": [
+      {
+        "name": "listings_canonical_revision_check",
+        "table": "listings",
+        "definition": "CHECK ((canonical_revision >= 0))"
+      },
+      {
+        "name": "listings_publisher_account_id_fkey",
+        "table": "listings",
+        "definition": "FOREIGN KEY (publisher_account_id) REFERENCES publisher_accounts(id) ON DELETE RESTRICT"
+      },
+      {
+        "name": "listings_canonical_domain_version_check",
+        "table": "listings",
+        "definition": "CHECK ((canonical_domain_version = 1))"
+      },
+      {
+        "name": "package_limits_publication_duration_seconds_check",
+        "table": "package_limits",
+        "definition": "CHECK (((publication_duration_seconds IS NULL) OR ((publication_duration_seconds >= 1) AND (publication_duration_seconds <= 315576000))))"
+      }
+    ]
+  }
+}

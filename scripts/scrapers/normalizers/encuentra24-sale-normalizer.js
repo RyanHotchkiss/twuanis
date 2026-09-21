@@ -552,7 +552,10 @@ function cleanDescription(value) {
 }
 
 function normalizeRow(row) {
-  return {
+  const normalized = {
+    // Preserve event identity/time verbatim; missing evidence stays missing.
+    observation_id: row.observation_id,
+    observed_at: row.observed_at,
     source_name: row.source_name,
     source_listing_id: row.source_listing_id,
     source_url: row.source_url,
@@ -596,6 +599,23 @@ function normalizeRow(row) {
 
     images: splitImages(row.images).join('|')
   }
+
+  // Lossless incoming observation fields; this snapshot does not certify heuristics
+  // already present upstream as source-supported canonical evidence.
+  normalized.source_observation_input = JSON.stringify(row)
+  // Compatibility labels remain for existing consumers, but are explicitly review
+  // information. Canonical ingestion must not promote them into facts/selections.
+  normalized.unresolved_normalizer_review = JSON.stringify({
+    status: 'unresolved',
+    canonical_authority: false,
+    values: Object.fromEntries([
+      'property_type', 'bedrooms', 'bathrooms', 'parking', 'year_built_range',
+      'property_area', 'construction_area', 'utility', 'environment', 'terrain',
+      'accessibility', 'legal_status', 'current_price', 'monthly_price'
+    ].filter(key => Object.prototype.hasOwnProperty.call(normalized, key))
+      .map(key => [key, normalized[key]]))
+  })
+  return normalized
 }
 
 const inputFile = process.argv[2]

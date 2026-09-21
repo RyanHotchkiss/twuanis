@@ -1,4 +1,5 @@
 import 'server-only'
+import { calculatePropertyPositionCounts, calculatePropertyPositionDifference, classifyPropertyPositionInterval, calculatePropertyPositionTail } from '@/lib/price-meter-property-position-math'
 
 import type {
   PriceMeterDistribution
@@ -24,10 +25,6 @@ import {
   buildPriceMeterPropertyPositionConstructionLandContext
 } from '@/lib/price-meter-property-position-construction-land'
 
-import {
-  getPriceMeterConfidenceScore,
-  type PriceMeterConfidenceScore
-} from '@/lib/confidence'
 
 import type {
   PriceMeterComparableSubjectIdentity
@@ -100,10 +97,6 @@ export type PriceMeterComparableEvidence = {
   subjectExcluded:
     true
 
-  confidence: {
-    score:
-      PriceMeterConfidenceScore
-  }
 
   distribution: {
     minimum:
@@ -271,106 +264,9 @@ function buildComparablePercentile({
   }
 
 
-  let belowCount =
-    0
-
-  let equalCount =
-    0
-
-  let aboveCount =
-    0
-
-
-  for (
-    const observation of
-      population.observations
-  ) {
-    const peerPricePerM2 =
-      observation.pricePerM2
-
-
-    if (
-      !Number.isFinite(
-        peerPricePerM2
-      ) ||
-      peerPricePerM2 <=
-        0
-    ) {
-      throw new Error(
-        'Phase 12A peer population contains an invalid Price / m² observation.'
-      )
-    }
-
-
-    if (
-      peerPricePerM2 <
-        subjectPricePerM2
-    ) {
-      belowCount +=
-        1
-
-      continue
-    }
-
-
-    if (
-      peerPricePerM2 >
-        subjectPricePerM2
-    ) {
-      aboveCount +=
-        1
-
-      continue
-    }
-
-
-    equalCount +=
-      1
-  }
-
-
-  if (
-    belowCount +
-      equalCount +
-      aboveCount !==
-    comparisonPopulationCount
-  ) {
-    throw new Error(
-      'Phase 12A percentile population accounting failed.'
-    )
-  }
-
-
-  /*
-   * Unlike Phase 12, equalCount may legitimately be zero.
-   *
-   * The subject is external to the Phase 12A peer population.
-   */
-
-  const position =
-    (
-      100 *
-      (
-        belowCount +
-        0.5 *
-        equalCount
-      )
-    ) /
-    comparisonPopulationCount
-
-
-  if (
-    !Number.isFinite(
-      position
-    ) ||
-    position < 0 ||
-    position > 100
-  ) {
-    throw new Error(
-      'Phase 12A percentile calculation produced an invalid result.'
-    )
-  }
-
+  const { belowCount, equalCount, aboveCount, percentilePosition: position } =
+    calculatePropertyPositionCounts(subjectPricePerM2,
+      population.observations.map(observation => observation.pricePerM2), comparisonPopulationCount)
 
   return {
     position,
@@ -400,90 +296,7 @@ function resolveComparableInterval({
     >
 }): PriceMeterPropertyPositionInterval {
 
-  const {
-    p10,
-    p25,
-    median,
-    p75,
-    p90
-  } =
-    distribution
-
-
-  if (
-    p10 === null ||
-    p25 === null ||
-    median === null ||
-    p75 === null ||
-    p90 === null
-  ) {
-    throw new Error(
-      'Phase 12A requires canonical peer distribution thresholds.'
-    )
-  }
-
-
-  if (
-    p10 > p25 ||
-    p25 > median ||
-    median > p75 ||
-    p75 > p90
-  ) {
-    throw new Error(
-      'Phase 12A peer distribution thresholds are not in canonical ascending order.'
-    )
-  }
-
-
-  if (
-    propertyPricePerM2 <
-      p10
-  ) {
-    return 'below_p10'
-  }
-
-
-  if (
-    propertyPricePerM2 <
-      p25
-  ) {
-    return 'p10_to_p25'
-  }
-
-
-  if (
-    propertyPricePerM2 <
-      median
-  ) {
-    return 'p25_to_median'
-  }
-
-
-  if (
-    propertyPricePerM2 ===
-      median
-  ) {
-    return 'at_median'
-  }
-
-
-  if (
-    propertyPricePerM2 <=
-      p75
-  ) {
-    return 'median_to_p75'
-  }
-
-
-  if (
-    propertyPricePerM2 <=
-      p90
-  ) {
-    return 'p75_to_p90'
-  }
-
-
-  return 'above_p90'
+  return classifyPropertyPositionInterval(propertyPricePerM2, distribution)
 }
 
 
@@ -526,89 +339,9 @@ function buildComparableTail({
   }
 
 
-  const thresholdPercentile:
-    10 | 90 =
-      interval ===
-        'below_p10'
-        ? 10
-        : 90
-
-
-  const thresholdPricePerM2 =
-    thresholdPercentile ===
-      10
-      ? distribution.p10
-      : distribution.p90
-
-
-  if (
-    thresholdPricePerM2 ===
-      null ||
-    !Number.isFinite(
-      thresholdPricePerM2
-    ) ||
-    thresholdPricePerM2 <=
-      0
-  ) {
-    throw new Error(
-      'Phase 12A tail evidence requires a valid canonical peer threshold.'
-    )
-  }
-
-
-  const differenceFromThreshold =
-    propertyPricePerM2 -
-    thresholdPricePerM2
-
-
-  const percentDifferenceFromThreshold =
-    (
-      differenceFromThreshold /
-      thresholdPricePerM2
-    ) *
-    100
-
-
-  if (
-    !Number.isFinite(
-      differenceFromThreshold
-    ) ||
-    !Number.isFinite(
-      percentDifferenceFromThreshold
-    )
-  ) {
-    throw new Error(
-      'Phase 12A tail calculation produced an invalid result.'
-    )
-  }
-
-
-  return {
-    listingId,
-
-    propertyPricePerM2,
-
-    comparisonPopulationCount,
-
-    percentilePosition,
-
-    tail:
-      interval,
-
-    thresholdPercentile,
-
-    thresholdPricePerM2,
-
-    differenceFromThreshold,
-
-    percentDifferenceFromThreshold,
-
-    percentageReference:
-      thresholdPercentile ===
-        10
-        ? 'selected_population_p10'
-        : 'selected_population_p90'
-  }
+  const tail = calculatePropertyPositionTail(propertyPricePerM2, distribution, interval)
+  if (tail === null) return null
+  return { listingId, propertyPricePerM2, comparisonPopulationCount, percentilePosition, tail: interval, ...tail }
 }
 
 
@@ -746,18 +479,7 @@ export function buildPriceMeterComparableEvidence({
     })
 
 
-  const difference =
-    propertyPricePerM2 -
-    median
-
-
-  const percentDifference =
-    (
-      difference /
-      median
-    ) *
-    100
-
+  const { difference, percentDifference } = calculatePropertyPositionDifference(propertyPricePerM2, median)
 
   if (
     !Number.isFinite(
@@ -806,10 +528,6 @@ export function buildPriceMeterComparableEvidence({
     })
 
 
-  const confidenceScore =
-    getPriceMeterConfidenceScore(
-      comparisonPopulationCount
-    )
 
 
   return {
@@ -838,10 +556,6 @@ export function buildPriceMeterComparableEvidence({
     subjectExcluded:
       true,
 
-    confidence: {
-      score:
-        confidenceScore
-    },
 
     distribution: {
       minimum,

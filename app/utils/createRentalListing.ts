@@ -16,6 +16,9 @@ export async function createRentalListing(
   generateListingTitle: (data: any) => string,
   generateListingDescription: (data: any) => string
 ) {
+  // S7: no surviving callers; active flows use token publication or manageListing.
+  rejectRetiredWriter()
+
   const {
     data: {
       user
@@ -267,4 +270,9 @@ console.log(response.data)
 
 alert('Listing Created Successfully')
 
+}
+
+// Explicit void keeps the retained legacy body type-checkable; execution always stops.
+function rejectRetiredWriter(): void {
+  throw new Error('This legacy direct writer is retired. Use the current listing workflow.')
 }

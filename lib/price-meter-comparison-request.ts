@@ -1,3 +1,4 @@
+import { validatePriceMeterComparisonCohortDefinition } from '@/lib/price-meter-comparison-cohort'
 import type {
   PriceMeterPropertyBasis,
   PriceMeterNormalizationBasis
@@ -41,6 +42,10 @@ export function validatePriceMeterComparisonRequest(
   request:
     PriceMeterComparisonRequest
 ): void {
+  for (const cohort of [request.cohortA, request.cohortB]) {
+    const validation = validatePriceMeterComparisonCohortDefinition(cohort)
+    if (!validation.valid) throw new Error('Invalid comparison cohort: ' + validation.reasons.join(', '))
+  }
   if (
     request.propertyBasis ===
       'land_only' &&

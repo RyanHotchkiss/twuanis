@@ -33,13 +33,7 @@ type Distribution = {
 }
 
 
-type Confidence = {
-  score:
-    number
 
-  label:
-    string
-}
 
 
 type ComparisonCohort = {
@@ -54,8 +48,6 @@ type ComparisonCohort = {
   distribution:
     Distribution
 
-  confidence:
-    Confidence
 }
 
 
@@ -513,12 +505,6 @@ function CohortEvidence({
           }
         />
 
-        <EvidenceCard
-          label="Confianza de Twuanis"
-          value={
-            `${cohort.confidence.label} · ${cohort.confidence.score}/100`
-          }
-        />
 
       </div>
     </section>

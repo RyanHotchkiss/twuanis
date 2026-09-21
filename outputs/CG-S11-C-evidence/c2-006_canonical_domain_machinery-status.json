@@ -1,0 +1,8 @@
+{
+  "source": "supabase/migrations/006_canonical_domain_machinery.sql",
+  "sha256": "73ed1b776a787af61b35cf03cb91eb4e8135f13fff446e4f6a61be2a9721b891",
+  "start": "2026-09-19T15:43:44.120116+00:00",
+  "end": "2026-09-19T15:43:45.191357+00:00",
+  "exit_code": 3,
+  "commit_output": false
+}

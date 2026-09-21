@@ -101,11 +101,8 @@ function matchesComparisonCohortGeography(
       'province'
   ) {
     return (
-      observation
-        .geography
-        .province
-        ?.id ===
-      selectedGeography.id
+      String(observation.geography.province?.id ?? '') ===
+      String(selectedGeography.id)
     )
   }
 
@@ -115,11 +112,8 @@ function matchesComparisonCohortGeography(
       'canton'
   ) {
     return (
-      observation
-        .geography
-        .canton
-        ?.id ===
-      selectedGeography.id
+      String(observation.geography.canton?.id ?? '') ===
+      String(selectedGeography.id)
     )
   }
 
@@ -129,11 +123,8 @@ function matchesComparisonCohortGeography(
       'district'
   ) {
     return (
-      observation
-        .geography
-        .district
-        ?.id ===
-      selectedGeography.id
+      String(observation.geography.district?.id ?? '') ===
+      String(selectedGeography.id)
     )
   }
 

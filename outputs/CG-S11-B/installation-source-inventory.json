@@ -1,0 +1,2494 @@
+{
+  "scope": "Ordered source declarations plus final disposable catalog. Current target collision mapping is in installation-manifest.md. Source SHA256 pins full dynamic DO bodies, not just declaration excerpts.",
+  "migrations": [
+    {
+      "file": "supabase/migrations/003_canonical_listing_write_boundary.sql",
+      "sha256": "6faa62f709971407113b82a0e6339e4501ce0f3fcd19956eb61b1b02f9f5c577",
+      "operations": [
+        {
+          "line": 10,
+          "declaration": "CREATE SCHEMA twuanis_private AUTHORIZATION postgres;"
+        },
+        {
+          "line": 11,
+          "declaration": "REVOKE ALL ON SCHEMA twuanis_private FROM PUBLIC, anon, authenticated, service_role;"
+        },
+        {
+          "line": 12,
+          "declaration": "CREATE FUNCTION twuanis_private.normalize_geographic_projection(p_name text)"
+        },
+        {
+          "line": 21,
+          "declaration": "ALTER FUNCTION twuanis_private.normalize_geographic_projection(text) OWNER TO postgres;"
+        },
+        {
+          "line": 22,
+          "declaration": "REVOKE EXECUTE ON FUNCTION twuanis_private.normalize_geographic_projection(text)"
+        },
+        {
+          "line": 24,
+          "declaration": "CREATE FUNCTION twuanis_private.write_listing_canonical("
+        },
+        {
+          "line": 139,
+          "declaration": "INSERT INTO public.listings_ontology_terms (listing_id, ontology_term_id)"
+        },
+        {
+          "line": 194,
+          "declaration": "ALTER FUNCTION twuanis_private.write_listing_canonical(uuid,text,text,text,text,text,uuid,boolean) OWNER TO postgres;"
+        },
+        {
+          "line": 195,
+          "declaration": "REVOKE EXECUTE ON FUNCTION twuanis_private.write_listing_canonical(uuid,text,text,text,text,text,uuid,boolean)"
+        },
+        {
+          "line": 197,
+          "declaration": "CREATE FUNCTION public.write_my_listing_canonical("
+        },
+        {
+          "line": 213,
+          "declaration": "ALTER FUNCTION public.write_my_listing_canonical(uuid,text,text,text,text,text) OWNER TO postgres;"
+        },
+        {
+          "line": 214,
+          "declaration": "REVOKE EXECUTE ON FUNCTION public.write_my_listing_canonical(uuid,text,text,text,text,text)"
+        },
+        {
+          "line": 216,
+          "declaration": "CREATE FUNCTION public.write_listing_canonical_server("
+        },
+        {
+          "line": 226,
+          "declaration": "ALTER FUNCTION public.write_listing_canonical_server(uuid,text,text,text,text,text) OWNER TO postgres;"
+        },
+        {
+          "line": 227,
+          "declaration": "REVOKE EXECUTE ON FUNCTION public.write_listing_canonical_server(uuid,text,text,text,text,text)"
+        }
+      ],
+      "installation_order": 1,
+      "requires": "Existing Migration 002 invariants; pre-install purge; private schemas absent"
+    },
+    {
+      "file": "supabase/migrations/004_dormant_canonical_listing_foundation.sql",
+      "sha256": "b028db71b00a1f0af24c773b077ebf75e0f6be08b40889a5fcac4b2b6bcd3604",
+      "operations": [
+        {
+          "line": 11,
+          "declaration": "CREATE SCHEMA twuanis_canonical_private AUTHORIZATION postgres;"
+        },
+        {
+          "line": 13,
+          "declaration": "REVOKE ALL ON SCHEMA twuanis_canonical_private FROM PUBLIC, anon, authenticated, service_role;"
+        },
+        {
+          "line": 14,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.finite_numeric(v numeric)"
+        },
+        {
+          "line": 20,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.reject_immutable_mutation()"
+        },
+        {
+          "line": 29,
+          "declaration": "CREATE TABLE public.publisher_accounts ("
+        },
+        {
+          "line": 35,
+          "declaration": "CREATE TABLE public.capacity_policy_guard ("
+        },
+        {
+          "line": 39,
+          "declaration": "ALTER TABLE public.listings"
+        },
+        {
+          "line": 43,
+          "declaration": "CREATE INDEX listings_publisher_account_idx ON public.listings(publisher_account_id)"
+        },
+        {
+          "line": 45,
+          "declaration": "CREATE TABLE public.listing_semantic_selections ("
+        },
+        {
+          "line": 54,
+          "declaration": "CREATE UNIQUE INDEX listing_semantic_singleton_idx"
+        },
+        {
+          "line": 57,
+          "declaration": "CREATE INDEX listing_semantic_term_idx ON public.listing_semantic_selections(ontology_term_id);"
+        },
+        {
+          "line": 58,
+          "declaration": "CREATE TABLE public.listing_fact_evidence ("
+        },
+        {
+          "line": 108,
+          "declaration": "CREATE INDEX listing_fact_category_idx ON public.listing_fact_evidence(category_term_id)"
+        },
+        {
+          "line": 110,
+          "declaration": "CREATE TABLE public.listing_classification_rule_sets ("
+        },
+        {
+          "line": 119,
+          "declaration": "CREATE TABLE public.listing_classification_rules ("
+        },
+        {
+          "line": 131,
+          "declaration": "CREATE INDEX listing_classification_term_idx ON public.listing_classification_rules(ontology_term_id);"
+        },
+        {
+          "line": 132,
+          "declaration": "CREATE TABLE public.listing_membership_origins ("
+        },
+        {
+          "line": 143,
+          "declaration": "CREATE INDEX listing_membership_origin_term_idx ON public.listing_membership_origins(ontology_term_id);"
+        },
+        {
+          "line": 144,
+          "declaration": "CREATE INDEX listing_membership_origin_rule_idx ON public.listing_membership_origins(classification_rule_id)"
+        },
+        {
+          "line": 148,
+          "declaration": "CREATE TABLE public.canonical_operation_receipts ("
+        },
+        {
+          "line": 162,
+          "declaration": "CREATE INDEX canonical_receipt_listing_idx ON public.canonical_operation_receipts(listing_id)"
+        },
+        {
+          "line": 166,
+          "declaration": "CREATE TABLE public.listing_source_observations ("
+        },
+        {
+          "line": 182,
+          "declaration": "CREATE INDEX listing_source_observation_listing_idx ON public.listing_source_observations(listing_id, processed_at);"
+        },
+        {
+          "line": 183,
+          "declaration": "CREATE TABLE public.source_identity_conflicts ("
+        },
+        {
+          "line": 213,
+          "declaration": "CREATE INDEX source_identity_conflict_listing_idx ON public.source_identity_conflicts(listing_id, recorded_at);"
+        },
+        {
+          "line": 216,
+          "declaration": "CREATE TABLE public.listing_lifecycle_events ("
+        },
+        {
+          "line": 241,
+          "declaration": "CREATE INDEX listing_lifecycle_chronology_idx ON public.listing_lifecycle_events(listing_id, listing_revision, recorded_at);"
+        },
+        {
+          "line": 242,
+          "declaration": "CREATE TABLE public.listing_monetary_events ("
+        },
+        {
+          "line": 270,
+          "declaration": "CREATE INDEX listing_monetary_chronology_idx ON public.listing_monetary_events(listing_id, listing_revision, recorded_at);"
+        },
+        {
+          "line": 271,
+          "declaration": "CREATE INDEX listing_monetary_source_idx ON public.listing_monetary_events(source_observation_id)"
+        },
+        {
+          "line": 273,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.validate_new_term_reference()"
+        },
+        {
+          "line": 295,
+          "declaration": "CREATE TRIGGER validate_semantic_selection BEFORE INSERT OR UPDATE ON public.listing_semantic_selections"
+        },
+        {
+          "line": 297,
+          "declaration": "CREATE TRIGGER validate_fact_category BEFORE INSERT OR UPDATE ON public.listing_fact_evidence"
+        },
+        {
+          "line": 299,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.validate_classification_rule()"
+        },
+        {
+          "line": 326,
+          "declaration": "CREATE TRIGGER validate_classification_bounds BEFORE INSERT ON public.listing_classification_rules"
+        }
+      ],
+      "installation_order": 2,
+      "requires": "supabase/migrations/003_canonical_listing_write_boundary.sql"
+    },
+    {
+      "file": "supabase/migrations/005_dormant_publisher_coordination.sql",
+      "sha256": "58a233408778aef4f2c53947db516dfc4b491b2503db47f8bc7d95be40508201",
+      "operations": [
+        {
+          "line": 18,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.initialize_capacity_guard()"
+        },
+        {
+          "line": 26,
+          "declaration": "INSERT INTO public.capacity_policy_guard(id) VALUES(1) ON CONFLICT(id) DO NOTHING;"
+        },
+        {
+          "line": 29,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.lock_capacity_policy(p_exclusive boolean DEFAULT false)"
+        },
+        {
+          "line": 45,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.ensure_publisher_account(p_owner uuid)"
+        },
+        {
+          "line": 53,
+          "declaration": "INSERT INTO public.publisher_accounts(owner_user_id) VALUES(p_owner)"
+        },
+        {
+          "line": 59,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.lock_publisher(p_publisher uuid)"
+        },
+        {
+          "line": 70,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.resolve_publisher(p_owner uuid)"
+        },
+        {
+          "line": 82,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.publisher_allowance(p_publisher uuid,p_owner uuid)"
+        },
+        {
+          "line": 117,
+          "declaration": "CREATE INDEX listings_canonical_active_publisher_idx ON public.listings(publisher_account_id)"
+        },
+        {
+          "line": 119,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.publisher_consumption(p_publisher uuid,p_owner uuid)"
+        },
+        {
+          "line": 133,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.capacity_state(p_allowance bigint,p_consumption bigint)"
+        }
+      ],
+      "installation_order": 3,
+      "requires": "supabase/migrations/004_dormant_canonical_listing_foundation.sql"
+    },
+    {
+      "file": "supabase/migrations/006_canonical_domain_machinery.sql",
+      "sha256": "73ed1b776a787af61b35cf03cb91eb4e8135f13fff446e4f6a61be2a9721b891",
+      "operations": [
+        {
+          "line": 11,
+          "declaration": "ALTER TABLE public.listings ADD COLUMN canonical_domain_version smallint CHECK(canonical_domain_version=1);"
+        },
+        {
+          "line": 14,
+          "declaration": "ALTER TABLE public.listings ALTER COLUMN monthly_price TYPE numeric USING monthly_price::numeric;"
+        },
+        {
+          "line": 15,
+          "declaration": "ALTER TABLE public.canonical_operation_receipts ADD COLUMN result_revision bigint CHECK(result_revision>=0);"
+        },
+        {
+          "line": 16,
+          "declaration": "ALTER TABLE public.listing_source_observations ADD COLUMN result_revision bigint CHECK(result_revision>=0);"
+        },
+        {
+          "line": 19,
+          "declaration": "CREATE TABLE twuanis_canonical_private.accessibility_identity ("
+        },
+        {
+          "line": 24,
+          "declaration": "CREATE TABLE twuanis_canonical_private.classification_seals ("
+        },
+        {
+          "line": 27,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.s3_sealed_rule_guard() RETURNS trigger"
+        },
+        {
+          "line": 36,
+          "declaration": "CREATE TRIGGER s3_sealed_rule_guard BEFORE INSERT ON public.listing_classification_rules"
+        },
+        {
+          "line": 38,
+          "declaration": "CREATE TRIGGER immutable_seals BEFORE UPDATE OR DELETE ON twuanis_canonical_private.classification_seals"
+        },
+        {
+          "line": 40,
+          "declaration": "CREATE TRIGGER immutable_seals_truncate BEFORE TRUNCATE ON twuanis_canonical_private.classification_seals"
+        },
+        {
+          "line": 42,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.s3_seal_classification(p_set uuid) RETURNS void"
+        },
+        {
+          "line": 51,
+          "declaration": "INSERT INTO twuanis_canonical_private.classification_seals VALUES(p_set) ON CONFLICT DO NOTHING;"
+        },
+        {
+          "line": 53,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.s3_keys(v jsonb,allowed text[],required text[] DEFAULT '{}') RETURNS void"
+        },
+        {
+          "line": 64,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.s3_decimal(v jsonb) RETURNS numeric"
+        },
+        {
+          "line": 72,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.s3_term_ids(v jsonb) RETURNS bigint[]"
+        },
+        {
+          "line": 83,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.s3_geography(v jsonb) RETURNS bigint[]"
+        },
+        {
+          "line": 115,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.s3_origins(lid uuid,dim text,ids bigint[],rule uuid DEFAULT NULL) RETURNS void"
+        },
+        {
+          "line": 143,
+          "declaration": "INSERT INTO public.listing_membership_origins(listing_id,ontology_term_id,origin_domain,classification_rule_id)"
+        },
+        {
+          "line": 147,
+          "declaration": "INSERT INTO public.listings_ontology_terms(listing_id,ontology_term_id) SELECT lid,t FROM (SELECT DISTINCT unnest(expanded)t)s ON CONFLICT DO NOTHING;"
+        },
+        {
+          "line": 149,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.s3_command("
+        },
+        {
+          "line": 279,
+          "declaration": "INSERT INTO public.listing_source_observations(id,source_name,source_listing_id,source_observation_id,listing_id,source_observed_at,outcome,payload_fingerprint,result_revision)"
+        },
+        {
+          "line": 281,
+          "declaration": "INSERT INTO public.source_identity_conflicts(listing_id,observation_id,source_name,source_listing_id,existing_transaction_type,observed_transaction_type,existing_province_code,existing_canton_code,observed_province_code,observed_canton_code,conflict_type)"
+        },
+        {
+          "line": 283,
+          "declaration": "INSERT INTO public.canonical_operation_receipts(id,authority_kind,authority_identity,operation_type,request_id,payload_fingerprint,outcome,listing_id,result_revision)"
+        },
+        {
+          "line": 289,
+          "declaration": "INSERT INTO public.listing_source_observations(id,source_name,source_listing_id,source_observation_id,listing_id,source_observed_at,outcome,payload_fingerprint,result_revision)"
+        },
+        {
+          "line": 291,
+          "declaration": "INSERT INTO public.canonical_operation_receipts(id,authority_kind,authority_identity,operation_type,request_id,payload_fingerprint,outcome,listing_id,result_revision)"
+        },
+        {
+          "line": 330,
+          "declaration": "INSERT INTO public.listing_semantic_selections(listing_id,dimension,ontology_term_id) SELECT p_listing,dim,x FROM unnest(ids)x;"
+        },
+        {
+          "line": 373,
+          "declaration": "INSERT INTO public.listing_fact_evidence(listing_id,dimension,kind,exact_value,category_term_id,range_lower,range_upper,lower_inclusive,upper_inclusive,evidence_source,evidence_reference)"
+        },
+        {
+          "line": 449,
+          "declaration": "INSERT INTO public.canonical_operation_receipts(id,authority_kind,authority_identity,operation_type,request_id,payload_fingerprint,outcome,listing_id,result_revision)"
+        },
+        {
+          "line": 452,
+          "declaration": "INSERT INTO public.listing_source_observations(id,source_name,source_listing_id,source_observation_id,listing_id,source_observed_at,outcome,payload_fingerprint,result_revision)"
+        },
+        {
+          "line": 456,
+          "declaration": "INSERT INTO public.listing_monetary_events(listing_id,operation_id,listing_revision,transaction_type,event_kind,old_amount,old_currency,new_amount,new_currency,actor_kind,actor_identity,reason,source_observation_id,source_observed_at)"
+        },
+        {
+          "line": 460,
+          "declaration": "INSERT INTO public.listing_lifecycle_events(listing_id,operation_id,listing_revision,event_type,previous_state,resulting_state,actor_kind,actor_identity,reason,publication_expires_at)"
+        }
+      ],
+      "installation_order": 4,
+      "requires": "supabase/migrations/005_dormant_publisher_coordination.sql"
+    },
+    {
+      "file": "supabase/migrations/007_canonical_creation_authority.sql",
+      "sha256": "521e67d7c1ebd619c3b1d7afd4817b94542eba9775515c402c17e7e8fa3be0da",
+      "operations": [
+        {
+          "line": 9,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.s4_domains(d jsonb,evidence_kind text) RETURNS jsonb"
+        },
+        {
+          "line": 54,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.s4_create_core(p_owner uuid,p_request uuid,p_input jsonb,p_source jsonb DEFAULT NULL)"
+        },
+        {
+          "line": 113,
+          "declaration": "INSERT INTO public.canonical_operation_receipts(id,authority_kind,authority_identity,operation_type,request_id,payload_fingerprint,outcome,listing_id,result_revision)"
+        },
+        {
+          "line": 120,
+          "declaration": "INSERT INTO public.listings(id,owner_id,publisher_account_id,transaction_type,listing_status,currency,listing_origin,listing_source_type,"
+        },
+        {
+          "line": 155,
+          "declaration": "INSERT INTO public.listing_semantic_selections(listing_id,dimension,ontology_term_id) SELECT p_listing,dim,x FROM unnest(ids)x;"
+        },
+        {
+          "line": 198,
+          "declaration": "INSERT INTO public.listing_fact_evidence(listing_id,dimension,kind,exact_value,category_term_id,range_lower,range_upper,lower_inclusive,upper_inclusive,evidence_source,evidence_reference)"
+        },
+        {
+          "line": 239,
+          "declaration": "INSERT INTO public.canonical_operation_receipts(id,authority_kind,authority_identity,operation_type,request_id,payload_fingerprint,outcome,listing_id,result_revision)"
+        },
+        {
+          "line": 244,
+          "declaration": "INSERT INTO public.listing_source_observations(id,source_name,source_listing_id,source_observation_id,listing_id,source_observed_at,outcome,payload_fingerprint,result_revision)"
+        },
+        {
+          "line": 248,
+          "declaration": "INSERT INTO public.listing_lifecycle_events(listing_id,operation_id,listing_revision,event_type,previous_state,resulting_state,actor_kind,actor_identity)"
+        },
+        {
+          "line": 251,
+          "declaration": "INSERT INTO public.listing_monetary_events(listing_id,operation_id,listing_revision,transaction_type,event_kind,old_amount,old_currency,new_amount,new_currency,actor_kind,actor_identity,reason,source_observation_id,source_observed_at)"
+        },
+        {
+          "line": 265,
+          "declaration": "CREATE FUNCTION public.create_customer_canonical_listing(p_request uuid,p_input jsonb) RETURNS jsonb"
+        },
+        {
+          "line": 273,
+          "declaration": "CREATE FUNCTION public.create_trusted_canonical_listing(p_request uuid,p_input jsonb,p_source jsonb DEFAULT NULL) RETURNS jsonb"
+        },
+        {
+          "line": 277,
+          "declaration": "CREATE FUNCTION public.mutate_customer_canonical_listing(p_listing uuid,p_expected bigint,p_request uuid,p_domains jsonb) RETURNS jsonb"
+        },
+        {
+          "line": 290,
+          "declaration": "CREATE FUNCTION public.mutate_trusted_canonical_listing(p_listing uuid,p_expected bigint,p_request uuid,p_domains jsonb,p_source jsonb DEFAULT NULL) RETURNS jsonb"
+        },
+        {
+          "line": 301,
+          "declaration": "ALTER FUNCTION twuanis_canonical_private.s4_domains(jsonb,text) OWNER TO postgres;"
+        },
+        {
+          "line": 303,
+          "declaration": "ALTER FUNCTION twuanis_canonical_private.s4_create_core(uuid,uuid,jsonb,jsonb) OWNER TO postgres;"
+        },
+        {
+          "line": 304,
+          "declaration": "REVOKE ALL ON FUNCTION twuanis_canonical_private.s4_domains(jsonb,text),twuanis_canonical_private.s4_create_core(uuid,uuid,jsonb,jsonb) FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 305,
+          "declaration": "ALTER FUNCTION public.create_customer_canonical_listing(uuid,jsonb) OWNER TO postgres;"
+        },
+        {
+          "line": 306,
+          "declaration": "ALTER FUNCTION public.create_trusted_canonical_listing(uuid,jsonb,jsonb) OWNER TO postgres;"
+        },
+        {
+          "line": 307,
+          "declaration": "ALTER FUNCTION public.mutate_customer_canonical_listing(uuid,bigint,uuid,jsonb) OWNER TO postgres;"
+        },
+        {
+          "line": 308,
+          "declaration": "ALTER FUNCTION public.mutate_trusted_canonical_listing(uuid,bigint,uuid,jsonb,jsonb) OWNER TO postgres;"
+        },
+        {
+          "line": 309,
+          "declaration": "REVOKE ALL ON FUNCTION public.create_customer_canonical_listing(uuid,jsonb),public.create_trusted_canonical_listing(uuid,jsonb,jsonb),public.mutate_customer_canonical_listing(uuid,bigint,uuid,jsonb),public.mutate_trusted_canonical_listing(uuid,bigint,uuid,jsonb,jsonb) FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 310,
+          "declaration": "GRANT EXECUTE ON FUNCTION public.create_customer_canonical_listing(uuid,jsonb),public.mutate_customer_canonical_listing(uuid,bigint,uuid,jsonb) TO authenticated;"
+        },
+        {
+          "line": 311,
+          "declaration": "GRANT EXECUTE ON FUNCTION public.create_trusted_canonical_listing(uuid,jsonb,jsonb),public.mutate_trusted_canonical_listing(uuid,bigint,uuid,jsonb,jsonb) TO service_role;"
+        }
+      ],
+      "installation_order": 5,
+      "requires": "supabase/migrations/006_canonical_domain_machinery.sql"
+    },
+    {
+      "file": "supabase/migrations/008_commercial_capacity_coordination.sql",
+      "sha256": "4dfa770194f96f0b659b54deda8c31966dea4fc28353f74321adc31c724ffdc0",
+      "operations": [
+        {
+          "line": 7,
+          "declaration": "CREATE OR REPLACE FUNCTION public.assign_default_market_package()"
+        },
+        {
+          "line": 29,
+          "declaration": "insert into public.user_subscriptions ("
+        },
+        {
+          "line": 51,
+          "declaration": "CREATE OR REPLACE FUNCTION public.approve_sinpe_payment(p_payment_id uuid)"
+        },
+        {
+          "line": 256,
+          "declaration": "CREATE OR REPLACE FUNCTION public.activate_purchase(p_purchase_id uuid)"
+        },
+        {
+          "line": 465,
+          "declaration": "insert into public.user_subscriptions ("
+        },
+        {
+          "line": 629,
+          "declaration": "insert into public.promotion_events ("
+        },
+        {
+          "line": 703,
+          "declaration": "insert into public.listing_entitlements ("
+        },
+        {
+          "line": 791,
+          "declaration": "insert into public.promotion_events ("
+        },
+        {
+          "line": 856,
+          "declaration": "insert into public.purchase_request_events ("
+        },
+        {
+          "line": 896,
+          "declaration": "ALTER FUNCTION public.assign_default_market_package() OWNER TO postgres;"
+        },
+        {
+          "line": 898,
+          "declaration": "ALTER FUNCTION public.approve_sinpe_payment(uuid) OWNER TO postgres;"
+        },
+        {
+          "line": 899,
+          "declaration": "ALTER FUNCTION public.activate_purchase(uuid) OWNER TO postgres;"
+        },
+        {
+          "line": 900,
+          "declaration": "REVOKE ALL ON FUNCTION public.assign_default_market_package(),public.approve_sinpe_payment(uuid),public.activate_purchase(uuid) FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 902,
+          "declaration": "GRANT EXECUTE ON FUNCTION public.approve_sinpe_payment(uuid) TO authenticated;"
+        },
+        {
+          "line": 904,
+          "declaration": "GRANT EXECUTE ON FUNCTION public.activate_purchase(uuid) TO service_role;"
+        }
+      ],
+      "installation_order": 6,
+      "requires": "supabase/migrations/007_canonical_creation_authority.sql"
+    },
+    {
+      "file": "supabase/migrations/009_canonical_reader_boundary.sql",
+      "sha256": "ca4d9ac57c0fb5eaf1fb988ad53ed589379cd17a4ce8d0e12fcd85cb90d28173",
+      "operations": [
+        {
+          "line": 3,
+          "declaration": "CREATE FUNCTION public.read_canonical_listing_evidence("
+        },
+        {
+          "line": 48,
+          "declaration": "ALTER FUNCTION public.read_canonical_listing_evidence(uuid[],text[],text[]) OWNER TO postgres;"
+        },
+        {
+          "line": 49,
+          "declaration": "REVOKE ALL ON FUNCTION public.read_canonical_listing_evidence(uuid[],text[],text[]) FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 50,
+          "declaration": "GRANT EXECUTE ON FUNCTION public.read_canonical_listing_evidence(uuid[],text[],text[]) TO service_role;"
+        },
+        {
+          "line": 52,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.s6_legacy_normalize(v text, slug boolean DEFAULT false)"
+        },
+        {
+          "line": 58,
+          "declaration": "ALTER FUNCTION twuanis_canonical_private.s6_legacy_normalize(text,boolean) OWNER TO postgres;"
+        },
+        {
+          "line": 59,
+          "declaration": "REVOKE ALL ON FUNCTION twuanis_canonical_private.s6_legacy_normalize(text,boolean) FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 60,
+          "declaration": "CREATE FUNCTION public.read_legacy_geographic_candidates("
+        },
+        {
+          "line": 83,
+          "declaration": "ALTER FUNCTION public.read_legacy_geographic_candidates(text[],text[],text[],text[],text) OWNER TO postgres;"
+        },
+        {
+          "line": 84,
+          "declaration": "REVOKE ALL ON FUNCTION public.read_legacy_geographic_candidates(text[],text[],text[],text[],text) FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 85,
+          "declaration": "GRANT EXECUTE ON FUNCTION public.read_legacy_geographic_candidates(text[],text[],text[],text[],text) TO service_role;"
+        },
+        {
+          "line": 86,
+          "declaration": "CREATE FUNCTION public.read_legacy_geography_dictionary(p_listing_ids uuid[]) RETURNS jsonb"
+        },
+        {
+          "line": 110,
+          "declaration": "ALTER FUNCTION public.read_legacy_geography_dictionary(uuid[]) OWNER TO postgres;"
+        },
+        {
+          "line": 111,
+          "declaration": "REVOKE ALL ON FUNCTION public.read_legacy_geography_dictionary(uuid[]) FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 112,
+          "declaration": "GRANT EXECUTE ON FUNCTION public.read_legacy_geography_dictionary(uuid[]) TO service_role;"
+        }
+      ],
+      "installation_order": 7,
+      "requires": "supabase/migrations/008_commercial_capacity_coordination.sql"
+    },
+    {
+      "file": "supabase/migrations/010_import_operator_authority.sql",
+      "sha256": "a083fd989c6d9848e7beb8ef10a0349b749164f7903f43f0afbb55899591e09e",
+      "operations": [
+        {
+          "line": 5,
+          "declaration": "CREATE TABLE twuanis_canonical_private.import_operator_grants ("
+        },
+        {
+          "line": 15,
+          "declaration": "CREATE UNIQUE INDEX import_operator_one_active ON twuanis_canonical_private.import_operator_grants(user_id) WHERE revoked_at IS NULL;"
+        },
+        {
+          "line": 16,
+          "declaration": "ALTER TABLE twuanis_canonical_private.import_operator_grants ENABLE ROW LEVEL SECURITY;"
+        },
+        {
+          "line": 17,
+          "declaration": "REVOKE ALL ON TABLE twuanis_canonical_private.import_operator_grants FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 18,
+          "declaration": "REVOKE ALL ON SEQUENCE twuanis_canonical_private.import_operator_grants_id_seq FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 20,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.set_import_operator(p_user uuid,p_active boolean)"
+        },
+        {
+          "line": 26,
+          "declaration": "INSERT INTO twuanis_canonical_private.import_operator_grants(user_id) VALUES(p_user)"
+        },
+        {
+          "line": 33,
+          "declaration": "ALTER FUNCTION twuanis_canonical_private.set_import_operator(uuid,boolean) OWNER TO postgres;"
+        },
+        {
+          "line": 34,
+          "declaration": "REVOKE ALL ON FUNCTION twuanis_canonical_private.set_import_operator(uuid,boolean) FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 36,
+          "declaration": "CREATE FUNCTION public.is_current_user_import_operator()"
+        },
+        {
+          "line": 43,
+          "declaration": "ALTER FUNCTION public.is_current_user_import_operator() OWNER TO postgres;"
+        },
+        {
+          "line": 44,
+          "declaration": "REVOKE ALL ON FUNCTION public.is_current_user_import_operator() FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 45,
+          "declaration": "GRANT EXECUTE ON FUNCTION public.is_current_user_import_operator() TO authenticated;"
+        }
+      ],
+      "installation_order": 8,
+      "requires": "supabase/migrations/009_canonical_reader_boundary.sql"
+    },
+    {
+      "file": "supabase/migrations/011_csv_initial_publication.sql",
+      "sha256": "892881c19899bb7586aa247bf56a4755536ea4e57e65d67aca58e6b9da70cd62",
+      "operations": [
+        {
+          "line": 5,
+          "declaration": "CREATE TABLE twuanis_canonical_private.csv_initial_publication ("
+        },
+        {
+          "line": 12,
+          "declaration": "ALTER TABLE twuanis_canonical_private.csv_initial_publication ENABLE ROW LEVEL SECURITY;"
+        },
+        {
+          "line": 13,
+          "declaration": "REVOKE ALL ON TABLE twuanis_canonical_private.csv_initial_publication FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 14,
+          "declaration": "CREATE FUNCTION public.create_csv_canonical_listing(p_request uuid,p_input jsonb,p_source jsonb)"
+        },
+        {
+          "line": 37,
+          "declaration": "INSERT INTO twuanis_canonical_private.csv_initial_publication(creation_receipt,listing_id)"
+        },
+        {
+          "line": 41,
+          "declaration": "CREATE FUNCTION public.initially_publish_csv_listing(p_creation_receipt uuid)"
+        },
+        {
+          "line": 74,
+          "declaration": "ALTER FUNCTION public.create_csv_canonical_listing(uuid,jsonb,jsonb) OWNER TO postgres;"
+        },
+        {
+          "line": 75,
+          "declaration": "ALTER FUNCTION public.initially_publish_csv_listing(uuid) OWNER TO postgres;"
+        },
+        {
+          "line": 76,
+          "declaration": "REVOKE ALL ON FUNCTION public.create_csv_canonical_listing(uuid,jsonb,jsonb),public.initially_publish_csv_listing(uuid) FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 77,
+          "declaration": "GRANT EXECUTE ON FUNCTION public.create_csv_canonical_listing(uuid,jsonb,jsonb),public.initially_publish_csv_listing(uuid) TO service_role;"
+        }
+      ],
+      "installation_order": 9,
+      "requires": "supabase/migrations/010_import_operator_authority.sql"
+    },
+    {
+      "file": "supabase/migrations/012_customer_publication_entitlement.sql",
+      "sha256": "be992016ce03b766bdf2a5a70b8577f4e076174aea12808479bc304c4c29fc21",
+      "operations": [
+        {
+          "line": 5,
+          "declaration": "ALTER TABLE public.package_limits ADD COLUMN publication_duration_seconds bigint"
+        },
+        {
+          "line": 11,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.guard_publication_entitlement()"
+        },
+        {
+          "line": 23,
+          "declaration": "REVOKE ALL ON FUNCTION twuanis_canonical_private.guard_publication_entitlement() FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 24,
+          "declaration": "CREATE TRIGGER guard_publication_entitlement BEFORE INSERT OR UPDATE ON public.package_limits"
+        },
+        {
+          "line": 27,
+          "declaration": "CREATE TABLE twuanis_canonical_private.customer_publication_commands ("
+        },
+        {
+          "line": 35,
+          "declaration": "ALTER TABLE twuanis_canonical_private.customer_publication_commands ENABLE ROW LEVEL SECURITY;"
+        },
+        {
+          "line": 36,
+          "declaration": "REVOKE ALL ON TABLE twuanis_canonical_private.customer_publication_commands FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 37,
+          "declaration": "CREATE FUNCTION public.publish_customer_canonical_listing(p_listing uuid,p_expected bigint,p_request uuid,p_event text)"
+        },
+        {
+          "line": 58,
+          "declaration": "INSERT INTO twuanis_canonical_private.customer_publication_commands(owner_id,request_id,listing_id,expected_revision,event,duration_seconds,package_id)"
+        },
+        {
+          "line": 65,
+          "declaration": "ALTER FUNCTION public.publish_customer_canonical_listing(uuid,bigint,uuid,text) OWNER TO postgres;"
+        },
+        {
+          "line": 66,
+          "declaration": "REVOKE ALL ON FUNCTION public.publish_customer_canonical_listing(uuid,bigint,uuid,text) FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 67,
+          "declaration": "GRANT EXECUTE ON FUNCTION public.publish_customer_canonical_listing(uuid,bigint,uuid,text) TO authenticated;"
+        }
+      ],
+      "installation_order": 10,
+      "requires": "supabase/migrations/011_csv_initial_publication.sql"
+    },
+    {
+      "file": "supabase/migrations/013_customer_duplicate.sql",
+      "sha256": "0318ce5a482ae4f59d7eacffc2aa195ec54d48b0dd188c3666d9eb892c919c95",
+      "operations": [
+        {
+          "line": 3,
+          "declaration": "CREATE TABLE twuanis_canonical_private.duplicate_commands ("
+        },
+        {
+          "line": 11,
+          "declaration": "ALTER TABLE twuanis_canonical_private.duplicate_commands ENABLE ROW LEVEL SECURITY;"
+        },
+        {
+          "line": 12,
+          "declaration": "REVOKE ALL ON twuanis_canonical_private.duplicate_commands FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 13,
+          "declaration": "CREATE FUNCTION public.prepare_customer_duplicate(p_source uuid,p_request uuid) RETURNS jsonb"
+        },
+        {
+          "line": 80,
+          "declaration": "INSERT INTO twuanis_canonical_private.duplicate_commands(owner_id,request_id,source_id,listing_id,creation_receipt,media)"
+        },
+        {
+          "line": 86,
+          "declaration": "CREATE FUNCTION public.attach_customer_duplicate_media(p_listing uuid) RETURNS jsonb"
+        },
+        {
+          "line": 101,
+          "declaration": "ALTER FUNCTION public.prepare_customer_duplicate(uuid,uuid) OWNER TO postgres;"
+        },
+        {
+          "line": 102,
+          "declaration": "ALTER FUNCTION public.attach_customer_duplicate_media(uuid) OWNER TO postgres;"
+        },
+        {
+          "line": 103,
+          "declaration": "REVOKE ALL ON FUNCTION public.prepare_customer_duplicate(uuid,uuid),public.attach_customer_duplicate_media(uuid) FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 104,
+          "declaration": "GRANT EXECUTE ON FUNCTION public.prepare_customer_duplicate(uuid,uuid) TO authenticated;"
+        },
+        {
+          "line": 105,
+          "declaration": "GRANT EXECUTE ON FUNCTION public.attach_customer_duplicate_media(uuid) TO service_role;"
+        },
+        {
+          "line": 107,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.guard_duplicate_publication() RETURNS trigger"
+        },
+        {
+          "line": 115,
+          "declaration": "REVOKE ALL ON FUNCTION twuanis_canonical_private.guard_duplicate_publication() FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 116,
+          "declaration": "CREATE TRIGGER s7_duplicate_publication_guard BEFORE UPDATE OF listing_status ON public.listings FOR EACH ROW EXECUTE FUNCTION twuanis_canonical_private.guard_duplicate_publication();"
+        }
+      ],
+      "installation_order": 11,
+      "requires": "supabase/migrations/012_customer_publication_entitlement.sql"
+    },
+    {
+      "file": "supabase/migrations/014_customer_edit_classification.sql",
+      "sha256": "3b4f5b8ad64d19c96bfe289e7027eb24c14de125cba12f8a177ab85c90b1a787",
+      "operations": [
+        {
+          "line": 3,
+          "declaration": "CREATE TABLE twuanis_canonical_private.customer_domain_edits ("
+        },
+        {
+          "line": 9,
+          "declaration": "ALTER TABLE twuanis_canonical_private.customer_domain_edits ENABLE ROW LEVEL SECURITY;"
+        },
+        {
+          "line": 10,
+          "declaration": "REVOKE ALL ON twuanis_canonical_private.customer_domain_edits FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 11,
+          "declaration": "CREATE OR REPLACE FUNCTION public.mutate_customer_canonical_listing(p_listing uuid,p_expected bigint,p_request uuid,p_domains jsonb) RETURNS jsonb"
+        },
+        {
+          "line": 50,
+          "declaration": "INSERT INTO twuanis_canonical_private.customer_domain_edits VALUES(actor,p_request,p_listing,p_expected,original,d);"
+        },
+        {
+          "line": 54,
+          "declaration": "ALTER FUNCTION public.mutate_customer_canonical_listing(uuid,bigint,uuid,jsonb) OWNER TO postgres;"
+        },
+        {
+          "line": 55,
+          "declaration": "REVOKE ALL ON FUNCTION public.mutate_customer_canonical_listing(uuid,bigint,uuid,jsonb) FROM PUBLIC,anon,service_role;"
+        },
+        {
+          "line": 56,
+          "declaration": "GRANT EXECUTE ON FUNCTION public.mutate_customer_canonical_listing(uuid,bigint,uuid,jsonb) TO authenticated;"
+        }
+      ],
+      "installation_order": 12,
+      "requires": "supabase/migrations/013_customer_duplicate.sql"
+    },
+    {
+      "file": "supabase/migrations/015_customer_edit_content.sql",
+      "sha256": "00b7e4921acbf86cb80a05035bf8a3b5238ae93bc1fac0e932e95a159bf94c12",
+      "operations": [
+        {
+          "line": 3,
+          "declaration": "CREATE TABLE twuanis_canonical_private.customer_content_edits ("
+        },
+        {
+          "line": 9,
+          "declaration": "ALTER TABLE twuanis_canonical_private.customer_content_edits ENABLE ROW LEVEL SECURITY;"
+        },
+        {
+          "line": 10,
+          "declaration": "REVOKE ALL ON twuanis_canonical_private.customer_content_edits FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 11,
+          "declaration": "CREATE FUNCTION public.edit_customer_canonical_listing(p_listing uuid,p_expected bigint,p_request uuid,p_domains jsonb,p_content jsonb) RETURNS jsonb"
+        },
+        {
+          "line": 27,
+          "declaration": "INSERT INTO twuanis_canonical_private.customer_content_edits(owner_id,request_id,listing_id,expected_revision,content) VALUES(actor,p_request,p_listing,p_expected,p_content);"
+        },
+        {
+          "line": 40,
+          "declaration": "ALTER FUNCTION public.edit_customer_canonical_listing(uuid,bigint,uuid,jsonb,jsonb) OWNER TO postgres;"
+        },
+        {
+          "line": 41,
+          "declaration": "REVOKE ALL ON FUNCTION public.edit_customer_canonical_listing(uuid,bigint,uuid,jsonb,jsonb) FROM PUBLIC,anon,service_role;"
+        },
+        {
+          "line": 42,
+          "declaration": "GRANT EXECUTE ON FUNCTION public.edit_customer_canonical_listing(uuid,bigint,uuid,jsonb,jsonb) TO authenticated;"
+        }
+      ],
+      "installation_order": 13,
+      "requires": "supabase/migrations/014_customer_edit_classification.sql"
+    },
+    {
+      "file": "supabase/migrations/016_customer_measurement_clear.sql",
+      "sha256": "8ef18175572591fa21e807f0722882b42404f5ef5d9e325e0245cd9f140367f9",
+      "operations": [
+        {
+          "line": 4,
+          "declaration": "CREATE OR REPLACE FUNCTION twuanis_canonical_private.s4_domains(d jsonb,evidence_kind text) RETURNS jsonb"
+        },
+        {
+          "line": 53,
+          "declaration": "CREATE OR REPLACE FUNCTION twuanis_canonical_private.s3_command("
+        },
+        {
+          "line": 183,
+          "declaration": "INSERT INTO public.listing_source_observations(id,source_name,source_listing_id,source_observation_id,listing_id,source_observed_at,outcome,payload_fingerprint,result_revision)"
+        },
+        {
+          "line": 185,
+          "declaration": "INSERT INTO public.source_identity_conflicts(listing_id,observation_id,source_name,source_listing_id,existing_transaction_type,observed_transaction_type,existing_province_code,existing_canton_code,observed_province_code,observed_canton_code,conflict_type)"
+        },
+        {
+          "line": 187,
+          "declaration": "INSERT INTO public.canonical_operation_receipts(id,authority_kind,authority_identity,operation_type,request_id,payload_fingerprint,outcome,listing_id,result_revision)"
+        },
+        {
+          "line": 193,
+          "declaration": "INSERT INTO public.listing_source_observations(id,source_name,source_listing_id,source_observation_id,listing_id,source_observed_at,outcome,payload_fingerprint,result_revision)"
+        },
+        {
+          "line": 195,
+          "declaration": "INSERT INTO public.canonical_operation_receipts(id,authority_kind,authority_identity,operation_type,request_id,payload_fingerprint,outcome,listing_id,result_revision)"
+        },
+        {
+          "line": 234,
+          "declaration": "INSERT INTO public.listing_semantic_selections(listing_id,dimension,ontology_term_id) SELECT p_listing,dim,x FROM unnest(ids)x;"
+        },
+        {
+          "line": 277,
+          "declaration": "INSERT INTO public.listing_fact_evidence(listing_id,dimension,kind,exact_value,category_term_id,range_lower,range_upper,lower_inclusive,upper_inclusive,evidence_source,evidence_reference)"
+        },
+        {
+          "line": 363,
+          "declaration": "INSERT INTO public.canonical_operation_receipts(id,authority_kind,authority_identity,operation_type,request_id,payload_fingerprint,outcome,listing_id,result_revision)"
+        },
+        {
+          "line": 366,
+          "declaration": "INSERT INTO public.listing_source_observations(id,source_name,source_listing_id,source_observation_id,listing_id,source_observed_at,outcome,payload_fingerprint,result_revision)"
+        },
+        {
+          "line": 370,
+          "declaration": "INSERT INTO public.listing_monetary_events(listing_id,operation_id,listing_revision,transaction_type,event_kind,old_amount,old_currency,new_amount,new_currency,actor_kind,actor_identity,reason,source_observation_id,source_observed_at)"
+        },
+        {
+          "line": 374,
+          "declaration": "INSERT INTO public.listing_lifecycle_events(listing_id,operation_id,listing_revision,event_type,previous_state,resulting_state,actor_kind,actor_identity,reason,publication_expires_at)"
+        },
+        {
+          "line": 389,
+          "declaration": "CREATE OR REPLACE FUNCTION public.mutate_customer_canonical_listing(p_listing uuid,p_expected bigint,p_request uuid,p_domains jsonb) RETURNS jsonb"
+        },
+        {
+          "line": 430,
+          "declaration": "INSERT INTO twuanis_canonical_private.customer_domain_edits VALUES(actor,p_request,p_listing,p_expected,original,d);"
+        }
+      ],
+      "installation_order": 14,
+      "requires": "supabase/migrations/015_customer_edit_content.sql"
+    },
+    {
+      "file": "supabase/migrations/017_token_canonical_creation.sql",
+      "sha256": "f13d1abb7678dafd23a67583f2c381475b4a4574822809b54d4ae646e61470c8",
+      "operations": [
+        {
+          "line": 3,
+          "declaration": "CREATE TABLE twuanis_canonical_private.token_creation_commands ("
+        },
+        {
+          "line": 12,
+          "declaration": "ALTER TABLE twuanis_canonical_private.token_creation_commands ENABLE ROW LEVEL SECURITY;"
+        },
+        {
+          "line": 13,
+          "declaration": "REVOKE ALL ON twuanis_canonical_private.token_creation_commands FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 14,
+          "declaration": "CREATE FUNCTION public.prepare_token_canonical_listing(p_token text,p_owner uuid,p_snapshot jsonb,p_input jsonb) RETURNS jsonb"
+        },
+        {
+          "line": 42,
+          "declaration": "INSERT INTO twuanis_canonical_private.token_creation_commands(token,owner_id,listing_id,media) VALUES(p_token,p_owner,(result->>'listing_id')::uuid,media);"
+        },
+        {
+          "line": 46,
+          "declaration": "CREATE FUNCTION public.get_token_canonical_operation(p_token text,p_owner uuid) RETURNS jsonb"
+        },
+        {
+          "line": 56,
+          "declaration": "REVOKE ALL ON FUNCTION public.get_token_canonical_operation(text,uuid) FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 57,
+          "declaration": "GRANT EXECUTE ON FUNCTION public.get_token_canonical_operation(text,uuid) TO service_role;"
+        },
+        {
+          "line": 58,
+          "declaration": "CREATE FUNCTION public.attach_token_canonical_media(p_token text,p_owner uuid) RETURNS jsonb"
+        },
+        {
+          "line": 76,
+          "declaration": "CREATE FUNCTION public.publish_token_canonical_listing(p_token text) RETURNS jsonb"
+        },
+        {
+          "line": 94,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.guard_token_media_publication() RETURNS trigger"
+        },
+        {
+          "line": 101,
+          "declaration": "CREATE TRIGGER s7_token_media_guard BEFORE UPDATE OF listing_status ON public.listings FOR EACH ROW EXECUTE FUNCTION twuanis_canonical_private.guard_token_media_publication();"
+        },
+        {
+          "line": 102,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.guard_token_snapshot() RETURNS trigger"
+        },
+        {
+          "line": 108,
+          "declaration": "CREATE TRIGGER s7_token_snapshot_guard BEFORE UPDATE ON public.listing_publish_tokens FOR EACH ROW EXECUTE FUNCTION twuanis_canonical_private.guard_token_snapshot();"
+        },
+        {
+          "line": 109,
+          "declaration": "REVOKE ALL ON FUNCTION public.prepare_token_canonical_listing(text,uuid,jsonb,jsonb),public.attach_token_canonical_media(text,uuid),public.publish_token_canonical_listing(text),twuanis_canonical_private.guard_token_media_publication(),twuanis_canonical_private.guard_token_snapshot() FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 110,
+          "declaration": "GRANT EXECUTE ON FUNCTION public.prepare_token_canonical_listing(text,uuid,jsonb,jsonb),public.attach_token_canonical_media(text,uuid) TO service_role;"
+        },
+        {
+          "line": 111,
+          "declaration": "GRANT EXECUTE ON FUNCTION public.publish_token_canonical_listing(text) TO authenticated;"
+        }
+      ],
+      "installation_order": 15,
+      "requires": "supabase/migrations/016_customer_measurement_clear.sql"
+    },
+    {
+      "file": "supabase/migrations/018_csv_source_evidence.sql",
+      "sha256": "f61aced295011a8c4a29a19f620e15055ffe629a84a61af37a5c8e63e8a147f8",
+      "operations": [
+        {
+          "line": 3,
+          "declaration": "CREATE TABLE twuanis_canonical_private.csv_source_evidence ("
+        },
+        {
+          "line": 13,
+          "declaration": "ALTER TABLE twuanis_canonical_private.csv_source_evidence ENABLE ROW LEVEL SECURITY;"
+        },
+        {
+          "line": 14,
+          "declaration": "REVOKE ALL ON twuanis_canonical_private.csv_source_evidence FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 15,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.reject_csv_evidence_change() RETURNS trigger"
+        },
+        {
+          "line": 17,
+          "declaration": "CREATE TRIGGER immutable_csv_evidence BEFORE UPDATE OR DELETE ON twuanis_canonical_private.csv_source_evidence FOR EACH ROW EXECUTE FUNCTION twuanis_canonical_private.reject_csv_evidence_change();"
+        },
+        {
+          "line": 18,
+          "declaration": "CREATE TRIGGER immutable_csv_evidence_truncate BEFORE TRUNCATE ON twuanis_canonical_private.csv_source_evidence FOR EACH STATEMENT EXECUTE FUNCTION twuanis_canonical_private.reject_csv_evidence_change();"
+        },
+        {
+          "line": 19,
+          "declaration": "CREATE FUNCTION public.retain_csv_source_evidence(p_raw jsonb,p_review jsonb) RETURNS uuid"
+        },
+        {
+          "line": 34,
+          "declaration": "INSERT INTO twuanis_canonical_private.csv_source_evidence(source_name,source_listing_id,source_observation_id,source_observed_at,raw_input,unresolved_review)"
+        },
+        {
+          "line": 38,
+          "declaration": "REVOKE ALL ON FUNCTION public.retain_csv_source_evidence(jsonb,jsonb),twuanis_canonical_private.reject_csv_evidence_change() FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 39,
+          "declaration": "GRANT EXECUTE ON FUNCTION public.retain_csv_source_evidence(jsonb,jsonb) TO service_role;"
+        }
+      ],
+      "installation_order": 16,
+      "requires": "supabase/migrations/017_token_canonical_creation.sql"
+    },
+    {
+      "file": "supabase/migrations/019_csv_source_references.sql",
+      "sha256": "030acf1095123b062560b9366af791206cd9eab55deafa5f35df8884ca054dab",
+      "operations": [
+        {
+          "line": 3,
+          "declaration": "ALTER TABLE twuanis_canonical_private.csv_initial_publication ADD COLUMN source_references_evidence uuid REFERENCES twuanis_canonical_private.csv_source_evidence(id);"
+        },
+        {
+          "line": 4,
+          "declaration": "CREATE FUNCTION public.complete_csv_source_references(p_receipt uuid,p_evidence uuid) RETURNS void"
+        },
+        {
+          "line": 32,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.guard_csv_source_reference_completion() RETURNS trigger"
+        },
+        {
+          "line": 41,
+          "declaration": "CREATE TRIGGER s7_csv_references_guard BEFORE UPDATE OF listing_status ON public.listings FOR EACH ROW EXECUTE FUNCTION twuanis_canonical_private.guard_csv_source_reference_completion();"
+        },
+        {
+          "line": 42,
+          "declaration": "REVOKE ALL ON FUNCTION public.complete_csv_source_references(uuid,uuid),twuanis_canonical_private.guard_csv_source_reference_completion() FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 43,
+          "declaration": "GRANT EXECUTE ON FUNCTION public.complete_csv_source_references(uuid,uuid) TO service_role;"
+        }
+      ],
+      "installation_order": 17,
+      "requires": "supabase/migrations/018_csv_source_evidence.sql"
+    },
+    {
+      "file": "supabase/migrations/020_ordinary_upload_operations.sql",
+      "sha256": "3cc607fbe067ed9d67a1ad5057e0693f74d1e269b0f6a9a20ee584f1e0f05af6",
+      "operations": [
+        {
+          "line": 3,
+          "declaration": "CREATE TABLE twuanis_canonical_private.ordinary_upload_operations ("
+        },
+        {
+          "line": 11,
+          "declaration": "ALTER TABLE twuanis_canonical_private.ordinary_upload_operations ENABLE ROW LEVEL SECURITY;"
+        },
+        {
+          "line": 12,
+          "declaration": "REVOKE ALL ON twuanis_canonical_private.ordinary_upload_operations FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 13,
+          "declaration": "CREATE FUNCTION public.prepare_ordinary_upload(p_owner uuid,p_listing uuid,p_bytes integer) RETURNS jsonb"
+        },
+        {
+          "line": 19,
+          "declaration": "INSERT INTO twuanis_canonical_private.ordinary_upload_operations(id,owner_id,listing_id,storage_path,byte_size)"
+        },
+        {
+          "line": 23,
+          "declaration": "CREATE FUNCTION public.get_ordinary_upload(p_owner uuid,p_operation uuid) RETURNS jsonb"
+        },
+        {
+          "line": 32,
+          "declaration": "CREATE FUNCTION public.attach_ordinary_upload(p_owner uuid,p_operation uuid) RETURNS jsonb"
+        },
+        {
+          "line": 56,
+          "declaration": "REVOKE ALL ON FUNCTION public.prepare_ordinary_upload(uuid,uuid,integer),public.get_ordinary_upload(uuid,uuid),public.attach_ordinary_upload(uuid,uuid) FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 57,
+          "declaration": "GRANT EXECUTE ON FUNCTION public.prepare_ordinary_upload(uuid,uuid,integer),public.get_ordinary_upload(uuid,uuid),public.attach_ordinary_upload(uuid,uuid) TO service_role;"
+        }
+      ],
+      "installation_order": 18,
+      "requires": "supabase/migrations/019_csv_source_references.sql"
+    },
+    {
+      "file": "supabase/migrations/021_image_detach_cleanup.sql",
+      "sha256": "1c8415442e53a1d10f8e86e69cee03ee8c1d210f769f03fb423edf8c91797507",
+      "operations": [
+        {
+          "line": 3,
+          "declaration": "CREATE TABLE twuanis_canonical_private.image_detach_operations ("
+        },
+        {
+          "line": 9,
+          "declaration": "ALTER TABLE twuanis_canonical_private.image_detach_operations ENABLE ROW LEVEL SECURITY;"
+        },
+        {
+          "line": 10,
+          "declaration": "REVOKE ALL ON twuanis_canonical_private.image_detach_operations FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 11,
+          "declaration": "CREATE FUNCTION public.detach_listing_image(p_owner uuid,p_listing uuid,p_image text) RETURNS jsonb"
+        },
+        {
+          "line": 31,
+          "declaration": "INSERT INTO twuanis_canonical_private.image_detach_operations(owner_id,listing_id,image_value,managed,cleanup_completed)"
+        },
+        {
+          "line": 36,
+          "declaration": "CREATE FUNCTION public.get_image_detach_operation(p_owner uuid,p_operation uuid) RETURNS jsonb"
+        },
+        {
+          "line": 44,
+          "declaration": "CREATE FUNCTION public.confirm_image_cleanup(p_owner uuid,p_operation uuid) RETURNS void"
+        },
+        {
+          "line": 50,
+          "declaration": "REVOKE ALL ON FUNCTION public.detach_listing_image(uuid,uuid,text),public.get_image_detach_operation(uuid,uuid),public.confirm_image_cleanup(uuid,uuid) FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 51,
+          "declaration": "GRANT EXECUTE ON FUNCTION public.detach_listing_image(uuid,uuid,text),public.get_image_detach_operation(uuid,uuid),public.confirm_image_cleanup(uuid,uuid) TO service_role;"
+        }
+      ],
+      "installation_order": 19,
+      "requires": "supabase/migrations/020_ordinary_upload_operations.sql"
+    },
+    {
+      "file": "supabase/migrations/022_abandoned_token_cleanup.sql",
+      "sha256": "a0ea2d69c7b9727a415ab0957fcf42c431ac4ea846ba5bd1a22e0235d6352909",
+      "operations": [
+        {
+          "line": 3,
+          "declaration": "CREATE FUNCTION public.claim_abandoned_listing_token(p_id uuid) RETURNS jsonb"
+        },
+        {
+          "line": 13,
+          "declaration": "REVOKE ALL ON FUNCTION public.claim_abandoned_listing_token(uuid) FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 14,
+          "declaration": "GRANT EXECUTE ON FUNCTION public.claim_abandoned_listing_token(uuid) TO service_role;"
+        }
+      ],
+      "installation_order": 20,
+      "requires": "supabase/migrations/021_image_detach_cleanup.sql"
+    },
+    {
+      "file": "supabase/migrations/023_source_observation_ingestion.sql",
+      "sha256": "93dfabee4b5c1d9cfc76259e6e691e24bc2c0bc5f5813a3af2c5b26b2128b8d1",
+      "operations": [
+        {
+          "line": 5,
+          "declaration": "CREATE TABLE twuanis_canonical_private.source_ingestion_state ("
+        },
+        {
+          "line": 14,
+          "declaration": "CREATE TABLE twuanis_canonical_private.source_ingestion_results ("
+        },
+        {
+          "line": 18,
+          "declaration": "CREATE TABLE twuanis_canonical_private.source_run_completions ("
+        },
+        {
+          "line": 24,
+          "declaration": "ALTER TABLE twuanis_canonical_private.source_ingestion_state ENABLE ROW LEVEL SECURITY;"
+        },
+        {
+          "line": 25,
+          "declaration": "ALTER TABLE twuanis_canonical_private.source_ingestion_results ENABLE ROW LEVEL SECURITY;"
+        },
+        {
+          "line": 26,
+          "declaration": "ALTER TABLE twuanis_canonical_private.source_run_completions ENABLE ROW LEVEL SECURITY;"
+        },
+        {
+          "line": 27,
+          "declaration": "REVOKE ALL ON twuanis_canonical_private.source_ingestion_state,twuanis_canonical_private.source_ingestion_results,twuanis_canonical_private.source_run_completions FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 28,
+          "declaration": "CREATE FUNCTION public.ingest_canonical_source_observation(p_evidence uuid,p_input jsonb)"
+        },
+        {
+          "line": 48,
+          "declaration": "INSERT INTO twuanis_canonical_private.source_ingestion_state(source_name,source_listing_id,listing_id)"
+        },
+        {
+          "line": 102,
+          "declaration": "INSERT INTO twuanis_canonical_private.source_ingestion_results VALUES(p_evidence,result);"
+        },
+        {
+          "line": 108,
+          "declaration": "CREATE FUNCTION public.complete_canonical_source_run(p_source text,p_run uuid,p_started_at timestamptz,p_completion jsonb,p_observed_ids jsonb)"
+        },
+        {
+          "line": 147,
+          "declaration": "INSERT INTO twuanis_canonical_private.source_run_completions(source_name,run_id,payload,result) VALUES(p_source,p_run,payload,result);"
+        },
+        {
+          "line": 150,
+          "declaration": "REVOKE ALL ON FUNCTION public.ingest_canonical_source_observation(uuid,jsonb),public.complete_canonical_source_run(text,uuid,timestamptz,jsonb,jsonb) FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 151,
+          "declaration": "GRANT EXECUTE ON FUNCTION public.ingest_canonical_source_observation(uuid,jsonb),public.complete_canonical_source_run(text,uuid,timestamptz,jsonb,jsonb) TO service_role;"
+        }
+      ],
+      "installation_order": 21,
+      "requires": "supabase/migrations/022_abandoned_token_cleanup.sql"
+    },
+    {
+      "file": "supabase/migrations/024_image_reorder_boundary.sql",
+      "sha256": "88fb5901237345dfe80de60b9a4a858c3c37fa41e9be64bc20968a129821c4de",
+      "operations": [
+        {
+          "line": 4,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.s11_image_trim(v text) RETURNS text"
+        },
+        {
+          "line": 10,
+          "declaration": "CREATE FUNCTION twuanis_canonical_private.s11_image_string(v jsonb,nested boolean DEFAULT false) RETURNS text"
+        },
+        {
+          "line": 32,
+          "declaration": "ALTER FUNCTION twuanis_canonical_private.s11_image_trim(text) OWNER TO postgres;"
+        },
+        {
+          "line": 33,
+          "declaration": "ALTER FUNCTION twuanis_canonical_private.s11_image_string(jsonb,boolean) OWNER TO postgres;"
+        },
+        {
+          "line": 34,
+          "declaration": "REVOKE ALL ON FUNCTION twuanis_canonical_private.s11_image_trim(text),twuanis_canonical_private.s11_image_string(jsonb,boolean) FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 35,
+          "declaration": "CREATE FUNCTION public.reorder_listing_images(p_owner uuid,p_listing uuid,p_prior text,p_images text[])"
+        },
+        {
+          "line": 67,
+          "declaration": "ALTER FUNCTION public.reorder_listing_images(uuid,uuid,text,text[]) OWNER TO postgres;"
+        },
+        {
+          "line": 68,
+          "declaration": "REVOKE ALL ON FUNCTION public.reorder_listing_images(uuid,uuid,text,text[]) FROM PUBLIC,anon,authenticated,service_role;"
+        },
+        {
+          "line": 69,
+          "declaration": "GRANT EXECUTE ON FUNCTION public.reorder_listing_images(uuid,uuid,text,text[]) TO service_role;"
+        }
+      ],
+      "installation_order": 22,
+      "requires": "supabase/migrations/023_source_observation_ingestion.sql"
+    }
+  ],
+  "functions": [
+    {
+      "signature": "twuanis_private.normalize_geographic_projection(text)",
+      "migration": "003_canonical_listing_write_boundary.sql",
+      "line": 13,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog, pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_name text RETURNS text LANGUAGE sql STABLE STRICT SECURITY INVOKER\nSET search_path = pg_catalog, pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_private.write_listing_canonical(uuid,text,text,text,text,text,uuid,boolean)",
+      "migration": "003_canonical_listing_write_boundary.sql",
+      "line": 25,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog, pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "\n  p_listing_id uuid,\n  p_operation text,\n  p_province_code text,\n  p_canton_code text,\n  p_district_code text,\n  p_expected_status text,\n  p_actor_id uuid,\n  p_trusted_server boolean\n RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY INVOKER\nSET search_path = pg_catalog, pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "public.write_my_listing_canonical(uuid,text,text,text,text,text)",
+      "migration": "003_canonical_listing_write_boundary.sql",
+      "line": 198,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog, pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "\n  p_listing_id uuid, p_operation text, p_province_code text,\n  p_canton_code text, p_district_code text, p_expected_status text\n RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER\nSET search_path = pg_catalog, pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "public.write_listing_canonical_server(uuid,text,text,text,text,text)",
+      "migration": "003_canonical_listing_write_boundary.sql",
+      "line": 217,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog, pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "\n  p_listing_id uuid, p_operation text, p_province_code text,\n  p_canton_code text, p_district_code text, p_expected_status text\n RETURNS jsonb LANGUAGE sql VOLATILE SECURITY DEFINER\nSET search_path = pg_catalog, pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.finite_numeric(numeric)",
+      "migration": "004_dormant_canonical_listing_foundation.sql",
+      "line": 15,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog, pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "v numeric RETURNS boolean LANGUAGE sql IMMUTABLE SECURITY INVOKER\nSET search_path = pg_catalog, pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.reject_immutable_mutation()",
+      "migration": "004_dormant_canonical_listing_foundation.sql",
+      "line": 21,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog, pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": " RETURNS trigger LANGUAGE plpgsql SECURITY INVOKER\nSET search_path = pg_catalog, pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.validate_new_term_reference()",
+      "migration": "004_dormant_canonical_listing_foundation.sql",
+      "line": 274,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog, pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": " RETURNS trigger LANGUAGE plpgsql SECURITY INVOKER\nSET search_path = pg_catalog, pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.validate_classification_rule()",
+      "migration": "004_dormant_canonical_listing_foundation.sql",
+      "line": 300,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog, pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": " RETURNS trigger LANGUAGE plpgsql SECURITY INVOKER\nSET search_path = pg_catalog, pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.initialize_capacity_guard()",
+      "migration": "005_dormant_publisher_coordination.sql",
+      "line": 19,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": " RETURNS void LANGUAGE plpgsql VOLATILE SECURITY INVOKER\nSET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.lock_capacity_policy(boolean)",
+      "migration": "005_dormant_publisher_coordination.sql",
+      "line": 30,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_exclusive boolean DEFAULT false RETURNS void LANGUAGE plpgsql VOLATILE SECURITY INVOKER\nSET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.ensure_publisher_account(uuid)",
+      "migration": "005_dormant_publisher_coordination.sql",
+      "line": 46,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_owner uuid RETURNS uuid LANGUAGE plpgsql VOLATILE SECURITY INVOKER\nSET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.lock_publisher(uuid)",
+      "migration": "005_dormant_publisher_coordination.sql",
+      "line": 60,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_publisher uuid RETURNS uuid LANGUAGE plpgsql VOLATILE SECURITY INVOKER\nSET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.resolve_publisher(uuid)",
+      "migration": "005_dormant_publisher_coordination.sql",
+      "line": 71,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_owner uuid RETURNS uuid LANGUAGE plpgsql VOLATILE SECURITY INVOKER\nSET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.publisher_allowance(uuid,uuid)",
+      "migration": "005_dormant_publisher_coordination.sql",
+      "line": 83,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_publisher uuid,p_owner uuid RETURNS TABLE(subscription_id uuid,package_id uuid,allowance bigint,unlimited boolean,\n effective_start timestamptz,effective_end timestamptz,observed_at timestamptz)\nLANGUAGE plpgsql VOLATILE SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.publisher_consumption(uuid,uuid)",
+      "migration": "005_dormant_publisher_coordination.sql",
+      "line": 120,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_publisher uuid,p_owner uuid RETURNS bigint LANGUAGE plpgsql VOLATILE SECURITY INVOKER\nSET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.capacity_state(bigint,bigint)",
+      "migration": "005_dormant_publisher_coordination.sql",
+      "line": 134,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_allowance bigint,p_consumption bigint RETURNS TABLE(allowance bigint,consumption bigint,remaining bigint,over_capacity bigint,\n adding_one_exceeds boolean,is_over_capacity boolean,unlimited boolean)\nLANGUAGE plpgsql IMMUTABLE SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.s3_sealed_rule_guard()",
+      "migration": "006_canonical_domain_machinery.sql",
+      "line": 27,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": " RETURNS trigger\nLANGUAGE plpgsql SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.s3_seal_classification(uuid)",
+      "migration": "006_canonical_domain_machinery.sql",
+      "line": 43,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_set uuid RETURNS void\nLANGUAGE plpgsql VOLATILE SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.s3_keys(jsonb,text[],text[])",
+      "migration": "006_canonical_domain_machinery.sql",
+      "line": 54,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "v jsonb,allowed text[],required text[] DEFAULT '{}' RETURNS void\nLANGUAGE plpgsql IMMUTABLE SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.s3_decimal(jsonb)",
+      "migration": "006_canonical_domain_machinery.sql",
+      "line": 64,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "v jsonb RETURNS numeric\nLANGUAGE plpgsql IMMUTABLE SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.s3_term_ids(jsonb)",
+      "migration": "006_canonical_domain_machinery.sql",
+      "line": 72,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "v jsonb RETURNS bigint[]\nLANGUAGE plpgsql IMMUTABLE SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.s3_geography(jsonb)",
+      "migration": "006_canonical_domain_machinery.sql",
+      "line": 84,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "v jsonb RETURNS bigint[]\nLANGUAGE plpgsql VOLATILE SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.s3_origins(uuid,text,bigint[],uuid)",
+      "migration": "006_canonical_domain_machinery.sql",
+      "line": 115,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "lid uuid,dim text,ids bigint[],rule uuid DEFAULT NULL RETURNS void\nLANGUAGE plpgsql VOLATILE SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.s3_command(uuid,bigint,text,text,uuid,jsonb,jsonb)",
+      "migration": "016_customer_measurement_clear.sql",
+      "line": 54,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "\n p_listing uuid,p_expected bigint,p_actor_kind text,p_actor_identity text,p_request uuid,p_domains jsonb,p_source jsonb DEFAULT NULL\n RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.s4_domains(jsonb,text)",
+      "migration": "016_customer_measurement_clear.sql",
+      "line": 4,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "d jsonb,evidence_kind text RETURNS jsonb\nLANGUAGE plpgsql IMMUTABLE SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.s4_create_core(uuid,uuid,jsonb,jsonb)",
+      "migration": "007_canonical_creation_authority.sql",
+      "line": 55,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_owner uuid,p_request uuid,p_input jsonb,p_source jsonb DEFAULT NULL RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "public.create_customer_canonical_listing(uuid,jsonb)",
+      "migration": "007_canonical_creation_authority.sql",
+      "line": 266,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "authenticated"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_request uuid,p_input jsonb RETURNS jsonb\nLANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,authenticated=X/postgres}"
+    },
+    {
+      "signature": "public.create_trusted_canonical_listing(uuid,jsonb,jsonb)",
+      "migration": "007_canonical_creation_authority.sql",
+      "line": 273,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_request uuid,p_input jsonb,p_source jsonb DEFAULT NULL RETURNS jsonb\nLANGUAGE sql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.mutate_customer_canonical_listing(uuid,bigint,uuid,jsonb)",
+      "migration": "016_customer_measurement_clear.sql",
+      "line": 390,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "authenticated"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_listing uuid,p_expected bigint,p_request uuid,p_domains jsonb RETURNS jsonb\nLANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,authenticated=X/postgres}"
+    },
+    {
+      "signature": "public.mutate_trusted_canonical_listing(uuid,bigint,uuid,jsonb,jsonb)",
+      "migration": "007_canonical_creation_authority.sql",
+      "line": 290,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_listing uuid,p_expected bigint,p_request uuid,p_domains jsonb,p_source jsonb DEFAULT NULL RETURNS jsonb\nLANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.assign_default_market_package()",
+      "migration": "008_commercial_capacity_coordination.sql",
+      "line": 8,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "EXISTING \u2014 INTENTIONAL REPLACEMENT",
+      "definition_header": " RETURNS trigger\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "public.approve_sinpe_payment(uuid)",
+      "migration": "008_commercial_capacity_coordination.sql",
+      "line": 52,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "authenticated"
+      ],
+      "classification": "EXISTING \u2014 INTENTIONAL REPLACEMENT",
+      "definition_header": "p_payment_id uuid RETURNS TABLE(payment_id uuid, subscription_id uuid, previous_subscription_id uuid, user_id uuid, package_id uuid, payment_status text, subscription_status text, period_start timestamp with time zone, period_end timestamp with time zone)\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,authenticated=X/postgres}"
+    },
+    {
+      "signature": "public.activate_purchase(uuid)",
+      "migration": "008_commercial_capacity_coordination.sql",
+      "line": 257,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "EXISTING \u2014 INTENTIONAL REPLACEMENT",
+      "definition_header": "p_purchase_id uuid RETURNS TABLE(purchase_id uuid, owner_id uuid, product_type text, activation_type text, activation_id uuid, activated_at timestamp with time zone)\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.read_canonical_listing_evidence(uuid[],text[],text[])",
+      "migration": "009_canonical_reader_boundary.sql",
+      "line": 3,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "\n p_listing_ids uuid[], p_fact_dimensions text[], p_semantic_dimensions text[]\n RETURNS jsonb\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nSET search_path = pg_catalog",
+      "actual_settings": [
+        "search_path=pg_catalog"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.s6_legacy_normalize(text,boolean)",
+      "migration": "009_canonical_reader_boundary.sql",
+      "line": 52,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "v text, slug boolean DEFAULT false RETURNS text LANGUAGE sql IMMUTABLE SET search_path=pg_catalog",
+      "actual_settings": [
+        "search_path=pg_catalog"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "public.read_legacy_geographic_candidates(text[],text[],text[],text[],text)",
+      "migration": "009_canonical_reader_boundary.sql",
+      "line": 61,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "\n p_provinces text[],p_cantons text[],p_districts text[],p_district_names text[],p_transaction text\n RETURNS TABLE(listing_id uuid)\nLANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path=pg_catalog",
+      "actual_settings": [
+        "search_path=pg_catalog"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.read_legacy_geography_dictionary(uuid[])",
+      "migration": "009_canonical_reader_boundary.sql",
+      "line": 87,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_listing_ids uuid[] RETURNS jsonb\nLANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path=pg_catalog",
+      "actual_settings": [
+        "search_path=pg_catalog"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.set_import_operator(uuid,boolean)",
+      "migration": "010_import_operator_authority.sql",
+      "line": 20,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_user uuid,p_active boolean RETURNS void LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog",
+      "actual_settings": [
+        "search_path=pg_catalog"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "public.is_current_user_import_operator()",
+      "migration": "010_import_operator_authority.sql",
+      "line": 36,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog",
+      "roles": [
+        "authenticated"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": " RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog",
+      "actual_settings": [
+        "search_path=pg_catalog"
+      ],
+      "actual_acl": "{postgres=X/postgres,authenticated=X/postgres}"
+    },
+    {
+      "signature": "public.create_csv_canonical_listing(uuid,jsonb,jsonb)",
+      "migration": "011_csv_initial_publication.sql",
+      "line": 15,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_request uuid,p_input jsonb,p_source jsonb RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog",
+      "actual_settings": [
+        "search_path=pg_catalog"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.initially_publish_csv_listing(uuid)",
+      "migration": "011_csv_initial_publication.sql",
+      "line": 42,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_creation_receipt uuid RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog",
+      "actual_settings": [
+        "search_path=pg_catalog"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.guard_publication_entitlement()",
+      "migration": "012_customer_publication_entitlement.sql",
+      "line": 11,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": " RETURNS trigger LANGUAGE plpgsql SECURITY INVOKER SET search_path=pg_catalog",
+      "actual_settings": [
+        "search_path=pg_catalog"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "public.publish_customer_canonical_listing(uuid,bigint,uuid,text)",
+      "migration": "012_customer_publication_entitlement.sql",
+      "line": 37,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog",
+      "roles": [
+        "authenticated"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_listing uuid,p_expected bigint,p_request uuid,p_event text RETURNS jsonb LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog",
+      "actual_settings": [
+        "search_path=pg_catalog"
+      ],
+      "actual_acl": "{postgres=X/postgres,authenticated=X/postgres}"
+    },
+    {
+      "signature": "public.prepare_customer_duplicate(uuid,uuid)",
+      "migration": "013_customer_duplicate.sql",
+      "line": 14,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "authenticated"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_source uuid,p_request uuid RETURNS jsonb\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,authenticated=X/postgres}"
+    },
+    {
+      "signature": "public.attach_customer_duplicate_media(uuid)",
+      "migration": "013_customer_duplicate.sql",
+      "line": 86,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_listing uuid RETURNS jsonb\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.guard_duplicate_publication()",
+      "migration": "013_customer_duplicate.sql",
+      "line": 107,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": " RETURNS trigger\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "public.edit_customer_canonical_listing(uuid,bigint,uuid,jsonb,jsonb)",
+      "migration": "015_customer_edit_content.sql",
+      "line": 11,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "authenticated"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_listing uuid,p_expected bigint,p_request uuid,p_domains jsonb,p_content jsonb RETURNS jsonb\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,authenticated=X/postgres}"
+    },
+    {
+      "signature": "public.prepare_token_canonical_listing(text,uuid,jsonb,jsonb)",
+      "migration": "017_token_canonical_creation.sql",
+      "line": 15,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_token text,p_owner uuid,p_snapshot jsonb,p_input jsonb RETURNS jsonb\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.get_token_canonical_operation(text,uuid)",
+      "migration": "017_token_canonical_creation.sql",
+      "line": 47,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_token text,p_owner uuid RETURNS jsonb\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.attach_token_canonical_media(text,uuid)",
+      "migration": "017_token_canonical_creation.sql",
+      "line": 59,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_token text,p_owner uuid RETURNS jsonb\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.publish_token_canonical_listing(text)",
+      "migration": "017_token_canonical_creation.sql",
+      "line": 77,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "authenticated"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_token text RETURNS jsonb\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,authenticated=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.guard_token_media_publication()",
+      "migration": "017_token_canonical_creation.sql",
+      "line": 95,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": " RETURNS trigger\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.guard_token_snapshot()",
+      "migration": "017_token_canonical_creation.sql",
+      "line": 102,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": " RETURNS trigger\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.reject_csv_evidence_change()",
+      "migration": "018_csv_source_evidence.sql",
+      "line": 15,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": " RETURNS trigger\nLANGUAGE plpgsql SECURITY INVOKER SET search_path=pg_catalog",
+      "actual_settings": [
+        "search_path=pg_catalog"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "public.retain_csv_source_evidence(jsonb,jsonb)",
+      "migration": "018_csv_source_evidence.sql",
+      "line": 19,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_raw jsonb,p_review jsonb RETURNS uuid\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.complete_csv_source_references(uuid,uuid)",
+      "migration": "019_csv_source_references.sql",
+      "line": 4,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_receipt uuid,p_evidence uuid RETURNS void\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.guard_csv_source_reference_completion()",
+      "migration": "019_csv_source_references.sql",
+      "line": 32,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": " RETURNS trigger\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "public.prepare_ordinary_upload(uuid,uuid,integer)",
+      "migration": "020_ordinary_upload_operations.sql",
+      "line": 13,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_owner uuid,p_listing uuid,p_bytes integer RETURNS jsonb\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.get_ordinary_upload(uuid,uuid)",
+      "migration": "020_ordinary_upload_operations.sql",
+      "line": 23,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_owner uuid,p_operation uuid RETURNS jsonb\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.attach_ordinary_upload(uuid,uuid)",
+      "migration": "020_ordinary_upload_operations.sql",
+      "line": 32,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_owner uuid,p_operation uuid RETURNS jsonb\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.detach_listing_image(uuid,uuid,text)",
+      "migration": "021_image_detach_cleanup.sql",
+      "line": 11,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_owner uuid,p_listing uuid,p_image text RETURNS jsonb\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.get_image_detach_operation(uuid,uuid)",
+      "migration": "021_image_detach_cleanup.sql",
+      "line": 36,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_owner uuid,p_operation uuid RETURNS jsonb\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.confirm_image_cleanup(uuid,uuid)",
+      "migration": "021_image_detach_cleanup.sql",
+      "line": 44,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_owner uuid,p_operation uuid RETURNS void\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.claim_abandoned_listing_token(uuid)",
+      "migration": "022_abandoned_token_cleanup.sql",
+      "line": 3,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_id uuid RETURNS jsonb\nLANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.ingest_canonical_source_observation(uuid,jsonb)",
+      "migration": "023_source_observation_ingestion.sql",
+      "line": 29,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_evidence uuid,p_input jsonb RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "public.complete_canonical_source_run(text,uuid,timestamptz,jsonb,jsonb)",
+      "migration": "023_source_observation_ingestion.sql",
+      "line": 108,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_source text,p_run uuid,p_started_at timestamptz,p_completion jsonb,p_observed_ids jsonb RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.s11_image_trim(text)",
+      "migration": "024_image_reorder_boundary.sql",
+      "line": 4,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "v text RETURNS text\nLANGUAGE sql IMMUTABLE SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "twuanis_canonical_private.s11_image_string(jsonb,boolean)",
+      "migration": "024_image_reorder_boundary.sql",
+      "line": 10,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "INVOKER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "v jsonb,nested boolean DEFAULT false RETURNS text\nLANGUAGE plpgsql IMMUTABLE SECURITY INVOKER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres}"
+    },
+    {
+      "signature": "public.reorder_listing_images(uuid,uuid,text,text[])",
+      "migration": "024_image_reorder_boundary.sql",
+      "line": 35,
+      "owner": "postgres (execute installation as postgres)",
+      "security": "DEFINER",
+      "search_path": "pg_catalog,pg_temp",
+      "roles": [
+        "service_role"
+      ],
+      "classification": "NEW \u2014 SAFE TO CREATE (subject to catalog absence assertion)",
+      "definition_header": "p_owner uuid,p_listing uuid,p_prior text,p_images text[] RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,pg_temp",
+      "actual_settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "actual_acl": "{postgres=X/postgres,service_role=X/postgres}"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "listings": 0,
+  "auth_count": 2,
+  "accessibility": [
+    {
+      "id": 1172,
+      "code": "2wd"
+    },
+    {
+      "id": 1173,
+      "code": "paved"
+    },
+    {
+      "id": 1174,
+      "code": "4x4"
+    },
+    {
+      "id": 1175,
+      "code": "walkable"
+    },
+    {
+      "id": 1176,
+      "code": "boat"
+    }
+  ],
+  "subscriptions": 2,
+  "default_duration": 2592000,
+  "listing_additions": [
+    {
+      "name": "canonical_domain_version",
+      "type": "smallint"
+    },
+    {
+      "name": "canonical_revision",
+      "type": "bigint"
+    },
+    {
+      "name": "monthly_price",
+      "type": "numeric"
+    },
+    {
+      "name": "publication_expires_at",
+      "type": "timestamp with time zone"
+    },
+    {
+      "name": "publisher_account_id",
+      "type": "uuid"
+    }
+  ],
+  "publisher_accounts": 0
+}

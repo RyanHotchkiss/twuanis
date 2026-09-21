@@ -1,3 +1,4 @@
+import PriceMeterPropertyPositionListing from '@/app/components/PriceMeterPropertyPositionListing'
 import Link from 'next/link'
 
 import { supabase } from '@/lib/supabase'
@@ -779,6 +780,8 @@ monthlyPricePerM2CRC !== null ? (
               value={`${valuation.summary.confidenceScore} · ${valuation.summary.confidenceLabel}`}
             />
           </div>
+
+          <PriceMeterPropertyPositionListing listingId={listing.id} lang="en" />
 
           <PriceMeterComparableListing
             listingId={listing.id}

@@ -1,0 +1,8 @@
+{
+  "source": "outputs/CG-S11-B/accessibility-seed.sql",
+  "sha256": "639fd87cb0461e022aa6eba188c5b0aaa3a6663e8d0de4d276488973a73a48d4",
+  "start": "2026-09-19T16:09:38.341166+00:00",
+  "end": "2026-09-19T16:09:39.192747+00:00",
+  "exit_code": 0,
+  "commit_output": true
+}

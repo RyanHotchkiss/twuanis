@@ -95,6 +95,8 @@ export default function MarketHubMyListingsLoader({
             id,
             title,
             listing_status,
+            canonical_domain_version,
+            canonical_revision::text,
             transaction_type,
             images,
             province,

@@ -1,0 +1,44 @@
+{
+  "id": "dpl_Aw3ZJPye4Ls5BQz2f79KAXsdpDgK",
+  "name": "twuanis-0",
+  "url": "twuanis-0-6wau7tfa7-ryans-projects-71456f46.vercel.app",
+  "target": "production",
+  "readyState": "ERROR",
+  "createdAt": 1789835491774,
+  "duration": {
+    "startTime": 1789835492792,
+    "endTime": 1789835615944,
+    "endTimeCapped": 1789835615944,
+    "timeToReady": 117342,
+    "timeToContainerExit": 123152,
+    "timeToContainerExitCapped": 123152,
+    "timeForBilling": 180000,
+    "cpuTimeForBilling": 360000
+  },
+  "buildMachine": {
+    "cores": 2,
+    "memory": 8192,
+    "machine": "basic",
+    "selectionType": "fixed",
+    "selectionSource": "plan-default"
+  },
+  "aliases": [
+    "twuanis-0-ryans-projects-71456f46.vercel.app"
+  ],
+  "builds": [
+    {
+      "id": "bld_at4qzgl9w",
+      "deploymentId": "dpl_Aw3ZJPye4Ls5BQz2f79KAXsdpDgK",
+      "entrypoint": ".",
+      "readyState": "READY",
+      "readyStateAt": 1789835491501,
+      "createdAt": 1789835491501,
+      "createdIn": "sfo1",
+      "use": "@vercel/vc-build",
+      "config": {},
+      "output": [],
+      "fingerprint": null
+    }
+  ],
+  "contextName": "ryans-projects-71456f46"
+}

@@ -1,3 +1,4 @@
+import 'server-only'
 import {
   getMatchingListings
 } from '@/lib/statistics-engine'
@@ -20,9 +21,7 @@ import {
   type PriceMeterObservation
 } from '@/lib/price-meter-observation-builder'
 
-import {
-  loadCanonicalGeographyTerms
-} from '@/lib/geography/resolve-listing-geography'
+import { loadLegacyGeographyDictionary } from '@/lib/canonical-population'
 
 import {
   resolveCanonicalGeography
@@ -32,9 +31,6 @@ import {
   resolveListingImages
 } from '@/app/utils/resolveListingImages'
 
-import {
-  supabase
-} from '@/lib/supabase'
 
 
 export type PriceMeterMarketFilters = {
@@ -264,7 +260,7 @@ export async function loadPriceMeterObservations(
 
   const listings =
     await getMatchingListings(
-      filters
+      filters, undefined, []
     )
 
 
@@ -274,15 +270,18 @@ export async function loadPriceMeterObservations(
    * -------------------------------------------------------
    */
 
-  const canonicalGeographyTerms =
-    await loadCanonicalGeographyTerms(
-      supabase
-    )
+  const canonicalGeographyTerms = await loadLegacyGeographyDictionary(
+    listings.filter(listing=>listing.canonical_domain_version!==1).map(listing=>listing.id)
+  )
 
 
   const listingsWithCanonicalGeography =
     listings.map(
       listing => {
+        if (listing.canonical_domain_version === 1) {
+          if (!listing.canonicalGeography) throw new Error('Missing canonical geography evidence.')
+          return listing
+        }
         const canonicalGeography =
           resolveCanonicalGeography({
             province:

@@ -43,11 +43,6 @@ import type {
 import type {
   PriceMeterComparisonCohortPopulation
 } from '@/lib/price-meter-comparison-cohort-population'
-import {
-  getPriceMeterConfidence,
-  type PriceMeterConfidence,
-  type PriceMeterConfidenceLanguage
-} from '@/lib/price-meter-confidence'
 
 import {
   PRICE_METER_COMPARISON_MINIMUM_SAMPLE_SIZE,
@@ -72,8 +67,6 @@ export type PriceMeterComparisonAnalysis<
     distribution:
         PriceMeterDistribution<T>
 
-    confidence:
-        PriceMeterConfidence
     }
 
   cohortB: {
@@ -83,8 +76,6 @@ export type PriceMeterComparisonAnalysis<
     distribution:
         PriceMeterDistribution<T>
 
-    confidence:
-        PriceMeterConfidence
     }
 
   evidence: {
@@ -152,7 +143,7 @@ export function buildPriceMeterComparisonAnalysis<
     PriceMeterComparisonReferenceCohort
 
   language:
-    PriceMeterConfidenceLanguage
+    'en' | 'es'
     }): PriceMeterComparisonAnalysis<T> {
 
   /*
@@ -212,33 +203,9 @@ export function buildPriceMeterComparisonAnalysis<
         cohortB.observations
     })
 
-    /*
-    * -------------------------------------------------------
-    * POPULATION CONFIDENCE
-    * -------------------------------------------------------
-    *
-    * Confidence describes Twuanis's confidence in each
-    * cohort's descriptive statistics based on that cohort's
-    * own sample size.
-    *
-    * Cohort A and Cohort B retain independent confidence
-    * results.
-    *
-    * No combined or comparison confidence is inferred.
-    */
-
-    const confidenceA =
-    getPriceMeterConfidence(
-        distributionA.sampleSize,
-        language
-    )
 
 
-    const confidenceB =
-    getPriceMeterConfidence(
-        distributionB.sampleSize,
-        language
-    )
+
 
     /*
     * -------------------------------------------------------
@@ -348,10 +315,7 @@ export function buildPriceMeterComparisonAnalysis<
             cohortA,
 
         distribution:
-            distributionA,
-
-        confidence:
-            confidenceA
+            distributionA
         },
 
         cohortB: {
@@ -359,10 +323,7 @@ export function buildPriceMeterComparisonAnalysis<
             cohortB,
 
         distribution:
-            distributionB,
-
-        confidence:
-            confidenceB
+            distributionB
         },
 
     evidence: {

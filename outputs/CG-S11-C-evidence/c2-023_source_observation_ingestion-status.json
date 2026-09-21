@@ -1,0 +1,8 @@
+{
+  "source": "supabase/migrations/023_source_observation_ingestion.sql",
+  "sha256": "93dfabee4b5c1d9cfc76259e6e691e24bc2c0bc5f5813a3af2c5b26b2128b8d1",
+  "start": "2026-09-19T16:08:38.244392+00:00",
+  "end": "2026-09-19T16:08:40.407721+00:00",
+  "exit_code": 0,
+  "commit_output": true
+}

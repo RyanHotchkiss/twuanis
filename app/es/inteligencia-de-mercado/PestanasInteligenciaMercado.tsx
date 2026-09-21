@@ -18,13 +18,13 @@ import {
 
 
 import ExploreResults from '@/app/es/explora/ResultadosExplora'
-import PriceMeterResults from '@/app/es/precio-por-metro-cuadrado/ResultadosPrecioMetro'
 import PricingStrategyResults from '@/app/es/estrategia-de-precios/ResultadosEstrategiaPrecios'
 import MarketScarcityResults from '@/app/es/escasez-de-mercado/ResultadosEscasezMercado'
 import BuyerDemandResults from '@/app/es/demanda-del-comprador/ResultadosDemandaComprador'
 import MarketMatchingResults from '@/app/es/coincidencia-de-mercado/ResultadosCoincidenciaMercado'
 import ValuationResults from '@/app/es/valoracion/ResultadosValoracion'
 import MarketFilters from '@/app/components/MarketFilters'
+import PriceMeterApplyPanel from '@/app/components/PriceMeterApplyPanel'
 import MarketComparisonResults from '@/app/es/comparacion-de-mercado/ResultadosComparacionMercado'
 import {
   Compass,
@@ -406,6 +406,7 @@ const tabs = [
           return (
           <Link
             key={tab.id}
+                prefetch={false}
             href={`/es/inteligencia-de-mercado?${query.toString()}&tab=${tab.id}`}
             style={{
               ...card,
@@ -476,6 +477,10 @@ const tabs = [
           Filtros del Mercado
         </h2>
 
+        <div hidden={activeTab !== 'price-meter'}>
+          <PriceMeterApplyPanel options={options} filters={filters} language="es" source="workspace" />
+        </div>
+        {activeTab !== 'price-meter' && (
         <MarketFilters
             language="es"
             workspace={
@@ -494,6 +499,7 @@ const tabs = [
                 : `/es/inteligencia-de-mercado?tab=${activeTab}`
             }
           />
+        )}
       </section>
 
 
@@ -506,7 +512,7 @@ const tabs = [
                     '1rem'
                 }}
               >
-                <button
+                <button hidden={activeTab === 'price-meter'}
                   type="button"
                   onClick={
                     handleSaveAnalysis
@@ -588,22 +594,6 @@ const tabs = [
               <EmptyState />
             )
         )}
-
-        {activeTab ===
-            'price-meter' && (
-            priceMeterAnalysis
-              ? (
-                <PriceMeterResults
-                  filters={filters}
-                  analysis={
-                    priceMeterAnalysis
-                  }
-                />
-              )
-              : (
-                <EmptyState />
-              )
-          )}
 
         {activeTab === 'pricing' && (
           <PricingStrategyResults

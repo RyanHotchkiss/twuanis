@@ -1,0 +1,5964 @@
+{
+  "roles": [
+    {
+      "role": "authenticated",
+      "superuser": false,
+      "bypass_rls": false
+    },
+    {
+      "role": "anon",
+      "superuser": false,
+      "bypass_rls": false
+    },
+    {
+      "role": "service_role",
+      "superuser": false,
+      "bypass_rls": true
+    }
+  ],
+  "objects": [
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "canonical_operation_receipts",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "canonical_operation_receipts",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "canonical_operation_receipts",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "capacity_policy_guard",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "capacity_policy_guard",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "capacity_policy_guard",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "entitlements",
+      "effective": true,
+      "privilege": "SELECT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "entitlements",
+      "effective": true,
+      "privilege": "SELECT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "entitlements",
+      "effective": true,
+      "privilege": "SELECT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_classification_rule_sets",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_classification_rule_sets",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_classification_rule_sets",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_classification_rules",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_classification_rules",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_classification_rules",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_fact_evidence",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_fact_evidence",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_fact_evidence",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_lifecycle_events",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_lifecycle_events",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_lifecycle_events",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_membership_origins",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_membership_origins",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_membership_origins",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_monetary_events",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_monetary_events",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_monetary_events",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_semantic_selections",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_semantic_selections",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_semantic_selections",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_source_observations",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_source_observations",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_source_observations",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listings",
+      "effective": true,
+      "privilege": "SELECT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listings",
+      "effective": true,
+      "privilege": "SELECT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listings",
+      "effective": true,
+      "privilege": "SELECT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listings_ontology_terms",
+      "effective": true,
+      "privilege": "SELECT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listings_ontology_terms",
+      "effective": true,
+      "privilege": "SELECT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listings_ontology_terms",
+      "effective": true,
+      "privilege": "SELECT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "ontology_relationships",
+      "effective": true,
+      "privilege": "SELECT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "ontology_relationships",
+      "effective": true,
+      "privilege": "SELECT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "ontology_relationships",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "ontology_terms",
+      "effective": true,
+      "privilege": "SELECT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "ontology_terms",
+      "effective": true,
+      "privilege": "SELECT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "ontology_terms",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "package_entitlements",
+      "effective": true,
+      "privilege": "SELECT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "package_entitlements",
+      "effective": true,
+      "privilege": "SELECT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "package_entitlements",
+      "effective": true,
+      "privilege": "SELECT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "publisher_accounts",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "publisher_accounts",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "publisher_accounts",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "saved_analyses",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "saved_analyses",
+      "effective": true,
+      "privilege": "SELECT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "saved_analyses",
+      "effective": true,
+      "privilege": "SELECT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "source_identity_conflicts",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "source_identity_conflicts",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "source_identity_conflicts",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "user_subscriptions",
+      "effective": false,
+      "privilege": "SELECT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "user_subscriptions",
+      "effective": true,
+      "privilege": "SELECT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "user_subscriptions",
+      "effective": true,
+      "privilege": "SELECT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "canonical_operation_receipts",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "canonical_operation_receipts",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "canonical_operation_receipts",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "capacity_policy_guard",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "capacity_policy_guard",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "capacity_policy_guard",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "entitlements",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "entitlements",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "entitlements",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_classification_rule_sets",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_classification_rule_sets",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_classification_rule_sets",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_classification_rules",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_classification_rules",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_classification_rules",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_fact_evidence",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_fact_evidence",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_fact_evidence",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_lifecycle_events",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_lifecycle_events",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_lifecycle_events",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_membership_origins",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_membership_origins",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_membership_origins",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_monetary_events",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_monetary_events",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_monetary_events",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_semantic_selections",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_semantic_selections",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_semantic_selections",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_source_observations",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_source_observations",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_source_observations",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listings",
+      "effective": true,
+      "privilege": "INSERT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listings",
+      "effective": true,
+      "privilege": "INSERT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listings",
+      "effective": true,
+      "privilege": "INSERT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listings_ontology_terms",
+      "effective": true,
+      "privilege": "INSERT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listings_ontology_terms",
+      "effective": true,
+      "privilege": "INSERT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listings_ontology_terms",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "ontology_relationships",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "ontology_relationships",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "ontology_relationships",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "ontology_terms",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "ontology_terms",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "ontology_terms",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "package_entitlements",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "package_entitlements",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "package_entitlements",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "publisher_accounts",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "publisher_accounts",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "publisher_accounts",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "saved_analyses",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "saved_analyses",
+      "effective": true,
+      "privilege": "INSERT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "saved_analyses",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "source_identity_conflicts",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "source_identity_conflicts",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "source_identity_conflicts",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "user_subscriptions",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "user_subscriptions",
+      "effective": false,
+      "privilege": "INSERT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "user_subscriptions",
+      "effective": true,
+      "privilege": "INSERT",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "canonical_operation_receipts",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "canonical_operation_receipts",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "canonical_operation_receipts",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "capacity_policy_guard",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "capacity_policy_guard",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "capacity_policy_guard",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "entitlements",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "entitlements",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "entitlements",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_classification_rule_sets",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_classification_rule_sets",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_classification_rule_sets",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_classification_rules",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_classification_rules",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_classification_rules",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_fact_evidence",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_fact_evidence",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_fact_evidence",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_lifecycle_events",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_lifecycle_events",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_lifecycle_events",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_membership_origins",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_membership_origins",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_membership_origins",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_monetary_events",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_monetary_events",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_monetary_events",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_semantic_selections",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_semantic_selections",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_semantic_selections",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_source_observations",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_source_observations",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_source_observations",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listings",
+      "effective": true,
+      "privilege": "UPDATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listings",
+      "effective": true,
+      "privilege": "UPDATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listings",
+      "effective": true,
+      "privilege": "UPDATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listings_ontology_terms",
+      "effective": true,
+      "privilege": "UPDATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listings_ontology_terms",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listings_ontology_terms",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "ontology_relationships",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "ontology_relationships",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "ontology_relationships",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "ontology_terms",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "ontology_terms",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "ontology_terms",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "package_entitlements",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "package_entitlements",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "package_entitlements",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "publisher_accounts",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "publisher_accounts",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "publisher_accounts",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "saved_analyses",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "saved_analyses",
+      "effective": true,
+      "privilege": "UPDATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "saved_analyses",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "source_identity_conflicts",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "source_identity_conflicts",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "source_identity_conflicts",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "user_subscriptions",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "user_subscriptions",
+      "effective": false,
+      "privilege": "UPDATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "user_subscriptions",
+      "effective": true,
+      "privilege": "UPDATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "canonical_operation_receipts",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "canonical_operation_receipts",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "canonical_operation_receipts",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "capacity_policy_guard",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "capacity_policy_guard",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "capacity_policy_guard",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "entitlements",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "entitlements",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "entitlements",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_classification_rule_sets",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_classification_rule_sets",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_classification_rule_sets",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_classification_rules",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_classification_rules",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_classification_rules",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_fact_evidence",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_fact_evidence",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_fact_evidence",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_lifecycle_events",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_lifecycle_events",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_lifecycle_events",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_membership_origins",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_membership_origins",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_membership_origins",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_monetary_events",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_monetary_events",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_monetary_events",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_semantic_selections",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_semantic_selections",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_semantic_selections",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_source_observations",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_source_observations",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_source_observations",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listings",
+      "effective": true,
+      "privilege": "DELETE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listings",
+      "effective": true,
+      "privilege": "DELETE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listings",
+      "effective": true,
+      "privilege": "DELETE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listings_ontology_terms",
+      "effective": true,
+      "privilege": "DELETE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listings_ontology_terms",
+      "effective": true,
+      "privilege": "DELETE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listings_ontology_terms",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "ontology_relationships",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "ontology_relationships",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "ontology_relationships",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "ontology_terms",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "ontology_terms",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "ontology_terms",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "package_entitlements",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "package_entitlements",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "package_entitlements",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "publisher_accounts",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "publisher_accounts",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "publisher_accounts",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "saved_analyses",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "saved_analyses",
+      "effective": true,
+      "privilege": "DELETE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "saved_analyses",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "source_identity_conflicts",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "source_identity_conflicts",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "source_identity_conflicts",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "user_subscriptions",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "user_subscriptions",
+      "effective": false,
+      "privilege": "DELETE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "user_subscriptions",
+      "effective": true,
+      "privilege": "DELETE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "canonical_operation_receipts",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "canonical_operation_receipts",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "canonical_operation_receipts",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "capacity_policy_guard",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "capacity_policy_guard",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "capacity_policy_guard",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "entitlements",
+      "effective": true,
+      "privilege": "TRUNCATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "entitlements",
+      "effective": true,
+      "privilege": "TRUNCATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "entitlements",
+      "effective": true,
+      "privilege": "TRUNCATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_classification_rule_sets",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_classification_rule_sets",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_classification_rule_sets",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_classification_rules",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_classification_rules",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_classification_rules",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_fact_evidence",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_fact_evidence",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_fact_evidence",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_lifecycle_events",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_lifecycle_events",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_lifecycle_events",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_membership_origins",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_membership_origins",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_membership_origins",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_monetary_events",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_monetary_events",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_monetary_events",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_semantic_selections",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_semantic_selections",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_semantic_selections",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_source_observations",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_source_observations",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_source_observations",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listings",
+      "effective": true,
+      "privilege": "TRUNCATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listings",
+      "effective": true,
+      "privilege": "TRUNCATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listings",
+      "effective": true,
+      "privilege": "TRUNCATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listings_ontology_terms",
+      "effective": true,
+      "privilege": "TRUNCATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listings_ontology_terms",
+      "effective": true,
+      "privilege": "TRUNCATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listings_ontology_terms",
+      "effective": true,
+      "privilege": "TRUNCATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "ontology_relationships",
+      "effective": true,
+      "privilege": "TRUNCATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "ontology_relationships",
+      "effective": true,
+      "privilege": "TRUNCATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "ontology_relationships",
+      "effective": true,
+      "privilege": "TRUNCATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "ontology_terms",
+      "effective": true,
+      "privilege": "TRUNCATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "ontology_terms",
+      "effective": true,
+      "privilege": "TRUNCATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "ontology_terms",
+      "effective": true,
+      "privilege": "TRUNCATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "package_entitlements",
+      "effective": true,
+      "privilege": "TRUNCATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "package_entitlements",
+      "effective": true,
+      "privilege": "TRUNCATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "package_entitlements",
+      "effective": true,
+      "privilege": "TRUNCATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "publisher_accounts",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "publisher_accounts",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "publisher_accounts",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "saved_analyses",
+      "effective": true,
+      "privilege": "TRUNCATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "saved_analyses",
+      "effective": true,
+      "privilege": "TRUNCATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "saved_analyses",
+      "effective": true,
+      "privilege": "TRUNCATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "source_identity_conflicts",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "source_identity_conflicts",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "source_identity_conflicts",
+      "effective": false,
+      "privilege": "TRUNCATE",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "user_subscriptions",
+      "effective": true,
+      "privilege": "TRUNCATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "user_subscriptions",
+      "effective": true,
+      "privilege": "TRUNCATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "user_subscriptions",
+      "effective": true,
+      "privilege": "TRUNCATE",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "canonical_operation_receipts",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "canonical_operation_receipts",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "canonical_operation_receipts",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "capacity_policy_guard",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "capacity_policy_guard",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "capacity_policy_guard",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "entitlements",
+      "effective": true,
+      "privilege": "REFERENCES",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "entitlements",
+      "effective": true,
+      "privilege": "REFERENCES",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "entitlements",
+      "effective": true,
+      "privilege": "REFERENCES",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_classification_rule_sets",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_classification_rule_sets",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_classification_rule_sets",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_classification_rules",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_classification_rules",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_classification_rules",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_fact_evidence",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_fact_evidence",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_fact_evidence",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_lifecycle_events",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_lifecycle_events",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_lifecycle_events",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_membership_origins",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_membership_origins",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_membership_origins",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_monetary_events",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_monetary_events",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_monetary_events",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_semantic_selections",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_semantic_selections",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_semantic_selections",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_source_observations",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_source_observations",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_source_observations",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listings",
+      "effective": true,
+      "privilege": "REFERENCES",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listings",
+      "effective": true,
+      "privilege": "REFERENCES",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listings",
+      "effective": true,
+      "privilege": "REFERENCES",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listings_ontology_terms",
+      "effective": true,
+      "privilege": "REFERENCES",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listings_ontology_terms",
+      "effective": true,
+      "privilege": "REFERENCES",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listings_ontology_terms",
+      "effective": true,
+      "privilege": "REFERENCES",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "ontology_relationships",
+      "effective": true,
+      "privilege": "REFERENCES",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "ontology_relationships",
+      "effective": true,
+      "privilege": "REFERENCES",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "ontology_relationships",
+      "effective": true,
+      "privilege": "REFERENCES",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "ontology_terms",
+      "effective": true,
+      "privilege": "REFERENCES",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "ontology_terms",
+      "effective": true,
+      "privilege": "REFERENCES",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "ontology_terms",
+      "effective": true,
+      "privilege": "REFERENCES",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "package_entitlements",
+      "effective": true,
+      "privilege": "REFERENCES",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "package_entitlements",
+      "effective": true,
+      "privilege": "REFERENCES",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "package_entitlements",
+      "effective": true,
+      "privilege": "REFERENCES",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "publisher_accounts",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "publisher_accounts",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "publisher_accounts",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "saved_analyses",
+      "effective": true,
+      "privilege": "REFERENCES",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "saved_analyses",
+      "effective": true,
+      "privilege": "REFERENCES",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "saved_analyses",
+      "effective": true,
+      "privilege": "REFERENCES",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "source_identity_conflicts",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "source_identity_conflicts",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "source_identity_conflicts",
+      "effective": false,
+      "privilege": "REFERENCES",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "user_subscriptions",
+      "effective": true,
+      "privilege": "REFERENCES",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "user_subscriptions",
+      "effective": true,
+      "privilege": "REFERENCES",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "user_subscriptions",
+      "effective": true,
+      "privilege": "REFERENCES",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "canonical_operation_receipts",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "canonical_operation_receipts",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "canonical_operation_receipts",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "capacity_policy_guard",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "capacity_policy_guard",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "capacity_policy_guard",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "entitlements",
+      "effective": true,
+      "privilege": "TRIGGER",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "entitlements",
+      "effective": true,
+      "privilege": "TRIGGER",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "entitlements",
+      "effective": true,
+      "privilege": "TRIGGER",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_classification_rule_sets",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_classification_rule_sets",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_classification_rule_sets",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_classification_rules",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_classification_rules",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_classification_rules",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_fact_evidence",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_fact_evidence",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_fact_evidence",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_lifecycle_events",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_lifecycle_events",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_lifecycle_events",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_membership_origins",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_membership_origins",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_membership_origins",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_monetary_events",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_monetary_events",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_monetary_events",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_semantic_selections",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_semantic_selections",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_semantic_selections",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listing_source_observations",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listing_source_observations",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listing_source_observations",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listings",
+      "effective": true,
+      "privilege": "TRIGGER",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listings",
+      "effective": true,
+      "privilege": "TRIGGER",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listings",
+      "effective": true,
+      "privilege": "TRIGGER",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "listings_ontology_terms",
+      "effective": true,
+      "privilege": "TRIGGER",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "listings_ontology_terms",
+      "effective": true,
+      "privilege": "TRIGGER",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "listings_ontology_terms",
+      "effective": true,
+      "privilege": "TRIGGER",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "ontology_relationships",
+      "effective": true,
+      "privilege": "TRIGGER",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "ontology_relationships",
+      "effective": true,
+      "privilege": "TRIGGER",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "ontology_relationships",
+      "effective": true,
+      "privilege": "TRIGGER",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "ontology_terms",
+      "effective": true,
+      "privilege": "TRIGGER",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "ontology_terms",
+      "effective": true,
+      "privilege": "TRIGGER",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "ontology_terms",
+      "effective": true,
+      "privilege": "TRIGGER",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "package_entitlements",
+      "effective": true,
+      "privilege": "TRIGGER",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "package_entitlements",
+      "effective": true,
+      "privilege": "TRIGGER",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "package_entitlements",
+      "effective": true,
+      "privilege": "TRIGGER",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "publisher_accounts",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "publisher_accounts",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "publisher_accounts",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "saved_analyses",
+      "effective": true,
+      "privilege": "TRIGGER",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "saved_analyses",
+      "effective": true,
+      "privilege": "TRIGGER",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "saved_analyses",
+      "effective": true,
+      "privilege": "TRIGGER",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "source_identity_conflicts",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "source_identity_conflicts",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "source_identity_conflicts",
+      "effective": false,
+      "privilege": "TRIGGER",
+      "column_mutation": false
+    },
+    {
+      "rls": true,
+      "role": "anon",
+      "table": "user_subscriptions",
+      "effective": true,
+      "privilege": "TRIGGER",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "authenticated",
+      "table": "user_subscriptions",
+      "effective": true,
+      "privilege": "TRIGGER",
+      "column_mutation": true
+    },
+    {
+      "rls": true,
+      "role": "service_role",
+      "table": "user_subscriptions",
+      "effective": true,
+      "privilege": "TRIGGER",
+      "column_mutation": true
+    }
+  ],
+  "schemas": [
+    {
+      "role": "anon",
+      "usage": true,
+      "create": false,
+      "schema": "graphql_public"
+    },
+    {
+      "role": "anon",
+      "usage": true,
+      "create": false,
+      "schema": "public"
+    },
+    {
+      "role": "anon",
+      "usage": false,
+      "create": false,
+      "schema": "twuanis_private"
+    },
+    {
+      "role": "anon",
+      "usage": false,
+      "create": false,
+      "schema": "twuanis_canonical_private"
+    },
+    {
+      "role": "authenticated",
+      "usage": true,
+      "create": false,
+      "schema": "graphql_public"
+    },
+    {
+      "role": "authenticated",
+      "usage": true,
+      "create": false,
+      "schema": "public"
+    },
+    {
+      "role": "authenticated",
+      "usage": false,
+      "create": false,
+      "schema": "twuanis_private"
+    },
+    {
+      "role": "authenticated",
+      "usage": false,
+      "create": false,
+      "schema": "twuanis_canonical_private"
+    },
+    {
+      "role": "service_role",
+      "usage": true,
+      "create": false,
+      "schema": "graphql_public"
+    },
+    {
+      "role": "service_role",
+      "usage": true,
+      "create": false,
+      "schema": "public"
+    },
+    {
+      "role": "service_role",
+      "usage": false,
+      "create": false,
+      "schema": "twuanis_private"
+    },
+    {
+      "role": "service_role",
+      "usage": false,
+      "create": false,
+      "schema": "twuanis_canonical_private"
+    }
+  ],
+  "identity": [
+    "postgres",
+    "postgres",
+    "postgres"
+  ],
+  "policies": [
+    {
+      "cmd": "SELECT",
+      "qual": "(is_active = true)",
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "tablename": "entitlements",
+      "permissive": "PERMISSIVE",
+      "policyname": "Entitlements are publicly readable",
+      "schemaname": "public",
+      "with_check": null
+    },
+    {
+      "cmd": "DELETE",
+      "qual": "(owner_id = auth.uid())",
+      "roles": [
+        "authenticated"
+      ],
+      "tablename": "listings",
+      "permissive": "PERMISSIVE",
+      "policyname": "Owners delete own listings",
+      "schemaname": "public",
+      "with_check": null
+    },
+    {
+      "cmd": "INSERT",
+      "qual": null,
+      "roles": [
+        "authenticated"
+      ],
+      "tablename": "listings",
+      "permissive": "PERMISSIVE",
+      "policyname": "Owners insert own listings",
+      "schemaname": "public",
+      "with_check": "(owner_id = auth.uid())"
+    },
+    {
+      "cmd": "SELECT",
+      "qual": "(owner_id = auth.uid())",
+      "roles": [
+        "authenticated"
+      ],
+      "tablename": "listings",
+      "permissive": "PERMISSIVE",
+      "policyname": "Owners read own listings",
+      "schemaname": "public",
+      "with_check": null
+    },
+    {
+      "cmd": "UPDATE",
+      "qual": "(owner_id = auth.uid())",
+      "roles": [
+        "authenticated"
+      ],
+      "tablename": "listings",
+      "permissive": "PERMISSIVE",
+      "policyname": "Owners update own listings",
+      "schemaname": "public",
+      "with_check": "(owner_id = auth.uid())"
+    },
+    {
+      "cmd": "SELECT",
+      "qual": "(listing_status = 'active'::text)",
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "tablename": "listings",
+      "permissive": "PERMISSIVE",
+      "policyname": "Public read active listings",
+      "schemaname": "public",
+      "with_check": null
+    },
+    {
+      "cmd": "SELECT",
+      "qual": "true",
+      "roles": [
+        "anon"
+      ],
+      "tablename": "listings_ontology_terms",
+      "permissive": "PERMISSIVE",
+      "policyname": "Public Read Listing Ontology",
+      "schemaname": "public",
+      "with_check": null
+    },
+    {
+      "cmd": "SELECT",
+      "qual": "true",
+      "roles": [
+        "authenticated"
+      ],
+      "tablename": "ontology_relationships",
+      "permissive": "PERMISSIVE",
+      "policyname": "Authenticated Read Ontology Relationships",
+      "schemaname": "public",
+      "with_check": null
+    },
+    {
+      "cmd": "SELECT",
+      "qual": "true",
+      "roles": [
+        "anon"
+      ],
+      "tablename": "ontology_terms",
+      "permissive": "PERMISSIVE",
+      "policyname": "Public Read Ontology",
+      "schemaname": "public",
+      "with_check": null
+    },
+    {
+      "cmd": "SELECT",
+      "qual": "true",
+      "roles": [
+        "anon",
+        "authenticated"
+      ],
+      "tablename": "package_entitlements",
+      "permissive": "PERMISSIVE",
+      "policyname": "Package entitlements are publicly readable",
+      "schemaname": "public",
+      "with_check": null
+    },
+    {
+      "cmd": "INSERT",
+      "qual": null,
+      "roles": [
+        "public"
+      ],
+      "tablename": "saved_analyses",
+      "permissive": "PERMISSIVE",
+      "policyname": "Users can create saved analyses",
+      "schemaname": "public",
+      "with_check": "(auth.uid() = user_id)"
+    },
+    {
+      "cmd": "DELETE",
+      "qual": "(auth.uid() = user_id)",
+      "roles": [
+        "public"
+      ],
+      "tablename": "saved_analyses",
+      "permissive": "PERMISSIVE",
+      "policyname": "Users can delete their saved analyses",
+      "schemaname": "public",
+      "with_check": null
+    },
+    {
+      "cmd": "UPDATE",
+      "qual": "(auth.uid() = user_id)",
+      "roles": [
+        "public"
+      ],
+      "tablename": "saved_analyses",
+      "permissive": "PERMISSIVE",
+      "policyname": "Users can update their saved analyses",
+      "schemaname": "public",
+      "with_check": "(auth.uid() = user_id)"
+    },
+    {
+      "cmd": "SELECT",
+      "qual": "(auth.uid() = user_id)",
+      "roles": [
+        "public"
+      ],
+      "tablename": "saved_analyses",
+      "permissive": "PERMISSIVE",
+      "policyname": "Users can view their saved analyses",
+      "schemaname": "public",
+      "with_check": null
+    },
+    {
+      "cmd": "ALL",
+      "qual": "(user_id = auth.uid())",
+      "roles": [
+        "authenticated"
+      ],
+      "tablename": "saved_analyses",
+      "permissive": "PERMISSIVE",
+      "policyname": "Users manage their saved analyses",
+      "schemaname": "public",
+      "with_check": "(user_id = auth.uid())"
+    },
+    {
+      "cmd": "SELECT",
+      "qual": "(auth.uid() = user_id)",
+      "roles": [
+        "authenticated"
+      ],
+      "tablename": "user_subscriptions",
+      "permissive": "PERMISSIVE",
+      "policyname": "Users can view their own subscriptions",
+      "schemaname": "public",
+      "with_check": null
+    }
+  ],
+  "functions": [
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_private.normalize_geographic_projection(text)",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_private.write_listing_canonical(uuid,text,text,text,text,text,uuid,boolean)",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.write_my_listing_canonical(uuid,text,text,text,text,text)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.write_listing_canonical_server(uuid,text,text,text,text,text)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.finite_numeric(numeric)",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.reject_immutable_mutation()",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.validate_new_term_reference()",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.validate_classification_rule()",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.initialize_capacity_guard()",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.lock_capacity_policy(boolean)",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.ensure_publisher_account(uuid)",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.lock_publisher(uuid)",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.resolve_publisher(uuid)",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.publisher_allowance(uuid,uuid)",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.publisher_consumption(uuid,uuid)",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.capacity_state(bigint,bigint)",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s3_sealed_rule_guard()",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s3_seal_classification(uuid)",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s3_keys(jsonb,text[],text[])",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s3_decimal(jsonb)",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s3_term_ids(jsonb)",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s3_geography(jsonb)",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s3_origins(uuid,text,bigint[],uuid)",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s3_command(uuid,bigint,text,text,uuid,jsonb,jsonb)",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s4_domains(jsonb,text)",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s4_create_core(uuid,uuid,jsonb,jsonb)",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.create_customer_canonical_listing(uuid,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.create_trusted_canonical_listing(uuid,jsonb,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.mutate_customer_canonical_listing(uuid,bigint,uuid,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.mutate_trusted_canonical_listing(uuid,bigint,uuid,jsonb,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.assign_default_market_package()",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.approve_sinpe_payment(uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.activate_purchase(uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "public.read_canonical_listing_evidence(uuid[],text[],text[])",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "twuanis_canonical_private.s6_legacy_normalize(text,boolean)",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "public.read_legacy_geographic_candidates(text[],text[],text[],text[],text)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "public.read_legacy_geography_dictionary(uuid[])",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "twuanis_canonical_private.set_import_operator(uuid,boolean)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "public.is_current_user_import_operator()",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "public.create_csv_canonical_listing(uuid,jsonb,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "public.initially_publish_csv_listing(uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "twuanis_canonical_private.guard_publication_entitlement()",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "public.publish_customer_canonical_listing(uuid,bigint,uuid,text)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.prepare_customer_duplicate(uuid,uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.attach_customer_duplicate_media(uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.guard_duplicate_publication()",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.edit_customer_canonical_listing(uuid,bigint,uuid,jsonb,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.prepare_token_canonical_listing(text,uuid,jsonb,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.get_token_canonical_operation(text,uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.attach_token_canonical_media(text,uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.publish_token_canonical_listing(text)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.guard_token_media_publication()",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.guard_token_snapshot()",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "twuanis_canonical_private.reject_csv_evidence_change()",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.retain_csv_source_evidence(jsonb,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.complete_csv_source_references(uuid,uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.guard_csv_source_reference_completion()",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.prepare_ordinary_upload(uuid,uuid,integer)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.get_ordinary_upload(uuid,uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.attach_ordinary_upload(uuid,uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.detach_listing_image(uuid,uuid,text)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.get_image_detach_operation(uuid,uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.confirm_image_cleanup(uuid,uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.claim_abandoned_listing_token(uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.ingest_canonical_source_observation(uuid,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.complete_canonical_source_run(text,uuid,timestamptz,jsonb,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s11_image_trim(text)",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s11_image_string(jsonb,boolean)",
+      "security_definer": false
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.reorder_listing_images(uuid,uuid,text,text[])",
+      "security_definer": true
+    },
+    {
+      "role": "anon",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": null,
+      "signature": "public.recover_listing_measurement(uuid,text,numeric,text,text,text,text)",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_private.normalize_geographic_projection(text)",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_private.write_listing_canonical(uuid,text,text,text,text,text,uuid,boolean)",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.write_my_listing_canonical(uuid,text,text,text,text,text)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.write_listing_canonical_server(uuid,text,text,text,text,text)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.finite_numeric(numeric)",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.reject_immutable_mutation()",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.validate_new_term_reference()",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.validate_classification_rule()",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.initialize_capacity_guard()",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.lock_capacity_policy(boolean)",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.ensure_publisher_account(uuid)",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.lock_publisher(uuid)",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.resolve_publisher(uuid)",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.publisher_allowance(uuid,uuid)",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.publisher_consumption(uuid,uuid)",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.capacity_state(bigint,bigint)",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s3_sealed_rule_guard()",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s3_seal_classification(uuid)",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s3_keys(jsonb,text[],text[])",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s3_decimal(jsonb)",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s3_term_ids(jsonb)",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s3_geography(jsonb)",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s3_origins(uuid,text,bigint[],uuid)",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s3_command(uuid,bigint,text,text,uuid,jsonb,jsonb)",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s4_domains(jsonb,text)",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s4_create_core(uuid,uuid,jsonb,jsonb)",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.create_customer_canonical_listing(uuid,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.create_trusted_canonical_listing(uuid,jsonb,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.mutate_customer_canonical_listing(uuid,bigint,uuid,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.mutate_trusted_canonical_listing(uuid,bigint,uuid,jsonb,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.assign_default_market_package()",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.approve_sinpe_payment(uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.activate_purchase(uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "public.read_canonical_listing_evidence(uuid[],text[],text[])",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "twuanis_canonical_private.s6_legacy_normalize(text,boolean)",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "public.read_legacy_geographic_candidates(text[],text[],text[],text[],text)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "public.read_legacy_geography_dictionary(uuid[])",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "twuanis_canonical_private.set_import_operator(uuid,boolean)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "public.is_current_user_import_operator()",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "public.create_csv_canonical_listing(uuid,jsonb,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "public.initially_publish_csv_listing(uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "twuanis_canonical_private.guard_publication_entitlement()",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "public.publish_customer_canonical_listing(uuid,bigint,uuid,text)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.prepare_customer_duplicate(uuid,uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.attach_customer_duplicate_media(uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.guard_duplicate_publication()",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.edit_customer_canonical_listing(uuid,bigint,uuid,jsonb,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.prepare_token_canonical_listing(text,uuid,jsonb,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.get_token_canonical_operation(text,uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.attach_token_canonical_media(text,uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.publish_token_canonical_listing(text)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.guard_token_media_publication()",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.guard_token_snapshot()",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "twuanis_canonical_private.reject_csv_evidence_change()",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.retain_csv_source_evidence(jsonb,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.complete_csv_source_references(uuid,uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.guard_csv_source_reference_completion()",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.prepare_ordinary_upload(uuid,uuid,integer)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.get_ordinary_upload(uuid,uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.attach_ordinary_upload(uuid,uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.detach_listing_image(uuid,uuid,text)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.get_image_detach_operation(uuid,uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.confirm_image_cleanup(uuid,uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.claim_abandoned_listing_token(uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.ingest_canonical_source_observation(uuid,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.complete_canonical_source_run(text,uuid,timestamptz,jsonb,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s11_image_trim(text)",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s11_image_string(jsonb,boolean)",
+      "security_definer": false
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.reorder_listing_images(uuid,uuid,text,text[])",
+      "security_definer": true
+    },
+    {
+      "role": "authenticated",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": null,
+      "signature": "public.recover_listing_measurement(uuid,text,numeric,text,text,text,text)",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_private.normalize_geographic_projection(text)",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_private.write_listing_canonical(uuid,text,text,text,text,text,uuid,boolean)",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.write_my_listing_canonical(uuid,text,text,text,text,text)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.write_listing_canonical_server(uuid,text,text,text,text,text)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.finite_numeric(numeric)",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.reject_immutable_mutation()",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.validate_new_term_reference()",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.validate_classification_rule()",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.initialize_capacity_guard()",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.lock_capacity_policy(boolean)",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.ensure_publisher_account(uuid)",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.lock_publisher(uuid)",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.resolve_publisher(uuid)",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.publisher_allowance(uuid,uuid)",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.publisher_consumption(uuid,uuid)",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.capacity_state(bigint,bigint)",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s3_sealed_rule_guard()",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s3_seal_classification(uuid)",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s3_keys(jsonb,text[],text[])",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s3_decimal(jsonb)",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s3_term_ids(jsonb)",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s3_geography(jsonb)",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s3_origins(uuid,text,bigint[],uuid)",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s3_command(uuid,bigint,text,text,uuid,jsonb,jsonb)",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s4_domains(jsonb,text)",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s4_create_core(uuid,uuid,jsonb,jsonb)",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.create_customer_canonical_listing(uuid,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.create_trusted_canonical_listing(uuid,jsonb,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.mutate_customer_canonical_listing(uuid,bigint,uuid,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.mutate_trusted_canonical_listing(uuid,bigint,uuid,jsonb,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.assign_default_market_package()",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.approve_sinpe_payment(uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.activate_purchase(uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "public.read_canonical_listing_evidence(uuid[],text[],text[])",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "twuanis_canonical_private.s6_legacy_normalize(text,boolean)",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "public.read_legacy_geographic_candidates(text[],text[],text[],text[],text)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "public.read_legacy_geography_dictionary(uuid[])",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "twuanis_canonical_private.set_import_operator(uuid,boolean)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "public.is_current_user_import_operator()",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "public.create_csv_canonical_listing(uuid,jsonb,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "public.initially_publish_csv_listing(uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "twuanis_canonical_private.guard_publication_entitlement()",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "public.publish_customer_canonical_listing(uuid,bigint,uuid,text)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.prepare_customer_duplicate(uuid,uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.attach_customer_duplicate_media(uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.guard_duplicate_publication()",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.edit_customer_canonical_listing(uuid,bigint,uuid,jsonb,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.prepare_token_canonical_listing(text,uuid,jsonb,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.get_token_canonical_operation(text,uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.attach_token_canonical_media(text,uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.publish_token_canonical_listing(text)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.guard_token_media_publication()",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.guard_token_snapshot()",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog"
+      ],
+      "signature": "twuanis_canonical_private.reject_csv_evidence_change()",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.retain_csv_source_evidence(jsonb,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.complete_csv_source_references(uuid,uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.guard_csv_source_reference_completion()",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.prepare_ordinary_upload(uuid,uuid,integer)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.get_ordinary_upload(uuid,uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.attach_ordinary_upload(uuid,uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.detach_listing_image(uuid,uuid,text)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.get_image_detach_operation(uuid,uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.confirm_image_cleanup(uuid,uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.claim_abandoned_listing_token(uuid)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.ingest_canonical_source_observation(uuid,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.complete_canonical_source_run(text,uuid,timestamptz,jsonb,jsonb)",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s11_image_trim(text)",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": false,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "twuanis_canonical_private.s11_image_string(jsonb,boolean)",
+      "security_definer": false
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": [
+        "search_path=pg_catalog, pg_temp"
+      ],
+      "signature": "public.reorder_listing_images(uuid,uuid,text,text[])",
+      "security_definer": true
+    },
+    {
+      "role": "service_role",
+      "owner": "postgres",
+      "execute": true,
+      "present": true,
+      "settings": null,
+      "signature": "public.recover_listing_measurement(uuid,text,numeric,text,text,text,text)",
+      "security_definer": false
+    }
+  ],
+  "listing_count": 0
+}

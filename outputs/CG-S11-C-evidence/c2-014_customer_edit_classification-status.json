@@ -1,0 +1,8 @@
+{
+  "source": "supabase/migrations/014_customer_edit_classification.sql",
+  "sha256": "3b4f5b8ad64d19c96bfe289e7027eb24c14de125cba12f8a177ab85c90b1a787",
+  "start": "2026-09-19T16:06:36.947181+00:00",
+  "end": "2026-09-19T16:06:38.277640+00:00",
+  "exit_code": 0,
+  "commit_output": true
+}

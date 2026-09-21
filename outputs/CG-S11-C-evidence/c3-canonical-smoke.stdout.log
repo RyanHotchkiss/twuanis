@@ -1,0 +1,54 @@
+BEGIN
+SET
+SET
+              set_config              
+--------------------------------------
+ 0a24f50b-d369-477e-baf1-8e9f3bcf5f45
+(1 row)
+
+CREATE FUNCTION
+SET
+RESET
+ s11_assert 
+------------
+ 
+(1 row)
+
+SET
+                                                                     edit_customer_canonical_listing                                                                      
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ {"outcome": "succeeded", "replayed": false, "revision": "2", "listing_id": "be634c43-4870-453a-a1a8-635aba01f7d7", "receipt_id": "efba90ef-d9ae-43c7-b457-b85db7d1a2df"}
+(1 row)
+
+RESET
+ s11_assert 
+------------
+ 
+(1 row)
+
+SET
+                                                                    publish_customer_canonical_listing                                                                    
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ {"outcome": "succeeded", "replayed": false, "revision": "3", "listing_id": "be634c43-4870-453a-a1a8-635aba01f7d7", "receipt_id": "146f04e6-f325-4e43-8a12-a223c9a21509"}
+(1 row)
+
+RESET
+SET
+                                                                    publish_customer_canonical_listing                                                                    
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ {"outcome": "succeeded", "replayed": false, "revision": "4", "listing_id": "be634c43-4870-453a-a1a8-635aba01f7d7", "receipt_id": "6766963a-5624-4c46-b598-643c0310b37a"}
+(1 row)
+
+RESET
+ s11_assert 
+------------
+ 
+(1 row)
+
+SET
+RESET
+ s11_assert 
+------------
+ 
+(1 row)
+

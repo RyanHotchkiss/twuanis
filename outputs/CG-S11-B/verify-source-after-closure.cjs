@@ -1,0 +1,68 @@
+// Focused post-closure source regression. Local fixture ONLY; never target.
+'use strict';
+const fs=require('fs'),path=require('path'),vm=require('vm'),assert=require('assert/strict'),crypto=require('crypto'),{execFileSync}=require('child_process');
+const root=path.resolve(__dirname,'../..'),ts=require(root+'/node_modules/typescript'),pg='/opt/homebrew/opt/postgresql@17/bin',env={PATH:'/usr/bin:/bin',LC_ALL:'C'},socket='/private/tmp/s11b-prep/socket';let n=0;
+const dbname='s11b_source_closure';
+const sql=q=>execFileSync(pg+'/psql',['-X','-qAt','-h',socket,'-p','55439','-U','postgres','-d',dbname,'-v','ON_ERROR_STOP=1'],{env,input:q,encoding:'utf8',timeout:30000,stdio:['pipe','pipe','pipe']}).trim();
+const lit=v=>"'"+String(v).replaceAll("'","''")+"'",ok=(v,l)=>{assert.ok(v,l);n++;console.log('PASS '+l)};
+(async()=>{
+ assert.equal(sql("SELECT inet_server_addr() IS NULL AND current_database()='s11b_source_closure';"),'t');
+ const functions={ingest_canonical_source_observation:['p_evidence','p_input'],complete_canonical_source_run:['p_source','p_run','p_started_at','p_completion','p_observed_ids'],retain_csv_source_evidence:['p_raw','p_review'],create_csv_canonical_listing:['p_request','p_input','p_source'],complete_csv_source_references:['p_receipt','p_evidence'],initially_publish_csv_listing:['p_creation_receipt']};
+ const captured={};const db={rpc:async(name,args)=>{captured[name]=args;assert.ok(functions[name]);try{const values=functions[name].map(k=>lit(typeof args[k]==='object'?JSON.stringify(args[k]):args[k]));const raw=sql(`SET ROLE service_role;SELECT to_jsonb(public.${name}(${values.join(',')}));`);return {data:raw?JSON.parse(raw):null,error:null}}catch(e){console.error(String(e.stderr));return {data:null,error:{message:String(e.stderr)}}}},from:table=>{assert.equal(table,'ontology_terms');let cols,filters=[],limit=2;const q={select(v){assert.ok(['id::text','id::text,official_code'].includes(v));cols=v;return q},eq(k,v){assert.match(k,/^[a-z_]+$/);filters.push(k+'='+lit(v));return q},limit(v){assert.equal(v,2);limit=v;return q},then(resolve,reject){return Promise.resolve().then(()=>({data:JSON.parse(sql(`SET ROLE service_role;SELECT coalesce(json_agg(t),'[]') FROM(SELECT ${cols} FROM ontology_terms WHERE ${filters.join(' AND ')} LIMIT ${limit})t;`)),error:null})).then(resolve,reject)}};return q}};
+ const cache=new Map();function load(file){if(cache.has(file))return cache.get(file);const m={exports:{}};vm.runInNewContext(ts.transpileModule(fs.readFileSync(root+'/'+file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,{module:m,exports:m.exports,require:k=>{if(k==='server-only')return{};if(k.startsWith('@/lib/canonical-customer-'))return load(k.slice(2)+'.ts');throw Error(k)},console,Error});cache.set(file,m.exports);return m.exports}
+ const ingest=load('lib/csv-source-ingestion.ts').ingestCsvObservation;
+ const name=code=>sql(`SELECT term_name FROM ontology_terms WHERE official_code=${lit(code)};`);
+ const ns='s11-authority-'+crypto.randomUUID();
+ let raw={source_name:ns,source_listing_id:'one',observation_id:crypto.randomUUID(),observed_at:'2026-01-01T00:00:00Z',transaction_type:'sale',currency:'USD',current_price:'0.50',property_type:sql('SELECT term_name FROM ontology_terms WHERE id=1;'),province:name('3'),canton:name('304'),district:name('30403'),raw_property_area:'250 m²',raw_construction_area:'90 m2',raw_year_built:'1995',images:'https://external.invalid/one.jpg',source_url:'https://external.invalid/listing',title:'Initial',description:'Initial description'};
+ const envelope=raw=>({...raw,source_observation_input:JSON.stringify(raw),unresolved_normalizer_review:JSON.stringify({status:'unresolved',canonical_authority:false,values:{}})});
+ const apply=async r=>{const a=await ingest(db,envelope(r));assert.ok(a.success,a.error);return a};
+ const first=await apply(raw),id=first.listingId;
+ const row=()=>JSON.parse(sql(`SELECT to_jsonb(l) FROM listings l WHERE id=${lit(id)};`));
+ const state=()=>JSON.parse(sql(`SELECT to_jsonb(s) FROM twuanis_canonical_private.source_ingestion_state s WHERE listing_id=${lit(id)};`));
+ const count=table=>Number(sql(`SELECT count(*) FROM ${table} WHERE listing_id=${lit(id)};`));
+ const next=(changes={})=>({...raw,...changes,observation_id:crypto.randomUUID(),observed_at:new Date(Date.parse(raw.observed_at)+86400000).toISOString()});
+ const run=(completion,runid=crypto.randomUUID(),ids=[])=>JSON.parse(sql(`SET ROLE service_role;SELECT public.complete_canonical_source_run(${lit(ns)},${lit(runid)},clock_timestamp()-interval '1 second',${lit(JSON.stringify(completion))},${lit(JSON.stringify(ids))});`));
+ const age=()=>sql(`UPDATE twuanis_canonical_private.source_ingestion_state SET positive_at=clock_timestamp()-interval '1 day' WHERE listing_id=${lit(id)};`);
+ ok(row().listing_status==='active','positive creation without any completion assertion');
+ const c=count('listing_lifecycle_events');ok((await apply(raw)).listingId===id&&count('listing_lifecycle_events')===c,'same observation retry has no lifecycle effects');
+ const other=await apply({...raw,source_listing_id:'two',observation_id:crypto.randomUUID()});ok(other.listingId!==id,'different source listing ID independent');
+ const cross=await apply({...raw,source_name:ns+'-other',observation_id:crypto.randomUUID()});ok(cross.listingId!==id,'same ID different namespace independent');
+ raw=next({current_price:'125',raw_property_area:'300 m²',raw_construction_area:'150 m2',title:'Too early',description:'Too early',images:'https://external.invalid/early.jpg',source_url:'https://external.invalid/new',raw_year_built:'2000'});await apply(raw);
+ ok(row().current_price===125&&count('listing_monetary_events')===2,'price change with immutable monetary history');
+ ok(row().property_area===300&&row().construction_area===150,'exact measurement updates');
+ ok(row().source_url===raw.source_url,'source URL updates immediately');
+ ok(row().title==='Initial'&&row().description==='Initial description'&&row().images.endsWith('one.jpg'),'all presentation fields gated before six months');
+ ok(sql(`SELECT exact_value FROM listing_fact_evidence WHERE listing_id=${lit(id)} AND dimension='year_built';`)==='1995','non-whitelisted fact unchanged');
+ const rev=row().canonical_revision;await apply(raw);ok(row().canonical_revision===rev&&count('listing_monetary_events')===2,'update replay no revision or money duplication');
+ sql(`UPDATE twuanis_canonical_private.source_ingestion_state SET presentation_at=clock_timestamp()-interval '7 months' WHERE listing_id=${lit(id)};`);
+ const oldclock=state().presentation_at;raw=next({title:'',description:'',images:'',source_url:'',current_price:'',raw_property_area:'0 m²',raw_construction_area:'20-50 m²'});await apply(raw);
+ ok(row().title==='Initial'&&row().images.endsWith('one.jpg')&&row().source_url.endsWith('/new'),'empty presentation/URL does not wipe');
+ ok(state().presentation_at===oldclock,'empty refresh does not reset clock');
+ ok(row().current_price===125&&row().property_area===300&&row().construction_area===150,'missing money/invalid measurement preserves current evidence');
+ raw=next({title:'Eligible',description:'Eligible description',images:'https://external.invalid/eligible.jpg'});await apply(raw);
+ ok(row().title==='Eligible'&&row().description==='Eligible description'&&row().images.endsWith('eligible.jpg'),'eligible six-month presentation refresh');
+ ok(state().presentation_at!==oldclock,'successful refresh records clock');
+ age();for(const value of [null,false,'unknown','failed','partial',{},'true'])ok(run(value).absence_applied===false&&state().misses===0,'unverified completion '+JSON.stringify(value)+' has no absence effect');
+ const runid=crypto.randomUUID();const runStarted=sql("SELECT clock_timestamp()-interval '1 second';");
+ const complete=`SELECT public.complete_canonical_source_run(${lit(ns)},${lit(runid)},${lit(runStarted)},'true','[]');`;
+ sql('SET ROLE service_role;'+complete);ok(state().misses===1&&row().listing_status==='active','first verified miss remains active');
+ sql('SET ROLE service_role;'+complete);ok(state().misses===1,'completion retry cannot double count');
+ run(false);ok(state().misses===1,'unverified run preserves first miss');
+ run(true);ok(state().misses===2&&row().listing_status==='archived','second verified miss archives');
+ ok(sql(`SELECT reason FROM listing_lifecycle_events WHERE listing_id=${lit(id)} AND event_type='archive' ORDER BY listing_revision DESC LIMIT 1;`)==='no longer observed at source','archive reason not sold/rented/leased');
+ const history=count('listing_lifecycle_events'),priorDeadline=row().publication_expires_at;
+ raw=next({title:'Not eligible on restoration',source_url:'https://external.invalid/reappeared'});await apply(raw);
+ ok(row().listing_status==='active'&&state().misses===0,'same-ID reappearance restores active and resets misses');
+ ok(count('listing_lifecycle_events')===history+2,'restore and publication append history');
+ ok(sql(`SELECT extract(epoch FROM(publication_expires_at-published_at))=7776000 FROM listings WHERE id=${lit(id)};`)==='t','new deadline exactly 90 days from publication operation');
+ ok(row().publication_expires_at!==priorDeadline&&row().title==='Eligible'&&row().source_url.endsWith('/reappeared'),'restoration fresh deadline respects presentation gate and current URL');
+ const afterRestore=count('listing_lifecycle_events');await apply(raw);ok(count('listing_lifecycle_events')===afterRestore&&state().misses===0,'restoration retry no duplicate effects');
+ age();run(true);ok(state().misses===1,'subsequent absence begins at one');
+ raw=next();await apply(raw);ok(state().misses===0,'positive observation without completion resets first miss');
+ age();run(true);run(true);ok(state().misses===2&&row().listing_status==='archived','new two-miss cycle archives again');
+ ok(sql(`SELECT listing_status FROM listings WHERE id=${lit(cross.listingId)};`)==='active','other source not reconciled');
+ for(const role of ['anon','authenticated'])ok(sql(`SELECT has_function_privilege(${lit(role)},'public.complete_canonical_source_run(text,uuid,timestamptz,jsonb,jsonb)','EXECUTE');`)==='f','completion authority denied to '+role);
+
+
+console.log('TOTAL '+n+' focused post-closure source checks');
+})().catch(e=>{console.error(e);process.exitCode=1});

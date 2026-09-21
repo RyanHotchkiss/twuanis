@@ -1,0 +1,8 @@
+{
+  "source": "supabase/migrations/007_canonical_creation_authority.sql",
+  "sha256": "521e67d7c1ebd619c3b1d7afd4817b94542eba9775515c402c17e7e8fa3be0da",
+  "start": "2026-09-19T16:04:35.460883+00:00",
+  "end": "2026-09-19T16:04:38.150275+00:00",
+  "exit_code": 0,
+  "commit_output": true
+}

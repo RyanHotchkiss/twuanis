@@ -27,7 +27,7 @@ export default async function EditRentalListingPage({
     error
   } = await supabase
     .from('listings')
-    .select('*')
+    .select('*,canonical_revision::text,current_price::text,monthly_price::text')
     .eq('id', id)
     .eq(
       'transaction_type',

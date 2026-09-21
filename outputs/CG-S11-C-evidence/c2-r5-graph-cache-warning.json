@@ -1,0 +1,35 @@
+{
+  "acl": "{postgres=arwdDxtm/postgres,anon=rDxtm/postgres,authenticated=rDxtm/postgres,service_role=Dxtm/postgres}",
+  "rls": false,
+  "kind": "m",
+  "owner": "postgres",
+  "object": "ontology_graph_cache",
+  "columns": [
+    "source_term_id",
+    "target_term_id",
+    "relationship_type",
+    "source_name",
+    "source_type",
+    "source_slug",
+    "target_name",
+    "target_type",
+    "target_slug"
+  ],
+  "effective": [
+    {
+      "role": "anon",
+      "select": true,
+      "schema_usage": true
+    },
+    {
+      "role": "authenticated",
+      "select": true,
+      "schema_usage": true
+    },
+    {
+      "role": "service_role",
+      "select": false,
+      "schema_usage": true
+    }
+  ]
+}

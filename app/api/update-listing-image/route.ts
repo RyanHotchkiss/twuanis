@@ -1,3 +1,4 @@
+import { attachmentUnconfirmed, retryOrdinaryUpload } from '@/lib/ordinary-upload-operation'
 import {
   NextRequest,
   NextResponse
@@ -39,7 +40,7 @@ type ListingRow = {
   id: string
   owner_id: string | null
   images: unknown
-  deleted_at: string | null
+  listing_status: string | null
 }
 
 function normalizeStoredImages(
@@ -139,6 +140,8 @@ export async function POST(
   let uploadedStoragePath:
     string | null = null
 
+  let operationId: string | null = null
+
   try {
     /*
      * Verify the authenticated user.
@@ -217,6 +220,17 @@ export async function POST(
      */
     const formData =
       await request.formData()
+
+    const retryId = formData.get('operationId')
+    if (retryId !== null) {
+      if (typeof retryId !== 'string' || !/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(retryId)) {
+        return NextResponse.json({ success: false, error: 'Valid operation ID required.' }, { status: 400 })
+      }
+      const requestedListing = formData.get('listingId')
+      if (requestedListing !== null && typeof requestedListing !== 'string') return NextResponse.json({ success: false, error: 'Invalid listing.' }, { status: 400 })
+      const result = await retryOrdinaryUpload(supabaseAdmin, user.id, retryId, requestedListing === null ? undefined : requestedListing)
+      return NextResponse.json(result, { status: result.success ? 200 : result.status === 'ATTACHMENT_UNCONFIRMED' ? 202 : 409 })
+    }
 
     const listingIdValue =
       formData.get(
@@ -312,7 +326,7 @@ export async function POST(
           id,
           owner_id,
           images,
-          deleted_at
+          listing_status
         `)
         .eq(
           'id',
@@ -371,7 +385,7 @@ export async function POST(
       )
     }
 
-    if (listing.deleted_at) {
+    if (listing.listing_status === 'deleted') {
       return NextResponse.json(
         {
           success: false,
@@ -512,8 +526,14 @@ export async function POST(
      * Upload directly to the permanent,
      * ownership-aware listing folder.
      */
-    uploadedStoragePath =
-      `${user.id}/${listing.id}/${crypto.randomUUID()}.jpg`
+    const prepared = await supabaseAdmin.rpc('prepare_ordinary_upload', {
+      p_owner: user.id, p_listing: listing.id, p_bytes: imageBytes.byteLength
+    })
+    if (prepared.error || typeof prepared.data?.id !== 'string' || typeof prepared.data?.storage_path !== 'string') {
+      return NextResponse.json({ success: false, error: 'Upload operation could not be established.' }, { status: 503 })
+    }
+    operationId = prepared.data.id
+    uploadedStoragePath = prepared.data.storage_path
 
     const {
       error: uploadError
@@ -524,7 +544,7 @@ export async function POST(
           BUCKET_NAME
         )
         .upload(
-          uploadedStoragePath,
+          uploadedStoragePath!,
           imageBytes,
           {
             contentType:
@@ -539,132 +559,19 @@ export async function POST(
         )
 
     if (uploadError) {
-      console.error(
-        'EDIT LISTING IMAGE UPLOAD ERROR:',
-        uploadError
-      )
-
-      return NextResponse.json(
-        {
-          success: false,
-          error:
-            'The listing image could not be uploaded.'
-        },
-        {
-          status: 500
-        }
-      )
+      return NextResponse.json(attachmentUnconfirmed(operationId!, uploadedStoragePath!), { status: 202 })
     }
+    const result = await retryOrdinaryUpload(supabaseAdmin, user.id, operationId!, listing.id)
+    return NextResponse.json(result, { status: result.success ? 200 : result.status === 'ATTACHMENT_UNCONFIRMED' ? 202 : 409 })
 
-    const updatedImages = [
-      ...existingImages,
-      uploadedStoragePath
-    ]
-
-    /*
-     * Attach the Storage path to the listing.
-     * Do not store its public URL.
-     */
-    const {
-      data: updatedListing,
-      error: updateError
-    } =
-      await supabaseAdmin
-        .from(
-          'listings'
-        )
-        .update({
-          images:
-            updatedImages,
-
-          updated_at:
-            new Date()
-              .toISOString()
-        })
-        .eq(
-          'id',
-          listing.id
-        )
-        .eq(
-          'owner_id',
-          user.id
-        )
-        .is(
-          'deleted_at',
-          null
-        )
-        .select(`
-          id,
-          images
-        `)
-        .maybeSingle()
-
-    if (
-      updateError ||
-      !updatedListing
-    ) {
-      await supabaseAdmin
-        .storage
-        .from(
-          BUCKET_NAME
-        )
-        .remove([
-          uploadedStoragePath
-        ])
-
-      uploadedStoragePath =
-        null
-
-      console.error(
-        'EDIT LISTING IMAGE DATABASE ERROR:',
-        updateError
-      )
-
-      return NextResponse.json(
-        {
-          success: false,
-          error:
-            'The listing image could not be attached to the listing.'
-        },
-        {
-          status: 500
-        }
-      )
-    }
-
-    return NextResponse.json({
-      success: true,
-
-      path:
-        uploadedStoragePath,
-
-      images:
-        normalizeStoredImages(
-          updatedListing.images
-        ),
-
-      imageCount:
-        updatedImages.length
-    })
   } catch (error) {
     console.error(
       'UPDATE LISTING IMAGE ROUTE ERROR:',
       error
     )
 
-    /*
-     * Remove an uploaded object if an unexpected
-     * failure occurs before successful completion.
-     */
-    if (uploadedStoragePath) {
-      await supabaseAdmin
-        .storage
-        .from(
-          BUCKET_NAME
-        )
-        .remove([
-          uploadedStoragePath
-        ])
+    if (operationId) {
+      return NextResponse.json(attachmentUnconfirmed(operationId, uploadedStoragePath ?? undefined), { status: 202 })
     }
 
     return NextResponse.json(

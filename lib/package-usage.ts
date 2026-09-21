@@ -276,10 +276,7 @@ async function calculateActiveListingsUsed({
         'listing_status',
         'active'
       )
-      .is(
-        'deleted_at',
-        null
-      )
+
 
   if (error) {
     throw new PackageUsageError(

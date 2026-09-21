@@ -15,6 +15,9 @@ export async function unpublishListing({
   supabase,
   listingId
 }: UnpublishListingOptions) {
+  // S7: no surviving callers; active flows use token publication or manageListing.
+  rejectRetiredWriter()
+
   if (!listingId) {
     throw new Error(
       'A listing ID is required.'
@@ -50,4 +53,9 @@ export async function unpublishListing({
   })
 
   return listing
+}
+
+// Explicit void keeps the retained legacy body type-checkable; execution always stops.
+function rejectRetiredWriter(): void {
+  throw new Error('This legacy direct writer is retired. Use the current listing workflow.')
 }

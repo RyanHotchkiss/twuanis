@@ -193,7 +193,6 @@ function resolveOntologyDimensionValue({
   dimension:
     Exclude<
       PriceMeterComparableDimension,
-      'year_built' |
       'construction_land'
     >
 }): PriceMeterComparablePresentationText | null {
@@ -243,28 +242,6 @@ function resolveDimensionValue({
   dimension:
     PriceMeterComparableDimension
 }): PriceMeterComparablePresentationText | null {
-
-  if (
-    dimension ===
-      'year_built'
-  ) {
-    if (
-      subject.yearBuiltCohort ===
-        null
-    ) {
-      return null
-    }
-
-
-    return {
-      en:
-        subject.yearBuiltCohort.labelEn,
-
-      es:
-        subject.yearBuiltCohort.labelEs
-    }
-  }
-
 
   if (
     dimension ===

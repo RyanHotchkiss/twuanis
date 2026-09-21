@@ -1,3 +1,5 @@
+import 'server-only'
+import { consumePriceMeterComparisonPermit, type PriceMeterComparisonPermit } from '@/lib/price-meter-comparison-permit'
 import {
   getCurrentAnalyticalDate
 } from '@/lib/analysis-date'
@@ -27,14 +29,6 @@ import {
 } from '@/lib/price-meter-analytical-cohort'
 
 import {
-  loadCanonicalGeographyTerms
-} from '@/lib/geography/resolve-listing-geography'
-
-import {
-  resolveCanonicalGeography
-} from '@/lib/geography/canonical-geography'
-
-import {
   loadPriceMeterComparisonCandidates
 } from '@/lib/price-meter-comparison-candidate-loader'
 
@@ -50,28 +44,28 @@ import type {
   PriceMeterComparisonRequest
 } from '@/lib/price-meter-comparison-request'
 
-import type {
-  PriceMeterConfidenceLanguage
-} from '@/lib/price-meter-confidence'
 
-import { supabase } from '@/lib/supabase'
+
 
 
 export async function getPriceMeterComparisonAnalysis({
   request,
-  language = 'en'
+  language = 'en',
+  permit
 }: {
   request:
     PriceMeterComparisonRequest
 
   language?:
-    PriceMeterConfidenceLanguage
+    'en' | 'es'
+  permit?: PriceMeterComparisonPermit
 }) {
+  consumePriceMeterComparisonPermit(permit, request, language)
   validatePriceMeterComparisonRequest(
     request
   )
 
-  const candidates =
+  const { listings: candidates, memberships } =
     await loadPriceMeterComparisonCandidates(
       request
     )
@@ -133,29 +127,8 @@ export async function getPriceMeterComparisonAnalysis({
     }
   }
 
-  const canonicalGeographyTerms =
-    await loadCanonicalGeographyTerms(
-      supabase
-    )
-
-  const analyticallyDecoratedCandidates =
-    candidates.map(
-      listing => {
-        const canonicalGeography =
-          resolveCanonicalGeography({
-            province:
-              listing.province,
-
-            canton:
-              listing.canton,
-
-            district:
-              listing.district,
-
-            terms:
-              canonicalGeographyTerms
-          })
-
+  const analyticallyDecoratedCandidates = candidates.map(listing => {
+        if (!listing.canonicalGeography) throw new Error('Missing canonical comparison geography.')
         const analyticalIdentity =
           resolvePriceMeterAnalyticalIdentity(
             listing,
@@ -167,7 +140,7 @@ export async function getPriceMeterComparisonAnalysis({
 
         return {
           ...listing,
-          canonicalGeography,
+          canonicalGeography: listing.canonicalGeography,
           analyticalIdentity
         }
       }
@@ -202,6 +175,7 @@ export async function getPriceMeterComparisonAnalysis({
   const comparison =
     await buildPriceMeterComparison({
       analyticalCohort,
+      memberships,
 
       cohortA:
         request.cohortA,

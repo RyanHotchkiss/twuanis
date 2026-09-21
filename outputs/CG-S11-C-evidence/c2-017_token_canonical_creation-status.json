@@ -1,0 +1,8 @@
+{
+  "source": "supabase/migrations/017_token_canonical_creation.sql",
+  "sha256": "f13d1abb7678dafd23a67583f2c381475b4a4574822809b54d4ae646e61470c8",
+  "start": "2026-09-19T16:07:18.329450+00:00",
+  "end": "2026-09-19T16:07:20.521301+00:00",
+  "exit_code": 0,
+  "commit_output": true
+}

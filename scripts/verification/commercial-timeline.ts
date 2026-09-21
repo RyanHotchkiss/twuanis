@@ -1,5 +1,4 @@
 import {
-  createClient,
   type SupabaseClient
 } from '@supabase/supabase-js'
 
@@ -7,56 +6,11 @@ import {
   resolveCommercialTimeline
 } from '@/lib/commercial-timeline'
 
-import {
-  loadEnvConfig
-} from '@next/env'
+import { disposableTimelineContext } from './timeline-disposable-authority'
 
-loadEnvConfig(
-  process.cwd()
-)
-
-const TEST_SUITE =
-  'commercial-timeline-verification'
-
-const TEST_USER_ID =
-  'd81064bc-1b4a-478f-8f6a-b263c4779bc1'
-
-
-function createAdminClient():
-  SupabaseClient {
-
-  const supabaseUrl =
-    process.env.NEXT_PUBLIC_SUPABASE_URL
-
-  const serviceRoleKey =
-    process.env.SUPABASE_SERVICE_ROLE_KEY
-
-
-  if (
-    !supabaseUrl ||
-    !serviceRoleKey
-  ) {
-
-    throw new Error(
-      'Missing Supabase environment variables.'
-    )
-  }
-
-
-  return createClient(
-    supabaseUrl,
-    serviceRoleKey,
-    {
-      auth: {
-        persistSession:
-          false,
-
-        autoRefreshToken:
-          false
-      }
-    }
-  )
-}
+const TEST_SUITE = 'commercial-timeline-verification'
+const TEST_USER_ID = disposableTimelineContext().userId
+function createAdminClient(): SupabaseClient { return disposableTimelineContext().client }
 
 
 function assert(
@@ -1695,4 +1649,4 @@ async function run() {
 }
 
 
-void run()
+export const verification = run()

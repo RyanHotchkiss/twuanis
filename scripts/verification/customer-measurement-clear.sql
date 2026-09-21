@@ -1,0 +1,41 @@
+\set ON_ERROR_STOP on
+BEGIN;
+DO $$ BEGIN IF current_database()<>'cg_s7_measurement_clear' OR inet_server_addr() IS NOT NULL THEN RAISE EXCEPTION 'disposable only';END IF;END $$;
+CREATE TEMP TABLE checks(label text PRIMARY KEY);
+CREATE FUNCTION pg_temp.ok(v boolean,label text) RETURNS void LANGUAGE plpgsql AS $$ BEGIN IF v IS NOT TRUE THEN RAISE EXCEPTION 'FAIL %',label;END IF;INSERT INTO checks VALUES(label);END $$;
+CREATE FUNCTION pg_temp.reject(q text,label text) RETURNS void LANGUAGE plpgsql AS $$ DECLARE rejected boolean:=false;BEGIN BEGIN EXECUTE q;EXCEPTION WHEN OTHERS THEN rejected:=true;END;PERFORM pg_temp.ok(rejected,label);END $$;
+INSERT INTO auth.users(id) VALUES('07000000-0000-0000-0000-000000001601');
+SELECT set_config('request.jwt.claim.sub','07000000-0000-0000-0000-000000001601',true);
+SELECT public.create_customer_canonical_listing(gen_random_uuid(),'{"transaction":"sale","geography":{"province":"3","canton":"304"},"semantics":{"property_type":["1"]},"measurements":{"property_area":{"value":"850"},"construction_area":{"value":"70"}},"money":{"amount":"0.5","currency":"USD"}}')->>'listing_id' AS lid \gset
+SELECT twuanis_canonical_private.s3_command(:'lid',1,'owner','07000000-0000-0000-0000-000000001601',gen_random_uuid(),'{"measurements":{"property_area":{"value":"850","rule_set":"80000000-0000-0000-0000-000000000001"}}}',NULL);
+CREATE TEMP TABLE old_receipts AS SELECT id,to_jsonb(r) value FROM canonical_operation_receipts r WHERE listing_id=:'lid';
+CREATE TEMP TABLE old_geo AS SELECT ontology_term_id FROM listing_membership_origins WHERE listing_id=:'lid' AND origin_domain='geography';
+CREATE TEMP TABLE old_history AS SELECT to_jsonb(e) value FROM listing_monetary_events e WHERE listing_id=:'lid';
+SELECT public.mutate_customer_canonical_listing(:'lid',2,'07000000-0000-0000-0000-000000001602','{"measurements":{"property_area":{"kind":"clear"}}}');
+SELECT pg_temp.ok((SELECT property_area IS NULL AND construction_area=70 AND canonical_revision=3 FROM listings WHERE id=:'lid'),'explicit clear removes only requested measurement');
+SELECT pg_temp.ok(NOT EXISTS(SELECT 1 FROM listing_membership_origins WHERE listing_id=:'lid' AND origin_domain='property_area'),'dependent current origins removed');
+SELECT pg_temp.ok(NOT EXISTS(SELECT 1 FROM listings_ontology_terms WHERE listing_id=:'lid' AND ontology_term_id=8),'obsolete current band removed');
+SELECT pg_temp.ok(NOT EXISTS((SELECT ontology_term_id FROM old_geo) EXCEPT SELECT ontology_term_id FROM listing_membership_origins WHERE listing_id=:'lid' AND origin_domain='geography'),'other-domain origins retained');
+SELECT pg_temp.ok(NOT EXISTS(SELECT 1 FROM old_receipts old JOIN canonical_operation_receipts r USING(id) WHERE to_jsonb(r)<>old.value),'historical receipts unchanged');
+SELECT pg_temp.ok(NOT EXISTS((SELECT to_jsonb(e) FROM listing_monetary_events e WHERE listing_id=:'lid') EXCEPT SELECT value FROM old_history),'no invented monetary history');
+SELECT public.mutate_customer_canonical_listing(:'lid',3,gen_random_uuid(),'{}');
+SELECT pg_temp.ok((SELECT construction_area=70 AND canonical_revision=3 FROM listings WHERE id=:'lid'),'omission unchanged');
+SELECT pg_temp.ok((public.mutate_customer_canonical_listing(:'lid',2,'07000000-0000-0000-0000-000000001602','{"measurements":{"property_area":{"kind":"clear"}}}')->>'replayed')::boolean,'clear retry replays');
+SELECT pg_temp.ok(public.mutate_customer_canonical_listing(:'lid',3,gen_random_uuid(),'{"measurements":{"property_area":{"kind":"clear"}}}')->>'outcome'='noop','clear absent measurement no-op');
+SELECT public.edit_customer_canonical_listing(:'lid',3,gen_random_uuid(),'{"measurements":{"construction_area":{"kind":"clear"}},"money":{"amount":"1","currency":"USD"}}','{"title":"explicit clear"}');
+SELECT pg_temp.ok((SELECT construction_area IS NULL AND current_price=1 AND title='explicit clear' AND canonical_revision=4 FROM listings WHERE id=:'lid'),'clear composes atomically with money and content');
+SELECT public.mutate_customer_canonical_listing(:'lid',4,gen_random_uuid(),'{"measurements":{"property_area":{"value":"50"}}}');
+SELECT pg_temp.ok((SELECT property_area=50 AND canonical_revision=5 FROM listings WHERE id=:'lid'),'new valid set after clear');
+SELECT pg_temp.ok(NOT EXISTS(SELECT 1 FROM listing_membership_origins WHERE listing_id=:'lid' AND origin_domain='property_area'),'history does not invent default rule after clear');
+SELECT public.mutate_customer_canonical_listing(:'lid',2,'07000000-0000-0000-0000-000000001602','{"measurements":{"property_area":{"kind":"clear"}}}');
+SELECT pg_temp.ok((SELECT property_area=50 AND canonical_revision=5 FROM listings WHERE id=:'lid'),'old clear replay cannot erase later set');
+SELECT public.mutate_customer_canonical_listing(:'lid',5,gen_random_uuid(),'{"semantics":{"property_type":["2"]}}');
+SELECT pg_temp.ok((SELECT property_area=50 AND canonical_revision=6 FROM listings WHERE id=:'lid'),'property type change retains measurement');
+SELECT set_config('s7.test_listing',:'lid',true);
+DO $$ DECLARE v jsonb; BEGIN FOR v IN SELECT value FROM jsonb_array_elements('[null,"",{},0,{"value":""},{"value":"0"},{"value":"NaN"},{"kind":"clear","value":"1"},{"kind":"clear","rule_set":"spoof"}]'::jsonb) LOOP
+ PERFORM pg_temp.reject(format('SELECT public.mutate_customer_canonical_listing(%L,6,gen_random_uuid(),%L)',current_setting('s7.test_listing'),jsonb_build_object('measurements',jsonb_build_object('property_area',v))::text),'invalid input never means clear: '||v::text);
+ END LOOP;END $$;
+SELECT pg_temp.ok((SELECT property_area=50 AND canonical_revision=6 FROM listings WHERE id=:'lid'),'rejections preserve evidence/revision');
+SELECT pg_temp.reject($q$SELECT twuanis_canonical_private.s4_domains('{"measurements":{"property_area":{"kind":"clear"}}}','source')$q$,'trusted-source clear not silently enabled');
+SELECT count(*) assertions FROM checks;
+ROLLBACK;

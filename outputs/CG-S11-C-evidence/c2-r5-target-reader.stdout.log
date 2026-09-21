@@ -1,0 +1,9 @@
+BEGIN
+SET
+id,source_term_id,target_term_id,relationship_type,confidence,notes,created_at
+id,parent_id,term_name,term_type,slug,description,created_at,level,official_code,term_name_en,term_name_es,slug_en,slug_es
+id,title,province,canton,district,property_type,property_area,construction_area,bedrooms,bathrooms,parking,year_built_range,environment,terrain,utility,accessibility,legal_status,price_millions,monthly_price,current_price,canonical_domain_version,currency,transaction_type,images
+RESET
+count,digest
+4690,2b4f30664b5b21eef85e1f804b92d7f3
+ROLLBACK

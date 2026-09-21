@@ -1,3 +1,4 @@
+import type { CanonicalEvidence } from '@/lib/canonical-listing-reader'
 
 import { supabase } from '@/lib/supabase'
 
@@ -39,15 +40,17 @@ export type EntityType =
 
 export async function getEntity(
   entityType: EntityType,
-  slug: string
+  slug: string,
+  existingEvidence?: ReadonlyMap<string,CanonicalEvidence>
 ) {
   const cleanSlug = decodeURIComponent(slug)
 
-  const { data: entity, error: entityError } = await supabase
-    .from('ontology_terms')
-    .select('*')
-    .eq('term_type', entityType)
-    .or(`slug.eq.${cleanSlug},slug_en.eq.${cleanSlug},slug_es.eq.${cleanSlug}`)
+  const entityQuery = supabase.from('ontology_terms')
+    .select('*,id::text,parent_id::text').eq('term_type',entityType)
+  const geographicCode = ['province','canton','district'].includes(entityType) && /^\d+$/.test(cleanSlug)
+  const { data: entity, error: entityError } = await (geographicCode
+    ? entityQuery.eq('official_code',cleanSlug)
+    : entityQuery.or(`slug.eq.${cleanSlug},slug_en.eq.${cleanSlug},slug_es.eq.${cleanSlug}`))
     .maybeSingle()
 
   if (entityError) {
@@ -106,7 +109,7 @@ export async function getEntity(
   ) {
     const listingData =
       await getPublicListingsByIds(
-        listingIds
+        listingIds, existingEvidence
       )
 
     const analyticalContext =

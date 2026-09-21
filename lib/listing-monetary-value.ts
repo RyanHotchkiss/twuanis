@@ -50,6 +50,7 @@ import {
 
 
 export type ListingMonetaryInput = {
+  canonical_domain_version?: number | null
   transaction_type?:
     string | null
 
@@ -186,6 +187,16 @@ export function resolveListingOriginalMonetaryValue(
   listing:
     ListingMonetaryInput
 ): ListingOriginalMonetaryValue | null {
+
+  // Canonical evidence never falls back to legacy amounts or aliases.
+  if (listing.canonical_domain_version === 1) {
+    if (listing.currency !== 'CRC' && listing.currency !== 'USD') return null
+    const amount = listing.transaction_type === 'sale'
+      ? parsePositiveAmount(listing.current_price)
+      : listing.transaction_type === 'rent'
+        ? parsePositiveAmount(listing.monthly_price) : null
+    return amount === null ? null : { amount, currency: listing.currency }
+  }
 
   const transactionType =
     String(

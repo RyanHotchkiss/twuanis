@@ -1,248 +1,86 @@
-import { supabase } from '@/lib/supabase'
+import 'server-only'
+import { supabaseAdmin } from '@/lib/supabase-admin'
+import { hydrateCanonicalPopulation } from '@/lib/canonical-population'
+import type { PriceMeterComparisonRequest } from '@/lib/price-meter-comparison-request'
+import type { PriceMeterOntologyMembership } from '@/lib/price-meter-ontology-membership'
 
-import type {
-  PriceMeterComparisonRequest
-} from '@/lib/price-meter-comparison-request'
-
-
-type PriceMeterComparisonCandidateListing = {
-  id: string
-  title: string | null
-  images: unknown
-  transaction_type: string | null
-  currency: string | null
-  monthly_price: number | null
-  property_area: number | null
-  construction_area: number | null
-  province: string | null
-  canton: string | null
-  district: string | null
-  property_type: string | null
-  bedrooms: string | null
-  bathrooms: string | null
-  parking: string | null
-  price_millions: number | null
-  current_price: number | null
-  created_at: string | null
+// Same completeness contract as the shared population reader: a short page is not EOF.
+async function complete<T>(page: (from: number, to: number) => PromiseLike<{data: unknown[] | null; error: unknown; count: number | null}>): Promise<T[]> {
+  const result: T[] = []
+  let expected: number | null = null
+  do {
+    const {data, error, count} = await page(result.length, result.length + 499)
+    if (error) throw error
+    if (count === null || !Number.isSafeInteger(count) || count < 0 || (expected !== null && count !== expected)) throw new Error('Incomplete comparison population evidence.')
+    expected = count
+    const rows = data ?? []
+    if (result.length + rows.length > count || (!rows.length && result.length < count)) throw new Error('Incomplete comparison population page.')
+    result.push(...rows as T[])
+  } while (result.length < expected)
+  return result
 }
-
-
-function intersectListingIdSets(
-  sets: Set<string>[]
-): string[] {
-  if (!sets.length) {
-    return []
+function chunks(ids: string[]) {
+  const result: string[][] = []
+  let chunk: string[] = [], size = 0
+  for (const id of new Set(ids)) {
+    const length = encodeURIComponent(JSON.stringify(id)).length + 3
+    if (length > 1500) throw new Error('Comparison identity exceeds request budget.')
+    if (chunk.length && (chunk.length >= 25 || size + length > 1500)) {result.push(chunk); chunk = []; size = 0}
+    chunk.push(id); size += length
   }
-
-  const [
-    first,
-    ...rest
-  ] = sets
-
-  return Array.from(first).filter(
-    listingId =>
-      rest.every(
-        set =>
-          set.has(listingId)
-      )
-  )
+  if (chunk.length) result.push(chunk)
+  return result
 }
+function termId(value: number) {
+  if (!Number.isSafeInteger(value) || value <= 0) throw new Error('Invalid or lossy comparison term identity.')
+  return String(value)
+}
+type Assignment = {listing_id: string; ontology_term_id: string}
 
-
-async function loadCohortCandidateListingIds(
-  request:
-    PriceMeterComparisonRequest,
-
-  side:
-    'A' | 'B'
-): Promise<string[]> {
-  const cohort =
-    side === 'A'
-      ? request.cohortA
-      : request.cohortB
-
-  const requiredOntologyTermIds = [
-    cohort.propertyType.ontologyTermId,
-    ...cohort.characteristics.map(
-      characteristic =>
-        characteristic.ontologyTermId
-    )
-  ]
-
-  const {
-    data,
-    error
-  } = await supabase
-    .from('listings_ontology_terms')
-    .select(`
-      listing_id,
-      ontology_term_id
-    `)
-    .in(
-      'ontology_term_id',
-      requiredOntologyTermIds
-    )
-
-  if (error) {
-    throw error
-  }
-
-  const listingIdsByTerm =
-    new Map<
-      number,
-      Set<string>
-    >()
-
-  for (
-    const ontologyTermId
-    of requiredOntologyTermIds
-  ) {
-    listingIdsByTerm.set(
-      ontologyTermId,
-      new Set<string>()
-    )
-  }
-
-  for (
-    const row
-    of data || []
-  ) {
-    const listingIds =
-      listingIdsByTerm.get(
-        row.ontology_term_id
-      )
-
-    if (!listingIds) {
-      continue
+export async function loadPriceMeterComparisonCandidates(request: PriceMeterComparisonRequest) {
+  const evidence = new Map<string, Set<string>>()
+  const query = () => supabaseAdmin.from('listings_ontology_terms')
+    .select('listing_id,ontology_term_id::text,listings!inner(canonical_domain_version)', {count:'exact'})
+    .eq('listings.canonical_domain_version', 1)
+  const record = (rows: Assignment[]) => {
+    for (const row of rows) {
+      const terms = evidence.get(row.listing_id) ?? new Set<string>()
+      terms.add(row.ontology_term_id); evidence.set(row.listing_id, terms)
     }
-
-    listingIds.add(
-      row.listing_id
-    )
+    return [...new Set(rows.map(row => row.listing_id))]
   }
-
-  const ontologyIntersection =
-    intersectListingIdSets(
-      Array.from(
-        listingIdsByTerm.values()
-      )
-    )
-
-  if (!ontologyIntersection.length) {
-    return []
+  const cohorts = [request.cohortA, request.cohortB]
+  const requirements = cohorts.map(cohort => ({
+    geography: termId(cohort.geography.id),
+    terms: [cohort.propertyType, ...cohort.characteristics].map(t => termId(t.ontologyTermId))
+  }))
+  const geographyCandidates = new Map<string, string[]>()
+  for (const geography of new Set(requirements.map(r => r.geography))) {
+    geographyCandidates.set(geography, record(await complete<Assignment>((from,to) => query()
+      .eq('ontology_term_id', geography).order('listing_id').order('ontology_term_id').range(from,to))))
   }
-
-  const geographyTermId =
-    cohort.geography.id
-
-  const {
-    data: geographyRows,
-    error: geographyError
-  } = await supabase
-    .from('listings_ontology_terms')
-    .select('listing_id')
-    .eq(
-      'ontology_term_id',
-      geographyTermId
-    )
-    .in(
-      'listing_id',
-      ontologyIntersection
-    )
-
-  if (geographyError) {
-    throw geographyError
+  // One bounded union serves both definitions. Each requested semantic membership
+  // is acquired once, even when A and B partially overlap or use the same geography.
+  const candidates = [...new Set([...geographyCandidates.values()].flat())].sort()
+  const requiredTerms = [...new Set(requirements.flatMap(r => r.terms))]
+  for (const chunk of chunks(candidates)) {
+    record(await complete<Assignment>((from,to) => query().in('ontology_term_id', requiredTerms)
+      .in('listing_id',chunk).order('listing_id').order('ontology_term_id').range(from,to)))
   }
-
-  const geographyListingIds =
-    new Set(
-      (geographyRows || []).map(
-        row =>
-          row.listing_id
-      )
-    )
-
-  return ontologyIntersection.filter(
-    listingId =>
-      geographyListingIds.has(
-        listingId
-      )
-  )
-}
-
-
-export async function loadPriceMeterComparisonCandidates(
-  request:
-    PriceMeterComparisonRequest
-): Promise<
-  PriceMeterComparisonCandidateListing[]
-> {
-  const [
-    cohortAListingIds,
-    cohortBListingIds
-  ] = await Promise.all([
-    loadCohortCandidateListingIds(
-      request,
-      'A'
-    ),
-
-    loadCohortCandidateListingIds(
-      request,
-      'B'
-    )
-  ])
-
-  const candidateListingIds =
-    Array.from(
-      new Set([
-        ...cohortAListingIds,
-        ...cohortBListingIds
-      ])
-    )
-
-  if (!candidateListingIds.length) {
-    return []
-  }
-
-  const {
-    data,
-    error
-  } = await supabase
-    .from('listings')
-    .select(`
-      id,
-      title,
-      images,
-      transaction_type,
-      currency,
-      monthly_price,
-      property_area,
-      construction_area,
-      province,
-      canton,
-      district,
-      property_type,
-      bedrooms,
-      bathrooms,
-      parking,
-      price_millions,
-      current_price,
-      created_at
-    `)
-    .in(
-      'id',
-      candidateListingIds
-    )
-    .eq(
-      'listing_status',
-      'active'
-    )
-
-  if (error) {
-    throw error
-  }
-
-  return (
-    data || []
-  ) as PriceMeterComparisonCandidateListing[]
+  const ids = [...new Set(requirements.flatMap(r =>
+    geographyCandidates.get(r.geography)!.filter(id => r.terms.every(term => evidence.get(id)?.has(term)))))].sort()
+  const rows: any[] = []
+  for (const chunk of chunks(ids)) rows.push(...await complete<any>((from,to) => supabaseAdmin.from('listings')
+    .select('id,title,images,canonical_domain_version,transaction_type,currency,monthly_price,current_price,price_millions,property_area,construction_area,created_at', {count:'exact'})
+    .eq('canonical_domain_version',1).eq('listing_status','active').eq('transaction_type',request.transactionType)
+    .in('id',chunk).order('id').range(from,to)))
+  if (new Set(rows.map(row=>row.id)).size !== rows.length) throw new Error('Duplicate comparison listing evidence.')
+  const listings = await hydrateCanonicalPopulation(rows, undefined, [])
+  const definitions = new Map([request.cohortA, request.cohortB].flatMap(cohort =>
+    [cohort.propertyType,...cohort.characteristics].map(term => [String(term.ontologyTermId),term] as const)))
+  const memberships: PriceMeterOntologyMembership[] = listings.map(listing => {
+    const characteristics = [...(evidence.get(listing.id) ?? [])].flatMap(id => definitions.has(id) ? [definitions.get(id)!] : [])
+    return {listingId:listing.id, characteristics, ontologyTermIds:characteristics.map(term=>term.ontologyTermId)}
+  })
+  return {listings, memberships}
 }

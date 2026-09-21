@@ -1,3 +1,4 @@
+import { executeCustomerPublication } from '@/lib/customer-publication-writer'
 import {
   NextRequest,
   NextResponse
@@ -26,6 +27,7 @@ type ListingRow = {
   owner_id: string | null
   title: string | null
   transaction_type: string | null
+  canonical_domain_version: number | null
   listing_status: string | null
   published_at: string | null
   renewed_at: string | null
@@ -153,6 +155,7 @@ export async function POST(
           owner_id,
           title,
           transaction_type,
+          canonical_domain_version,
           listing_status,
           published_at,
           renewed_at,
@@ -221,247 +224,11 @@ export async function POST(
     /*
      * Renewal is valid only from active or expired.
      */
-    if (
-      listing.listing_status !==
-        'active' &&
-      listing.listing_status !==
-        'expired'
-    ) {
-      return NextResponse.json(
-        {
-          success: false,
-          error:
-            'Only active or expired listings can be renewed.'
-        },
-        {
-          status: 409
-        }
-      )
+    if (listing.canonical_domain_version === 1) {
+      const result = await executeCustomerPublication(authenticatedSupabase, listing.id, 'renew', requestBody)
+      return NextResponse.json({ success: true, listing: { id: listing.id }, canonicalResult: result })
     }
-
-    const previousStatus =
-      listing.listing_status
-
-    /*
-     * Expired → Active consumes an active-listing slot.
-     *
-     * Active → Active does not create another active
-     * listing, so no package-capacity check is needed.
-     */
-    if (
-      previousStatus ===
-      'expired'
-    ) {
-      let packageUsage
-
-      try {
-        packageUsage =
-          await resolveUserPackageUsage({
-            supabase:
-              supabaseAdmin,
-
-            userId:
-              user.id
-          })
-      } catch (usageError) {
-        console.error(
-          'RENEW LISTING PACKAGE USAGE ERROR:',
-          usageError
-        )
-
-        return NextResponse.json(
-          {
-            success: false,
-            error:
-              'Your package allowance could not be verified.'
-          },
-          {
-            status: 500
-          }
-        )
-      }
-
-      if (
-        packageUsage.listingLimit !==
-          null &&
-        packageUsage.listingsUsed >=
-          packageUsage.listingLimit
-      ) {
-        return NextResponse.json(
-          {
-            success: false,
-
-            code:
-              'LISTING_LIMIT_EXCEEDED',
-
-            error:
-              `Your package allows ${packageUsage.listingLimit} active ${
-                packageUsage.listingLimit === 1
-                  ? 'listing'
-                  : 'listings'
-              }. Archive an existing listing or upgrade your package before renewing this listing.`
-          },
-          {
-            status: 403
-          }
-        )
-      }
-    }
-
-    /*
-     * Renew the listing canonically.
-     *
-     * created_at is deliberately untouched.
-     */
-    const renewedAt =
-      new Date().toISOString()
-
-    const {
-      data: renewedListing,
-      error: renewError
-    } =
-      await supabaseAdmin
-        .from(
-          'listings'
-        )
-        .update({
-          listing_status:
-            'active',
-
-          published_at:
-            renewedAt,
-
-          renewed_at:
-            renewedAt,
-
-          updated_at:
-            renewedAt,
-
-          expired_at:
-            null
-        })
-        .eq(
-          'id',
-          listing.id
-        )
-        .eq(
-          'owner_id',
-          user.id
-        )
-        .eq(
-          'listing_status',
-          previousStatus
-        )
-        .select(`
-          id,
-          title,
-          listing_status,
-          transaction_type,
-          created_at,
-          published_at,
-          renewed_at,
-          updated_at,
-          expired_at
-        `)
-        .maybeSingle()
-
-    if (
-      renewError ||
-      !renewedListing
-    ) {
-      console.error(
-        'RENEW LISTING UPDATE ERROR:',
-        renewError
-      )
-
-      return NextResponse.json(
-        {
-          success: false,
-          error:
-            'The listing could not be renewed.'
-        },
-        {
-          status: 500
-        }
-      )
-    }
-
-    /*
-     * Record the canonical renewal event.
-     *
-     * Activity failure must not invalidate a successful
-     * listing renewal.
-     */
-    try {
-      const {
-        error: activityError
-      } =
-        await supabaseAdmin
-          .from(
-            'activity_events'
-          )
-          .insert({
-            user_id:
-              user.id,
-
-            event_category:
-              'listing',
-
-            event_type:
-              'listing_renewed',
-
-            entity_type:
-              'listing',
-
-            entity_id:
-              renewedListing.id,
-
-            metadata: {
-              title:
-                renewedListing.title,
-
-              transactionType:
-                renewedListing
-                  .transaction_type,
-
-              previousStatus,
-
-              listingStatus:
-                renewedListing
-                  .listing_status,
-
-              publishedAt:
-                renewedListing
-                  .published_at,
-
-              renewedAt:
-                renewedListing
-                  .renewed_at,
-
-              source:
-                'market-hub'
-            }
-          })
-
-      if (activityError) {
-        console.error(
-          'RENEW LISTING ACTIVITY ERROR:',
-          activityError
-        )
-      }
-    } catch (activityError) {
-      console.error(
-        'RENEW LISTING ACTIVITY ERROR:',
-        activityError
-      )
-    }
-
-    return NextResponse.json({
-      success: true,
-
-      listing:
-        renewedListing
-    })
+    return NextResponse.json({ success: false, error: 'Legacy listing mutation has been retired. A canonical listing is required.' }, { status: 409 })
   } catch (error) {
     console.error(
       'RENEW LISTING ROUTE ERROR:',

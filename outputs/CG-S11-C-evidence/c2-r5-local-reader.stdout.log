@@ -1,0 +1,15 @@
+BEGIN
+SET
+ source_term_id | target_term_id | relationship_type 
+----------------+----------------+-------------------
+(0 rows)
+
+ id | term_type | level | parent_id | term_name | official_code 
+----+-----------+-------+-----------+-----------+---------------
+(0 rows)
+
+ id | title | province | canton | district | property_type | property_area | construction_area | bedrooms | bathrooms | parking | year_built_range | environment | terrain | utility | accessibility | legal_status | price_millions | monthly_price | current_price | canonical_domain_version | currency | transaction_type | images 
+----+-------+----------+--------+----------+---------------+---------------+-------------------+----------+-----------+---------+------------------+-------------+---------+---------+---------------+--------------+----------------+---------------+---------------+--------------------------+----------+------------------+--------
+(0 rows)
+
+ROLLBACK

@@ -1,3 +1,5 @@
+import { calculatePropertyPositionTail } from './price-meter-property-position-math'
+import { assertPriceMeterPropertyPositionParticipation } from './price-meter-property-position-population'
 import type { PriceMeterDistribution } from './price-meter-distribution'
 import type { PriceMeterPropertyPositionPopulation } from './price-meter-property-position-population'
 import type { PriceMeterPropertyPositionPercentile } from './price-meter-property-position-percentile'
@@ -72,6 +74,7 @@ export function buildPriceMeterPropertyPositionTail({
   percentile: PriceMeterPropertyPositionPercentile
   interval: PriceMeterPropertyPositionIntervalResult
 }): PriceMeterPropertyPositionTailResult | null {
+  assertPriceMeterPropertyPositionParticipation(population)
   const propertyPricePerM2 = population.subject.propertyPricePerM2
   const comparisonPopulationCount = population.comparisonPopulationCount
 
@@ -146,56 +149,8 @@ export function buildPriceMeterPropertyPositionTail({
     )
   }
 
-  const thresholdPercentile: 10 | 90 =
-    interval.interval === 'below_p10' ? 10 : 90
-
-  const thresholdPricePerM2 =
-    thresholdPercentile === 10
-      ? distribution.p10
-      : distribution.p90
-
-  if (
-    thresholdPricePerM2 === null ||
-    !Number.isFinite(thresholdPricePerM2) ||
-    thresholdPricePerM2 <= 0
-  ) {
-    throw new Error(
-      'Cannot calculate property Price / m² tail position without a valid canonical tail threshold.',
-    )
-  }
-
-  if (
-    interval.interval === 'below_p10' &&
-    propertyPricePerM2 >= thresholdPricePerM2
-  ) {
-    throw new Error(
-      'Property Price / m² tail identity conflicts with the canonical P10 threshold.',
-    )
-  }
-
-  if (
-    interval.interval === 'above_p90' &&
-    propertyPricePerM2 <= thresholdPricePerM2
-  ) {
-    throw new Error(
-      'Property Price / m² tail identity conflicts with the canonical P90 threshold.',
-    )
-  }
-
-  const differenceFromThreshold =
-    propertyPricePerM2 - thresholdPricePerM2
-
-  const percentDifferenceFromThreshold =
-    (differenceFromThreshold / thresholdPricePerM2) * 100
-
-  if (
-    !Number.isFinite(differenceFromThreshold) ||
-    !Number.isFinite(percentDifferenceFromThreshold)
-  ) {
-    throw new Error(
-      'Property Price / m² tail calculation produced an invalid result.',
-    )
-  }
+  const tail = calculatePropertyPositionTail(propertyPricePerM2, distribution, interval.interval)
+  if (tail === null) throw new Error('Property position tail interval requires tail evidence.')
 
   return {
     listingId: population.subject.listingId,
@@ -205,15 +160,6 @@ export function buildPriceMeterPropertyPositionTail({
     percentilePosition: percentile.percentilePosition,
 
     tail: interval.interval,
-    thresholdPercentile,
-    thresholdPricePerM2,
-
-    differenceFromThreshold,
-    percentDifferenceFromThreshold,
-
-    percentageReference:
-      thresholdPercentile === 10
-        ? 'selected_population_p10'
-        : 'selected_population_p90',
+    ...tail,
   }
 }

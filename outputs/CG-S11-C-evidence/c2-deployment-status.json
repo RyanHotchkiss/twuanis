@@ -1,0 +1,16 @@
+{
+  "recorded_at": "2026-09-19T16:24:37.329043+00:00",
+  "deployment_id": "dpl_4WJJp6a9sd9h1HusqyRwwGm2rNJH",
+  "url": "twuanis-0-jgubn4oi8-ryans-projects-71456f46.vercel.app",
+  "target": "production",
+  "created_at": "2026-09-19T16:21:45.051000+00:00",
+  "ready_state": "BLOCKED",
+  "dashboard_reason": "This deployment couldn\u2019t be built because the project was paused.",
+  "cli_wait_interrupted": true,
+  "cli_wait_exit_code": 130,
+  "successful_build": false,
+  "authority_closure_executed": false,
+  "stop_point_2": "ACCEPTED",
+  "stop_point_3": "NOT ACCEPTED",
+  "disposable_postgresql": "STOPPED"
+}

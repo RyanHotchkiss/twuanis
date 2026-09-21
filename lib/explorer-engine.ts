@@ -64,7 +64,10 @@ export async function exploreMarket(filters: ExplorerFilters) {
   const entityData = primaryEntity
     ? await getEntity(
         primaryEntity.entityType,
-        primaryEntity.slug
+        primaryEntity.slug,
+        new Map(('listings' in market.data ? market.data.listings : [])
+          .filter((listing:any)=>listing.canonical_domain_version===1 && listing.canonicalEvidence)
+          .map((listing:any)=>[listing.id,listing.canonicalEvidence] as const))
       ).catch(() => null)
     : null
 

@@ -1,0 +1,8 @@
+{
+  "source": "/Users/cassidydaddy/twuanis/outputs/CG-S11-C/ontology-graph-cache-authority-repair.sql",
+  "sha256": "c6527d3ea59c7c2d565ae694175aba49346409cd436fd3a5c97326a3c7d16483",
+  "start": "2026-09-19T17:01:47.934609+00:00",
+  "end": "2026-09-19T17:01:49.051858+00:00",
+  "exit_code": 0,
+  "commit": true
+}

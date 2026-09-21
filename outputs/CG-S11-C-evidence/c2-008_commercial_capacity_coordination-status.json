@@ -1,0 +1,8 @@
+{
+  "source": "supabase/migrations/008_commercial_capacity_coordination.sql",
+  "sha256": "4dfa770194f96f0b659b54deda8c31966dea4fc28353f74321adc31c724ffdc0",
+  "start": "2026-09-19T16:04:54.839480+00:00",
+  "end": "2026-09-19T16:04:56.463115+00:00",
+  "exit_code": 0,
+  "commit_output": true
+}

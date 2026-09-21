@@ -1,0 +1,8 @@
+{
+  "source": "supabase/migrations/012_customer_publication_entitlement.sql",
+  "sha256": "be992016ce03b766bdf2a5a70b8577f4e076174aea12808479bc304c4c29fc21",
+  "start": "2026-09-19T16:06:06.819320+00:00",
+  "end": "2026-09-19T16:06:09.015969+00:00",
+  "exit_code": 0,
+  "commit_output": true
+}

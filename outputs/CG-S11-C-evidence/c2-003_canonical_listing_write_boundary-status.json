@@ -1,0 +1,8 @@
+{
+  "source": "supabase/migrations/003_canonical_listing_write_boundary.sql",
+  "sha256": "6faa62f709971407113b82a0e6339e4501ce0f3fcd19956eb61b1b02f9f5c577",
+  "start": "2026-09-19T15:42:48.684395+00:00",
+  "end": "2026-09-19T15:42:50.893236+00:00",
+  "exit_code": 0,
+  "commit_output": true
+}

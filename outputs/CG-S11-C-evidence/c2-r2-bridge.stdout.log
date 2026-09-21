@@ -1,0 +1,60 @@
+BEGIN
+SET
+SET
+DO
+DO
+DO
+DO
+DROP VIEW
+DROP VIEW
+BEGIN
+SET
+SET
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE FUNCTION
+CREATE TRIGGER
+CREATE TRIGGER
+CREATE TRIGGER
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+CREATE FUNCTION
+DO
+COMMIT
+BEGIN
+SET
+SET
+CREATE VIEW
+ALTER VIEW
+REVOKE
+GRANT
+DO
+CREATE VIEW
+ALTER VIEW
+REVOKE
+GRANT
+DO
+DO
+DO
+ id | title | transaction_type | listing_status | property_type | province | canton | district | price_millions | monthly_price | construction_area | property_area | utility | environment | terrain | accessibility | legal_status | created_at 
+----+-------+------------------+----------------+---------------+----------+--------+----------+----------------+---------------+-------------------+---------------+---------+-------------+---------+---------------+--------------+------------
+(0 rows)
+
+ canton | total_active_listings | sale_listings | rental_listings | avg_sale_price_millions | median_sale_price_millions | avg_monthly_rent | median_monthly_rent | avg_construction_area | avg_property_area | recent_listing_count 
+--------+-----------------------+---------------+-----------------+-------------------------+----------------------------+------------------+---------------------+-----------------------+-------------------+----------------------
+(0 rows)
+
+COMMIT
+        checkpoint        
+--------------------------
+ S11_C2_TWO_VIEW_RESTORED
+(1 row)
+

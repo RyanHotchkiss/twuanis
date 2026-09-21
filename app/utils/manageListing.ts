@@ -1,3 +1,4 @@
+import { changeCustomerListingLifecycle } from './canonicalCustomerLifecycle'
 import {
   type SupabaseClient
 } from '@supabase/supabase-js'
@@ -41,65 +42,12 @@ type DuplicateListingResult = {
   images?: string[] | null
 }
 
-async function updateListingStatus({
-  supabase,
-  listingId,
-  listingStatus
-}: {
-  supabase: SupabaseClient
-  listingId: string
-  listingStatus:
-    | 'draft'
-    | 'archived'
-    | 'deleted'
-}) {
-  const {
-    data,
-    error
-  } = await supabase
-    .from('listings')
-    .update({
-      listing_status:
-        listingStatus
-    })
-    .eq(
-      'id',
-      listingId
-    )
-    .select(`
-      id,
-      title,
-      listing_status,
-      transaction_type
-    `)
-    .single()
-
-  if (error) {
-    throw new Error(
-      error.message
-    )
-  }
-
-  if (!data) {
-    throw new Error(
-      'Listing was not found.'
-    )
-  }
-
-  return data as ListingLifecycleResult
-}
-
 export async function unpublishListing({
   supabase,
   listingId
 }: ListingLifecycleInput) {
   const listing =
-    await updateListingStatus({
-      supabase,
-      listingId,
-      listingStatus:
-        'draft'
-    })
+    await changeCustomerListingLifecycle(supabase, listingId, 'unpublish')
 
   try {
     await recordListingUnpublished({
@@ -138,12 +86,7 @@ export async function archiveListing({
   listingId
 }: ListingLifecycleInput) {
   const listing =
-    await updateListingStatus({
-      supabase,
-      listingId,
-      listingStatus:
-        'archived'
-    })
+    await changeCustomerListingLifecycle(supabase, listingId, 'archive')
 
   try {
     await recordListingArchived({
@@ -179,12 +122,7 @@ export async function restoreListing({
   listingId
 }: ListingLifecycleInput) {
   const listing =
-    await updateListingStatus({
-      supabase,
-      listingId,
-      listingStatus:
-        'draft'
-    })
+    await changeCustomerListingLifecycle(supabase, listingId, 'restore')
 
   try {
     await recordListingRestored({
@@ -223,12 +161,7 @@ export async function deleteListing({
   listingId
 }: ListingLifecycleInput) {
   const listing =
-    await updateListingStatus({
-      supabase,
-      listingId,
-      listingStatus:
-        'deleted'
-    })
+    await changeCustomerListingLifecycle(supabase, listingId, 'delete')
 
   try {
     await recordListingDeleted({
@@ -262,193 +195,24 @@ export async function deleteListing({
   return listing
 }
 
-export async function duplicateListing({
-    supabase,
-    listingId
-  }: ListingLifecycleInput) {
-    const {
-      data: {
-        user
-      },
-      error: userError
-    } = await supabase.auth.getUser()
-    if (
-      userError ||
-      !user
-    ) {
-      throw new Error(
-        'You must be signed in to duplicate a listing.'
-      )
-    }
-    const {
-      data: sourceListing,
-      error: sourceError
-    } = await supabase
-
-    .from('listings')
-    .select(`
-      province,
-      canton,
-      district,
-      property_type,
-      bedrooms,
-      bathrooms,
-      parking,
-      year_built_range,
-      construction_area,
-      property_area,
-      utility,
-      environment,
-      accessibility,
-      terrain,
-      legal_status,
-      price_millions,
-      monthly_price,
-      transaction_type,
-      currency,
-      whatsapp,
-      title,
-      description,
-      images
-    `)
-    .eq(
-        'id',
-        listingId
-      )
-      .eq(
-        'owner_id',
-        user.id
-      )
-      .single()
-
-  if (sourceError) {
-    throw new Error(
-      sourceError.message
-    )
+export async function duplicateListing({ supabase, listingId }: ListingLifecycleInput) {
+  const { data: { user }, error } = await supabase.auth.getUser()
+  if (error || !user) throw new Error('You must be signed in to duplicate a listing.')
+  const { data: { session } } = await supabase.auth.getSession()
+  if (!session?.access_token) throw new Error('Your session could not be verified.')
+  // Keep the operation across retries/remounts, including lost server responses.
+  const key = `twuanis:duplicate:${user.id}:${listingId}`
+  let requestId = window.localStorage.getItem(key)
+  if (!requestId) {
+    requestId = crypto.randomUUID()
+    window.localStorage.setItem(key, requestId)
   }
-
-  if (!sourceListing) {
-    throw new Error(
-      'Listing was not found.'
-    )
-  }
-
-  const duplicateTitle =
-    sourceListing.title
-      ? `${sourceListing.title} — Copy`
-      : 'Listing Copy'
-
-  const {
-    data: duplicatedListing,
-    error: duplicateError
-  } = await supabase
-    .from('listings')
-    .insert([
-      {
-        owner_id:
-          user.id,
-
-        province:
-          sourceListing.province,
-
-        canton:
-          sourceListing.canton,
-
-        district:
-          sourceListing.district,
-
-        property_type:
-          sourceListing.property_type,
-
-        bedrooms:
-          sourceListing.bedrooms,
-
-        bathrooms:
-          sourceListing.bathrooms,
-
-        parking:
-          sourceListing.parking,
-
-        year_built_range:
-          sourceListing.year_built_range,
-
-        construction_area:
-          sourceListing.construction_area,
-
-        property_area:
-          sourceListing.property_area,
-
-        utility:
-          sourceListing.utility,
-
-        environment:
-          sourceListing.environment,
-
-        accessibility:
-          sourceListing.accessibility,
-
-        terrain:
-          sourceListing.terrain,
-
-        legal_status:
-          sourceListing.legal_status,
-
-        price_millions:
-          sourceListing.price_millions,
-
-        monthly_price:
-          sourceListing.monthly_price,
-
-        transaction_type:
-          sourceListing.transaction_type,
-
-        currency:
-          sourceListing.currency,
-
-        whatsapp:
-          sourceListing.whatsapp,
-
-        title:
-          duplicateTitle,
-
-        description:
-          sourceListing.description,
-
-        images:
-          sourceListing.images,
-
-        listing_status:
-          'draft'
-      }
-    ])
-    .select(`
-      id,
-      title,
-      listing_status,
-      transaction_type,
-      province,
-      canton,
-      district,
-      property_type,
-      price_millions,
-      monthly_price,
-      currency,
-      images
-    `)
-    .single()
-
-  if (duplicateError) {
-    throw new Error(
-      duplicateError.message
-    )
-  }
-
-  if (!duplicatedListing) {
-    throw new Error(
-      'The duplicate listing was not created.'
-    )
-  }
-
-  return duplicatedListing as DuplicateListingResult
+  const response = await fetch('/api/duplicate-listing', {
+    method: 'POST', headers: { Authorization: `Bearer ${session.access_token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ listingId, requestId })
+  })
+  const result = await response.json()
+  if (!response.ok || !result.success || typeof result.id !== 'string') throw new Error(result.error || 'Duplication failed. Retry the same operation.')
+  if (result.mediaStatus === 'complete') window.localStorage.removeItem(key)
+  return result as { id: string; mediaStatus: 'complete' | 'incomplete'; warning?: string }
 }
-

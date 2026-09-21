@@ -1,0 +1,67 @@
+BEGIN
+SET
+SET
+              set_config              
+--------------------------------------
+ 0a24f50b-d369-477e-baf1-8e9f3bcf5f45
+(1 row)
+
+CREATE FUNCTION
+SET
+RESET
+ s11_assert 
+------------
+ 
+(1 row)
+
+SET
+                                                                     edit_customer_canonical_listing                                                                      
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ {"outcome": "succeeded", "replayed": false, "revision": "2", "listing_id": "21bb1d57-b9c9-466e-a5db-9bb40be043f2", "receipt_id": "07ff7a73-3608-43df-99ac-1c67bcb8bfc5"}
+(1 row)
+
+RESET
+ s11_assert 
+------------
+ 
+(1 row)
+
+SET
+                                                                    publish_customer_canonical_listing                                                                    
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ {"outcome": "succeeded", "replayed": false, "revision": "3", "listing_id": "21bb1d57-b9c9-466e-a5db-9bb40be043f2", "receipt_id": "5f9e132a-7ee2-4768-ae63-b8c13a4a33b8"}
+(1 row)
+
+RESET
+SET
+                                                                    publish_customer_canonical_listing                                                                    
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ {"outcome": "succeeded", "replayed": false, "revision": "4", "listing_id": "21bb1d57-b9c9-466e-a5db-9bb40be043f2", "receipt_id": "55e459d7-f1ee-4e7c-a2f6-95e5ea4438d6"}
+(1 row)
+
+RESET
+ s11_assert 
+------------
+ 
+(1 row)
+
+SET
+RESET
+ s11_assert 
+------------
+ 
+(1 row)
+
+INSERT 0 1
+SET
+                                                   prepare_token_canonical_listing                                                   
+-------------------------------------------------------------------------------------------------------------------------------------
+ {"media": [], "completed": false, "listing_id": "5fb37573-fc85-4974-b125-40904c1cbc0f", "publication": null, "transaction": "sale"}
+(1 row)
+
+                       attach_token_canonical_media                        
+---------------------------------------------------------------------------
+ {"completed": true, "listing_id": "5fb37573-fc85-4974-b125-40904c1cbc0f"}
+(1 row)
+
+SET

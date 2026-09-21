@@ -1,0 +1,8 @@
+{
+  "migration-006-market-views-bridge.sql": "6bdbe2f30eb37e5e3ed46729119e9da1fa1b66281f20d4e86ae220963a2e8442",
+  "migration-006-catalog-verification.sql": "f348d5bc241dde54893827c2390963c882fb08244a52162e8a07f90c1a8e1446",
+  "migration-006-market-views-restore.sql": "51c5e095ab3a05d377976dfb61d72fac3299b6c29e338796904b40c8c87957bc",
+  "migration-006-market-views-pre.sql": "47d2f3e75872a3f5dce4d096ee305e9835fb21b01eef08d7138a3c88ba96cbfd",
+  "verify-migration-006-market-views.py": "41cd64a43161a42508647dd8f0e7194993b7aa9f6855aea193db61d09bd4bcdb",
+  "migration-006-market-views-README.md": "85d0abd4140a8e80d9e2c11a84934da21bf42a240cee07746eed46f7bc43d8c4"
+}

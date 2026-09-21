@@ -91,6 +91,7 @@ function matchesOptionSlug(
   value:
     string
 ): boolean {
+  if (['province', 'canton', 'district'].includes(option.term_type) && option.official_code === value) return true
   return [
     option.slug,
     option.slug_en,

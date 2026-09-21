@@ -1,0 +1,39 @@
+PASS positive creation without any completion assertion
+PASS same observation retry has no lifecycle effects
+PASS different source listing ID independent
+PASS same ID different namespace independent
+PASS price change with immutable monetary history
+PASS exact measurement updates
+PASS source URL updates immediately
+PASS all presentation fields gated before six months
+PASS non-whitelisted fact unchanged
+PASS update replay no revision or money duplication
+PASS empty presentation/URL does not wipe
+PASS empty refresh does not reset clock
+PASS missing money/invalid measurement preserves current evidence
+PASS eligible six-month presentation refresh
+PASS successful refresh records clock
+PASS unverified completion null has no absence effect
+PASS unverified completion false has no absence effect
+PASS unverified completion "unknown" has no absence effect
+PASS unverified completion "failed" has no absence effect
+PASS unverified completion "partial" has no absence effect
+PASS unverified completion {} has no absence effect
+PASS unverified completion "true" has no absence effect
+PASS first verified miss remains active
+PASS completion retry cannot double count
+PASS unverified run preserves first miss
+PASS second verified miss archives
+PASS archive reason not sold/rented/leased
+PASS same-ID reappearance restores active and resets misses
+PASS restore and publication append history
+PASS new deadline exactly 90 days from publication operation
+PASS restoration fresh deadline respects presentation gate and current URL
+PASS restoration retry no duplicate effects
+PASS subsequent absence begins at one
+PASS positive observation without completion resets first miss
+PASS new two-miss cycle archives again
+PASS other source not reconciled
+PASS completion authority denied to anon
+PASS completion authority denied to authenticated
+TOTAL 38 focused post-closure source checks

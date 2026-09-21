@@ -1,0 +1,22 @@
+BEGIN
+ exactly_one_receipt | correct_operation | auth_identity_set_verified | exact_subscription_receipt_verified 
+---------------------+-------------------+----------------------------+-------------------------------------
+ t                   | t                 | t                          | t
+(1 row)
+
+ all_retained_users_default_only 
+---------------------------------
+ t
+(1 row)
+
+ no_test_reviewers | no_test_import_operators 
+-------------------+--------------------------
+ t                 | t
+(1 row)
+
+ reviewers_fail_closed 
+-----------------------
+ t
+(1 row)
+
+ROLLBACK

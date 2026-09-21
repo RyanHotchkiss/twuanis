@@ -1,0 +1,8 @@
+{
+  "source": "supabase/migrations/021_image_detach_cleanup.sql",
+  "sha256": "1c8415442e53a1d10f8e86e69cee03ee8c1d210f769f03fb423edf8c91797507",
+  "start": "2026-09-19T16:08:09.447331+00:00",
+  "end": "2026-09-19T16:08:10.809295+00:00",
+  "exit_code": 0,
+  "commit_output": true
+}

@@ -23,12 +23,17 @@ type PublishResponse = {
   success: boolean
   redirectTo?: string
   error?: string
+  listingId?: string
+  mediaStatus?: string
+  warning?: string
 }
 
 export default function AuthenticatedListingPublisher({
   token
 }: AuthenticatedListingPublisherProps) {
   const router = useRouter()
+  const [attempt, setAttempt] = useState(0)
+  const [draftId, setDraftId] = useState<string | null>(null)
 
   const [user, setUser] =
     useState<User | null>(null)
@@ -99,7 +104,7 @@ export default function AuthenticatedListingPublisher({
     if (
       checkingAuth ||
       !user ||
-      publishing
+      publishing || errorMessage
     ) {
       return
     }
@@ -147,6 +152,8 @@ export default function AuthenticatedListingPublisher({
 
         const data =
           await response.json() as PublishResponse
+
+        if (data.listingId) setDraftId(data.listingId)
 
         if (
           !response.ok ||
@@ -198,7 +205,7 @@ export default function AuthenticatedListingPublisher({
     }
   }, [
     checkingAuth,
-    publishing,
+    attempt,
     router,
     token,
     user
@@ -241,6 +248,7 @@ export default function AuthenticatedListingPublisher({
 
           <p style={errorText}>
             {errorMessage}
+            {draftId && <span> Listing ID: {draftId}</span>}
           </p>
 
           <button
@@ -248,6 +256,7 @@ export default function AuthenticatedListingPublisher({
             onClick={() => {
               setErrorMessage('')
               setPublishing(false)
+              setAttempt(value => value + 1)
             }}
             style={retryButton}
           >

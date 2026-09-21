@@ -1,0 +1,26 @@
+[
+  {
+    "table": "ontology_terms",
+    "role": "service_role",
+    "operation": "SELECT",
+    "status": 200,
+    "rows": 677,
+    "error": null
+  },
+  {
+    "table": "ontology_relationships",
+    "role": "service_role",
+    "operation": "SELECT",
+    "status": 200,
+    "rows": 1000,
+    "error": null
+  },
+  {
+    "table": "listings",
+    "role": "service_role",
+    "operation": "SELECT",
+    "status": 200,
+    "rows": 0,
+    "error": null
+  }
+]

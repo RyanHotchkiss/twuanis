@@ -1,0 +1,282 @@
+{
+  "acl": "{postgres=arwdDxtm/postgres,anon=rDxtm/postgres,authenticated=rDxtm/postgres,service_role=Dxtm/postgres}",
+  "rls": true,
+  "owner": "postgres",
+  "columns": [
+    {
+      "acl": null,
+      "column": "id"
+    },
+    {
+      "acl": null,
+      "column": "source_term_id"
+    },
+    {
+      "acl": null,
+      "column": "target_term_id"
+    },
+    {
+      "acl": null,
+      "column": "relationship_type"
+    },
+    {
+      "acl": null,
+      "column": "confidence"
+    },
+    {
+      "acl": null,
+      "column": "notes"
+    },
+    {
+      "acl": null,
+      "column": "created_at"
+    }
+  ],
+  "effective": [
+    {
+      "role": "anon",
+      "allowed": true,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "anon",
+      "allowed": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "anon",
+      "allowed": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "anon",
+      "allowed": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "anon",
+      "allowed": true,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "anon",
+      "allowed": true,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "anon",
+      "allowed": true,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "authenticated",
+      "allowed": true,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "authenticated",
+      "allowed": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "authenticated",
+      "allowed": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "authenticated",
+      "allowed": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "authenticated",
+      "allowed": true,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "authenticated",
+      "allowed": true,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "authenticated",
+      "allowed": true,
+      "privilege": "TRIGGER"
+    },
+    {
+      "role": "service_role",
+      "allowed": false,
+      "privilege": "SELECT"
+    },
+    {
+      "role": "service_role",
+      "allowed": false,
+      "privilege": "INSERT"
+    },
+    {
+      "role": "service_role",
+      "allowed": false,
+      "privilege": "UPDATE"
+    },
+    {
+      "role": "service_role",
+      "allowed": false,
+      "privilege": "DELETE"
+    },
+    {
+      "role": "service_role",
+      "allowed": true,
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "service_role",
+      "allowed": true,
+      "privilege": "REFERENCES"
+    },
+    {
+      "role": "service_role",
+      "allowed": true,
+      "privilege": "TRIGGER"
+    }
+  ],
+  "force_rls": false,
+  "acl_expanded": [
+    {
+      "grantee": "16388",
+      "grantor": "16388",
+      "is_grantable": false,
+      "privilege_type": "INSERT"
+    },
+    {
+      "grantee": "16388",
+      "grantor": "16388",
+      "is_grantable": false,
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "16388",
+      "grantor": "16388",
+      "is_grantable": false,
+      "privilege_type": "UPDATE"
+    },
+    {
+      "grantee": "16388",
+      "grantor": "16388",
+      "is_grantable": false,
+      "privilege_type": "DELETE"
+    },
+    {
+      "grantee": "16388",
+      "grantor": "16388",
+      "is_grantable": false,
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "grantee": "16388",
+      "grantor": "16388",
+      "is_grantable": false,
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "grantee": "16388",
+      "grantor": "16388",
+      "is_grantable": false,
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "grantee": "16388",
+      "grantor": "16388",
+      "is_grantable": false,
+      "privilege_type": "MAINTAIN"
+    },
+    {
+      "grantee": "16484",
+      "grantor": "16388",
+      "is_grantable": false,
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "16484",
+      "grantor": "16388",
+      "is_grantable": false,
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "grantee": "16484",
+      "grantor": "16388",
+      "is_grantable": false,
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "grantee": "16484",
+      "grantor": "16388",
+      "is_grantable": false,
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "grantee": "16484",
+      "grantor": "16388",
+      "is_grantable": false,
+      "privilege_type": "MAINTAIN"
+    },
+    {
+      "grantee": "16485",
+      "grantor": "16388",
+      "is_grantable": false,
+      "privilege_type": "SELECT"
+    },
+    {
+      "grantee": "16485",
+      "grantor": "16388",
+      "is_grantable": false,
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "grantee": "16485",
+      "grantor": "16388",
+      "is_grantable": false,
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "grantee": "16485",
+      "grantor": "16388",
+      "is_grantable": false,
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "grantee": "16485",
+      "grantor": "16388",
+      "is_grantable": false,
+      "privilege_type": "MAINTAIN"
+    },
+    {
+      "grantee": "16486",
+      "grantor": "16388",
+      "is_grantable": false,
+      "privilege_type": "TRUNCATE"
+    },
+    {
+      "grantee": "16486",
+      "grantor": "16388",
+      "is_grantable": false,
+      "privilege_type": "REFERENCES"
+    },
+    {
+      "grantee": "16486",
+      "grantor": "16388",
+      "is_grantable": false,
+      "privilege_type": "TRIGGER"
+    },
+    {
+      "grantee": "16486",
+      "grantor": "16388",
+      "is_grantable": false,
+      "privilege_type": "MAINTAIN"
+    }
+  ],
+  "data_baseline": {
+    "count": 4690,
+    "digest": "2b4f30664b5b21eef85e1f804b92d7f3"
+  },
+  "role_memberships": []
+}

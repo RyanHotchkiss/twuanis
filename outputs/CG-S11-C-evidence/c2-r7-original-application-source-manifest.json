@@ -1,0 +1,3476 @@
+{
+  "purpose": "Future reviewed application source identity, not current deployment identity. Includes tracked and untracked relevant application/migration/verification/config inputs; secrets excluded. No commit/build/deployment created by S11-B.",
+  "head": "507fa49423fd622c88bf3bdf16c15a19e83c1739",
+  "files": [
+    {
+      "path": "app/AuthOverlay.tsx",
+      "sha256": "76a0832d8d424d524213d7a30cc35de49ca2e7df46cccf033cb25bcc5189741f",
+      "bytes": 3329
+    },
+    {
+      "path": "app/accessibility/[accessibility]/page.tsx",
+      "sha256": "1b6ac25425618c13ed64ddc809b9da6366c889e1015b67034a533c60a129be4a",
+      "bytes": 310
+    },
+    {
+      "path": "app/api/activity/route.ts",
+      "sha256": "517356a27bbea520d86b9ef054ca7cfc355ba3c9af0cecbb1f9cabfe7441d879",
+      "bytes": 5394
+    },
+    {
+      "path": "app/api/available-add-ons/route.ts",
+      "sha256": "dd2c662778d224f8241fcc98358fc0cdd05190a83a1b80b292b5f13e039b801f",
+      "bytes": 2483
+    },
+    {
+      "path": "app/api/check-publish-token/route.ts",
+      "sha256": "fc5422b817ea34376fc1f1ffb6abfe4352037852dd57611eb0b22ff0bde048f4",
+      "bytes": 1038
+    },
+    {
+      "path": "app/api/commercial-state/route.ts",
+      "sha256": "708913260448e6ae608cc02548a31dcffe4fbc313d47059fbe545e88206d8570",
+      "bytes": 2980
+    },
+    {
+      "path": "app/api/commercial-timeline/route.ts",
+      "sha256": "c48c8409effaf29f77ec28020320f882195e2f65bc85209701e0261261382b87",
+      "bytes": 2687
+    },
+    {
+      "path": "app/api/comparable/route.ts",
+      "sha256": "68d4465b0f604692cde4095eb295efe61aab3e4d76c88ae518eed6574b3ad09a",
+      "bytes": 6154
+    },
+    {
+      "path": "app/api/create-publish-token/route.ts",
+      "sha256": "a299b74e9ef753fa53d6e9af696f45cf7a7f489d4e9fd03bffd7655fc1827966",
+      "bytes": 2074
+    },
+    {
+      "path": "app/api/cron/cleanup-temporary-listing-images/route.ts",
+      "sha256": "02719609807ec039af1770189db2afdb6a39d17201c1bdfb3f5d39121883bf1d",
+      "bytes": 5129
+    },
+    {
+      "path": "app/api/cron/saved-search-alerts/route.ts",
+      "sha256": "befdaf53b71377b88d1d2c4f2e09d26c744135bc504cef2ab7c1d57fee0840bc",
+      "bytes": 1309
+    },
+    {
+      "path": "app/api/debug/bccr-fx/route.ts",
+      "sha256": "6723bbae870b0ec9ceb8c24e7a70300d82e1301eec71e0ed8187bd9ee4bbca7a",
+      "bytes": 4345
+    },
+    {
+      "path": "app/api/debug/saved-analysis-integrity/route.ts",
+      "sha256": "9c07d57888336e5a6d894083c9adda6366e17d72829f06915cfa0eac2c792593",
+      "bytes": 7053
+    },
+    {
+      "path": "app/api/delete-listing-image/route.ts",
+      "sha256": "3d7d55f08c494f703e4838f053a96d16c30df90dadaf7cecb3aa4f39d7eb345c",
+      "bytes": 3890
+    },
+    {
+      "path": "app/api/duplicate-listing/route.ts",
+      "sha256": "a42f31405452cb7f8f9631248315535b47805e952591a40d4dc917b17e67ade2",
+      "bytes": 1596
+    },
+    {
+      "path": "app/api/edit-canonical-listing/route.ts",
+      "sha256": "5dacc8f3fe27689f3f7ad390ac912a902384984cc8b0cd9c4efbca81ddc4ae3f",
+      "bytes": 2291
+    },
+    {
+      "path": "app/api/import-canonical-csv/route.ts",
+      "sha256": "0dd1f96aae19705523a524287ac779fda5bb41da96f2b38f732efef1d7236404",
+      "bytes": 1995
+    },
+    {
+      "path": "app/api/listing-capabilities/route.ts",
+      "sha256": "bd3152be7b9fe09217f0fe278bb9845a599acf39d08305c4dab84957e23639f4",
+      "bytes": 3137
+    },
+    {
+      "path": "app/api/listing-timeline/route.ts",
+      "sha256": "d953cffad749eb24796fd995c97e542a6b3d8436aadcb120a30b834bfce12daf",
+      "bytes": 3340
+    },
+    {
+      "path": "app/api/marketplace-fx/route.ts",
+      "sha256": "77e21c3851837d2de3a86006ef92c6f7d8007c007b1ea9662685c2819ccbec4a",
+      "bytes": 1122
+    },
+    {
+      "path": "app/api/marketplace-placement/route.ts",
+      "sha256": "cbd2efe4894486ff5c34fd0f8839778622c1bb47f5532e6f521d6dbb984c21e3",
+      "bytes": 2099
+    },
+    {
+      "path": "app/api/package-usage/route.ts",
+      "sha256": "720865aabb8add5fa35b8faabff6ffdf87e8585b154d07558da67def3ca5ba5c",
+      "bytes": 2074
+    },
+    {
+      "path": "app/api/permanently-delete-listing/route.ts",
+      "sha256": "1b6240f169a0ae02ac16f38a881ae7e8c9af41486414ee8f8d5b3a3ed40f7b1c",
+      "bytes": 355
+    },
+    {
+      "path": "app/api/price-meter/cross-dimensional/route.ts",
+      "sha256": "16e81c108f5d5c9c35c09fe17a8564c6ffc868ed02ac9604128039e1a01ec538",
+      "bytes": 9975
+    },
+    {
+      "path": "app/api/public-listing-contact/route.ts",
+      "sha256": "a1644d664e04341150397929a1c812d52cf1064c583e0b2f031a68d877d59f12",
+      "bytes": 830
+    },
+    {
+      "path": "app/api/public-listings/by-ids/route.ts",
+      "sha256": "34743382ee98ca2193511f4b05c4b9adc4fb3d09c6cc1a7f2b9880feaa0bb41d",
+      "bytes": 1876
+    },
+    {
+      "path": "app/api/public-listings/route.ts",
+      "sha256": "fa335eaa2b8c17cfa47e06408613e374c84844ebead0dd5ffbdd330aa8319413",
+      "bytes": 1623
+    },
+    {
+      "path": "app/api/public-promotion-evidence/route.ts",
+      "sha256": "c1e6f8147545442aea06bdb929a95aa6c5b5cc5e155d0f02295f1969e236fbc0",
+      "bytes": 4243
+    },
+    {
+      "path": "app/api/publish-existing-listing/route.ts",
+      "sha256": "33e602fb2604af9d8df9c3e5618897372a04f4d5ff59313eac83cffbfa13b55f",
+      "bytes": 5250
+    },
+    {
+      "path": "app/api/publish-listing/route.ts",
+      "sha256": "840a3be543b16533c4592de8ca3d86d0fd7d0acd6bf7d6377b58c8e17a3165dc",
+      "bytes": 1521
+    },
+    {
+      "path": "app/api/push/subscribe/route.ts",
+      "sha256": "7367317954c1c88daabfe2a87904e013969a53869b322820eddc5b8f57c0a07c",
+      "bytes": 1963
+    },
+    {
+      "path": "app/api/push/unsubscribe/route.ts",
+      "sha256": "9ee55c39858fef33818fa7980eb4b8d5f0ed6fb0346c5daf4ef792e425093376",
+      "bytes": 1432
+    },
+    {
+      "path": "app/api/rebuild-market-cache/route.ts",
+      "sha256": "bcf3f83ff0d36be25df22f0f8e1e77016fabc0f37ab74690d8bd6e3cfd4e074d",
+      "bytes": 912
+    },
+    {
+      "path": "app/api/renew-listing/route.ts",
+      "sha256": "50ceec8e0665437246e1ed7e6e11cf575c5d62e160e338caefb330ddb8c29ee0",
+      "bytes": 4666
+    },
+    {
+      "path": "app/api/reorder-listing-images/route.ts",
+      "sha256": "a9f486343164f3b0fdde99c8b25731b96707e5ce0f07e20cfb6e067fa2b5ab01",
+      "bytes": 8371
+    },
+    {
+      "path": "app/api/send-otp/route.ts",
+      "sha256": "86723a8a169355fedcf348647a1cc2acb7ca1a3bf917d45177fca92a8b673592",
+      "bytes": 2613
+    },
+    {
+      "path": "app/api/send-whatsapp/route.ts",
+      "sha256": "cdf4d1ecfb77a07d79fe86cb8490c4e9776815e058194dcc6e9ca13c9d4af774",
+      "bytes": 949
+    },
+    {
+      "path": "app/api/test-cache/route.ts",
+      "sha256": "49b9cf47d2496203f56d936e7019a42a6e22c815b5ba266374224670312ec32a",
+      "bytes": 262
+    },
+    {
+      "path": "app/api/test-email/route.ts",
+      "sha256": "a3e06fe05d363503ceacc5afe2ed211875844eef46a99cd12221caf7feb69b12",
+      "bytes": 197
+    },
+    {
+      "path": "app/api/test-explorer/route.ts",
+      "sha256": "93487683a56a70ed27573d459f4e7bd874ec3f8cdf438bebab22e697f2f91134",
+      "bytes": 274
+    },
+    {
+      "path": "app/api/test-market-engine/route.ts",
+      "sha256": "a1cd51ebd4827512c2f5cf49701908c90364138e300cb4a577b29cbb5a505d1f",
+      "bytes": 271
+    },
+    {
+      "path": "app/api/test-market/route.ts",
+      "sha256": "dcbbbf3fa20c3f98ee648eaedec3803660fbb4c69c72d5ad2870475b1fcbb3a8",
+      "bytes": 734
+    },
+    {
+      "path": "app/api/test-whatsapp/route.ts",
+      "sha256": "5546e21f75782816db0de633505cdb955fff12f92e4e7eac674f98458357ef0e",
+      "bytes": 280
+    },
+    {
+      "path": "app/api/update-listing-image/route.ts",
+      "sha256": "f61cff2ea3e5403700693faac995ec8c6c98d0e014df64b74a495bad034c5742",
+      "bytes": 11732
+    },
+    {
+      "path": "app/api/upload-temporary-listing-image/route.ts",
+      "sha256": "42af0741e4370a1ed6f09dc28a0707333a5e735a0c38ec04d8c7f16e8189ca5e",
+      "bytes": 5886
+    },
+    {
+      "path": "app/api/verify-otp/route.ts",
+      "sha256": "860910a5ff54c4e00e1552088b109b7bba8c2610f9cfb5d2bf4a0d05593005a3",
+      "bytes": 1749
+    },
+    {
+      "path": "app/api/whatsapp-webhook/route.ts",
+      "sha256": "ce2a590ca11be4e7528536d208197258d3c8ca9133527db9c760f44a60728079",
+      "bytes": 987
+    },
+    {
+      "path": "app/auth/callback/page.tsx",
+      "sha256": "8f7d9051977f6a7501db2357e7060585746990e0c9a6a435e623919658469b02",
+      "bytes": 2418
+    },
+    {
+      "path": "app/auth/reset-password/page.tsx",
+      "sha256": "e8c573f0af2d0046ab908fe4330703fcb0d6229ea17cf8162b7e79a02054cbb9",
+      "bytes": 3926
+    },
+    {
+      "path": "app/buyer-demand/BuyerDemandResults.tsx",
+      "sha256": "29ba64f12a0cbec719970491d4d3e9ce0c5df100c1c5d8cc9de37470ac78fe93",
+      "bytes": 4277
+    },
+    {
+      "path": "app/buyer-demand/page.tsx",
+      "sha256": "5c14512184a193c2bdbb929e07701f6b515043dc0b545bd6731dac5ad4654903",
+      "bytes": 2093
+    },
+    {
+      "path": "app/canton/[canton]/page.tsx",
+      "sha256": "973d0ad90db674aac9a05cab24600f64a066abbe3527e9287757f975531f1695",
+      "bytes": 277
+    },
+    {
+      "path": "app/components/AnalysisActions.tsx",
+      "sha256": "de6535ab34f608a04b0f8e6db7abeff982bfcf2886a4daaca2a4f18e60975fde",
+      "bytes": 10303
+    },
+    {
+      "path": "app/components/AuthenticatedListingPublisher.tsx",
+      "sha256": "a7e22a095f6c963946409f22de357cb45fb1f5868e15d48e06602f96563c8696",
+      "bytes": 6129
+    },
+    {
+      "path": "app/components/BackButton.tsx",
+      "sha256": "6c6ae43e67b210f60c6a6a7b45caad1b1df9a4bc2400c3121f8cab11dd409350",
+      "bytes": 648
+    },
+    {
+      "path": "app/components/Breadcrumbs.tsx",
+      "sha256": "533127d788ed5517578e2c71d3a8d788e42b6bdbf7decc1731661184f3f5176d",
+      "bytes": 2491
+    },
+    {
+      "path": "app/components/BuyHeader.tsx",
+      "sha256": "05dbf73d1c54da3bdd30d108d0d893eccd6080541ee2a582e30db2a172100b48",
+      "bytes": 844
+    },
+    {
+      "path": "app/components/BuyHeaderES.tsx",
+      "sha256": "ba52b0f403fad5e97afe38033d7d753b9a030659be6d09b278de795690d0e1a0",
+      "bytes": 856
+    },
+    {
+      "path": "app/components/BuyPropertyCard.tsx",
+      "sha256": "77f11be8009be9045e587a747944ee668aa22a808f2ef68e46a874b900f34b21",
+      "bytes": 2832
+    },
+    {
+      "path": "app/components/BuyPropertyGrid.tsx",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "app/components/BuySidebar.tsx",
+      "sha256": "0666b2753da547ae40e7b5bef7ccffb2e98ed122d993ba120c2fc16dd38c9462",
+      "bytes": 18690
+    },
+    {
+      "path": "app/components/BuySidebarES.tsx",
+      "sha256": "0f3762f5411083f52043c8ad402749e680b022e2ea3fe75f7b8ef5c5d58b4274",
+      "bytes": 19273
+    },
+    {
+      "path": "app/components/CollectionPicker.tsx",
+      "sha256": "171c8f0075862ff91710a8d593ee3d783885cfdd02b6d6d40e16da36b84f82b3",
+      "bytes": 11390
+    },
+    {
+      "path": "app/components/CreateCollectionButton.tsx",
+      "sha256": "c013373aeb72df2d37cced94fbff67695dd6c06c177961ae64a54d38ca05eee1",
+      "bytes": 3381
+    },
+    {
+      "path": "app/components/CreateListingButtonS.tsx",
+      "sha256": "40a2f3275e227b979a019d148b4bef47e369ed689f48de0d6856589f532255a5",
+      "bytes": 1705
+    },
+    {
+      "path": "app/components/CreateListingButtonSXL.tsx",
+      "sha256": "605aee6eb9951030544103ef417f74017ec1d442ab91f58a89492ee8bf80a9ef",
+      "bytes": 1895
+    },
+    {
+      "path": "app/components/CreateRentalListingButton.tsx",
+      "sha256": "352a9d3304177c34a0f61fe6367c692fcf8d2a5b72344a727aecf556408182d4",
+      "bytes": 558
+    },
+    {
+      "path": "app/components/CsvListingImagePreviewGrid.tsx",
+      "sha256": "4e96c5e23e1c49c8fb59f0d48ebe527aa40965ed6a8969711bd07cf667eb77ad",
+      "bytes": 856
+    },
+    {
+      "path": "app/components/CsvListingImageUploader.tsx",
+      "sha256": "be1ce7dfc29dff0df59fd82d6fa2db7dc1bc9943f9111384bd0f513a7522927a",
+      "bytes": 1357
+    },
+    {
+      "path": "app/components/CsvListingsGrid.tsx",
+      "sha256": "13df9dce4128024385b631233d28828be1717e52f1225ed6b91fb22fb768339a",
+      "bytes": 3437
+    },
+    {
+      "path": "app/components/CsvPublishActions.tsx",
+      "sha256": "a17a6c1275525cacc184ccd1084880f3872ae6b6ed3eae718db865409268e608",
+      "bytes": 914
+    },
+    {
+      "path": "app/components/CsvPublishActionsRentLease.tsx",
+      "sha256": "102933e77a847c88f9ee15f0ce5b9123dd4975ac29b7f2ab79773d4ca29c8080",
+      "bytes": 937
+    },
+    {
+      "path": "app/components/CsvStagingModal.tsx",
+      "sha256": "4413865dee6e22af9fab012940fb818f761d36de1194e37d40aa968e17c4889a",
+      "bytes": 2450
+    },
+    {
+      "path": "app/components/DefinitionCard.tsx",
+      "sha256": "2cfa19503cc489f45f32d7807cfdedac5c69cd5248a9c76fc55554da8b1a33e4",
+      "bytes": 399
+    },
+    {
+      "path": "app/components/EmailAuthModal.tsx",
+      "sha256": "a2a25351ba26e0e26cd73240da98216526c18ee121678d47321f84e75a5d4f8a",
+      "bytes": 9418
+    },
+    {
+      "path": "app/components/EmptyResultsES.tsx",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "app/components/EngineComparisonTable.tsx",
+      "sha256": "3cdc1608879b3fa97c3a14d922b20784e241ca37c55abbb187a99892fbeebe8b",
+      "bytes": 10968
+    },
+    {
+      "path": "app/components/Entity-Page.tsx",
+      "sha256": "90bcb1aa667bfb62ebf16c9b4b7d01b43d1aa16ccfe1451959c8489c38f4e178",
+      "bytes": 8855
+    },
+    {
+      "path": "app/components/EntityComparisonPanel.tsx",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "app/components/Explore.tsx",
+      "sha256": "20d44769d10f3f3db48fa422f350dfcbb881f527186b56bd3ccfd0edcfeca89f",
+      "bytes": 1190
+    },
+    {
+      "path": "app/components/Favorites.tsx",
+      "sha256": "f4bfc28cfe8136a8e57211b3fe6e910626c5072721bde58e9330f004529b3d61",
+      "bytes": 1069
+    },
+    {
+      "path": "app/components/FilterButton.tsx",
+      "sha256": "f0e39e6b33964bfc29ceed87a441b2fffb1fd6c1704f01e726e2dbf6d24c38c8",
+      "bytes": 1247
+    },
+    {
+      "path": "app/components/GraphExplorer.tsx",
+      "sha256": "015045bf75dc2f33b588681e2a923567ddf412595f787445e5aace06d9134014",
+      "bytes": 846
+    },
+    {
+      "path": "app/components/HelpButton.tsx",
+      "sha256": "3e41d9b1630e1a4ae5b362f20ffb1c64cfa0e0c222b696d32eb0fbe8a2c98256",
+      "bytes": 1783
+    },
+    {
+      "path": "app/components/HomeButton.tsx",
+      "sha256": "723a4092e0de3c71f1d498c9f95d9b445e36406888007d3393b41a9bec251890",
+      "bytes": 1414
+    },
+    {
+      "path": "app/components/ImagePreviewGridS.tsx",
+      "sha256": "ee35b3134fec868af98ccfbc320f3248ef1394fbf71d1509b050fbc881e79cca",
+      "bytes": 1428
+    },
+    {
+      "path": "app/components/ImageUploaderS.tsx",
+      "sha256": "e4d44897965855527ac8fcf7cda69221bcd5f4ce665b9e66eb6229b74b00f488",
+      "bytes": 1133
+    },
+    {
+      "path": "app/components/JsonLd.tsx",
+      "sha256": "c6fd556766b8692303cda909e1be49333e1d2b470f99d7383007229dff295d8e",
+      "bytes": 331
+    },
+    {
+      "path": "app/components/LanguageButtonEN.tsx",
+      "sha256": "d804cbe60b12db8f10de32e5e36ac1f2e3da9a7e73625a56a8730c26fab0e9a6",
+      "bytes": 678
+    },
+    {
+      "path": "app/components/LanguageButtonES.tsx",
+      "sha256": "88b3bd56cc69b415688740cd45456ad08d2c5c3d91835a732d2ccdd0e5d78f09",
+      "bytes": 750
+    },
+    {
+      "path": "app/components/ListingActions.tsx",
+      "sha256": "5a2b7d619f0d2844e495b02410af120e989ed447f60ce4cc6531056165c47a38",
+      "bytes": 6338
+    },
+    {
+      "path": "app/components/ListingActivityTracker.tsx",
+      "sha256": "7a62985b464b9556d69fb2c7a115c4835c15d33f6b75e981fa2d8ce37cdc5138",
+      "bytes": 1897
+    },
+    {
+      "path": "app/components/ListingOperationsCenter.tsx",
+      "sha256": "fa6c2debe229862577fab8e9e3108670abf87b20a77bdb4bae1efd6ec6d22656",
+      "bytes": 79519
+    },
+    {
+      "path": "app/components/LoginModal.tsx",
+      "sha256": "4f615dff3dddb4ad87a039cef978a0ad7a5967e6d90462107c3d04cabffb9543",
+      "bytes": 4716
+    },
+    {
+      "path": "app/components/MarketActivityTracker.tsx",
+      "sha256": "21315fa8ce5a314864cf50c26b7b188fa69d081314cb3077aed56b5cd1b06fa5",
+      "bytes": 633
+    },
+    {
+      "path": "app/components/MarketFilters.tsx",
+      "sha256": "455146a7829349183b17f7105484eb0f2a6eaac88e68dbeebdcee7da14dfe0cd",
+      "bytes": 7018
+    },
+    {
+      "path": "app/components/MarketHubActivityEngine.tsx",
+      "sha256": "84c95c12de051e06e754136c2b52ff9cc65464e4c1caa03605e27a1a800da9b7",
+      "bytes": 2383
+    },
+    {
+      "path": "app/components/MarketHubAuthGate.tsx",
+      "sha256": "44947b4f116ca1f18379854907650d9e17c272fc60860398aa4ec282a54190fc",
+      "bytes": 1510
+    },
+    {
+      "path": "app/components/MarketHubCompare.tsx",
+      "sha256": "ea6322a01d22c5e14ee138a8d9afb61f4a89d23d595c3fe617d120fcd52d6d7f",
+      "bytes": 16122
+    },
+    {
+      "path": "app/components/MarketHubComparisons.tsx",
+      "sha256": "494344e1cdb4eabad9a862e9e818e72a0cef1656133393b30a46d00edcef9f13",
+      "bytes": 6740
+    },
+    {
+      "path": "app/components/MarketHubFavorites.tsx",
+      "sha256": "a816b77130d1d1dda501b27c9c3f23944bb2ea74528bb74a8043493c9a17e5af",
+      "bytes": 100478
+    },
+    {
+      "path": "app/components/MarketHubFirstTimeExperience.tsx",
+      "sha256": "577367b2b07ae85249e46a8b8e016cba0bf572edc6164bb1de2e5c9cfddbc99f",
+      "bytes": 29353
+    },
+    {
+      "path": "app/components/MarketHubIntelligence.tsx",
+      "sha256": "40d59ed67b4f2604723c86d474eede348294e9664d549103c6781b05689423e9",
+      "bytes": 12677
+    },
+    {
+      "path": "app/components/MarketHubIntelligenceEngine.tsx",
+      "sha256": "85ba5729b36ef834dee4df9320463bef938f37e47daf6f53b574f7643a56d843",
+      "bytes": 5934
+    },
+    {
+      "path": "app/components/MarketHubKnowledge.tsx",
+      "sha256": "f664f5527010063ccb5b735730847e7a12f4537462db605c735e20a0422ae1ca",
+      "bytes": 7815
+    },
+    {
+      "path": "app/components/MarketHubMarketIntelligence.tsx",
+      "sha256": "44c11aad4532511054e5b89ff95f626eb4bcf3048b7a28110fe048d794acc458",
+      "bytes": 48643
+    },
+    {
+      "path": "app/components/MarketHubMyListings.tsx",
+      "sha256": "610baaf6b7ebf74a3e5d2637163c67264f52c840c59e9b83ab5fd96a20538e6f",
+      "bytes": 33966
+    },
+    {
+      "path": "app/components/MarketHubMyListingsLoader.tsx",
+      "sha256": "baf442a3fe3ea97401da8791ea6715ff3d62d7fd4044bfda2ee22be6a11cc53d",
+      "bytes": 4749
+    },
+    {
+      "path": "app/components/MarketHubNotificationFeed.tsx",
+      "sha256": "8644269cfcbe8449246e2c9bf5b62ff0ada1620abbc2028ae5099dd4ad6d390d",
+      "bytes": 6801
+    },
+    {
+      "path": "app/components/MarketHubPackages.tsx",
+      "sha256": "c190a26b2fa1a851092c91a78956108ab2ef97a4da33942e8a804b06540555b0",
+      "bytes": 157739
+    },
+    {
+      "path": "app/components/MarketHubPackagesLoader.tsx",
+      "sha256": "82bfcee308bf4dc3f8af9275647c96c981f49bf80b9b0f2352890df0760cb0d7",
+      "bytes": 50797
+    },
+    {
+      "path": "app/components/MarketHubPaymentReview.tsx",
+      "sha256": "e4f70c6944be1686c00caa466e61d325377f56385b05a0cb9223307cd5dcf20b",
+      "bytes": 21689
+    },
+    {
+      "path": "app/components/MarketHubPropertyNotes.tsx",
+      "sha256": "690db19f27cec0a94631bb692b9521156b02761b3a15d6398afed54030708722",
+      "bytes": 26425
+    },
+    {
+      "path": "app/components/MarketHubRecentActivity.tsx",
+      "sha256": "b162f3aebd35ef7384b8a9fa44e2f19f4e4969efc987b7fb2243d60f0ec6354b",
+      "bytes": 11097
+    },
+    {
+      "path": "app/components/MarketHubRecentlyViewedProperties.tsx",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "app/components/MarketHubSavedAnalyses.tsx",
+      "sha256": "2c9aff272a61774920d78118b0347d177d1904d0a8f2d96cb2b815a8dc2a0180",
+      "bytes": 10243
+    },
+    {
+      "path": "app/components/MarketHubSettings.tsx",
+      "sha256": "f2c7f2250b04d58a924cebe5c17c8a101011b2b6b2c340c403efda9778f0cdfb",
+      "bytes": 92527
+    },
+    {
+      "path": "app/components/MarketHubShell.tsx",
+      "sha256": "741b701ea5572d6fc3709e53a01914b15706c5a0ef04fcfa5f97aec67831f626",
+      "bytes": 19576
+    },
+    {
+      "path": "app/components/PackageCard.tsx",
+      "sha256": "1dca4c51ad029b7a73d2e1b6b2a6513c80c5950bf5859cc876215561ca2cb241",
+      "bytes": 6898
+    },
+    {
+      "path": "app/components/PackageModal.tsx",
+      "sha256": "d87236cbdebfb8c091dc0334229a7f0185f11232b8a877dc9aaffb085e6f1815",
+      "bytes": 17954
+    },
+    {
+      "path": "app/components/PermissionGate.tsx",
+      "sha256": "212c135c0c5864c1e3f478f4172f45edc6f175a7cf8c3d362bdee3c615592af9",
+      "bytes": 7696
+    },
+    {
+      "path": "app/components/PriceMeterApplyPanel.tsx",
+      "sha256": "a6a45628261ca1e60c018a3d4c970efd4b0a9f71817f4c3a429aa346a0b7f536",
+      "bytes": 2268
+    },
+    {
+      "path": "app/components/PriceMeterComparableListing.tsx",
+      "sha256": "532201fc2204e0c8efd2756beb4916e211f745edef329c514669dc86dd1712c2",
+      "bytes": 22502
+    },
+    {
+      "path": "app/components/PropertyCard.tsx",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "app/components/PropertyCardES.tsx",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "app/components/PropertyDefinitionPanel.tsx",
+      "sha256": "47fdee826c4822c34959c9fab768f0a678a62520a406182e5524e32293fc8290",
+      "bytes": 5595
+    },
+    {
+      "path": "app/components/PropertyDefinitionPanelES.tsx",
+      "sha256": "31f2c809ab9fe2e0d8e982b8f43454eb56a1b12a9d22ce57fcced4332f2cb0b5",
+      "bytes": 6109
+    },
+    {
+      "path": "app/components/PropertyGridES.tsx",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "app/components/PropertyNoteEditor.tsx",
+      "sha256": "87556985d6f930ab9ee3fa68abe4f0e2a49d9fd28fe7cf3debf17c0518939c74",
+      "bytes": 6913
+    },
+    {
+      "path": "app/components/PropertyNotes.tsx",
+      "sha256": "4a4e7df665922d73ffb1a251040009d72b7df1980c4b656d5275040fe2d3632b",
+      "bytes": 17774
+    },
+    {
+      "path": "app/components/PublishListingSheet.tsx",
+      "sha256": "1761a804650cc28adc58cb90ad3e99b9db8e96d8d964c3e9d31db6829ebc39d6",
+      "bytes": 12465
+    },
+    {
+      "path": "app/components/RecordRecentlyViewedProperty.tsx",
+      "sha256": "00235e0536b4e811adfac34168cc29319ffbc188e6d08c1be8493ad4d5418f29",
+      "bytes": 846
+    },
+    {
+      "path": "app/components/RentLeaseSidebar.tsx",
+      "sha256": "3aa7318213c78c0882a4774352bc9b01497194ae996bed45b7ffb8f418ffc440",
+      "bytes": 18471
+    },
+    {
+      "path": "app/components/RentLeaseSidebarES.tsx",
+      "sha256": "8bb38b8240d0ee7b395524087f8abb30f0014c92999981cb2ca7a61416b507bb",
+      "bytes": 19304
+    },
+    {
+      "path": "app/components/RentalListingEditForm.tsx",
+      "sha256": "153e0b487ce819c53a262749a6a7c745f409808d3976a551ff71351eb7e7a5b8",
+      "bytes": 49118
+    },
+    {
+      "path": "app/components/RentalPropertyDefinitionPanel.tsx",
+      "sha256": "3a8d8eb17d2db5c133f01ea95654d45ef5cbfb5125daf2af0f233a0561bdae3d",
+      "bytes": 5545
+    },
+    {
+      "path": "app/components/RentalPropertyDefinitionPanelES.tsx",
+      "sha256": "6abd5b87d846bbd9d446b80c41ef98caf7d16b752edd65014ccc7af7a2c2574f",
+      "bytes": 5722
+    },
+    {
+      "path": "app/components/SaleListingEditForm.tsx",
+      "sha256": "b40d5426a9b600df5fa3d7347ab07b8a8e0719161dbe5b447680a09254f03d75",
+      "bytes": 55749
+    },
+    {
+      "path": "app/components/SearchButton.tsx",
+      "sha256": "f91371b421ecfecf4765a5e15f7d0533a72e4ee5c97f2c15b490dc1a65cbc7f9",
+      "bytes": 1275
+    },
+    {
+      "path": "app/components/SelectionSection.tsx",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "app/components/SwipeCard.tsx",
+      "sha256": "62a02e83b8480ebbc6b07792eb1a7bb5c0a5c640b994dfd675314f032c84c270",
+      "bytes": 1433
+    },
+    {
+      "path": "app/components/SwipeCardES.tsx",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "app/components/TopBar.tsx",
+      "sha256": "df60360472929c252b5e1c08492381bbb9b09a1704e1fb85753a8dcf2f35edeb",
+      "bytes": 12294
+    },
+    {
+      "path": "app/components/WhatsAppInput.tsx",
+      "sha256": "30e29c3c7730fced7159ad180725685cffa2b13ba0f6632bd6180068d852e8fb",
+      "bytes": 1952
+    },
+    {
+      "path": "app/components/WhatsAppInputS.tsx",
+      "sha256": "30e29c3c7730fced7159ad180725685cffa2b13ba0f6632bd6180068d852e8fb",
+      "bytes": 1952
+    },
+    {
+      "path": "app/components/comparisons/ComparisonCard.tsx",
+      "sha256": "e05021eb98060e94088cb4ebafa370fe1d9e75e944103c4ac8d9bbfb0fc6454e",
+      "bytes": 5564
+    },
+    {
+      "path": "app/components/comparisons/ComparisonShell.tsx",
+      "sha256": "143c690ac75d04ab0ade5db9c6cc786bb86c447ae2ecbae09b33aa51360e8194",
+      "bytes": 1625
+    },
+    {
+      "path": "app/components/comparisons/ComparisonTabs.tsx",
+      "sha256": "12495105889a20f2e0118419e70d475673a863261104284719ca57dcd6e3b404",
+      "bytes": 2267
+    },
+    {
+      "path": "app/components/comparisons/EntityComparisonPanel.tsx",
+      "sha256": "0d9e3950fdd0faed25e1797f78b1d3194bece3d5a9aec120d3d7376def2bab53",
+      "bytes": 3173
+    },
+    {
+      "path": "app/components/comparisons/ListingCompareButton.tsx",
+      "sha256": "e1602e589c25e2d4da05e1f1d7fb78717fd54c8bc91473cefd1f24471869e251",
+      "bytes": 1132
+    },
+    {
+      "path": "app/components/comparisons/MarketComparisonPanel.tsx",
+      "sha256": "72647a1daf7bccad8a15ba46b9699d19707043c7e74b2e8d37b2bcf77f32c14c",
+      "bytes": 3429
+    },
+    {
+      "path": "app/components/comparisons/PropertyComparisonEngine.tsx",
+      "sha256": "eb13e927dbdf5df4d4c51486f65a2409d2d1193b00d991dfafe4193ba798d6b2",
+      "bytes": 22040
+    },
+    {
+      "path": "app/components/comparisons/PropertyComparisonPanel.tsx",
+      "sha256": "8b0747373bcdcbea1f9d0dcc454460a83c802c0ff27786ba8ee05c521d9a7bb0",
+      "bytes": 4899
+    },
+    {
+      "path": "app/components/comparisons/PropertyComparisonTray.tsx",
+      "sha256": "e9c26da7a83b82807364c2583385f70602891fc68a7f4b5606492755031dbc5a",
+      "bytes": 7734
+    },
+    {
+      "path": "app/components/filter-bar/AccessibilityFilter.tsx",
+      "sha256": "a64d6bf9a6b76315d45f34fecfaf95d336351b529b51d127d049da0a3f607ab0",
+      "bytes": 3347
+    },
+    {
+      "path": "app/components/filter-bar/AccessibilityFilterES.tsx",
+      "sha256": "3899d0beb9734a7dd8b3c4e821e5ad09ff11faef06f59c96fa91e321415fbc3c",
+      "bytes": 4327
+    },
+    {
+      "path": "app/components/filter-bar/AccessibilityFilterS.tsx",
+      "sha256": "d3fb81b6fe46df1be49adf6a95eeeb2089fc92c2d8ac0d2198d6ebf3d4a1e3a3",
+      "bytes": 5414
+    },
+    {
+      "path": "app/components/filter-bar/AccessibilityFilterSES.tsx",
+      "sha256": "8a65a92dc5654bc3816d6056f94e5c2d74ad00ea1bbfe2d72dae0e44d4b26487",
+      "bytes": 5403
+    },
+    {
+      "path": "app/components/filter-bar/AdvancedFiltersToggle.tsx",
+      "sha256": "05bbc35ca9a266eab50fcce7a8611eefdb6f189242d5f04d464e524684d525f3",
+      "bytes": 2552
+    },
+    {
+      "path": "app/components/filter-bar/AdvancedFiltersToggleES.tsx",
+      "sha256": "c0ea1043e0e83f1bd996565277d8109a84ad629ded5280e398c068e06f1c1498",
+      "bytes": 2559
+    },
+    {
+      "path": "app/components/filter-bar/BathroomFilterS.tsx",
+      "sha256": "26fb5e6de1a71c9e288f703c0e51ef150aaa9ab1ac670409bef981614ed9fb14",
+      "bytes": 3237
+    },
+    {
+      "path": "app/components/filter-bar/BathroomFilterSES.tsx",
+      "sha256": "75765c4be78eba80bc9c2e3c7d0a501e525bd9efb4b875d7654691658ca743a5",
+      "bytes": 3219
+    },
+    {
+      "path": "app/components/filter-bar/BedroomFilterS.tsx",
+      "sha256": "a24da451dbc6e3e2518dfefa4e9314140d7e0288daf4fb75b0c9620db4c63a30",
+      "bytes": 3208
+    },
+    {
+      "path": "app/components/filter-bar/BedroomFilterSES.tsx",
+      "sha256": "548dda741274e830d31fcf3e3d09c359118fb52837330fc4de2a504de0ae9b96",
+      "bytes": 3240
+    },
+    {
+      "path": "app/components/filter-bar/ConstructionAreaFilterS.tsx",
+      "sha256": "17e91ff82cff067ca2e5c3b84d3cdcd6975e4ff9a25702b588e80ca1c1abed7b",
+      "bytes": 3263
+    },
+    {
+      "path": "app/components/filter-bar/ConstructionAreaFilterSES.tsx",
+      "sha256": "adb8097d02abc8dbd25145433dbff04a34eccb5172b3bb1acd538dcc17a7091f",
+      "bytes": 3360
+    },
+    {
+      "path": "app/components/filter-bar/EnvironmentFilter.tsx",
+      "sha256": "7f2023d9ee8608d8320b8f0d7a506e4642d95c7b2a84ea13687284e01ba54cd7",
+      "bytes": 4382
+    },
+    {
+      "path": "app/components/filter-bar/EnvironmentFilterES.tsx",
+      "sha256": "dce3a8e83a5d33f76f2d7b141d691f840ccf06541e302da0df152869af2d811d",
+      "bytes": 4490
+    },
+    {
+      "path": "app/components/filter-bar/EnvironmentFilterS.tsx",
+      "sha256": "e50c81fa07591d1150e20479916a92c6456358effc3220ed604bb9352fbf03c6",
+      "bytes": 3293
+    },
+    {
+      "path": "app/components/filter-bar/EnvironmentFilterSES.tsx",
+      "sha256": "0d0f4de08a5867256dde7aeb5f560d2d26cb3971bae772bd884bd73b370308d0",
+      "bytes": 3318
+    },
+    {
+      "path": "app/components/filter-bar/LegalStatusFilter.tsx",
+      "sha256": "9f9a94700001750b83b86f9025af9d75706605ba29d9c14620437f91c76878f9",
+      "bytes": 3576
+    },
+    {
+      "path": "app/components/filter-bar/LegalStatusFilterES.tsx",
+      "sha256": "76f59d2d5511db413f90a5b06f3bd59c73b84c4281f353f32c2c2a3f7e2b9bd8",
+      "bytes": 3591
+    },
+    {
+      "path": "app/components/filter-bar/LegalStatusFilterS.tsx",
+      "sha256": "c2700dbd116d9458a92688813f515a3633c47b92ba1362565bc1b3d30113d7f4",
+      "bytes": 3331
+    },
+    {
+      "path": "app/components/filter-bar/LegalStatusFilterSES.tsx",
+      "sha256": "2713dcdc610d79710c772dce405543811b8f0c639fed8cf01460b7ad62c47e76",
+      "bytes": 3351
+    },
+    {
+      "path": "app/components/filter-bar/LocationFilter.tsx",
+      "sha256": "503834cc9877b24ac3929263977d59bfe959d353e21b024e3f7088a69ab642c0",
+      "bytes": 13903
+    },
+    {
+      "path": "app/components/filter-bar/LocationFilterES.tsx",
+      "sha256": "c386335a9bae122d9d90a8afcc63f03e3a61aa418c1ad9d0d90a1b924ce289ed",
+      "bytes": 13896
+    },
+    {
+      "path": "app/components/filter-bar/LocationSelector.tsx",
+      "sha256": "fd5a82743866eeba2af4228eda6b73cc24e698108f675dc2621b15e3c70e5a0e",
+      "bytes": 7819
+    },
+    {
+      "path": "app/components/filter-bar/LocationSelectorS.tsx",
+      "sha256": "fd5a82743866eeba2af4228eda6b73cc24e698108f675dc2621b15e3c70e5a0e",
+      "bytes": 7819
+    },
+    {
+      "path": "app/components/filter-bar/MonthlyRentSelector.tsx",
+      "sha256": "aa57c4b01e00444de12ea82f33142cc45edae2eb76c3e40fd2d5efd588748e22",
+      "bytes": 3389
+    },
+    {
+      "path": "app/components/filter-bar/MonthlyRentSelectorS.tsx",
+      "sha256": "aa57c4b01e00444de12ea82f33142cc45edae2eb76c3e40fd2d5efd588748e22",
+      "bytes": 3389
+    },
+    {
+      "path": "app/components/filter-bar/ParkingFilterS.tsx",
+      "sha256": "d2ce9db793fc1bd4aaee828da2fae8ec9856db1bbd4b0c06e0c2eba3fc9a7979",
+      "bytes": 3230
+    },
+    {
+      "path": "app/components/filter-bar/ParkingFilterSES.tsx",
+      "sha256": "62f43fa067e0a81e3581d1863702c9d6cd82e9b9395aee1684a2af49110ed795",
+      "bytes": 3238
+    },
+    {
+      "path": "app/components/filter-bar/PriceFilter.tsx",
+      "sha256": "d911e02f89dc4570e36bc16fa62e10ba226693d7df2e0e6db80298ac6c98d334",
+      "bytes": 4545
+    },
+    {
+      "path": "app/components/filter-bar/PriceFilterES.tsx",
+      "sha256": "147e1dd40caf94c85a4cfa2cbeb9dbd15187fc6d995a72864879fe3000968c9a",
+      "bytes": 4487
+    },
+    {
+      "path": "app/components/filter-bar/PriceFilterRL.tsx",
+      "sha256": "65d7f65c2af9fb5551524108f2a681338711c45bdb787c6cb8f9ca88851aed97",
+      "bytes": 4131
+    },
+    {
+      "path": "app/components/filter-bar/PriceFilterRLES.tsx",
+      "sha256": "8d202e65bdefa92604977c287008d3cc18d18b7ba4002f49a2bc853ce83dd670",
+      "bytes": 3926
+    },
+    {
+      "path": "app/components/filter-bar/PriceSelectorS.tsx",
+      "sha256": "ab1bbd2a70d51664e7873d30f6127140465cfc0b5c6014b3e1e2efb5f1d180b4",
+      "bytes": 2710
+    },
+    {
+      "path": "app/components/filter-bar/PropertyAreaFilter.tsx",
+      "sha256": "c011b7cc2c737ca486eeaefdc4f99d948b2439711b5a3ccc199081af1d4cc731",
+      "bytes": 3908
+    },
+    {
+      "path": "app/components/filter-bar/PropertyAreaFilterES.tsx",
+      "sha256": "3b7b89d1e138722709d6749a8ec401df04b3d0a2dba02d598842584b24d99c97",
+      "bytes": 3927
+    },
+    {
+      "path": "app/components/filter-bar/PropertyAreaFilterS.tsx",
+      "sha256": "1477a4d4951d393c364d9ae216df3ad791a6c78f815d7cccaa1e265ca8ebcdef",
+      "bytes": 3222
+    },
+    {
+      "path": "app/components/filter-bar/PropertyAreaFilterSES.tsx",
+      "sha256": "c0e7502a532614cf12d96aa7d868930c1d1f3f77284e1578407da5c2fd686604",
+      "bytes": 3102
+    },
+    {
+      "path": "app/components/filter-bar/PropertyTypeFilter.tsx",
+      "sha256": "c17917f8d6f40bf5529fa46e838ebe061558406c0f50c89a8a0ee7aed6f39285",
+      "bytes": 5288
+    },
+    {
+      "path": "app/components/filter-bar/PropertyTypeFilterES.tsx",
+      "sha256": "49ee08f7ba502edd5c37273010e4177986b15f636f7e3d6736d08db1cf08c231",
+      "bytes": 6475
+    },
+    {
+      "path": "app/components/filter-bar/PropertyTypeFilterS.tsx",
+      "sha256": "aaf33e3f6e147331be41e04a3764c963d781ae94f5490e8cb6b49d83b9e613f0",
+      "bytes": 4951
+    },
+    {
+      "path": "app/components/filter-bar/PropertyTypeFilterSES.tsx",
+      "sha256": "4405973b1938ba3e7ed89fa4ed13accdbef2b2edf159bc9256b93216f0b79087",
+      "bytes": 6361
+    },
+    {
+      "path": "app/components/filter-bar/ResidentialAttributesS.tsx",
+      "sha256": "b740ffc6d80f0e1eef048d4ee47ec492fa8b5bd898a7a4444d2b59a1db5a9329",
+      "bytes": 15064
+    },
+    {
+      "path": "app/components/filter-bar/ResidentialAttributesSES.tsx",
+      "sha256": "d47a7b95b8ad8892824719ca01441fcb7b20953a34ea3494245add454c6c308c",
+      "bytes": 16317
+    },
+    {
+      "path": "app/components/filter-bar/TerrainFilter.tsx",
+      "sha256": "b026edbff8733b1f8d4d9546ea0c506ea9f65c7a5585c4b1ffdc1c665bf515da",
+      "bytes": 4157
+    },
+    {
+      "path": "app/components/filter-bar/TerrainFilterES.tsx",
+      "sha256": "be5ad7ef339aa76b2ffc975f1fbab6c76424fafe6b7ff8620079a7163109271f",
+      "bytes": 4492
+    },
+    {
+      "path": "app/components/filter-bar/TerrainFilterS.tsx",
+      "sha256": "89f0745ea9fffb9107e8a69fc7d3c9e9234ba8b36392a5f0efe21e40a79c79dd",
+      "bytes": 4023
+    },
+    {
+      "path": "app/components/filter-bar/TerrainFilterSES.tsx",
+      "sha256": "18dd8d7a0e45cec3b0d522455808845b3f7bbaee6c229d72d056b57ce9b0f51f",
+      "bytes": 3781
+    },
+    {
+      "path": "app/components/filter-bar/UseTypeFilter.tsx",
+      "sha256": "d445b7ec5bdad982c6d4c990e4cc2ee4d9f5c4b52f8516d1abb93e455c6d48ca",
+      "bytes": 1609
+    },
+    {
+      "path": "app/components/filter-bar/UtilitiesFilter.tsx",
+      "sha256": "e37d5af665b6b0e9da25562a5130cd4351997d0a6bafce59119ec72cbe83d02d",
+      "bytes": 4244
+    },
+    {
+      "path": "app/components/filter-bar/UtilitiesFilterES.tsx",
+      "sha256": "ec87d28c6502e6398b35336312c17e9a4f0eddf52566bb510a55a2fd589fa540",
+      "bytes": 4629
+    },
+    {
+      "path": "app/components/filter-bar/UtilitiesFilterS.tsx",
+      "sha256": "35f3287e7b27f5fb49ddbf3833c305ea995ad3e4633568ce09180de6deb3ce66",
+      "bytes": 5498
+    },
+    {
+      "path": "app/components/filter-bar/UtilitiesFilterSES.tsx",
+      "sha256": "d148813a49e804bbf71a42e17549e5dccf83f204c1b57ff564d327647ff62904",
+      "bytes": 5473
+    },
+    {
+      "path": "app/components/filter-bar/YearBuiltFilterS.tsx",
+      "sha256": "6b020897319aa34830e5b168f8622b0eedb1ba0379c6700a68989941c3cdecac",
+      "bytes": 3318
+    },
+    {
+      "path": "app/components/filter-bar/YearBuiltFilterSES.tsx",
+      "sha256": "078185b7bd5e7b0a5dfa4676055825857684d4ef8a3147e809501b98215a283e",
+      "bytes": 3329
+    },
+    {
+      "path": "app/components/listing-input/ExactConstructionAreaInput.tsx",
+      "sha256": "adce0438d9c64ae1e05924d096dff3e3d8634acfab18c94cf18937f7aba21056",
+      "bytes": 8954
+    },
+    {
+      "path": "app/components/listing-input/ExactPropertyAreaInput.tsx",
+      "sha256": "912f13734fe8f00d4e41ee5bd1d2ce4851813faffb493a50010deb60523b2dea",
+      "bytes": 12007
+    },
+    {
+      "path": "app/components/market-filters/FilterColumn.tsx",
+      "sha256": "acc3e0cdb5ac22032d302555d5058bb50b0c10fe996adc176d8018c7aaff6403",
+      "bytes": 6863
+    },
+    {
+      "path": "app/components/market-filters/FilterSelect.tsx",
+      "sha256": "63f9bb36ea9f863b60bc3df3dd8522c9521f51660bdbf7176bbb059387ff4118",
+      "bytes": 1315
+    },
+    {
+      "path": "app/components/market-filters/UrlFilterSelect.tsx",
+      "sha256": "3864768537df7bdad796c14c048ca21ac76eaf5cc63b2f007990f9695936d3e6",
+      "bytes": 919
+    },
+    {
+      "path": "app/components/market-filters/filter-registry.ts",
+      "sha256": "232c9f8274e2d7780e81d62932948d052aab6614e8ea4c68d73ed4b1301779a8",
+      "bytes": 8985
+    },
+    {
+      "path": "app/components/market-filters/options.ts",
+      "sha256": "80c7db401332440aec603335c6da2cc71891ad79b2efea7c92d2270b4bce59a9",
+      "bytes": 828
+    },
+    {
+      "path": "app/components/market-filters/styles.ts",
+      "sha256": "fbe1e7a6984d28e8a8212e4950a8236e74b260c726bc11ea92306c2745b4596e",
+      "bytes": 1422
+    },
+    {
+      "path": "app/components/market-filters/translations.ts",
+      "sha256": "b43b4282a525b1381b562f7e9afe7262fee511d58de617b6dad1c316ae2d1a2d",
+      "bytes": 1701
+    },
+    {
+      "path": "app/components/market-filters/types.ts",
+      "sha256": "e058eb6c4e6683261b4ba636cbb4af24c2980315df9d50fd30ee95c1accc7dfb",
+      "bytes": 1145
+    },
+    {
+      "path": "app/components/market-filters/utils.ts",
+      "sha256": "3234c9a5acb4f7cd472a1e7d7470ac222bdff0cdb0c0c7098c1ee3ab76770cb7",
+      "bytes": 2419
+    },
+    {
+      "path": "app/components/price-meter-comparison/PriceMeterComparisonApply.tsx",
+      "sha256": "6d477801a34b570e1f8d28188eb1f835b691961f930606bfe00e4ef213439945",
+      "bytes": 1243
+    },
+    {
+      "path": "app/components/price-meter-comparison/PriceMeterComparisonCohortColumn.tsx",
+      "sha256": "d07972bd18169cbddf848d78215ff15d7ebc2f93e9f9158a45d26054785a6dfc",
+      "bytes": 8725
+    },
+    {
+      "path": "app/components/price-meter-comparison/PriceMeterComparisonFilters.tsx",
+      "sha256": "7b7d9395030cd611cff0ace78ea007a625cfdc46330b271748df968469673169",
+      "bytes": 6013
+    },
+    {
+      "path": "app/district/[district]/page.tsx",
+      "sha256": "c4a20948e462154eef11966c8144f6ace0c1491c6a6f88ed594ccf2673b57b6c",
+      "bytes": 286
+    },
+    {
+      "path": "app/en/HomePageClient.tsx",
+      "sha256": "1c1c173b0d59cf94c6f695d72a5526664f658e4b8fb129e987b3eaf60bb8e221",
+      "bytes": 61328
+    },
+    {
+      "path": "app/en/buy/listing/[id]/page.tsx",
+      "sha256": "a80294a2b997bbd4de54479d147d69ff3db565202908098fe813e4bea3827da0",
+      "bytes": 19752
+    },
+    {
+      "path": "app/en/buy/page.tsx",
+      "sha256": "fd28cc0262bbcc5b047357fe29c67b3da90e2fe2144a54c312a948b4b954a3c7",
+      "bytes": 44346
+    },
+    {
+      "path": "app/en/compare/entities/page.tsx",
+      "sha256": "3ed10468e7f42cf2f7f0af13ac489eede9ffa198b71fe790a9fd03370227ad25",
+      "bytes": 738
+    },
+    {
+      "path": "app/en/compare/markets/page.tsx",
+      "sha256": "5155c53a2af4dc280c492dca371ea20ae2700710b0b4d2e0495a5eebd1e4adca",
+      "bytes": 751
+    },
+    {
+      "path": "app/en/compare/properties/page.tsx",
+      "sha256": "e2bf8e9f313a6330e9c9f6d7f773cef71772a1a0edf01bf72f4262e3ebcfd2f8",
+      "bytes": 1606
+    },
+    {
+      "path": "app/en/favorites/page.tsx",
+      "sha256": "e0a506661e686084dec8b048caa1e5b6b33a1d43b80e72f2a5b31d751234df1a",
+      "bytes": 17352
+    },
+    {
+      "path": "app/en/market-hub/page.tsx",
+      "sha256": "32018860e43c6ac4f1331704fc1a7b0c6c4b5cceaaf538e9e9531f4dbbd88e55",
+      "bytes": 11412
+    },
+    {
+      "path": "app/en/market-intelligence/MarketIntelligenceTabs.tsx",
+      "sha256": "38d680112bdd5c25dfc07a98ffdce64ec16d536cf8829e0796000a0b7c041810",
+      "bytes": 17638
+    },
+    {
+      "path": "app/en/market-intelligence/packages/MarketIntelligencePackages.tsx",
+      "sha256": "5a56fcd85f8dacac26e525e1aa6af04eebbe7bb76164d7757075d230241fc2ab",
+      "bytes": 2962
+    },
+    {
+      "path": "app/en/market-intelligence/packages/page.tsx",
+      "sha256": "1a1b2ebf15485eb60ea52781ab9598919eb6b396d77da5ff13e0aa01d60d2241",
+      "bytes": 386
+    },
+    {
+      "path": "app/en/market-intelligence/page.tsx",
+      "sha256": "60cbabc64e6cf42e3f3364b70b56638b502861f5d9152326357623bbfe22be50",
+      "bytes": 2450
+    },
+    {
+      "path": "app/en/page.tsx",
+      "sha256": "3af08112e5b8f32839d57b71d26c8d9ee842700a1aa311f3724c8d5691a65a60",
+      "bytes": 1456
+    },
+    {
+      "path": "app/en/rent-lease/listing/[id]/page.tsx",
+      "sha256": "6ab0fa2a40dbd642742e575537abd22b43d8f030d920e61bb373c9ef9f120735",
+      "bytes": 20122
+    },
+    {
+      "path": "app/en/rent-lease/page.tsx",
+      "sha256": "189cabdabcfb2263022f683ae023b210253b629ce5c23e974f348ea578628f44",
+      "bytes": 44387
+    },
+    {
+      "path": "app/en/rent-out-lease-out/edit/[id]/page.tsx",
+      "sha256": "1a4f402d33dfedf7cdef02d9143ce41880db52c5a3be826778366a7d0f7b5d6d",
+      "bytes": 761
+    },
+    {
+      "path": "app/en/rent-out-lease-out/page.tsx",
+      "sha256": "122a362922a9e22b0d135daf17c8e136dd41e3d15d85bb7c522c26b1c6a69a7b",
+      "bytes": 32836
+    },
+    {
+      "path": "app/en/saved-analysis/[id]/page.tsx",
+      "sha256": "dc6925da007597d954d4a897e8607b509af94e57869e8d58422394c4f1b46456",
+      "bytes": 1595
+    },
+    {
+      "path": "app/en/sell/edit/[id]/page.tsx",
+      "sha256": "1dd368bb3b352c8cdd09fcd3bfa30c54b19bbf152d33f767c19cc34719d23bab",
+      "bytes": 842
+    },
+    {
+      "path": "app/en/sell/page.tsx",
+      "sha256": "4fc36db14b1ba5594fbbcd3c2e11295af5a6569106ca7a685ccbaaac7bf731cd",
+      "bytes": 32593
+    },
+    {
+      "path": "app/en/swipe/buy/page.tsx",
+      "sha256": "200f589413cb9f389ac82d5c3a2ce93a1870607cfaca8a053ae0c28afa663000",
+      "bytes": 17566
+    },
+    {
+      "path": "app/en/swipe/page.tsx",
+      "sha256": "7f358fdcd08039dc77d52d87d3a367a48b3408368833ad36b8c5625ea6cee744",
+      "bytes": 2240
+    },
+    {
+      "path": "app/en/swipe/rent-lease/page.tsx",
+      "sha256": "1cbf60ec81e3bd4ae1ed90cd42556a7b8b2a9ba0f675151e984bc881a06e5fec",
+      "bytes": 17714
+    },
+    {
+      "path": "app/environment/[environment]/page.tsx",
+      "sha256": "2811ea54b83f4f1e72d9644d14771973b6238da356deb7fa88b1abbd358e362b",
+      "bytes": 300
+    },
+    {
+      "path": "app/es/HomePageClient.tsx",
+      "sha256": "ff8f41fe70229051243656e0806740263053462f86d7772015181500f32da3d3",
+      "bytes": 62151
+    },
+    {
+      "path": "app/es/alquilar-arrendar/anuncio/[id]/page.tsx",
+      "sha256": "f3f346653f2249326117d11ec005792b38a25d5d2f79edc2dce625f062c9b17c",
+      "bytes": 20369
+    },
+    {
+      "path": "app/es/alquilar-arrendar/page.tsx",
+      "sha256": "5e874699aed6be808c4f4d606d01292f28bfb4d63a9dfe89a492b7ec5bbe8c00",
+      "bytes": 45458
+    },
+    {
+      "path": "app/es/analisis-guardado/[id]/page.tsx",
+      "sha256": "3fcf9dae388a322493a72d9534016868c3bab58e3a45a0eab645aa67225d7f7a",
+      "bytes": 1598
+    },
+    {
+      "path": "app/es/centro-de-mercado/page.tsx",
+      "sha256": "2888c68193c73a183b40755f50d4cad690560bd75b7c717c4d733487f724db59",
+      "bytes": 11555
+    },
+    {
+      "path": "app/es/coincidencia-de-mercado/ResultadosCoincidenciaMercado.tsx",
+      "sha256": "1eb641d373d7a33e248fe127812296f1cdcff72bbec879012ab84f82b565d68e",
+      "bytes": 12088
+    },
+    {
+      "path": "app/es/coincidencia-de-mercado/page.tsx",
+      "sha256": "211f75aaa32b476af72476726544f8850b6bce989f190d13abbea5b2d8bb4ac0",
+      "bytes": 1794
+    },
+    {
+      "path": "app/es/comparacion-de-mercado/ResultadosComparacionMercado.tsx",
+      "sha256": "80ffd7bc88e68994b60c8a307a282f8f08a2ce48d0478e4b46957efbba3b8037",
+      "bytes": 3326
+    },
+    {
+      "path": "app/es/comparacion-de-mercado/page.tsx",
+      "sha256": "6eb22bcbcffa0a3bcd7daf763f920ad7bc594eb400e539004c49ed0352b6f040",
+      "bytes": 2767
+    },
+    {
+      "path": "app/es/comparar/entidades/page.tsx",
+      "sha256": "1c7814681177ad8fa51d3c5cf882f4e32ad4b7a5220741769d82e07af91477f6",
+      "bytes": 766
+    },
+    {
+      "path": "app/es/comparar/mercados/page.tsx",
+      "sha256": "98546642b5e7c8b2c38a2db5af24fb2351b1a4fd4e8023ef040797c5ffefd0c3",
+      "bytes": 757
+    },
+    {
+      "path": "app/es/comparar/propiedades/page.tsx",
+      "sha256": "c767f45f760027f1b92b14fe2a4a4ed3a1aa1576a30e9a39176d490a62a1b86a",
+      "bytes": 1626
+    },
+    {
+      "path": "app/es/comprar/anuncio/[id]/page.tsx",
+      "sha256": "95e7a7dd5e83c8b4a2207e7d2a827796381c1118a849caa4ffa1af514a31f2d0",
+      "bytes": 21808
+    },
+    {
+      "path": "app/es/comprar/page.tsx",
+      "sha256": "c6885954e27cc226de5f1bfc5a77ff6bad61786c528cc0153a3ff1a7f5e68133",
+      "bytes": 45442
+    },
+    {
+      "path": "app/es/demanda-del-comprador/ResultadosDemandaComprador.tsx",
+      "sha256": "287261d98ed417dbdad0eabe106a51a01a0524c41a7457d5b2e55f5622fe195e",
+      "bytes": 8739
+    },
+    {
+      "path": "app/es/demanda-del-comprador/page.tsx",
+      "sha256": "0fe88aeac16dd62314046739fc5080b5c24f2e5c933172a426b0513ca298032e",
+      "bytes": 2229
+    },
+    {
+      "path": "app/es/deslizar/alquilar/page.tsx",
+      "sha256": "fcd83695ae6d9028f8fe852ab1b667e5adfd2c3e6525135a83ce6729cebf2dab",
+      "bytes": 18512
+    },
+    {
+      "path": "app/es/deslizar/comprar/page.tsx",
+      "sha256": "7967e404c17efb13afaa3a6f2c5c0244d541ef317c3288d9221521e67f561e03",
+      "bytes": 17634
+    },
+    {
+      "path": "app/es/deslizar/page.tsx",
+      "sha256": "e28b7578532de986a537612498c2cbc2f01ded2502131d30ce547bcd6a15285b",
+      "bytes": 2282
+    },
+    {
+      "path": "app/es/escasez-de-mercado/ResultadosEscasezMercado.tsx",
+      "sha256": "e293cc4d1bdb59f3eb7ab1683162a98dce9e55a940f4733946e9e832f644a56e",
+      "bytes": 10862
+    },
+    {
+      "path": "app/es/escasez-de-mercado/page.tsx",
+      "sha256": "488adf528d6b106763215859bb2e3183787257fd66f52ffdbf5059a741045617",
+      "bytes": 2200
+    },
+    {
+      "path": "app/es/estrategia-de-precios/ResultadosEstrategiaPrecios.tsx",
+      "sha256": "64102d8d2273eefe7f8af5902715bba53f3572687a90c6e0161c71cdf683e638",
+      "bytes": 14033
+    },
+    {
+      "path": "app/es/estrategia-de-precios/page.tsx",
+      "sha256": "2cb5044afce644eedfdbac516efbf1b1d72125b5e8f78d7e822519ff6a08cb94",
+      "bytes": 1855
+    },
+    {
+      "path": "app/es/explora/ResultadosExplora.tsx",
+      "sha256": "cab45bf858dde47be0cf008cea194dd317a02d8458ba686d4698af7e634e76ad",
+      "bytes": 24422
+    },
+    {
+      "path": "app/es/explora/page.tsx",
+      "sha256": "b51530b051dade752cda96d9124cbd4fd7e64ec4c14b40b8ce4af82fc603b43e",
+      "bytes": 3319
+    },
+    {
+      "path": "app/es/favoritos/page.tsx",
+      "sha256": "1e7f6bd09e0df54964cd3c6d5c4d6fe877ea7ffb34124ae5cd13d3fb12f81847",
+      "bytes": 17562
+    },
+    {
+      "path": "app/es/inteligencia-de-mercado/PestanasInteligenciaMercado.tsx",
+      "sha256": "f01cf74be5bd121871d7657c0dd7433cdf472894d734a7a4e6cf5d82d585bd63",
+      "bytes": 18002
+    },
+    {
+      "path": "app/es/inteligencia-de-mercado/page.tsx",
+      "sha256": "4338aa17d37c464c44bfbf3dbc6b5bf3163d38f2e423c4a50a0d7e3c195da126",
+      "bytes": 2635
+    },
+    {
+      "path": "app/es/inteligencia-de-mercado/paquetes/PaquetesInteligenciaMercado.tsx",
+      "sha256": "8857517d65d1c44e28cf5876dd02dd75f42198a4b4dac02a6b4ecf7c67bf2453",
+      "bytes": 3005
+    },
+    {
+      "path": "app/es/inteligencia-de-mercado/paquetes/page.tsx",
+      "sha256": "8bf2e2c521ac4698231683755aa13fc354ffaeaf54df180ec25684e9787def5b",
+      "bytes": 389
+    },
+    {
+      "path": "app/es/page.tsx",
+      "sha256": "fe8873e689e5afdfb411862c18839cd06e5d18aeb7aeaaa04c69986dcd4fa813",
+      "bytes": 1315
+    },
+    {
+      "path": "app/es/precio-por-metro-cuadrado/PrecioMetroDistribucionConstruccionTerrenoChart.tsx",
+      "sha256": "c2239a4197004201b427cef7ca37a3a8df3170e5487651e678dd306873b45d97",
+      "bytes": 4496
+    },
+    {
+      "path": "app/es/precio-por-metro-cuadrado/PrecioMetroRelacionConstruccionTerrenoChart.tsx",
+      "sha256": "d9abc7f6f88d4d4c1e29d39348b1285162ee6b7436cd5af582955d286e9cc388",
+      "bytes": 8243
+    },
+    {
+      "path": "app/es/precio-por-metro-cuadrado/PrecioMetroRelacionTamanoChart.tsx",
+      "sha256": "94000e7e3b260a14c693ef3b724649fde6b7f58889a3ca79e60a489438de26c5",
+      "bytes": 5916
+    },
+    {
+      "path": "app/es/precio-por-metro-cuadrado/ResultadosComparacionPrecioMetro.tsx",
+      "sha256": "11cf87e067f81ddb7cd91910d63b489ae989ff54162976fe660e9d453f555908",
+      "bytes": 18485
+    },
+    {
+      "path": "app/es/precio-por-metro-cuadrado/ResultadosPrecioMetro.tsx",
+      "sha256": "4d2f59f48123575d739e7c372c239f6aeee7c80a8ff21148622f6314112fd7a3",
+      "bytes": 105183
+    },
+    {
+      "path": "app/es/precio-por-metro-cuadrado/page.tsx",
+      "sha256": "55515bf62360d904b3ad96f5850d0db4cb969975e80789113e7c736387cb9685",
+      "bytes": 3923
+    },
+    {
+      "path": "app/es/publicar-alquiler-arrendamiento/editar/[id]/page.tsx",
+      "sha256": "7444e46664fade39a3c70f648b21f1380ccc08c8bd91855e785d5a8618aebffc",
+      "bytes": 805
+    },
+    {
+      "path": "app/es/publicar-alquiler-arrendamiento/page.tsx",
+      "sha256": "f8516928e378a721eb6c0a1a7e95883afbb99deded2907e49e8adc0a9f4cccfe",
+      "bytes": 33789
+    },
+    {
+      "path": "app/es/valoracion/FiltroUbicacion.tsx",
+      "sha256": "b49fc401f20075f06e72d41a1b642f62080d71704de4e22b3768644a86b17cf8",
+      "bytes": 9692
+    },
+    {
+      "path": "app/es/valoracion/FiltrosValoracion.tsx",
+      "sha256": "ac9adf5604dfb9466be83a961decefcc40e19224e2926a36adf0f11147f23988",
+      "bytes": 1705
+    },
+    {
+      "path": "app/es/valoracion/ResultadosValoracion.tsx",
+      "sha256": "5bea40556be589165834496da235c213a31e268698ce003983a4b532cd59ae4b",
+      "bytes": 10623
+    },
+    {
+      "path": "app/es/valoracion/page.tsx",
+      "sha256": "61354d79c9532076edf2de641e12927faff9cdb57c522d690cc963fa2304ac17",
+      "bytes": 1704
+    },
+    {
+      "path": "app/es/vender/editar/[id]/page.tsx",
+      "sha256": "54a0e7a35530322acf538a60a8166ac5a247b96408526c98ac610cce82884bba",
+      "bytes": 838
+    },
+    {
+      "path": "app/es/vender/page.tsx",
+      "sha256": "22077c2f119c28b9f235f195a2b7fead2dfcd1011740cd5f107d2303fde4bbe5",
+      "bytes": 32206
+    },
+    {
+      "path": "app/explore/ExploreFilters.tsx",
+      "sha256": "3a56a1259beee23d1e17d2f909bbd295a26fd646d81c9e6030a99c14ee1f20c9",
+      "bytes": 6913
+    },
+    {
+      "path": "app/explore/ExploreLocationFilter.tsx",
+      "sha256": "7d6c1acbff31d9c31beec1c12a0bb3002609ce993581ef29decf98d635eab682",
+      "bytes": 9383
+    },
+    {
+      "path": "app/explore/ExploreResults.tsx",
+      "sha256": "678e2f38002b22a6e0a7c857554c87083cbad51672d9d392da5d9e7b5cbc925d",
+      "bytes": 27641
+    },
+    {
+      "path": "app/explore/page.tsx",
+      "sha256": "61f8075f861542e339e43c1a56f0808c841eb422218ec9d5f6ff241c6a27af2b",
+      "bytes": 3673
+    },
+    {
+      "path": "app/favicon.ico",
+      "sha256": "2b8ad2d33455a8f736fc3a8ebf8f0bdea8848ad4c0db48a2833bd0f9cd775932",
+      "bytes": 25931
+    },
+    {
+      "path": "app/globals.css",
+      "sha256": "6483bb3a21e04037cdcb3f7d59f87d775b620ecb6b7c0f67201444456ad30f70",
+      "bytes": 1992
+    },
+    {
+      "path": "app/hooks/useMarketplaceFx.ts",
+      "sha256": "a3c303545e6b42e83734a9ab2d0a10f6e5006ef791af2e4aead0b0c16344c130",
+      "bytes": 1418
+    },
+    {
+      "path": "app/layout.tsx",
+      "sha256": "138f6487d4f61abc6f808724a8d48eaa97713ecd519605d08ac67b99608e4e0f",
+      "bytes": 589
+    },
+    {
+      "path": "app/legal-status/[legal-status]/page.tsx",
+      "sha256": "86555b2071a18aa9e513edd5e1563c79a4c9680816a4c71dcdf7aa1c1a122912",
+      "bytes": 320
+    },
+    {
+      "path": "app/login/page.tsx",
+      "sha256": "507050b23a97519f279d8cd6544390612072de78c6345ade9eb318e342cbc710",
+      "bytes": 994
+    },
+    {
+      "path": "app/market-comparison/MarketComparisonResults.tsx",
+      "sha256": "816df0d51a67c390cbc49f951e22e7c6da48b711cb0cff3ce0f5a991cd30d3e4",
+      "bytes": 2900
+    },
+    {
+      "path": "app/market-comparison/page.tsx",
+      "sha256": "6d59653372af700c6b92df422f12c7bce82b45531cd61b0c7d0c8ba668a0c2af",
+      "bytes": 2717
+    },
+    {
+      "path": "app/market-matching/MarketMatchingResults.tsx",
+      "sha256": "db7942854baa582a190ef7dfe5e3c82a9e9e7ed5021d0b28d2ad3aac1c2e043a",
+      "bytes": 11969
+    },
+    {
+      "path": "app/market-matching/page.tsx",
+      "sha256": "51c64a6a76f25b789b6ec898d25c83e5386ebd02f75f03743a5927f75f6d68d1",
+      "bytes": 1738
+    },
+    {
+      "path": "app/market-scarcity/MarketScarcityResults.tsx",
+      "sha256": "d00ae954013db9462d66bacaa9af0aecb4bdbbec5b013703c0c6fa43b55d3a9d",
+      "bytes": 10010
+    },
+    {
+      "path": "app/market-scarcity/page.tsx",
+      "sha256": "a5e7f4c057faecba2dc0dd1df5a9bb7655aeccbbfca52a6707d2afd0d941ebdd",
+      "bytes": 2099
+    },
+    {
+      "path": "app/page.tsx",
+      "sha256": "5fb5ec72f22fde8255c181bbad3534625fad8f6a8c9437e4e4cc55e65c2b1063",
+      "bytes": 96
+    },
+    {
+      "path": "app/price-per-square-meter/PriceMeterComparisonResults.tsx",
+      "sha256": "74f7176e2ee35fa2f30c2cd5933238894e67197f679864fb9d6c92817bb575e2",
+      "bytes": 18264
+    },
+    {
+      "path": "app/price-per-square-meter/PriceMeterConstructionLandDistributionChart.tsx",
+      "sha256": "c576720d879c14f5b8efdb97c0cbc8e520513416945ae25d8c377510c4126f4a",
+      "bytes": 4406
+    },
+    {
+      "path": "app/price-per-square-meter/PriceMeterConstructionLandRelationshipChart.tsx",
+      "sha256": "55f6ad8c578962917ecd1ad03657cca92284c04c58810a1e49980913bb3a4471",
+      "bytes": 8110
+    },
+    {
+      "path": "app/price-per-square-meter/PriceMeterCrossDimensionalAnalysis.tsx",
+      "sha256": "c78dc7ebb6d8dc77fdeaa18f664403134a782cc3ac57f80907f6238af4a35d4b",
+      "bytes": 11625
+    },
+    {
+      "path": "app/price-per-square-meter/PriceMeterCrossDimensionalResults.tsx",
+      "sha256": "8d3a5f769e7fa9dc3029a419b42caaa025d01b44c07d952ecb06355047931ff3",
+      "bytes": 58511
+    },
+    {
+      "path": "app/price-per-square-meter/PriceMeterResults.tsx",
+      "sha256": "3c2906e0d460466e427f05a3de3ca95d8501eeee949b2459d07249b566240bcc",
+      "bytes": 101772
+    },
+    {
+      "path": "app/price-per-square-meter/PriceMeterSizeRelationshipChart.tsx",
+      "sha256": "f6da8b1395d956728ec80cbcc7e0960dde9af3d1c8e31df925bfd44dfa1f289b",
+      "bytes": 5861
+    },
+    {
+      "path": "app/price-per-square-meter/page.tsx",
+      "sha256": "fc2ffb0245ba9c68185bc66263da356951926aae540736e3969f0ca4032903f6",
+      "bytes": 3813
+    },
+    {
+      "path": "app/pricing-strategy/PricingStrategyResults.tsx",
+      "sha256": "33da4c9c3941eafccea0e3882d667b07ff66d0107667204eca194f273e5e3a32",
+      "bytes": 13896
+    },
+    {
+      "path": "app/pricing-strategy/page.tsx",
+      "sha256": "8105c39467fd3ce2c6f176cdee8ba9324f7c94a83a1e6b8082e654cd321ae826",
+      "bytes": 1777
+    },
+    {
+      "path": "app/property-type/[property-type]/page.tsx",
+      "sha256": "f1be90d68a8ee052262c393acd132ed75d4972351fe65166a67d06416014017d",
+      "bytes": 328
+    },
+    {
+      "path": "app/province/[province]/page.tsx",
+      "sha256": "355f607267980ea4fcfa48f9cd4b65fdc30e82288cc2a5094fce4fe91c01fce7",
+      "bytes": 287
+    },
+    {
+      "path": "app/publish-listing/[token]/page.tsx",
+      "sha256": "1ec5f3e1ded8283a6c45aaf60dd74a976ed19bec873e2d55dedf9d0c26ee9500",
+      "bytes": 1112
+    },
+    {
+      "path": "app/robots.ts",
+      "sha256": "3917ec67dd8b6db87b4a475332f69ee74f025817a4b842ff1144c6e95d0af21f",
+      "bytes": 223
+    },
+    {
+      "path": "app/sitemap.ts",
+      "sha256": "77ccab81cde18c272ce85cfb85f470b2271b607f6ffce61db84f2b6543fad5b6",
+      "bytes": 2837
+    },
+    {
+      "path": "app/soporte/ayuda/page.tsx",
+      "sha256": "b48fb0c6700f17c30415ba885136e28a90774c52f62fa05d1112b16b1e48bc92",
+      "bytes": 13545
+    },
+    {
+      "path": "app/styles/sell-styles.ts",
+      "sha256": "ae95f575f98c1144ea26b18777d303724f569a5dfd213ae206f6282e6a89cf99",
+      "bytes": 5286
+    },
+    {
+      "path": "app/support/help/page.tsx",
+      "sha256": "f688d719c0aded5220dbaa50eb9531793be565b211441e7e1752ac078c80daee",
+      "bytes": 13255
+    },
+    {
+      "path": "app/terrain/[terrain]/page.tsx",
+      "sha256": "d407e9253264de66afb9f57b12d516b61158507bb14c831ed57c890716edd795",
+      "bytes": 280
+    },
+    {
+      "path": "app/utility/[utility]/page.tsx",
+      "sha256": "2f82b3343b173102e2f296bc9714f8b168c10bd130f53fbc0db9832efa849da2",
+      "bytes": 280
+    },
+    {
+      "path": "app/utils/archiveListing.ts",
+      "sha256": "7bbe88ee03ff1d9529ad6a0610f8334b0b08c0f5eed18981c3bc34f74085df16",
+      "bytes": 1222
+    },
+    {
+      "path": "app/utils/canonicalCustomerEdit.ts",
+      "sha256": "312a73c8fa25b2858a50d36f22db4836286325f3ba0887e83a7473888e3b72a2",
+      "bytes": 2853
+    },
+    {
+      "path": "app/utils/canonicalCustomerLifecycle.ts",
+      "sha256": "9626052790db265976e8196f818765f696ad622f92afebda1b92ba66c397b9dd",
+      "bytes": 2329
+    },
+    {
+      "path": "app/utils/createListing.ts",
+      "sha256": "df0774e9f831e9f8fb3b451017dde5e1babcef5f38638f2bd961d4788784bbd3",
+      "bytes": 5101
+    },
+    {
+      "path": "app/utils/createRentalListing.ts",
+      "sha256": "856aafee2bbe9067a1cd3d6517f83046c3861c45a8f44afabbf95aa6ccf554ea",
+      "bytes": 5844
+    },
+    {
+      "path": "app/utils/deleteListing.ts",
+      "sha256": "7f908f88e08e68d30e35d46f4d762b0410f14e357aea1927d7b0d4dc87efb4d8",
+      "bytes": 1371
+    },
+    {
+      "path": "app/utils/listing-utils.ts",
+      "sha256": "fc04dc7ead0ca556304cd37a46130d9338164b1d87e165ad130edc1945ab11c9",
+      "bytes": 4920
+    },
+    {
+      "path": "app/utils/manageListing.ts",
+      "sha256": "b65faa18208005bb12fef8af50512446a77b4cef66650c544357b4a3c9df65af",
+      "bytes": 4864
+    },
+    {
+      "path": "app/utils/marketHubListing.ts",
+      "sha256": "aeafd90f542ad658054dd0a97f23f6adfc39829145df446f921013676e32a1a7",
+      "bytes": 6262
+    },
+    {
+      "path": "app/utils/optimizeListingImage.ts",
+      "sha256": "8d1fbbc6c71dc4ca295a31e4fac5ac9fb5983e3d538960e74198163707221ddb",
+      "bytes": 2316
+    },
+    {
+      "path": "app/utils/publishCsvListings.ts",
+      "sha256": "aab4ed2e1cc157449e9907e105ba121eb216502ef511c2fef544ce37be824f95",
+      "bytes": 80
+    },
+    {
+      "path": "app/utils/publishListing.ts",
+      "sha256": "0ca0b2c9e275a0152bed204f8a8db445f121255297bb1dd326348d06f6f65b1b",
+      "bytes": 1222
+    },
+    {
+      "path": "app/utils/publishRentLeaseCsvListings.ts",
+      "sha256": "39be6bf48f9f7b8b95328f8be220a9e4e0071c3208f9c2b824b7984543f1e34d",
+      "bytes": 89
+    },
+    {
+      "path": "app/utils/resolveListingImages.ts",
+      "sha256": "d0101667e01b4b6d28a57fec09474f11d2bc81e7482ecdaeeb7c99ff28425dd1",
+      "bytes": 1732
+    },
+    {
+      "path": "app/utils/startListingPublishFlow.ts",
+      "sha256": "942e710360d439d1ff7d370b964ed50f11086381da843e4133aaf71a139ce19b",
+      "bytes": 2781
+    },
+    {
+      "path": "app/utils/submitCanonicalCsv.ts",
+      "sha256": "e167f3d93b24194b200695e4cdf24416c4ef12aded859f3102c6e072bccb003e",
+      "bytes": 1189
+    },
+    {
+      "path": "app/utils/unpublishListing.ts",
+      "sha256": "fc2d62bd93389e5e1c05726350a9d9e41fcf5107aab942f73f613e70f7673695",
+      "bytes": 1231
+    },
+    {
+      "path": "app/utils/updateListing.ts",
+      "sha256": "067e0f8377cb136c9b85c7c27aef1e37380b8939195afb89e88d20d63ab2ffae",
+      "bytes": 435
+    },
+    {
+      "path": "app/utils/uploadListingImages.ts",
+      "sha256": "c1e7ab389eb49bb214e1dca0639f1daad6370a01d9c46b0dd12e614f485de38d",
+      "bytes": 1446
+    },
+    {
+      "path": "app/valuation/ValuationFilters.tsx",
+      "sha256": "bd512333c90a08f8bc5e952edbc042c03cba671269b2ee36b3a5ad8ad9a059ca",
+      "bytes": 1720
+    },
+    {
+      "path": "app/valuation/ValuationResults.tsx",
+      "sha256": "4d4557fc10c8480839013d51ae04f3e3526e3b7c49b4afd14bc4f8a518028434",
+      "bytes": 10490
+    },
+    {
+      "path": "app/valuation/page.tsx",
+      "sha256": "551455e07fde0a46552ad5bc84da4f49c694315d23af4a5a3e9e06da15f51678",
+      "bytes": 1623
+    },
+    {
+      "path": "app/whatsapp-webhook/route.ts",
+      "sha256": "387e5c42b546bbe67ad5a7b4b4f1ee25c31e7a369e391dbeb08f4d0734e29b6c",
+      "bytes": 1046
+    },
+    {
+      "path": "lib/account-storage.ts",
+      "sha256": "b8377e261c6bd5883c69d06d8bf4e73ad6c99d445d46478ea56b7d96516bd572",
+      "bytes": 1929
+    },
+    {
+      "path": "lib/activation-engine.ts",
+      "sha256": "0625940f13a7358265dc3e8d3dbe8a3889ea1e094586a8c42a34678984458bb9",
+      "bytes": 29301
+    },
+    {
+      "path": "lib/activity.ts",
+      "sha256": "c536d1fe3ecd5ffc22c17f387e3955830da3a0675469247b559bafdecebb2b38",
+      "bytes": 10459
+    },
+    {
+      "path": "lib/activity/comparisons.ts",
+      "sha256": "271505ef2f4bda8df51aad1cc249b997943ed0bf07056b7d1cef08c0b2cc0f11",
+      "bytes": 1382
+    },
+    {
+      "path": "lib/activity/getTimeline.ts",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "lib/activity/index.ts",
+      "sha256": "781a0bc0f3aa082ef446feeedd47cf0e83c8c8da0cb5dc0d76bb4145194aeae5",
+      "bytes": 265
+    },
+    {
+      "path": "lib/activity/listings.ts",
+      "sha256": "5418429bc719e75a8d0458082f33e0dd754dc50e035d88eb78270633519d8b5e",
+      "bytes": 6240
+    },
+    {
+      "path": "lib/activity/markets.ts",
+      "sha256": "669172cb0abbc738ce203b20a994099ebab9129c729d7ab01480feaa4912b9cc",
+      "bytes": 988
+    },
+    {
+      "path": "lib/activity/types.ts",
+      "sha256": "bd3c8567e773067dfcdd6d8ef0d154656201cbad3274bf18855472f4190ddc4d",
+      "bytes": 1001
+    },
+    {
+      "path": "lib/add-on-catalog.ts",
+      "sha256": "39a27725233f7882a8859cb2524e3075851e8b3f6e2df177d7f8768ab392d721",
+      "bytes": 4040
+    },
+    {
+      "path": "lib/aggregate-promotion-intelligence-engine.ts",
+      "sha256": "2c67e748face6f50e58dd45cec6b90d1aa3a28ec78c8abd277e67e869cc0fccd",
+      "bytes": 19827
+    },
+    {
+      "path": "lib/aggregation-cache-engine.ts",
+      "sha256": "271b43aafd654304ce62a53fd085c7a672f392bb9e3fb8b9ae78b492c121d28c",
+      "bytes": 2189
+    },
+    {
+      "path": "lib/analysis-date.ts",
+      "sha256": "1cdb9c49955f2d04659dafde80f61d5faf6a2c679750abfe4865da4e170ffefb",
+      "bytes": 1541
+    },
+    {
+      "path": "lib/approval-engine.ts",
+      "sha256": "a0d8af0eff45b3512beef80d4090c8049103a9b7e0b65b5ab0b8ef065acc2096",
+      "bytes": 9717
+    },
+    {
+      "path": "lib/area-measurement.ts",
+      "sha256": "5c8569de9b675db76647ccfa8e6c9d796ac6449fb76e9557a3197ac17ada0a3c",
+      "bytes": 1485
+    },
+    {
+      "path": "lib/assign-listing-ontology.ts",
+      "sha256": "6291475c26e991c554ad98d43e22f21e2e6bf137c0d9734e0487a681677554ea",
+      "bytes": 10069
+    },
+    {
+      "path": "lib/auth/current-user.ts",
+      "sha256": "b2759122719466cdf9c5ea682c81d7abe33b8ad3c04ef23ac32c6ebfe196bb05",
+      "bytes": 437
+    },
+    {
+      "path": "lib/browser-push.ts",
+      "sha256": "e2a242a4935788f5a109b97bd69ece62adead1191aefa131141e28f5b16072d2",
+      "bytes": 1777
+    },
+    {
+      "path": "lib/buyer-demand-engine.ts",
+      "sha256": "acb24be911a7583b8923c61829d99fc4be09a5d08a16dee1ab70304440c1b92d",
+      "bytes": 15521
+    },
+    {
+      "path": "lib/canonical-customer-edit.ts",
+      "sha256": "ca6b2c91ea1286326f394787faaa2e82fe318d9650610a500607a8b960fa0dde",
+      "bytes": 4917
+    },
+    {
+      "path": "lib/canonical-customer-road-distance.ts",
+      "sha256": "52095082198e15a789e56b51ce53b260648aa42a16b7646553f605403725afe3",
+      "bytes": 2744
+    },
+    {
+      "path": "lib/canonical-listing-reader.ts",
+      "sha256": "dc7d64ff34e4fcd36c27ee3163d4c90a4e75a2ca6a79e0714fce14484b52925f",
+      "bytes": 5737
+    },
+    {
+      "path": "lib/canonical-population.ts",
+      "sha256": "31d305405ab211453c691f49a3420be3367ba8e3371d0c6e64a99bc77cf2c938",
+      "bytes": 4743
+    },
+    {
+      "path": "lib/collections.ts",
+      "sha256": "5dc7030c57066e03a72bde0e5ee7edc82863bcafa48d8682f5ce1ce8532167e0",
+      "bytes": 9284
+    },
+    {
+      "path": "lib/commercial-provider-registry.ts",
+      "sha256": "c727f4e64864bdd5b0a23132205f0acbdeb868a8199a39a62935bf0d98b0953b",
+      "bytes": 2356
+    },
+    {
+      "path": "lib/commercial-provider-resolver.ts",
+      "sha256": "06ad347ec01d3f7f21f0b18d7df39cd93595d7e7031acdd74a14c8510ea89dde",
+      "bytes": 4636
+    },
+    {
+      "path": "lib/commercial-provider.ts",
+      "sha256": "8a9c04223b876b91f9b245bb6e2ff1bf02e545c01112914ae2625fb709f4fa0f",
+      "bytes": 12791
+    },
+    {
+      "path": "lib/commercial-resolver.ts",
+      "sha256": "2ff64771e08635cdbcd166fd2e2ffcb72697a8a9f32ea108c45b311d513fac0f",
+      "bytes": 19243
+    },
+    {
+      "path": "lib/commercial-submission.ts",
+      "sha256": "7e4c1ee63739020db52003e13136201e8404790d484ae027e780f85a35910dc7",
+      "bytes": 5090
+    },
+    {
+      "path": "lib/commercial-timeline.ts",
+      "sha256": "29bb9ebc4eb0e6f4c61308bda6f98d279643f5b9e3bd166456d138f11d2d6fe8",
+      "bytes": 18581
+    },
+    {
+      "path": "lib/comparable-cohort-engine.ts",
+      "sha256": "530a59c9c69bbff58ed35518840be61724221c98023278e6cd9868e5d22f1da8",
+      "bytes": 19939
+    },
+    {
+      "path": "lib/comparables-engine.ts",
+      "sha256": "cdb20d2a218567d3578a016ffda424911314c7ccf0a160b304281f2922235555",
+      "bytes": 3224
+    },
+    {
+      "path": "lib/comparisons/types.ts",
+      "sha256": "56ea5b482f90a1e01f1cee96b0208fcc9b0c1c13818ace0e51b9ee36db5a396d",
+      "bytes": 1332
+    },
+    {
+      "path": "lib/confidence.ts",
+      "sha256": "ac845b2295fc97a8aa6adb1ba2e410b98824acfc9f731d4e84ada8672e7c6720",
+      "bytes": 2190
+    },
+    {
+      "path": "lib/createListingId.ts",
+      "sha256": "c37b6d920c7ee665459882e8849bc2361502089e96f95e7175001abda012cad7",
+      "bytes": 382
+    },
+    {
+      "path": "lib/csv-source-ingestion.ts",
+      "sha256": "178051ebe3b80552be059916f20684b339ba2bb8e8c44f0bcbed8c57ebb20560",
+      "bytes": 5063
+    },
+    {
+      "path": "lib/currency-conversion.ts",
+      "sha256": "4b90cf39e0123890de6006cbcf2f81063aaf61b03f91d751f50caa4127e23795",
+      "bytes": 2710
+    },
+    {
+      "path": "lib/customer-publication-writer.ts",
+      "sha256": "34c08ad9c07fcaa9373e035b5dc1b528d094b6410d985d1987c098653a99024a",
+      "bytes": 1120
+    },
+    {
+      "path": "lib/duplicate-listing-media.ts",
+      "sha256": "2fcb9ad31ba42ea957b72348f381eae27e4f4f4bedd25197747c30e58b975b5b",
+      "bytes": 2605
+    },
+    {
+      "path": "lib/email.ts",
+      "sha256": "f90bc939e53dc6cabf414a626e00d4ab8a7cbcc800533a6b912ab835fad9e9c9",
+      "bytes": 859
+    },
+    {
+      "path": "lib/entity-comparisons.ts",
+      "sha256": "c0ecad9920cbdf87cf4e0ba7d4cb699b5e2ec3cd99e13122868583814a0dbb11",
+      "bytes": 9084
+    },
+    {
+      "path": "lib/entity-engine.ts",
+      "sha256": "1f985087d1c02b1c3dbc9cd38f300f2c736bf38f6b86e99f8308b41de4a20082",
+      "bytes": 4103
+    },
+    {
+      "path": "lib/explorer-engine.ts",
+      "sha256": "ed2bc4c56041df3ad6b68770b1433c8a1860660ebf3466b75c48620c49f4a90a",
+      "bytes": 2432
+    },
+    {
+      "path": "lib/explorer-options-engine.ts",
+      "sha256": "efefdce0410d8775c61ac358008e7fb9f0b7c1269b16bd476a88d60e2c036c2e",
+      "bytes": 2041
+    },
+    {
+      "path": "lib/favorites.ts",
+      "sha256": "69c361d72b18f1183ebd281b5bb66940027a48f843a05e151faa42b046abda95",
+      "bytes": 1148
+    },
+    {
+      "path": "lib/fx/bccr-provider.ts",
+      "sha256": "f6313ad6441f11f1586dd26333703bcc656d83a751baf413506ed4bc652a0050",
+      "bytes": 8176
+    },
+    {
+      "path": "lib/fx/fx-registry.ts",
+      "sha256": "b63602211afeea09ca9f93881cb8edc50c5fef9259891a1e9c0f828d6faa728e",
+      "bytes": 5708
+    },
+    {
+      "path": "lib/fx/fx-resolver.ts",
+      "sha256": "0e4d1504ab372407e8197e5f9fea22ab58c22c4f75e687fb9975e42e9d5de5c2",
+      "bytes": 7210
+    },
+    {
+      "path": "lib/fx/fx-service.ts",
+      "sha256": "2ba19b7f56cb44f065146b8ba7df996483a2d4b620b9eba0de4f108aa3a85022",
+      "bytes": 6808
+    },
+    {
+      "path": "lib/geography/canonical-geography.ts",
+      "sha256": "91b2cfce8cc944d979a155e4af7775d5d9b94128440db8523948eb01d80b4674",
+      "bytes": 7888
+    },
+    {
+      "path": "lib/geography/dta-geography.test.ts",
+      "sha256": "37470c15ef6afb07d9710b53f8dced45b146a5911b84496eb27dc8c8114b6bea",
+      "bytes": 12609
+    },
+    {
+      "path": "lib/geography/dta-identity.ts",
+      "sha256": "4fb6e70e448731efe598aec3dea1ae634963a29002d89ad76c8bb73b5e205530",
+      "bytes": 5179
+    },
+    {
+      "path": "lib/geography/dta-request.ts",
+      "sha256": "2d19094d3033c23d82f16b0bb235bbbd01009bcdf009e398c57e570aeed7dd34",
+      "bytes": 3366
+    },
+    {
+      "path": "lib/geography/resolve-dta-geography.ts",
+      "sha256": "99965c67b17fc549e86051b2353e57be702f36a2acf535e74574c8a8fd0e777b",
+      "bytes": 1570
+    },
+    {
+      "path": "lib/geography/resolve-listing-geography.ts",
+      "sha256": "3bc522cd2d1815976e350ff6df6b987b222425ed83d8c3e93f5bfe688009bcd9",
+      "bytes": 1657
+    },
+    {
+      "path": "lib/graph-engine.ts",
+      "sha256": "b0f2d3a9759f16435f3478156e2cc660b9abd6242f3d603fe376dacedf2d4065",
+      "bytes": 932
+    },
+    {
+      "path": "lib/intelligence-analytics.ts",
+      "sha256": "269b05d39995c94f56469eb71997d546df76ed71805881a972ffc8dde819d3a2",
+      "bytes": 1443
+    },
+    {
+      "path": "lib/language-route.ts",
+      "sha256": "ed10afb80ab44ae7cb5a48836869b188fc57f0297171233807999e0b92d70907",
+      "bytes": 4448
+    },
+    {
+      "path": "lib/listing-capabilities.ts",
+      "sha256": "60e273916623d1203bc703965dc9937d33a76c87ace1dfd12c5f42ff02332332",
+      "bytes": 11937
+    },
+    {
+      "path": "lib/listing-entitlements.ts",
+      "sha256": "ead9ceea19e95e4d55a9d966d945bd43b5b2515822e3cb9d81a7bd6088447350",
+      "bytes": 28934
+    },
+    {
+      "path": "lib/listing-lifecycle-engine.ts",
+      "sha256": "e1c1bb0a2e56238dca7203287167638db8aacf0b94f32c2a615fd3d03a44b4ec",
+      "bytes": 4481
+    },
+    {
+      "path": "lib/listing-monetary-value.ts",
+      "sha256": "e24534119827a911288f3f905fb311c0c1c4c58cb201b33047c8dd0bb1f1001a",
+      "bytes": 5114
+    },
+    {
+      "path": "lib/listing-performance-engine.ts",
+      "sha256": "6ef2bf5a743eeb3199cb4ca1fccb99634d9fea9ce21825263a7bac3b881620f3",
+      "bytes": 7433
+    },
+    {
+      "path": "lib/listing-performance-signals.ts",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "lib/listing-performance.ts",
+      "sha256": "5f03c3dc4b3d5b22ed34383f014a4c77be5d436737c42ee0ba6f3f29bfccf885",
+      "bytes": 2743
+    },
+    {
+      "path": "lib/listing-ranking.ts",
+      "sha256": "6244fe3766ba82dccc8165f645871b5095e83e31f76fb8ca963dd5b9277f94a7",
+      "bytes": 6504
+    },
+    {
+      "path": "lib/listing-state.ts",
+      "sha256": "250422c43b613d68af8298f6a19c80d1569d2ef484dcb85d879bab49456d9417",
+      "bytes": 2060
+    },
+    {
+      "path": "lib/listing-timeline.ts",
+      "sha256": "e13f6eb3d67f4b1d28a17c1418dbf0d85f9baeecfd373a34d6f6c33a342a16c6",
+      "bytes": 20657
+    },
+    {
+      "path": "lib/load-analysis.ts",
+      "sha256": "fa421f5dc56cfc67858f6b7c37552878507fcae2e9066d3429f32cb6479c8b38",
+      "bytes": 414
+    },
+    {
+      "path": "lib/market-analytical-context.ts",
+      "sha256": "51348e9a10bcb62c21ff5240707f77d64984fb64f4e20ecd877ca43a717da74b",
+      "bytes": 1806
+    },
+    {
+      "path": "lib/market-comparison-engine.ts",
+      "sha256": "329521ab8886aeedee7e59a6fd59c2e2e0585277ef7c2cfc3fde2f44577ba012",
+      "bytes": 8203
+    },
+    {
+      "path": "lib/market-comparisons.ts",
+      "sha256": "ae5cf6db065c634876fe8076d8e29ff8ce0215f919a5562868e53d9b4301dc6a",
+      "bytes": 8169
+    },
+    {
+      "path": "lib/market-engine.ts",
+      "sha256": "ac1e1e7d7feec6cbdd2d5c6195cf5a1bd56e5576a576b91f59b3e06fff27d9e0",
+      "bytes": 6975
+    },
+    {
+      "path": "lib/market-intelligence-area-ranges.ts",
+      "sha256": "040f8b05afb06cebf71f2ff0a8643a0617e3a757e5b2ee9df7db592f97969d4e",
+      "bytes": 3723
+    },
+    {
+      "path": "lib/market-intelligence-workspace.ts",
+      "sha256": "622745522ea84de31e572c960463a1830e05a43f96690c2b3ff8a1c06a2d002d",
+      "bytes": 11462
+    },
+    {
+      "path": "lib/market-matching-engine.ts",
+      "sha256": "d8693892fedd920a96c771627b0e69c8582bb2e890daf5b266099883b2dd9b73",
+      "bytes": 5314
+    },
+    {
+      "path": "lib/market-scarcity-engine.ts",
+      "sha256": "8cc83d2c372c3d050d7d92c07580882ace93d4dd04dd6510b9798e5286faf3d8",
+      "bytes": 10847
+    },
+    {
+      "path": "lib/marketIntelligencePackages.ts",
+      "sha256": "5c392ae3bff446ef6f25e2ef8e72f9bdc6db1654493340c101b7e0ce6033298b",
+      "bytes": 9710
+    },
+    {
+      "path": "lib/marketplace-area-ranges.ts",
+      "sha256": "e27ae81614c75b299ddb99187f183385ba1b04f39475d9083709e7f5845a1bb3",
+      "bytes": 2193
+    },
+    {
+      "path": "lib/normalizeText.ts",
+      "sha256": "c5eaa97f9031ffad79b5a5a563a0486fe906449892c59dd683991017376c1ad0",
+      "bytes": 390
+    },
+    {
+      "path": "lib/notifications.ts",
+      "sha256": "6230500a0df0cb863c0a22d2bb011dd7b1f656207c578996d5d8b53fb636889a",
+      "bytes": 574
+    },
+    {
+      "path": "lib/numerical-distribution.ts",
+      "sha256": "8b8b6cae803de6d11ccdfcc4c23f207d974cff6480db8103283b44b2af9d1f9e",
+      "bytes": 3284
+    },
+    {
+      "path": "lib/onboarding.ts",
+      "sha256": "5bd275ae80547dbcc8f2c8a76cd8e058649eb79131702196cfd9ccbfd5436ed4",
+      "bytes": 3970
+    },
+    {
+      "path": "lib/ordinary-upload-operation.ts",
+      "sha256": "3fbdec700e1400bde38aa0e4fd9fb9d4da8e93bbf82652a426566e9ecc367134",
+      "bytes": 2198
+    },
+    {
+      "path": "lib/package-limits.ts",
+      "sha256": "da99391d353632b696b1cea3c4e5963b39fe30418fea25acf521f826cd7970b7",
+      "bytes": 4250
+    },
+    {
+      "path": "lib/package-usage.ts",
+      "sha256": "e08b27d8cd560ed5bdde0b85d455eb200dac4cd87ef7bd0058e351856d4c4c73",
+      "bytes": 7166
+    },
+    {
+      "path": "lib/permissions.ts",
+      "sha256": "26ad98f9b5a603523e1f77ec74a72612cce73389d15645bd906c4ff7cefaff38",
+      "bytes": 7750
+    },
+    {
+      "path": "lib/price-meter-analytical-cohort.ts",
+      "sha256": "46c2edbd7fa3d839b75d9298656e011cc696aca3f72b29dd6c93d913eb777ff3",
+      "bytes": 2731
+    },
+    {
+      "path": "lib/price-meter-apply-action.ts",
+      "sha256": "fe58629813e3aa9666057c61f9415d672db238dd04c4b9fa605ae6d293b1fb84",
+      "bytes": 2075
+    },
+    {
+      "path": "lib/price-meter-apply-contract.ts",
+      "sha256": "9a1857d139cdaf054856daa9e75dc9e0647d10c20ed1a7632402125a712e906e",
+      "bytes": 1641
+    },
+    {
+      "path": "lib/price-meter-apply-permit.ts",
+      "sha256": "3be4c0417a0e52d02869a8c093968df41987bd6402c27f17e2def1d294148563",
+      "bytes": 1095
+    },
+    {
+      "path": "lib/price-meter-authorization.ts",
+      "sha256": "30684cd3b8ccac001757f77e55317a8c2296bd93ac5d5d1bd2582fee824b777d",
+      "bytes": 2041
+    },
+    {
+      "path": "lib/price-meter-browser-result.ts",
+      "sha256": "ddce5eaa241d9f9c2c2c78e39dd6f6c09ced2c8d6aff000acd9e9a8f9d99f32e",
+      "bytes": 1556
+    },
+    {
+      "path": "lib/price-meter-characteristic-distribution.ts",
+      "sha256": "0759fb991696bf9dea0da0d2185a725652fdbc54d3c951a88b9755760f621488",
+      "bytes": 6368
+    },
+    {
+      "path": "lib/price-meter-characteristic-identity.ts",
+      "sha256": "80100c8dc0c3b3c664e072fc4382207c2a88138ad697de405fc7bf90d24ef5ab",
+      "bytes": 1517
+    },
+    {
+      "path": "lib/price-meter-characteristic-relationship.ts",
+      "sha256": "201dd289db75281a363b124ee27e2e3b9f4c994488d8b9569c3fa83ebcf51c5d",
+      "bytes": 4096
+    },
+    {
+      "path": "lib/price-meter-comparable-base-cohort.ts",
+      "sha256": "77accadd995afb9a45be3a92ec037a61d05996bb4b7e39c0bdd4c099a9e5c8ea",
+      "bytes": 3975
+    },
+    {
+      "path": "lib/price-meter-comparable-browser-contract.ts",
+      "sha256": "d8b2120ba0a85cf0247c1eb39a504644791605994b07783da768d6e63231778d",
+      "bytes": 5685
+    },
+    {
+      "path": "lib/price-meter-comparable-dimensions.ts",
+      "sha256": "ca44d7da3aa26a88890f6f9271f5afbfdf861f0cdd0de624309fc156b428d777",
+      "bytes": 2041
+    },
+    {
+      "path": "lib/price-meter-comparable-dto.ts",
+      "sha256": "2aad8164ea5c7c1539bc9585a9b2866ad45eac4541fd5983ebaa4ebae7385e05",
+      "bytes": 6430
+    },
+    {
+      "path": "lib/price-meter-comparable-engine.ts",
+      "sha256": "bfd12cf8b5fb4067f3952d5796df19803178c685bd5c140a7d81ad5cecf387c0",
+      "bytes": 10980
+    },
+    {
+      "path": "lib/price-meter-comparable-evidence.ts",
+      "sha256": "1618ef8020a6670b3d489e6c566b0573e1240b72ab852b8ef87b169f256c5e2a",
+      "bytes": 13535
+    },
+    {
+      "path": "lib/price-meter-comparable-geography.ts",
+      "sha256": "713138238762864369f0be0d789682106b37a51191e5037b8e5d05b46318bc07",
+      "bytes": 2525
+    },
+    {
+      "path": "lib/price-meter-comparable-loader.ts",
+      "sha256": "eb9e2091413f0c9780bd01f606d1b2f2a4f5bc6a5c47bc78d255566bbff66b0f",
+      "bytes": 27369
+    },
+    {
+      "path": "lib/price-meter-comparable-population-trail.ts",
+      "sha256": "b113332b4f8fc133f5068556c0ba8aa7aaee8be2931d5d8d53fd3760d6ddf626",
+      "bytes": 3317
+    },
+    {
+      "path": "lib/price-meter-comparable-population.ts",
+      "sha256": "38ff1bd455f0eb4ceac1bd1560163c0d93078bc54faf8b503ae5369a1a0002bd",
+      "bytes": 11627
+    },
+    {
+      "path": "lib/price-meter-comparable-presentation.ts",
+      "sha256": "4c6298517392f763d75e3157b08516d6451f4b08fb26727a4ba69fd25a17f28c",
+      "bytes": 10560
+    },
+    {
+      "path": "lib/price-meter-comparable-request.ts",
+      "sha256": "c82f0cc9f6d99bbe5bd0c754f87e1bb4fbb9fcf55d723f25d1728152e85f749b",
+      "bytes": 2438
+    },
+    {
+      "path": "lib/price-meter-comparable-server.ts",
+      "sha256": "3376893dc64531563cba4c7422b3d6cf1eadf689de4776fdc879274ec3728a45",
+      "bytes": 5721
+    },
+    {
+      "path": "lib/price-meter-comparable-subject-identity.ts",
+      "sha256": "f69d99f24b588e5b70a0c90aa28131f7760c3e63cb8d1333415e03ccec3b2a5f",
+      "bytes": 3914
+    },
+    {
+      "path": "lib/price-meter-comparison-action.tsx",
+      "sha256": "6ca11a3d5ec0331a9b2280cc507baaaebec47d6db32db127f0519726f735f7fe",
+      "bytes": 1759
+    },
+    {
+      "path": "lib/price-meter-comparison-analysis.ts",
+      "sha256": "ff43bfc9e233240f37d44b809437442cee6c1350cec810e0394589156f198618",
+      "bytes": 8109
+    },
+    {
+      "path": "lib/price-meter-comparison-analytical-cohort.ts",
+      "sha256": "d249a97ea99a4539acaf98a029f8c048f46e827f4e2c58835d83b0ff97fe799d",
+      "bytes": 1509
+    },
+    {
+      "path": "lib/price-meter-comparison-candidate-loader.ts",
+      "sha256": "dd079d7c4de12bac412c8d85b188c4151d515aeadf54bc3d3b17a583120b126f",
+      "bytes": 5143
+    },
+    {
+      "path": "lib/price-meter-comparison-cohort-population.ts",
+      "sha256": "6da3715e40466db975a17417103f36500fe68a7c001b6af4e55cd47b93becf0a",
+      "bytes": 8548
+    },
+    {
+      "path": "lib/price-meter-comparison-cohort.ts",
+      "sha256": "9700a27c4ffb46daeecfd5051b5ec41b0da0bfe480b62ee8a85e268287dea5eb",
+      "bytes": 5168
+    },
+    {
+      "path": "lib/price-meter-comparison-engine.ts",
+      "sha256": "0b4f167ce4da433e58cd5da843126e25418f71167401e47c4d01cd0031e2d459",
+      "bytes": 4267
+    },
+    {
+      "path": "lib/price-meter-comparison-evidence.ts",
+      "sha256": "ee257b8e3bfc724df2c65b76b6baa141c77c4e09e08d320b8842ca364dc9f3b5",
+      "bytes": 981
+    },
+    {
+      "path": "lib/price-meter-comparison-orchestrator.ts",
+      "sha256": "c9d72ba81cc8b219ce390fe83322c4bf0c9cb91ff2e7bd778a2e974aeb7901ef",
+      "bytes": 4236
+    },
+    {
+      "path": "lib/price-meter-comparison-permit.ts",
+      "sha256": "968750775021ec2e7d0a66ae58adef73e1ef46388877bfc467a3a5fc13675241",
+      "bytes": 954
+    },
+    {
+      "path": "lib/price-meter-comparison-request-parser.ts",
+      "sha256": "da2c8ee427203b81b803f44dc4bd16260353ac3231f7f92652a0166804955256",
+      "bytes": 10154
+    },
+    {
+      "path": "lib/price-meter-comparison-request.ts",
+      "sha256": "c4fc9337b1c281f07387d64b1b090b3fbcea2fb2dceada9712ebe93641c8f34c",
+      "bytes": 1631
+    },
+    {
+      "path": "lib/price-meter-confidence.ts",
+      "sha256": "3c66047244464a2a04c91a711003b13d25b915bf33017bfbbc1e73b7f318fe98",
+      "bytes": 922
+    },
+    {
+      "path": "lib/price-meter-construction-land-analysis.ts",
+      "sha256": "36410f2c34a59b03b7cfe2dd56fe11bb5391d544f007a4ee19423e0c60d6bd5a",
+      "bytes": 7208
+    },
+    {
+      "path": "lib/price-meter-construction-land-cohorts.ts",
+      "sha256": "adb364247ce32599b4d889016ce3503b440c908a39af035e172283782418b08c",
+      "bytes": 3753
+    },
+    {
+      "path": "lib/price-meter-construction-land-distribution.ts",
+      "sha256": "c4b80dc61e6eed68395407c943afb4b16dd83aeac2a3a1c59d5f2526c7e4cd47",
+      "bytes": 3570
+    },
+    {
+      "path": "lib/price-meter-construction-land-population.ts",
+      "sha256": "e822430723fea62b4fe91f76eaf326f5aa6b668ec86da999c47ac73ff19868d9",
+      "bytes": 5987
+    },
+    {
+      "path": "lib/price-meter-construction-land-relationship.ts",
+      "sha256": "ec812f11262f384b75c682791b73cf9a1287c76340c64fc20de8414d002b2529",
+      "bytes": 7730
+    },
+    {
+      "path": "lib/price-meter-construction-land-statistics.ts",
+      "sha256": "509a95f061b7a40f93e26b44623bcefd733d08ce3a9094788321702ff26ef402",
+      "bytes": 10739
+    },
+    {
+      "path": "lib/price-meter-construction-land.ts",
+      "sha256": "4809e17b695ec4eeba6d74b69d087e42dc6f6d184bac33333d432cf0c14e0096",
+      "bytes": 4712
+    },
+    {
+      "path": "lib/price-meter-cross-dimensional-analyzer.ts",
+      "sha256": "b210ac175d63e4af79560909a582fa574e16c823ebbe8d3ee0e82cc61df4a4f3",
+      "bytes": 21101
+    },
+    {
+      "path": "lib/price-meter-cross-dimensional-evidence.ts",
+      "sha256": "22f1bc296a999a8945997650ea7ab47dc0c35f9225c68d15b478b9892331a998",
+      "bytes": 6657
+    },
+    {
+      "path": "lib/price-meter-cross-dimensional-identity.ts",
+      "sha256": "63e3172d1995ae891ae1a3f23ee6acfe8a18d8e0bbfe691b934d8f9525fe0b38",
+      "bytes": 8117
+    },
+    {
+      "path": "lib/price-meter-cross-dimensional-outcomes.ts",
+      "sha256": "f97f82f8b291a257becad4d86c0bbb34308f30058c8080a575e9959af0abb268",
+      "bytes": 30782
+    },
+    {
+      "path": "lib/price-meter-cross-dimensional-population.ts",
+      "sha256": "2bd22799f631a0c9c34fbe3d6f71e25aeb8b5282b72df5022ee739f251d2762d",
+      "bytes": 12504
+    },
+    {
+      "path": "lib/price-meter-cross-dimensional-presentation.ts",
+      "sha256": "e5564a6342b465ef19f650813addb6c2ac4b710442b1a9bda6c58a5a1b7f0668",
+      "bytes": 7048
+    },
+    {
+      "path": "lib/price-meter-cross-dimensional-question.ts",
+      "sha256": "6897a38b8569f2e005fb6b95869c97ac0c19086f27b2887a376751c585d82e63",
+      "bytes": 17123
+    },
+    {
+      "path": "lib/price-meter-cross-dimensional-secondary-cohort.ts",
+      "sha256": "6714f2501a343b0da26eee0c89482e333475324522e8598b1a7b276faca67beb",
+      "bytes": 7327
+    },
+    {
+      "path": "lib/price-meter-cross-dimensional-synthesis.ts",
+      "sha256": "ebe0f702a5a45a2d6a44fa81411fae6804e6686ea10754650cacd6762cad022c",
+      "bytes": 12456
+    },
+    {
+      "path": "lib/price-meter-discovery-criterion.ts",
+      "sha256": "8a88974154daf1d06745451b47ae55f014ae0da5e8ff557d33ef21f6ff154c0b",
+      "bytes": 8383
+    },
+    {
+      "path": "lib/price-meter-discovery-engine.ts",
+      "sha256": "24c5a80fa0df6e671b037c545fd9b7e3683e4e22b15ad4582de4c7996298f735",
+      "bytes": 13890
+    },
+    {
+      "path": "lib/price-meter-discovery-loader.ts",
+      "sha256": "a18b55864762f293b8c8bbcb56079ba774db2bb635695f64b91fd2300f2e596e",
+      "bytes": 20630
+    },
+    {
+      "path": "lib/price-meter-discovery-population.ts",
+      "sha256": "dd98491f0cae087c916c070011563856fc03857a127891b3fc2223a3d8d37c82",
+      "bytes": 15505
+    },
+    {
+      "path": "lib/price-meter-discovery-request.ts",
+      "sha256": "be898694e8906dee94ae8230ad1393890691c9f8e1191100f236bd6240079730",
+      "bytes": 12777
+    },
+    {
+      "path": "lib/price-meter-distribution-interpretation.ts",
+      "sha256": "d4e9f443291e1301524ad1a86823cf8471b122a206a7eb0b94a59cb0a379b82a",
+      "bytes": 5463
+    },
+    {
+      "path": "lib/price-meter-distribution.ts",
+      "sha256": "9e2a0d2a5102ecc8733e028b571ca599d1c5511d8a621a1ee530de098ea829cb",
+      "bytes": 2050
+    },
+    {
+      "path": "lib/price-meter-engine.ts",
+      "sha256": "ec91ec65463a020b84ef514288b01793a2b5c1de508afa7990be46352329b5aa",
+      "bytes": 47703
+    },
+    {
+      "path": "lib/price-meter-geographic-conclusions.ts",
+      "sha256": "73504e230b29576529773a22c446d490cce6e5038b2fa9cce333b464acf6735d",
+      "bytes": 14123
+    },
+    {
+      "path": "lib/price-meter-geographic-distribution.ts",
+      "sha256": "54e8f8a14b557acfdb961d6ffd8204f7a7757fb7c17aee20eafea8d31417c984",
+      "bytes": 7731
+    },
+    {
+      "path": "lib/price-meter-geographic-scope.ts",
+      "sha256": "b2339111e2dbf7638ef6c573fdb747644f706f33f760756aa0df76e6ce8099b2",
+      "bytes": 962
+    },
+    {
+      "path": "lib/price-meter-geographic-statistics.ts",
+      "sha256": "64d5b9fc27fd214708006631d7f64621cb565b3bd7e0517bf19b9eae8639be6d",
+      "bytes": 6848
+    },
+    {
+      "path": "lib/price-meter-identity.ts",
+      "sha256": "317a9c819f7c924f839fb1976f92bcbc2fb8db34a06002ff1bd2c5572750f905",
+      "bytes": 23088
+    },
+    {
+      "path": "lib/price-meter-observation-builder.ts",
+      "sha256": "62ea1cb0da54a83f15d290582fd8be5ea7381b7e9f1da8179286df8361c1de77",
+      "bytes": 2652
+    },
+    {
+      "path": "lib/price-meter-observation-loader.ts",
+      "sha256": "0ba58c6775dba20d263e739d9d79c41321714b34b9aea7347bcae0ed4f9c59ec",
+      "bytes": 7185
+    },
+    {
+      "path": "lib/price-meter-ontology-membership.ts",
+      "sha256": "93a4b225be5082ad8a83e4522bc166ff0c6eb903685f9748a1fdc00bbe056d8b",
+      "bytes": 8054
+    },
+    {
+      "path": "lib/price-meter-property-position-construction-land.ts",
+      "sha256": "cc0732c7482ca82c01fc884940c91ef9b16b76b449100326d54574778d9fe97e",
+      "bytes": 2445
+    },
+    {
+      "path": "lib/price-meter-property-position-evidence.ts",
+      "sha256": "a0f16a6a273ce9c49f5028aacbc7f29f79d9a6f068fdcef7f59dc1194bd122e2",
+      "bytes": 10907
+    },
+    {
+      "path": "lib/price-meter-property-position-identity.ts",
+      "sha256": "c0004dfe7a335a743f326134188041475468fe519b0f8e6c9a86cded8e12435e",
+      "bytes": 7932
+    },
+    {
+      "path": "lib/price-meter-property-position-interval.ts",
+      "sha256": "2005f335a8c64ce1c5af25ad3f73fc76d9ac84b98d4a2c8996ed7a0ca39ee0c6",
+      "bytes": 4484
+    },
+    {
+      "path": "lib/price-meter-property-position-language.ts",
+      "sha256": "8f49c0ac3baac5e846ec6959fa745f9112fe0d61829280310333cd1ea81230e2",
+      "bytes": 2503
+    },
+    {
+      "path": "lib/price-meter-property-position-median.ts",
+      "sha256": "579a6ebc7636dafd946d42a84ec461c63f1c8f43fd9a06017850b5911cd8e86a",
+      "bytes": 3547
+    },
+    {
+      "path": "lib/price-meter-property-position-normalization.ts",
+      "sha256": "eb33b6b9d09aeca3e17a468a6d1255fb35bacc58b906dd9d44726d49cd961359",
+      "bytes": 4321
+    },
+    {
+      "path": "lib/price-meter-property-position-percentile.ts",
+      "sha256": "1d4b0f20dfb617077da1c398c92f48812088e78eeb40996c17901ea9b05fae25",
+      "bytes": 3710
+    },
+    {
+      "path": "lib/price-meter-property-position-population.ts",
+      "sha256": "749c5d6aec73b252838624ac101427a217022cb29b1dad6ff2e83c93262769fc",
+      "bytes": 10571
+    },
+    {
+      "path": "lib/price-meter-property-position-tail.ts",
+      "sha256": "18f7d8521b7f1cdb4cfc4a52df276f968327a4db74da58d0d409ae3fd4e8b5fa",
+      "bytes": 6101
+    },
+    {
+      "path": "lib/price-meter-property-price-vs-median.ts",
+      "sha256": "a50fcda35876e44d74846ff1bbb587cd17e7fc538a8902365773973261e61817",
+      "bytes": 3001
+    },
+    {
+      "path": "lib/price-meter-size-relationship-math.ts",
+      "sha256": "a2be3ced5eb626cede7294de261b7bbb909780d80f9a3f75cdcdd7a6595d9970",
+      "bytes": 10433
+    },
+    {
+      "path": "lib/price-meter-size-relationship-population.ts",
+      "sha256": "755870ad189c99f540f34800cabeb37736e93e2f2ce0682120e653ccb61f3900",
+      "bytes": 5425
+    },
+    {
+      "path": "lib/price-meter-size-relationship.ts",
+      "sha256": "f6565ee62c454f591d10116eea7a5e5461d600ecefacb046951c9e4823b242a3",
+      "bytes": 3966
+    },
+    {
+      "path": "lib/price-meter-statistic-identity.ts",
+      "sha256": "25b0a70d6ef82e2e42586401bda13c66aa3c9a51775f457e8a09ffb5254219d3",
+      "bytes": 3542
+    },
+    {
+      "path": "lib/price-meter-transaction-cohort.ts",
+      "sha256": "6b5387150d7002bc8b0e1ba613f086c7172866d5c8af7e82bb2342504d952c73",
+      "bytes": 1992
+    },
+    {
+      "path": "lib/price-meter-year-built-cohorts.ts",
+      "sha256": "4ecb6f15ce0af659ecdcacea6a2194764239450f3494f7fe545a6fc1a1c40c3a",
+      "bytes": 2167
+    },
+    {
+      "path": "lib/pricing-strategy-engine.ts",
+      "sha256": "aaed3b2d5bb6a08a2aca1c58fd8bb35c762351e8be9a51c6b102decebb0abacd",
+      "bytes": 7470
+    },
+    {
+      "path": "lib/promotion-catalog.ts",
+      "sha256": "aca565f1ac0e00c7a1409854c41eda920ac683999e4f13d0cee7c6d4b8484108",
+      "bytes": 10512
+    },
+    {
+      "path": "lib/promotion-engine.ts",
+      "sha256": "04254be8ee629202b9b19f378252bdd4bdf4ca25170e0efa89d0f58d65c249cb",
+      "bytes": 22393
+    },
+    {
+      "path": "lib/promotion-history.ts",
+      "sha256": "bdd3bb59feebcdb847dc796552679416f41b9e1991b069a75b34c56de3b00401",
+      "bytes": 8699
+    },
+    {
+      "path": "lib/promotion-intelligence-engine.ts",
+      "sha256": "70f3e24df635755a1b2c0b8b37b0beb7c712f7d69136f700c541371a63c9291b",
+      "bytes": 26416
+    },
+    {
+      "path": "lib/promotion-intelligence-evidence.ts",
+      "sha256": "9e83da506cca5f0bb65c0c271ff2856e0acd83434c90849272ca3481f33a746a",
+      "bytes": 19423
+    },
+    {
+      "path": "lib/promotion-operations.ts",
+      "sha256": "e2f69912206285bbb55f238fb6812381c7e9278fbcff1a46bf63693734c5bea1",
+      "bytes": 6100
+    },
+    {
+      "path": "lib/promotion-performance-engine.ts",
+      "sha256": "cc339d3758b0961d5d5cc75843ba31d9f2b556f730e666f94402fbfce771cd11",
+      "bytes": 25368
+    },
+    {
+      "path": "lib/promotion-placement.ts",
+      "sha256": "3c1b28b67ed69daa53a806b20e62c14065dd92ff25244d96798da3318772fa50",
+      "bytes": 8478
+    },
+    {
+      "path": "lib/property-comparison-selection.ts",
+      "sha256": "e9c4160f410a90a563054979832add30698a3e7802794bf6d293a04df887852f",
+      "bytes": 3024
+    },
+    {
+      "path": "lib/property-comparisons.ts",
+      "sha256": "e30067c86df0000e24545deb405d78a809453ceaa1da6ca5750cd3ea8ede9753",
+      "bytes": 9440
+    },
+    {
+      "path": "lib/property-notes.ts",
+      "sha256": "5dc6ce1d8a327aed24ad4f4b01a7fb6566dc5aca72e2f74dfe75495521c5224c",
+      "bytes": 4928
+    },
+    {
+      "path": "lib/providers/bank-transfer-provider.ts",
+      "sha256": "409da021b97c4a28119047958f2a67fc3a974ab5cddf40bf7494efe155668594",
+      "bytes": 11685
+    },
+    {
+      "path": "lib/providers/sinpe-provider.ts",
+      "sha256": "3c69ea4bc78e7283e67f38c7dbff47f76c4a9af3b4447ed0f2e05060cbc8091b",
+      "bytes": 11626
+    },
+    {
+      "path": "lib/public-listing-monetary-projection.ts",
+      "sha256": "a4f5c84d1b118223eaf63b9ab5f166307deee623ec3a8c9e1d3d8362a6e787aa",
+      "bytes": 1461
+    },
+    {
+      "path": "lib/public-listings-server.ts",
+      "sha256": "5114ec01ccd5f0253589358f0db80a826be27c92adb8bbfeae68a0b05ee0a062",
+      "bytes": 3819
+    },
+    {
+      "path": "lib/public-promotion-evidence.ts",
+      "sha256": "b570f170df518ef7aa58421385f75830bc2734af9053c6376e8faddb48ae4df6",
+      "bytes": 7708
+    },
+    {
+      "path": "lib/purchase-engine.ts",
+      "sha256": "193d2000c0a8328f51cf0a04c685f6b9e2a21ada96b8dfed3a96ce21d052ea79",
+      "bytes": 16454
+    },
+    {
+      "path": "lib/related-markets-engine.ts",
+      "sha256": "3573b791d86a4ac475382fdb8266e3359a68d8226d077eb67253f56f452bcd2e",
+      "bytes": 1965
+    },
+    {
+      "path": "lib/saved-analyses.ts",
+      "sha256": "f41bef6dff35dd74e73a065eb106b0caba4ad954f94c35dc0e3f70f6e19bf846",
+      "bytes": 4618
+    },
+    {
+      "path": "lib/saved-search-alerts.ts",
+      "sha256": "a4dc5d94aaebec3affda61eb377631b3598a36f9871a0392dbe46c7e879c174f",
+      "bytes": 10838
+    },
+    {
+      "path": "lib/saved-searches.ts",
+      "sha256": "4d1c56f11c6aad243bbee9b12c003dbd8d08f027a49bf5effe1ccbe056da02a8",
+      "bytes": 4094
+    },
+    {
+      "path": "lib/schema-engine.ts",
+      "sha256": "1a83bfd2fda025981c7f8fc69a40b2638716b258975a5e45ce783588cdbf4ca1",
+      "bytes": 10222
+    },
+    {
+      "path": "lib/schema/buildHomePageSchema.ts",
+      "sha256": "fa09f7a1c4ddf31ba471fd72b661ac771f453a0a2d1269612ffc985a55c267fc",
+      "bytes": 3657
+    },
+    {
+      "path": "lib/schema/buildOntologyNode.ts",
+      "sha256": "c5b6f647be281e852d311a25c767bcc94b3bd71f525e58bbe18b6f7e1cf07c1f",
+      "bytes": 1073
+    },
+    {
+      "path": "lib/schema/buildPlaceNode.ts",
+      "sha256": "75328820b1525f4552e95909b3c25f3a734ed9fe87fc83dba1e2795b0e7bccbf",
+      "bytes": 1170
+    },
+    {
+      "path": "lib/schema/buildRelationshipNode.ts",
+      "sha256": "5b2a5ec7ed0cc373f9545a6cbd89762059fd892e705d4086df744cc83644cd36",
+      "bytes": 1030
+    },
+    {
+      "path": "lib/statistics-engine.ts",
+      "sha256": "bedeae1270666e65efd2c6a4b22e48b211f733f4d9cd3356f6ab7e6df536f326",
+      "bytes": 37259
+    },
+    {
+      "path": "lib/storage/analysis-storage.ts",
+      "sha256": "9c44e53096759eda8425e0936634b235be6b6012eb5d3ff4ae8811cc3546683e",
+      "bytes": 1118
+    },
+    {
+      "path": "lib/storage/keys.ts",
+      "sha256": "202e0ac963d1514ca9675de4a9e741f2aae94bb78dc748810c8f4db92e02b301",
+      "bytes": 191
+    },
+    {
+      "path": "lib/storage/local-storage.ts",
+      "sha256": "fa0e576288a99aef27b1a33c92d27392411282855667241d4ef32000853b8938",
+      "bytes": 566
+    },
+    {
+      "path": "lib/storage/storage.ts",
+      "sha256": "db72d8ea315a532e313fcc19b23fc1e2e3bc711c75a13ad459df2dbdf7eb8c59",
+      "bytes": 162
+    },
+    {
+      "path": "lib/supabase-admin.ts",
+      "sha256": "54b1d03ad6ef621e299ae94d49434c4eaae4d91e986583a0adfa52bcdeb6a62c",
+      "bytes": 582
+    },
+    {
+      "path": "lib/supabase-server.ts",
+      "sha256": "ab636c5e372dfdbb7085558843ecdfcdb7626dc7bf05fd10bb3ec59d835a544f",
+      "bytes": 1068
+    },
+    {
+      "path": "lib/supabase.ts",
+      "sha256": "7de22d47b4a2a0bcbc8bbf85c1986275034459aab163ca1a56c6f48d90269029",
+      "bytes": 246
+    },
+    {
+      "path": "lib/token-canonical-creation.ts",
+      "sha256": "8ccaa7a742c2948c98ad6de4ce57386258bd84d9584a99dcae3df2a691970da6",
+      "bytes": 5276
+    },
+    {
+      "path": "lib/valuation-confidence-engine.ts",
+      "sha256": "95b6f779e567e02eb82ea5902d5cfccc8737f927b532422d4d96ae52148c1b40",
+      "bytes": 1508
+    },
+    {
+      "path": "lib/valuation-engine.ts",
+      "sha256": "54268c9dda536459c550bd2e0e36745e0ef748cc322135b0012bce9e28d2574d",
+      "bytes": 12935
+    },
+    {
+      "path": "lib/whatsapp.ts",
+      "sha256": "9fefd449ba34004468caee72d565969f00ae83c4195d15bbd5baef51d635d93d",
+      "bytes": 986
+    },
+    {
+      "path": "next.config.ts",
+      "sha256": "9159f73e5dbd531d3c798132b4494ab92b4299914c2bb195619e0c228b4f2d8c",
+      "bytes": 149
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "a355482947abebcff0974a661432244e7e1d734d0d33870edf0a5fa40c69537e",
+      "bytes": 346965
+    },
+    {
+      "path": "package.json",
+      "sha256": "c91c2b506bea4f6288e228eb09fb6327e0d675de71f3e08d75cf9ee55ffa3420",
+      "bytes": 2181
+    },
+    {
+      "path": "scripts/verification/abandoned-token-cleanup.sql",
+      "sha256": "1ccfb603a5a2b38c2e7687fd4288cae72215ea3b1838179cfda4dd9156061182",
+      "bytes": 2183
+    },
+    {
+      "path": "scripts/verification/activation-disposable-authority.ts",
+      "sha256": "b0a3de28ac3f5d19b82cd3905ddfdc6becd25bc8ad2cdf84fe42c60faa61d9c0",
+      "bytes": 318
+    },
+    {
+      "path": "scripts/verification/activation-disposable-runner.cjs",
+      "sha256": "2d173404076f380b438b2dac6927171bed88b51884d5faf4f9475b31b50db3c4",
+      "bytes": 11494
+    },
+    {
+      "path": "scripts/verification/activation-disposable-schema.sql",
+      "sha256": "00acde53ea58e13c7ac7eb57cf08d501fe5e41f6df970365bc49f7485e0f5dad",
+      "bytes": 1242
+    },
+    {
+      "path": "scripts/verification/activation-engine.ts",
+      "sha256": "b2ee3354e19ef492e64160af656c3d39fd2af8e17cd052389e076cff834b9876",
+      "bytes": 20010
+    },
+    {
+      "path": "scripts/verification/aggregate-promotion-intelligence.ts",
+      "sha256": "ea72cda585af3300f6468748eec986549811bc0d8cebeda2f3075f8592b8586a",
+      "bytes": 38089
+    },
+    {
+      "path": "scripts/verification/approval-engine.ts",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "scripts/verification/canonical-creation-authority.sql",
+      "sha256": "f9a358b3b71fda10efc8c0a6227c4548bc1a38a4e1f64c5fe8e77bf28deaef88",
+      "bytes": 43097
+    },
+    {
+      "path": "scripts/verification/canonical-creation-concurrency.py",
+      "sha256": "905c882dcaf5ccff7593ce9a18631564b3c2323971496cfe803595f9c917c23f",
+      "bytes": 9473
+    },
+    {
+      "path": "scripts/verification/canonical-domain-concurrency.py",
+      "sha256": "781f98daebce7a29298166956bf69ae9343709265a98715e8e4441496358878b",
+      "bytes": 6590
+    },
+    {
+      "path": "scripts/verification/canonical-domain-machinery.sql",
+      "sha256": "c50d7e4d205a642dc2852012f1bc18c146bdbe39e55200aea8b1b24e4e87455f",
+      "bytes": 35550
+    },
+    {
+      "path": "scripts/verification/canonical-foundation-concurrency.py",
+      "sha256": "10f6b873b08cc564f62beb1b4c622361daae950e8738d16e40ffb5fef547112b",
+      "bytes": 4705
+    },
+    {
+      "path": "scripts/verification/canonical-foundation.sql",
+      "sha256": "077423ceb6846e347f81e4638a991a7f96e088e20d87c0824489bf9fff052038",
+      "bytes": 26018
+    },
+    {
+      "path": "scripts/verification/canonical-listing-write.sql",
+      "sha256": "9cd39f63e0f82d05cefb558d0954fe2ce77430766f751215baf92c5883d0a274",
+      "bytes": 11981
+    },
+    {
+      "path": "scripts/verification/canonical-reader-boundary.sql",
+      "sha256": "f40bb1615b0245e8eaf7901aed41da5de633cacb71e2d94b8b2ab56d28f9e583",
+      "bytes": 11668
+    },
+    {
+      "path": "scripts/verification/canonical-reader-closed-regression.py",
+      "sha256": "aa76d7bb5229c92c8415b9ec03ee4c34451bef0074fffa77a3d6c7545ed597f2",
+      "bytes": 1830
+    },
+    {
+      "path": "scripts/verification/canonical-reader-downstream.cjs",
+      "sha256": "3163de3508edef627e5e695586ea723f367686289c1bc4b9ea62d5128cc5951e",
+      "bytes": 3067
+    },
+    {
+      "path": "scripts/verification/canonical-reader-import-graph.cjs",
+      "sha256": "5a20cfd902705b90906d441a23d5c410ae1ecbc8f3c619ff4bc5cb39f7e17f81",
+      "bytes": 2032
+    },
+    {
+      "path": "scripts/verification/canonical-reader-lifecycle-apply.cjs",
+      "sha256": "0ea16928c2c10f0052589ead7750fb4f7a68981d0189a3da6539d9756765e4a9",
+      "bytes": 5133
+    },
+    {
+      "path": "scripts/verification/canonical-reader-public.cjs",
+      "sha256": "56507d16cf647763699701b555a7682e3a887d92754233c3528ead331aa87065",
+      "bytes": 3438
+    },
+    {
+      "path": "scripts/verification/canonical-readers.cjs",
+      "sha256": "f5b81e7d9c247cdc4182a419c75aa5256201dcfd3063240c31c5fd0a0cc0c1c7",
+      "bytes": 14082
+    },
+    {
+      "path": "scripts/verification/canonical-writer-permanent-delete.cjs",
+      "sha256": "50f02b7080b392231e6ff39e1cc1b4bf0bb62f73a49ee34ab9d6179a9a9507f0",
+      "bytes": 7099
+    },
+    {
+      "path": "scripts/verification/commercial-capacity-application.cjs",
+      "sha256": "0e4b04a2c03ddfcb2ac108c6f69e6273fcdad1b6344282b70d969fea4011c32a",
+      "bytes": 3074
+    },
+    {
+      "path": "scripts/verification/commercial-capacity-concurrency.py",
+      "sha256": "fa31ac6a1408cbdc9eff8c6438862b829b93f0d5f14d883c317a66b4a86fd14c",
+      "bytes": 8738
+    },
+    {
+      "path": "scripts/verification/commercial-capacity-coordination.sql",
+      "sha256": "78bfdc1539bce57d6f4664807cf9ff97240449327804e7e534ded11f3d4f6c60",
+      "bytes": 32726
+    },
+    {
+      "path": "scripts/verification/commercial-disposable-authority.ts",
+      "sha256": "fcb928af105f84505fe4ead08e09a9f1da593cef64417651e7c2ae26ef4e92bf",
+      "bytes": 363
+    },
+    {
+      "path": "scripts/verification/commercial-disposable-runner.cjs",
+      "sha256": "dc91210ff8cf7f39c8f595b1a9e1e9e24fefe6f32f6b19fa2d74e1c087b645e9",
+      "bytes": 10057
+    },
+    {
+      "path": "scripts/verification/commercial-provider.ts",
+      "sha256": "32478d8dd2dcff7b1f9be23a4a79b95bdf7046037dbadf49f04afd13e6290953",
+      "bytes": 12204
+    },
+    {
+      "path": "scripts/verification/commercial-resolver.ts",
+      "sha256": "dcb20480fccda903a466cb87b3cabc673109dee5147311635352eb750827f902",
+      "bytes": 15188
+    },
+    {
+      "path": "scripts/verification/commercial-timeline.ts",
+      "sha256": "272aa357dde4fe8644b6ade793c3bf0d7ad4920802d6c786cab4033cd66a7c56",
+      "bytes": 25519
+    },
+    {
+      "path": "scripts/verification/comparable-cohort.ts",
+      "sha256": "0b91c49035472c5ce558057fd4de3d107f65c2d3ea3a721144a6a4e998d89fad",
+      "bytes": 20890
+    },
+    {
+      "path": "scripts/verification/csv-evidence-concurrency.py",
+      "sha256": "9092bc5aa8b8bb2c94defd70a1bf857041e1150cf576cb5b0b2167d2a37ecbd6",
+      "bytes": 2816
+    },
+    {
+      "path": "scripts/verification/csv-evidence.sql",
+      "sha256": "3353fd6a614547b27527f9856df127a60f6267c792bed716570a4feccca0c0b2",
+      "bytes": 5067
+    },
+    {
+      "path": "scripts/verification/csv-ingestion.cjs",
+      "sha256": "bfcbb063b369ac0d52d88a30238999ea6a8c16aaa4ec39ae71817faa56840ced",
+      "bytes": 6898
+    },
+    {
+      "path": "scripts/verification/csv-initial-publication.sql",
+      "sha256": "44d2e5af1d346f030b0709f830c9a17cdc96a49b1a7d30b1ab21ede3bb683d7d",
+      "bytes": 7122
+    },
+    {
+      "path": "scripts/verification/csv-normalizer-provenance.cjs",
+      "sha256": "edc5cfc8fe97ce6be1e4deffafad3fc3b36270cfbdfcb74dc27f219ac8465f25",
+      "bytes": 2981
+    },
+    {
+      "path": "scripts/verification/csv-source-references.sql",
+      "sha256": "ff2f2cc57d3628cf2b1f32aa234a1f2f1000da677d29a65c0c996a40c5258f21",
+      "bytes": 4405
+    },
+    {
+      "path": "scripts/verification/customer-duplicate-concurrency.py",
+      "sha256": "f51cf9942ad21abb6ac7cf137760d9f5cb436724b9a2a69d6b8069b43db1f23e",
+      "bytes": 2967
+    },
+    {
+      "path": "scripts/verification/customer-duplicate-media.cjs",
+      "sha256": "ec60ac5302ad9e517960f86d7419f1a085dd9029f6f22769f9436a08d2b46514",
+      "bytes": 6692
+    },
+    {
+      "path": "scripts/verification/customer-duplicate-ui.cjs",
+      "sha256": "39172e5c5bc655f574e6b7a99ca0d5796df339ee4e5870940abc64e2e9e53565",
+      "bytes": 1152
+    },
+    {
+      "path": "scripts/verification/customer-duplicate.sql",
+      "sha256": "7bb4b3d6ea8684d0b4838f5d9ce583fc55688e3983250076b2e6d3413d11a9be",
+      "bytes": 7648
+    },
+    {
+      "path": "scripts/verification/customer-edit-classification.sql",
+      "sha256": "9e5e1788f68d3dfbe0c069212a33b75e9ed7afba41befca28d72738df8f22dfb",
+      "bytes": 9591
+    },
+    {
+      "path": "scripts/verification/customer-edit-concurrency.py",
+      "sha256": "870654671453dc65ac31f65caef85adc9f17d6ad4123a1e4ac4d0bce28684ddf",
+      "bytes": 2872
+    },
+    {
+      "path": "scripts/verification/customer-edit-integration.cjs",
+      "sha256": "1504bed19d5b36dae5c0914d382b97ace8985e040f0fd358dbfc39c70a6a3686",
+      "bytes": 8262
+    },
+    {
+      "path": "scripts/verification/customer-lifecycle.cjs",
+      "sha256": "d60fe93e99b0d9c0c6ed7d1a068b204ea1bc0da219f77668e68560e8bd46dfe9",
+      "bytes": 3442
+    },
+    {
+      "path": "scripts/verification/customer-lifecycle.sql",
+      "sha256": "2e6cc086042268eb624f6e3918195f39eb9a97c534afddd976201fa708810e5b",
+      "bytes": 2815
+    },
+    {
+      "path": "scripts/verification/customer-measurement-clear-concurrency.py",
+      "sha256": "6c70accba10d582ec50ea88fbc4980e3fce65a86aa555078eeeedb4e2ed1cacb",
+      "bytes": 2647
+    },
+    {
+      "path": "scripts/verification/customer-measurement-clear.cjs",
+      "sha256": "4858a80ec2c26ebfe5573c5402c1ef567866cd09f87f64e415713b4624fcf566",
+      "bytes": 3763
+    },
+    {
+      "path": "scripts/verification/customer-measurement-clear.sql",
+      "sha256": "6d12699df2bd123d1b99f1965bddf44ca7e87be46df9d500630651e27da8368b",
+      "bytes": 5905
+    },
+    {
+      "path": "scripts/verification/customer-publication-callers.cjs",
+      "sha256": "70fb7f706fecb1cc075e402ae469309efe2a73d20bc44167b9e1c9439b90be89",
+      "bytes": 4226
+    },
+    {
+      "path": "scripts/verification/customer-publication-entitlement.sql",
+      "sha256": "63854c8b1cd8ebe28c7c2e340c24423de603511970ec05e2bbf46d997ec12742",
+      "bytes": 7926
+    },
+    {
+      "path": "scripts/verification/customer-road-distance.cjs",
+      "sha256": "a1b783cecd7eb9413a797ac3bee011ac7d59db97cc9863c5279b9c617a40d620",
+      "bytes": 3602
+    },
+    {
+      "path": "scripts/verification/image-detach-concurrency.py",
+      "sha256": "8cfed8e1e43735cfb8b94b010e7ea3341d1e7a5e5548524945488e5cbc0f085f",
+      "bytes": 2023
+    },
+    {
+      "path": "scripts/verification/image-detach.cjs",
+      "sha256": "031dc25d4cd6b0ddc590f21feae68471c72193a2f223e6aa10058da1bf8e2ea6",
+      "bytes": 4041
+    },
+    {
+      "path": "scripts/verification/image-detach.sql",
+      "sha256": "748cbd1d20adb15ac3ad5bd4271b3557f340eddd19a7ba521a08cce7a1eb7ae9",
+      "bytes": 3997
+    },
+    {
+      "path": "scripts/verification/import-operator-authority.sql",
+      "sha256": "5735fbfc6d89cad8d730f4624c4fad01f53983bdd6124bac2e29b6afbe9b05a8",
+      "bytes": 4422
+    },
+    {
+      "path": "scripts/verification/listing-lifecycle.ts",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "scripts/verification/media-caller-containment.cjs",
+      "sha256": "0e29eac5a4f443a5f76b187c2a19d624eb23685589ae8e35374ef0e86a0cd701",
+      "bytes": 1750
+    },
+    {
+      "path": "scripts/verification/ontology.ts",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "scripts/verification/ordinary-image-attachment.cjs",
+      "sha256": "8cb718f1321dc1e6490a22abaadd1b795fdb776308730718f906d7f2ff588a8b",
+      "bytes": 4097
+    },
+    {
+      "path": "scripts/verification/ordinary-upload-concurrency.py",
+      "sha256": "747906a61041cb0b96f4ed979a73dacf3fab221a1c7b40d61d7f2ed0a7b2a0cf",
+      "bytes": 2119
+    },
+    {
+      "path": "scripts/verification/ordinary-upload-fixture.sql",
+      "sha256": "fd04181c0199b76dd9c18feb10514819407c6fde4b380b2c8aeb3dc191490d63",
+      "bytes": 487
+    },
+    {
+      "path": "scripts/verification/ordinary-upload-operation.cjs",
+      "sha256": "74fab1550b352fec20b4074dee7c454952bf683c5ef1ff27ef19e7e9719bb70a",
+      "bytes": 4603
+    },
+    {
+      "path": "scripts/verification/ordinary-upload.sql",
+      "sha256": "6580fad6985a89d95639e1dd607e648d10782587207bd6a6365f191ce326aef3",
+      "bytes": 4008
+    },
+    {
+      "path": "scripts/verification/promotion-history.ts",
+      "sha256": "0976167caa37ffa7aa53e46b3e058e2641ef88d383147ce00819b1e86c61d7bd",
+      "bytes": 23455
+    },
+    {
+      "path": "scripts/verification/promotion-intelligence.ts",
+      "sha256": "b1ca36bae036b201ae0b0f5ab89c9dd1f4ee0ce016a1bf294d013b68d3b447d6",
+      "bytes": 42001
+    },
+    {
+      "path": "scripts/verification/promotion-performance.ts",
+      "sha256": "3d6086077afc7ea8702baeeccde761d49a6c5c46b3405bdb06b70cf826f45219",
+      "bytes": 28996
+    },
+    {
+      "path": "scripts/verification/promotion-placement.ts",
+      "sha256": "71c36564067f89d271ac232a88441d47f7aebf27ad2bdc6c7befdb6d5ae0e709",
+      "bytes": 9560
+    },
+    {
+      "path": "scripts/verification/provider-disposable-authority.ts",
+      "sha256": "8772bb2484f4cca912a25daf73b502ea36c4ec15b8418645c46d7dc22e1ef7ae",
+      "bytes": 339
+    },
+    {
+      "path": "scripts/verification/provider-disposable-schema.sql",
+      "sha256": "e8970279808c617ee1a64c9ee0e6f102083f32cd20a15cb0c84ab88e602de639",
+      "bytes": 496
+    },
+    {
+      "path": "scripts/verification/public-evidence-disposable-authority.ts",
+      "sha256": "a4507d5c19d47776bd9372ea5f2dd7c7d077e8b50578aaec124c4663979bc249",
+      "bytes": 246
+    },
+    {
+      "path": "scripts/verification/public-promotion-evidence.ts",
+      "sha256": "fa5ae6049ac1b8cfdc9daf0150d1badea25d6aef8548a7c5799ac1e9ab4ce071",
+      "bytes": 22932
+    },
+    {
+      "path": "scripts/verification/publisher-coordination-concurrency.py",
+      "sha256": "009ba894feda950c4b5d06db298a652ad298851d56975eee59d29f524b52c0db",
+      "bytes": 6711
+    },
+    {
+      "path": "scripts/verification/publisher-coordination.sql",
+      "sha256": "c45ca8f62369bf2e3d524e9d4e691003be753efd38ad4549a02644572347c513",
+      "bytes": 15879
+    },
+    {
+      "path": "scripts/verification/purchase-engine.ts",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "scripts/verification/retired-listing-writers.cjs",
+      "sha256": "6ca455fd7e42a50567b275390128a7b74b5c7e97044206eb0d7e57ca822aedcc",
+      "bytes": 926
+    },
+    {
+      "path": "scripts/verification/retired-ontology-writer.cjs",
+      "sha256": "3ab3c4a75d791899f0a1ac88a8346571dc514b7b2080cbe41ee33521798f2fca",
+      "bytes": 2155
+    },
+    {
+      "path": "scripts/verification/s10-csv-adapter.cjs",
+      "sha256": "b9a16fdc2237ab993bacaa961b3aa3e389f3e9bff1050bb671f0531e9df37ce6",
+      "bytes": 6712
+    },
+    {
+      "path": "scripts/verification/s10-source-ingestion.cjs",
+      "sha256": "43058ac59e2c3485550ac3a675686498003f4627c4364702170bde32bc55e308",
+      "bytes": 18626
+    },
+    {
+      "path": "scripts/verification/s8-legacy-retirement.cjs",
+      "sha256": "51e94395426d58c374bfe0690d1cfe37c3338bfd5a8306998e65f05296fb1c9f",
+      "bytes": 2519
+    },
+    {
+      "path": "scripts/verification/s9-browser-result.cjs",
+      "sha256": "2e059fb6ec59c7237efc6fd29e9ff3ead95bf9348af8e85e525903c4e3ed0b57",
+      "bytes": 4226
+    },
+    {
+      "path": "scripts/verification/s9-canonical-chain-continuation.cjs",
+      "sha256": "88f66da360bd9c941c9a630a14b882353f77e962f88b5e085666e892f2c10072",
+      "bytes": 8079
+    },
+    {
+      "path": "scripts/verification/s9-canonical-chain.cjs",
+      "sha256": "31e32588c15f54bfdb64cc369f2e061e7f6824bc0ae61f98ee725796e3bc0aaf",
+      "bytes": 9203
+    },
+    {
+      "path": "scripts/verification/s9-capacity-classification.cjs",
+      "sha256": "494ea0b0a2a79d26d1bc1491b74708a52e5d4c3cb4ee0e5e895d9dd02abbe80f",
+      "bytes": 5184
+    },
+    {
+      "path": "scripts/verification/s9-commercial-integration.cjs",
+      "sha256": "964ea8be023b79e12ef70377ec41b037c12a86feded8401ac9e009606a0b80eb",
+      "bytes": 3674
+    },
+    {
+      "path": "scripts/verification/s9-comparison-gate.cjs",
+      "sha256": "cd6e314d95e862be17189ae67fc858cb493664757217914f4d6790c7ea5c6d3b",
+      "bytes": 4066
+    },
+    {
+      "path": "scripts/verification/s9-comparison-population.cjs",
+      "sha256": "3a2632d9bc3e3ead80e81d79942d3632cd27401f761319b2ae2e4f3ca7e92056",
+      "bytes": 11717
+    },
+    {
+      "path": "scripts/verification/s9-csv-integration.cjs",
+      "sha256": "9908831872fb56a62c4865e0190ecbdccf03b4b51c2419a7d0200e43978df9f0",
+      "bytes": 5945
+    },
+    {
+      "path": "scripts/verification/s9-media-integration.cjs",
+      "sha256": "75ef75e1cb068ea2df6c3224100cfbb44b9187adcd570b593947f4eaccdb1f94",
+      "bytes": 4504
+    },
+    {
+      "path": "scripts/verification/s9-media-lifecycle.cjs",
+      "sha256": "29e74a86d1455351ca4331d91fd00046033778b0070611103e8946895bddc6fc",
+      "bytes": 4276
+    },
+    {
+      "path": "scripts/verification/s9-ordinary-acquisition.cjs",
+      "sha256": "a615f8c8d0a278332544d0e130e16208011e7246258cba33f6c2a20a68e33f0a",
+      "bytes": 11656
+    },
+    {
+      "path": "scripts/verification/s9-ordinary-engine-probe.cjs",
+      "sha256": "3828eb81a0cd51fce9b4aebc6ed86c764a8f57c78647b19caec1ff55d583e33f",
+      "bytes": 2916
+    },
+    {
+      "path": "scripts/verification/s9-phase11.cjs",
+      "sha256": "83e42cbb9c9f9aa844fb60e927599a94b9f9e93248552c5d69885d9b2f42b7ea",
+      "bytes": 4675
+    },
+    {
+      "path": "scripts/verification/s9-phase12.cjs",
+      "sha256": "c85bb2929d85e8b0e82caf1cb46e296c5b0076df764ab6249520e08d535c8641",
+      "bytes": 4375
+    },
+    {
+      "path": "scripts/verification/s9-phase12a-integration.cjs",
+      "sha256": "76b1652422697f0e0490325ab300ade798c2eabc8c22ffa40c4492e33ddb4a6e",
+      "bytes": 11175
+    },
+    {
+      "path": "scripts/verification/s9-phase12a-membership.cjs",
+      "sha256": "8fc0c8c40a04319eea0032e83f3b7772dbc97e9e7d7a6f6f5f69758d8cca9f1c",
+      "bytes": 3536
+    },
+    {
+      "path": "scripts/verification/s9-phase12a-year-probe.cjs",
+      "sha256": "e83cab2b957a0b619a85dd93eadb1d387da5539d6e4066d6a238fb140ae9e147",
+      "bytes": 5764
+    },
+    {
+      "path": "scripts/verification/s9-ppm2-authorization.cjs",
+      "sha256": "f84da215447b40aef3a21f8cfc481d5b67a9006d3c672cd6c135c133007093c0",
+      "bytes": 3703
+    },
+    {
+      "path": "scripts/verification/s9-token-integration.cjs",
+      "sha256": "ff05bfb10dc3a70dccfa31f3e07e51a21e34352a22d6de718ecc03d56125db2e",
+      "bytes": 5649
+    },
+    {
+      "path": "scripts/verification/source-observation-propagation.cjs",
+      "sha256": "a1804d4618b74c3cbb8cdeb1e5eb5460c35f305b81ab8fe47a8e8b1409cf667f",
+      "bytes": 2577
+    },
+    {
+      "path": "scripts/verification/source-property-type.cjs",
+      "sha256": "cdf816138394687c94b3603b235f2f31d8c4be8cbbc9247734818297bff40655",
+      "bytes": 4113
+    },
+    {
+      "path": "scripts/verification/timeline-disposable-authority.ts",
+      "sha256": "9b8a70cf04f2d81b591edee5ade966e0c00f47af0e5a431775fbcdf69621ec3c",
+      "bytes": 274
+    },
+    {
+      "path": "supabase/migrations/001_market_intelligence.sql",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "supabase/migrations/002_canonical_geography_structural_invariants.sql",
+      "sha256": "a672f6efa8587c800d7fa8856f650eb8f6b9bd487b5b22921567ce123fd489a3",
+      "bytes": 1406
+    },
+    {
+      "path": "supabase/migrations/003_canonical_listing_write_boundary.sql",
+      "sha256": "6faa62f709971407113b82a0e6339e4501ce0f3fcd19956eb61b1b02f9f5c577",
+      "bytes": 10974
+    },
+    {
+      "path": "supabase/migrations/004_dormant_canonical_listing_foundation.sql",
+      "sha256": "b028db71b00a1f0af24c773b077ebf75e0f6be08b40889a5fcac4b2b6bcd3604",
+      "bytes": 21852
+    },
+    {
+      "path": "supabase/migrations/005_dormant_publisher_coordination.sql",
+      "sha256": "58a233408778aef4f2c53947db516dfc4b491b2503db47f8bc7d95be40508201",
+      "bytes": 8732
+    },
+    {
+      "path": "supabase/migrations/006_canonical_domain_machinery.sql",
+      "sha256": "73ed1b776a787af61b35cf03cb91eb4e8135f13fff446e4f6a61be2a9721b891",
+      "bytes": 42118
+    },
+    {
+      "path": "supabase/migrations/007_canonical_creation_authority.sql",
+      "sha256": "521e67d7c1ebd619c3b1d7afd4817b94542eba9775515c402c17e7e8fa3be0da",
+      "bytes": 28533
+    },
+    {
+      "path": "supabase/migrations/008_commercial_capacity_coordination.sql",
+      "sha256": "4dfa770194f96f0b659b54deda8c31966dea4fc28353f74321adc31c724ffdc0",
+      "bytes": 20772
+    },
+    {
+      "path": "supabase/migrations/009_canonical_reader_boundary.sql",
+      "sha256": "ca4d9ac57c0fb5eaf1fb988ad53ed589379cd17a4ce8d0e12fcd85cb90d28173",
+      "bytes": 9173
+    },
+    {
+      "path": "supabase/migrations/010_import_operator_authority.sql",
+      "sha256": "a083fd989c6d9848e7beb8ef10a0349b749164f7903f43f0afbb55899591e09e",
+      "bytes": 2749
+    },
+    {
+      "path": "supabase/migrations/011_csv_initial_publication.sql",
+      "sha256": "892881c19899bb7586aa247bf56a4755536ea4e57e65d67aca58e6b9da70cd62",
+      "bytes": 6228
+    },
+    {
+      "path": "supabase/migrations/012_customer_publication_entitlement.sql",
+      "sha256": "be992016ce03b766bdf2a5a70b8577f4e076174aea12808479bc304c4c29fc21",
+      "bytes": 5378
+    },
+    {
+      "path": "supabase/migrations/013_customer_duplicate.sql",
+      "sha256": "0318ce5a482ae4f59d7eacffc2aa195ec54d48b0dd188c3666d9eb892c919c95",
+      "bytes": 10902
+    },
+    {
+      "path": "supabase/migrations/014_customer_edit_classification.sql",
+      "sha256": "3b4f5b8ad64d19c96bfe289e7027eb24c14de125cba12f8a177ab85c90b1a787",
+      "bytes": 4777
+    },
+    {
+      "path": "supabase/migrations/015_customer_edit_content.sql",
+      "sha256": "00b7e4921acbf86cb80a05035bf8a3b5238ae93bc1fac0e932e95a159bf94c12",
+      "bytes": 3643
+    },
+    {
+      "path": "supabase/migrations/016_customer_measurement_clear.sql",
+      "sha256": "8ef18175572591fa21e807f0722882b42404f5ef5d9e325e0245cd9f140367f9",
+      "bytes": 38862
+    },
+    {
+      "path": "supabase/migrations/017_token_canonical_creation.sql",
+      "sha256": "f13d1abb7678dafd23a67583f2c381475b4a4574822809b54d4ae646e61470c8",
+      "bytes": 9783
+    },
+    {
+      "path": "supabase/migrations/018_csv_source_evidence.sql",
+      "sha256": "f61aced295011a8c4a29a19f620e15055ffe629a84a61af37a5c8e63e8a147f8",
+      "bytes": 4520
+    },
+    {
+      "path": "supabase/migrations/019_csv_source_references.sql",
+      "sha256": "030acf1095123b062560b9366af791206cd9eab55deafa5f35df8884ca054dab",
+      "bytes": 4284
+    },
+    {
+      "path": "supabase/migrations/020_ordinary_upload_operations.sql",
+      "sha256": "3cc607fbe067ed9d67a1ad5057e0693f74d1e269b0f6a9a20ee584f1e0f05af6",
+      "bytes": 4668
+    },
+    {
+      "path": "supabase/migrations/021_image_detach_cleanup.sql",
+      "sha256": "1c8415442e53a1d10f8e86e69cee03ee8c1d210f769f03fb423edf8c91797507",
+      "bytes": 4426
+    },
+    {
+      "path": "supabase/migrations/022_abandoned_token_cleanup.sql",
+      "sha256": "a0ea2d69c7b9727a415ab0957fcf42c431ac4ea846ba5bd1a22e0235d6352909",
+      "bytes": 979
+    },
+    {
+      "path": "supabase/migrations/023_source_observation_ingestion.sql",
+      "sha256": "93dfabee4b5c1d9cfc76259e6e691e24bc2c0bc5f5813a3af2c5b26b2128b8d1",
+      "bytes": 12469
+    },
+    {
+      "path": "supabase/migrations/024_image_reorder_boundary.sql",
+      "sha256": "88fb5901237345dfe80de60b9a4a858c3c37fa41e9be64bc20968a129821c4de",
+      "bytes": 4960
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "5220f526b8aca83d3751f03b33e6fb05f0f472ec0521a20b7cacc9d0860925af",
+      "bytes": 665
+    },
+    {
+      "path": "vercel.json",
+      "sha256": "b6ce2d35d86207c407a008b7e066fde9362a88537943be780c8f73fe38bb7ba5",
+      "bytes": 269
+    }
+  ]
+}

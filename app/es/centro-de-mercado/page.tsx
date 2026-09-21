@@ -79,6 +79,19 @@ export default async function CentroDeMercadoPage({
   const params =
     await searchParams
 
+    // TEMP PPM2 TRACE BEGIN
+        if (typeof params.__ppm2trace === 'string') {
+          console.info(
+            '[PPM2 TRACE]',
+            JSON.stringify({
+              stage: 'page',
+              traceId: params.__ppm2trace,
+              eventId: crypto.randomUUID(),
+              page: '/es/centro-de-mercado',
+            })
+          )
+        }
+        // TEMP PPM2 TRACE END
 
   const intelligenceWorkspace =
   params.intelligence

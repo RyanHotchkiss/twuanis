@@ -4,24 +4,22 @@ import type {
   PriceMeterCrossDimensionalGeographicEvidence,
   PriceMeterCrossDimensionalSizeEvidence,
   PriceMeterCrossDimensionalConstructionLandEvidence
-} from '@/lib/price-meter-cross-dimensional-evidence'
-
-import {
-  evaluatePriceMeterCrossDimensionalOutcomes,
-  type PriceMeterCrossDimensionalOutcomes,
-  type PriceMeterCrossDimensionalVariation,
-  type PriceMeterCrossDimensionalReversal,
-  type PriceMeterCrossDimensionalNonEstablishment
-} from '@/lib/price-meter-cross-dimensional-outcomes'
-
-import {
-  buildPriceMeterCrossDimensionalSynthesis,
-  type PriceMeterCrossDimensionalSynthesis
-} from '@/lib/price-meter-cross-dimensional-synthesis'
+} from '@/lib/price-meter-cross-dimensional-result-contract'
 
 import type {
-  PriceMeterCrossDimensionalQuestionDefinition
-} from '@/lib/price-meter-cross-dimensional-question'
+  PriceMeterCrossDimensionalOutcomes,
+  PriceMeterCrossDimensionalVariation,
+  PriceMeterCrossDimensionalReversal,
+  PriceMeterCrossDimensionalNonEstablishment
+} from '@/lib/price-meter-cross-dimensional-result-contract'
+
+import type {
+  PriceMeterCrossDimensionalSynthesis
+} from '@/lib/price-meter-cross-dimensional-result-contract'
+
+import type {
+  PriceMeterCrossDimensionalQuestionPresentation
+} from '@/lib/price-meter-cross-dimensional-result-contract'
 
 
 type Props = {
@@ -32,10 +30,13 @@ type Props = {
     'sale' | 'rent'
 
   question:
-    PriceMeterCrossDimensionalQuestionDefinition
+    PriceMeterCrossDimensionalQuestionPresentation
 
   evidence:
     PriceMeterCrossDimensionalEvidenceSet
+
+  outcomes: PriceMeterCrossDimensionalOutcomes
+  synthesis: PriceMeterCrossDimensionalSynthesis
 }
 
 import {
@@ -2196,7 +2197,9 @@ export default function PriceMeterCrossDimensionalResults({
   language,
   transactionType,
   question,
-  evidence
+  evidence,
+  outcomes,
+  synthesis
 }: Props) {
 
   const isSpanish =
@@ -2211,19 +2214,6 @@ export default function PriceMeterCrossDimensionalResults({
     })
 
 
-  const outcomes =
-    evaluatePriceMeterCrossDimensionalOutcomes(
-      evidence
-    )
-
-
-  const synthesis =
-    buildPriceMeterCrossDimensionalSynthesis({
-      question,
-      evidenceSet:
-        evidence,
-      outcomes
-    })
 
 
   return (

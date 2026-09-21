@@ -1,3 +1,5 @@
+import { calculatePropertyPositionCounts } from './price-meter-property-position-math'
+import { assertPriceMeterPropertyPositionParticipation } from './price-meter-property-position-population'
 import type { PriceMeterPropertyPositionPopulation } from './price-meter-property-position-population'
 
 export type PriceMeterPropertyPositionPercentileMethod = 'midrank'
@@ -42,6 +44,7 @@ export function buildPriceMeterPropertyPositionPercentile({
 }: {
   population: PriceMeterPropertyPositionPopulation
 }): PriceMeterPropertyPositionPercentile {
+  assertPriceMeterPropertyPositionParticipation(population)
   const subjectPricePerM2 = population.subject.propertyPricePerM2
   const comparisonPopulationCount = population.comparisonPopulationCount
 
@@ -71,62 +74,12 @@ export function buildPriceMeterPropertyPositionPercentile({
     )
   }
 
-  let belowCount = 0
-  let equalCount = 0
-  let aboveCount = 0
+  const { belowCount, equalCount, aboveCount, percentilePosition } =
+    calculatePropertyPositionCounts(subjectPricePerM2,
+      population.observations.map(observation => observation.pricePerM2), comparisonPopulationCount)
 
-  for (const observation of population.observations) {
-    const observationPricePerM2 = observation.pricePerM2
-
-    if (
-      !Number.isFinite(observationPricePerM2) ||
-      observationPricePerM2 <= 0
-    ) {
-      throw new Error(
-        'Property Price / m² comparison population contains an invalid Price / m² observation.',
-      )
-    }
-
-    if (observationPricePerM2 < subjectPricePerM2) {
-      belowCount += 1
-      continue
-    }
-
-    if (observationPricePerM2 > subjectPricePerM2) {
-      aboveCount += 1
-      continue
-    }
-
-    equalCount += 1
-  }
-
-  if (
-    belowCount + equalCount + aboveCount !==
-    comparisonPopulationCount
-  ) {
-    throw new Error(
-      'Property Price / m² percentile population accounting failed.',
-    )
-  }
-
-  if (equalCount < 1) {
-    throw new Error(
-      'Subject property is not represented in its canonical Price / m² comparison population.',
-    )
-  }
-
-  const percentilePosition =
-    (100 * (belowCount + 0.5 * equalCount)) /
-    comparisonPopulationCount
-
-  if (
-    !Number.isFinite(percentilePosition) ||
-    percentilePosition < 0 ||
-    percentilePosition > 100
-  ) {
-    throw new Error(
-      'Property Price / m² percentile calculation produced an invalid result.',
-    )
+  if (population.participation === 'SUBJECT_INCLUDED' && equalCount < 1) {
+    throw new Error('Subject property is not represented in its canonical Price / m² comparison population.')
   }
 
   return {

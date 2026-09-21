@@ -20,12 +20,6 @@ import type {
   PriceMeterCharacteristicIdentity
 } from '@/lib/price-meter-characteristic-identity'
 
-import {
-  resolvePriceMeterYearBuiltCohort,
-  type PriceMeterYearBuiltCohort
-} from '@/lib/price-meter-year-built-cohorts'
-
-
 export type PriceMeterComparableSubjectIdentity = {
   positionIdentity:
     PriceMeterPropertyPositionIdentity
@@ -38,9 +32,6 @@ export type PriceMeterComparableSubjectIdentity = {
 
   constructionAreaRange:
     string | null
-
-  yearBuiltCohort:
-    PriceMeterYearBuiltCohort | null
 
   characteristics:
     PriceMeterCharacteristicIdentity[]
@@ -97,8 +88,7 @@ function resolveSingleRange({
 
 export function resolvePriceMeterComparableSubjectIdentity({
   observation,
-  characteristics,
-  yearBuiltRange
+  characteristics
 }: {
   observation:
     PriceMeterObservation
@@ -206,34 +196,9 @@ export function resolvePriceMeterComparableSubjectIdentity({
   }
 
 
-  const yearBuiltCohort =
-    yearBuiltRange ===
-      null ||
-    yearBuiltRange ===
-      undefined ||
-    yearBuiltRange ===
-      ''
-      ? null
-      : resolvePriceMeterYearBuiltCohort(
-          yearBuiltRange
-        )
-
-
-  if (
-    yearBuiltRange !==
-      null &&
-    yearBuiltRange !==
-      undefined &&
-    yearBuiltRange !==
-      '' &&
-    yearBuiltCohort ===
-      null
-  ) {
-    throw new Error(
-      'Subject Year Built identity is not a canonical Price / m² Year Built cohort.'
-    )
-  }
-
+  // Exact/range Year Built evidence is valid without classification. Only the
+  // supplied authorized characteristics establish a selectable category.
+  // The compatibility yearBuiltRange input must never manufacture membership.
 
   return {
     positionIdentity,
@@ -244,8 +209,6 @@ export function resolvePriceMeterComparableSubjectIdentity({
     propertyAreaRange,
 
     constructionAreaRange,
-
-    yearBuiltCohort,
 
     characteristics:
       [...characteristics]

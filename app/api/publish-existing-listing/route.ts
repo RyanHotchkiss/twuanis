@@ -1,3 +1,4 @@
+import { executeCustomerPublication } from '@/lib/customer-publication-writer'
 import {
   NextRequest,
   NextResponse
@@ -30,6 +31,7 @@ type ListingRow = {
   owner_id: string | null
   title: string | null
   transaction_type: string | null
+  canonical_domain_version: number | null
   listing_status: string | null
   images: unknown
   published_at: string | null
@@ -200,6 +202,7 @@ export async function POST(
           owner_id,
           title,
           transaction_type,
+          canonical_domain_version,
           listing_status,
           images,
           published_at
@@ -261,196 +264,11 @@ export async function POST(
       )
     }
 
-    if (
-      listing.listing_status !==
-      'draft'
-    ) {
-      return NextResponse.json(
-        {
-          success: false,
-          error:
-            'Only draft listings can be published.'
-        },
-        {
-          status: 409
-        }
-      )
+    if (listing.canonical_domain_version === 1) {
+      const result = await executeCustomerPublication(authenticatedSupabase, listing.id, 'publish', requestBody)
+      return NextResponse.json({ success: true, listing: { id: listing.id }, canonicalResult: result })
     }
-
-    const images =
-      normalizeStoredImages(
-        listing.images
-      )
-
-    if (images.length === 0) {
-      return NextResponse.json(
-        {
-          success: false,
-          error:
-            'Add at least one image before publishing this listing.'
-        },
-        {
-          status: 409
-        }
-      )
-    }
-
-    let packageUsage
-
-    try {
-      packageUsage =
-        await resolveUserPackageUsage({
-          supabase:
-            supabaseAdmin,
-
-          userId:
-            user.id
-        })
-    } catch (usageError) {
-      console.error(
-        'PUBLISH EXISTING PACKAGE USAGE ERROR:',
-        usageError
-      )
-
-      return NextResponse.json(
-        {
-          success: false,
-          error:
-            'Your package allowance could not be verified.'
-        },
-        {
-          status: 500
-        }
-      )
-    }
-
-    if (
-      packageUsage.listingLimit !==
-        null &&
-      packageUsage.listingsUsed >=
-        packageUsage.listingLimit
-    ) {
-      return NextResponse.json(
-        {
-          success: false,
-
-          code:
-            'LISTING_LIMIT_EXCEEDED',
-
-          error:
-            `Your package allows ${packageUsage.listingLimit} active ${
-              packageUsage.listingLimit === 1
-                ? 'listing'
-                : 'listings'
-            }. Archive an existing listing or upgrade your package before publishing another.`
-        },
-        {
-          status: 403
-        }
-      )
-    }
-
-    const publishedAt =
-      new Date().toISOString()
-
-    const {
-      data: publishedListing,
-      error: publishError
-    } =
-      await supabaseAdmin
-        .from(
-          'listings'
-        )
-        .update({
-          listing_status:
-            'active',
-
-          published_at:
-            publishedAt,
-
-          updated_at:
-            publishedAt
-        })
-        .eq(
-          'id',
-          listing.id
-        )
-        .eq(
-          'owner_id',
-          user.id
-        )
-        .eq(
-          'listing_status',
-          'draft'
-        )
-        .select(`
-          id,
-          title,
-          listing_status,
-          transaction_type,
-          published_at,
-          updated_at
-        `)
-        .maybeSingle()
-
-    if (
-      publishError ||
-      !publishedListing
-    ) {
-      console.error(
-        'PUBLISH EXISTING LISTING UPDATE ERROR:',
-        publishError
-      )
-
-      return NextResponse.json(
-        {
-          success: false,
-          error:
-            'The listing could not be published.'
-        },
-        {
-          status: 500
-        }
-      )
-    }
-
-    try {
-      await recordListingPublished({
-        listingId:
-          publishedListing.id,
-
-        metadata: {
-          title:
-            publishedListing.title,
-
-          status:
-            publishedListing
-              .listing_status,
-
-          transactionType:
-            publishedListing
-              .transaction_type,
-
-          previousStatus:
-            'draft',
-
-          source:
-            'market-hub'
-        }
-      })
-    } catch (activityError) {
-      console.error(
-        'PUBLISH EXISTING LISTING ACTIVITY ERROR:',
-        activityError
-      )
-    }
-
-    return NextResponse.json({
-      success: true,
-
-      listing:
-        publishedListing
-    })
+    return NextResponse.json({ success: false, error: 'Legacy listing mutation has been retired. A canonical listing is required.' }, { status: 409 })
   } catch (error) {
     console.error(
       'PUBLISH EXISTING LISTING ROUTE ERROR:',

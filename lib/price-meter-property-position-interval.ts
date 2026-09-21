@@ -1,14 +1,9 @@
+import { classifyPropertyPositionInterval, type PropertyPositionInterval } from './price-meter-property-position-math'
+import { assertPriceMeterPropertyPositionParticipation } from './price-meter-property-position-population'
 import type { PriceMeterDistribution } from './price-meter-distribution'
 import type { PriceMeterPropertyPositionPopulation } from './price-meter-property-position-population'
 
-export type PriceMeterPropertyPositionInterval =
-  | 'below_p10'
-  | 'p10_to_p25'
-  | 'p25_to_median'
-  | 'at_median'
-  | 'median_to_p75'
-  | 'p75_to_p90'
-  | 'above_p90'
+export type PriceMeterPropertyPositionInterval = PropertyPositionInterval
 
 export type PriceMeterPropertyPositionIntervalResult = {
   listingId: string
@@ -67,6 +62,7 @@ export function buildPriceMeterPropertyPositionInterval({
     PriceMeterPropertyPositionPopulation['transactionType']
   >
 }): PriceMeterPropertyPositionIntervalResult {
+  assertPriceMeterPropertyPositionParticipation(population)
   const propertyPricePerM2 = population.subject.propertyPricePerM2
   const comparisonPopulationCount = population.comparisonPopulationCount
 
@@ -143,23 +139,7 @@ export function buildPriceMeterPropertyPositionInterval({
     )
   }
 
-  let interval: PriceMeterPropertyPositionInterval
-
-  if (propertyPricePerM2 < p10) {
-    interval = 'below_p10'
-  } else if (propertyPricePerM2 < p25) {
-    interval = 'p10_to_p25'
-  } else if (propertyPricePerM2 < median) {
-    interval = 'p25_to_median'
-  } else if (propertyPricePerM2 === median) {
-    interval = 'at_median'
-  } else if (propertyPricePerM2 <= p75) {
-    interval = 'median_to_p75'
-  } else if (propertyPricePerM2 <= p90) {
-    interval = 'p75_to_p90'
-  } else {
-    interval = 'above_p90'
-  }
+  const interval = classifyPropertyPositionInterval(propertyPricePerM2, distribution)
 
   return {
     listingId: population.subject.listingId,

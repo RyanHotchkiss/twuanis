@@ -328,6 +328,10 @@ export async function resolveExactHistoricalFxRate(
         'effective_date',
         analyticalDate
       )
+      // This lookup runs both before and after BCCR registry ingestion.
+      // A fresh signal opts out of render-pass GET memoization so the
+      // post-insert lookup cannot reuse the earlier missing observation.
+      .abortSignal(new AbortController().signal)
       .maybeSingle()
 
 

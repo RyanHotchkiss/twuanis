@@ -1,0 +1,8 @@
+{
+  "source": "supabase/migrations/005_dormant_publisher_coordination.sql",
+  "sha256": "58a233408778aef4f2c53947db516dfc4b491b2503db47f8bc7d95be40508201",
+  "start": "2026-09-19T15:43:23.678140+00:00",
+  "end": "2026-09-19T15:43:25.468636+00:00",
+  "exit_code": 0,
+  "commit_output": true
+}

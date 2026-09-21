@@ -7,10 +7,6 @@ import {
 } from '@/lib/explorer-engine'
 
 import {
-  getPriceMeterAnalysis
-} from '@/lib/price-meter-engine'
-
-import {
   getPricingStrategy
 } from '@/lib/pricing-strategy-engine'
 
@@ -61,6 +57,10 @@ export type MarketIntelligenceSearchParams = {
   distance_to_paved_road_range?: string
   legal_status?: string
   tab?: string
+
+// TEMP PPM2 TRACE BEGIN
+__ppm2trace?: string
+// TEMP PPM2 TRACE END
 
   a_transaction_type?: string
   a_province?: string
@@ -166,6 +166,21 @@ export async function resolveMarketIntelligenceWorkspace({
 }): Promise<
   ResolvedMarketIntelligenceWorkspace
 > {
+  
+// TEMP PPM2 TRACE BEGIN
+if (typeof params.__ppm2trace === 'string') {
+  console.info(
+    '[PPM2 TRACE]',
+    JSON.stringify({
+      stage: 'workspace',
+      traceId: params.__ppm2trace,
+      eventId: crypto.randomUUID(),
+      tab: params.tab ?? 'explorer',
+      language,
+    })
+  )
+}
+// TEMP PPM2 TRACE END
 
   /*
    * -----------------------------------------------------
@@ -542,14 +557,7 @@ export async function resolveMarketIntelligenceWorkspace({
       break
 
     case 'price-meter':
-      priceMeterAnalysis =
-        engineFilters.transaction_type === 'sale' ||
-        engineFilters.transaction_type === 'rent'
-          ? await getPriceMeterAnalysis(
-              engineFilters,
-              language
-            )
-          : null
+      // Navigation supplies configuration only. Apply owns analytical execution.
       break
 
     case 'pricing':

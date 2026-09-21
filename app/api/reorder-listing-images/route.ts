@@ -24,7 +24,7 @@ type ListingRow = {
   id: string
   owner_id: string | null
   images: unknown
-  deleted_at: string | null
+  listing_status: string | null
 }
 
 function normalizeStoredImages(
@@ -309,7 +309,7 @@ export async function POST(
           id,
           owner_id,
           images,
-          deleted_at
+          listing_status
         `)
         .eq(
           'id',
@@ -371,7 +371,7 @@ export async function POST(
       )
     }
 
-    if (listing.deleted_at) {
+    if (listing.listing_status === 'deleted') {
       return NextResponse.json(
         {
           success: false,
@@ -426,35 +426,12 @@ export async function POST(
       data: updatedListing,
       error: updateError
     } =
-      await supabaseAdmin
-        .from(
-          'listings'
-        )
-        .update({
-          images:
-            reorderedImages,
-
-          updated_at:
-            new Date()
-              .toISOString()
-        })
-        .eq(
-          'id',
-          listing.id
-        )
-        .eq(
-          'owner_id',
-          user.id
-        )
-        .is(
-          'deleted_at',
-          null
-        )
-        .select(`
-          id,
-          images
-        `)
-        .maybeSingle()
+      await supabaseAdmin.rpc('reorder_listing_images', {
+        p_owner: user.id,
+        p_listing: listing.id,
+        p_prior: listing.images,
+        p_images: reorderedImages
+      })
 
     if (
       updateError ||

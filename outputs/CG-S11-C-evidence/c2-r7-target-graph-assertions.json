@@ -1,0 +1,10 @@
+{
+  "file": "/Users/cassidydaddy/twuanis/outputs/CG-S11-C-evidence/c2-r7-target-graph.stdout.log",
+  "true_assertions": 137,
+  "errors": [],
+  "sections": {
+    "r,p,graph_authority_verified": 24,
+    "r,attname,p,graph_column_verified": 108,
+    "graph_type_verified,graph_owner_verified,owner_refresh_verified,graph_public_denied,graph_public_columns_denied": 1
+  }
+}

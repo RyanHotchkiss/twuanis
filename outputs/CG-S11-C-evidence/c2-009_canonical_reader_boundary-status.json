@@ -1,0 +1,8 @@
+{
+  "source": "supabase/migrations/009_canonical_reader_boundary.sql",
+  "sha256": "ca4d9ac57c0fb5eaf1fb988ad53ed589379cd17a4ce8d0e12fcd85cb90d28173",
+  "start": "2026-09-19T16:05:11.638572+00:00",
+  "end": "2026-09-19T16:05:13.676578+00:00",
+  "exit_code": 0,
+  "commit_output": true
+}

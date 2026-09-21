@@ -1,0 +1,14 @@
+{
+  "expected_006_dependency_failure": true,
+  "wrong_drop_order_rejected": true,
+  "injected_precommit_failure_restores_both_views": true,
+  "bridge_committed": true,
+  "exact_view_metadata_assertions_passed": true,
+  "integer_population_outputs_identical": true,
+  "fractional_average_median_preserved": true,
+  "null_transaction_status_filters_preserved": true,
+  "numeric_type": true,
+  "migration007_committed_locally": true,
+  "function_count": 8,
+  "new_006_table_count": 2
+}

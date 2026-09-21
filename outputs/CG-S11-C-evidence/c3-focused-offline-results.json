@@ -1,0 +1,34 @@
+[
+  {
+    "file": "scripts/verification/s9-ppm2-authorization.cjs",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/verification/s9-comparison-gate.cjs",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/verification/s9-ordinary-engine-probe.cjs",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/verification/s9-phase11.cjs",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/verification/s9-phase12.cjs",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/verification/s9-phase12a-integration.cjs",
+    "exit_code": 0
+  },
+  {
+    "file": "scripts/verification/canonical-reader-import-graph.cjs",
+    "exit_code": 0
+  },
+  {
+    "file": "outputs/CG-S11-B/verify-reorder-route.cjs",
+    "exit_code": 0
+  }
+]

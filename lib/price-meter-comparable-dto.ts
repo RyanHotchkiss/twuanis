@@ -137,7 +137,7 @@ export function toPriceMeterComparableEvidenceDTO(
    * Zero peers is itself evidence about the explicitly
    * selected population.
    *
-   * No distribution, percentile, median, tail, confidence,
+   * No distribution, percentile, median, tail,
    * or C:L statistics are fabricated for an empty cohort.
    */
 
@@ -191,10 +191,6 @@ export function toPriceMeterComparableEvidenceDTO(
     status:
       'ok',
 
-    confidence: {
-      score:
-        evidence.confidence.score
-    },
 
     distribution: {
       minimum:

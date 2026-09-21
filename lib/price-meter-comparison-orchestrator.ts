@@ -47,7 +47,8 @@ import {
 } from '@/lib/price-meter-comparison-cohort-population'
 
 import {
-  loadPriceMeterOntologyMemberships
+  loadPriceMeterOntologyMemberships,
+  type PriceMeterOntologyMembership
 } from '@/lib/price-meter-ontology-membership'
 
 import {
@@ -56,20 +57,19 @@ import {
   type PriceMeterComparisonReferenceCohort
 } from '@/lib/price-meter-comparison-analysis'
 
-import type {
-  PriceMeterConfidenceLanguage
-} from '@/lib/price-meter-confidence'
 
 
 export async function buildPriceMeterComparison<
   T extends PriceMeterTransactionType
 >({
   analyticalCohort,
+  memberships: suppliedMemberships,
   cohortA,
   cohortB,
   referenceCohort,
   language
 }: {
+  memberships?: PriceMeterOntologyMembership[]
   analyticalCohort:
     PriceMeterAnalyticalCohort<T>
 
@@ -83,7 +83,7 @@ export async function buildPriceMeterComparison<
     PriceMeterComparisonReferenceCohort
 
   language:
-    PriceMeterConfidenceLanguage
+    'en' | 'es'
 }): Promise<
   PriceMeterComparisonAnalysis<T>
 > {
@@ -125,7 +125,7 @@ export async function buildPriceMeterComparison<
    */
 
   const memberships =
-    await loadPriceMeterOntologyMemberships(
+    suppliedMemberships ?? await loadPriceMeterOntologyMemberships(
       listingIds
     )
 

@@ -100,6 +100,8 @@ export default function CsvListingsGrid({
 
           </div>
 
+          {listing.canonicalImportError && <p role="alert">{listing.canonicalImportError}</p>}
+
           {/* CONTENT */}
           <div style={content}>
 

@@ -32,16 +32,7 @@ export type PriceMeterStatisticGeography = {
 }
 
 
-export type PriceMeterStatisticConfidence = {
-  score:
-    number
 
-  label:
-    string
-
-  sampleSize:
-    number
-}
 
 export type PriceMeterStatisticFxObservation = {
   baseCurrency:
@@ -103,8 +94,6 @@ export type PriceMeterStatisticIdentity = {
   sampleSize:
     number
 
-  confidence:
-    PriceMeterStatisticConfidence
 }
 
 
@@ -166,8 +155,7 @@ export function createPriceMeterStatistic({
   normalizationBasis,
   geography,
   monetary,
-  sampleSize,
-  confidence
+  sampleSize
 }: {
   statistic:
     PriceMeterStatisticKind
@@ -193,11 +181,6 @@ export function createPriceMeterStatistic({
   sampleSize:
     number
 
-  confidence:
-    Omit<
-      PriceMeterStatisticConfidence,
-      'sampleSize'
-    >
 }): PriceMeterStatistic {
 
   const denominatorUnit =
@@ -230,13 +213,7 @@ export function createPriceMeterStatistic({
           normalizationBasis
         }),
 
-      sampleSize,
-
-      confidence: {
-        ...confidence,
-
-        sampleSize
-      }
+      sampleSize
     }
   }
 }

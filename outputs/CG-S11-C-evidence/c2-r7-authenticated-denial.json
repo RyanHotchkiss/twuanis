@@ -1,0 +1,5 @@
+{
+  "exit_code": 3,
+  "stderr": "psql:<stdin>:1: ERROR:  permission denied for materialized view ontology_graph_cache\nHINT:  Grant the required privileges to the current role with: GRANT SELECT ON public.ontology_graph_cache TO authenticated;\n",
+  "method": "READ ONLY SET LOCAL ROLE authenticated; SELECT LIMIT 0; no user JWT minted or user session altered"
+}

@@ -1,0 +1,4 @@
+psql:/Users/cassidydaddy/twuanis/outputs/CG-S11-B/canonical-smoke.sql:46: ERROR:  publication capacity exceeded
+CONTEXT:  PL/pgSQL function twuanis_canonical_private.s3_command(uuid,bigint,text,text,uuid,jsonb,jsonb) line 294 at RAISE
+PL/pgSQL function public.publish_customer_canonical_listing(uuid,bigint,uuid,text) line 24 at assignment
+PL/pgSQL function public.publish_token_canonical_listing(text) line 12 at assignment

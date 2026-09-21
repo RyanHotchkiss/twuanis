@@ -484,7 +484,7 @@ export function runPriceMeterComparableEngine(
    * -------------------------------------------------------
    *
    * Distribution, percentile, median-position, interval,
-   * tail, and confidence evidence require at least one
+   * and tail evidence require at least one
    * subject-excluded peer observation.
    */
 

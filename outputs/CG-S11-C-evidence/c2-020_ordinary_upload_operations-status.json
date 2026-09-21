@@ -1,0 +1,8 @@
+{
+  "source": "supabase/migrations/020_ordinary_upload_operations.sql",
+  "sha256": "3cc607fbe067ed9d67a1ad5057e0693f74d1e269b0f6a9a20ee584f1e0f05af6",
+  "start": "2026-09-19T16:07:57.142519+00:00",
+  "end": "2026-09-19T16:07:58.484083+00:00",
+  "exit_code": 0,
+  "commit_output": true
+}

@@ -1,0 +1,8 @@
+{
+  "source": "outputs/CG-S11-B/initialization-verification.sql",
+  "sha256": "1cd156df9ff76eb9ee0719b3c59a8cd6aceade0ba51df30a0e731ec453516271",
+  "start": "2026-09-19T16:10:16.794559+00:00",
+  "end": "2026-09-19T16:10:17.861376+00:00",
+  "exit_code": 0,
+  "commit_output": false
+}

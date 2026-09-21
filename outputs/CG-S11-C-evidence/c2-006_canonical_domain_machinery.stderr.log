@@ -1,0 +1,2 @@
+psql:/Users/cassidydaddy/twuanis/supabase/migrations/006_canonical_domain_machinery.sql:14: ERROR:  cannot alter type of a column used by a view or rule
+DETAIL:  rule _RETURN on view market_listing_base depends on column "monthly_price"

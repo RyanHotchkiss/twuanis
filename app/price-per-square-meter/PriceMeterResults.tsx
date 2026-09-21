@@ -46,18 +46,7 @@ type Distribution = {
 }
 
 
-type Confidence = {
-  numberOfProperties:
-    number
 
-  confidence: {
-    score:
-      number
-
-    label:
-      string
-  }
-}
 
 type SizeRelationshipBand = {
   range:
@@ -337,16 +326,7 @@ type GeographicIdentity = {
 }
 
 
-type GeographicConfidence = {
-  score:
-    number
 
-  label:
-    'very_low'
-    | 'low'
-    | 'moderate'
-    | 'high'
-}
 
 
 type GeographicStatistic = {
@@ -362,8 +342,6 @@ type GeographicStatistic = {
   distribution:
     Distribution
 
-  confidence:
-    GeographicConfidence
 
   medianDifferenceFromSelectedMarket:
     number | null
@@ -772,14 +750,11 @@ function MarketStatisticCard({
 
 function CohortDistribution({
   distribution,
-  confidence,
   definition
 }: {
   distribution:
     Distribution
 
-  confidence:
-    Confidence
 
   definition:
     CohortDefinition
@@ -899,19 +874,6 @@ function CohortDistribution({
             />
 
 
-            <MarketStatisticCard
-              label="Confidence Based on Number of Properties"
-              value={
-                `${confidence.confidence.score}% · ${confidence.confidence.label}`
-              }
-              description={
-                `Based on ${confidence.numberOfProperties} ${
-                  confidence.numberOfProperties === 1
-                    ? 'property'
-                    : 'properties'
-                } in this exact market cohort.`
-              }
-            />
           </div>
 
 
@@ -995,33 +957,7 @@ function geographicDisplayName(
 }
 
 
-function geographicConfidenceLabel(
-  label:
-    GeographicConfidence['label']
-) {
-  if (
-    label ===
-      'high'
-  ) {
-    return 'High Confidence'
-  }
 
-  if (
-    label ===
-      'moderate'
-  ) {
-    return 'Moderate Confidence'
-  }
-
-  if (
-    label ===
-      'low'
-  ) {
-    return 'Low Confidence'
-  }
-
-  return 'Very Low Confidence'
-}
 
 
 function formatSignedGeographicPrice(
@@ -1269,9 +1205,6 @@ function GeographicPriceComparison({
                     % Difference from Selected-Market Median
                   </th>
 
-                  <th style={relationshipTh}>
-                    Twuanis Confidence
-                  </th>
                 </tr>
               </thead>
 
@@ -1340,20 +1273,6 @@ function GeographicPriceComparison({
                         }
                       </td>
 
-                      <td style={relationshipTd}>
-                        {
-                          statistic
-                            .confidence
-                            .score
-                        }% ·{' '}
-                        {
-                          geographicConfidenceLabel(
-                            statistic
-                              .confidence
-                              .label
-                          )
-                        }
-                      </td>
                     </tr>
                   )
                 )}
@@ -1472,14 +1391,11 @@ function GeographicPriceComparison({
 }
 
  function ConstructionLandDistribution({
-  analysis,
-  confidence
+  analysis
 }: {
   analysis:
     ConstructionLandAnalysis
 
-  confidence:
-    Confidence
 }) {
   const {
     distribution
@@ -1612,19 +1528,6 @@ function GeographicPriceComparison({
               }
             />
         
-            <MarketStatisticCard
-              label="Confidence Based on Number of Properties"
-              value={
-                `${confidence.confidence.score}% · ${confidence.confidence.label}`
-              }
-              description={
-                `Based on ${confidence.numberOfProperties} ${
-                  confidence.numberOfProperties === 1
-                    ? 'property'
-                    : 'properties'
-                } in this exact Construction-to-Land analytical population.`
-              }
-            />
         
           </div>
 
@@ -3352,11 +3255,6 @@ export default function PriceMeterResults({
           .analysis
 
 
-    const constructionLandConfidence:
-      Confidence =
-        intelligence
-          .constructionToLand
-          .confidence
 
       const constructionLandIdentity =
         intelligence
@@ -3444,12 +3342,6 @@ export default function PriceMeterResults({
                 ]
 
 
-          const confidence:
-            Confidence =
-              intelligence
-                .confidenceBasedOnNumberOfProperties[
-                  definition.key
-                ]
 
 
           return (
@@ -3459,9 +3351,6 @@ export default function PriceMeterResults({
               }
               distribution={
                 distribution
-              }
-              confidence={
-                confidence
               }
               definition={
                 definition
@@ -3805,9 +3694,6 @@ export default function PriceMeterResults({
         <ConstructionLandDistribution
           analysis={
             constructionLandAnalysis
-          }
-          confidence={
-            constructionLandConfidence
           }
         />
 

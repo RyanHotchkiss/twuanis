@@ -1,0 +1,11 @@
+{
+  "original_hashes": {
+    "authority-closure.sql": "7b52f72042a1fc7c8999f87e78d504f48992ccea029eae241e1733dbb0a4cc7c",
+    "verify-authority.sql": "ee8c64c1ae150bd1daf8e9026fe2f148e54365f9e3b6f02322a03b7d3725c546"
+  },
+  "revised_hashes": {
+    "authority-closure.sql": "18fb025d98acca0ab24f0cebd2f094487f42081c13079e099fac6b216f7c249f",
+    "verify-authority.sql": "f84e52edd82b7a0f9de9f560df6ca66b67a56773b6b01120a733ce080a1aeaad"
+  },
+  "private_verification_unchanged_sha256": "c3def07ca56c71205e72695cc664c16518a06b0cc06fea514b68a17086cb5d2a"
+}

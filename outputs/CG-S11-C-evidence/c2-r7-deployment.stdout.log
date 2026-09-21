@@ -1,0 +1,33 @@
+{
+  "status": "ok",
+  "deployment": {
+    "id": "dpl_BkY1harMgkSRwurxhkDMvgLvSkZW",
+    "url": "https://twuanis-0-pi0abcmle-ryans-projects-71456f46.vercel.app",
+    "inspectorUrl": "https://vercel.com/ryans-projects-71456f46/twuanis-0/BkY1harMgkSRwurxhkDMvgLvSkZW",
+    "readyState": "READY",
+    "target": "production",
+    "deploymentApiUrl": "https://api.vercel.com/v13/deployments/dpl_BkY1harMgkSRwurxhkDMvgLvSkZW",
+    "buildMachine": {
+      "cores": 2,
+      "memory": 8192,
+      "machine": "basic",
+      "selectionType": "fixed",
+      "selectionSource": "plan-default"
+    }
+  },
+  "message": "Deployment twuanis-0-pi0abcmle-ryans-projects-71456f46.vercel.app ready.",
+  "next": [
+    {
+      "command": "vercel curl https://twuanis-0-pi0abcmle-ryans-projects-71456f46.vercel.app",
+      "when": "Verify deployment, including when Deployment Protection is enabled"
+    },
+    {
+      "command": "vercel inspect twuanis-0-pi0abcmle-ryans-projects-71456f46.vercel.app --scope ryans-projects-71456f46",
+      "when": "Inspect deployment"
+    },
+    {
+      "command": "vercel deploy --prod --scope ryans-projects-71456f46",
+      "when": "Promote to production"
+    }
+  ]
+}

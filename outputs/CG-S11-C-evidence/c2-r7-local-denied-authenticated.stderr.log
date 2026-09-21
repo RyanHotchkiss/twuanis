@@ -1,0 +1,1 @@
+psql:<stdin>:1: ERROR:  permission denied for materialized view ontology_graph_cache

@@ -1,0 +1,8 @@
+{
+  "source": "supabase/migrations/018_csv_source_evidence.sql",
+  "sha256": "f61aced295011a8c4a29a19f620e15055ffe629a84a61af37a5c8e63e8a147f8",
+  "start": "2026-09-19T16:07:32.960042+00:00",
+  "end": "2026-09-19T16:07:34.614033+00:00",
+  "exit_code": 0,
+  "commit_output": true
+}

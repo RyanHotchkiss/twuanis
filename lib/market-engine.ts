@@ -51,7 +51,7 @@ export function createMarketTitle(filters: MarketFilters) {
     filters.canton ||
     filters.province
 
-  if (location) parts.push(`${location}`)
+  if (location) parts.push(/^[0-9,]+$/.test(location) ? 'Costa Rica' : location)
 
   if (!parts.length) return 'Costa Rica Real Estate Market'
 
@@ -234,7 +234,7 @@ export async function getMarketIntelligence(filters: MarketFilters) {
         const live = await getMarketStatistics(filters)
 
         return {
-          title: createMarketTitle(filters),
+          title: createMarketTitle({...filters,...live.geographyLabels}),
           filters,
           cacheHit: true,
           mode: 'cached-entity',
@@ -248,7 +248,7 @@ export async function getMarketIntelligence(filters: MarketFilters) {
       const live = await getMarketStatistics(filters)
 
       return {
-        title: createMarketTitle(filters),
+        title: createMarketTitle({...filters,...live.geographyLabels}),
         filters,
         cacheHit: false,
         mode: 'live-entity',
@@ -261,7 +261,7 @@ const live = await getMarketStatistics(filters)
 
 
   return {
-  title: createMarketTitle(filters),
+  title: createMarketTitle({...filters,...live.geographyLabels}),
   filters,
   cacheHit: false,
   mode: 'live',

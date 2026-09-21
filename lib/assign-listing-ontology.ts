@@ -443,10 +443,17 @@ console.log(
 
 }
 
+// S7: retain the historical implementation, but prohibit this legacy write bypass.
+function rejectRetiredOntologyWriter(): void {
+  throw new Error('assignListingOntology write function is retired; use canonical write machinery.')
+}
+
 export async function assignListingOntology(
   listingId: string,
   listingData: any
 ) {
+  rejectRetiredOntologyWriter()
+
 
   console.log(
     'ASSIGN ONTOLOGY CALLED',

@@ -1,3 +1,4 @@
+import PriceMeterPropertyPositionListing from '@/app/components/PriceMeterPropertyPositionListing'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import {
@@ -794,6 +795,8 @@ return (
               value={`${valuation.summary.confidenceScore} · ${valuation.summary.confidenceLabel}`}
             />
           </div>
+
+          <PriceMeterPropertyPositionListing listingId={listing.id} lang="es" />
 
           <PriceMeterComparableListing
             listingId={listing.id}

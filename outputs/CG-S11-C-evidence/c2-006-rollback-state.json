@@ -1,0 +1,5 @@
+{
+  "stdout": "{\"identity\": [\"postgres\", \"postgres\", \"postgres\"], \"auth_count\": 2, \"view_present\": true, \"listing_count\": 0, \"publisher_count\": 0, \"monthly_price_type\": \"bigint\", \"subscription_count\": 0, \"capacity_guard_count\": 1, \"private_schema_present\": true, \"canonical_schema_present\": true, \"migration006_domain_column_present\": false}\n",
+  "stderr": "",
+  "exit_code": 0
+}

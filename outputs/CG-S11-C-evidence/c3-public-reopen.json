@@ -1,0 +1,74 @@
+[
+  {
+    "host": "twuanis.com",
+    "path": "/en",
+    "status": 200,
+    "final_url": "https://twuanis.com/en",
+    "twuanis": true,
+    "app_navigation": false,
+    "empty_state": null,
+    "vercel_auth": false,
+    "error_page": false,
+    "at": "2026-09-19T18:00:52.124829+00:00"
+  },
+  {
+    "host": "twuanis.com",
+    "path": "/es",
+    "status": 200,
+    "final_url": "https://twuanis.com/es",
+    "twuanis": true,
+    "app_navigation": false,
+    "empty_state": null,
+    "vercel_auth": false,
+    "error_page": false,
+    "at": "2026-09-19T18:00:52.723334+00:00"
+  },
+  {
+    "host": "www.twuanis.com",
+    "path": "/en",
+    "status": 200,
+    "final_url": "https://www.twuanis.com/en",
+    "twuanis": true,
+    "app_navigation": false,
+    "empty_state": null,
+    "vercel_auth": false,
+    "error_page": false,
+    "at": "2026-09-19T18:00:53.463114+00:00"
+  },
+  {
+    "host": "twuanis-0.vercel.app",
+    "path": "/en",
+    "status": 200,
+    "final_url": "https://twuanis-0.vercel.app/en",
+    "twuanis": true,
+    "app_navigation": false,
+    "empty_state": null,
+    "vercel_auth": false,
+    "error_page": false,
+    "at": "2026-09-19T18:00:54.084786+00:00"
+  },
+  {
+    "host": "twuanis.com",
+    "path": "/en/buy",
+    "status": 200,
+    "final_url": "https://twuanis.com/en/buy",
+    "twuanis": true,
+    "app_navigation": false,
+    "empty_state": false,
+    "vercel_auth": false,
+    "error_page": false,
+    "at": "2026-09-19T18:00:54.404519+00:00"
+  },
+  {
+    "host": "twuanis.com",
+    "path": "/es/comprar",
+    "status": 200,
+    "final_url": "https://twuanis.com/es/comprar",
+    "twuanis": true,
+    "app_navigation": false,
+    "empty_state": false,
+    "vercel_auth": false,
+    "error_page": false,
+    "at": "2026-09-19T18:00:54.732233+00:00"
+  }
+]

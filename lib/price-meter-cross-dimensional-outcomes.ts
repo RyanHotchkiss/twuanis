@@ -1,3 +1,5 @@
+import 'server-only'
+
 /*
  * ---------------------------------------------------------
  * PRICE / M² CROSS-DIMENSIONAL OUTCOMES

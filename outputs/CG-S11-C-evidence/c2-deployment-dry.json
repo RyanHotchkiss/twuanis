@@ -1,0 +1,4397 @@
+{
+  "framework": {
+    "name": "Next.js",
+    "slug": "nextjs"
+  },
+  "basePath": "/private/tmp/s11-c2-reviewed-app",
+  "fileCount": 708,
+  "totalSize": 29981906,
+  "ignoredCount": 1,
+  "ignored": [
+    ".gitignore"
+  ],
+  "directories": [
+    {
+      "path": "public",
+      "fileCount": 10,
+      "size": 23934974
+    },
+    {
+      "path": "app",
+      "fileCount": 352,
+      "size": 3113503
+    },
+    {
+      "path": "lib",
+      "fileCount": 211,
+      "size": 1464868
+    },
+    {
+      "path": "scripts",
+      "fileCount": 102,
+      "size": 825044
+    },
+    {
+      "path": "package-lock.json",
+      "fileCount": 1,
+      "size": 346965
+    },
+    {
+      "path": "supabase",
+      "fileCount": 24,
+      "size": 262188
+    },
+    {
+      "path": "data",
+      "fileCount": 1,
+      "size": 25067
+    },
+    {
+      "path": "price-meter-comparable-browser-contract.ts",
+      "fileCount": 1,
+      "size": 5474
+    },
+    {
+      "path": "package.json",
+      "fileCount": 1,
+      "size": 2181
+    },
+    {
+      "path": "tsconfig.json",
+      "fileCount": 1,
+      "size": 665
+    },
+    {
+      "path": "eslint.config.mjs",
+      "fileCount": 1,
+      "size": 465
+    },
+    {
+      "path": "vercel.json",
+      "fileCount": 1,
+      "size": 269
+    },
+    {
+      "path": "next.config.ts",
+      "fileCount": 1,
+      "size": 149
+    },
+    {
+      "path": "postcss.config.mjs",
+      "fileCount": 1,
+      "size": 94
+    }
+  ],
+  "largestFiles": [
+    {
+      "path": "public/filter.svg",
+      "size": 19409435,
+      "mode": 33188,
+      "sha": "aae7a6d9bcff30795c537335280aaf8a3d023d55"
+    },
+    {
+      "path": "public/images/twuanis-intro-en.png",
+      "size": 2315190,
+      "mode": 33188,
+      "sha": "6cab3d92b08404cf4763db64c78ca049a6d5f049"
+    },
+    {
+      "path": "public/images/twuanis-intro-es.png",
+      "size": 2203696,
+      "mode": 33188,
+      "sha": "5756bf8a9dab77eb8172a032c6e9b089648e8db6"
+    },
+    {
+      "path": "package-lock.json",
+      "size": 346965,
+      "mode": 33188,
+      "sha": "016a68ba107c71e9104bda67741f21401c02d469"
+    },
+    {
+      "path": "app/components/MarketHubPackages.tsx",
+      "size": 157739,
+      "mode": 33188,
+      "sha": "1562c6259a93f6df85162fc39cd2a05cecb86e37"
+    },
+    {
+      "path": "app/es/precio-por-metro-cuadrado/ResultadosPrecioMetro.tsx",
+      "size": 105183,
+      "mode": 33188,
+      "sha": "78ce77194504358b5c169d3541ac479ccc017690"
+    },
+    {
+      "path": "app/price-per-square-meter/PriceMeterResults.tsx",
+      "size": 101772,
+      "mode": 33188,
+      "sha": "0a04768239f9fce894502f65bb2bc857a32b46c4"
+    },
+    {
+      "path": "app/components/MarketHubFavorites.tsx",
+      "size": 100478,
+      "mode": 33188,
+      "sha": "da408ecb0b5063573e1883c3ec710cb5179dff40"
+    },
+    {
+      "path": "app/components/MarketHubSettings.tsx",
+      "size": 92527,
+      "mode": 33188,
+      "sha": "040bb932fdbf56a851556190b9f4f283b182c734"
+    },
+    {
+      "path": "app/components/ListingOperationsCenter.tsx",
+      "size": 79519,
+      "mode": 33188,
+      "sha": "f2b8cd17b63487bd0b9cc8c6f1b8b242e00fae9a"
+    }
+  ],
+  "files": [
+    {
+      "path": "app/accessibility/[accessibility]/page.tsx",
+      "size": 310,
+      "mode": 33188,
+      "sha": "689f68a3fa6b346ecf1b61bbd40668c8fc96237a"
+    },
+    {
+      "path": "app/api/activity/route.ts",
+      "size": 5394,
+      "mode": 33188,
+      "sha": "c6427be7b790baf72dabd2352f73884238aba389"
+    },
+    {
+      "path": "app/api/available-add-ons/route.ts",
+      "size": 2483,
+      "mode": 33188,
+      "sha": "83768103cd0e690fc2621a2a93713119272484aa"
+    },
+    {
+      "path": "app/api/check-publish-token/route.ts",
+      "size": 1038,
+      "mode": 33188,
+      "sha": "9c99c643d584439b80eb56cdd5dfdce2818241ee"
+    },
+    {
+      "path": "app/api/commercial-state/route.ts",
+      "size": 2980,
+      "mode": 33188,
+      "sha": "8188587acbcd83b3837cee253ec36957dd95e463"
+    },
+    {
+      "path": "app/api/commercial-timeline/route.ts",
+      "size": 2687,
+      "mode": 33188,
+      "sha": "abeabbf22d36a0f2a2f4f18ff5beaa5d14bf6373"
+    },
+    {
+      "path": "app/api/comparable/route.ts",
+      "size": 6154,
+      "mode": 33188,
+      "sha": "b25b753508358ae1d3c0514391dd7d08ab539ef5"
+    },
+    {
+      "path": "app/api/create-publish-token/route.ts",
+      "size": 2074,
+      "mode": 33188,
+      "sha": "7e611262e5e026780a165bf2d78ded2958343de9"
+    },
+    {
+      "path": "app/api/cron/cleanup-temporary-listing-images/route.ts",
+      "size": 5129,
+      "mode": 33188,
+      "sha": "1d07669646733a5b3d01388aa1407cd879e498cd"
+    },
+    {
+      "path": "app/api/cron/saved-search-alerts/route.ts",
+      "size": 1309,
+      "mode": 33188,
+      "sha": "600ef90293efd9728f0f8441baf4d6793663c3dc"
+    },
+    {
+      "path": "app/api/debug/bccr-fx/route.ts",
+      "size": 4345,
+      "mode": 33188,
+      "sha": "c78255bbf9d0e5e1f2caf3e5c46ba985ec5a5b0b"
+    },
+    {
+      "path": "app/api/debug/saved-analysis-integrity/route.ts",
+      "size": 7053,
+      "mode": 33188,
+      "sha": "64ca3d157e0ffff173738b0ac61335b4d59a1e53"
+    },
+    {
+      "path": "app/api/delete-listing-image/route.ts",
+      "size": 3890,
+      "mode": 33188,
+      "sha": "7536527e8596b9f5f8c359f2e8005360a2a1776b"
+    },
+    {
+      "path": "app/api/duplicate-listing/route.ts",
+      "size": 1596,
+      "mode": 33188,
+      "sha": "73f9eded9b3e861f16e0e11578ff00d36fab44b9"
+    },
+    {
+      "path": "app/api/edit-canonical-listing/route.ts",
+      "size": 2291,
+      "mode": 33188,
+      "sha": "fde6bc9ef961a1b01fde7816959c4a6c27cbf05f"
+    },
+    {
+      "path": "app/api/import-canonical-csv/route.ts",
+      "size": 1995,
+      "mode": 33188,
+      "sha": "13d1f05f34296258d673fae4c24bedf708c283f6"
+    },
+    {
+      "path": "app/api/listing-capabilities/route.ts",
+      "size": 3137,
+      "mode": 33188,
+      "sha": "1082fd164d9a858bb4d8305c77660884fcc892c4"
+    },
+    {
+      "path": "app/api/listing-timeline/route.ts",
+      "size": 3340,
+      "mode": 33188,
+      "sha": "98b2e96a5e20e3f6c26545b0ae795eb6b8ea1abf"
+    },
+    {
+      "path": "app/api/marketplace-fx/route.ts",
+      "size": 1122,
+      "mode": 33188,
+      "sha": "f0261d41b3ebe29d0692019441b879a7a1ac8222"
+    },
+    {
+      "path": "app/api/marketplace-placement/route.ts",
+      "size": 2099,
+      "mode": 33188,
+      "sha": "dff75cc34f1510294c854164400dddc131416113"
+    },
+    {
+      "path": "app/api/package-usage/route.ts",
+      "size": 2074,
+      "mode": 33188,
+      "sha": "a07e5414abcbf044e6b3874418d5aa7e32f3c4b8"
+    },
+    {
+      "path": "app/api/permanently-delete-listing/route.ts",
+      "size": 355,
+      "mode": 33188,
+      "sha": "9597dd7601763243935e3c4c3b0fab67d90310bf"
+    },
+    {
+      "path": "app/api/price-meter/cross-dimensional/route.ts",
+      "size": 9975,
+      "mode": 33188,
+      "sha": "86974b1aabc879c919b59335fa2b206ec2a044e3"
+    },
+    {
+      "path": "app/api/public-listing-contact/route.ts",
+      "size": 830,
+      "mode": 33188,
+      "sha": "959857d4680c86bfb4edad491b61c65631b85be7"
+    },
+    {
+      "path": "app/api/public-listings/by-ids/route.ts",
+      "size": 1876,
+      "mode": 33188,
+      "sha": "318ed7e06d983c997b162fb6c6345b44f151e9a4"
+    },
+    {
+      "path": "app/api/public-listings/route.ts",
+      "size": 1623,
+      "mode": 33188,
+      "sha": "20f2ae1abef9dba4c31030ffcf2b9e5bb448577b"
+    },
+    {
+      "path": "app/api/public-promotion-evidence/route.ts",
+      "size": 4243,
+      "mode": 33188,
+      "sha": "abc9f284d9ec41a769934970c06718fffc725a8b"
+    },
+    {
+      "path": "app/api/publish-existing-listing/route.ts",
+      "size": 5250,
+      "mode": 33188,
+      "sha": "ccd2de52e3dec3540824e5665f1323eaba31da89"
+    },
+    {
+      "path": "app/api/publish-listing/route.ts",
+      "size": 1521,
+      "mode": 33188,
+      "sha": "8727a604164a9c0f27099cc064bd2c447bdca100"
+    },
+    {
+      "path": "app/api/push/subscribe/route.ts",
+      "size": 1963,
+      "mode": 33188,
+      "sha": "8d0a7952fbd87445d005824a0ec579eacd3c7fb4"
+    },
+    {
+      "path": "app/api/push/unsubscribe/route.ts",
+      "size": 1432,
+      "mode": 33188,
+      "sha": "408da27a1e2a1c3dbc541463398035470345856a"
+    },
+    {
+      "path": "app/api/rebuild-market-cache/route.ts",
+      "size": 912,
+      "mode": 33188,
+      "sha": "5e222453cad2035301cbcaf9b7d44896f80da14d"
+    },
+    {
+      "path": "app/api/renew-listing/route.ts",
+      "size": 4666,
+      "mode": 33188,
+      "sha": "cc62233d6043d36ed895d35945f780be6b192a1e"
+    },
+    {
+      "path": "app/api/reorder-listing-images/route.ts",
+      "size": 8371,
+      "mode": 33188,
+      "sha": "fe543e2d408d000e7d41f0e988f6f1db049e1edc"
+    },
+    {
+      "path": "app/api/send-otp/route.ts",
+      "size": 2613,
+      "mode": 33188,
+      "sha": "f104e198ec5b4568bbc85502b031343940bdc020"
+    },
+    {
+      "path": "app/api/send-whatsapp/route.ts",
+      "size": 949,
+      "mode": 33188,
+      "sha": "ef000bbd44dc85ef63601aaa71f9f3915c68a620"
+    },
+    {
+      "path": "app/api/test-cache/route.ts",
+      "size": 262,
+      "mode": 33188,
+      "sha": "7b5095ec71ee8fed39e593db2c1be4c47eca9956"
+    },
+    {
+      "path": "app/api/test-email/route.ts",
+      "size": 197,
+      "mode": 33188,
+      "sha": "ed939a97e36b5dabefba0bb96e88ba616a32036a"
+    },
+    {
+      "path": "app/api/test-explorer/route.ts",
+      "size": 274,
+      "mode": 33188,
+      "sha": "d3047b1a9a6069b14926f6f6a08294180caa842f"
+    },
+    {
+      "path": "app/api/test-market-engine/route.ts",
+      "size": 271,
+      "mode": 33188,
+      "sha": "8f5fda1a44f239442b6951f6fab64fb5db71566c"
+    },
+    {
+      "path": "app/api/test-market/route.ts",
+      "size": 734,
+      "mode": 33188,
+      "sha": "e64628cdd38b59552b9e2d47b23513fd1dbfb543"
+    },
+    {
+      "path": "app/api/test-whatsapp/route.ts",
+      "size": 280,
+      "mode": 33188,
+      "sha": "379519051d03129a60bf9212f1c0edd9301bef71"
+    },
+    {
+      "path": "app/api/update-listing-image/route.ts",
+      "size": 11732,
+      "mode": 33188,
+      "sha": "ab3018a29d0566663dc767108cd9780295a09b10"
+    },
+    {
+      "path": "app/api/upload-temporary-listing-image/route.ts",
+      "size": 5886,
+      "mode": 33188,
+      "sha": "b55837eeca7195d64a6e58e354b2b828f5bf987c"
+    },
+    {
+      "path": "app/api/verify-otp/route.ts",
+      "size": 1749,
+      "mode": 33188,
+      "sha": "d8d47d3ccdbb4ff4eb669c2852f26b51b20a0d07"
+    },
+    {
+      "path": "app/api/whatsapp-webhook/route.ts",
+      "size": 987,
+      "mode": 33188,
+      "sha": "ea36a276e100f773666e3f0b158370a56acef5e6"
+    },
+    {
+      "path": "app/auth/callback/page.tsx",
+      "size": 2418,
+      "mode": 33188,
+      "sha": "f7a37a4af73919e3b68e1c5b3ab85c9c99c1bc2e"
+    },
+    {
+      "path": "app/auth/reset-password/page.tsx",
+      "size": 3926,
+      "mode": 33188,
+      "sha": "b5cf032876dc82d28a36ef12d837a653e9c168d6"
+    },
+    {
+      "path": "app/AuthOverlay.tsx",
+      "size": 3329,
+      "mode": 33188,
+      "sha": "87e39a341a127ff9636c9e2e7c1a28c6e6ba9f41"
+    },
+    {
+      "path": "app/buyer-demand/BuyerDemandResults.tsx",
+      "size": 4277,
+      "mode": 33188,
+      "sha": "b41dca07f56bcb854201f049c77b5fd8543cf7e2"
+    },
+    {
+      "path": "app/buyer-demand/page.tsx",
+      "size": 2093,
+      "mode": 33188,
+      "sha": "c3e39e9cd43419be5a912f0e63f4aaef51f2c507"
+    },
+    {
+      "path": "app/canton/[canton]/page.tsx",
+      "size": 277,
+      "mode": 33188,
+      "sha": "36bacd6ef11b934d88990a49eba0965bea5ba8c7"
+    },
+    {
+      "path": "app/components/AnalysisActions.tsx",
+      "size": 10303,
+      "mode": 33188,
+      "sha": "d41c8e3dbe677b62812676b7b72ed8ba4a54f80c"
+    },
+    {
+      "path": "app/components/AuthenticatedListingPublisher.tsx",
+      "size": 6129,
+      "mode": 33188,
+      "sha": "954bc56f01ac864b781ce047d771b11b06c387b5"
+    },
+    {
+      "path": "app/components/BackButton.tsx",
+      "size": 648,
+      "mode": 33188,
+      "sha": "79e39a114a2be07fc04645a9e03300a5b26da806"
+    },
+    {
+      "path": "app/components/Breadcrumbs.tsx",
+      "size": 2491,
+      "mode": 33188,
+      "sha": "92b07f8d839c181e676962345be1fc6cde3a4015"
+    },
+    {
+      "path": "app/components/BuyHeader.tsx",
+      "size": 844,
+      "mode": 33188,
+      "sha": "ef0ab697df6a2f90e41149a18fe10639100dd2c6"
+    },
+    {
+      "path": "app/components/BuyHeaderES.tsx",
+      "size": 856,
+      "mode": 33188,
+      "sha": "f0266f370b03501733afd494801564b4b36d55ad"
+    },
+    {
+      "path": "app/components/BuyPropertyCard.tsx",
+      "size": 2832,
+      "mode": 33188,
+      "sha": "878326e7243035af3cd2e6054b64f53d77b19dd7"
+    },
+    {
+      "path": "app/components/BuyPropertyGrid.tsx",
+      "size": 0,
+      "mode": 33188,
+      "sha": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+    },
+    {
+      "path": "app/components/BuySidebar.tsx",
+      "size": 18690,
+      "mode": 33188,
+      "sha": "276723c2b1f8dc75aa1222e9b735a0ef9a20fde6"
+    },
+    {
+      "path": "app/components/BuySidebarES.tsx",
+      "size": 19273,
+      "mode": 33188,
+      "sha": "103480433c921f5bc204d0006e72de7b5e41f5aa"
+    },
+    {
+      "path": "app/components/CollectionPicker.tsx",
+      "size": 11390,
+      "mode": 33188,
+      "sha": "5ec6d6fb7c8b2c06248b947d3260151926e4189a"
+    },
+    {
+      "path": "app/components/comparisons/ComparisonCard.tsx",
+      "size": 5564,
+      "mode": 33188,
+      "sha": "656c419b1c3ffb8ed7b7a96fc3944b862f99a4a3"
+    },
+    {
+      "path": "app/components/comparisons/ComparisonShell.tsx",
+      "size": 1625,
+      "mode": 33188,
+      "sha": "19b43ba32ed5d44a2170ff704206b73729720131"
+    },
+    {
+      "path": "app/components/comparisons/ComparisonTabs.tsx",
+      "size": 2267,
+      "mode": 33188,
+      "sha": "4c0533e17fc78fcdc54e230dc9a8775cfe1a5a6b"
+    },
+    {
+      "path": "app/components/comparisons/EntityComparisonPanel.tsx",
+      "size": 3173,
+      "mode": 33188,
+      "sha": "f99da92ac7b2c4f59e4767678e8d30077d5bbae4"
+    },
+    {
+      "path": "app/components/comparisons/ListingCompareButton.tsx",
+      "size": 1132,
+      "mode": 33188,
+      "sha": "9d95013fd077b47d761cba20ef372b20f668487a"
+    },
+    {
+      "path": "app/components/comparisons/MarketComparisonPanel.tsx",
+      "size": 3429,
+      "mode": 33188,
+      "sha": "9f5a70eaf2c87c6b459e22787c88f111f9ca5757"
+    },
+    {
+      "path": "app/components/comparisons/PropertyComparisonEngine.tsx",
+      "size": 22040,
+      "mode": 33188,
+      "sha": "f4cc67ea96e5538ebdb4239f259c663314dbd973"
+    },
+    {
+      "path": "app/components/comparisons/PropertyComparisonPanel.tsx",
+      "size": 4899,
+      "mode": 33188,
+      "sha": "6a5d9ee1dc714884cd669911485116b29a9578dd"
+    },
+    {
+      "path": "app/components/comparisons/PropertyComparisonTray.tsx",
+      "size": 7734,
+      "mode": 33188,
+      "sha": "f027f1b68df15127e65f2fefc5cc4bbabc97849b"
+    },
+    {
+      "path": "app/components/CreateCollectionButton.tsx",
+      "size": 3381,
+      "mode": 33188,
+      "sha": "71797e63c35fde7daf8f2ed15d4c60f3ca7496f8"
+    },
+    {
+      "path": "app/components/CreateListingButtonS.tsx",
+      "size": 1705,
+      "mode": 33188,
+      "sha": "2d1abe586f85e40cc911c4352b4ef86ee3e2b0ed"
+    },
+    {
+      "path": "app/components/CreateListingButtonSXL.tsx",
+      "size": 1895,
+      "mode": 33188,
+      "sha": "169a4dff190b8fbfb74f3644cc7fe605a983d3b1"
+    },
+    {
+      "path": "app/components/CreateRentalListingButton.tsx",
+      "size": 558,
+      "mode": 33188,
+      "sha": "eb7b4a9ab5a1adb6a6b590e9a4b80ad2bedebc0a"
+    },
+    {
+      "path": "app/components/CsvListingImagePreviewGrid.tsx",
+      "size": 856,
+      "mode": 33188,
+      "sha": "ee64e8859a56402a1ce769b065f60131552704e9"
+    },
+    {
+      "path": "app/components/CsvListingImageUploader.tsx",
+      "size": 1357,
+      "mode": 33188,
+      "sha": "581b4e704491162fe52a2eab8d1d5f92818816d7"
+    },
+    {
+      "path": "app/components/CsvListingsGrid.tsx",
+      "size": 3437,
+      "mode": 33188,
+      "sha": "d280d41bbe4d11d61708e5c636bd30b84afcfdb0"
+    },
+    {
+      "path": "app/components/CsvPublishActions.tsx",
+      "size": 914,
+      "mode": 33188,
+      "sha": "1c8f493e6fc2d93950a70ff8db36e03567a0894d"
+    },
+    {
+      "path": "app/components/CsvPublishActionsRentLease.tsx",
+      "size": 937,
+      "mode": 33188,
+      "sha": "1c8d07ab1f183979b4b75367c56336e9f4e11876"
+    },
+    {
+      "path": "app/components/CsvStagingModal.tsx",
+      "size": 2450,
+      "mode": 33188,
+      "sha": "56cd625fdd38f488fe338dd15a2fc64de9f776d7"
+    },
+    {
+      "path": "app/components/DefinitionCard.tsx",
+      "size": 399,
+      "mode": 33188,
+      "sha": "a139a2934aaa6da61a8fa02173de3dc5d6826e07"
+    },
+    {
+      "path": "app/components/EmailAuthModal.tsx",
+      "size": 9418,
+      "mode": 33188,
+      "sha": "b1e8c4b32ec70335215bdfabe62b9abda606d863"
+    },
+    {
+      "path": "app/components/EmptyResultsES.tsx",
+      "size": 0,
+      "mode": 33188,
+      "sha": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+    },
+    {
+      "path": "app/components/EngineComparisonTable.tsx",
+      "size": 10968,
+      "mode": 33188,
+      "sha": "c08c2c6294a00c49edf188996dc5752fc923c28c"
+    },
+    {
+      "path": "app/components/Entity-Page.tsx",
+      "size": 8855,
+      "mode": 33188,
+      "sha": "dc7fbdebb8439f4d9b20896b3cb1a42557fef1d2"
+    },
+    {
+      "path": "app/components/EntityComparisonPanel.tsx",
+      "size": 0,
+      "mode": 33188,
+      "sha": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+    },
+    {
+      "path": "app/components/Explore.tsx",
+      "size": 1190,
+      "mode": 33188,
+      "sha": "a0312bd2a174092db0222cc639deab5e0cededc4"
+    },
+    {
+      "path": "app/components/Favorites.tsx",
+      "size": 1069,
+      "mode": 33188,
+      "sha": "613e6d33ecebf32a7f5319fb481412c0c5f2ca4b"
+    },
+    {
+      "path": "app/components/filter-bar/AccessibilityFilter.tsx",
+      "size": 3347,
+      "mode": 33188,
+      "sha": "1d27461d70093c990e821d5fa45bd246957949a0"
+    },
+    {
+      "path": "app/components/filter-bar/AccessibilityFilterES.tsx",
+      "size": 4327,
+      "mode": 33188,
+      "sha": "f0610b6a94a033b05a79c2703b821b7763cb48f2"
+    },
+    {
+      "path": "app/components/filter-bar/AccessibilityFilterS.tsx",
+      "size": 5414,
+      "mode": 33188,
+      "sha": "33313343177aa457413bd998d5a297a23544471c"
+    },
+    {
+      "path": "app/components/filter-bar/AccessibilityFilterSES.tsx",
+      "size": 5403,
+      "mode": 33188,
+      "sha": "4d2ccc98008a6ea9839ceb8574c5bd75318e632b"
+    },
+    {
+      "path": "app/components/filter-bar/AdvancedFiltersToggle.tsx",
+      "size": 2552,
+      "mode": 33188,
+      "sha": "c9e11eb7894f6a54f7012afbfa5261606b3d858f"
+    },
+    {
+      "path": "app/components/filter-bar/AdvancedFiltersToggleES.tsx",
+      "size": 2559,
+      "mode": 33188,
+      "sha": "b38b55773082b762eb8e58bf2f8d7e12dcb76c9b"
+    },
+    {
+      "path": "app/components/filter-bar/BathroomFilterS.tsx",
+      "size": 3237,
+      "mode": 33188,
+      "sha": "f0bbe04587fcf17870373eaf86d1feb880789fe8"
+    },
+    {
+      "path": "app/components/filter-bar/BathroomFilterSES.tsx",
+      "size": 3219,
+      "mode": 33188,
+      "sha": "9c7e47141ab1986e98fce41dd8ad0494006e8784"
+    },
+    {
+      "path": "app/components/filter-bar/BedroomFilterS.tsx",
+      "size": 3208,
+      "mode": 33188,
+      "sha": "d2d1eceef4640594961482a42e678dce19095112"
+    },
+    {
+      "path": "app/components/filter-bar/BedroomFilterSES.tsx",
+      "size": 3240,
+      "mode": 33188,
+      "sha": "2a149ade57ab90c2aad44797cd030c4c0facdc88"
+    },
+    {
+      "path": "app/components/filter-bar/ConstructionAreaFilterS.tsx",
+      "size": 3263,
+      "mode": 33188,
+      "sha": "2a8a91f470ac1234b5d1a04342b38649da15876f"
+    },
+    {
+      "path": "app/components/filter-bar/ConstructionAreaFilterSES.tsx",
+      "size": 3360,
+      "mode": 33188,
+      "sha": "8f2baf4a48566799a35709568faae19356d41c4b"
+    },
+    {
+      "path": "app/components/filter-bar/EnvironmentFilter.tsx",
+      "size": 4382,
+      "mode": 33188,
+      "sha": "02a207594f0e8c96485d6f872f74f56ebc0ceb06"
+    },
+    {
+      "path": "app/components/filter-bar/EnvironmentFilterES.tsx",
+      "size": 4490,
+      "mode": 33188,
+      "sha": "c37dabba01d6699ae3d745f0018cc9c8feeba681"
+    },
+    {
+      "path": "app/components/filter-bar/EnvironmentFilterS.tsx",
+      "size": 3293,
+      "mode": 33188,
+      "sha": "5afd63591f760ad75f7b1f8e17e4c0659cd83e80"
+    },
+    {
+      "path": "app/components/filter-bar/EnvironmentFilterSES.tsx",
+      "size": 3318,
+      "mode": 33188,
+      "sha": "8fcd2c75949fd5962e4661b921eb15a4ce6a4ba3"
+    },
+    {
+      "path": "app/components/filter-bar/LegalStatusFilter.tsx",
+      "size": 3576,
+      "mode": 33188,
+      "sha": "78671313fb703423136c5bd6d475f5b18e25b236"
+    },
+    {
+      "path": "app/components/filter-bar/LegalStatusFilterES.tsx",
+      "size": 3591,
+      "mode": 33188,
+      "sha": "ce212a28029443bdd5500a27136d364c4c99244d"
+    },
+    {
+      "path": "app/components/filter-bar/LegalStatusFilterS.tsx",
+      "size": 3331,
+      "mode": 33188,
+      "sha": "1d25c8d33b88a5fcde6e936b6fe05a2bdb639213"
+    },
+    {
+      "path": "app/components/filter-bar/LegalStatusFilterSES.tsx",
+      "size": 3351,
+      "mode": 33188,
+      "sha": "098e7cbe5becef4fcab1cff5a088c39e8ad0d227"
+    },
+    {
+      "path": "app/components/filter-bar/LocationFilter.tsx",
+      "size": 13903,
+      "mode": 33188,
+      "sha": "c03e2ff06cf2e2a043b406dfdd8ec650c81ec151"
+    },
+    {
+      "path": "app/components/filter-bar/LocationFilterES.tsx",
+      "size": 13896,
+      "mode": 33188,
+      "sha": "778f4d0b75e84f60935ad52b74d4c8f65b250e37"
+    },
+    {
+      "path": "app/components/filter-bar/LocationSelector.tsx",
+      "size": 7819,
+      "mode": 33188,
+      "sha": "7fed6900ee1d776c816a28f52dbc6f93854d5d01"
+    },
+    {
+      "path": "app/components/filter-bar/LocationSelectorS.tsx",
+      "size": 7819,
+      "mode": 33188,
+      "sha": "7fed6900ee1d776c816a28f52dbc6f93854d5d01"
+    },
+    {
+      "path": "app/components/filter-bar/MonthlyRentSelector.tsx",
+      "size": 3389,
+      "mode": 33188,
+      "sha": "a1044c817519718eba786458819560490f785b0e"
+    },
+    {
+      "path": "app/components/filter-bar/MonthlyRentSelectorS.tsx",
+      "size": 3389,
+      "mode": 33188,
+      "sha": "a1044c817519718eba786458819560490f785b0e"
+    },
+    {
+      "path": "app/components/filter-bar/ParkingFilterS.tsx",
+      "size": 3230,
+      "mode": 33188,
+      "sha": "f4e8eb76464115cfff4f4c445d84383e4d9ac581"
+    },
+    {
+      "path": "app/components/filter-bar/ParkingFilterSES.tsx",
+      "size": 3238,
+      "mode": 33188,
+      "sha": "21e949b541d31cd938d05c5dbf347e5934e5a429"
+    },
+    {
+      "path": "app/components/filter-bar/PriceFilter.tsx",
+      "size": 4545,
+      "mode": 33188,
+      "sha": "7451d04861ad6399143cc1da84fa3e614066b2ca"
+    },
+    {
+      "path": "app/components/filter-bar/PriceFilterES.tsx",
+      "size": 4487,
+      "mode": 33188,
+      "sha": "c92a30d075e4c72e806e8cf24111dc8de5904af0"
+    },
+    {
+      "path": "app/components/filter-bar/PriceFilterRL.tsx",
+      "size": 4131,
+      "mode": 33188,
+      "sha": "76acaadbff1464957b93af06ac4a9536cea784fe"
+    },
+    {
+      "path": "app/components/filter-bar/PriceFilterRLES.tsx",
+      "size": 3926,
+      "mode": 33188,
+      "sha": "530dfd17638fd55184f493f3e84fc0917937515f"
+    },
+    {
+      "path": "app/components/filter-bar/PriceSelectorS.tsx",
+      "size": 2710,
+      "mode": 33188,
+      "sha": "936843f40a21d744c1a2856299fb5e70b6d18786"
+    },
+    {
+      "path": "app/components/filter-bar/PropertyAreaFilter.tsx",
+      "size": 3908,
+      "mode": 33188,
+      "sha": "ee613e8981a05ebd9f4936f5ad3825f7460e7389"
+    },
+    {
+      "path": "app/components/filter-bar/PropertyAreaFilterES.tsx",
+      "size": 3927,
+      "mode": 33188,
+      "sha": "0fbb3574fbfe66dceba4fe7aa79959bd9767ead4"
+    },
+    {
+      "path": "app/components/filter-bar/PropertyAreaFilterS.tsx",
+      "size": 3222,
+      "mode": 33188,
+      "sha": "ae0e6c8af8a075a508ce52b4576ba992e13c6b97"
+    },
+    {
+      "path": "app/components/filter-bar/PropertyAreaFilterSES.tsx",
+      "size": 3102,
+      "mode": 33188,
+      "sha": "bdf1309822821ff37c660fbd82d244689019f509"
+    },
+    {
+      "path": "app/components/filter-bar/PropertyTypeFilter.tsx",
+      "size": 5288,
+      "mode": 33188,
+      "sha": "e0deb44543c87e609399a1d30e6635b6c08a73cf"
+    },
+    {
+      "path": "app/components/filter-bar/PropertyTypeFilterES.tsx",
+      "size": 6475,
+      "mode": 33188,
+      "sha": "e1e53f54734f7cb8c77fe865098bd9e2a6ac4eee"
+    },
+    {
+      "path": "app/components/filter-bar/PropertyTypeFilterS.tsx",
+      "size": 4951,
+      "mode": 33188,
+      "sha": "0a2397e0610d4fb3d2a5a745cb59f3257abd2696"
+    },
+    {
+      "path": "app/components/filter-bar/PropertyTypeFilterSES.tsx",
+      "size": 6361,
+      "mode": 33188,
+      "sha": "65045561513a37fb8a2e9550efc21107ea401830"
+    },
+    {
+      "path": "app/components/filter-bar/ResidentialAttributesS.tsx",
+      "size": 15064,
+      "mode": 33188,
+      "sha": "818203b19fe7c3db96971d076af12c845ac6219d"
+    },
+    {
+      "path": "app/components/filter-bar/ResidentialAttributesSES.tsx",
+      "size": 16317,
+      "mode": 33188,
+      "sha": "db8c8284d72ce41e66eadc748b28c00709a74d8c"
+    },
+    {
+      "path": "app/components/filter-bar/TerrainFilter.tsx",
+      "size": 4157,
+      "mode": 33188,
+      "sha": "6011e79be5ccd44c111ef28eb9bb450dc11730f5"
+    },
+    {
+      "path": "app/components/filter-bar/TerrainFilterES.tsx",
+      "size": 4492,
+      "mode": 33188,
+      "sha": "ea9b5e04b295656e77390ae61994a3382a9737e4"
+    },
+    {
+      "path": "app/components/filter-bar/TerrainFilterS.tsx",
+      "size": 4023,
+      "mode": 33188,
+      "sha": "1967cedf8dbd9bf75330693808ba8a4a1335abf7"
+    },
+    {
+      "path": "app/components/filter-bar/TerrainFilterSES.tsx",
+      "size": 3781,
+      "mode": 33188,
+      "sha": "fe2dffdb5c96621ebd9543806f4f239cff04d5af"
+    },
+    {
+      "path": "app/components/filter-bar/UseTypeFilter.tsx",
+      "size": 1609,
+      "mode": 33188,
+      "sha": "fe4fd47276896bc74282d55619e833cb69e725e5"
+    },
+    {
+      "path": "app/components/filter-bar/UtilitiesFilter.tsx",
+      "size": 4244,
+      "mode": 33188,
+      "sha": "4ce0df93a86509f2145ec7d15119e24217e4416d"
+    },
+    {
+      "path": "app/components/filter-bar/UtilitiesFilterES.tsx",
+      "size": 4629,
+      "mode": 33188,
+      "sha": "5bb258ccda4cf2460b6343e195dfdef8fbc0095f"
+    },
+    {
+      "path": "app/components/filter-bar/UtilitiesFilterS.tsx",
+      "size": 5498,
+      "mode": 33188,
+      "sha": "ba58f31306ca306ba3dba53afda5843ea791b18e"
+    },
+    {
+      "path": "app/components/filter-bar/UtilitiesFilterSES.tsx",
+      "size": 5473,
+      "mode": 33188,
+      "sha": "e903b432265d675b54bdcb6a55f34401b3999346"
+    },
+    {
+      "path": "app/components/filter-bar/YearBuiltFilterS.tsx",
+      "size": 3318,
+      "mode": 33188,
+      "sha": "24b1bcc09627ca70b84be7cf75dcb7321ff12b22"
+    },
+    {
+      "path": "app/components/filter-bar/YearBuiltFilterSES.tsx",
+      "size": 3329,
+      "mode": 33188,
+      "sha": "c8ddc2cfd14cc0be74e9158558d05a2bc79b255d"
+    },
+    {
+      "path": "app/components/FilterButton.tsx",
+      "size": 1247,
+      "mode": 33188,
+      "sha": "281138d724f508721280b79f45c5c4517b86b4db"
+    },
+    {
+      "path": "app/components/GraphExplorer.tsx",
+      "size": 846,
+      "mode": 33188,
+      "sha": "4026db4ef671eb5dd84679a2da07bf06a6fb776d"
+    },
+    {
+      "path": "app/components/HelpButton.tsx",
+      "size": 1783,
+      "mode": 33188,
+      "sha": "2a0f8aeb562ae96c0d7f68b389e8507fbcb3ec90"
+    },
+    {
+      "path": "app/components/HomeButton.tsx",
+      "size": 1414,
+      "mode": 33188,
+      "sha": "680316344fb5a47f733089196accba261d087016"
+    },
+    {
+      "path": "app/components/ImagePreviewGridS.tsx",
+      "size": 1428,
+      "mode": 33188,
+      "sha": "5c3c215a6a4f6b36b79b521c859748fb8528e825"
+    },
+    {
+      "path": "app/components/ImageUploaderS.tsx",
+      "size": 1133,
+      "mode": 33188,
+      "sha": "f58f1b54bd89b126d4f5e5d4836bacbc6ad1a38d"
+    },
+    {
+      "path": "app/components/JsonLd.tsx",
+      "size": 331,
+      "mode": 33188,
+      "sha": "77d02b4617fe321f93d66d4df42f406896faaaaa"
+    },
+    {
+      "path": "app/components/LanguageButtonEN.tsx",
+      "size": 678,
+      "mode": 33188,
+      "sha": "d41fd0241c27875d8cb606eaab93afa485af1d4f"
+    },
+    {
+      "path": "app/components/LanguageButtonES.tsx",
+      "size": 750,
+      "mode": 33188,
+      "sha": "43a2de061b538098143e7d0bb7e361591b0d205f"
+    },
+    {
+      "path": "app/components/listing-input/ExactConstructionAreaInput.tsx",
+      "size": 8954,
+      "mode": 33188,
+      "sha": "dba347f633f0b77a6916275b11415a53eca9220e"
+    },
+    {
+      "path": "app/components/listing-input/ExactPropertyAreaInput.tsx",
+      "size": 12007,
+      "mode": 33188,
+      "sha": "9bdfb62c608365f5a84479264fb07106f301b34d"
+    },
+    {
+      "path": "app/components/ListingActions.tsx",
+      "size": 6338,
+      "mode": 33188,
+      "sha": "c02df3267bcaa463adef4ae13d5a9f527ac645ad"
+    },
+    {
+      "path": "app/components/ListingActivityTracker.tsx",
+      "size": 1897,
+      "mode": 33188,
+      "sha": "2f37fe377892a482331559ab626a1f9c15459142"
+    },
+    {
+      "path": "app/components/ListingOperationsCenter.tsx",
+      "size": 79519,
+      "mode": 33188,
+      "sha": "f2b8cd17b63487bd0b9cc8c6f1b8b242e00fae9a"
+    },
+    {
+      "path": "app/components/LoginModal.tsx",
+      "size": 4716,
+      "mode": 33188,
+      "sha": "f828f971c5619f4a68f3910c197534ac8101324c"
+    },
+    {
+      "path": "app/components/market-filters/filter-registry.ts",
+      "size": 8985,
+      "mode": 33188,
+      "sha": "e1c22e849b32a316ae255cf220c7c802d4c3d6cf"
+    },
+    {
+      "path": "app/components/market-filters/FilterColumn.tsx",
+      "size": 6863,
+      "mode": 33188,
+      "sha": "8136a397291105e471cf376568560f1169e21e08"
+    },
+    {
+      "path": "app/components/market-filters/FilterSelect.tsx",
+      "size": 1315,
+      "mode": 33188,
+      "sha": "2cb05ef3483190928dcb438134b95fee80fb932f"
+    },
+    {
+      "path": "app/components/market-filters/options.ts",
+      "size": 828,
+      "mode": 33188,
+      "sha": "ca0acc38bd14df50d5c0fb85a6534cdba2b4d835"
+    },
+    {
+      "path": "app/components/market-filters/styles.ts",
+      "size": 1422,
+      "mode": 33188,
+      "sha": "97e5d177dcfa21a54d71e671b33d9370a9d95b04"
+    },
+    {
+      "path": "app/components/market-filters/translations.ts",
+      "size": 1701,
+      "mode": 33188,
+      "sha": "d06d1f89badfcf0ba3fae9bf5df8bd864bd9b2c5"
+    },
+    {
+      "path": "app/components/market-filters/types.ts",
+      "size": 1145,
+      "mode": 33188,
+      "sha": "b450c5f7fd3f2a8b4154bcee34e98172ff1ef1a6"
+    },
+    {
+      "path": "app/components/market-filters/UrlFilterSelect.tsx",
+      "size": 919,
+      "mode": 33188,
+      "sha": "76328506179724954e1980a68b492409140d8e91"
+    },
+    {
+      "path": "app/components/market-filters/utils.ts",
+      "size": 2419,
+      "mode": 33188,
+      "sha": "3a5ea64b4082d0116ec8246e4cb7e55cfecccd75"
+    },
+    {
+      "path": "app/components/MarketActivityTracker.tsx",
+      "size": 633,
+      "mode": 33188,
+      "sha": "844c861c662a824bc75e0a62f7e1e258ef387be5"
+    },
+    {
+      "path": "app/components/MarketFilters.tsx",
+      "size": 7018,
+      "mode": 33188,
+      "sha": "6c2c0bb4069aa970a4715b861059e515f31cf8e0"
+    },
+    {
+      "path": "app/components/MarketHubActivityEngine.tsx",
+      "size": 2383,
+      "mode": 33188,
+      "sha": "30f72bb2f5055fcb214a8793ec0470b5c33d4c20"
+    },
+    {
+      "path": "app/components/MarketHubAuthGate.tsx",
+      "size": 1510,
+      "mode": 33188,
+      "sha": "7b1edebf8f49a7178883dda8e8cd6794d4445f09"
+    },
+    {
+      "path": "app/components/MarketHubCompare.tsx",
+      "size": 16122,
+      "mode": 33188,
+      "sha": "37129d310fbdc8a009ee5c32da2d74223cad8d76"
+    },
+    {
+      "path": "app/components/MarketHubComparisons.tsx",
+      "size": 6740,
+      "mode": 33188,
+      "sha": "ba541f012182a70902c73bb53e279f63fc10d20b"
+    },
+    {
+      "path": "app/components/MarketHubFavorites.tsx",
+      "size": 100478,
+      "mode": 33188,
+      "sha": "da408ecb0b5063573e1883c3ec710cb5179dff40"
+    },
+    {
+      "path": "app/components/MarketHubFirstTimeExperience.tsx",
+      "size": 29353,
+      "mode": 33188,
+      "sha": "e8f7a79c1fd2b41e1dae6b7dcbe86dd8d9dac5d5"
+    },
+    {
+      "path": "app/components/MarketHubIntelligence.tsx",
+      "size": 12677,
+      "mode": 33188,
+      "sha": "76e0e5827b6e8e87f3c9493bc46e5434ad8afe3b"
+    },
+    {
+      "path": "app/components/MarketHubIntelligenceEngine.tsx",
+      "size": 5934,
+      "mode": 33188,
+      "sha": "19a460aa31f922acce53c6c17cc5610bbce7c2da"
+    },
+    {
+      "path": "app/components/MarketHubKnowledge.tsx",
+      "size": 7815,
+      "mode": 33188,
+      "sha": "0e39ef5ca983df58170adeac9afe1dc06e1decfb"
+    },
+    {
+      "path": "app/components/MarketHubMarketIntelligence.tsx",
+      "size": 48643,
+      "mode": 33188,
+      "sha": "2ff24958ec40b4dd1634791a6ed4ba8089d1f89b"
+    },
+    {
+      "path": "app/components/MarketHubMyListings.tsx",
+      "size": 33966,
+      "mode": 33188,
+      "sha": "a1f2c674abe705e3e7e2ec2c76e484c8d24493cb"
+    },
+    {
+      "path": "app/components/MarketHubMyListingsLoader.tsx",
+      "size": 4749,
+      "mode": 33188,
+      "sha": "5d2aa2e05efe4b92401fe52cd5d4ef1bf6776c63"
+    },
+    {
+      "path": "app/components/MarketHubNotificationFeed.tsx",
+      "size": 6801,
+      "mode": 33188,
+      "sha": "d7d1b5665d632df1961772afebdb921eb5f70125"
+    },
+    {
+      "path": "app/components/MarketHubPackages.tsx",
+      "size": 157739,
+      "mode": 33188,
+      "sha": "1562c6259a93f6df85162fc39cd2a05cecb86e37"
+    },
+    {
+      "path": "app/components/MarketHubPackagesLoader.tsx",
+      "size": 50797,
+      "mode": 33188,
+      "sha": "06557c05c326c188edafaa196319e06804d72db1"
+    },
+    {
+      "path": "app/components/MarketHubPaymentReview.tsx",
+      "size": 21689,
+      "mode": 33188,
+      "sha": "68b5900819e29aadcc5b7c249d90b4d80be2157f"
+    },
+    {
+      "path": "app/components/MarketHubPropertyNotes.tsx",
+      "size": 26425,
+      "mode": 33188,
+      "sha": "4e158734ab3a24c5c5f52aa2e96cb6eac8c37292"
+    },
+    {
+      "path": "app/components/MarketHubRecentActivity.tsx",
+      "size": 11097,
+      "mode": 33188,
+      "sha": "19450e246f117aa49e69b68ed995549f303a9850"
+    },
+    {
+      "path": "app/components/MarketHubRecentlyViewedProperties.tsx",
+      "size": 0,
+      "mode": 33188,
+      "sha": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+    },
+    {
+      "path": "app/components/MarketHubSavedAnalyses.tsx",
+      "size": 10243,
+      "mode": 33188,
+      "sha": "b3bd7f85565914ecba652422252e0255de8a909d"
+    },
+    {
+      "path": "app/components/MarketHubSettings.tsx",
+      "size": 92527,
+      "mode": 33188,
+      "sha": "040bb932fdbf56a851556190b9f4f283b182c734"
+    },
+    {
+      "path": "app/components/MarketHubShell.tsx",
+      "size": 19576,
+      "mode": 33188,
+      "sha": "c3b58405a87426293797999c4500488215cde7c7"
+    },
+    {
+      "path": "app/components/PackageCard.tsx",
+      "size": 6898,
+      "mode": 33188,
+      "sha": "01bc522e0b54d29efc0275c83d8f4a75459f6258"
+    },
+    {
+      "path": "app/components/PackageModal.tsx",
+      "size": 17954,
+      "mode": 33188,
+      "sha": "f9b8b5a330d0167a44f8abd69b07e78248113287"
+    },
+    {
+      "path": "app/components/PermissionGate.tsx",
+      "size": 7696,
+      "mode": 33188,
+      "sha": "cff2422fec0a39722fbb55d00183aa6dd32930b7"
+    },
+    {
+      "path": "app/components/price-meter-comparison/PriceMeterComparisonApply.tsx",
+      "size": 1243,
+      "mode": 33188,
+      "sha": "df9d248743071c661b6ad04e44886d2b5c94b89d"
+    },
+    {
+      "path": "app/components/price-meter-comparison/PriceMeterComparisonCohortColumn.tsx",
+      "size": 8725,
+      "mode": 33188,
+      "sha": "ca98e7fec008fd95a132d55e1c90c31d437b5748"
+    },
+    {
+      "path": "app/components/price-meter-comparison/PriceMeterComparisonFilters.tsx",
+      "size": 6013,
+      "mode": 33188,
+      "sha": "f59c55b226920b9b466240997a724d78ec4ecbaf"
+    },
+    {
+      "path": "app/components/PriceMeterApplyPanel.tsx",
+      "size": 2268,
+      "mode": 33188,
+      "sha": "0516f9e21a71980c11e3c8ed60db559d29ed6b5b"
+    },
+    {
+      "path": "app/components/PriceMeterComparableListing.tsx",
+      "size": 22502,
+      "mode": 33188,
+      "sha": "64f2d57900a59a2ba6b568056add35ffbeb0b677"
+    },
+    {
+      "path": "app/components/PropertyCard.tsx",
+      "size": 0,
+      "mode": 33188,
+      "sha": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+    },
+    {
+      "path": "app/components/PropertyCardES.tsx",
+      "size": 0,
+      "mode": 33188,
+      "sha": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+    },
+    {
+      "path": "app/components/PropertyDefinitionPanel.tsx",
+      "size": 5595,
+      "mode": 33188,
+      "sha": "483fe56bc76c7965f2820eabbbd92588a633100c"
+    },
+    {
+      "path": "app/components/PropertyDefinitionPanelES.tsx",
+      "size": 6109,
+      "mode": 33188,
+      "sha": "2945322e0a7810f803238ac08b9f0a4b610c3788"
+    },
+    {
+      "path": "app/components/PropertyGridES.tsx",
+      "size": 0,
+      "mode": 33188,
+      "sha": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+    },
+    {
+      "path": "app/components/PropertyNoteEditor.tsx",
+      "size": 6913,
+      "mode": 33188,
+      "sha": "90c1402abd672fe0cb925e5109e87f47ab5c47f3"
+    },
+    {
+      "path": "app/components/PropertyNotes.tsx",
+      "size": 17774,
+      "mode": 33188,
+      "sha": "63f8fb250ec88416903e4b13e40aa8f354e882f9"
+    },
+    {
+      "path": "app/components/PublishListingSheet.tsx",
+      "size": 12465,
+      "mode": 33188,
+      "sha": "9e03ca8d1c850e8a85ea2fa706c0e54cfab1394b"
+    },
+    {
+      "path": "app/components/RecordRecentlyViewedProperty.tsx",
+      "size": 846,
+      "mode": 33188,
+      "sha": "7275d736615cf2691d7a545a9fecbb5e44011295"
+    },
+    {
+      "path": "app/components/RentalListingEditForm.tsx",
+      "size": 49118,
+      "mode": 33188,
+      "sha": "410791f4ca0d42364e10744b74abfcd2c2882a28"
+    },
+    {
+      "path": "app/components/RentalPropertyDefinitionPanel.tsx",
+      "size": 5545,
+      "mode": 33188,
+      "sha": "3ad6e93fd7d862a3d8d8347f35c700eb85798c79"
+    },
+    {
+      "path": "app/components/RentalPropertyDefinitionPanelES.tsx",
+      "size": 5722,
+      "mode": 33188,
+      "sha": "6ca725ac89a9d71674c4d8466fc0bc7671689bab"
+    },
+    {
+      "path": "app/components/RentLeaseSidebar.tsx",
+      "size": 18471,
+      "mode": 33188,
+      "sha": "d3190d4d4b33424bd1390cabb38afb4c5245d818"
+    },
+    {
+      "path": "app/components/RentLeaseSidebarES.tsx",
+      "size": 19304,
+      "mode": 33188,
+      "sha": "c629d7d60da479c9bbe599202e699a9dff2017d1"
+    },
+    {
+      "path": "app/components/SaleListingEditForm.tsx",
+      "size": 55749,
+      "mode": 33188,
+      "sha": "d298421062924afefa7c4530a1acf053a21b3abd"
+    },
+    {
+      "path": "app/components/SearchButton.tsx",
+      "size": 1275,
+      "mode": 33188,
+      "sha": "01f57fd9ca995746e16b523c6184a4b4857cb4ab"
+    },
+    {
+      "path": "app/components/SelectionSection.tsx",
+      "size": 0,
+      "mode": 33188,
+      "sha": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+    },
+    {
+      "path": "app/components/SwipeCard.tsx",
+      "size": 1433,
+      "mode": 33188,
+      "sha": "1bd790555c55fd99b69f1bdf196ebb96f0bdb9e5"
+    },
+    {
+      "path": "app/components/SwipeCardES.tsx",
+      "size": 0,
+      "mode": 33188,
+      "sha": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+    },
+    {
+      "path": "app/components/TopBar.tsx",
+      "size": 12294,
+      "mode": 33188,
+      "sha": "058ede0dcaf2e1789c41d86019e36f732648b36b"
+    },
+    {
+      "path": "app/components/WhatsAppInput.tsx",
+      "size": 1952,
+      "mode": 33188,
+      "sha": "f79080155f9d551bef70ecf7225dbce4e0dcd48d"
+    },
+    {
+      "path": "app/components/WhatsAppInputS.tsx",
+      "size": 1952,
+      "mode": 33188,
+      "sha": "f79080155f9d551bef70ecf7225dbce4e0dcd48d"
+    },
+    {
+      "path": "app/district/[district]/page.tsx",
+      "size": 286,
+      "mode": 33188,
+      "sha": "286271614d8cc1c1f183427eabd8130dd19b3cf5"
+    },
+    {
+      "path": "app/en/buy/listing/[id]/page.tsx",
+      "size": 19752,
+      "mode": 33188,
+      "sha": "f924a0fe6af817dcb60c7d8dfbe31830962d4dca"
+    },
+    {
+      "path": "app/en/buy/page.tsx",
+      "size": 44346,
+      "mode": 33188,
+      "sha": "5961f72b5e97e570c8355f835950ad9c6beb50c8"
+    },
+    {
+      "path": "app/en/compare/entities/page.tsx",
+      "size": 738,
+      "mode": 33188,
+      "sha": "4530fb8262c22ed3ed6a552d756c264b95140587"
+    },
+    {
+      "path": "app/en/compare/markets/page.tsx",
+      "size": 751,
+      "mode": 33188,
+      "sha": "788fdc357dfe4bb92d5d0afaba646f9dc5a4ee5d"
+    },
+    {
+      "path": "app/en/compare/properties/page.tsx",
+      "size": 1606,
+      "mode": 33188,
+      "sha": "d3503a27a1ae764fe6bda0eed96841d59e147590"
+    },
+    {
+      "path": "app/en/favorites/page.tsx",
+      "size": 17352,
+      "mode": 33188,
+      "sha": "068dee45ccb2c0b307d4f63512862eadc3fc5b6e"
+    },
+    {
+      "path": "app/en/HomePageClient.tsx",
+      "size": 61328,
+      "mode": 33188,
+      "sha": "ef4a92b64df32020c6958a4be36009e4cb966651"
+    },
+    {
+      "path": "app/en/market-hub/page.tsx",
+      "size": 11412,
+      "mode": 33188,
+      "sha": "edeca6f71de8ba7f5883a307369252a92dbb2192"
+    },
+    {
+      "path": "app/en/market-intelligence/MarketIntelligenceTabs.tsx",
+      "size": 17638,
+      "mode": 33188,
+      "sha": "ee1764db5db6f9a5d74b64cd0a3aa308b42c6996"
+    },
+    {
+      "path": "app/en/market-intelligence/packages/MarketIntelligencePackages.tsx",
+      "size": 2962,
+      "mode": 33188,
+      "sha": "142bbd6ff23b5b1af665af4c0760fa4f55eb1e93"
+    },
+    {
+      "path": "app/en/market-intelligence/packages/page.tsx",
+      "size": 386,
+      "mode": 33188,
+      "sha": "367187df280f311e79c641f2c277c71c52c885e5"
+    },
+    {
+      "path": "app/en/market-intelligence/page.tsx",
+      "size": 2450,
+      "mode": 33188,
+      "sha": "3c796358e3b56feec1b4dcb0ba49f6a3d35e914f"
+    },
+    {
+      "path": "app/en/page.tsx",
+      "size": 1456,
+      "mode": 33188,
+      "sha": "2fce425f593576e004310849738e574971e868b2"
+    },
+    {
+      "path": "app/en/rent-lease/listing/[id]/page.tsx",
+      "size": 20122,
+      "mode": 33188,
+      "sha": "4a8e6eda8892cd0fdf59961b6efe027b359630b8"
+    },
+    {
+      "path": "app/en/rent-lease/page.tsx",
+      "size": 44387,
+      "mode": 33188,
+      "sha": "d5f41650f152a47f1e545ba5c09465abb8c56c73"
+    },
+    {
+      "path": "app/en/rent-out-lease-out/edit/[id]/page.tsx",
+      "size": 761,
+      "mode": 33188,
+      "sha": "0669daabc2e3a5ff07cb675c79feba839c55660e"
+    },
+    {
+      "path": "app/en/rent-out-lease-out/page.tsx",
+      "size": 32836,
+      "mode": 33188,
+      "sha": "f86e40cc727b71b637b2d309c36294c19e632172"
+    },
+    {
+      "path": "app/en/saved-analysis/[id]/page.tsx",
+      "size": 1595,
+      "mode": 33188,
+      "sha": "defa31a280c72e0189eeb52e5620bffd6e199f58"
+    },
+    {
+      "path": "app/en/sell/edit/[id]/page.tsx",
+      "size": 842,
+      "mode": 33188,
+      "sha": "54754d697a76b60e8f07b27a7db90a0ce04f0126"
+    },
+    {
+      "path": "app/en/sell/page.tsx",
+      "size": 32593,
+      "mode": 33188,
+      "sha": "45da3ec5a24472cba2f9183cf19410c7319123e0"
+    },
+    {
+      "path": "app/en/swipe/buy/page.tsx",
+      "size": 17566,
+      "mode": 33188,
+      "sha": "fc11efd72e36e28cb4782927fe301a84ef77271c"
+    },
+    {
+      "path": "app/en/swipe/page.tsx",
+      "size": 2240,
+      "mode": 33188,
+      "sha": "64bc75bc5d9eaae7cb284dcea81827d848df7b4f"
+    },
+    {
+      "path": "app/en/swipe/rent-lease/page.tsx",
+      "size": 17714,
+      "mode": 33188,
+      "sha": "c0b028c72dbbb8869355ad9560c3e23ef4fc8aa5"
+    },
+    {
+      "path": "app/environment/[environment]/page.tsx",
+      "size": 300,
+      "mode": 33188,
+      "sha": "d23a97678eb261dc08463a6ec56fe54f59e07e1e"
+    },
+    {
+      "path": "app/es/alquilar-arrendar/anuncio/[id]/page.tsx",
+      "size": 20369,
+      "mode": 33188,
+      "sha": "471cd41d04fa5ac4045ada76016cc3554ddd9785"
+    },
+    {
+      "path": "app/es/alquilar-arrendar/page.tsx",
+      "size": 45458,
+      "mode": 33188,
+      "sha": "e67d3eaa8a5bbd063a7f716b5ad8182244c62abb"
+    },
+    {
+      "path": "app/es/analisis-guardado/[id]/page.tsx",
+      "size": 1598,
+      "mode": 33188,
+      "sha": "31703b22383add994078fbf36e0540e2a2202bbb"
+    },
+    {
+      "path": "app/es/centro-de-mercado/page.tsx",
+      "size": 11555,
+      "mode": 33188,
+      "sha": "3b52b9bdada6812cc8799e68f2039e53b1cf56b7"
+    },
+    {
+      "path": "app/es/coincidencia-de-mercado/page.tsx",
+      "size": 1794,
+      "mode": 33188,
+      "sha": "b9dbdae5f6e678cab392d0174f07223032378d3e"
+    },
+    {
+      "path": "app/es/coincidencia-de-mercado/ResultadosCoincidenciaMercado.tsx",
+      "size": 12088,
+      "mode": 33188,
+      "sha": "81a178d17ab543a7f756742d93a1a1b941071b8d"
+    },
+    {
+      "path": "app/es/comparacion-de-mercado/page.tsx",
+      "size": 2767,
+      "mode": 33188,
+      "sha": "e9d6af597043b2154de333606e26e905a51a07b6"
+    },
+    {
+      "path": "app/es/comparacion-de-mercado/ResultadosComparacionMercado.tsx",
+      "size": 3326,
+      "mode": 33188,
+      "sha": "0a3d23a1ca6df0d3a8f043a405d618b65c9ec99b"
+    },
+    {
+      "path": "app/es/comparar/entidades/page.tsx",
+      "size": 766,
+      "mode": 33188,
+      "sha": "be3469857b33d9ab6311d6ea8ab06d7df0ceebb0"
+    },
+    {
+      "path": "app/es/comparar/mercados/page.tsx",
+      "size": 757,
+      "mode": 33188,
+      "sha": "31999ee5a7d03e23b736fef9c25e07367bccc467"
+    },
+    {
+      "path": "app/es/comparar/propiedades/page.tsx",
+      "size": 1626,
+      "mode": 33188,
+      "sha": "f845455934ef69ace6b44038dc3c8cc967ea47e0"
+    },
+    {
+      "path": "app/es/comprar/anuncio/[id]/page.tsx",
+      "size": 21808,
+      "mode": 33188,
+      "sha": "c4a384acc2f6243e4199d25c2c3f7033be6389c7"
+    },
+    {
+      "path": "app/es/comprar/page.tsx",
+      "size": 45442,
+      "mode": 33188,
+      "sha": "0124b2a0aa798255ff1ac4e64a032c36f1d42561"
+    },
+    {
+      "path": "app/es/demanda-del-comprador/page.tsx",
+      "size": 2229,
+      "mode": 33188,
+      "sha": "51dad08475312ba7c039fff966dfd9b0450dbb1d"
+    },
+    {
+      "path": "app/es/demanda-del-comprador/ResultadosDemandaComprador.tsx",
+      "size": 8739,
+      "mode": 33188,
+      "sha": "0ab3cab393997f039be99a79dbc178f5b78796d8"
+    },
+    {
+      "path": "app/es/deslizar/alquilar/page.tsx",
+      "size": 18512,
+      "mode": 33188,
+      "sha": "b09431ece4e39b97f787c38c4bf1991256991ba0"
+    },
+    {
+      "path": "app/es/deslizar/comprar/page.tsx",
+      "size": 17634,
+      "mode": 33188,
+      "sha": "02cd695f403d6b4016dd07779ea0e10a05c2cd8c"
+    },
+    {
+      "path": "app/es/deslizar/page.tsx",
+      "size": 2282,
+      "mode": 33188,
+      "sha": "6be34cc09b85a04a20fcb562a4d7e146e491020a"
+    },
+    {
+      "path": "app/es/escasez-de-mercado/page.tsx",
+      "size": 2200,
+      "mode": 33188,
+      "sha": "f3dfae101f16d7f14feda0427285b7d7560e611c"
+    },
+    {
+      "path": "app/es/escasez-de-mercado/ResultadosEscasezMercado.tsx",
+      "size": 10862,
+      "mode": 33188,
+      "sha": "8f67e53981ec2d4aac10edc44c5dff428e5d42e6"
+    },
+    {
+      "path": "app/es/estrategia-de-precios/page.tsx",
+      "size": 1855,
+      "mode": 33188,
+      "sha": "6cf0239d2bd10aa5ca0b7d25ec69d12b1234e0a7"
+    },
+    {
+      "path": "app/es/estrategia-de-precios/ResultadosEstrategiaPrecios.tsx",
+      "size": 14033,
+      "mode": 33188,
+      "sha": "02b6f318d346c8e4897b680095a37cad0918cb2d"
+    },
+    {
+      "path": "app/es/explora/page.tsx",
+      "size": 3319,
+      "mode": 33188,
+      "sha": "68bbb5271f112ee78cc7d0e18528d5cf792b6d20"
+    },
+    {
+      "path": "app/es/explora/ResultadosExplora.tsx",
+      "size": 24422,
+      "mode": 33188,
+      "sha": "8ad1c8c578699c09ad7b29c4283b5214472fb753"
+    },
+    {
+      "path": "app/es/favoritos/page.tsx",
+      "size": 17562,
+      "mode": 33188,
+      "sha": "14b6b4236e36753ff6591f86e57811b36d266259"
+    },
+    {
+      "path": "app/es/HomePageClient.tsx",
+      "size": 62151,
+      "mode": 33188,
+      "sha": "6b7e8b10a1cccff1b13ce9e36b0830d467ad7453"
+    },
+    {
+      "path": "app/es/inteligencia-de-mercado/page.tsx",
+      "size": 2635,
+      "mode": 33188,
+      "sha": "441eecdcee6019c6d66c17219096542df7050cdf"
+    },
+    {
+      "path": "app/es/inteligencia-de-mercado/paquetes/page.tsx",
+      "size": 389,
+      "mode": 33188,
+      "sha": "91c0fb19787cd31049d29b63110dfa9e507a7f16"
+    },
+    {
+      "path": "app/es/inteligencia-de-mercado/paquetes/PaquetesInteligenciaMercado.tsx",
+      "size": 3005,
+      "mode": 33188,
+      "sha": "4c1e824edb8e6a47f16f01d0ef4f52a067342edf"
+    },
+    {
+      "path": "app/es/inteligencia-de-mercado/PestanasInteligenciaMercado.tsx",
+      "size": 18002,
+      "mode": 33188,
+      "sha": "4fbf629ac1f07b629a13b23891f97924ceda6107"
+    },
+    {
+      "path": "app/es/page.tsx",
+      "size": 1315,
+      "mode": 33188,
+      "sha": "c895ea8cf4813ea510606049519045509959998c"
+    },
+    {
+      "path": "app/es/precio-por-metro-cuadrado/page.tsx",
+      "size": 3923,
+      "mode": 33188,
+      "sha": "bebb5475582882617d13df38a621b33e71c7d8e3"
+    },
+    {
+      "path": "app/es/precio-por-metro-cuadrado/PrecioMetroDistribucionConstruccionTerrenoChart.tsx",
+      "size": 4496,
+      "mode": 33188,
+      "sha": "b7ae3f2329e01ed6a93d9d5f7e99be976a6f7983"
+    },
+    {
+      "path": "app/es/precio-por-metro-cuadrado/PrecioMetroRelacionConstruccionTerrenoChart.tsx",
+      "size": 8243,
+      "mode": 33188,
+      "sha": "6dea9f5d796eee4c894b3ed7063d2c80d4acae0a"
+    },
+    {
+      "path": "app/es/precio-por-metro-cuadrado/PrecioMetroRelacionTamanoChart.tsx",
+      "size": 5916,
+      "mode": 33188,
+      "sha": "db9b3296adfd6f8fc73135da642d25df589036fd"
+    },
+    {
+      "path": "app/es/precio-por-metro-cuadrado/ResultadosComparacionPrecioMetro.tsx",
+      "size": 18485,
+      "mode": 33188,
+      "sha": "adbd57be436a133c1c6185a7cd5d61334b03e77b"
+    },
+    {
+      "path": "app/es/precio-por-metro-cuadrado/ResultadosPrecioMetro.tsx",
+      "size": 105183,
+      "mode": 33188,
+      "sha": "78ce77194504358b5c169d3541ac479ccc017690"
+    },
+    {
+      "path": "app/es/publicar-alquiler-arrendamiento/editar/[id]/page.tsx",
+      "size": 805,
+      "mode": 33188,
+      "sha": "4de8bcf9860d6725ee2f265f0934de00588b07ee"
+    },
+    {
+      "path": "app/es/publicar-alquiler-arrendamiento/page.tsx",
+      "size": 33789,
+      "mode": 33188,
+      "sha": "3d8f0b05aeb53639a8c31acf2e503438d0a603a6"
+    },
+    {
+      "path": "app/es/valoracion/FiltrosValoracion.tsx",
+      "size": 1705,
+      "mode": 33188,
+      "sha": "04bc6956f3514251e2bf51a02b6e29486bdf4728"
+    },
+    {
+      "path": "app/es/valoracion/FiltroUbicacion.tsx",
+      "size": 9692,
+      "mode": 33188,
+      "sha": "ead25d29d582f67ab0d19208a8be615eb86ea2f8"
+    },
+    {
+      "path": "app/es/valoracion/page.tsx",
+      "size": 1704,
+      "mode": 33188,
+      "sha": "1cdcf7c4ecfd5e0641eb747aecd46c27c8561467"
+    },
+    {
+      "path": "app/es/valoracion/ResultadosValoracion.tsx",
+      "size": 10623,
+      "mode": 33188,
+      "sha": "fa6f237ca13453598e2df0c3acc17339eb381201"
+    },
+    {
+      "path": "app/es/vender/editar/[id]/page.tsx",
+      "size": 838,
+      "mode": 33188,
+      "sha": "a16ea6556834ec23180ae8eb8da79695f21d0306"
+    },
+    {
+      "path": "app/es/vender/page.tsx",
+      "size": 32206,
+      "mode": 33188,
+      "sha": "cbcf2408cddbccf3e6069aef8c5933039844db32"
+    },
+    {
+      "path": "app/explore/ExploreFilters.tsx",
+      "size": 6913,
+      "mode": 33188,
+      "sha": "e8b38249928db58bbc6a9d10968e9e6b860fd55e"
+    },
+    {
+      "path": "app/explore/ExploreLocationFilter.tsx",
+      "size": 9383,
+      "mode": 33188,
+      "sha": "acffd0ca0660ac98800c217d220c014bca08c287"
+    },
+    {
+      "path": "app/explore/ExploreResults.tsx",
+      "size": 27641,
+      "mode": 33188,
+      "sha": "9acef06c00ba20fd2af02ed049283741bb9e5a8a"
+    },
+    {
+      "path": "app/explore/page.tsx",
+      "size": 3673,
+      "mode": 33188,
+      "sha": "5fd91ffdf0f6dc1b476913d0e7dacad3fad8a6c5"
+    },
+    {
+      "path": "app/favicon.ico",
+      "size": 25931,
+      "mode": 33188,
+      "sha": "9ecfcc8f0ead0bf3d2d7c39e084b88f41cc89a2e"
+    },
+    {
+      "path": "app/globals.css",
+      "size": 1992,
+      "mode": 33188,
+      "sha": "ed944622d71ffef1107c7fd44d2445ddebadb996"
+    },
+    {
+      "path": "app/hooks/useMarketplaceFx.ts",
+      "size": 1418,
+      "mode": 33188,
+      "sha": "97dcf2b7fd305ecc213923eaa4f008565fcc6c6c"
+    },
+    {
+      "path": "app/layout.tsx",
+      "size": 589,
+      "mode": 33188,
+      "sha": "6fb180302bd972e480491088a8f981d5135c1706"
+    },
+    {
+      "path": "app/legal-status/[legal-status]/page.tsx",
+      "size": 320,
+      "mode": 33188,
+      "sha": "443d0cfe340b0c3e55811deabc48e3884c97cae2"
+    },
+    {
+      "path": "app/login/page.tsx",
+      "size": 994,
+      "mode": 33188,
+      "sha": "95d7b323b90b59107ba1f62214842cfd593c4720"
+    },
+    {
+      "path": "app/market-comparison/MarketComparisonResults.tsx",
+      "size": 2900,
+      "mode": 33188,
+      "sha": "bc6429be552297692ba4762eaf72d8b97da17d90"
+    },
+    {
+      "path": "app/market-comparison/page.tsx",
+      "size": 2717,
+      "mode": 33188,
+      "sha": "1397507fc336dbac7a1aef39633f11e1235ee876"
+    },
+    {
+      "path": "app/market-matching/MarketMatchingResults.tsx",
+      "size": 11969,
+      "mode": 33188,
+      "sha": "23c0d4769188bdd445d8836d1935afac0b874b6e"
+    },
+    {
+      "path": "app/market-matching/page.tsx",
+      "size": 1738,
+      "mode": 33188,
+      "sha": "732f00907920fedf0a4fdfdd94c1cf2fffe20b4b"
+    },
+    {
+      "path": "app/market-scarcity/MarketScarcityResults.tsx",
+      "size": 10010,
+      "mode": 33188,
+      "sha": "ea17272923d7eac7b552cd03b137ce7b9184336b"
+    },
+    {
+      "path": "app/market-scarcity/page.tsx",
+      "size": 2099,
+      "mode": 33188,
+      "sha": "c5f720abebd2d3e8f2e71de46a6bf25f225fbfc4"
+    },
+    {
+      "path": "app/page.tsx",
+      "size": 96,
+      "mode": 33188,
+      "sha": "9920b769657c47fc8a3387e3b461374234f77f1f"
+    },
+    {
+      "path": "app/price-per-square-meter/page.tsx",
+      "size": 3813,
+      "mode": 33188,
+      "sha": "5099b22e5cadebdd75d5e34ce83d9bb08d7c099c"
+    },
+    {
+      "path": "app/price-per-square-meter/PriceMeterComparisonResults.tsx",
+      "size": 18264,
+      "mode": 33188,
+      "sha": "09f1cbd5188f6c452eda31101b82f273e7103e22"
+    },
+    {
+      "path": "app/price-per-square-meter/PriceMeterConstructionLandDistributionChart.tsx",
+      "size": 4406,
+      "mode": 33188,
+      "sha": "2e788a5faf1159fe1ce46b6547ddb944da176655"
+    },
+    {
+      "path": "app/price-per-square-meter/PriceMeterConstructionLandRelationshipChart.tsx",
+      "size": 8110,
+      "mode": 33188,
+      "sha": "5170871bdfadb489cbeb3111a6797a380244d8ab"
+    },
+    {
+      "path": "app/price-per-square-meter/PriceMeterCrossDimensionalAnalysis.tsx",
+      "size": 11625,
+      "mode": 33188,
+      "sha": "166d47c43c392f770759a8b5fa18b036fd9ef36d"
+    },
+    {
+      "path": "app/price-per-square-meter/PriceMeterCrossDimensionalResults.tsx",
+      "size": 58511,
+      "mode": 33188,
+      "sha": "a89176c9d9a499584af7b0ae037c2c2f21166eae"
+    },
+    {
+      "path": "app/price-per-square-meter/PriceMeterResults.tsx",
+      "size": 101772,
+      "mode": 33188,
+      "sha": "0a04768239f9fce894502f65bb2bc857a32b46c4"
+    },
+    {
+      "path": "app/price-per-square-meter/PriceMeterSizeRelationshipChart.tsx",
+      "size": 5861,
+      "mode": 33188,
+      "sha": "3fa4ace900f7d189bde1469ceddc6dce9b232ec4"
+    },
+    {
+      "path": "app/pricing-strategy/page.tsx",
+      "size": 1777,
+      "mode": 33188,
+      "sha": "bfa7f911ea18dfa4e025ba38215840b9ddb0043b"
+    },
+    {
+      "path": "app/pricing-strategy/PricingStrategyResults.tsx",
+      "size": 13896,
+      "mode": 33188,
+      "sha": "21a6716f8b1b37fddb690ce3ecd46c10d033ddc3"
+    },
+    {
+      "path": "app/property-type/[property-type]/page.tsx",
+      "size": 328,
+      "mode": 33188,
+      "sha": "40c69fb92474103bad208f1e73d450d74d0bfa30"
+    },
+    {
+      "path": "app/province/[province]/page.tsx",
+      "size": 287,
+      "mode": 33188,
+      "sha": "335123b69de69a8df957921a7bfb46991db37dab"
+    },
+    {
+      "path": "app/publish-listing/[token]/page.tsx",
+      "size": 1112,
+      "mode": 33188,
+      "sha": "c979265aa15c853df9993bcc9621ccfd3bb50a23"
+    },
+    {
+      "path": "app/robots.ts",
+      "size": 223,
+      "mode": 33188,
+      "sha": "820ec697982afc53612825275a47d9814463280d"
+    },
+    {
+      "path": "app/sitemap.ts",
+      "size": 2837,
+      "mode": 33188,
+      "sha": "3ff46895b33341db79d535f6ec7b0f018bec0003"
+    },
+    {
+      "path": "app/soporte/ayuda/page.tsx",
+      "size": 13545,
+      "mode": 33188,
+      "sha": "3d501242dc05d1d5dba7393c4deffe686da0ff1b"
+    },
+    {
+      "path": "app/styles/sell-styles.ts",
+      "size": 5286,
+      "mode": 33188,
+      "sha": "437f0da78946258169e38e44a54ba94a11e1f225"
+    },
+    {
+      "path": "app/support/help/page.tsx",
+      "size": 13255,
+      "mode": 33188,
+      "sha": "b47b3ebcc039a6ca2c1c640f270be8fd84372785"
+    },
+    {
+      "path": "app/terrain/[terrain]/page.tsx",
+      "size": 280,
+      "mode": 33188,
+      "sha": "a082d3a0eef44a72171c8f9875f2428dfd1c0407"
+    },
+    {
+      "path": "app/utility/[utility]/page.tsx",
+      "size": 280,
+      "mode": 33188,
+      "sha": "2c2ab71d94ebbcd9ab3c99e4a50c1590b6f7b922"
+    },
+    {
+      "path": "app/utils/archiveListing.ts",
+      "size": 1222,
+      "mode": 33188,
+      "sha": "eb3b98ce7e0f10059c2716b69fe909d53ae3e2ad"
+    },
+    {
+      "path": "app/utils/canonicalCustomerEdit.ts",
+      "size": 2853,
+      "mode": 33188,
+      "sha": "c255f7285b95f6daa84f3935ce1fe4aad7066334"
+    },
+    {
+      "path": "app/utils/canonicalCustomerLifecycle.ts",
+      "size": 2329,
+      "mode": 33188,
+      "sha": "0a756ce6f949775aa2149310f050aec3754fcfe7"
+    },
+    {
+      "path": "app/utils/createListing.ts",
+      "size": 5101,
+      "mode": 33188,
+      "sha": "6fda3afb5e56f81f27a8b7425d22bcbe61f19ab9"
+    },
+    {
+      "path": "app/utils/createRentalListing.ts",
+      "size": 5844,
+      "mode": 33188,
+      "sha": "dcd0dbefc8a2ecea32d7f17f01ed30c9dfc2fede"
+    },
+    {
+      "path": "app/utils/deleteListing.ts",
+      "size": 1371,
+      "mode": 33188,
+      "sha": "b4a29bb51875fdb6d3b92976c43e80ec0a4b6531"
+    },
+    {
+      "path": "app/utils/listing-utils.ts",
+      "size": 4920,
+      "mode": 33188,
+      "sha": "929c95ab58f542a401dbf8514c7109d910372cf0"
+    },
+    {
+      "path": "app/utils/manageListing.ts",
+      "size": 4864,
+      "mode": 33188,
+      "sha": "1de54dba83a9f980c9da9ed2daaf64d35cf4976a"
+    },
+    {
+      "path": "app/utils/marketHubListing.ts",
+      "size": 6262,
+      "mode": 33188,
+      "sha": "423da2abb7fa5902be7cd2c888e5580ed043c75f"
+    },
+    {
+      "path": "app/utils/optimizeListingImage.ts",
+      "size": 2316,
+      "mode": 33188,
+      "sha": "2279716d225c9d4f9e318f9cddfe54f23f583ff4"
+    },
+    {
+      "path": "app/utils/publishCsvListings.ts",
+      "size": 80,
+      "mode": 33188,
+      "sha": "351b5b882855ce50045d11893587de2fd56e88c2"
+    },
+    {
+      "path": "app/utils/publishListing.ts",
+      "size": 1222,
+      "mode": 33188,
+      "sha": "69f6a9b3970d5bfecc6c65a193afaa0c9abf434b"
+    },
+    {
+      "path": "app/utils/publishRentLeaseCsvListings.ts",
+      "size": 89,
+      "mode": 33188,
+      "sha": "cc24c19fd388a46228904cf2e472db090bff93aa"
+    },
+    {
+      "path": "app/utils/resolveListingImages.ts",
+      "size": 1732,
+      "mode": 33188,
+      "sha": "a06d4f3655650cd997cf4be7599c8616173f2a61"
+    },
+    {
+      "path": "app/utils/startListingPublishFlow.ts",
+      "size": 2781,
+      "mode": 33188,
+      "sha": "0ac46a8c076ebef7910443238155a89348918008"
+    },
+    {
+      "path": "app/utils/submitCanonicalCsv.ts",
+      "size": 1189,
+      "mode": 33188,
+      "sha": "065b830f1ce747b86048960a56bf6b7ce17e3fbe"
+    },
+    {
+      "path": "app/utils/unpublishListing.ts",
+      "size": 1231,
+      "mode": 33188,
+      "sha": "758c5b86d78915c301de89018ad6061309d6af19"
+    },
+    {
+      "path": "app/utils/updateListing.ts",
+      "size": 435,
+      "mode": 33188,
+      "sha": "c9d1523cf13e3a2bbfce02f720c1220b7cc41353"
+    },
+    {
+      "path": "app/utils/uploadListingImages.ts",
+      "size": 1446,
+      "mode": 33188,
+      "sha": "679dd09b45ccd69445694238b927768ee0ad4ba3"
+    },
+    {
+      "path": "app/valuation/page.tsx",
+      "size": 1623,
+      "mode": 33188,
+      "sha": "22f1555250fd01738965b4f7b9793cac6b988c08"
+    },
+    {
+      "path": "app/valuation/ValuationFilters.tsx",
+      "size": 1720,
+      "mode": 33188,
+      "sha": "c9f60edad9ae7cba880c49a60dbaa1cd84ae3601"
+    },
+    {
+      "path": "app/valuation/ValuationResults.tsx",
+      "size": 10490,
+      "mode": 33188,
+      "sha": "ec846ba17bc5839d3b07417f31e4286fa6b789f1"
+    },
+    {
+      "path": "app/whatsapp-webhook/route.ts",
+      "size": 1046,
+      "mode": 33188,
+      "sha": "8572c538120d312dba139f6ded3f55d43b26f75d"
+    },
+    {
+      "path": "data/property-data.ts",
+      "size": 25067,
+      "mode": 33188,
+      "sha": "af9aca69662f364ad9e83014829624688548670f"
+    },
+    {
+      "path": "eslint.config.mjs",
+      "size": 465,
+      "mode": 33188,
+      "sha": "44d5bed565a8dd284af3e17f3b16a1c752008d0e"
+    },
+    {
+      "path": "lib/account-storage.ts",
+      "size": 1929,
+      "mode": 33188,
+      "sha": "8cd9e6a0877d0c14ce80ac809c97b3c36f401f3f"
+    },
+    {
+      "path": "lib/activation-engine.ts",
+      "size": 29301,
+      "mode": 33188,
+      "sha": "3086ec1d56a80fb23d5a81df97c410d1ffa8cc58"
+    },
+    {
+      "path": "lib/activity.ts",
+      "size": 10459,
+      "mode": 33188,
+      "sha": "1873473d5af76067e787c163180e137812869b2e"
+    },
+    {
+      "path": "lib/activity/comparisons.ts",
+      "size": 1382,
+      "mode": 33188,
+      "sha": "e1d9c05b07854e66f3a51f8861996902bd6620e7"
+    },
+    {
+      "path": "lib/activity/getTimeline.ts",
+      "size": 0,
+      "mode": 33188,
+      "sha": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+    },
+    {
+      "path": "lib/activity/index.ts",
+      "size": 265,
+      "mode": 33188,
+      "sha": "1b93155dde51dec1ccdbc705c15051cf45fea0c6"
+    },
+    {
+      "path": "lib/activity/listings.ts",
+      "size": 6240,
+      "mode": 33188,
+      "sha": "bbde1e577d3e895f6dc24ab3674dc579e14f56ad"
+    },
+    {
+      "path": "lib/activity/markets.ts",
+      "size": 988,
+      "mode": 33188,
+      "sha": "6992a5fce1c24876f4c6a57cfa72179c5cdccd55"
+    },
+    {
+      "path": "lib/activity/types.ts",
+      "size": 1001,
+      "mode": 33188,
+      "sha": "c1fb9f37bd4b4a7e593c5ea4173127c6d40d40ea"
+    },
+    {
+      "path": "lib/add-on-catalog.ts",
+      "size": 4040,
+      "mode": 33188,
+      "sha": "4654ea37139b03a9d8c03b97f43492f530c5d7f1"
+    },
+    {
+      "path": "lib/aggregate-promotion-intelligence-engine.ts",
+      "size": 19827,
+      "mode": 33188,
+      "sha": "2170bca76139b2b22fbf9faf7bdb41e8d1b4664a"
+    },
+    {
+      "path": "lib/aggregation-cache-engine.ts",
+      "size": 2189,
+      "mode": 33188,
+      "sha": "698cfe1b56d01b7a9c9f3a762f5d428f1364b59e"
+    },
+    {
+      "path": "lib/analysis-date.ts",
+      "size": 1541,
+      "mode": 33188,
+      "sha": "a71bb3b16491ae43e511487e233d1e54418c12f7"
+    },
+    {
+      "path": "lib/approval-engine.ts",
+      "size": 9717,
+      "mode": 33188,
+      "sha": "feda0c4deb62fc62e4ae7689ab34ef76915a2336"
+    },
+    {
+      "path": "lib/area-measurement.ts",
+      "size": 1485,
+      "mode": 33188,
+      "sha": "52b28d3fa243adc9ae5cacd41478a304f2064250"
+    },
+    {
+      "path": "lib/assign-listing-ontology.ts",
+      "size": 10069,
+      "mode": 33188,
+      "sha": "f84b2ec5e4919d2a37e3907c266da26ce4a10114"
+    },
+    {
+      "path": "lib/auth/current-user.ts",
+      "size": 437,
+      "mode": 33188,
+      "sha": "144f78758729ad98b7837107f27f9e3e31bb0e90"
+    },
+    {
+      "path": "lib/browser-push.ts",
+      "size": 1777,
+      "mode": 33188,
+      "sha": "b324481ee18ba94dcf78e25da3bb87b187d99129"
+    },
+    {
+      "path": "lib/buyer-demand-engine.ts",
+      "size": 15521,
+      "mode": 33188,
+      "sha": "76bb777ffe03ccd0b34c168a443db0fd2d78221e"
+    },
+    {
+      "path": "lib/canonical-customer-edit.ts",
+      "size": 4917,
+      "mode": 33188,
+      "sha": "0d07e94498df637740277de5acf13b5385a26a42"
+    },
+    {
+      "path": "lib/canonical-customer-road-distance.ts",
+      "size": 2744,
+      "mode": 33188,
+      "sha": "bc0fd84df8252eecc119a2b865255fd3c374011b"
+    },
+    {
+      "path": "lib/canonical-listing-reader.ts",
+      "size": 5737,
+      "mode": 33188,
+      "sha": "ef9251d0b5ddb44c92b24ec2d3fc9bc42a7477f5"
+    },
+    {
+      "path": "lib/canonical-population.ts",
+      "size": 4743,
+      "mode": 33188,
+      "sha": "a624594bd753b4934b3c1bca150b3d874ea7161e"
+    },
+    {
+      "path": "lib/collections.ts",
+      "size": 9284,
+      "mode": 33188,
+      "sha": "1c0f0c61199ec2b0be515efdf0e4b2113ed5edcb"
+    },
+    {
+      "path": "lib/commercial-provider-registry.ts",
+      "size": 2356,
+      "mode": 33188,
+      "sha": "4bc8f24466040ac2517ee7557c810d0de5744f4f"
+    },
+    {
+      "path": "lib/commercial-provider-resolver.ts",
+      "size": 4636,
+      "mode": 33188,
+      "sha": "a61edd963ff7bf095c60ca896aa181c66347b9ed"
+    },
+    {
+      "path": "lib/commercial-provider.ts",
+      "size": 12791,
+      "mode": 33188,
+      "sha": "d3b5030b86e93931ea01b29a8bbbb8ede434cec1"
+    },
+    {
+      "path": "lib/commercial-resolver.ts",
+      "size": 19243,
+      "mode": 33188,
+      "sha": "0130eb7c41451c63ccf18188f84a547b77295e2c"
+    },
+    {
+      "path": "lib/commercial-submission.ts",
+      "size": 5090,
+      "mode": 33188,
+      "sha": "3eddb8ca90959fbd45d3bf0f7c9866366e85bf64"
+    },
+    {
+      "path": "lib/commercial-timeline.ts",
+      "size": 18581,
+      "mode": 33188,
+      "sha": "6ad57f3481cd1fb3902f99275f28acf8237ea6a2"
+    },
+    {
+      "path": "lib/comparable-cohort-engine.ts",
+      "size": 19939,
+      "mode": 33188,
+      "sha": "8ee870ead63995068c1f03f89c6c3c14c488aa2a"
+    },
+    {
+      "path": "lib/comparables-engine.ts",
+      "size": 3224,
+      "mode": 33188,
+      "sha": "f62b9865f6f37bf1bbb6657d81f05444c4be136c"
+    },
+    {
+      "path": "lib/comparisons/types.ts",
+      "size": 1332,
+      "mode": 33188,
+      "sha": "1f962ef3a8c309fc301602d7185883ae5b019a0d"
+    },
+    {
+      "path": "lib/confidence.ts",
+      "size": 2190,
+      "mode": 33188,
+      "sha": "4efb6b8ae28ec2d14f728cd9971d2bff2d6fe978"
+    },
+    {
+      "path": "lib/createListingId.ts",
+      "size": 382,
+      "mode": 33188,
+      "sha": "f02550a5eb7cad449d2cd1d1ca7d3312a0a30a6a"
+    },
+    {
+      "path": "lib/csv-source-ingestion.ts",
+      "size": 5063,
+      "mode": 33188,
+      "sha": "29d0aa08d2ab5d8cf71fcd3f9e977777a16936f0"
+    },
+    {
+      "path": "lib/currency-conversion.ts",
+      "size": 2710,
+      "mode": 33188,
+      "sha": "7832aa156b19dc33323db5681621544816b443d4"
+    },
+    {
+      "path": "lib/customer-publication-writer.ts",
+      "size": 1120,
+      "mode": 33188,
+      "sha": "409b0feb447dad3ceda2acdc5a37be161ed75d16"
+    },
+    {
+      "path": "lib/duplicate-listing-media.ts",
+      "size": 2605,
+      "mode": 33188,
+      "sha": "81829583a354330f562955f56908a59601f40e56"
+    },
+    {
+      "path": "lib/email.ts",
+      "size": 859,
+      "mode": 33188,
+      "sha": "f57b591e278618e6d52193bd6426eae41d7bb31b"
+    },
+    {
+      "path": "lib/entity-comparisons.ts",
+      "size": 9084,
+      "mode": 33188,
+      "sha": "bc386f47233f7bd55cfb149f0bd90dde850cb34d"
+    },
+    {
+      "path": "lib/entity-engine.ts",
+      "size": 4103,
+      "mode": 33188,
+      "sha": "0c4b8327c02b6d1da0630f0fd05435a688d51ea3"
+    },
+    {
+      "path": "lib/explorer-engine.ts",
+      "size": 2432,
+      "mode": 33188,
+      "sha": "1b12d0c1f195e93b9dfc878edf53cf475a26c931"
+    },
+    {
+      "path": "lib/explorer-options-engine.ts",
+      "size": 2041,
+      "mode": 33188,
+      "sha": "963b60c0da27c401881eef0b724bdafa4e7de0b9"
+    },
+    {
+      "path": "lib/favorites.ts",
+      "size": 1148,
+      "mode": 33188,
+      "sha": "1005f2c1c16d8622c23a1200d39aa6a4c4cc3660"
+    },
+    {
+      "path": "lib/fx/bccr-provider.ts",
+      "size": 8176,
+      "mode": 33188,
+      "sha": "19f3bf98161cd37c5e84c6c63400f101ce84cb35"
+    },
+    {
+      "path": "lib/fx/fx-registry.ts",
+      "size": 5708,
+      "mode": 33188,
+      "sha": "4abca11eadedd01e839acde04447a055fe334c9d"
+    },
+    {
+      "path": "lib/fx/fx-resolver.ts",
+      "size": 7210,
+      "mode": 33188,
+      "sha": "4840bc403183443de8a86b15b99e1f0e6d2d779b"
+    },
+    {
+      "path": "lib/fx/fx-service.ts",
+      "size": 6808,
+      "mode": 33188,
+      "sha": "856eefa4043fde2a1492cc3726e40c3d48da4661"
+    },
+    {
+      "path": "lib/geography/canonical-geography.ts",
+      "size": 7888,
+      "mode": 33188,
+      "sha": "218359be9a956c212ce6251466f67ae45fa2facc"
+    },
+    {
+      "path": "lib/geography/dta-geography.test.ts",
+      "size": 12609,
+      "mode": 33188,
+      "sha": "59d63d8546631ce193774fdc10e904a88bd02283"
+    },
+    {
+      "path": "lib/geography/dta-identity.ts",
+      "size": 5179,
+      "mode": 33188,
+      "sha": "9a76b83a6e61b10b00e5b274b39bbb4fefac3d0f"
+    },
+    {
+      "path": "lib/geography/dta-request.ts",
+      "size": 3366,
+      "mode": 33188,
+      "sha": "d4c116c8eb702d9be5e52346d9744489de45da10"
+    },
+    {
+      "path": "lib/geography/resolve-dta-geography.ts",
+      "size": 1570,
+      "mode": 33188,
+      "sha": "339bbb7eb41fc79352c90ac65fccad40ddad201d"
+    },
+    {
+      "path": "lib/geography/resolve-listing-geography.ts",
+      "size": 1657,
+      "mode": 33188,
+      "sha": "8285b17c8496a146f4320c489f9e4f419b1ddfcf"
+    },
+    {
+      "path": "lib/graph-engine.ts",
+      "size": 932,
+      "mode": 33188,
+      "sha": "7a5517b24f1416a434b1cb3d220f328a35ca1daa"
+    },
+    {
+      "path": "lib/intelligence-analytics.ts",
+      "size": 1443,
+      "mode": 33188,
+      "sha": "2c487198f648384d5bcfd291b6a31e5d2c86ca97"
+    },
+    {
+      "path": "lib/language-route.ts",
+      "size": 4448,
+      "mode": 33188,
+      "sha": "d62ee813e336f64b30aa7e6e69d5302c47d74d73"
+    },
+    {
+      "path": "lib/listing-capabilities.ts",
+      "size": 11937,
+      "mode": 33188,
+      "sha": "ac66acd5ee03ae2e61b48908a4ecc53127e742d3"
+    },
+    {
+      "path": "lib/listing-entitlements.ts",
+      "size": 28934,
+      "mode": 33188,
+      "sha": "4090f3009c1de0d4bd2279e3d4cf4b7adf5944ec"
+    },
+    {
+      "path": "lib/listing-lifecycle-engine.ts",
+      "size": 4481,
+      "mode": 33188,
+      "sha": "d20d78beae0a5b2bb34f06e214f5709babe51e1c"
+    },
+    {
+      "path": "lib/listing-monetary-value.ts",
+      "size": 5114,
+      "mode": 33188,
+      "sha": "30ef02c686d262837731bb8d93e7319710be90ed"
+    },
+    {
+      "path": "lib/listing-performance-engine.ts",
+      "size": 7433,
+      "mode": 33188,
+      "sha": "46afdca0bea3ccbb13637fdae2ba53568a0421d7"
+    },
+    {
+      "path": "lib/listing-performance-signals.ts",
+      "size": 0,
+      "mode": 33188,
+      "sha": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+    },
+    {
+      "path": "lib/listing-performance.ts",
+      "size": 2743,
+      "mode": 33188,
+      "sha": "0939a005b34f884116d0e9356cf512c0adf3a940"
+    },
+    {
+      "path": "lib/listing-ranking.ts",
+      "size": 6504,
+      "mode": 33188,
+      "sha": "c8efb4ce6e24e92ed9060a764a17d3115b466ff6"
+    },
+    {
+      "path": "lib/listing-state.ts",
+      "size": 2060,
+      "mode": 33188,
+      "sha": "0290c2d6484ad1d70a80d64758d667a1808e76fb"
+    },
+    {
+      "path": "lib/listing-timeline.ts",
+      "size": 20657,
+      "mode": 33188,
+      "sha": "9d76f79387adb6a949c25724d05147496fcc4ce0"
+    },
+    {
+      "path": "lib/load-analysis.ts",
+      "size": 414,
+      "mode": 33188,
+      "sha": "fd20845b9bede46d7c84511e7c398facb7164f94"
+    },
+    {
+      "path": "lib/market-analytical-context.ts",
+      "size": 1806,
+      "mode": 33188,
+      "sha": "c7c9b98200196615aacb7a6ac4634866f2030e3e"
+    },
+    {
+      "path": "lib/market-comparison-engine.ts",
+      "size": 8203,
+      "mode": 33188,
+      "sha": "6c51aa4ce2e2a4a9d863b6c31e9f0af6b8e3ddf5"
+    },
+    {
+      "path": "lib/market-comparisons.ts",
+      "size": 8169,
+      "mode": 33188,
+      "sha": "b25532f766fd3ef7b77591e553a746e0679bc21d"
+    },
+    {
+      "path": "lib/market-engine.ts",
+      "size": 6975,
+      "mode": 33188,
+      "sha": "5e5ac00863a0db8e0c4f3d59e751cc06cd674fd2"
+    },
+    {
+      "path": "lib/market-intelligence-area-ranges.ts",
+      "size": 3723,
+      "mode": 33188,
+      "sha": "c00823ede0d761f782d2b9421791fa6db1d8cf4a"
+    },
+    {
+      "path": "lib/market-intelligence-workspace.ts",
+      "size": 11462,
+      "mode": 33188,
+      "sha": "91b5da02f51d1169015210f8b2b1864df5ddf8b0"
+    },
+    {
+      "path": "lib/market-matching-engine.ts",
+      "size": 5314,
+      "mode": 33188,
+      "sha": "9ecb970b09f110c93a0f95bc95d7ac72cab9fcae"
+    },
+    {
+      "path": "lib/market-scarcity-engine.ts",
+      "size": 10847,
+      "mode": 33188,
+      "sha": "6e386a07245b90d6b76469ee805fdbb776b4e755"
+    },
+    {
+      "path": "lib/marketIntelligencePackages.ts",
+      "size": 9710,
+      "mode": 33188,
+      "sha": "ae41cad9168991b69521201623cf4ec7a99d5ed1"
+    },
+    {
+      "path": "lib/marketplace-area-ranges.ts",
+      "size": 2193,
+      "mode": 33188,
+      "sha": "0822e5d3f63c0f826675b9f6239ac581c8dfabf7"
+    },
+    {
+      "path": "lib/normalizeText.ts",
+      "size": 390,
+      "mode": 33188,
+      "sha": "d6be0bcc2e592b87ea60e66bf04fdcfb0df20caa"
+    },
+    {
+      "path": "lib/notifications.ts",
+      "size": 574,
+      "mode": 33188,
+      "sha": "d5add862556aad899d097f585ee67fef9cea9834"
+    },
+    {
+      "path": "lib/numerical-distribution.ts",
+      "size": 3284,
+      "mode": 33188,
+      "sha": "6669e37368c5a67fa24d158bf3a7c369e3b5ca4f"
+    },
+    {
+      "path": "lib/onboarding.ts",
+      "size": 3970,
+      "mode": 33188,
+      "sha": "00cbe52737168e32f8af345cea706f96459c3529"
+    },
+    {
+      "path": "lib/ordinary-upload-operation.ts",
+      "size": 2198,
+      "mode": 33188,
+      "sha": "dcb151fa9236ca0a98a33316535b0b41f7133b1d"
+    },
+    {
+      "path": "lib/package-limits.ts",
+      "size": 4250,
+      "mode": 33188,
+      "sha": "ed563d5af195d3420244e1e7f960e4adaa48c97f"
+    },
+    {
+      "path": "lib/package-usage.ts",
+      "size": 7166,
+      "mode": 33188,
+      "sha": "94a31e2bcdf97399222fd5959ad989fa1d440fe5"
+    },
+    {
+      "path": "lib/permissions.ts",
+      "size": 7750,
+      "mode": 33188,
+      "sha": "df838e67a8645fd13bca7331509627e5ca97d237"
+    },
+    {
+      "path": "lib/price-meter-analytical-cohort.ts",
+      "size": 2731,
+      "mode": 33188,
+      "sha": "af957c7cb0bfc6ed9f0298e8f52bb15b500a195f"
+    },
+    {
+      "path": "lib/price-meter-apply-action.ts",
+      "size": 2075,
+      "mode": 33188,
+      "sha": "2d9282f056299bb2f7ec1e62a61396e40a24860b"
+    },
+    {
+      "path": "lib/price-meter-apply-contract.ts",
+      "size": 1641,
+      "mode": 33188,
+      "sha": "ff9318e992ef298a1c56af35081cd3c20221ffa8"
+    },
+    {
+      "path": "lib/price-meter-apply-permit.ts",
+      "size": 1095,
+      "mode": 33188,
+      "sha": "fd8fa40b645895fcf944617e37358daed5c16e56"
+    },
+    {
+      "path": "lib/price-meter-authorization.ts",
+      "size": 2041,
+      "mode": 33188,
+      "sha": "51280913e7a4531f2c519ecc33018c1d09761e42"
+    },
+    {
+      "path": "lib/price-meter-browser-result.ts",
+      "size": 1556,
+      "mode": 33188,
+      "sha": "0c4ed51c737ef0cc5ee94ed89c3f8b870e06686a"
+    },
+    {
+      "path": "lib/price-meter-characteristic-distribution.ts",
+      "size": 6368,
+      "mode": 33188,
+      "sha": "8a27a3c9ebab77f6bc01d40af1d5f25477c16db8"
+    },
+    {
+      "path": "lib/price-meter-characteristic-identity.ts",
+      "size": 1517,
+      "mode": 33188,
+      "sha": "4cd529b5270768082f3b6c5eba8f55b25d0c00a2"
+    },
+    {
+      "path": "lib/price-meter-characteristic-relationship.ts",
+      "size": 4096,
+      "mode": 33188,
+      "sha": "435221d21e17f18343dd983cd4c1a7bc3b8b9118"
+    },
+    {
+      "path": "lib/price-meter-comparable-base-cohort.ts",
+      "size": 3975,
+      "mode": 33188,
+      "sha": "c4ecfab1b703ce96d5bfc8dab2b424e39d9c00bd"
+    },
+    {
+      "path": "lib/price-meter-comparable-browser-contract.ts",
+      "size": 5685,
+      "mode": 33188,
+      "sha": "753825cb4aafcee72d1b2d285f6f353018b9c351"
+    },
+    {
+      "path": "lib/price-meter-comparable-dimensions.ts",
+      "size": 2041,
+      "mode": 33188,
+      "sha": "f31eed8daa22089ddeb41cb3caf2fdfcab8e07f5"
+    },
+    {
+      "path": "lib/price-meter-comparable-dto.ts",
+      "size": 6430,
+      "mode": 33188,
+      "sha": "1f432288f0a2cab316ac6262f6c73ac5d527365e"
+    },
+    {
+      "path": "lib/price-meter-comparable-engine.ts",
+      "size": 10980,
+      "mode": 33188,
+      "sha": "71d87d3725ef1962de079230055fc29f0dabd0ad"
+    },
+    {
+      "path": "lib/price-meter-comparable-evidence.ts",
+      "size": 13535,
+      "mode": 33188,
+      "sha": "6edef07a1c77fc2f9cf544845cc02547fd3f254e"
+    },
+    {
+      "path": "lib/price-meter-comparable-geography.ts",
+      "size": 2525,
+      "mode": 33188,
+      "sha": "d067d53638b2ea70bfc32dd482986ca648cd0eb4"
+    },
+    {
+      "path": "lib/price-meter-comparable-loader.ts",
+      "size": 27369,
+      "mode": 33188,
+      "sha": "9510e302e01ae4a71477a8570d8cbe959fed6777"
+    },
+    {
+      "path": "lib/price-meter-comparable-population-trail.ts",
+      "size": 3317,
+      "mode": 33188,
+      "sha": "e32344f40106017fbf34bb3b984c2ffe9181fa31"
+    },
+    {
+      "path": "lib/price-meter-comparable-population.ts",
+      "size": 11627,
+      "mode": 33188,
+      "sha": "7a1cc5a19d35da236311f5e635440725a58a043e"
+    },
+    {
+      "path": "lib/price-meter-comparable-presentation.ts",
+      "size": 10560,
+      "mode": 33188,
+      "sha": "c61fc20bbd14cd2ace4068eeb7f671fec4a25b42"
+    },
+    {
+      "path": "lib/price-meter-comparable-request.ts",
+      "size": 2438,
+      "mode": 33188,
+      "sha": "6e37909f4b07af2f6316af27fe3aa475f2e300f1"
+    },
+    {
+      "path": "lib/price-meter-comparable-server.ts",
+      "size": 5721,
+      "mode": 33188,
+      "sha": "ea74ad579ac47823336ab60a3d421a10f73cd53e"
+    },
+    {
+      "path": "lib/price-meter-comparable-subject-identity.ts",
+      "size": 3914,
+      "mode": 33188,
+      "sha": "394b96a28ecd3cba72272c9299c8a19811b400eb"
+    },
+    {
+      "path": "lib/price-meter-comparison-action.tsx",
+      "size": 1759,
+      "mode": 33188,
+      "sha": "8830b0fc3300e99114c18a1d600f5029ef100e45"
+    },
+    {
+      "path": "lib/price-meter-comparison-analysis.ts",
+      "size": 8109,
+      "mode": 33188,
+      "sha": "9531e963e5990fae38ef9194911462525667d743"
+    },
+    {
+      "path": "lib/price-meter-comparison-analytical-cohort.ts",
+      "size": 1509,
+      "mode": 33188,
+      "sha": "303b5073bb466abe6ea0dd36d077a2ccfe0dbb30"
+    },
+    {
+      "path": "lib/price-meter-comparison-candidate-loader.ts",
+      "size": 5143,
+      "mode": 33188,
+      "sha": "064ce8e46e7a27b901d0d6448d2fe198a7f9f040"
+    },
+    {
+      "path": "lib/price-meter-comparison-cohort-population.ts",
+      "size": 8548,
+      "mode": 33188,
+      "sha": "3245a5f5daf5a99e267c540f841a9c5eecd44a51"
+    },
+    {
+      "path": "lib/price-meter-comparison-cohort.ts",
+      "size": 5168,
+      "mode": 33188,
+      "sha": "1a573eb2abc1a1aa926dbeb6f8b2a0077c93a451"
+    },
+    {
+      "path": "lib/price-meter-comparison-engine.ts",
+      "size": 4267,
+      "mode": 33188,
+      "sha": "35af1fa9d6259c9f2ff773af1babbbd96a654538"
+    },
+    {
+      "path": "lib/price-meter-comparison-evidence.ts",
+      "size": 981,
+      "mode": 33188,
+      "sha": "50cab6ace58932320b837c3361675b194bfa5e00"
+    },
+    {
+      "path": "lib/price-meter-comparison-orchestrator.ts",
+      "size": 4236,
+      "mode": 33188,
+      "sha": "8ac5f35c59efbc133d7c0b375425bd5f7b3bea26"
+    },
+    {
+      "path": "lib/price-meter-comparison-permit.ts",
+      "size": 954,
+      "mode": 33188,
+      "sha": "160f25b14ab1e7073adfd17d42476e13f0613be7"
+    },
+    {
+      "path": "lib/price-meter-comparison-request-parser.ts",
+      "size": 10154,
+      "mode": 33188,
+      "sha": "77ef184e335f9081f6ae558674ab85308ced2787"
+    },
+    {
+      "path": "lib/price-meter-comparison-request.ts",
+      "size": 1631,
+      "mode": 33188,
+      "sha": "1c9c79cb8a1d9535510e28c94ab6e8cac5ca24a8"
+    },
+    {
+      "path": "lib/price-meter-confidence.ts",
+      "size": 922,
+      "mode": 33188,
+      "sha": "03273be1c16494fdc04e885a6bb87eb6749a03a1"
+    },
+    {
+      "path": "lib/price-meter-construction-land-analysis.ts",
+      "size": 7208,
+      "mode": 33188,
+      "sha": "a1fd182c2fa9c245c6ee468dc11af91c105a5c74"
+    },
+    {
+      "path": "lib/price-meter-construction-land-cohorts.ts",
+      "size": 3753,
+      "mode": 33188,
+      "sha": "228680028e9a87fe37b372275e892a69b7e6fda0"
+    },
+    {
+      "path": "lib/price-meter-construction-land-distribution.ts",
+      "size": 3570,
+      "mode": 33188,
+      "sha": "31c3c45de796d8263ecc4d6b450e2cf3dcf7dd40"
+    },
+    {
+      "path": "lib/price-meter-construction-land-population.ts",
+      "size": 5987,
+      "mode": 33188,
+      "sha": "6a8df1d25155873fb4f5eaa73b9d487178fa26ab"
+    },
+    {
+      "path": "lib/price-meter-construction-land-relationship.ts",
+      "size": 7730,
+      "mode": 33188,
+      "sha": "b7a3fd210013b53a228b8ae067f6f6acda724321"
+    },
+    {
+      "path": "lib/price-meter-construction-land-statistics.ts",
+      "size": 10739,
+      "mode": 33188,
+      "sha": "9ee5166c52c9f936a00c93aad077b59a972e3c6d"
+    },
+    {
+      "path": "lib/price-meter-construction-land.ts",
+      "size": 4712,
+      "mode": 33188,
+      "sha": "93c22229eee06fe64f2c921db88c35d3eaa37849"
+    },
+    {
+      "path": "lib/price-meter-cross-dimensional-analyzer.ts",
+      "size": 21101,
+      "mode": 33188,
+      "sha": "267e11c9603e7c7f863cdcaa10cf7f0396881757"
+    },
+    {
+      "path": "lib/price-meter-cross-dimensional-evidence.ts",
+      "size": 6657,
+      "mode": 33188,
+      "sha": "448aeec17590df829761d6d9c2627b2e241790f8"
+    },
+    {
+      "path": "lib/price-meter-cross-dimensional-identity.ts",
+      "size": 8117,
+      "mode": 33188,
+      "sha": "e7be860d591979bdfb07b89bb1b114565610c3bc"
+    },
+    {
+      "path": "lib/price-meter-cross-dimensional-outcomes.ts",
+      "size": 30782,
+      "mode": 33188,
+      "sha": "de2e940c9c0e069a322d42467631e1b118d79988"
+    },
+    {
+      "path": "lib/price-meter-cross-dimensional-population.ts",
+      "size": 12504,
+      "mode": 33188,
+      "sha": "86638a5996c1838376de5ab98555dc43c72a8a74"
+    },
+    {
+      "path": "lib/price-meter-cross-dimensional-presentation.ts",
+      "size": 7048,
+      "mode": 33188,
+      "sha": "894844757233ce355dce90c1cbf0932909376533"
+    },
+    {
+      "path": "lib/price-meter-cross-dimensional-question.ts",
+      "size": 17123,
+      "mode": 33188,
+      "sha": "fa8d1cee024e08d0b209c44a271c29e154e0d44e"
+    },
+    {
+      "path": "lib/price-meter-cross-dimensional-secondary-cohort.ts",
+      "size": 7327,
+      "mode": 33188,
+      "sha": "15f14ed4e9d1d9dc7929393e5f23f2099b049b54"
+    },
+    {
+      "path": "lib/price-meter-cross-dimensional-synthesis.ts",
+      "size": 12456,
+      "mode": 33188,
+      "sha": "1470b544f12e81a9e3ef2bd2964e29b09f2a5cf8"
+    },
+    {
+      "path": "lib/price-meter-discovery-criterion.ts",
+      "size": 8383,
+      "mode": 33188,
+      "sha": "392a953dbd35522cb0b66a9f6b35234367c12cff"
+    },
+    {
+      "path": "lib/price-meter-discovery-engine.ts",
+      "size": 13890,
+      "mode": 33188,
+      "sha": "12a66c47408fdf182404c8175e0ca3aa6d8d55a8"
+    },
+    {
+      "path": "lib/price-meter-discovery-loader.ts",
+      "size": 20630,
+      "mode": 33188,
+      "sha": "7cc71fc7d02a202a4e5c0dda4b623908f717220d"
+    },
+    {
+      "path": "lib/price-meter-discovery-population.ts",
+      "size": 15505,
+      "mode": 33188,
+      "sha": "802767dd618a82e3063af26e43cbc5c39668c657"
+    },
+    {
+      "path": "lib/price-meter-discovery-request.ts",
+      "size": 12777,
+      "mode": 33188,
+      "sha": "59d07d4816332b4eb14811492d7d6d65519d47de"
+    },
+    {
+      "path": "lib/price-meter-distribution-interpretation.ts",
+      "size": 5463,
+      "mode": 33188,
+      "sha": "93c9652379ef41d45eb61e5b8a3a660a7bb9b9f9"
+    },
+    {
+      "path": "lib/price-meter-distribution.ts",
+      "size": 2050,
+      "mode": 33188,
+      "sha": "2a8bc9c81c2ac4be6b3fb8f7d2fac2a219e6acee"
+    },
+    {
+      "path": "lib/price-meter-engine.ts",
+      "size": 47703,
+      "mode": 33188,
+      "sha": "0062bb7426a9352e0fdc5a2eb8670c5b32e3a9bd"
+    },
+    {
+      "path": "lib/price-meter-geographic-conclusions.ts",
+      "size": 14123,
+      "mode": 33188,
+      "sha": "7f39e161cd4c3f21efaa5c1641aefe4800d84cfb"
+    },
+    {
+      "path": "lib/price-meter-geographic-distribution.ts",
+      "size": 7731,
+      "mode": 33188,
+      "sha": "57f77ba95201a0fd6f47a388636a3aa884b2f77f"
+    },
+    {
+      "path": "lib/price-meter-geographic-scope.ts",
+      "size": 962,
+      "mode": 33188,
+      "sha": "449c5498f42e9168430f1b815ac29ccc495b75b4"
+    },
+    {
+      "path": "lib/price-meter-geographic-statistics.ts",
+      "size": 6848,
+      "mode": 33188,
+      "sha": "8f786f15fd2ef22804e7ce8fc1518c267f08791c"
+    },
+    {
+      "path": "lib/price-meter-identity.ts",
+      "size": 23088,
+      "mode": 33188,
+      "sha": "931f3c17d8990438f332aba3c0b023f32081f39b"
+    },
+    {
+      "path": "lib/price-meter-observation-builder.ts",
+      "size": 2652,
+      "mode": 33188,
+      "sha": "5e07703683f28cbd798cbf853a7e0783a3a1c505"
+    },
+    {
+      "path": "lib/price-meter-observation-loader.ts",
+      "size": 7185,
+      "mode": 33188,
+      "sha": "4b5f640a83dea24d44ebccdf1311f30f67048908"
+    },
+    {
+      "path": "lib/price-meter-ontology-membership.ts",
+      "size": 8054,
+      "mode": 33188,
+      "sha": "c84dd5579f483a8d8e60fafa7a07d98b11b092f0"
+    },
+    {
+      "path": "lib/price-meter-property-position-construction-land.ts",
+      "size": 2445,
+      "mode": 33188,
+      "sha": "7d8499edec6a311eb6c725d827767a04375c5fb8"
+    },
+    {
+      "path": "lib/price-meter-property-position-evidence.ts",
+      "size": 10907,
+      "mode": 33188,
+      "sha": "59397ae46eb5c9104e86cce9681b633e795bde0a"
+    },
+    {
+      "path": "lib/price-meter-property-position-identity.ts",
+      "size": 7932,
+      "mode": 33188,
+      "sha": "1cf6a5cac42e0a378f7aa118256e3dca2e8cfdd1"
+    },
+    {
+      "path": "lib/price-meter-property-position-interval.ts",
+      "size": 4484,
+      "mode": 33188,
+      "sha": "7500290cb9770c36016d373d58b3a5e46cad86fc"
+    },
+    {
+      "path": "lib/price-meter-property-position-language.ts",
+      "size": 2503,
+      "mode": 33188,
+      "sha": "722003447b9b11c82409b4aac480ed119c726908"
+    },
+    {
+      "path": "lib/price-meter-property-position-median.ts",
+      "size": 3547,
+      "mode": 33188,
+      "sha": "171b8846a8644093c0ec40f717cf76bad5cf3c3f"
+    },
+    {
+      "path": "lib/price-meter-property-position-normalization.ts",
+      "size": 4321,
+      "mode": 33188,
+      "sha": "ab3fd926165d38c73dab8251f1dad6667e7e7064"
+    },
+    {
+      "path": "lib/price-meter-property-position-percentile.ts",
+      "size": 3710,
+      "mode": 33188,
+      "sha": "75a68be1b4b0389debf381f9fd769863f74158b0"
+    },
+    {
+      "path": "lib/price-meter-property-position-population.ts",
+      "size": 10571,
+      "mode": 33188,
+      "sha": "87fb2f109b18d25172c4bd0a68634cd8bbf1b143"
+    },
+    {
+      "path": "lib/price-meter-property-position-tail.ts",
+      "size": 6101,
+      "mode": 33188,
+      "sha": "23a87b24563830ab75ced1c9525faf9b328a487b"
+    },
+    {
+      "path": "lib/price-meter-property-price-vs-median.ts",
+      "size": 3001,
+      "mode": 33188,
+      "sha": "c0be9175853db7653eda539577d2488212efd35e"
+    },
+    {
+      "path": "lib/price-meter-size-relationship-math.ts",
+      "size": 10433,
+      "mode": 33188,
+      "sha": "96ba1dcf29c8ad432574660da82c9ed1bee770ab"
+    },
+    {
+      "path": "lib/price-meter-size-relationship-population.ts",
+      "size": 5425,
+      "mode": 33188,
+      "sha": "e85ed77b37e08099c114860e8ce699c600123708"
+    },
+    {
+      "path": "lib/price-meter-size-relationship.ts",
+      "size": 3966,
+      "mode": 33188,
+      "sha": "e368b419ed1f2b5a79b3b956322c6d8ad097b303"
+    },
+    {
+      "path": "lib/price-meter-statistic-identity.ts",
+      "size": 3542,
+      "mode": 33188,
+      "sha": "528cd0778793fc4ba4d76040d1b712566da4ada9"
+    },
+    {
+      "path": "lib/price-meter-transaction-cohort.ts",
+      "size": 1992,
+      "mode": 33188,
+      "sha": "e7f01eadcf0093d0821e3686e6c2cae1066eba6e"
+    },
+    {
+      "path": "lib/price-meter-year-built-cohorts.ts",
+      "size": 2167,
+      "mode": 33188,
+      "sha": "2d9650e3a87757c3187f83e3e74e4fedf236bcf3"
+    },
+    {
+      "path": "lib/pricing-strategy-engine.ts",
+      "size": 7470,
+      "mode": 33188,
+      "sha": "0b1bc8d146c3a7473cdcfe229bb21ed384a9a846"
+    },
+    {
+      "path": "lib/promotion-catalog.ts",
+      "size": 10512,
+      "mode": 33188,
+      "sha": "b0b19abd9acec8fe3066da9685487ce70a1913e4"
+    },
+    {
+      "path": "lib/promotion-engine.ts",
+      "size": 22393,
+      "mode": 33188,
+      "sha": "a7f99afadfc634a0aa872a329b5e6b1f9bc80da7"
+    },
+    {
+      "path": "lib/promotion-history.ts",
+      "size": 8699,
+      "mode": 33188,
+      "sha": "4772b3d7251722ddb2a7e371573fe89d448b406d"
+    },
+    {
+      "path": "lib/promotion-intelligence-engine.ts",
+      "size": 26416,
+      "mode": 33188,
+      "sha": "80a84babe493f42f6d285824d4594eb4c0269083"
+    },
+    {
+      "path": "lib/promotion-intelligence-evidence.ts",
+      "size": 19423,
+      "mode": 33188,
+      "sha": "3c88cb7d7f81680afc056922dc3e5bd23724c39c"
+    },
+    {
+      "path": "lib/promotion-operations.ts",
+      "size": 6100,
+      "mode": 33188,
+      "sha": "a01155561e5ab9b7fded84f22ced8e719c1430b6"
+    },
+    {
+      "path": "lib/promotion-performance-engine.ts",
+      "size": 25368,
+      "mode": 33188,
+      "sha": "bc81b8ec1dd0de2b89ee3f18c353751091f59083"
+    },
+    {
+      "path": "lib/promotion-placement.ts",
+      "size": 8478,
+      "mode": 33188,
+      "sha": "8cab88b92a0e26f6ef829ddbffef3b6af2383bfd"
+    },
+    {
+      "path": "lib/property-comparison-selection.ts",
+      "size": 3024,
+      "mode": 33188,
+      "sha": "73ccec09663c0f3b63c611470f233388102c58e3"
+    },
+    {
+      "path": "lib/property-comparisons.ts",
+      "size": 9440,
+      "mode": 33188,
+      "sha": "1926a37329e9f34e9a8a1f9a73ac4b3dfb7456f3"
+    },
+    {
+      "path": "lib/property-notes.ts",
+      "size": 4928,
+      "mode": 33188,
+      "sha": "9c99df6b304581f27c46bdcbcdc57bd8f1b98457"
+    },
+    {
+      "path": "lib/providers/bank-transfer-provider.ts",
+      "size": 11685,
+      "mode": 33188,
+      "sha": "6557c10e089d177f62ff5e22256b31ecd856c57d"
+    },
+    {
+      "path": "lib/providers/sinpe-provider.ts",
+      "size": 11626,
+      "mode": 33188,
+      "sha": "ee93eca5a6ff2ca2c795b2b64563b3561cb2fa88"
+    },
+    {
+      "path": "lib/public-listing-monetary-projection.ts",
+      "size": 1461,
+      "mode": 33188,
+      "sha": "9839115c2416ffe037cee5f3ca0d8270e99e7fe1"
+    },
+    {
+      "path": "lib/public-listings-server.ts",
+      "size": 3819,
+      "mode": 33188,
+      "sha": "a81fdf49a1f6c784dba7a705e5ea32f5fc81acb0"
+    },
+    {
+      "path": "lib/public-promotion-evidence.ts",
+      "size": 7708,
+      "mode": 33188,
+      "sha": "c1190e634c08b995ce88a555c7f74a1a202b85cf"
+    },
+    {
+      "path": "lib/purchase-engine.ts",
+      "size": 16454,
+      "mode": 33188,
+      "sha": "5e37fa18aab7f2768422e8c733cf1ebba9b0e918"
+    },
+    {
+      "path": "lib/related-markets-engine.ts",
+      "size": 1965,
+      "mode": 33188,
+      "sha": "6c5d5fe056879d57c859f44e85fbccecdd611d5c"
+    },
+    {
+      "path": "lib/saved-analyses.ts",
+      "size": 4618,
+      "mode": 33188,
+      "sha": "88516852dcd59e4a35265176c92cef81b3542813"
+    },
+    {
+      "path": "lib/saved-search-alerts.ts",
+      "size": 10838,
+      "mode": 33188,
+      "sha": "d870caa1d9e98c4d3665c89a80301b2dba13337b"
+    },
+    {
+      "path": "lib/saved-searches.ts",
+      "size": 4094,
+      "mode": 33188,
+      "sha": "81aaf137e8789e98fc1fd0591c4913d9b9c4d050"
+    },
+    {
+      "path": "lib/schema-engine.ts",
+      "size": 10222,
+      "mode": 33188,
+      "sha": "4bf5cc02e77fbfcccebef4c6300e75f8beb1b09a"
+    },
+    {
+      "path": "lib/schema/buildHomePageSchema.ts",
+      "size": 3657,
+      "mode": 33188,
+      "sha": "99dc0e76969cea42560ba17cf82ee12d84a8be34"
+    },
+    {
+      "path": "lib/schema/buildOntologyNode.ts",
+      "size": 1073,
+      "mode": 33188,
+      "sha": "fbb836e78a55da2204894e434445abab6caad8f8"
+    },
+    {
+      "path": "lib/schema/buildPlaceNode.ts",
+      "size": 1170,
+      "mode": 33188,
+      "sha": "ccb542dd619efbd65e205e9a322154fa8166b951"
+    },
+    {
+      "path": "lib/schema/buildRelationshipNode.ts",
+      "size": 1030,
+      "mode": 33188,
+      "sha": "1a0dd66b128bd9d07d990b828d0f2a9bd754fb11"
+    },
+    {
+      "path": "lib/statistics-engine.ts",
+      "size": 37259,
+      "mode": 33188,
+      "sha": "0025e78b71934e0d4235eb74375bcabcd603a607"
+    },
+    {
+      "path": "lib/storage/analysis-storage.ts",
+      "size": 1118,
+      "mode": 33188,
+      "sha": "06a9694ee501d6238afd6ed1d058ce4d8d22a90c"
+    },
+    {
+      "path": "lib/storage/keys.ts",
+      "size": 191,
+      "mode": 33188,
+      "sha": "241161760e326370c3efb79ee06a5a80ae50f0cb"
+    },
+    {
+      "path": "lib/storage/local-storage.ts",
+      "size": 566,
+      "mode": 33188,
+      "sha": "ecad27f0bbb0f2b1b391ceaf20a35a545ef908ff"
+    },
+    {
+      "path": "lib/storage/storage.ts",
+      "size": 162,
+      "mode": 33188,
+      "sha": "08bf82bb288ef66f4483119e9c3d0ca103605d1f"
+    },
+    {
+      "path": "lib/supabase-admin.ts",
+      "size": 582,
+      "mode": 33188,
+      "sha": "05f31520c47d20fddca75e8fd5d45a043ba4bb5e"
+    },
+    {
+      "path": "lib/supabase-server.ts",
+      "size": 1068,
+      "mode": 33188,
+      "sha": "6ad0479a236185e19cff610d5398c0ad2137939c"
+    },
+    {
+      "path": "lib/supabase.ts",
+      "size": 246,
+      "mode": 33188,
+      "sha": "4bc682e170cfe7316471b3bcab420fcead813812"
+    },
+    {
+      "path": "lib/token-canonical-creation.ts",
+      "size": 5276,
+      "mode": 33188,
+      "sha": "3eaa162d3cbe3135248ad1edee9146e575842f6e"
+    },
+    {
+      "path": "lib/valuation-confidence-engine.ts",
+      "size": 1508,
+      "mode": 33188,
+      "sha": "8403f301e95417d66c42f2dba7db94392966af13"
+    },
+    {
+      "path": "lib/valuation-engine.ts",
+      "size": 12935,
+      "mode": 33188,
+      "sha": "07c2cd30c0396a94320362573dae88853fdffac8"
+    },
+    {
+      "path": "lib/whatsapp.ts",
+      "size": 986,
+      "mode": 33188,
+      "sha": "e38cff9d041455170e522ffea4f1a98d1cecce70"
+    },
+    {
+      "path": "next.config.ts",
+      "size": 149,
+      "mode": 33188,
+      "sha": "a2ba789b73384c2b1dafa69195d01e0c794d4219"
+    },
+    {
+      "path": "package-lock.json",
+      "size": 346965,
+      "mode": 33188,
+      "sha": "016a68ba107c71e9104bda67741f21401c02d469"
+    },
+    {
+      "path": "package.json",
+      "size": 2181,
+      "mode": 33188,
+      "sha": "58ca12d906bedf1c1c2c8457475b860ddade4d77"
+    },
+    {
+      "path": "postcss.config.mjs",
+      "size": 94,
+      "mode": 33188,
+      "sha": "8f8be689e9af58f80351df6e6b551146822f42a4"
+    },
+    {
+      "path": "price-meter-comparable-browser-contract.ts",
+      "size": 5474,
+      "mode": 33188,
+      "sha": "5c8f21c84ae5de423068d98555040cc24bcacbd9"
+    },
+    {
+      "path": "public/file.svg",
+      "size": 391,
+      "mode": 33188,
+      "sha": "fb380eeffe87d50b597383664c02982964d0d28c"
+    },
+    {
+      "path": "public/filter.svg",
+      "size": 19409435,
+      "mode": 33188,
+      "sha": "aae7a6d9bcff30795c537335280aaf8a3d023d55"
+    },
+    {
+      "path": "public/globe.svg",
+      "size": 1035,
+      "mode": 33188,
+      "sha": "2eba23b01a46733bb8423e6d38ebf5f7e95abec5"
+    },
+    {
+      "path": "public/images/twuanis-intro-en.png",
+      "size": 2315190,
+      "mode": 33188,
+      "sha": "6cab3d92b08404cf4763db64c78ca049a6d5f049"
+    },
+    {
+      "path": "public/images/twuanis-intro-es.png",
+      "size": 2203696,
+      "mode": 33188,
+      "sha": "5756bf8a9dab77eb8172a032c6e9b089648e8db6"
+    },
+    {
+      "path": "public/images/twuanis-mobius.svg",
+      "size": 2157,
+      "mode": 33188,
+      "sha": "613bb46027de8fd9730ba4a8698eef11dcb23750"
+    },
+    {
+      "path": "public/next.svg",
+      "size": 1375,
+      "mode": 33188,
+      "sha": "3f3e95622612b989c5bd6a03299a308c6f3c7e6b"
+    },
+    {
+      "path": "public/sw.js",
+      "size": 1182,
+      "mode": 33188,
+      "sha": "5f3207c094fc009cb57bd9cb6cacfa8252867bea"
+    },
+    {
+      "path": "public/vercel.svg",
+      "size": 128,
+      "mode": 33188,
+      "sha": "cebb8852d58c8886be3e9051a26957f42bb82f1a"
+    },
+    {
+      "path": "public/window.svg",
+      "size": 385,
+      "mode": 33188,
+      "sha": "54c48e0daa6caa317fe1b4c419007fd93e948db9"
+    },
+    {
+      "path": "scripts/verification/abandoned-token-cleanup.sql",
+      "size": 2183,
+      "mode": 33188,
+      "sha": "5c719cabf8de6582010a2d8a04e5687756bc4a93"
+    },
+    {
+      "path": "scripts/verification/activation-disposable-authority.ts",
+      "size": 318,
+      "mode": 33188,
+      "sha": "7562f0dd40677caa5bda993f15895c334dceb233"
+    },
+    {
+      "path": "scripts/verification/activation-disposable-runner.cjs",
+      "size": 11494,
+      "mode": 33188,
+      "sha": "7a87a959035dd7732247829397af1d0f6e97ba52"
+    },
+    {
+      "path": "scripts/verification/activation-disposable-schema.sql",
+      "size": 1242,
+      "mode": 33188,
+      "sha": "96081bc23b8ab8123590a5e6397446ca3eb54ba3"
+    },
+    {
+      "path": "scripts/verification/activation-engine.ts",
+      "size": 20010,
+      "mode": 33188,
+      "sha": "7169373364b9b865b01e72af91213c55ce0ddb4d"
+    },
+    {
+      "path": "scripts/verification/aggregate-promotion-intelligence.ts",
+      "size": 38089,
+      "mode": 33188,
+      "sha": "d23dcaadc160f3cf37cd2a3669f006b1aa34ca60"
+    },
+    {
+      "path": "scripts/verification/approval-engine.ts",
+      "size": 0,
+      "mode": 33188,
+      "sha": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+    },
+    {
+      "path": "scripts/verification/canonical-creation-authority.sql",
+      "size": 43097,
+      "mode": 33188,
+      "sha": "f10a39ae369bb86b3d37a1cd1ac7f6e028fc6b10"
+    },
+    {
+      "path": "scripts/verification/canonical-creation-concurrency.py",
+      "size": 9473,
+      "mode": 33188,
+      "sha": "0411021687e7862abaa72308feddb9f15cac9ab4"
+    },
+    {
+      "path": "scripts/verification/canonical-domain-concurrency.py",
+      "size": 6590,
+      "mode": 33188,
+      "sha": "96111d7bfa95034cea47f2d294c8e4666f4b0468"
+    },
+    {
+      "path": "scripts/verification/canonical-domain-machinery.sql",
+      "size": 35550,
+      "mode": 33188,
+      "sha": "b5441759f69cd9a7d071baa8d4fddd5a1d5d9f13"
+    },
+    {
+      "path": "scripts/verification/canonical-foundation-concurrency.py",
+      "size": 4705,
+      "mode": 33188,
+      "sha": "e8a83d4b6b7cf2b2b614e72b1cf16003897860d3"
+    },
+    {
+      "path": "scripts/verification/canonical-foundation.sql",
+      "size": 26018,
+      "mode": 33188,
+      "sha": "c68ef01181cc8a5b2dda550a892636f1d8874aff"
+    },
+    {
+      "path": "scripts/verification/canonical-listing-write.sql",
+      "size": 11981,
+      "mode": 33188,
+      "sha": "c64a49117a0ca895ec3489383c26a8eebca3518a"
+    },
+    {
+      "path": "scripts/verification/canonical-reader-boundary.sql",
+      "size": 11668,
+      "mode": 33188,
+      "sha": "1fe331df3d8f052ea96372b640a82d9441b42599"
+    },
+    {
+      "path": "scripts/verification/canonical-reader-closed-regression.py",
+      "size": 1830,
+      "mode": 33188,
+      "sha": "05fe97d5d23cb71209e3aed79f4845cf6d364281"
+    },
+    {
+      "path": "scripts/verification/canonical-reader-downstream.cjs",
+      "size": 3067,
+      "mode": 33188,
+      "sha": "dba194b556e7d2e56f0572d66f014b55ab8d5240"
+    },
+    {
+      "path": "scripts/verification/canonical-reader-import-graph.cjs",
+      "size": 2032,
+      "mode": 33188,
+      "sha": "917cb1cf85256cc99c417e656b4136e29b0ed7b0"
+    },
+    {
+      "path": "scripts/verification/canonical-reader-lifecycle-apply.cjs",
+      "size": 5133,
+      "mode": 33188,
+      "sha": "7d01742b20c854e287f2e183a25e485fc95b8d29"
+    },
+    {
+      "path": "scripts/verification/canonical-reader-public.cjs",
+      "size": 3438,
+      "mode": 33188,
+      "sha": "2e1beb31a519e227636fa86b0ea5fdfc6ca2e736"
+    },
+    {
+      "path": "scripts/verification/canonical-readers.cjs",
+      "size": 14082,
+      "mode": 33188,
+      "sha": "c7a19de79117bf20e23e5766ab5a43c9637097c6"
+    },
+    {
+      "path": "scripts/verification/canonical-writer-permanent-delete.cjs",
+      "size": 7099,
+      "mode": 33188,
+      "sha": "378c80ff97d04f12e74cee645007ece05d6a4166"
+    },
+    {
+      "path": "scripts/verification/commercial-capacity-application.cjs",
+      "size": 3074,
+      "mode": 33188,
+      "sha": "394e21f97b28ca19619f8f5e6963945248d1d0d6"
+    },
+    {
+      "path": "scripts/verification/commercial-capacity-concurrency.py",
+      "size": 8738,
+      "mode": 33188,
+      "sha": "32ecf12a7de3a625463aa747c9f93dbd22c287c7"
+    },
+    {
+      "path": "scripts/verification/commercial-capacity-coordination.sql",
+      "size": 32726,
+      "mode": 33188,
+      "sha": "feaf17979a60a95fe66924419ad27bdda901543f"
+    },
+    {
+      "path": "scripts/verification/commercial-disposable-authority.ts",
+      "size": 363,
+      "mode": 33188,
+      "sha": "b594f7bae8f313701156bdc79b63992ecc423e0c"
+    },
+    {
+      "path": "scripts/verification/commercial-disposable-runner.cjs",
+      "size": 10057,
+      "mode": 33188,
+      "sha": "c1e301d2c26f1c561be37e78fcb7bb4f7e9f923c"
+    },
+    {
+      "path": "scripts/verification/commercial-provider.ts",
+      "size": 12204,
+      "mode": 33188,
+      "sha": "643603948a640b9a704a6ead354866deff34009a"
+    },
+    {
+      "path": "scripts/verification/commercial-resolver.ts",
+      "size": 15188,
+      "mode": 33188,
+      "sha": "68d28267ee907987fd50a065db223162b09b2cb6"
+    },
+    {
+      "path": "scripts/verification/commercial-timeline.ts",
+      "size": 25519,
+      "mode": 33188,
+      "sha": "03fce1302d7f22db41361fd35b7ea41da20575ff"
+    },
+    {
+      "path": "scripts/verification/comparable-cohort.ts",
+      "size": 20890,
+      "mode": 33188,
+      "sha": "361f42f899e3be56a726bf28624542dd610e4f19"
+    },
+    {
+      "path": "scripts/verification/csv-evidence-concurrency.py",
+      "size": 2816,
+      "mode": 33188,
+      "sha": "28f4083895e31fcf76698ef399bb6012aab8bc8f"
+    },
+    {
+      "path": "scripts/verification/csv-evidence.sql",
+      "size": 5067,
+      "mode": 33188,
+      "sha": "a86b83a4391b84bfbf25b285b417da2969d3ada8"
+    },
+    {
+      "path": "scripts/verification/csv-ingestion.cjs",
+      "size": 6898,
+      "mode": 33188,
+      "sha": "35f6535b137481ab5fa04f72fafe7cdcab0d5b8e"
+    },
+    {
+      "path": "scripts/verification/csv-initial-publication.sql",
+      "size": 7122,
+      "mode": 33188,
+      "sha": "626018266c826cc5f75ffac762cce73f76edfd64"
+    },
+    {
+      "path": "scripts/verification/csv-normalizer-provenance.cjs",
+      "size": 2981,
+      "mode": 33188,
+      "sha": "53f98522265eb45b196374de033de1ba7b2a44df"
+    },
+    {
+      "path": "scripts/verification/csv-source-references.sql",
+      "size": 4405,
+      "mode": 33188,
+      "sha": "8a36753c7f6a208a533cb2efe0cb424a75f1181d"
+    },
+    {
+      "path": "scripts/verification/customer-duplicate-concurrency.py",
+      "size": 2967,
+      "mode": 33188,
+      "sha": "f02be6960e9f47e1973ef376d0114a393b60e1a6"
+    },
+    {
+      "path": "scripts/verification/customer-duplicate-media.cjs",
+      "size": 6692,
+      "mode": 33188,
+      "sha": "827c3dfc67d29d0325146ac9a9bf9a42c4123ca4"
+    },
+    {
+      "path": "scripts/verification/customer-duplicate-ui.cjs",
+      "size": 1152,
+      "mode": 33188,
+      "sha": "eaf69838e5de8e6cc6bf317f6a4c08962573da9c"
+    },
+    {
+      "path": "scripts/verification/customer-duplicate.sql",
+      "size": 7648,
+      "mode": 33188,
+      "sha": "bdff4eb1c813b63981cba34a3abadc92a2bc6818"
+    },
+    {
+      "path": "scripts/verification/customer-edit-classification.sql",
+      "size": 9591,
+      "mode": 33188,
+      "sha": "86876ab7f6e89b74d8590355c4ba9841337ebbfc"
+    },
+    {
+      "path": "scripts/verification/customer-edit-concurrency.py",
+      "size": 2872,
+      "mode": 33188,
+      "sha": "4cd56b189ab8557231c6f7b6c43a2729d7cd9d4e"
+    },
+    {
+      "path": "scripts/verification/customer-edit-integration.cjs",
+      "size": 8262,
+      "mode": 33188,
+      "sha": "f3582db9af6a31a05606e7a51a3ade5f9c453e7b"
+    },
+    {
+      "path": "scripts/verification/customer-lifecycle.cjs",
+      "size": 3442,
+      "mode": 33188,
+      "sha": "ab84761f55f76d0bb784ec736c7a58a678b82866"
+    },
+    {
+      "path": "scripts/verification/customer-lifecycle.sql",
+      "size": 2815,
+      "mode": 33188,
+      "sha": "2a547d7be8e9630391595ded6a38ca269c5ccbe6"
+    },
+    {
+      "path": "scripts/verification/customer-measurement-clear-concurrency.py",
+      "size": 2647,
+      "mode": 33188,
+      "sha": "594582dc09b8ae36cc60f3a3aa3ccf445388912d"
+    },
+    {
+      "path": "scripts/verification/customer-measurement-clear.cjs",
+      "size": 3763,
+      "mode": 33188,
+      "sha": "96f00e8dfc2eecab1b674cd9a97e5b9b1ff2ebf3"
+    },
+    {
+      "path": "scripts/verification/customer-measurement-clear.sql",
+      "size": 5905,
+      "mode": 33188,
+      "sha": "dc82e09432c61946ad3e54853db4328df0f6c73c"
+    },
+    {
+      "path": "scripts/verification/customer-publication-callers.cjs",
+      "size": 4226,
+      "mode": 33188,
+      "sha": "2c2e3d54bcd7fb8a333eba1da3976923032cb8da"
+    },
+    {
+      "path": "scripts/verification/customer-publication-entitlement.sql",
+      "size": 7926,
+      "mode": 33188,
+      "sha": "f52ccb18ebf27f921ef25370dcb492ab8309c84e"
+    },
+    {
+      "path": "scripts/verification/customer-road-distance.cjs",
+      "size": 3602,
+      "mode": 33188,
+      "sha": "057ea0db761b812bde7291116dc13297e6aff1b2"
+    },
+    {
+      "path": "scripts/verification/image-detach-concurrency.py",
+      "size": 2023,
+      "mode": 33188,
+      "sha": "eb7c172c67ca7571268f529f45b17d3d287e3cf4"
+    },
+    {
+      "path": "scripts/verification/image-detach.cjs",
+      "size": 4041,
+      "mode": 33188,
+      "sha": "0778f1006af2866c40f4c5ccc6849d21cf324102"
+    },
+    {
+      "path": "scripts/verification/image-detach.sql",
+      "size": 3997,
+      "mode": 33188,
+      "sha": "e5749ba567ab4ef4b2282dd723627f8f47d24a54"
+    },
+    {
+      "path": "scripts/verification/import-operator-authority.sql",
+      "size": 4422,
+      "mode": 33188,
+      "sha": "ce3c94311b40fbc912170490bdc4acb45cd479e1"
+    },
+    {
+      "path": "scripts/verification/listing-lifecycle.ts",
+      "size": 0,
+      "mode": 33188,
+      "sha": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+    },
+    {
+      "path": "scripts/verification/media-caller-containment.cjs",
+      "size": 1750,
+      "mode": 33188,
+      "sha": "ba898feb0e06a07be565e1cb91c9e90b224a79b3"
+    },
+    {
+      "path": "scripts/verification/ontology.ts",
+      "size": 0,
+      "mode": 33188,
+      "sha": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+    },
+    {
+      "path": "scripts/verification/ordinary-image-attachment.cjs",
+      "size": 4097,
+      "mode": 33188,
+      "sha": "1e064341bc3d73da063d440f8d9461996b25a82b"
+    },
+    {
+      "path": "scripts/verification/ordinary-upload-concurrency.py",
+      "size": 2119,
+      "mode": 33188,
+      "sha": "f3eedc0e7d3a8ddac183dd4a3adeca567e04cb90"
+    },
+    {
+      "path": "scripts/verification/ordinary-upload-fixture.sql",
+      "size": 487,
+      "mode": 33188,
+      "sha": "b5e64adb22502c763f23cd3cde4283444cbd892f"
+    },
+    {
+      "path": "scripts/verification/ordinary-upload-operation.cjs",
+      "size": 4603,
+      "mode": 33188,
+      "sha": "1d05d2e1fff32d6feb9d674dedb7e83142225b68"
+    },
+    {
+      "path": "scripts/verification/ordinary-upload.sql",
+      "size": 4008,
+      "mode": 33188,
+      "sha": "1cbe3fe927b388701c8c2200db02dc4d1affa157"
+    },
+    {
+      "path": "scripts/verification/promotion-history.ts",
+      "size": 23455,
+      "mode": 33188,
+      "sha": "6a901a5451d2a71e4280de6b9f6d462cabecfade"
+    },
+    {
+      "path": "scripts/verification/promotion-intelligence.ts",
+      "size": 42001,
+      "mode": 33188,
+      "sha": "18cbe5d8b2ee01d2d9aec776b0e312e7702d7d90"
+    },
+    {
+      "path": "scripts/verification/promotion-performance.ts",
+      "size": 28996,
+      "mode": 33188,
+      "sha": "2d8b14c859468485dd56f0d2123b5454736c1c38"
+    },
+    {
+      "path": "scripts/verification/promotion-placement.ts",
+      "size": 9560,
+      "mode": 33188,
+      "sha": "561ea77c782a4992f557e2e8aea05c1d83c339c8"
+    },
+    {
+      "path": "scripts/verification/provider-disposable-authority.ts",
+      "size": 339,
+      "mode": 33188,
+      "sha": "ea4c5266daa96b16f18a01f2278f9d22d3285923"
+    },
+    {
+      "path": "scripts/verification/provider-disposable-schema.sql",
+      "size": 496,
+      "mode": 33188,
+      "sha": "cd98ae405fd908c15a490c3cad82db892778e28a"
+    },
+    {
+      "path": "scripts/verification/public-evidence-disposable-authority.ts",
+      "size": 246,
+      "mode": 33188,
+      "sha": "e169b954d958edf96457e40d449f4f3ae67a60c2"
+    },
+    {
+      "path": "scripts/verification/public-promotion-evidence.ts",
+      "size": 22932,
+      "mode": 33188,
+      "sha": "d75fd1c0e616289ea7d78752e8d9a16417a2bb89"
+    },
+    {
+      "path": "scripts/verification/publisher-coordination-concurrency.py",
+      "size": 6711,
+      "mode": 33188,
+      "sha": "584713c20bfbe9b7770441b92b5038dde72923ac"
+    },
+    {
+      "path": "scripts/verification/publisher-coordination.sql",
+      "size": 15879,
+      "mode": 33188,
+      "sha": "f78b2f48bf8d453744b6b462e8f0ae330a8931b7"
+    },
+    {
+      "path": "scripts/verification/purchase-engine.ts",
+      "size": 0,
+      "mode": 33188,
+      "sha": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+    },
+    {
+      "path": "scripts/verification/retired-listing-writers.cjs",
+      "size": 926,
+      "mode": 33188,
+      "sha": "ae5990a1f029fd5e40b786694d880ce7572c3a60"
+    },
+    {
+      "path": "scripts/verification/retired-ontology-writer.cjs",
+      "size": 2155,
+      "mode": 33188,
+      "sha": "5635fbac522cb2a66e50e94b7c4e15af22d14c10"
+    },
+    {
+      "path": "scripts/verification/s10-csv-adapter.cjs",
+      "size": 6712,
+      "mode": 33188,
+      "sha": "8882ca92906c577f8b0bb1d7c4bf17ee66883066"
+    },
+    {
+      "path": "scripts/verification/s10-source-ingestion.cjs",
+      "size": 18626,
+      "mode": 33188,
+      "sha": "ecccba9ec3283f0202fc955a1c534e66e5d535bc"
+    },
+    {
+      "path": "scripts/verification/s8-legacy-retirement.cjs",
+      "size": 2519,
+      "mode": 33188,
+      "sha": "573d8b12bd5480d285482f94c73f32be510ac168"
+    },
+    {
+      "path": "scripts/verification/s9-browser-result.cjs",
+      "size": 4226,
+      "mode": 33188,
+      "sha": "9154cab4d4527876bd4ebdb1a375764c8edb200e"
+    },
+    {
+      "path": "scripts/verification/s9-canonical-chain-continuation.cjs",
+      "size": 8079,
+      "mode": 33188,
+      "sha": "0cf388285511ab137324db011e9d483dc30d170a"
+    },
+    {
+      "path": "scripts/verification/s9-canonical-chain.cjs",
+      "size": 9203,
+      "mode": 33188,
+      "sha": "69af90b28950ed54ab64879ca4c74819fa34e3c6"
+    },
+    {
+      "path": "scripts/verification/s9-capacity-classification.cjs",
+      "size": 5184,
+      "mode": 33188,
+      "sha": "cc14c818c8eee9236f16a049eef4a69a5e225b6f"
+    },
+    {
+      "path": "scripts/verification/s9-commercial-integration.cjs",
+      "size": 3674,
+      "mode": 33188,
+      "sha": "1761cd60ece0875effece23a53a7583016205744"
+    },
+    {
+      "path": "scripts/verification/s9-comparison-gate.cjs",
+      "size": 4066,
+      "mode": 33188,
+      "sha": "5ee728276a7de86877f7a774b452a5eded1f690a"
+    },
+    {
+      "path": "scripts/verification/s9-comparison-population.cjs",
+      "size": 11717,
+      "mode": 33188,
+      "sha": "2b76d27eb0902e9dcb70ae5919e28d9f187452e3"
+    },
+    {
+      "path": "scripts/verification/s9-csv-integration.cjs",
+      "size": 5945,
+      "mode": 33188,
+      "sha": "affcd74a2df5ac32bd8c77d4880b007ff71e077d"
+    },
+    {
+      "path": "scripts/verification/s9-media-integration.cjs",
+      "size": 4504,
+      "mode": 33188,
+      "sha": "0b53aecc7a9240d928937ce71f245aa72386608d"
+    },
+    {
+      "path": "scripts/verification/s9-media-lifecycle.cjs",
+      "size": 4276,
+      "mode": 33188,
+      "sha": "947e6a50e23d186938651e6cddb15e4098f42e64"
+    },
+    {
+      "path": "scripts/verification/s9-ordinary-acquisition.cjs",
+      "size": 11656,
+      "mode": 33188,
+      "sha": "fb2af5af3352a73a1296ddecca11dd6315113437"
+    },
+    {
+      "path": "scripts/verification/s9-ordinary-engine-probe.cjs",
+      "size": 2916,
+      "mode": 33188,
+      "sha": "4075fa94940b654c0bf1100debacc3530178010c"
+    },
+    {
+      "path": "scripts/verification/s9-phase11.cjs",
+      "size": 4675,
+      "mode": 33188,
+      "sha": "28d1ae05b62da2b65444b54fcb62e1d2909b0553"
+    },
+    {
+      "path": "scripts/verification/s9-phase12.cjs",
+      "size": 4375,
+      "mode": 33188,
+      "sha": "58febf49d060a6be47f9e6ea19a6636018379790"
+    },
+    {
+      "path": "scripts/verification/s9-phase12a-integration.cjs",
+      "size": 11175,
+      "mode": 33188,
+      "sha": "a144d6b1e3bb0176aa48ebe1c3228f7cdef45cdc"
+    },
+    {
+      "path": "scripts/verification/s9-phase12a-membership.cjs",
+      "size": 3536,
+      "mode": 33188,
+      "sha": "2e9c7d44376c015a13aade9e2141833d9fa669c9"
+    },
+    {
+      "path": "scripts/verification/s9-phase12a-year-probe.cjs",
+      "size": 5764,
+      "mode": 33188,
+      "sha": "9d78e8d08e61bc5c87224e548b0f35e8c47c5333"
+    },
+    {
+      "path": "scripts/verification/s9-ppm2-authorization.cjs",
+      "size": 3703,
+      "mode": 33188,
+      "sha": "414c43797ae5686ca7efbc51034d9340d262c346"
+    },
+    {
+      "path": "scripts/verification/s9-token-integration.cjs",
+      "size": 5649,
+      "mode": 33188,
+      "sha": "4c8e9b30ccf4147181849b538f1dc45c5113594f"
+    },
+    {
+      "path": "scripts/verification/source-observation-propagation.cjs",
+      "size": 2577,
+      "mode": 33188,
+      "sha": "a7a254c6b801566f7ac6da01383450b8180332ff"
+    },
+    {
+      "path": "scripts/verification/source-property-type.cjs",
+      "size": 4113,
+      "mode": 33188,
+      "sha": "06f5a67954563411ad24087b3c90bd819e78acb8"
+    },
+    {
+      "path": "scripts/verification/timeline-disposable-authority.ts",
+      "size": 274,
+      "mode": 33188,
+      "sha": "eff374d464386d0349565d47b2229ba38fc14b95"
+    },
+    {
+      "path": "supabase/migrations/001_market_intelligence.sql",
+      "size": 0,
+      "mode": 33188,
+      "sha": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+    },
+    {
+      "path": "supabase/migrations/002_canonical_geography_structural_invariants.sql",
+      "size": 1406,
+      "mode": 33188,
+      "sha": "ace3c985860cedf76084ec0320bf04737269a458"
+    },
+    {
+      "path": "supabase/migrations/003_canonical_listing_write_boundary.sql",
+      "size": 10974,
+      "mode": 33188,
+      "sha": "693096609351fdfbe7f50bc7c4bacdaeb1717136"
+    },
+    {
+      "path": "supabase/migrations/004_dormant_canonical_listing_foundation.sql",
+      "size": 21852,
+      "mode": 33188,
+      "sha": "c80a093d53c2ad799378285de448e872bb2d0522"
+    },
+    {
+      "path": "supabase/migrations/005_dormant_publisher_coordination.sql",
+      "size": 8732,
+      "mode": 33188,
+      "sha": "08352c745bb56b614d3bbe667eddd877c129f9f5"
+    },
+    {
+      "path": "supabase/migrations/006_canonical_domain_machinery.sql",
+      "size": 42118,
+      "mode": 33188,
+      "sha": "9a21fc8634f1964ff95933570c5b8b6cbe15ec35"
+    },
+    {
+      "path": "supabase/migrations/007_canonical_creation_authority.sql",
+      "size": 28533,
+      "mode": 33188,
+      "sha": "54b56d69859a80b03a691500aa6ff6b13e39a3f2"
+    },
+    {
+      "path": "supabase/migrations/008_commercial_capacity_coordination.sql",
+      "size": 20772,
+      "mode": 33188,
+      "sha": "b6d259f60d26270b4ea69e366768c49d376f7a97"
+    },
+    {
+      "path": "supabase/migrations/009_canonical_reader_boundary.sql",
+      "size": 9173,
+      "mode": 33188,
+      "sha": "da7bb0b9e4aeee5bba8b6dbbb2870dd759c4c9a1"
+    },
+    {
+      "path": "supabase/migrations/010_import_operator_authority.sql",
+      "size": 2749,
+      "mode": 33188,
+      "sha": "e5b6eb126f9bb833b2298769f55e9c773e8b56b0"
+    },
+    {
+      "path": "supabase/migrations/011_csv_initial_publication.sql",
+      "size": 6228,
+      "mode": 33188,
+      "sha": "c0291851b7db95630ec83ccec0f1ed81d11e1426"
+    },
+    {
+      "path": "supabase/migrations/012_customer_publication_entitlement.sql",
+      "size": 5378,
+      "mode": 33188,
+      "sha": "6523226d660314bb20c8575632f52d52e9b65bd1"
+    },
+    {
+      "path": "supabase/migrations/013_customer_duplicate.sql",
+      "size": 10902,
+      "mode": 33188,
+      "sha": "032d9b7e020030f2f0cc0ed2aaa75cdb3a29611d"
+    },
+    {
+      "path": "supabase/migrations/014_customer_edit_classification.sql",
+      "size": 4777,
+      "mode": 33188,
+      "sha": "452f1038d223a5ba17392f8b1a61d465325149d3"
+    },
+    {
+      "path": "supabase/migrations/015_customer_edit_content.sql",
+      "size": 3643,
+      "mode": 33188,
+      "sha": "53f2b9ee512ab62e4ac443465a9d607d852e49a3"
+    },
+    {
+      "path": "supabase/migrations/016_customer_measurement_clear.sql",
+      "size": 38862,
+      "mode": 33188,
+      "sha": "490ba5872a763e6e8becc5efeeafb41f0f4650c4"
+    },
+    {
+      "path": "supabase/migrations/017_token_canonical_creation.sql",
+      "size": 9783,
+      "mode": 33188,
+      "sha": "101fcfe2af81c8eccc0d23853c7e9d4c292073d0"
+    },
+    {
+      "path": "supabase/migrations/018_csv_source_evidence.sql",
+      "size": 4520,
+      "mode": 33188,
+      "sha": "9023289b7dfaee48ec5830a6338593bd613b798d"
+    },
+    {
+      "path": "supabase/migrations/019_csv_source_references.sql",
+      "size": 4284,
+      "mode": 33188,
+      "sha": "7b216bd379a3718e802159c282333977582bee87"
+    },
+    {
+      "path": "supabase/migrations/020_ordinary_upload_operations.sql",
+      "size": 4668,
+      "mode": 33188,
+      "sha": "1708e742148adfc559095f9c61eb260d92eb79cd"
+    },
+    {
+      "path": "supabase/migrations/021_image_detach_cleanup.sql",
+      "size": 4426,
+      "mode": 33188,
+      "sha": "9d492e07a4f67e6f76de2b25dcc63e02361371a1"
+    },
+    {
+      "path": "supabase/migrations/022_abandoned_token_cleanup.sql",
+      "size": 979,
+      "mode": 33188,
+      "sha": "6afcd6b830ec148cbd6cfb845774faa693265c57"
+    },
+    {
+      "path": "supabase/migrations/023_source_observation_ingestion.sql",
+      "size": 12469,
+      "mode": 33188,
+      "sha": "506599f3d7db168bad8d19f8dad6d7094540b24f"
+    },
+    {
+      "path": "supabase/migrations/024_image_reorder_boundary.sql",
+      "size": 4960,
+      "mode": 33188,
+      "sha": "7daa561d0baad0ad1976497299ac7787ffa489c1"
+    },
+    {
+      "path": "tsconfig.json",
+      "size": 665,
+      "mode": 33188,
+      "sha": "6276e38fe8f2bad3d011a9459ed6ffecff247c96"
+    },
+    {
+      "path": "vercel.json",
+      "size": 269,
+      "mode": 33188,
+      "sha": "fbb53a52d747217626a3b1ecb8841dcef77f35c7"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 import type {
-  PriceMeterCrossDimensionalQuestionDefinition,
+  PriceMeterCrossDimensionalQuestionPresentation,
   PriceMeterCrossDimensionalQuestionKey
-} from '@/lib/price-meter-cross-dimensional-question'
+} from '@/lib/price-meter-cross-dimensional-result-contract'
 
 
 export type PriceMeterCrossDimensionalLanguage =
@@ -189,7 +189,7 @@ export function getPriceMeterCrossDimensionalPresentation({
   language
 }: {
   question:
-    PriceMeterCrossDimensionalQuestionDefinition
+    PriceMeterCrossDimensionalQuestionPresentation
 
   language:
     PriceMeterCrossDimensionalLanguage

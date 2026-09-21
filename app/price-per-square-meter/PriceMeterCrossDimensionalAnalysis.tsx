@@ -5,17 +5,12 @@ import {
   useState
 } from 'react'
 
-import {
-  getPriceMeterCrossDimensionalQuestion,
-  type PriceMeterCrossDimensionalQuestionKey
-} from '@/lib/price-meter-cross-dimensional-question'
+import type { PriceMeterCrossDimensionalQuestionKey, PriceMeterCrossDimensionalResult } from '@/lib/price-meter-cross-dimensional-result-contract'
 
 import PriceMeterCrossDimensionalResults
   from './PriceMeterCrossDimensionalResults'
 
-import type {
-  PriceMeterCrossDimensionalEvidenceSet
-} from '@/lib/price-meter-cross-dimensional-evidence'
+
 
 import type {
   PriceMeterCrossDimensionalLanguage
@@ -36,18 +31,7 @@ type PriceMeterCrossDimensionalCohortKey =
   | 'improvedConstructionNormalized'
 
 
-type PriceMeterCrossDimensionalResponse = {
-  question:
-    ReturnType<
-      typeof getPriceMeterCrossDimensionalQuestion
-    >
-
-  identity:
-    unknown
-
-  evidence:
-    PriceMeterCrossDimensionalEvidenceSet
-}
+type PriceMeterCrossDimensionalResponse = PriceMeterCrossDimensionalResult
 
 
 type Props = {
@@ -242,21 +226,8 @@ export default function PriceMeterCrossDimensionalAnalysis({
     }
 
 
-    /*
-     * -----------------------------------------------------
-     * CLIENT-SIDE QUESTION AUTHORIZATION
-     * -----------------------------------------------------
-     *
-     * The canonical server boundary performs its own
-     * authorization again.
-     *
-     * This lookup prevents the interface from initiating a
-     * request for a question outside the canonical matrix.
-     */
+    // Question keys are untrusted intent; the server resolves analytical authority.
 
-    getPriceMeterCrossDimensionalQuestion(
-      questionKey
-    )
 
 
     /*
@@ -536,15 +507,13 @@ export default function PriceMeterCrossDimensionalAnalysis({
                 language={
                   language
                 }
-                transactionType={
-                    transactionType
-                  }
+                transactionType={result.context.transactionType}
                 question={
                   result.question
                 }
-                evidence={
-                  result.evidence
-                }
+                evidence={result.evidence}
+                outcomes={result.outcomes}
+                synthesis={result.synthesis}
               />
 
               {children?.(

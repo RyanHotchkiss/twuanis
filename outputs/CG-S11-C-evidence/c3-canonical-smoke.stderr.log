@@ -1,0 +1,2 @@
+psql:/Users/cassidydaddy/twuanis/outputs/CG-S11-B/canonical-smoke.sql:38: ERROR:  null value in column "phone" of relation "listing_publish_tokens" violates not-null constraint
+DETAIL:  Failing row contains (eb3fb6ea-d21f-41be-bb8f-c7d54c7bac89, null, 1365bf52-92ca-41c3-8e8b-d9df0ce57318, {"images": [], "temporary_images": []}, f, 2026-09-19 17:39:09.710106+00, null, null, null).

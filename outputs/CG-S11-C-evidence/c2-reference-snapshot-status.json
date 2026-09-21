@@ -1,0 +1,8 @@
+{
+  "source": "outputs/CG-S11-B/reference-snapshot.sql",
+  "sha256": "4df327318024cf7be4eb25619aa61f94f433a97b5b139c5e3a26736cc506693b",
+  "start": "2026-09-19T16:10:27.067369+00:00",
+  "end": "2026-09-19T16:10:28.135598+00:00",
+  "exit_code": 0,
+  "commit_output": false
+}

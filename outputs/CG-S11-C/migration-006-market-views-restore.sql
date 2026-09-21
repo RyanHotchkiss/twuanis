@@ -1,0 +1,57 @@
+\set ON_ERROR_STOP on
+BEGIN;
+SET LOCAL search_path=public,pg_catalog;
+SET LOCAL lock_timeout='5s';
+CREATE VIEW public.market_listing_base AS
+ SELECT id,
+    title,
+    transaction_type,
+    listing_status,
+    property_type,
+    province,
+    canton,
+    district,
+    price_millions,
+    monthly_price,
+    construction_area,
+    property_area,
+    utility,
+    environment,
+    terrain,
+    accessibility,
+    legal_status,
+    created_at
+   FROM listings
+  WHERE listing_status = 'active'::text;
+ALTER VIEW public.market_listing_base OWNER TO postgres;
+REVOKE ALL ON public.market_listing_base FROM PUBLIC,anon,authenticated,service_role;
+GRANT TRUNCATE, REFERENCES, TRIGGER, MAINTAIN ON public.market_listing_base TO anon,authenticated,service_role;
+DO $check$ DECLARE actual jsonb; BEGIN SELECT jsonb_build_object('definition',pg_get_viewdef(c.oid,true),'owner',pg_get_userbyid(c.relowner),'acl',c.relacl,'options',c.reloptions,'comment',obj_description(c.oid),'columns',(SELECT jsonb_agg(jsonb_build_object('name',a.attname,'type',format_type(a.atttypid,a.atttypmod),'acl',a.attacl,'comment',col_description(c.oid,a.attnum)) ORDER BY a.attnum) FROM pg_attribute a WHERE a.attrelid=c.oid AND a.attnum>0 AND NOT a.attisdropped)) INTO actual FROM pg_class c WHERE c.oid=to_regclass('public.market_listing_base'); IF actual IS DISTINCT FROM '{"definition": " SELECT id,\n    title,\n    transaction_type,\n    listing_status,\n    property_type,\n    province,\n    canton,\n    district,\n    price_millions,\n    monthly_price,\n    construction_area,\n    property_area,\n    utility,\n    environment,\n    terrain,\n    accessibility,\n    legal_status,\n    created_at\n   FROM listings\n  WHERE listing_status = ''active''::text;", "owner": "postgres", "acl": ["postgres=arwdDxtm/postgres", "anon=Dxtm/postgres", "authenticated=Dxtm/postgres", "service_role=Dxtm/postgres"], "options": null, "comment": null, "columns": [{"acl": null, "name": "id", "type": "uuid", "comment": null}, {"acl": null, "name": "title", "type": "text", "comment": null}, {"acl": null, "name": "transaction_type", "type": "text", "comment": null}, {"acl": null, "name": "listing_status", "type": "text", "comment": null}, {"acl": null, "name": "property_type", "type": "text", "comment": null}, {"acl": null, "name": "province", "type": "text", "comment": null}, {"acl": null, "name": "canton", "type": "text", "comment": null}, {"acl": null, "name": "district", "type": "text", "comment": null}, {"acl": null, "name": "price_millions", "type": "numeric", "comment": null}, {"acl": null, "name": "monthly_price", "type": "numeric", "comment": null}, {"acl": null, "name": "construction_area", "type": "numeric", "comment": null}, {"acl": null, "name": "property_area", "type": "numeric", "comment": null}, {"acl": null, "name": "utility", "type": "text[]", "comment": null}, {"acl": null, "name": "environment", "type": "text", "comment": null}, {"acl": null, "name": "terrain", "type": "text[]", "comment": null}, {"acl": null, "name": "accessibility", "type": "text", "comment": null}, {"acl": null, "name": "legal_status", "type": "text", "comment": null}, {"acl": null, "name": "created_at", "type": "timestamp with time zone", "comment": null}]}'::jsonb THEN RAISE EXCEPTION 'view metadata mismatch: market_listing_base'; END IF; END $check$;
+CREATE VIEW public.market_canton_stats AS
+ SELECT canton,
+    count(*) AS total_active_listings,
+    count(*) FILTER (WHERE transaction_type = 'sale'::text) AS sale_listings,
+    count(*) FILTER (WHERE transaction_type = ANY (ARRAY['rent'::text, 'lease'::text])) AS rental_listings,
+    avg(price_millions) FILTER (WHERE transaction_type = 'sale'::text AND price_millions IS NOT NULL) AS avg_sale_price_millions,
+    percentile_cont(0.5::double precision) WITHIN GROUP (ORDER BY (price_millions::double precision)) FILTER (WHERE transaction_type = 'sale'::text AND price_millions IS NOT NULL) AS median_sale_price_millions,
+    avg(monthly_price) FILTER (WHERE (transaction_type = ANY (ARRAY['rent'::text, 'lease'::text])) AND monthly_price IS NOT NULL) AS avg_monthly_rent,
+    percentile_cont(0.5::double precision) WITHIN GROUP (ORDER BY (monthly_price::double precision)) FILTER (WHERE (transaction_type = ANY (ARRAY['rent'::text, 'lease'::text])) AND monthly_price IS NOT NULL) AS median_monthly_rent,
+    avg(construction_area) AS avg_construction_area,
+    avg(property_area) AS avg_property_area,
+    count(*) FILTER (WHERE created_at >= (now() - '30 days'::interval)) AS recent_listing_count
+   FROM market_listing_base
+  WHERE canton IS NOT NULL
+  GROUP BY canton;
+ALTER VIEW public.market_canton_stats OWNER TO postgres;
+REVOKE ALL ON public.market_canton_stats FROM PUBLIC,anon,authenticated,service_role;
+GRANT TRUNCATE, REFERENCES, TRIGGER, MAINTAIN ON public.market_canton_stats TO anon,authenticated,service_role;
+DO $check$ DECLARE actual jsonb; BEGIN SELECT jsonb_build_object('definition',pg_get_viewdef(c.oid,true),'owner',pg_get_userbyid(c.relowner),'acl',c.relacl,'options',c.reloptions,'comment',obj_description(c.oid),'columns',(SELECT jsonb_agg(jsonb_build_object('name',a.attname,'type',format_type(a.atttypid,a.atttypmod),'acl',a.attacl,'comment',col_description(c.oid,a.attnum)) ORDER BY a.attnum) FROM pg_attribute a WHERE a.attrelid=c.oid AND a.attnum>0 AND NOT a.attisdropped)) INTO actual FROM pg_class c WHERE c.oid=to_regclass('public.market_canton_stats'); IF actual IS DISTINCT FROM '{"definition": " SELECT canton,\n    count(*) AS total_active_listings,\n    count(*) FILTER (WHERE transaction_type = ''sale''::text) AS sale_listings,\n    count(*) FILTER (WHERE transaction_type = ANY (ARRAY[''rent''::text, ''lease''::text])) AS rental_listings,\n    avg(price_millions) FILTER (WHERE transaction_type = ''sale''::text AND price_millions IS NOT NULL) AS avg_sale_price_millions,\n    percentile_cont(0.5::double precision) WITHIN GROUP (ORDER BY (price_millions::double precision)) FILTER (WHERE transaction_type = ''sale''::text AND price_millions IS NOT NULL) AS median_sale_price_millions,\n    avg(monthly_price) FILTER (WHERE (transaction_type = ANY (ARRAY[''rent''::text, ''lease''::text])) AND monthly_price IS NOT NULL) AS avg_monthly_rent,\n    percentile_cont(0.5::double precision) WITHIN GROUP (ORDER BY (monthly_price::double precision)) FILTER (WHERE (transaction_type = ANY (ARRAY[''rent''::text, ''lease''::text])) AND monthly_price IS NOT NULL) AS median_monthly_rent,\n    avg(construction_area) AS avg_construction_area,\n    avg(property_area) AS avg_property_area,\n    count(*) FILTER (WHERE created_at >= (now() - ''30 days''::interval)) AS recent_listing_count\n   FROM market_listing_base\n  WHERE canton IS NOT NULL\n  GROUP BY canton;", "owner": "postgres", "acl": ["postgres=arwdDxtm/postgres", "anon=Dxtm/postgres", "authenticated=Dxtm/postgres", "service_role=Dxtm/postgres"], "options": null, "comment": null, "columns": [{"acl": null, "name": "canton", "type": "text", "comment": null}, {"acl": null, "name": "total_active_listings", "type": "bigint", "comment": null}, {"acl": null, "name": "sale_listings", "type": "bigint", "comment": null}, {"acl": null, "name": "rental_listings", "type": "bigint", "comment": null}, {"acl": null, "name": "avg_sale_price_millions", "type": "numeric", "comment": null}, {"acl": null, "name": "median_sale_price_millions", "type": "double precision", "comment": null}, {"acl": null, "name": "avg_monthly_rent", "type": "numeric", "comment": null}, {"acl": null, "name": "median_monthly_rent", "type": "double precision", "comment": null}, {"acl": null, "name": "avg_construction_area", "type": "numeric", "comment": null}, {"acl": null, "name": "avg_property_area", "type": "numeric", "comment": null}, {"acl": null, "name": "recent_listing_count", "type": "bigint", "comment": null}]}'::jsonb THEN RAISE EXCEPTION 'view metadata mismatch: market_canton_stats'; END IF; END $check$;
+DO $deps$ BEGIN
+ IF EXISTS(SELECT 1 FROM pg_depend d WHERE ((d.refclassid='pg_class'::regclass AND d.refobjid IN('public.market_listing_base'::regclass,'public.market_canton_stats'::regclass)) OR (d.refclassid='pg_type'::regclass AND d.refobjid IN(SELECT t.oid FROM pg_type t WHERE t.typrelid IN('public.market_listing_base'::regclass,'public.market_canton_stats'::regclass) OR t.oid IN(SELECT typarray FROM pg_type WHERE typrelid IN('public.market_listing_base'::regclass,'public.market_canton_stats'::regclass))))) AND d.deptype NOT IN('i','a') AND NOT(d.classid='pg_rewrite'::regclass AND d.objid=(SELECT oid FROM pg_rewrite WHERE ev_class='public.market_canton_stats'::regclass AND rulename='_RETURN') AND d.refclassid='pg_class'::regclass AND d.refobjid='public.market_listing_base'::regclass)) THEN RAISE EXCEPTION 'unexpected downstream dependency'; END IF;
+ IF NOT EXISTS(SELECT 1 FROM pg_depend d JOIN pg_rewrite w ON w.oid=d.objid WHERE d.classid='pg_rewrite'::regclass AND w.ev_class='public.market_canton_stats'::regclass AND d.refobjid='public.market_listing_base'::regclass AND d.deptype='n') THEN RAISE EXCEPTION 'expected view dependency absent'; END IF;
+END $deps$;
+DO $$ BEGIN IF (SELECT format_type(atttypid,atttypmod) FROM pg_attribute WHERE attrelid='public.listings'::regclass AND attname='monthly_price') <> 'numeric' THEN RAISE EXCEPTION 'numeric type required'; END IF; END $$;
+SELECT * FROM public.market_listing_base LIMIT 0;
+SELECT * FROM public.market_canton_stats LIMIT 0;
+COMMIT;
+SELECT 'S11_C2_TWO_VIEW_RESTORED' AS checkpoint;

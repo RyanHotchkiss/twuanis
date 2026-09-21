@@ -37,7 +37,9 @@ export type PriceMeterObservation = {
 
 
 export function buildPriceMeterObservations(
-  listings: any[]
+  listings: any[],
+  // Optional execution scope: omit to preserve all existing caller behavior.
+  normalizationBasis?: PriceMeterObservation['normalizationBasis']
 ): PriceMeterObservation[] {
 
   const observations:
@@ -74,6 +76,7 @@ export function buildPriceMeterObservations(
 
 
     if (
+      (normalizationBasis === undefined || normalizationBasis === 'land') &&
       identity
         .availableNormalizationBases
         .includes('land') &&
@@ -116,6 +119,7 @@ export function buildPriceMeterObservations(
 
 
     if (
+      (normalizationBasis === undefined || normalizationBasis === 'construction') &&
       identity
         .availableNormalizationBases
         .includes('construction') &&

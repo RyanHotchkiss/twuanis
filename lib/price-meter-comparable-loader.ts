@@ -1,4 +1,5 @@
 import 'server-only'
+import { hydrateCanonicalPopulation } from '@/lib/canonical-population'
 
 import {
   supabaseAdmin
@@ -89,6 +90,7 @@ import type {
 
 const LISTING_SELECT = `
   id,
+  canonical_domain_version,
   title,
   transaction_type,
   listing_status,
@@ -115,6 +117,9 @@ const LISTING_SELECT = `
 
 
 type PriceMeterComparableRawListing = {
+  canonical_domain_version?: number | null
+  canonicalGeography?: ReturnType<typeof resolveCanonicalGeography>
+
   id:
     string
 
@@ -327,6 +332,35 @@ function resolveOntologyTerm(
 }
 
 
+// Exact totals distinguish a complete short page from transport truncation.
+async function completeRows(page: (from: number, to: number) => PromiseLike<{data: any[] | null; error: unknown; count: number | null}>): Promise<any[]> {
+  const rows: any[] = []
+  let expected: number | null = null
+  do {
+    const result = await page(rows.length, rows.length + 499)
+    if (result.error) throw result.error
+    const count = result.count
+    if (count === null || !Number.isSafeInteger(count) || count < 0 || (expected !== null && count !== expected)) throw new Error('Incomplete Phase 12A evidence count.')
+    expected = count
+    const next = result.data ?? []
+    if (rows.length + next.length > count || (!next.length && rows.length < count)) throw new Error('Incomplete Phase 12A evidence page.')
+    rows.push(...next)
+  } while (rows.length < expected)
+  return rows
+}
+function idChunks(ids: string[]): string[][] {
+  const chunks: string[][] = []
+  let chunk: string[] = [], size = 0
+  for (const id of [...new Set(ids)].sort()) {
+    const length = encodeURIComponent(JSON.stringify(id)).length + 3
+    if (length > 1500) throw new Error('Phase 12A identity exceeds request budget.')
+    if (chunk.length && (chunk.length >= 25 || size + length > 1500)) {chunks.push(chunk); chunk = []; size = 0}
+    chunk.push(id); size += length
+  }
+  if (chunk.length) chunks.push(chunk)
+  return chunks
+}
+
 async function loadMembershipDetails(
   listingIds:
     string[]
@@ -359,37 +393,14 @@ async function loadMembershipDetails(
   }
 
 
-  const {
-    data,
-    error
-  } =
-    await supabaseAdmin
-      .from(
-        'listings_ontology_terms'
-      )
-      .select(`
-        listing_id,
-        ontology_terms (
-          id,
-          term_name,
-          term_name_en,
-          term_name_es,
-          term_type,
-          slug,
-          slug_en,
-          slug_es
-        )
-      `)
-      .in(
-        'listing_id',
-        uniqueListingIds
-      )
-
-
-  if (error) {
-    throw error
+  const data: ListingOntologyAssignmentRow[] = []
+  for (const chunk of idChunks(uniqueListingIds)) {
+    data.push(...await completeRows((from, to) => supabaseAdmin
+      .from('listings_ontology_terms')
+      .select(`listing_id, ontology_terms (id, term_name, term_name_en, term_name_es,
+        term_type, slug, slug_en, slug_es)`, {count:'exact'})
+      .in('listing_id', chunk).order('listing_id').order('ontology_term_id').range(from,to)))
   }
-
 
   const membershipMap =
     new Map<
@@ -604,7 +615,7 @@ function decorateListings({
     listing => {
 
       const canonicalGeography =
-        resolveCanonicalGeography({
+        listing.canonicalGeography ?? resolveCanonicalGeography({
           province:
             listing.province,
 
@@ -719,10 +730,11 @@ async function loadSubjectListing(
   }
 
 
-  return (
-    data as
-      PriceMeterComparableRawListing
-  )
+  if (data.canonical_domain_version !== null && data.canonical_domain_version !== 1) {
+    throw new Error('Unsupported Phase 12A listing authority.')
+  }
+  const [listing] = await hydrateCanonicalPopulation([data], undefined, [])
+  return listing as PriceMeterComparableRawListing
 }
 
 export async function loadPriceMeterComparableSubjectConfiguration(
@@ -743,7 +755,7 @@ export async function loadPriceMeterComparableSubjectConfiguration(
 
 
   const canonicalGeographyTerms =
-    await loadCanonicalGeographyTerms(
+    subjectListing.canonical_domain_version === 1 ? [] : await loadCanonicalGeographyTerms(
       supabaseAdmin
     )
 
@@ -931,6 +943,7 @@ async function loadBoundedCandidateListings({
         'property_type',
         subject.propertyType.slug
       )
+      .is('canonical_domain_version', null)
 
 
   /*
@@ -1098,6 +1111,43 @@ async function loadBoundedCandidateListings({
 }
 
 
+async function loadCanonicalCandidates({subject, geography}: {
+  subject: PriceMeterComparableSubjectIdentity; geography: CanonicalGeographyTerm
+}) {
+  const position = subject.positionIdentity
+  const propertyRange = resolvePropertyAreaConstraint(subject.propertyAreaRange)
+  const constructionRange = position.propertyBasis === 'improved_property'
+    ? resolveConstructionAreaConstraint(subject.constructionAreaRange!) : null
+  if (!propertyRange || (position.propertyBasis === 'improved_property' && !constructionRange)) {
+    throw new Error('Invalid Phase 12A canonical area boundary.')
+  }
+  const geographyId = String(geography.id)
+  if (!/^[1-9][0-9]*$/.test(geographyId) || (typeof geography.id === 'number' && !Number.isSafeInteger(geography.id))) {
+    throw new Error('Invalid Phase 12A geography identity.')
+  }
+  const candidates = await completeRows((from,to) => supabaseAdmin.from('listings_ontology_terms')
+    .select('listing_id,listings!inner(canonical_domain_version,listing_status,transaction_type)', {count:'exact'})
+    .eq('ontology_term_id',geographyId).eq('listings.canonical_domain_version',1)
+    .eq('listings.listing_status','active').eq('listings.transaction_type',position.transactionType)
+    .neq('listing_id',position.listingId).order('listing_id').range(from,to))
+  const memberships = await loadMembershipDetails(candidates.map(row => row.listing_id))
+  const ids = memberships.filter(row => row.ontologyTermIds.includes(subject.propertyType.ontologyTermId)).map(row => row.listingId)
+  const rows: PriceMeterComparableRawListing[] = []
+  for (const chunk of idChunks(ids)) {
+    rows.push(...await completeRows((from,to) => {
+      let query: any = supabaseAdmin.from('listings').select(LISTING_SELECT,{count:'exact'})
+        .eq('canonical_domain_version',1).eq('listing_status','active').eq('transaction_type',position.transactionType)
+        .in('id',chunk).order('id').range(from,to)
+      query = applyAreaConstraint(query,'property_area',propertyRange)
+      if (constructionRange) query = applyAreaConstraint(query,'construction_area',constructionRange)
+      return query
+    }))
+  }
+  if (new Set(rows.map(row=>row.id)).size !== rows.length) throw new Error('Duplicate Phase 12A listing evidence.')
+  const listings = await hydrateCanonicalPopulation(rows, undefined, [])
+  return {listings: listings as PriceMeterComparableRawListing[], memberships}
+}
+
 function selectObservationUniverse({
   observations,
   subject
@@ -1214,16 +1264,11 @@ const subjectObservation =
    * -------------------------------------------------------
    */
 
-  const candidateListings =
-    await loadBoundedCandidateListings({
-      subject:
-        subjectIdentity,
-
-      geography,
-
-      subjectListing
-    })
-
+  const canonicalCandidates = subjectListing.canonical_domain_version === 1
+    ? await loadCanonicalCandidates({subject:subjectIdentity, geography}) : null
+  const candidateListings = canonicalCandidates?.listings ?? await loadBoundedCandidateListings({
+    subject:subjectIdentity, geography, subjectListing
+  })
 
   /*
    * -------------------------------------------------------
@@ -1235,7 +1280,7 @@ const subjectObservation =
    */
 
   const fxIdentity =
-    await resolveFxIdentity({
+    subjectFxIdentity ?? await resolveFxIdentity({
       listings: [
         subjectListing,
         ...candidateListings
@@ -1340,26 +1385,17 @@ const subjectObservation =
     )
 
 
-  const membershipDetails =
-    await loadMembershipDetails(
-      boundedListingIds
-    )
-
-
-  const finalSubjectMembership =
-    membershipDetails.find(
-      membership =>
-        membership.listingId ===
-          subjectListingId
-    )
-
-
-  if (!finalSubjectMembership) {
-    throw new Error(
-      'Phase 12A subject ontology membership disappeared from the bounded population.'
-    )
+  const finalSubjectMembership = {
+    listingId:subjectListingId,
+    characteristics:subjectConfiguration.characteristics,
+    ontologyTermIds:subjectConfiguration.characteristics.map(term=>term.ontologyTermId)
   }
-
+  const peerIds = boundedListingIds.filter(id=>id!==subjectListingId)
+  const peerIdSet = new Set(peerIds)
+  const peerMemberships = canonicalCandidates
+    ? canonicalCandidates.memberships.filter(row=>peerIdSet.has(row.listingId))
+    : await loadMembershipDetails(peerIds)
+  const membershipDetails = [finalSubjectMembership, ...peerMemberships]
 
   const finalSubjectIdentity =
     resolvePriceMeterComparableSubjectIdentity({
@@ -1416,7 +1452,7 @@ const subjectObservation =
     geography,
 
     observations:
-      candidateObservations,
+      canonicalCandidates ? [finalSubjectObservation, ...candidateObservations] : candidateObservations,
 
     memberships
   }

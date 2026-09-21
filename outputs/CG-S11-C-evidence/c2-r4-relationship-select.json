@@ -1,0 +1,6 @@
+{
+  "scope": "READ ONLY transaction, service_role SELECT * LIMIT 0; no rows retrieved",
+  "exit_code": 3,
+  "stdout": "",
+  "stderr": "psql:<stdin>:1: ERROR:  permission denied for table ontology_relationships\nHINT:  Grant the required privileges to the current role with: GRANT SELECT ON public.ontology_relationships TO service_role;\n"
+}

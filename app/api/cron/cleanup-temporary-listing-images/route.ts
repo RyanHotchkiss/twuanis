@@ -189,10 +189,13 @@ export async function GET(
       of abandonedTokens
     ) {
       try {
-        const temporaryPaths =
-          getTemporaryImagePaths(
-            abandonedToken
-          )
+        // Claim by confirmed database deletion before touching storage. Canonical
+        // creation commands retain their token and source media for same-ID retry.
+        const claimed = await supabaseAdmin.rpc('claim_abandoned_listing_token', { p_id: abandonedToken.id })
+        if (claimed.error) throw claimed.error
+        if (!claimed.data) continue
+        deletedTokens += 1
+        const temporaryPaths = getTemporaryImagePaths(claimed.data as PublishTokenRow)
 
         if (
           temporaryPaths.length >
@@ -223,41 +226,6 @@ export async function GET(
             temporaryPaths.length
         }
 
-        /*
-         * Recheck verified=false while deleting
-         * so a token published during this run
-         * cannot be removed accidentally.
-         */
-        const {
-          data:
-            deletedTokenRows,
-          error:
-            deleteTokenError
-        } =
-          await supabaseAdmin
-            .from(
-              'listing_publish_tokens'
-            )
-            .delete()
-            .eq(
-              'id',
-              abandonedToken.id
-            )
-            .eq(
-              'verified',
-              false
-            )
-            .select(
-              'id'
-            )
-
-        if (deleteTokenError) {
-          throw deleteTokenError
-        }
-
-        deletedTokens +=
-          deletedTokenRows
-            ?.length ?? 0
       } catch (tokenError) {
         console.error(
           'TEMPORARY LISTING CLEANUP ITEM ERROR:',

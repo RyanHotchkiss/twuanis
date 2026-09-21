@@ -7,17 +7,17 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
-    "verify-provider": "tsx scripts/verification/commercial-provider.ts",
-    "verify-activation": "tsx scripts/verification/activation-engine.ts",
+    "verify-provider": "node scripts/verification/activation-disposable-runner.cjs provider",
+    "verify-activation": "node scripts/verification/activation-disposable-runner.cjs",
     "verify-promotion-placement": "tsx scripts/verification/promotion-placement.ts",
     "verify-promotion-history": "tsx scripts/verification/promotion-history.ts",
     "verify-promotion-performance": "tsx scripts/verification/promotion-performance.ts",
     "verify-comparable-cohort": "tsx scripts/verification/comparable-cohort.ts",
     "verify-promotion-intelligence": "tsx scripts/verification/promotion-intelligence.ts",
     "verify-aggregate-promotion-intelligence": "tsx scripts/verification/aggregate-promotion-intelligence.ts",
-    "verify-public-promotion-evidence": "tsx scripts/verification/public-promotion-evidence.ts",
-    "verify-commercial-resolver": "tsx scripts/verification/commercial-resolver.ts",
-    "verify-commercial-timeline": "tsx scripts/verification/commercial-timeline.ts"
+    "verify-public-promotion-evidence": "node scripts/verification/commercial-disposable-runner.cjs public-evidence",
+    "verify-commercial-resolver": "node scripts/verification/commercial-disposable-runner.cjs",
+    "verify-commercial-timeline": "node scripts/verification/commercial-disposable-runner.cjs timeline"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

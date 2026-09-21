@@ -1,0 +1,6 @@
+{
+  "count": 69,
+  "unexpected_overloads": [],
+  "missing": [],
+  "comparison_note": "PostgreSQL regprocedure spells timestamptz as timestamp with time zone. Normalize this equivalent built-in type spelling; not an overload or schema change."
+}

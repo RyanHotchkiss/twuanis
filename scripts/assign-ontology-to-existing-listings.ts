@@ -1,6 +1,13 @@
 import dotenv from 'dotenv'
 import WebSocket from 'ws'
 
+// S7: compatibility fields cannot authorize canonical membership writes.
+function rejectRetiredOntologyWriter(): void {
+  throw new Error('Bulk ontology assignment is retired; canonical reconciliation is not available here.')
+}
+
+rejectRetiredOntologyWriter()
+
 dotenv.config({
   path: '.env.local'
 })

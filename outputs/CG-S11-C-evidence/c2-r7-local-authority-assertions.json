@@ -1,0 +1,19 @@
+{
+  "file": "/Users/cassidydaddy/twuanis/outputs/CG-S11-C-evidence/c2-r7-local-authority.stdout.log",
+  "true_assertions": 1255,
+  "errors": [],
+  "sections": {
+    "signature,exists,owner_verified,security_verified,search_path_verified,public_denied,anon_denied,authenticated_verified,service_verified,no_broader_overload": 69,
+    "r,t,p,denied": 81,
+    "r,object,attname,p,denied": 459,
+    "r,obsolete_denied": 3,
+    "required_ontology_read": 1,
+    "rolname,rolsuper,rolbypassrls,rolcreaterole,rolinherit,rolcanlogin": 3,
+    "r,rolname": 0,
+    "nspname,relname,pg_get_userbyid": 0,
+    "relationship_server_read_verified": 1,
+    "r,p,relationship_mutation_denied": 21,
+    "r,attname,p,relationship_column_mutation_denied": 27,
+    "relationship_owner_verified,relationship_rls_verified,relationship_force_rls_unchanged,relationship_public_denied,relationship_public_columns_denied": 1
+  }
+}

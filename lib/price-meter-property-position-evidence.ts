@@ -1,3 +1,4 @@
+import { assertPriceMeterPropertyPositionParticipation } from './price-meter-property-position-population'
 import type {
   PriceMeterDistribution,
 } from './price-meter-distribution'
@@ -26,12 +27,10 @@ import type {
   PriceMeterPropertyPositionConstructionLandContext,
 } from './price-meter-property-position-construction-land'
 
-import {
-  getPriceMeterConfidenceScore,
-  type PriceMeterConfidenceScore,
-} from './confidence'
 
 export type PriceMeterPropertyPositionEvidence = {
+  participation: PriceMeterPropertyPositionPopulation['participation']
+
   listingId:
     string
 
@@ -56,10 +55,6 @@ export type PriceMeterPropertyPositionEvidence = {
     comparisonPopulationCount:
     number
 
-  confidence: {
-    score:
-      PriceMeterConfidenceScore
-  }
 
   distribution: {
     minimum:
@@ -144,9 +139,6 @@ export type PriceMeterPropertyPositionEvidence = {
  * - one canonical Price / m² observation
  *
  * and then assembles those results into one evidence object.
- *
- * Confidence is intentionally composed later from the canonical
- * confidence architecture rather than recalculated here.
  */
 export function buildPriceMeterPropertyPositionEvidence({
   population,
@@ -180,6 +172,7 @@ export function buildPriceMeterPropertyPositionEvidence({
   constructionToLandContext:
     PriceMeterPropertyPositionConstructionLandContext | null
 }): PriceMeterPropertyPositionEvidence {
+  assertPriceMeterPropertyPositionParticipation(population)
   const subject =
     population.subject
 
@@ -213,10 +206,6 @@ export function buildPriceMeterPropertyPositionEvidence({
   }
 
 
-  const confidenceScore =
-    getPriceMeterConfidenceScore(
-      comparisonPopulationCount
-    )
 
 
   /*
@@ -429,6 +418,7 @@ export function buildPriceMeterPropertyPositionEvidence({
    */
 
   return {
+    participation: population.participation,
     listingId,
 
     transactionType:
@@ -450,10 +440,6 @@ export function buildPriceMeterPropertyPositionEvidence({
 
     comparisonPopulationCount,
 
-    confidence: {
-      score:
-        confidenceScore,
-    },
 
     distribution: {
       minimum:

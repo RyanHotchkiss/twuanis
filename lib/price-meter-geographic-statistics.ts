@@ -13,16 +13,7 @@ import type {
 } from '@/lib/price-meter-geographic-distribution'
 
 
-export type PriceMeterGeographicConfidence = {
-  score:
-    number
 
-  label:
-    | 'very_low'
-    | 'low'
-    | 'moderate'
-    | 'high'
-}
 
 
 export type PriceMeterGeographicStatistic<
@@ -40,8 +31,6 @@ export type PriceMeterGeographicStatistic<
   distribution:
     PriceMeterDistribution<T>
 
-  confidence:
-    PriceMeterGeographicConfidence
 
     medianDifferenceFromSelectedMarket:
     number | null
@@ -51,82 +40,10 @@ export type PriceMeterGeographicStatistic<
 }
 
 
-/*
- * ---------------------------------------------------------
- * CONFIDENCE
- * ---------------------------------------------------------
- *
- * Geographic confidence is based on the number of valid
- * Price / m² observations inside the geographic cohort.
- *
- * This intentionally uses the same sample-size thresholds
- * currently used by the Price / m² engine:
- *
- * 25+ = high
- * 15+ = moderate
- * 8+  = low
- * <8  = very low
- */
 
 
-function resolveGeographicConfidence(
-  sampleSize:
-    number
-): PriceMeterGeographicConfidence {
-
-  if (
-    sampleSize >=
-      25
-  ) {
-
-    return {
-      score:
-        90,
-
-      label:
-        'high'
-    }
-  }
 
 
-  if (
-    sampleSize >=
-      15
-  ) {
-
-    return {
-      score:
-        75,
-
-      label:
-        'moderate'
-    }
-  }
-
-
-  if (
-    sampleSize >=
-      8
-  ) {
-
-    return {
-      score:
-        60,
-
-      label:
-        'low'
-    }
-  }
-
-
-  return {
-    score:
-      35,
-
-    label:
-      'very_low'
-  }
-}
 
 
 /*
@@ -321,12 +238,6 @@ export function buildPriceMeterGeographicStatistics<
             geographicDistribution
               .distribution,
 
-          confidence:
-            resolveGeographicConfidence(
-              geographicDistribution
-                .distribution
-                .sampleSize
-            ),
 
           medianDifferenceFromSelectedMarket:
             difference.absolute,

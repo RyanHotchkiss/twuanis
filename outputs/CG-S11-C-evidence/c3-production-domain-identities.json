@@ -1,0 +1,41 @@
+[
+  {
+    "id": "dpl_BkY1harMgkSRwurxhkDMvgLvSkZW",
+    "readyState": "READY",
+    "target": "production",
+    "url": "twuanis-0-pi0abcmle-ryans-projects-71456f46.vercel.app",
+    "aliases": [
+      "twuanis.com",
+      "www.twuanis.com",
+      "twuanis-0.vercel.app",
+      "twuanis-0-ryans-projects-71456f46.vercel.app"
+    ],
+    "host": "twuanis.com"
+  },
+  {
+    "id": "dpl_BkY1harMgkSRwurxhkDMvgLvSkZW",
+    "readyState": "READY",
+    "target": "production",
+    "url": "twuanis-0-pi0abcmle-ryans-projects-71456f46.vercel.app",
+    "aliases": [
+      "twuanis.com",
+      "www.twuanis.com",
+      "twuanis-0.vercel.app",
+      "twuanis-0-ryans-projects-71456f46.vercel.app"
+    ],
+    "host": "www.twuanis.com"
+  },
+  {
+    "id": "dpl_BkY1harMgkSRwurxhkDMvgLvSkZW",
+    "readyState": "READY",
+    "target": "production",
+    "url": "twuanis-0-pi0abcmle-ryans-projects-71456f46.vercel.app",
+    "aliases": [
+      "twuanis.com",
+      "www.twuanis.com",
+      "twuanis-0.vercel.app",
+      "twuanis-0-ryans-projects-71456f46.vercel.app"
+    ],
+    "host": "twuanis-0.vercel.app"
+  }
+]

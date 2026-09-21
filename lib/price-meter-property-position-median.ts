@@ -1,3 +1,5 @@
+import { calculatePropertyPositionDifference } from './price-meter-property-position-math'
+import { assertPriceMeterPropertyPositionParticipation } from './price-meter-property-position-population'
 import type { PriceMeterDistribution } from './price-meter-distribution'
 import type { PriceMeterPropertyPositionPopulation } from './price-meter-property-position-population'
 
@@ -47,6 +49,7 @@ export function buildPriceMeterPropertyPositionMedian({
     PriceMeterPropertyPositionPopulation['transactionType']
   >
 }): PriceMeterPropertyPositionMedian {
+  assertPriceMeterPropertyPositionParticipation(population)
   const propertyPricePerM2 = population.subject.propertyPricePerM2
   const comparisonPopulationMedian = distribution.median
   const comparisonPopulationCount = population.comparisonPopulationCount
@@ -95,11 +98,8 @@ export function buildPriceMeterPropertyPositionMedian({
     )
   }
 
-  const differenceFromMedian =
-    propertyPricePerM2 - comparisonPopulationMedian
-
-  const percentDifferenceFromMedian =
-    (differenceFromMedian / comparisonPopulationMedian) * 100
+  const { difference: differenceFromMedian, percentDifference: percentDifferenceFromMedian } =
+    calculatePropertyPositionDifference(propertyPricePerM2, comparisonPopulationMedian)
 
   if (
     !Number.isFinite(differenceFromMedian) ||

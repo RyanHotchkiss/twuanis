@@ -1,0 +1,18 @@
+{
+  "signup": "ON; persisted after reload",
+  "anonymous_signin": "OFF unchanged",
+  "confirm_email": "ON unchanged",
+  "cron": "Enabled; both existing schedules retained; none manually invoked",
+  "protection": "Standard Protection restored; previews protected; production public",
+  "reopen_save_started_at": "2026-09-19T18:00:16.915Z",
+  "deployment_id": "dpl_BkY1harMgkSRwurxhkDMvgLvSkZW",
+  "public_browser_checks": [
+    "twuanis.com/en",
+    "twuanis.com/es",
+    "twuanis.com/en/buy",
+    "twuanis.com/es/comprar",
+    "www.twuanis.com/en",
+    "twuanis-0.vercel.app/en"
+  ],
+  "password_rotation": "PENDING USER HANDOFF"
+}

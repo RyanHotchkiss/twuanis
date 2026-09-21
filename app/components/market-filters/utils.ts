@@ -13,6 +13,7 @@ export function optionValue(
   }
 
   return (
+    option.official_code ||
     option.slug ||
     option.slug_en ||
     option.slug_es ||

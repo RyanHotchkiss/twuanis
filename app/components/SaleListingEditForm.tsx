@@ -2,7 +2,8 @@
 
 import {
   FormEvent,
-  useState
+  useState,
+  useRef
 } from 'react'
 
 import {
@@ -12,6 +13,8 @@ import {
 import {
   supabase
 } from '@/lib/supabase'
+
+import { submitCanonicalCustomerEdit } from '@/app/utils/canonicalCustomerEdit'
 
 import {
   updateListing
@@ -392,10 +395,7 @@ export default function SaleListingEditForm({
         ),
 
       priceMillions:
-        Number(
-          listing.price_millions ||
-          0
-        ),
+        listing.canonical_domain_version === 1 ? String(listing.current_price ?? '') : Number(listing.price_millions || 0),
 
       transaction_type: 'sale',
 
@@ -403,7 +403,7 @@ export default function SaleListingEditForm({
         listing.listing_status ||
         'active',
 
-      currency: 'CRC',
+      currency: listing.canonical_domain_version === 1 ? listing.currency : 'CRC',
 
       whatsapp:
         listing.whatsapp || '',
@@ -419,6 +419,8 @@ export default function SaleListingEditForm({
           listing.images
         )
     })
+  const initialPropertyData = useRef(propertyData)
+  const [measurementClears, setMeasurementClears] = useState<Record<string, boolean>>({})
       const [
     showLocationOptions,
     setShowLocationOptions
@@ -513,6 +515,9 @@ export default function SaleListingEditForm({
     field: string,
     value: unknown
   ) {
+    if (field === 'property_area' || field === 'construction_area') {
+      setMeasurementClears(previous => ({ ...previous, [field]: false }))
+    }
     setPropertyData(
       previous => ({
         ...previous,
@@ -520,6 +525,8 @@ export default function SaleListingEditForm({
       })
     )
   }
+
+  const [pendingImageCleanup, setPendingImageCleanup] = useState<string[]>([])
 
   async function getAccessToken() {
     const {
@@ -530,7 +537,7 @@ export default function SaleListingEditForm({
   }
 
   async function deleteImage(
-    imageValue: string
+    imageValue: string, operationId?: string
   ) {
     const token =
       await getAccessToken()
@@ -553,7 +560,7 @@ export default function SaleListingEditForm({
               `Bearer ${token}`
           },
 
-          body: JSON.stringify({
+          body: JSON.stringify(operationId ? { operationId } : {
             listingId: listing.id,
             imageValue
           })
@@ -567,6 +574,11 @@ export default function SaleListingEditForm({
       alert(result.error)
       return
     }
+
+    setPendingImageCleanup(previous => {
+      const remaining = previous.filter(id => id !== result.operationId)
+      return result.storageCleanupPending ? [...remaining, result.operationId] : remaining
+    })
 
     setField(
         'images',
@@ -685,7 +697,7 @@ export default function SaleListingEditForm({
 
     if (
       !propertyData.priceMillions ||
-      propertyData.priceMillions <= 0
+      Number(propertyData.priceMillions) <= 0
     ) {
       setErrorMessage(
         labels.priceRequired
@@ -698,6 +710,9 @@ export default function SaleListingEditForm({
     setErrorMessage('')
 
     try {
+      if (listing.canonical_domain_version === 1) {
+        await submitCanonicalCustomerEdit(supabase, listing, initialPropertyData.current, propertyData, measurementClears)
+      } else {
       await updateListing({
         supabase,
         listingId:
@@ -786,15 +801,10 @@ export default function SaleListingEditForm({
             propertyData.title.trim(),
 
           description:
-            propertyData.description.trim(),
-
-          images:
-            propertyData.images.map(
-              image =>
-                image.storedValue
-            )
+            propertyData.description.trim()
         }
       })
+      }
 
       router.push(
         language === 'es'
@@ -980,7 +990,7 @@ export default function SaleListingEditForm({
                         bathrooms: '',
                         parking: '',
                         year_built_range: '',
-                        construction_area: null
+                        construction_area: listing.canonical_domain_version === 1 ? previous.construction_area : null
                       })
                     )
                   }
@@ -1047,7 +1057,7 @@ export default function SaleListingEditForm({
                         bathrooms: '',
                         parking: '',
                         year_built_range: '',
-                        construction_area: null
+                        construction_area: listing.canonical_domain_version === 1 ? previous.construction_area : null
                       })
                     )
                   }
@@ -1447,8 +1457,8 @@ export default function SaleListingEditForm({
                           ...prev,
                           accessibility: value,
                           distance_to_paved_road_range:
-                            value ===
-                            'Unpaved Road to Property'
+                            (listing.canonical_domain_version === 1 || value ===
+                            'Unpaved Road to Property')
                               ? prev.distance_to_paved_road_range
                               : ''
                         }))
@@ -1487,8 +1497,8 @@ export default function SaleListingEditForm({
                         ...prev,
                         accessibility: value,
                         distance_to_paved_road_range:
-                          value ===
-                          'Unpaved Road to Property'
+                          (listing.canonical_domain_version === 1 || value ===
+                          'Unpaved Road to Property')
                             ? prev.distance_to_paved_road_range
                             : ''
                       }))
@@ -1612,9 +1622,16 @@ export default function SaleListingEditForm({
                 />
               )}
 
+              {listing.canonical_domain_version === 1 ? (
+                <label style={fieldLabel}>
+                  {language === 'es' ? 'Precio' : 'Price'} ({propertyData.currency})
+                  <input type="number" min="0" step="any" value={propertyData.priceMillions}
+                    onChange={event => setField('priceMillions', event.target.value)} style={input} />
+                </label>
+              ) : (
               <PriceSelectorS
                 priceMillions={
-                  propertyData.priceMillions
+                  Number(propertyData.priceMillions)
                 }
                 setPriceMillions={
                   updater =>
@@ -1623,7 +1640,7 @@ export default function SaleListingEditForm({
                         ...previous,
                         priceMillions:
                           updater(
-                            previous.priceMillions
+                            Number(previous.priceMillions)
                           )
                       })
                     )
@@ -1635,7 +1652,31 @@ export default function SaleListingEditForm({
                   usdToCrcRate
                 }
               />
+              )}
 
+              {listing.canonical_domain_version === 1 && (
+                <section style={textSection}>
+                  {(['property_area', 'construction_area'] as const).map(dimension => (
+                    <div key={dimension}>
+                      <span>{dimension === 'property_area'
+                        ? (language === 'es' ? 'Área del terreno' : 'Property area')
+                        : (language === 'es' ? 'Área de construcción' : 'Construction area')}</span>{' '}
+                      <button type="button" onClick={() => {
+                        const clear = !measurementClears[dimension]
+                        setMeasurementClears(previous => ({ ...previous, [dimension]: clear }))
+                        setPropertyData(previous => ({ ...previous, [dimension]: clear ? null : initialPropertyData.current[dimension] }))
+                      }}>
+                        {measurementClears[dimension]
+                          ? (language === 'es' ? 'Deshacer eliminación' : 'Undo clear')
+                          : (language === 'es' ? 'Eliminar medida' : 'Clear measurement')}
+                      </button>
+                      {measurementClears[dimension] && <p>{language === 'es'
+                        ? 'Se eliminará esta medida y su clasificación actual al guardar.'
+                        : 'Saving will remove this measurement and its current classification.'}</p>}
+                    </div>
+                  ))}
+                </section>
+              )}
               <section style={textSection}>
                 <label style={fieldLabel}>
                   {labels.listingTitle}
@@ -1784,6 +1825,14 @@ export default function SaleListingEditForm({
                 </section>
               )}
 
+              {pendingImageCleanup.map(operationId => (
+                <div key={operationId} role="status">
+                  <p>{language === 'es' ? 'La imagen permanece retirada. La limpieza del almacenamiento está pendiente.' : 'The image remains detached. Storage cleanup is pending.'}</p>
+                  <button type="button" onClick={() => deleteImage('', operationId)}>
+                    {language === 'es' ? 'Reintentar limpieza' : 'Retry cleanup'}
+                  </button>
+                </div>
+              ))}
               {errorMessage && (
                 <div style={errorBox}>
                   {errorMessage}

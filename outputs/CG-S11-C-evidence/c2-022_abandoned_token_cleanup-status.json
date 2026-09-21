@@ -1,0 +1,8 @@
+{
+  "source": "supabase/migrations/022_abandoned_token_cleanup.sql",
+  "sha256": "a0ea2d69c7b9727a415ab0957fcf42c431ac4ea846ba5bd1a22e0235d6352909",
+  "start": "2026-09-19T16:08:23.051882+00:00",
+  "end": "2026-09-19T16:08:23.991327+00:00",
+  "exit_code": 0,
+  "commit_output": true
+}

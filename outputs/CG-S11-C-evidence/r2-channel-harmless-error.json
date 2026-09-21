@@ -1,0 +1,5 @@
+{
+  "stdout": "BEGIN\n",
+  "stderr": "psql:<stdin>:1: ERROR:  division by zero\n",
+  "exit_code": 3
+}

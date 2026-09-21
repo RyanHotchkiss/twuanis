@@ -1,20 +1,9 @@
-import {
-  loadEnvConfig
-} from '@next/env'
-
-import {
-  createClient,
-  type SupabaseClient
-} from '@supabase/supabase-js'
+import type { SupabaseClient } from '@supabase/supabase-js'
+import { disposableCommercialContext } from './commercial-disposable-authority'
 
 import {
   resolveCommercialState
 } from '../../lib/commercial-resolver'
-
-
-loadEnvConfig(
-  process.cwd()
-)
 
 
 const TEST_SUITE =
@@ -61,63 +50,11 @@ type PromotionProductRow = {
 }
 
 
-function requireEnvironmentVariable(
-  name:
-    string
-): string {
-
-  const value =
-    process.env[
-      name
-    ]
-
-
-  if (
-    !value ||
-    !value.trim()
-  ) {
-
-    throw new Error(
-      `Missing required environment variable: ${name}`
-    )
-  }
-
-
-  return value.trim()
+function createAdminClient(): SupabaseClient {
+  return disposableCommercialContext().client
 }
-
-
-function createAdminClient():
-  SupabaseClient {
-
-  return createClient(
-    requireEnvironmentVariable(
-      'NEXT_PUBLIC_SUPABASE_URL'
-    ),
-
-    requireEnvironmentVariable(
-      'SUPABASE_SERVICE_ROLE_KEY'
-    ),
-
-    {
-      auth: {
-        persistSession:
-          false,
-
-        autoRefreshToken:
-          false
-      }
-    }
-  )
-}
-
-
-function requireTestUserId():
-  string {
-
-  return requireEnvironmentVariable(
-    'ACTIVATION_VERIFY_USER_ID'
-  )
+function requireTestUserId(): string {
+  return disposableCommercialContext().userId
 }
 
 
@@ -1172,4 +1109,4 @@ async function run() {
 }
 
 
-void run()
+export const verification = run()

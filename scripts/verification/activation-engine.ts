@@ -1,11 +1,5 @@
-import {
-  loadEnvConfig
-} from '@next/env'
-
-import {
-  createClient,
-  type SupabaseClient
-} from '@supabase/supabase-js'
+import type { SupabaseClient } from '@supabase/supabase-js'
+import { disposableActivationContext } from './activation-disposable-authority'
 
 import {
   createPurchaseRequest
@@ -14,11 +8,6 @@ import {
 import {
   approvePurchase
 } from '../../lib/approval-engine'
-
-
-loadEnvConfig(
-  process.cwd()
-)
 
 
 const TEST_SUITE =
@@ -88,72 +77,8 @@ const artifacts:
 }
 
 
-function requireEnvironmentVariable(
-  name:
-    string
-): string {
-
-  const value =
-    process.env[
-      name
-    ]
-
-  if (
-    !value ||
-    !value.trim()
-  ) {
-    throw new Error(
-      `Missing required environment variable: ${name}`
-    )
-  }
-
-  return value.trim()
-}
-
-
-function createAdminClient():
-  SupabaseClient {
-
-  const url =
-    requireEnvironmentVariable(
-      'NEXT_PUBLIC_SUPABASE_URL'
-    )
-
-  const serviceRoleKey =
-    requireEnvironmentVariable(
-      'SUPABASE_SERVICE_ROLE_KEY'
-    )
-
-  return createClient(
-    url,
-    serviceRoleKey,
-    {
-      auth: {
-        persistSession:
-          false,
-
-        autoRefreshToken:
-          false
-      }
-    }
-  )
-}
-
-
-function requireTestIdentity() {
-
-  return {
-    userId:
-      requireEnvironmentVariable(
-        'ACTIVATION_VERIFY_USER_ID'
-      ),
-
-    listingId:
-      requireEnvironmentVariable(
-        'ACTIVATION_VERIFY_LISTING_ID'
-      )
-  }
-}
+function createAdminClient(): SupabaseClient { return disposableActivationContext().client }
+function requireTestIdentity() { const { userId, listingId } = disposableActivationContext(); return { userId, listingId } }
 
 
 function testMetadata(
@@ -318,9 +243,7 @@ async function resolveTestPackage({
 }) {
 
   const explicitPackageId =
-    process.env
-      .ACTIVATION_VERIFY_PACKAGE_ID
-      ?.trim()
+    disposableActivationContext().packageId
 
   let query =
     supabase
@@ -391,9 +314,7 @@ async function resolveTestAddOn({
 }) {
 
   const explicitAddOnId =
-    process.env
-      .ACTIVATION_VERIFY_ADD_ON_ID
-      ?.trim()
+    disposableActivationContext().addOnId
 
   let query =
     supabase
@@ -1388,7 +1309,7 @@ async function verifyActivationEngine() {
 }
 
 
-verifyActivationEngine()
+export const verification = verifyActivationEngine()
   .catch(error => {
 
     console.error(

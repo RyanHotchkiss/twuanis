@@ -1,0 +1,1 @@
+psql:/Users/cassidydaddy/twuanis/supabase/migrations/006_canonical_domain_machinery.sql:5: WARNING:  there is already a transaction in progress
