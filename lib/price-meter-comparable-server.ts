@@ -188,6 +188,7 @@ export async function executePriceMeterComparableAnalysis(
 
   const loaded =
     await loadPriceMeterComparableBoundedPopulation({
+      activeDimensions:request.activeDimensions,
       subjectListingId:
         request.subjectListingId,
 

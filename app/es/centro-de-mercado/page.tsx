@@ -1,6 +1,3 @@
-import TopBar
-  from '@/app/components/TopBar'
-
 import MarketHubAuthGate
   from '@/app/components/MarketHubAuthGate'
 
@@ -213,9 +210,7 @@ const intelligenceTabMap:
     <MarketHubAuthGate>
 
       <div style={page}>
-        <TopBar />
-
-
+  
         <MarketHubShell
           language="es"
 

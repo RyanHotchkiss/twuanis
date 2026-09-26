@@ -3,11 +3,12 @@ export default function MarketComparisonResults({
 }: {
   comparison: any
 }) {
+  const spanish = comparison?.language === 'es'
   if (!comparison?.left || !comparison?.right) {
     return (
       <section>
         <div style={emptyCard}>
-          Define two markets above, then click Compare Markets.
+          {spanish?'Define dos mercados y aplica la comparación.':'Define two markets above, then click Compare Markets.'}
         </div>
       </section>
     )
@@ -16,17 +17,17 @@ export default function MarketComparisonResults({
   return (
     <section>
       <h2 style={sectionTitle}>
-        Market Comparison Results
+        {spanish?'Comparación de mercados':'Market Comparison Results'}
       </h2>
 
       <div style={comparisonGrid}>
         <MarketColumn
-          title="Market A"
+          title={spanish?"Mercado A":"Market A"} spanish={spanish}
           market={comparison.left}
         />
 
         <MarketColumn
-          title="Market B"
+          title={spanish?"Mercado B":"Market B"} spanish={spanish}
           market={comparison.right}
         />
       </div>
@@ -36,43 +37,45 @@ export default function MarketComparisonResults({
 
 function MarketColumn({
   title,
-  market
+  market, spanish
 }: {
   title: string
   market: any
+  spanish: boolean
 }) {
   return (
     <div style={marketCard}>
       <h3 style={marketTitle}>{title}</h3>
 
-      <Stat label="Listings" value={market.sampleSize} />
-      <Stat label="Average Sale Price" value={market.averageSalePriceCRC} />
-      <Stat label="Median Sale Price" value={market.medianSalePriceCRC} />
-      <Stat label="Average Rent" value={market.averageRentCRC} />
-      <Stat label="Median Rent" value={market.medianRentCRC} />
-      <Stat label="Average Land Area" value={market.averagePropertyArea} />
-      <Stat label="Average Construction Area" value={market.averageConstructionArea} />
-      <Stat label="Most Common Property Type" value={market.topPropertyType} />
-      <Stat label="Most Common Environment" value={market.topEnvironment} />
-      <Stat label="Most Common Terrain" value={market.topTerrain} />
-      <Stat label="Most Common Utility" value={market.topUtility} />
-      <Stat label="Most Common Accessibility" value={market.topAccessibility} />
-      <Stat label="Most Common Legal Status" value={market.topLegalStatus} />
+      <Stat label={spanish?"Propiedades":"Listings"} empty={spanish?"Sin evidencia":"No data"} value={market.sampleSize} />
+      <Stat label={spanish?"Precio de venta promedio":"Average Sale Price"} empty={spanish?"Sin evidencia":"No data"} value={market.averageSalePriceCRC} />
+      <Stat label={spanish?"Precio de venta mediano":"Median Sale Price"} empty={spanish?"Sin evidencia":"No data"} value={market.medianSalePriceCRC} />
+      <Stat label={spanish?"Alquiler promedio":"Average Rent"} empty={spanish?"Sin evidencia":"No data"} value={market.averageRentCRC} />
+      <Stat label={spanish?"Alquiler mediano":"Median Rent"} empty={spanish?"Sin evidencia":"No data"} value={market.medianRentCRC} />
+      <Stat label={spanish?"Área de terreno promedio":"Average Land Area"} empty={spanish?"Sin evidencia":"No data"} value={market.averagePropertyArea} />
+      <Stat label={spanish?"Área de construcción promedio":"Average Construction Area"} empty={spanish?"Sin evidencia":"No data"} value={market.averageConstructionArea} />
+      <Stat label={spanish?"Tipo de propiedad más frecuente":"Most Common Property Type"} empty={spanish?"Sin evidencia":"No data"} value={market.topPropertyType} />
+      <Stat label={spanish?"Entorno más frecuente":"Most Common Environment"} empty={spanish?"Sin evidencia":"No data"} value={market.topEnvironment} />
+      <Stat label={spanish?"Terreno más frecuente":"Most Common Terrain"} empty={spanish?"Sin evidencia":"No data"} value={market.topTerrain} />
+      <Stat label={spanish?"Servicio más frecuente":"Most Common Utility"} empty={spanish?"Sin evidencia":"No data"} value={market.topUtility} />
+      <Stat label={spanish?"Accesibilidad más frecuente":"Most Common Accessibility"} empty={spanish?"Sin evidencia":"No data"} value={market.topAccessibility} />
+      <Stat label={spanish?"Estado legal más frecuente":"Most Common Legal Status"} empty={spanish?"Sin evidencia":"No data"} value={market.topLegalStatus} />
     </div>
   )
 }
 
 function Stat({
   label,
-  value
+  value, empty
 }: {
   label: string
   value: any
+  empty: string
 }) {
   return (
     <div style={statRow}>
       <span style={statLabel}>{label}</span>
-      <strong style={statValue}>{value || 'No data'}</strong>
+      <strong style={statValue}>{value ?? empty}</strong>
     </div>
   )
 }

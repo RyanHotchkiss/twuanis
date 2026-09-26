@@ -1,4 +1,5 @@
 import 'server-only'
+import { resolveMarketYearBuiltConstraint, evaluateMarketYearBuilt } from '@/lib/market-year-built-constraint'
 import { supabaseAdmin } from '@/lib/supabase-admin'
 import { hydrateCanonicalPopulation, resolvePopulationGeography } from '@/lib/canonical-population'
 import { supabase } from '@/lib/supabase'
@@ -1103,7 +1104,8 @@ export async function getMatchingListings(filters: MarketFilters, onGeographyLab
   const {resolved,legacy,displayLabels} = await resolvePopulationGeography(filters)
   onGeographyLabels?.(displayLabels ?? {})
   const {province,canton,district,transaction_type,property_area,construction_area,
-    distance_to_paved_road_range,...semanticFilters}=filters
+    distance_to_paved_road_range,year_built,...semanticFilters}=filters
+  const yearConstraint=year_built?resolveMarketYearBuiltConstraint(year_built):null
   const terms = await resolveFilterTerms(semanticFilters)
   const groups = new Map<string,Set<string>>()
   for (const term of terms) {
@@ -1166,7 +1168,7 @@ export async function getMatchingListings(filters: MarketFilters, onGeographyLab
     canonical.push(...await completePopulationRows<Listing>((from,to)=>query().in('id',chunk).range(from,to)))
   }
   if (new Set(canonical.map(l=>l.id)).size!==canonical.length) throw new Error('Duplicate canonical population evidence.')
-  canonical=await hydrateCanonicalPopulation(canonical,undefined,[...new Set([...factDimensions,...(distance_to_paved_road_range?['distance_to_paved_road']:[])])])
+  canonical=await hydrateCanonicalPopulation(canonical,undefined,[...new Set([...factDimensions,...(yearConstraint?['year_built']:[]),...(distance_to_paved_road_range?['distance_to_paved_road']:[])])])
   canonical=canonical.filter(l=>(!property_area||matchesPropertyAreaConstraint(l.property_area,property_area)) &&
     (!construction_area||matchesConstructionAreaConstraint(l.construction_area,construction_area)))
   if (distance_to_paved_road_range) {
@@ -1177,7 +1179,11 @@ export async function getMatchingListings(filters: MarketFilters, onGeographyLab
       return value===distance_to_paved_road_range
     })
   }
-  const legacyRows=await getLegacyMatchingListings(legacy,terms)
+  // Legacy compatibility strings are not canonical year evidence. They cannot
+  // establish satisfaction of a selected canonical numerical year constraint.
+  const legacyRows=yearConstraint?[]:await getLegacyMatchingListings(legacy,terms)
+  if(yearConstraint) canonical=canonical.filter(l=>evaluateMarketYearBuilt(yearConstraint,
+    l.canonicalEvidence.facts.find((f:any)=>f.dimension==='year_built')).state==='MATCH')
   return [...new Map([...legacyRows,...canonical].map(l=>[l.id,l])).values()]
     .sort((a,b)=>a.id<b.id?-1:a.id>b.id?1:0)
 }

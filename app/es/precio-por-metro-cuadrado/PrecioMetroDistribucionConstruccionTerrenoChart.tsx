@@ -1,3 +1,5 @@
+import PriceMeterChartViewport from '@/app/price-per-square-meter/PriceMeterChartViewport'
+
 type Cohort = {
   definition: {
     key:
@@ -57,6 +59,7 @@ export default function PrecioMetroDistribucionConstruccionTerrenoChart({
 
 
   return (
+    <PriceMeterChartViewport label="Gráfico de cohortes construcción-terreno; desplácese horizontalmente para ver todas las cohortes">
     <div style={chartShell}>
       <div style={chartYAxisLabel}>
         Propiedades
@@ -121,6 +124,7 @@ export default function PrecioMetroDistribucionConstruccionTerrenoChart({
         con n = 0.
       </div>
     </div>
+    </PriceMeterChartViewport>
   )
 }
 

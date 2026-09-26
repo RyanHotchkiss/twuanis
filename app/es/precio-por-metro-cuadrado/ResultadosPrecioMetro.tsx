@@ -3304,19 +3304,16 @@ export default function PriceMeterResults({
     const constructionLandAnalysis:
       ConstructionLandAnalysis =
         intelligence
-          .constructionToLand
-          .analysis
+          .constructionToLand?.analysis
 
 
 
     const constructionLandIdentity =
       intelligence
-        .constructionToLand
-        .identity
+        .constructionToLand?.identity
 
 
-    const constructionLandGeography =
-      [
+    const constructionLandGeography = constructionLandIdentity ? [
         constructionLandIdentity
           .geography
           .province,
@@ -3330,11 +3327,10 @@ export default function PriceMeterResults({
           .district
       ]
         .filter(Boolean)
-        .join(' · ')
+        .join(' · ') : ''
 
 
-    const constructionLandIdentityLabel =
-      [
+    const constructionLandIdentityLabel = constructionLandIdentity && constructionLandAnalysis ? [
         transactionLabel(
           constructionLandIdentity
             .transactionType
@@ -3358,7 +3354,7 @@ export default function PriceMeterResults({
             ? 'propiedad'
             : 'propiedades'
         }`
-      ].join(' · ')
+      ].join(' · ') : ''
 
   return (
     <section>
@@ -3393,6 +3389,7 @@ export default function PriceMeterResults({
                 .distributions[
                   definition.key
                 ]
+          if(!distribution)return null
 
 
 
@@ -3413,8 +3410,7 @@ export default function PriceMeterResults({
         }
       )}
 
-            {geographicScope.comparisonLevel !==
-        null && (
+            {Object.keys(geographicStatistics).length>0 && geographicScope.comparisonLevel !== null && (
         <div style={geographicPresentation}>
           <div style={presentationHeader}>
             <div>
@@ -3486,7 +3482,7 @@ export default function PriceMeterResults({
         </div>
       )}
 
-      <div style={relationshipPresentation}>
+      {(constructionSizeRelationship || propertySizeRelationship) && (<div style={relationshipPresentation}>
         <div style={presentationHeader}>
           <div>
             <h2 style={sectionTitle}>
@@ -3507,7 +3503,7 @@ export default function PriceMeterResults({
         </div>
 
 
-        <SizeRelationshipEvidence
+        {constructionSizeRelationship && (<SizeRelationshipEvidence
           title="Relación con el Área de Construcción"
           description="Cómo se relaciona el tamaño de construcción con el Precio / m² normalizado por construcción para propiedades con construcción en este mercado seleccionado."
           relationship={
@@ -3518,10 +3514,10 @@ export default function PriceMeterResults({
           transactionType={
             transactionType
           }
-        />
+        />)}
 
 
-        <SizeRelationshipEvidence
+        {propertySizeRelationship && (<SizeRelationshipEvidence
           title="Relación con el Área de la Propiedad"
           description="Cómo se relaciona el tamaño de la propiedad con el Precio / m² normalizado por terreno para propiedades con construcción en este mercado seleccionado."
           relationship={
@@ -3532,7 +3528,7 @@ export default function PriceMeterResults({
           transactionType={
             transactionType
           }
-        />
+        />)}
       
 
         <div style={statisticsPresentation}>
@@ -3554,20 +3550,20 @@ export default function PriceMeterResults({
           </div>
 
 
-          <SizeRelationshipStatistics
+          {constructionSizeRelationship && (<SizeRelationshipStatistics
             title="Estadísticas del Área de Construcción"
             relationship={
               constructionSizeRelationship
             }
-          />
+          />)}
 
 
-          <SizeRelationshipStatistics
+          {propertySizeRelationship && (<SizeRelationshipStatistics
             title="Estadísticas del Área de la Propiedad"
             relationship={
               propertySizeRelationship
             }
-          />
+          />)}
         </div>
 
               <div style={visualizationPresentation}>
@@ -3590,7 +3586,7 @@ export default function PriceMeterResults({
           </div>
 
 
-          <section style={visualizationSection}>
+          {constructionSizeRelationship && (<section style={visualizationSection}>
             <h3 style={cohortTitle}>
               Relación con el Área de Construcción
             </h3>
@@ -3602,7 +3598,7 @@ export default function PriceMeterResults({
               construcción.
             </p>
 
-            <PrecioMetroRelacionTamanoChart
+            {constructionSizeRelationship && (<PrecioMetroRelacionTamanoChart
               coordinates={
                 constructionSizeRelationship
                   .population
@@ -3613,11 +3609,11 @@ export default function PriceMeterResults({
               transactionType={
                 transactionType
               }
-            />
-          </section>
+            />)}
+          </section>)}
 
 
-          <section style={visualizationSection}>
+          {propertySizeRelationship && (<section style={visualizationSection}>
             <h3 style={cohortTitle}>
               Relación con el Área de la Propiedad
             </h3>
@@ -3628,7 +3624,7 @@ export default function PriceMeterResults({
               Precio / m² normalizado por terreno.
             </p>
 
-            <PrecioMetroRelacionTamanoChart
+            {propertySizeRelationship && (<PrecioMetroRelacionTamanoChart
               coordinates={
                 propertySizeRelationship
                   .population
@@ -3639,8 +3635,8 @@ export default function PriceMeterResults({
               transactionType={
                 transactionType
               }
-            />
-                    </section>
+            />)}
+                    </section>)}
         </div>
 
 
@@ -3665,16 +3661,16 @@ export default function PriceMeterResults({
           </div>
 
 
-          <SizeRelationshipSynthesis
+          {constructionSizeRelationship && (<SizeRelationshipSynthesis
             title="Síntesis del Área de Construcción"
             relationship={
               constructionSizeRelationship
             }
             areaLabel="Área de Construcción"
             ratioLabel="m² de construcción"
-          />
+          />)}
 
-            <PriceMeterCrossDimensionalAnalysis
+            {constructionSizeRelationship && (<PriceMeterCrossDimensionalAnalysis
               language="es"
               options={
                 constructionAreaCrossDimensionalOptions
@@ -3683,18 +3679,18 @@ export default function PriceMeterResults({
                 filters
               }
               cohortKey="improvedConstructionNormalized"
-            />
+            />)}
 
-        <SizeRelationshipSynthesis
+        {propertySizeRelationship && (<SizeRelationshipSynthesis
           title="Síntesis del Área de la Propiedad"
           relationship={
             propertySizeRelationship
           }
           areaLabel="Área de la Propiedad"
           ratioLabel="m² de terreno"
-        />
+        />)}
 
-        <PriceMeterCrossDimensionalAnalysis
+        {propertySizeRelationship && (<PriceMeterCrossDimensionalAnalysis
           language="es"
           options={
             propertyAreaCrossDimensionalOptions
@@ -3703,9 +3699,9 @@ export default function PriceMeterResults({
             filters
           }
           cohortKey="improvedLandNormalized"
-        />
+        />)}
         </div>
-        </div>
+        </div>)}
 
         <div style={methodologyPresentation}><div style={methodologyPresentation}>
           <div style={presentationHeader}>
@@ -3731,7 +3727,7 @@ export default function PriceMeterResults({
 
 
       </div>
-            <div style={constructionLandPresentation}>
+            {(constructionLandAnalysis) && (<div style={constructionLandPresentation}>
         <div style={presentationHeader}>
           <div>
             <h2 style={sectionTitle}>
@@ -4008,7 +4004,7 @@ export default function PriceMeterResults({
           />
         </div>
 
-      </div>
+      </div>)}
     </section>
   )
 }

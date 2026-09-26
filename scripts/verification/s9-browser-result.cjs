@@ -23,12 +23,12 @@ console.log('S9 BROWSER RESULT',checks,'checks passed; cached completed fixture,
   vm.runInNewContext(ts.transpileModule(fs.readFileSync(root+'/lib/price-meter-apply-action.ts','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,{module:action,exports:action.exports,require(k){
    if(k==='@/lib/price-meter-authorization')return {async authorizePriceMeterIntelligenceExecution(){events.push('authority')}};
    if(k==='@/lib/explorer-options-engine')return {async getExplorerOptions(){events.push('options');return {property_type:[{slug:'house',term_name:'House'}]}}};
-   if(k==='@/lib/price-meter-engine')return {async getPriceMeterAnalysis(filters,lang,permit){permitModule.consumePriceMeterApplyPermit(permit,filters,lang);events.push('engine');return fixture}};
-   if(k.startsWith('@/'))return load(k.slice(2));throw Error('Forbidden action dependency '+k);
+   if(k==='./price-meter-selected-engine')return {async getSelectedPriceMeterAnalysis(filters,lang,permit){permitModule.consumePriceMeterApplyPermit(permit,filters,lang);events.push('engine');return project(fixture,'sale')}};
+   if(k==='./price-meter-selected-contract')return load('lib/price-meter-selected-contract');if(k.startsWith('@/'))return load(k.slice(2));throw Error('Forbidden action dependency '+k);
   }});
-  const result=await action.exports.executePriceMeterApply({province:'3',canton:'304',property_type:'house',transaction_type:'sale'},language,source);
+  const result=await action.exports.executePriceMeterApply({province:'3',canton:'304',property_type:'house',transaction_type:'sale'},language,source,['distribution']);
   ok(JSON.stringify(result)===JSON.stringify(project(fixture,'sale')),'actual action projects cached internal result');
-  ok(events.join(',')===(source==='workspace'?'authority,options,engine':'authority,engine'),'existing action sequencing preserved');
+  ok(events.join(',')==='authority,engine','existing action sequencing preserved');
  }
  console.log('S9 BROWSER RESULT TOTAL',checks,'checks passed including actual Apply/projector boundary.');
 })().catch(e=>{console.error(e);process.exitCode=1});

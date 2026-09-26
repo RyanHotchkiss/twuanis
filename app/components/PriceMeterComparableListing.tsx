@@ -1,5 +1,7 @@
 'use client'
 
+import { positionNumber } from '@/lib/price-meter-property-position-presentation'
+
 import {
   useState
 } from 'react'
@@ -186,23 +188,6 @@ const COPY = {
 } as const
 
 
-function formatNumber(
-  value:
-    number
-): string {
-
-  return new Intl.NumberFormat(
-    'en-US',
-    {
-      maximumFractionDigits:
-        2
-    }
-  ).format(
-    value
-  )
-}
-
-
 export default function PriceMeterComparableListing({
   listingId,
   lang
@@ -210,6 +195,8 @@ export default function PriceMeterComparableListing({
 
   const copy =
     COPY[lang]
+
+  const formatNumber = (value: number) => positionNumber(value, lang)
 
 
   const [
@@ -928,9 +915,7 @@ export default function PriceMeterComparableListing({
               copy.population
             }
             value={
-              evidence
-                .comparisonPopulationCount
-                .toLocaleString()
+              formatNumber(evidence.comparisonPopulationCount)
             }
           />
 
@@ -1016,11 +1001,11 @@ export default function PriceMeterComparableListing({
                   </span>
 
                   <span>
-                    {step.beforeCount}
+                    {formatNumber(step.beforeCount)}
                     {' → '}
-                    {step.afterCount}
+                    {formatNumber(step.afterCount)}
                     {' · '}
-                    {step.removedCount}
+                    {formatNumber(step.removedCount)}
                     {' '}
                     {copy.removed}
                   </span>

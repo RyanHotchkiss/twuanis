@@ -1,6 +1,7 @@
-import {
-  getMarketStatistics
-} from '@/lib/statistics-engine'
+import 'server-only'
+import { resolveCanonicalMarketRequest,canonicalMarketFilterBoundary } from './canonical-market-request'
+import { readMarketNumericalSurvivors } from './canonical-market-acquisition'
+import { canonicalMarketPrevalence } from './canonical-market-prevalence'
 
 import {
   resolveMarketAnalyticalContext,
@@ -140,25 +141,6 @@ function median(values: number[]) {
   return sorted[middle]
 }
 
-function mostCommon(values: any[]) {
-  const counts: Record<string, number> = {}
-
-  values
-    .filter(Boolean)
-    .forEach(value => {
-      const key = String(value)
-      counts[key] = (counts[key] || 0) + 1
-    })
-
-  const entries = Object.entries(counts)
-
-  if (!entries.length) return null
-
-  return entries.sort((a, b) =>
-    b[1] - a[1] || (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0)
-  )[0][0]
-}
-
 function applyPriceRange(
   listings: any[],
   priceRange: string | undefined,
@@ -201,23 +183,22 @@ async function analyzeMarket(
   sideFilters: SideFilters,
   prefix: 'a' | 'b',
   analyticalContext:
-    MarketAnalyticalContext
+    MarketAnalyticalContext,
+  language:Language
 ) {
   const filters =
     normalizeSideFilters(sideFilters, prefix)
 
-  const market =
-  await getMarketStatistics(
-    filters,
-    analyticalContext
-  )
+  const request=await resolveCanonicalMarketRequest(filters,language)
+  const acquired=await readMarketNumericalSurvivors(request,canonicalMarketFilterBoundary(request),
+    ['canonical_domain_version','transaction_type','currency','current_price','monthly_price','property_area','construction_area'])
 
 const usdToCrcRate =
   analyticalContext.fx.rate
 
 const listings =
   applyPriceRange(
-    market.listings || [],
+    acquired,
     sideFilters[
       `${prefix}_price_range`
     ],
@@ -276,8 +257,11 @@ const listings =
   const averageConstructionArea =
     average(constructionAreas)
 
+  const prevalence=await canonicalMarketPrevalence(listings.map(row=>row.id),['property_type','environment','terrain','utility','accessibility','legal_status'])
+  const leading=(dimension:string)=>{const value=prevalence.dimensions.find(d=>d.dimension===dimension)?.terms[0];return value?value.label[language]:null}
   return {
     filters,
+    prevalence,
 
     sampleSize:
       listings.length,
@@ -341,22 +325,22 @@ const listings =
       formatM2(averageConstructionArea),
 
     topPropertyType:
-      mostCommon(listings.map((listing: any) => listing.property_type)),
+      leading('property_type'),
 
     topEnvironment:
-      mostCommon(listings.map((listing: any) => listing.environment)),
+      leading('environment'),
 
     topTerrain:
-      mostCommon(listings.map((listing: any) => listing.terrain)),
+      leading('terrain'),
 
     topUtility:
-      mostCommon(listings.map((listing: any) => listing.utility)),
+      leading('utility'),
 
     topAccessibility:
-      mostCommon(listings.map((listing: any) => listing.accessibility)),
+      leading('accessibility'),
 
     topLegalStatus:
-      mostCommon(listings.map((listing: any) => listing.legal_status))
+      leading('legal_status')
   }
 }
 
@@ -372,14 +356,16 @@ export async function getMarketComparison(
     await analyzeMarket(
       leftFilters,
       'a',
-      analyticalContext
+      analyticalContext,
+      language
     )
 
   const right =
     await analyzeMarket(
       rightFilters,
       'b',
-      analyticalContext
+      analyticalContext,
+      language
     )
 
   return {

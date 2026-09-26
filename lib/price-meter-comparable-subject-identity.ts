@@ -38,7 +38,7 @@ export type PriceMeterComparableSubjectIdentity = {
 }
 
 
-function resolveSingleRange({
+export function resolveSingleRange({
   exactAreaM2,
   basis
 }: {

@@ -39,6 +39,7 @@ export type Phase14ServerOutcome = Phase14ServerExecution | Readonly<{
   reason:string;dimension?:string;trace:readonly TraceEntry[]
 }>
 const owners = new WeakMap<object, Phase14ComparativeDiscoveryResults>()
+const failures = new WeakSet<object>()
 class StageFailure {
   constructor(readonly state:FailureState, readonly reason:string, readonly dimension?:string) {}
 }
@@ -113,13 +114,22 @@ export async function executePhase14ComparativeDiscovery(rawRequest:unknown, nor
     // A final postcondition failure replaces the last success entry, not a duplicate logical call.
     const entries=trace.at(-1)?.stage===current?trace.slice(0,-1):[...trace]
     entries.push(Object.freeze({stage:current,state:failure.state,inputCount,outputCount:null,reason:failure.reason,...(failure.dimension?{dimension:failure.dimension}:{})}))
-    return Object.freeze({state:failure.state,contractVersion:1,invocationId,executionAttemptId:analytical?.analyticalExecutionId??null,
+    const outcome = Object.freeze({state:failure.state,contractVersion:1 as const,invocationId,executionAttemptId:analytical?.analyticalExecutionId??null,
       marketExecutionId:market?.executionId??null,marketQuestionIdentity:market?.canonicalQuestionSerialization??null,
       analyticalQuestionIdentity:analytical?.analyticalIdentity??null,normalization:validNormalization,failedStage:current,
       reason:failure.reason,...(failure.dimension?{dimension:failure.dimension}:{}),trace:Object.freeze(entries)})
+    failures.add(outcome)
+    return outcome
   }
 }
 export function assertPhase14ServerExecution(value:Phase14ServerOutcome):asserts value is Phase14ServerExecution {
   if(value.state!=='complete'||owners.get(value)!==value.result)throw new Error('Invalid Phase 14 server execution.')
   validateCompletion(value)
+}
+
+// Identity proves origin; copying or serializing an outcome never confers authority.
+export function assertPhase14ServerOutcome(value: unknown): asserts value is Phase14ServerOutcome {
+  if (!value || typeof value !== 'object') throw new Error('Invalid Phase 14 server outcome.')
+  if (failures.has(value)) return
+  assertPhase14ServerExecution(value as Phase14ServerOutcome)
 }

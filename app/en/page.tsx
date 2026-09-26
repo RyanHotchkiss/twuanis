@@ -23,10 +23,19 @@ const { data: ontologyRelationships }
       .from('ontology_relationships')
       .select('*')
 
-const listings =
-  await getPublicListings(
-    'sale'
-  )
+const [
+  saleListings,
+  rentListings
+] = await Promise.all([
+  getPublicListings('sale'),
+  getPublicListings('rent')
+])
+
+const saleCount =
+  saleListings.length
+
+const rentCount =
+  rentListings.length
     
   const homepagePlacement =
     await resolveMarketplacePlacement({
@@ -34,7 +43,7 @@ const listings =
         supabaseAdmin,
 
       listings:
-        listings,
+        saleListings,
 
       surface:
         'homepage'
@@ -59,6 +68,12 @@ const listings =
               }
               listings={
                 homepagePlacement.listings
+              }
+              saleCount={
+                saleCount
+              }
+              rentCount={
+                rentCount
               }
               homePageSchema={
                 homePageSchema

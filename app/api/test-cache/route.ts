@@ -1,14 +1,2 @@
-import { NextResponse } from 'next/server'
-
-import {
-  getCachedMarketStatistics
-} from '@/lib/statistics-engine'
-
-export async function GET() {
-  const data = await getCachedMarketStatistics(
-    'canton',
-    'santa-ana'
-  )
-
-  return NextResponse.json(data)
-}
+// Retired analytical debug surface: no imports, acquisition, writes, or result serialization.
+export async function GET() { return new Response(null, {status:404}) }

@@ -14,18 +14,18 @@ export default function MarketScarcityResults({
 
       <div style={hero}>
         <p style={eyebrow}>
-          HOW RARE IS THIS MARKET CONFIGURATION?
+          {scarcity.language === 'es' ? 'FRECUENCIA DE LA CONFIGURACIÓN' : 'PROPERTY CONFIGURATION FREQUENCY'}
         </p>
 
         {selected ? (
           <>
             <div style={heroScore}>
-              {selected.scarcityScore}
-              <span style={scoreScale}> / 100</span>
+              {scarcity.scarcityShare ?? '—'}
+              
             </div>
 
             <div style={heroLevel}>
-              {scarcity.scarcityLevel}
+              {scarcity.state==='EMPTY_BASE_MARKET'?(scarcity.language==='es'?'Mercado base vacío':'Empty base market'):(scarcity.language === 'es' ? 'Evidencia establecida' : 'Established evidence')}
             </div>
 
             <p style={heroExplanation}>
@@ -38,7 +38,7 @@ export default function MarketScarcityResults({
                   {scarcity.matchingCount}
                 </span>
                 <span style={evidenceLabel}>
-                  Matching Listings
+                  {scarcity.language === 'es' ? 'Propiedades que cumplen' : 'Matching Listings'}
                 </span>
               </div>
 
@@ -49,7 +49,7 @@ export default function MarketScarcityResults({
                   {scarcity.marketSize}
                 </span>
                 <span style={evidenceLabel}>
-                  Market Listings
+                  {scarcity.language === 'es' ? 'Propiedades del mercado' : 'Market Listings'}
                 </span>
               </div>
 
@@ -60,14 +60,14 @@ export default function MarketScarcityResults({
                   {scarcity.scarcityShare || '—'}
                 </span>
                 <span style={evidenceLabel}>
-                  Market Share
+                  {scarcity.language === 'es' ? 'Proporción del mercado' : 'Market Share'}
                 </span>
               </div>
             </div>
 
             <div style={configuration}>
               <p style={configurationLabel}>
-                YOUR CONFIGURATION
+                {scarcity.language === 'es' ? 'TU CONFIGURACIÓN' : 'YOUR CONFIGURATION'}
               </p>
 
               <div style={attributeRow}>
@@ -75,7 +75,7 @@ export default function MarketScarcityResults({
                   (attribute: any, index: number) => (
                     <span
                       key={`${attribute.category}-${attribute.value}-${index}`}
-                      style={attribute}
+                      style={attributeStyle}
                     >
                       {formatValue(attribute.value)}
                     </span>
@@ -87,12 +87,11 @@ export default function MarketScarcityResults({
         ) : (
           <>
             <div style={heroLevel}>
-              Entire Market
+              {scarcity.language === 'es' ? 'Mercado completo' : 'Entire Market'}
             </div>
 
             <p style={heroExplanation}>
-              Select market characteristics to measure how rare a
-              specific property configuration is within this market.
+              {scarcity.language === 'es' ? 'Selecciona características para medir su frecuencia establecida en este mercado.' : 'Select property characteristics to measure their established frequency within this base market.'}
             </p>
 
             <div style={evidenceRow}>
@@ -101,7 +100,7 @@ export default function MarketScarcityResults({
                   {scarcity.marketSize}
                 </span>
                 <span style={evidenceLabel}>
-                  Market Listings
+                  {scarcity.language === 'es' ? 'Propiedades del mercado' : 'Market Listings'}
                 </span>
               </div>
             </div>
@@ -109,81 +108,6 @@ export default function MarketScarcityResults({
         )}
       </div>
 
-      {/* ---------- RAREST CONFIGURATIONS ---------- */}
-
-      <div style={discoverySection}>
-        <div style={discoveryHeader}>
-          <div>
-            <p style={eyebrow}>
-              MARKET DISCOVERY
-            </p>
-
-            <h2 style={sectionTitle}>
-              Rarest Configurations
-            </h2>
-          </div>
-
-          <p style={sectionDescription}>
-            Property characteristics with the least comparable
-            supply in the selected market.
-          </p>
-        </div>
-
-        {scarcity.combinations?.length > 0 ? (
-          <div style={rankingList}>
-            {scarcity.combinations.map(
-              (item: any, index: number) => (
-                <div
-                  key={`${item.title}-${index}`}
-                  style={rankingRow}
-                >
-                  <div style={rank}>
-                    #{index + 1}
-                  </div>
-
-                  <div style={combinationBody}>
-                    <p style={combinationCategory}>
-                      {renderCategories(item.attributes)}
-                    </p>
-
-                    <h3 style={combinationTitle}>
-                      {renderCombination(item.attributes)}
-                    </h3>
-
-                    <p style={combinationExplanation}>
-                      {item.explanation}
-                    </p>
-                  </div>
-
-                  <div style={combinationEvidence}>
-                    <div style={combinationScore}>
-                      {item.scarcityScore}
-                      <span style={smallScale}> / 100</span>
-                    </div>
-
-                    <div style={combinationLevel}>
-                      {item.scarcityLevel}
-                    </div>
-
-                    <div style={combinationStats}>
-                      {item.matchingCount}{' '}
-                      {item.matchingCount === 1
-                        ? 'listing'
-                        : 'listings'}
-                      {' · '}
-                      {item.marketShare}
-                    </div>
-                  </div>
-                </div>
-              )
-            )}
-          </div>
-        ) : (
-          <div style={emptyState}>
-            No scarcity combinations available yet.
-          </div>
-        )}
-      </div>
     </section>
   )
 }
@@ -330,7 +254,7 @@ const attributeRow = {
   gap: '.6rem'
 }
 
-const attribute = {
+const attributeStyle = {
   border: '1px solid #333',
   borderRadius: '999px',
   padding: '.45rem .8rem',

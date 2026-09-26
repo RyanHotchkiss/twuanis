@@ -1,3 +1,5 @@
+import PriceMeterChartViewport from './PriceMeterChartViewport'
+
 type Coordinate = {
   area:
     number
@@ -169,6 +171,7 @@ export default function PriceMeterSizeRelationshipChart({
 
 
   return (
+    <PriceMeterChartViewport label="Area relationship chart; scroll horizontally to inspect all labels">
     <div style={chartShell}>
       <div style={chartYAxisLabel}>
         Price / {ratioLabel}
@@ -240,6 +243,7 @@ export default function PriceMeterSizeRelationshipChart({
         median normalized Price / m².
       </div>
     </div>
+    </PriceMeterChartViewport>
   )
 }
 
@@ -252,7 +256,7 @@ const chartShell = {
     '1.25rem',
 
   padding:
-    '1.5rem 1.5rem 1.25rem 4.5rem',
+    '1.5rem 6rem 1.25rem 6rem',
 
   background:
     '#111',
@@ -266,6 +270,7 @@ const chartShell = {
 
 
 const plot = {
+  marginBottom: '4rem',
   position:
     'relative' as const,
 
@@ -338,7 +343,7 @@ const pointLabel = {
   gap:
     '.15rem',
 
-  minWidth:
+  width:
     '180px',
 
   textAlign:
@@ -348,7 +353,9 @@ const pointLabel = {
     '.75rem',
 
   whiteSpace:
-    'nowrap' as const
+    'normal' as const,
+
+  overflowWrap: 'anywhere' as const
 }
 
 

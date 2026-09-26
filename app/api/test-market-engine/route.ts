@@ -1,11 +1,2 @@
-import { NextResponse } from 'next/server'
-import { getMarketIntelligence } from '@/lib/market-engine'
-
-export async function GET() {
-  const data = await getMarketIntelligence({
-    canton: 'santa-ana',
-    property_type: 'condo'
-  })
-
-  return NextResponse.json(data)
-}
+// Retired analytical debug surface: no imports, acquisition, writes, or result serialization.
+export async function GET() { return new Response(null, {status:404}) }

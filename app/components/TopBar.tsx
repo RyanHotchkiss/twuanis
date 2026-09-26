@@ -28,11 +28,11 @@ import {
   getAlternateLanguageUrl
 } from '@/lib/language-route'
 
-
 type TopBarProps = {
   onFilterClick?: () => void
+  theme?: 'dark' | 'light'
+  onThemeToggle?: () => void
 }
-
 
 const GOLD = '#C7A44B'
 const WHITE = '#FFFFFF'
@@ -40,7 +40,9 @@ const UTILITY_ORANGE = '#ff3b00'
 
 
 function TopBarContent({
-  onFilterClick
+  onFilterClick,
+  theme = 'dark',
+  onThemeToggle
 }: TopBarProps) {
 
   const pathname =
@@ -86,90 +88,89 @@ const isSpanish =
   const [hoveredItem, setHoveredItem] =
     useState<string | null>(null)
 
-
   useEffect(() => {
 
-    const timer =
-      window.setTimeout(() => {
-        setShowLabels(false)
-      }, 5000)
+      const timer =
+        window.setTimeout(() => {
+          setShowLabels(false)
+        }, 5000)
 
-    return () =>
-      window.clearTimeout(timer)
+      return () =>
+        window.clearTimeout(timer)
 
-  }, [])
-
-
-  useEffect(() => {
-
-    function handleResize() {
-      setIsMobile(
-        window.innerWidth <= 768
-      )
-    }
-
-    handleResize()
-
-    window.addEventListener(
-      'resize',
-      handleResize
-    )
-
-    return () =>
-      window.removeEventListener(
-        'resize',
-        handleResize
-      )
-
-  }, [])
+    }, [])
 
 
   useEffect(() => {
 
-    let lastScrollY =
+  let lastScrollY =
+    window.scrollY
+
+  function handleScroll() {
+
+    const currentScrollY =
       window.scrollY
 
-    function handleScroll() {
+    /*
+     * TOP OF PAGE
+     *
+     * Full navigation is always visible.
+     */
+    if (currentScrollY <= 12) {
 
-      const currentScrollY =
-        window.scrollY
-
-      if (currentScrollY <= 12) {
-
-        setCollapsed(false)
-        setManuallyExpanded(false)
-
-        lastScrollY =
-          currentScrollY
-
-        return
-      }
-
-      if (
-        currentScrollY >
-        lastScrollY + 6 &&
-        !manuallyExpanded
-      ) {
-        setCollapsed(true)
-      }
+      setCollapsed(false)
+      setManuallyExpanded(false)
 
       lastScrollY =
         currentScrollY
+
+      return
     }
 
-    window.addEventListener(
+    /*
+     * SCROLLING DOWN
+     *
+     * Collapse full navigation into
+     * the floating hamburger.
+     */
+    if (
+      currentScrollY >
+      lastScrollY + 6 &&
+      !manuallyExpanded
+    ) {
+      setCollapsed(true)
+    }
+
+    /*
+     * SCROLLING UP
+     *
+     * Restore full navigation immediately.
+     */
+    if (
+      currentScrollY <
+      lastScrollY - 6
+    ) {
+      setCollapsed(false)
+      setManuallyExpanded(false)
+    }
+
+    lastScrollY =
+      currentScrollY
+  }
+
+  window.addEventListener(
+    'scroll',
+    handleScroll,
+    { passive: true }
+  )
+
+  return () =>
+    window.removeEventListener(
       'scroll',
-      handleScroll,
-      { passive: true }
+      handleScroll
     )
 
-    return () =>
-      window.removeEventListener(
-        'scroll',
-        handleScroll
-      )
-
-  }, [manuallyExpanded])
+}, [manuallyExpanded])
 
 
   function labelVisible(
@@ -216,7 +217,10 @@ const isSpanish =
   ) {
 
     return {
-      color: '#d8d8d8',
+      color:
+        theme === 'dark'
+          ? '#d8d8d8'
+          : '#000000',
       fontSize:
         mobileLabel
           ? '.62rem'
@@ -254,8 +258,10 @@ const isSpanish =
 
   if (collapsed) {
 
-    return (
-      <div style={stickyShell}>
+  return (
+    <div
+      style={floatingHamburgerShell(theme)}
+    >
         <button
           type="button"
           aria-label={
@@ -272,7 +278,11 @@ const isSpanish =
           <Menu
             size={32}
             strokeWidth={0.8}
-            color={WHITE}
+            color={
+              theme === 'dark'
+                ? WHITE
+                : '#000000'
+            }
           />
         </button>
       </div>
@@ -283,7 +293,13 @@ const isSpanish =
 
   return (
 
-    <div style={stickyShell}>
+    <div
+      style={
+        manuallyExpanded
+          ? floatingTopBarShell(theme)
+          : stickyShell(theme)
+      }
+    >
 
       <nav style={navContainer}>
 
@@ -305,7 +321,11 @@ const isSpanish =
           <CircleUser
             size={50}
             strokeWidth={0.65}
-            color={WHITE}
+            color={
+                theme === 'dark'
+                  ? WHITE
+                  : '#000000'
+              }
           />
 
           <span
@@ -339,7 +359,11 @@ const isSpanish =
           <Compass
             size={50}
             strokeWidth={0.65}
-            color={WHITE}
+            color={
+                theme === 'dark'
+                  ? WHITE
+                  : '#000000'
+              }
           />
 
           <span
@@ -572,7 +596,10 @@ const isSpanish =
         >
           <span
             style={{
-              color: WHITE,
+              color:
+                theme === 'dark'
+                  ? WHITE
+                  : '#000000',
               fontSize: '12px',
               fontWeight: 300,
               lineHeight: '30px',
@@ -596,6 +623,81 @@ const isSpanish =
           </span>
         </Link>
 
+        {/* APPEARANCE */}
+          <button
+            type="button"
+            aria-label={
+              theme === 'dark'
+                ? 'Switch to light mode'
+                : 'Switch to dark mode'
+            }
+            title={
+              theme === 'dark'
+                ? 'Light mode'
+                : 'Dark mode'
+            }
+            onClick={onThemeToggle}
+            onMouseEnter={() =>
+              setHoveredItem('appearance')
+            }
+            onMouseLeave={() =>
+              setHoveredItem(null)
+            }
+            style={{
+              ...itemStyle(),
+            }}
+          >
+            <span
+              style={{
+                width: 42,
+                height: 42,
+
+                border:
+                  theme === 'dark'
+                    ? '1px solid rgba(255,255,255,.22)'
+                    : '1px solid rgba(0,0,0,.22)',
+
+                borderRadius: 999,
+
+                background:
+                  theme === 'dark'
+                    ? 'rgba(255,255,255,.06)'
+                    : 'rgba(0,0,0,.05)',
+
+                color:
+                  theme === 'dark'
+                    ? '#ffffff'
+                    : '#000000',
+
+                fontSize: '1.35rem',
+                lineHeight: 1,
+
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+
+                boxSizing: 'border-box',
+                flexShrink: 0,
+
+                transition:
+                  'color .25s ease, background .25s ease, border-color .25s ease',
+              }}
+            >
+              ◐
+            </span>
+
+            <span
+              style={labelStyle(
+                labelVisible('appearance'),
+                isMobile
+              )}
+            >
+              {theme === 'dark'
+                ? 'Light Mode'
+                : 'Dark Mode'}
+            </span>
+          </button>
+
             </nav>
 
     </div>
@@ -618,7 +720,9 @@ export default function TopBar(
 }
 
 
-const stickyShell = {
+const stickyShell = (
+  theme: 'dark' | 'light'
+) => ({
   position:
     'sticky' as const,
 
@@ -635,7 +739,9 @@ const stickyShell = {
   padding: '.55rem .7rem',
 
   background:
-    'rgba(0, 0, 0, .88)',
+    theme === 'dark'
+      ? 'rgba(0, 0, 0, .88)'
+      : 'rgba(255, 255, 255, .92)',
 
   backdropFilter:
     'blur(14px)',
@@ -644,14 +750,21 @@ const stickyShell = {
     'blur(14px)',
 
   border:
-    '1px solid rgba(255,255,255,.07)',
+    theme === 'dark'
+      ? '1px solid rgba(255,255,255,.07)'
+      : '1px solid rgba(0,0,0,.10)',
 
   borderRadius:
     '18px',
 
   boxShadow:
-    '0 8px 30px rgba(0,0,0,.28)'
-}
+    theme === 'dark'
+      ? '0 8px 30px rgba(0,0,0,.28)'
+      : '0 8px 30px rgba(0,0,0,.14)',
+
+  transition:
+    'background .25s ease, border-color .25s ease, box-shadow .25s ease',
+})
 
 
 const navContainer = {
@@ -678,3 +791,113 @@ const hamburgerButton = {
   WebkitTapHighlightColor:
     'transparent'
 }
+
+const floatingHamburgerShell = (
+  theme: 'dark' | 'light'
+) => ({
+  position:
+    'fixed' as const,
+
+  top:
+    '1rem',
+
+  left:
+    '50%',
+
+  transform:
+    'translateX(-50%)',
+
+  zIndex:
+    9999,
+
+  width:
+    'fit-content',
+
+  padding:
+    '.55rem .7rem',
+
+  background:
+    theme === 'dark'
+      ? 'rgba(0, 0, 0, .88)'
+      : 'rgba(255, 255, 255, .92)',
+
+  backdropFilter:
+    'blur(14px)',
+
+  WebkitBackdropFilter:
+    'blur(14px)',
+
+  border:
+    theme === 'dark'
+      ? '1px solid rgba(255,255,255,.07)'
+      : '1px solid rgba(0,0,0,.10)',
+
+  borderRadius:
+    '18px',
+
+  boxShadow:
+    theme === 'dark'
+      ? '0 8px 30px rgba(0,0,0,.28)'
+      : '0 8px 30px rgba(0,0,0,.14)',
+
+  transition:
+    'background .25s ease, border-color .25s ease, box-shadow .25s ease'
+})
+
+const floatingTopBarShell = (
+  theme: 'dark' | 'light'
+) => ({
+  position:
+    'fixed' as const,
+
+  top:
+    '1rem',
+
+  left:
+    '50%',
+
+  transform:
+    'translateX(-50%)',
+
+  zIndex:
+    9999,
+
+  width:
+    'fit-content',
+
+  maxWidth:
+    'calc(100vw - 2rem)',
+
+  margin:
+    0,
+
+  padding:
+    '.55rem .7rem',
+
+  background:
+    theme === 'dark'
+      ? 'rgba(0, 0, 0, .88)'
+      : 'rgba(255, 255, 255, .92)',
+
+  backdropFilter:
+    'blur(14px)',
+
+  WebkitBackdropFilter:
+    'blur(14px)',
+
+  border:
+    theme === 'dark'
+      ? '1px solid rgba(255,255,255,.07)'
+      : '1px solid rgba(0,0,0,.10)',
+
+  borderRadius:
+    '18px',
+
+  boxShadow:
+    theme === 'dark'
+      ? '0 8px 30px rgba(0,0,0,.28)'
+      : '0 8px 30px rgba(0,0,0,.14)',
+
+  transition:
+    'background .25s ease, border-color .25s ease, box-shadow .25s ease'
+})

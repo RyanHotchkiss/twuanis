@@ -10,7 +10,7 @@ const assignments=rows.flatMap(l=>[province.id,canton.id,l.id===uuid(36)?4:1,3,.
 const rowFor=id=>rows.find(r=>r.id===id);
 const db={from(table){let filters=[],orders=[],start=0,end=499,single=false,cols;const q={select(c){cols=c;return q},eq(k,v){filters.push(['eq',k,v]);return q},neq(k,v){filters.push(['neq',k,v]);return q},is(k,v){filters.push(['eq',k,v]);return q},in(k,v){assert.ok(v.length<=25);filters.push(['in',k,v]);return q},gte(k,v){filters.push(['gte',k,v]);return q},lt(k,v){filters.push(['lt',k,v]);return q},order(k){orders.push(k);return q},range(a,b){start=a;end=b;return q},maybeSingle(){single=true;return q},then(resolve,reject){return Promise.resolve().then(()=>{
  calls.push({table,filters,cols,start,single});
- let data=(table==='listings'?rows:assignments).filter(row=>filters.every(([op,k,v])=>{const actual=k.startsWith('listings.')?rowFor(row.listing_id)[k.slice(9)]:row[k];return op==='eq'?String(actual)===String(v):op==='neq'?String(actual)!==String(v):op==='in'?v.includes(actual):op==='gte'?actual!==null&&actual>=v:actual!==null&&actual<v}));
+ let data=(table==='listings'?rows:assignments).filter(row=>filters.every(([op,k,v])=>{const actual=k.startsWith('listings.')?rowFor(row.listing_id)[k.slice(9)]:k.startsWith('ontology_terms.')?row.ontology_terms?.[k.slice(15)]:row[k];return op==='eq'?String(actual)===String(v):op==='neq'?String(actual)!==String(v):op==='in'?v.includes(actual):op==='gte'?actual!==null&&actual>=v:actual!==null&&actual<v}));
  data=data.slice().sort((a,b)=>{for(const k of orders){if(a[k]!==b[k])return String(a[k])<String(b[k])?-1:1}return 0});
  const count=data.length;
  if(single)return {data:data[0]??null,error:null};
@@ -23,7 +23,7 @@ const request={subjectListingId:uuid(1),geographyLevel:'canton',normalizationBas
 const loader=load('lib/price-meter-comparable-loader.ts'),engine=load('lib/price-meter-comparable-engine.ts');
 function analyze(result,dimensions=[]){return engine.runPriceMeterComparableEngine({request:{...request,activeDimensions:dimensions},subjectObservation:result.subject.observation,subjectCharacteristics:result.subject.characteristics,subjectYearBuiltRange:result.subject.yearBuiltRange,boundedObservations:result.observations,memberships:result.memberships})}
 (async()=>{
- const result=await loader.loadPriceMeterComparableBoundedPopulation(request);
+ const result=await loader.loadPriceMeterComparableBoundedPopulation({...request,activeDimensions:['year_built','bedrooms']});
  ok(result.observations.length===28,'Subject plus27 eligible canonical peers, excluding legacy/rent/draft/areas/invalid price/type');
  ok(result.subject.observation.geography.canton.id===canton.id,'lossless canonical geography overrides misleading text');
  ok(result.observations.every(o=>o.transactionType==='sale'&&o.propertyBasis==='improved_property'&&o.normalizationBasis==='land'),'immutable analytical boundaries');
@@ -31,7 +31,7 @@ function analyze(result,dimensions=[]){return engine.runPriceMeterComparableEngi
  ok(!rpcIds.includes(uuid(33))&&!rpcIds.includes(uuid(34))&&!rpcIds.includes(uuid(36)),'area and property-type exclusions before hydration');
  ok(calls.filter(c=>c.single).length===1,'subject listing acquired once');
  const subjectMembership=calls.filter(c=>c.table==='listings_ontology_terms'&&c.filters.some(([op,k,v])=>op==='in'&&k==='listing_id'&&v.includes(uuid(1))));
- ok(subjectMembership.length===3,'subject5 membership rows fetched once across3 capped pages');
+ ok(subjectMembership.length===2,'subject3 characteristic rows fetched once across2 capped pages; no geography membership dump');
  ok(fxCalls===0,'CRC-only no FX acquisition');
  const before=calls.length,rpcBefore=rpcIds.length;
  const unconstrained=analyze(result),category=analyze(result,['year_built']),combined=analyze(result,['year_built','bedrooms']);

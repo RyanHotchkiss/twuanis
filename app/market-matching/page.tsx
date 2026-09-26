@@ -1,3 +1,4 @@
+import CanonicalMarketApplyPanel from '@/app/components/CanonicalMarketApplyPanel'
 import MarketFilters from '@/app/components/MarketFilters'
 import MarketMatchingResults from './MarketMatchingResults'
 
@@ -37,10 +38,7 @@ export default async function MarketMatchingPage({
   const options =
     await getExplorerOptions()
 
-  const matches =
-    await getMarketMatches(filters, 'en')
-
-  return (
+return (
     <main
       style={{
         maxWidth: '1400px',
@@ -68,17 +66,9 @@ export default async function MarketMatchingPage({
         location, and market characteristics that matter most to you.
       </p>
 
-      <MarketFilters
-        workspace="matching"
-        options={options}
-        filters={filters}
-        basePath="/market-matching"
-      />
+      <CanonicalMarketApplyPanel workspace="matching" options={options} filters={filters} language="en"/>
 
-      <MarketMatchingResults
-        filters={filters}
-        matches={matches}
-      />
+      
     </main>
   )
 }

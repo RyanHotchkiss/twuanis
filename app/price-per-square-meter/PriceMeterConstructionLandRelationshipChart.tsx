@@ -1,3 +1,5 @@
+import PriceMeterChartViewport from './PriceMeterChartViewport'
+
 type Coordinate = {
   constructionToLandRatio:
     number
@@ -190,6 +192,7 @@ export default function PriceMeterConstructionLandRelationshipChart({
 
 
   return (
+    <PriceMeterChartViewport label="Construction-to-Land relationship chart; scroll horizontally to inspect all labels">
     <div style={chartShell}>
       <div style={chartYAxisLabel}>
         Price / {normalizationUnitLabel}
@@ -295,6 +298,7 @@ export default function PriceMeterConstructionLandRelationshipChart({
         or building footprint.
       </div>
     </div>
+    </PriceMeterChartViewport>
   )
 }
 
@@ -307,7 +311,7 @@ const chartShell = {
     '1.25rem',
 
   padding:
-    '1.5rem 1.5rem 1.25rem 4.5rem',
+    '1.5rem 6rem 1.25rem 6rem',
 
   background:
     '#111',
@@ -321,6 +325,7 @@ const chartShell = {
 
 
 const plot = {
+  marginBottom: '7rem',
   position:
     'relative' as const,
 
@@ -393,7 +398,7 @@ const pointLabel = {
   gap:
     '.12rem',
 
-  minWidth:
+  width:
     '220px',
 
   textAlign:
@@ -403,7 +408,9 @@ const pointLabel = {
     '.72rem',
 
   whiteSpace:
-    'nowrap' as const
+    'normal' as const,
+
+  overflowWrap: 'anywhere' as const
 }
 
 

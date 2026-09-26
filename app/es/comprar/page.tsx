@@ -14,6 +14,7 @@ import FilterButton from '@/app/components/FilterButton'
 import TopBar from '@/app/components/TopBar'
 import BuyHeaderES from '@/app/components/BuyHeaderES'
 import BuySidebarES from '@/app/components/BuySidebarES'
+import MarketplaceListingGrid from '@/app/components/marketplace/MarketplaceListingGrid'
 import { normalizeText } from '@/lib/normalizeText' 
 import {
   getSavedSearch,
@@ -146,6 +147,9 @@ const navButton = {
 
   const [isMobile, setIsMobile] =
     useState(false)
+
+  const [theme, setTheme] =
+    useState<'dark' | 'light'>('dark')
 
   const [
     showSaveSearchAuth,
@@ -931,94 +935,302 @@ const filteredProperties = properties.filter((property) => {
       filteredProperties
 
   return (
-      <main style={{
-        background: '#000',
-        minHeight: '100vh',
-        color: '#fff',
-        padding: '20px',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
+      <main
+        style={{
+          background:
+            theme === 'dark'
+              ? '#000000'
+              : '#f7f7f4',
+
+          minHeight: '100vh',
+
+          color:
+            theme === 'dark'
+              ? '#ffffff'
+              : '#111111',
+
+          padding: '20px',
+
+          position: 'relative',
+
+          overflow: 'hidden',
+
+          transition:
+            'background .25s ease, color .25s ease'
+        }}
+      >
 
       {showSaveSearchAuth && (
         <EmailAuthModal
           onClose={() =>
             setShowSaveSearchAuth(false)
           }
-          redirectTo="/en/buy"
+          redirectTo="/es/comprar"
         />
       )}
 
-        {/* TOP NAV */}
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              padding: '.5rem 0',
-              marginBottom: '40px',
-              borderBottom: '1px solid #151515'
-            }}>
+        {/* MARKETPLACE MASTHEAD */}
+          <section
+            style={{
+              position: 'relative',
 
-                    <TopBar
-                      onFilterClick={() =>
-                        setShowMobileFilters(true)
-                      }
-                    />
+              minHeight:
+                isMobile
+                  ? '420px'
+                  : '360px',
 
-                    <div className="floating-filter-button">
-                      <FilterButton
-                        onClick={() => setShowMobileFilters(true)}
-                      />
-                    </div>
+              marginBottom:
+                '24px',
 
-            </div>
+              borderRadius:
+                '28px',
 
-            {/* HEADER */}
+              overflow:
+                'hidden',
 
-            <BuyHeaderES />
+              backgroundImage:
+                theme === 'dark'
+                  ? 'url(/images/buy-dark.webp)'
+                  : 'url(/images/buy-light.webp)',
 
+              backgroundSize:
+                'cover',
+
+              backgroundPosition:
+                'center center',
+
+              backgroundRepeat:
+                'no-repeat',
+
+              border:
+                theme === 'dark'
+                  ? '1px solid rgba(255,255,255,.08)'
+                  : '1px solid rgba(0,0,0,.10)',
+
+              transition:
+                'background-image .25s ease, border-color .25s ease'
+            }}
+          >
+            {/* IMAGE CONTRAST LAYER */}
+            <div
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                inset: 0,
+
+                background:
+                  theme === 'dark'
+                    ? 'linear-gradient(180deg, rgba(0,0,0,.30) 0%, rgba(0,0,0,.40) 55%, rgba(0,0,0,.62) 100%)'
+                    : 'linear-gradient(180deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.18) 55%, rgba(255,255,255,.42) 100%)',
+
+                pointerEvents:
+                  'none'
+              }}
+            />
+
+            {/* MASTHEAD CONTENT */}
+            <div
+              style={{
+                position: 'relative',
+
+                zIndex: 1,
+
+                minHeight:
+                  isMobile
+                    ? '420px'
+                    : '360px',
+
+                padding:
+                  isMobile
+                    ? '14px'
+                    : '16px 24px 28px',
+
+                boxSizing:
+                  'border-box',
+
+                display:
+                  'flex',
+
+                flexDirection:
+                  'column'
+              }}
+            >
+              {/* TOP NAV */}
               <div
                 style={{
+                  width: '100%',
+
                   display: 'flex',
-                  justifyContent: 'center',
-                  marginBottom: '24px',
-                  gap: '12px',
-                  flexWrap: 'wrap',
+
+                  justifyContent:
+                    'center',
+
+                  alignItems:
+                    'flex-start',
+
+                  position:
+                    'relative'
                 }}
               >
-                <button
-                  type="button"
-                  onClick={handleSaveSearch}
+                <TopBar
+                  theme={theme}
+
+                  onThemeToggle={() =>
+                    setTheme(current =>
+                      current === 'dark'
+                        ? 'light'
+                        : 'dark'
+                    )
+                  }
+
+                  onFilterClick={() =>
+                    setShowMobileFilters(true)
+                  }
+                />
+
+                <div
+                  className="floating-filter-button"
+                >
+                  <FilterButton
+                    onClick={() =>
+                      setShowMobileFilters(true)
+                    }
+                  />
+                </div>
+              </div>
+
+              {/* HEADER + ACTIONS */}
+              <div
+                style={{
+                  flex: 1,
+
+                  display:
+                    'flex',
+
+                  flexDirection:
+                    'column',
+
+                  alignItems:
+                    'center',
+
+                  justifyContent:
+                    'center',
+
+                  padding:
+                    isMobile
+                      ? '28px 12px 18px'
+                      : '24px 20px 12px'
+                }}
+              >
+                <BuyHeaderES
+                  theme={theme}
+                />
+
+                <div
                   style={{
-                    background: '#fff',
-                    border: '1px solid #fff',
-                    color: '#000',
-                    padding: '12px 20px',
-                    borderRadius: '999px',
-                    cursor: 'pointer',
-                    fontWeight: 'bold'
+                    display:
+                      'flex',
+
+                    justifyContent:
+                      'center',
+
+                    gap:
+                      '12px',
+
+                    flexWrap:
+                      'wrap'
                   }}
                 >
-                  Guardar búsqueda
-                </button>
+                  <button
+                    type="button"
 
-                <Link
-                  href="/es/favoritos"
-                  style={{
-                    background: '#161616',
-                    border: '1px solid #C7A44B',
-                    color: '#C7A44B',
-                    padding: '12px 20px',
-                    borderRadius: '999px',
-                    cursor: 'pointer',
-                    fontWeight: 'bold',
-                    textDecoration: 'none'
-                  }}
-                >
-                  Abrir Favoritos
-                </Link>
+                    onClick={
+                      handleSaveSearch
+                    }
 
-              </div>   
+                    style={{
+                      background:
+                        theme === 'dark'
+                          ? '#ffffff'
+                          : '#111111',
+
+                      border:
+                        theme === 'dark'
+                          ? '1px solid #ffffff'
+                          : '1px solid #111111',
+
+                      color:
+                        theme === 'dark'
+                          ? '#000000'
+                          : '#ffffff',
+
+                      padding:
+                        '12px 20px',
+
+                      borderRadius:
+                        '999px',
+
+                      cursor:
+                        'pointer',
+
+                      fontWeight:
+                        'bold',
+
+                      transition:
+                        'background .25s ease, color .25s ease, border-color .25s ease'
+                    }}
+                  >
+                    Guardar búsqueda
+                  </button>
+
+                  <Link
+                    href="/es/favoritos"
+
+                    style={{
+                      background:
+                        theme === 'dark'
+                          ? 'rgba(0,0,0,.72)'
+                          : 'rgba(255,255,255,.88)',
+
+                      border:
+                        '1px solid #C7A44B',
+
+                      color:
+                        theme === 'dark'
+                          ? '#C7A44B'
+                          : '#6f5315',
+
+                      padding:
+                        '12px 20px',
+
+                      borderRadius:
+                        '999px',
+
+                      cursor:
+                        'pointer',
+
+                      fontWeight:
+                        'bold',
+
+                      textDecoration:
+                        'none',
+
+                      backdropFilter:
+                        'blur(10px)',
+
+                      WebkitBackdropFilter:
+                        'blur(10px)',
+
+                      transition:
+                        'background .25s ease, color .25s ease'
+                    }}
+                  >
+                    Abrir Favoritos
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </section>
 
         {/* MAIN GRID */}
           <div style={{
@@ -1031,18 +1243,28 @@ const filteredProperties = properties.filter((property) => {
         {/* BUY EXPERIENCE */}
           <div
             style={{
-              background: '#111',
+              background:
+                theme === 'dark'
+                  ? '#111111'
+                  : '#ffffff',
               borderRadius: '28px',
               overflow: isMobile
                 ? 'visible'
                 : 'hidden',
               textDecoration: 'none',
               color: '#fff',
-              border: '1px solid #222',
+              border:
+                theme === 'dark'
+                  ? '1px solid #222222'
+                  : '1px solid rgba(0,0,0,.12)',
+
               display: 'grid',
-              gridTemplateColumns: isMobile
-                ? '1fr'
-                : '320px 1fr',
+              gridTemplateColumns:
+                isMobile
+                  ? '1fr'
+                  : '320px 1fr',
+              transition:
+                  'background .25s ease, color .25s ease, border-color .25s ease',
               minHeight: '620px',
               width: '100%'
             }}
@@ -1112,362 +1334,102 @@ const filteredProperties = properties.filter((property) => {
 
             />
 
-{/* PROPERTY PREVIEW right-center column */}
-                <div
-                  style={{
-                    padding: isMobile ? '16px' : '30px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    width: '100%',
-                    overflow: 'hidden'
-                  }}
-                >
+          <MarketplaceListingGrid
+                theme={theme}
 
-                  <div>
+                listings={
+                  rankedProperties
+                }
 
-                    <div
-                      style={{
-                        display: 'grid',
-                        gridTemplateColumns:
-  isMobile
-    ? '1fr'
-    : 'repeat(5, 1fr)',
-                        gap: '1.25rem',
-                        alignContent: 'start'
-                      }}
-                    >
+                transactionType="buy"
 
-                              {rankedProperties.map((property) => (
+                language="es"
 
-                                <Link
-                                  href={`/es/comprar/anuncio/${property.id}`}
-                                  key={property.id}
-                                  style={{
-                                    textDecoration: 'none',
-                                    color: 'inherit'
-                                  }}
-                                >
+                favoriteIds={
+                  favoriteIds
+                }
 
-                                  <div
-                                    style={{
-                                      background: '#181818',
-                                      border: '1px solid #222',
-                                      borderRadius: '22px',
-                                      overflow: 'hidden',
-                                      cursor: 'pointer'
-                                    }}
-                                  >
+                isSelected={
+                  isSelected
+                }
 
-                                    {/* PROPERTY IMAGE */}
-                                    <div
-                                      style={{
-                                        aspectRatio: '4 / 3',
-                                        overflow: 'hidden',
-                                        position: 'relative',
-                                        background: '#111'
-                                      }}
-                                    >
+                maximumProperties={
+                  maximumProperties
+                }
 
-                                      {Array.isArray(property.images) &&
-                                      property.images[0] ? (
+                selectedPropertyIds={
+                  propertyIds
+                }
 
-                                        <img
-                                          referrerPolicy="no-referrer"
-                                          src={property.images[0]}
-                                          alt={property.title}
-                                          style={{
-                                            width: '100%',
-                                            height: '100%',
-                                            objectFit: 'cover',
-                                            display: 'block'
-                                          }}
-                                        />
+                onToggleCompare={
+                  toggleProperty
+                }
 
-                                      ) : (
+                onToggleFavorite={async property => {
+                  const alreadySaved =
+                    favoriteIds.includes(
+                      property.id
+                    )
 
-                                        <div
-                                          style={{
-                                            height: '100%',
-                                            background:
-                                              'linear-gradient(135deg, #222 0%, #333 100%)',
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            color: '#555',
-                                            fontSize: '20px'
-                                          }}
-                                        >
-                                          No Image
-                                        </div>
+                  await toggleFavorite(
+                    property.id
+                  )
 
-                                      )}
+                  const ids =
+                    await getListingFavoriteIds()
 
-                                      <button
-                                            onClick={async (e) => {
+                  setFavoriteIds(ids)
 
-                                              e.preventDefault()
-                                              e.stopPropagation()
+                  const metadata = {
+                    title:
+                      property.title,
 
-                                              const alreadySaved =
-                                                favoriteIds.includes(
-                                                  property.id
-                                                )
+                    province:
+                      property.province,
 
-                                              await toggleFavorite(
-                                                  property.id
-                                                )
+                    canton:
+                      property.canton,
 
-                                              const metadata = {
-                                                title: property.title,
-                                                province: property.province,
-                                                canton: property.canton,
-                                                district: property.district,
-                                                propertyType: property.property_type,
-                                                transactionType: 'buy',
-                                                pathname: window.location.pathname,
-                                                href: window.location.href,
-                                                source: 'search-results'
-                                              }
+                    district:
+                      property.district,
 
-                                              if (alreadySaved) {
+                    propertyType:
+                      property.property_type,
 
-                                                await trackListingRemoved({
-                                                  listingId: property.id,
-                                                  metadata
-                                                })
+                    transactionType:
+                      'buy',
 
-                                              } else {
+                    pathname:
+                      window.location.pathname,
 
-                                                await recordListingSaved({
-                                                  listingId: property.id,
-                                                  metadata
-                                                })
+                    href:
+                      window.location.href,
 
-                                              }
+                    source:
+                      'search-results'
+                  }
 
-                                            }}
-                                        style={{
-                                          position: 'absolute',
-                                          top: '1rem',
-                                          right: '1rem',
-                                          width: '2.75rem',
-                                          height: '2.75rem',
-                                          borderRadius: '999px',
-                                          border: '1px solid rgba(255,255,255,.15)',
-                                          background: 'rgba(0,0,0,.55)',
-                                          backdropFilter: 'blur(8px)',
-                                          display: 'flex',
-                                          justifyContent: 'center',
-                                          alignItems: 'center',
-                                          cursor: 'pointer',
-                                          zIndex: 20
-                                        }}
-                                      >
+                  if (alreadySaved) {
+                    await trackListingRemoved({
+                      listingId:
+                        property.id,
 
-                                        <span style={{
-                                          fontSize: '1.25rem',
-                                          color:
-                                            favoriteIds.includes(property.id)
-                                              ? '#D4AF37'
-                                              : '#fff',
-                                          transition: 'all .2s ease'
-                                        }}>
-                                          ♥
-                                        </span>
+                      metadata
+                    })
+                  } else {
+                    await recordListingSaved({
+                      listingId:
+                        property.id,
 
-                                      </button>
+                      metadata
+                    })
+                  }
+                }}
+              />
 
-                                  <button
-                                    type="button"
-                                    onClick={e => {
-                                      e.preventDefault()
-                                      e.stopPropagation()
-
-                                      toggleProperty(
-                                        property.id
-                                      )
-                                    }}
-                                    style={{
-                                      position: 'absolute',
-                                      left: '1rem',
-                                      bottom: '1rem',
-                                      zIndex: 20,
-                                      border:
-                                        isSelected(property.id)
-                                          ? '1px solid #fff'
-                                          : '1px solid rgba(255,255,255,.25)',
-                                      borderRadius: '999px',
-                                      padding: '.55rem .8rem',
-                                      background:
-                                        isSelected(property.id)
-                                          ? '#fff'
-                                          : 'rgba(0,0,0,.65)',
-                                      color:
-                                        isSelected(property.id)
-                                          ? '#000'
-                                          : '#fff',
-                                      backdropFilter: 'blur(8px)',
-                                      cursor:
-                                        !isSelected(property.id) &&
-                                        propertyIds.length >=
-                                          maximumProperties
-                                          ? 'not-allowed'
-                                          : 'pointer',
-                                      fontSize: '.75rem',
-                                      fontWeight: 700,
-                                      opacity:
-                                        !isSelected(property.id) &&
-                                        propertyIds.length >=
-                                          maximumProperties
-                                          ? 0.45
-                                          : 1
-                                    }}
-                                    disabled={
-                                      !isSelected(property.id) &&
-                                      propertyIds.length >=
-                                        maximumProperties
-                                    }
-                                  >
-                                    {isSelected(property.id)
-                                      ? 'Selected'
-                                      : '+ Comparar'}
-                                  </button>
-
-                                    </div>
-
-                                    {/* CONTENT */}
-                                    <div
-                                      style={{
-                                        padding: '1.25rem'
-                                      }}
-                                    >
-
-                                      <h2
-                                        style={{
-                                          fontSize: '1.25rem',
-                                          marginBottom: '.75rem'
-                                        }}
-                                      >
-                                        {property.title}
-                                      </h2>
-
-                                      <p
-                                        style={{
-                                          color: '#888',
-                                          marginBottom: '16px'
-                                        }}
-                                      >
-                                        {property.province} → {property.canton} → {property.district}
-                                      </p>
-
-                                      <div
-                                        style={{
-                                          display: 'flex',
-                                          flexWrap: 'wrap',
-                                          gap: '10px'
-                                        }}
-                                      >
-
-                                      <span style={pill}>
-                                        {property.property_type}
-                                      </span>
-
-                                      {property.marketplace_original_price && (
-                                        <span style={pill}>
-                                          {property.marketplace_original_currency === 'USD'
-                                            ? `$${Number(property.marketplace_original_price).toLocaleString()}`
-                                            : `₡${Number(property.marketplace_original_price).toLocaleString()}`}
-                                        </span>
-                                      )}
-
-                                      {property.property_area && (
-                                        <span style={pill}>
-                                          {property.property_area}
-                                        </span>
-                                      )}
-
-                                      {property.construction_area && (
-                                        <span style={pill}>
-                                          {property.construction_area} Construcción
-                                        </span>
-                                      )}
-
-                                      {property.bedrooms && (
-                                        <span style={pill}>
-                                          {property.bedrooms
-                                            ?.replace('Bedroom', '')
-                                            .replace('Bedrooms', '')
-                                            .trim()} Habitaciones
-                                        </span>
-                                      )}
-
-                                      {property.bathrooms && (
-                                        <span style={pill}>
-                                          {property.bathrooms
-                                            ?.replace('Bathroom', '')
-                                            .replace('Bathrooms', '')
-                                            .trim()} Baños
-                                        </span>
-                                      )}
-
-                                      {property.parking && (
-                                        <span style={pill}>
-                                          {property.parking
-                                            ?.replace('Vehicle', '')
-                                            .replace('Vehicles', '')
-                                            .trim()} Parqueos
-                                        </span>
-                                      )}
-
-                                       
-                                      </div>
-
-                                    </div>
-
-                                  </div>
-
-                                </Link>
-
-                              ))}
-
-                     
-
-                      {filteredProperties.length === 0 && (
-
-                        <div
-                          style={{
-                            background: '#181818',
-                            border: '1px solid #222',
-                            borderRadius: '22px',
-                            padding: '40px',
-                            textAlign: 'center'
-                          }}
-                        >
-
-                          <h2
-                            style={{
-                              marginBottom: '10px'
-                            }}
-                          >
-                            No se encontraron propiedades en venta
-                          </h2>
-
-                          <p
-                            style={{
-                              color: '#777'
-                            }}
-                          >
-                            Intenta ajustar los filtros de propiedad.
-                          </p>
-
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-           </div>
+                                
+          </div>
+        </div>
         <PropertyComparisonTray
           properties={properties}
           language="es"

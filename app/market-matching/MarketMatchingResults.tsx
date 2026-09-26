@@ -5,6 +5,7 @@ export default function MarketMatchingResults({
   filters: any
   matches: any
 }) {
+  const es = matches.language === 'es'
   const listings =
     matches.listings || []
 
@@ -14,16 +15,15 @@ export default function MarketMatchingResults({
       <section style={header}>
         <div>
           <div style={eyebrow}>
-            Property Matching
+            {es ? 'Coincidencia de propiedades' : 'Property Matching'}
           </div>
 
           <h2 style={title}>
-            Best Matching Properties
+            {es ? 'Propiedades con mayor coincidencia' : 'Best Matching Properties'}
           </h2>
 
           <p style={description}>
-            Properties ranked by how closely
-            they match your selected criteria.
+            {es ? 'Propiedades ordenadas según la evidencia de tus criterios seleccionados.' : 'Properties ranked by how closely             they match your selected criteria.'}
           </p>
         </div>
 
@@ -33,7 +33,7 @@ export default function MarketMatchingResults({
           </span>
 
           <span style={resultCountLabel}>
-            Matches
+            {es ? 'Resultados' : 'Matches'}
           </span>
         </div>
       </section>
@@ -54,7 +54,7 @@ export default function MarketMatchingResults({
 
                 <div style={rankColumn}>
                   <div style={rankLabel}>
-                    Rank
+                    {es ? 'Posición' : 'Rank'}
                   </div>
 
                   <div style={rankValue}>
@@ -97,11 +97,11 @@ export default function MarketMatchingResults({
 
                       <div style={scoreBlock}>
                         <div style={scoreValue}>
-                          {listing.matchScore}%
+                          {listing.matchScore === null ? (matches.language === 'es' ? 'Sin evidencia evaluable' : 'No evaluable evidence') : `${listing.matchScore.toFixed(2)}%`}
                         </div>
 
                         <div style={scoreLabel}>
-                          Match
+                          {es ? 'Coincidencia' : 'Match'}
                         </div>
                       </div>
                     </div>
@@ -109,7 +109,7 @@ export default function MarketMatchingResults({
 
                     <div style={facts}>
                       <Fact
-                        label="Price"
+                        label={es?"Precio":"Price"}
                         value={
                           listing.formattedPrice ||
                           'N/A'
@@ -117,7 +117,7 @@ export default function MarketMatchingResults({
                       />
 
                       <Fact
-                        label="Property Type"
+                        label={es?"Tipo de propiedad":"Property Type"}
                         value={
                           listing.property_type ||
                           'N/A'
@@ -125,28 +125,33 @@ export default function MarketMatchingResults({
                       />
 
                       <Fact
-                        label="Bedrooms"
+                        label={es?"Dormitorios":"Bedrooms"}
                         value={
-                          listing.bedrooms ||
+                          listing.bedrooms ??
                           'N/A'
                         }
                       />
 
                       <Fact
-                        label="Bathrooms"
+                        label={es?"Baños":"Bathrooms"}
                         value={
-                          listing.bathrooms ||
+                          listing.bathrooms ??
                           'N/A'
                         }
                       />
                     </div>
 
 
+                    {listing.unknownFeatures?.length > 0 && <p>
+                      {matches.language === 'es' ? 'Evidencia desconocida: ' : 'Unknown evidence: '}
+                      {listing.unknownFeatures.join(' · ')}
+                    </p>}
+
                     <div style={reasoningGrid}>
 
                       <div style={reasoningPanel}>
                         <div style={reasoningHeading}>
-                          Why It Matches
+                          {es ? 'Coincidencias confirmadas' : 'Why It Matches'}
                         </div>
 
                         {listing.matchReasons?.length >
@@ -171,7 +176,7 @@ export default function MarketMatchingResults({
                           </div>
                         ) : (
                           <div style={muted}>
-                            No match reasons available.
+                            {es ? 'No hay coincidencias confirmadas.' : 'No match reasons available.'}
                           </div>
                         )}
                       </div>
@@ -179,7 +184,7 @@ export default function MarketMatchingResults({
 
                       <div style={reasoningPanel}>
                         <div style={reasoningHeading}>
-                          Tradeoffs
+                          {es ? 'Diferencias confirmadas' : 'Tradeoffs'}
                         </div>
 
                         {listing.missingFeatures
@@ -208,7 +213,7 @@ export default function MarketMatchingResults({
                               ✓
                             </span>
 
-                            No identified tradeoffs
+                            {es ? 'No hay diferencias confirmadas' : 'No identified tradeoffs'}
                           </div>
                         )}
                       </div>
@@ -226,12 +231,11 @@ export default function MarketMatchingResults({
       ) : (
         <div style={emptyState}>
           <div style={emptyTitle}>
-            No matching properties found
+            {es ? 'No se encontraron propiedades' : 'No matching properties found'}
           </div>
 
           <div style={emptyDescription}>
-            Adjust your criteria to broaden
-            the property search.
+            {es ? 'Ajusta los criterios para ampliar la búsqueda.' : 'Adjust your criteria to broaden             the property search.'}
           </div>
         </div>
       )}

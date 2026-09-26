@@ -25,7 +25,7 @@ export default async function SavedAnalysisPage({
             matching: 'property-matching',
             comparison: 'market-comparison',
             scarcity: 'market-frequency',
-            'price-meter': 'price-per-square-meter',
+            'price-meter': 'price-meter',
             'buyer-demand': 'buyer-demand'
           }
 

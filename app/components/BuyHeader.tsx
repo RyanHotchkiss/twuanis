@@ -3,11 +3,13 @@
 type BuyHeaderProps = {
   title?: string
   subtitle?: string
+  theme?: 'dark' | 'light'
 }
 
 export default function BuyHeader({
   title = 'Twuanis',
-  subtitle = 'Find Properties for Sale'
+  subtitle = 'Find Properties for Sale',
+  theme = 'dark'
 }: BuyHeaderProps) {
 
   return (
@@ -24,7 +26,10 @@ export default function BuyHeader({
                 fontSize: '72px',
                 marginBottom: '10px',
 
-                color: '#ffffff',
+                color:
+                  theme === 'dark'
+                    ? '#ffffff'
+                    : '#000000',
 
                 WebkitTextStroke: '2px #d4af37',
 
@@ -39,7 +44,10 @@ export default function BuyHeader({
 
       <p
         style={{
-          color: '#fff',
+          color:
+            theme === 'dark'
+              ? '#ffffff'
+              : '#000000',
           fontSize: '22px'
         }}
       >

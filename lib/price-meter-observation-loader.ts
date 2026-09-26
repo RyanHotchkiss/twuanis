@@ -1,7 +1,7 @@
 import 'server-only'
 import {
-  getMatchingListings
-} from '@/lib/statistics-engine'
+  loadCanonicalMarketObservationRows
+} from '@/lib/canonical-market-observation-rows'
 
 import {
   resolvePriceMeterAnalyticalIdentity,
@@ -27,9 +27,7 @@ import {
   resolveCanonicalGeography
 } from '@/lib/geography/canonical-geography'
 
-import {
-  resolveListingImages
-} from '@/app/utils/resolveListingImages'
+
 
 
 
@@ -54,180 +52,9 @@ export type PriceMeterMarketFilters = {
 }
 
 
-function formatCRC(
-  value:
-    number | null,
-  suffix =
-    ''
-) {
-  if (
-    value === null ||
-    Number.isNaN(
-      value
-    )
-  ) {
-    return null
-  }
-
-  return `₡${Math.round(value).toLocaleString()}${suffix}`
+function decoratePriceMeterListing(listing:any, context:{analyticalDate:string;fxIdentity:PriceMeterFxIdentity|null}) {
+  return {...listing,analyticalIdentity:resolvePriceMeterAnalyticalIdentity(listing,context)}
 }
-
-
-function formatUSD(
-  value:
-    number | null,
-  suffix =
-    ''
-) {
-  if (
-    value === null ||
-    Number.isNaN(
-      value
-    )
-  ) {
-    return null
-  }
-
-  return `$${Math.round(value).toLocaleString()}${suffix}`
-}
-
-
-const SQM_TO_SQFT =
-  10.7639
-
-
-function pricePerFt2(
-  value:
-    number | null
-) {
-  if (
-    value === null ||
-    Number.isNaN(
-      value
-    )
-  ) {
-    return null
-  }
-
-  return value /
-    SQM_TO_SQFT
-}
-
-
-function decoratePriceMeterListing(
-  listing:
-    any,
-
-  context: {
-    analyticalDate:
-      string
-
-    fxIdentity:
-      PriceMeterFxIdentity | null
-  }
-) {
-  const analyticalIdentity =
-    resolvePriceMeterAnalyticalIdentity(
-      listing,
-      context
-    )
-
-
-  const price =
-    analyticalIdentity
-      .price
-      .analyticalAmount
-
-
-  const propertyArea =
-    analyticalIdentity
-      .propertyArea
-      .exactM2
-
-
-  const constructionArea =
-    analyticalIdentity
-      .constructionArea
-      .exactM2
-
-
-  const pricePerLandM2 =
-    price &&
-    propertyArea
-      ? price /
-        propertyArea
-      : null
-
-
-  const pricePerConstructionM2 =
-    price &&
-    constructionArea
-      ? price /
-        constructionArea
-      : null
-
-
-  return {
-    ...listing,
-
-    analyticalIdentity,
-
-    images:
-      resolveListingImages(
-        listing.images
-      ),
-
-    formattedPrice:
-      analyticalIdentity
-        .price
-        .originalAmount !==
-        null
-        ? analyticalIdentity
-            .price
-            .originalCurrency ===
-          'USD'
-          ? formatUSD(
-              analyticalIdentity
-                .price
-                .originalAmount
-            )
-          : formatCRC(
-              analyticalIdentity
-                .price
-                .originalAmount
-            )
-        : null,
-
-    pricePerLandM2:
-      formatCRC(
-        pricePerLandM2,
-        ' / m²'
-      ),
-
-    pricePerLandFt2:
-      formatCRC(
-        pricePerFt2(
-          pricePerLandM2
-        ),
-        ' / ft²'
-      ),
-
-    pricePerConstructionM2:
-      formatCRC(
-        pricePerConstructionM2,
-        ' / m²'
-      ),
-
-    pricePerConstructionFt2:
-      formatCRC(
-        pricePerFt2(
-          pricePerConstructionM2
-        ),
-        ' / ft²'
-      )
-  }
-}
-
 
 export type PriceMeterObservationLoadResult = {
   analyticalDate:
@@ -259,9 +86,7 @@ export async function loadPriceMeterObservations(
    */
 
   const listings =
-    await getMatchingListings(
-      filters, undefined, []
-    )
+    await loadCanonicalMarketObservationRows(filters)
 
 
   /*

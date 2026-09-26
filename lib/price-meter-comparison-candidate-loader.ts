@@ -42,6 +42,7 @@ export async function loadPriceMeterComparisonCandidates(request: PriceMeterComp
   const query = () => supabaseAdmin.from('listings_ontology_terms')
     .select('listing_id,ontology_term_id::text,listings!inner(canonical_domain_version)', {count:'exact'})
     .eq('listings.canonical_domain_version', 1)
+    .eq('listings.listing_status','active').eq('listings.transaction_type',request.transactionType)
   const record = (rows: Assignment[]) => {
     for (const row of rows) {
       const terms = evidence.get(row.listing_id) ?? new Set<string>()
@@ -71,7 +72,7 @@ export async function loadPriceMeterComparisonCandidates(request: PriceMeterComp
     geographyCandidates.get(r.geography)!.filter(id => r.terms.every(term => evidence.get(id)?.has(term)))))].sort()
   const rows: any[] = []
   for (const chunk of chunks(ids)) rows.push(...await complete<any>((from,to) => supabaseAdmin.from('listings')
-    .select('id,title,images,canonical_domain_version,transaction_type,currency,monthly_price,current_price,price_millions,property_area,construction_area,created_at', {count:'exact'})
+    .select('id,canonical_domain_version,transaction_type,currency,monthly_price,current_price,property_area,construction_area', {count:'exact'})
     .eq('canonical_domain_version',1).eq('listing_status','active').eq('transaction_type',request.transactionType)
     .in('id',chunk).order('id').range(from,to)))
   if (new Set(rows.map(row=>row.id)).size !== rows.length) throw new Error('Duplicate comparison listing evidence.')

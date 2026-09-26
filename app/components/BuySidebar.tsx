@@ -1,4 +1,5 @@
 'use client'
+import {useState} from 'react'
 import LocationFilter from '@/app/components/filter-bar/LocationFilter'
 import PriceFilter from '@/app/components/filter-bar/PriceFilter'
 import PropertyTypeFilter from '@/app/components/filter-bar/PropertyTypeFilter'
@@ -9,16 +10,17 @@ import EnvironmentFilter from '@/app/components/filter-bar/EnvironmentFilter'
 import AccessibilityFilter from '@/app/components/filter-bar/AccessibilityFilter'
 import TerrainFilter from '@/app/components/filter-bar/TerrainFilter'
 import LegalStatusFilter from '@/app/components/filter-bar/LegalStatusFilter'
-import {
-  residential_property_types
-} from '@/data/property-data'
+import {residential_property_types} from '@/data/property-data'
 import ConstructionAreaFilterS from '@/app/components/filter-bar/ConstructionAreaFilterS'
 
 export default function BuySidebar(props: any) {
 
-const {
 
+const {
+                theme,
                 isMobile,
+                desktopCollapsed,
+                setDesktopCollapsed,
                 showMobileFilters,
                 setShowMobileFilters,
 
@@ -152,49 +154,177 @@ const {
 
   return (
 
-    <div
-      style={{
-        background: '#000000',
-        borderRight: '1px solid #D4AF37',
+        <div
+            style={{
+            background: '#000000',
 
-        padding: '25px',
+            borderRight:
+                '1px solid #D4AF37',
 
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '28px',
+            padding:
+                isMobile
+                ? '25px'
+                : desktopCollapsed
+                ? '16px 0'
+                : '25px',
 
-        position: isMobile
-            ? 'fixed'
-            : 'sticky',
+            display: 'flex',
 
-        top: isMobile
-            ? 0
-            : '1rem',
+            flexDirection:
+                'column',
 
-        left:
-            isMobile && !showMobileFilters
-            ? '-100%'
-            : '0',
+            gap:
+                desktopCollapsed && !isMobile
+                ? 0
+                : '28px',
 
-        width:
-            isMobile
-            ? '85vw'
-            : '320px',
+            position:
+                isMobile
+                ? 'fixed'
+                : 'sticky',
 
-        height:
-            isMobile
-            ? '100vh'
-            : 'calc(100vh - 2rem)',
+            top:
+                isMobile
+                ? 0
+                : '1rem',
 
-        overflowY: 'auto',
+            left:
+                isMobile &&
+                !showMobileFilters
+                ? '-100%'
+                : '0',
 
-        alignSelf: 'flex-start',
+            width:
+                isMobile
+                ? '85vw'
+                : desktopCollapsed
+                ? '48px'
+                : '320px',
 
-        zIndex: 1500,
+            minWidth:
+                isMobile
+                ? undefined
+                : desktopCollapsed
+                ? '48px'
+                : '320px',
 
-        transition: 'left .3s ease'
-        }}
-    >
+            height:
+                isMobile
+                ? '100vh'
+                : 'calc(100vh - 2rem)',
+
+            overflowY:
+                desktopCollapsed &&
+                !isMobile
+                ? 'hidden'
+                : 'auto',
+
+            overflowX:
+                'hidden',
+
+            alignSelf:
+                'flex-start',
+
+            zIndex:
+                1500,
+
+            boxSizing:
+                'border-box',
+
+            transition:
+                isMobile
+                ? 'left .3s ease'
+                : 'width .28s ease, min-width .28s ease, padding .28s ease'
+            }}
+        >
+
+        {/* DESKTOP SIDEBAR COLLAPSE */}
+            {!isMobile && (
+            <button
+                type="button"
+
+                aria-label={
+                desktopCollapsed
+                    ? 'Expand filters'
+                    : 'Collapse filters'
+                }
+
+                title={
+                desktopCollapsed
+                    ? 'Expand filters'
+                    : 'Collapse filters'
+                }
+
+                onClick={() =>
+                    setDesktopCollapsed(
+                        (current: boolean) => !current
+                    )
+                    }
+
+                style={{
+                width:
+                    desktopCollapsed
+                    ? '100%'
+                    : '42px',
+
+                height:
+                    '42px',
+
+                minHeight:
+                    '42px',
+
+                alignSelf:
+                    desktopCollapsed
+                    ? 'stretch'
+                    : 'flex-end',
+
+                display:
+                    'flex',
+
+                alignItems:
+                    'center',
+
+                justifyContent:
+                    'center',
+
+                padding:
+                    0,
+
+                margin:
+                    desktopCollapsed
+                    ? 0
+                    : '0 0 -8px',
+
+                background:
+                    'transparent',
+
+                border:
+                    'none',
+
+                color:
+                    '#ff3b00',
+
+                fontSize:
+                    '32px',
+
+                fontWeight:
+                    700,
+
+                lineHeight:
+                    1,
+
+                cursor:
+                    'pointer',
+
+                flexShrink:
+                    0
+                }}
+            >
+                {desktopCollapsed
+                ? '›'
+                : '‹'}
+            </button>
+            )}
 
       {isMobile && (
 
@@ -244,20 +374,9 @@ const {
 
       )}
 
-      <h2
-        style={{
-          color: '#fff',
-          textAlign: 'center',
+{(isMobile || !desktopCollapsed) && (
+  <>
 
-          textShadow:
-            '-1px -1px 0 #D4AF37,' +
-            '1px -1px 0 #D4AF37,' +
-            '-1px 1px 0 #D4AF37,' +
-            '1px 1px 0 #D4AF37'
-        }}
-      >
-        Filters
-      </h2>
 
 <LocationFilter
                 showLocationOptions={showLocationOptions}
@@ -646,6 +765,9 @@ const {
                 />
                 
       {children}
+
+        </>
+      )}
 
     </div>
 

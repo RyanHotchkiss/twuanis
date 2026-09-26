@@ -54,7 +54,7 @@ export async function hydrateCanonicalPopulation<T extends {id:string;canonical_
     return {...listing,
       // Compatibility labels are derived for output, never used to select canonical rows.
       province:province.term_name,canton:canton.term_name,district:district?.term_name??null,
-      property_type:e.selections[0].slug||e.selections[0].term_name,
+      property_type:e.selections[0].slug??null,
       ...factProjection,
       canonicalEvidence:e,
       canonicalGeography:{source:{province:null,canton:null,district:null},province,canton,district,

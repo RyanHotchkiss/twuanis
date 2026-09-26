@@ -1,6 +1,3 @@
-import TopBar
-  from '@/app/components/TopBar'
-
 import MarketHubAuthGate
   from '@/app/components/MarketHubAuthGate'
 
@@ -212,9 +209,7 @@ const resolvedIntelligence =
     <MarketHubAuthGate>
 
       <div style={page}>
-        <TopBar />
-
-
+        
         <MarketHubShell
           language="en"
 
@@ -534,12 +529,9 @@ const resolvedIntelligence =
 
 
 const page = {
-  minHeight:
-    '100vh',
-
-  background:
-    '#0a0a0a'
-}
+    minHeight:
+      '100vh'
+  }
 
 
 const workspaceStack = {

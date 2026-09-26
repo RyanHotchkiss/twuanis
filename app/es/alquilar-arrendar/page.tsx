@@ -13,6 +13,7 @@ import TopBar from '@/app/components/TopBar'
 import FilterButton from '@/app/components/FilterButton'
 
 import RentLeaseSidebarES from '@/app/components/RentLeaseSidebarES'
+import MarketplaceListingGrid from '@/app/components/marketplace/MarketplaceListingGrid'
 import { normalizeText } from '@/lib/normalizeText' 
 import {
   getSavedSearch,
@@ -144,6 +145,9 @@ const navButton = {
 
   const [isMobile, setIsMobile] =
     useState(false)
+
+  const [theme, setTheme] =
+    useState<'dark' | 'light'>('dark')
 
   const [
     showSaveSearchAuth,
@@ -926,14 +930,30 @@ const filteredProperties = properties.filter((property) => {
       filteredProperties
 
   return (
-      <main style={{
-        background: '#000',
-        minHeight: '100vh',
-        color: '#fff',
-        padding: '20px',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
+      <main
+        style={{
+          background:
+            theme === 'dark'
+              ? '#000000'
+              : '#f7f7f4',
+
+          minHeight: '100vh',
+
+          color:
+            theme === 'dark'
+              ? '#ffffff'
+              : '#111111',
+
+          padding: '20px',
+
+          position: 'relative',
+
+          overflow: 'hidden',
+
+          transition:
+            'background .25s ease, color .25s ease'
+        }}
+      >
 
       
       {showSaveSearchAuth && (
@@ -941,104 +961,320 @@ const filteredProperties = properties.filter((property) => {
           onClose={() =>
             setShowSaveSearchAuth(false)
           }
-          redirectTo="/en/buy"
+          redirectTo="/es/alquilar-arrendar"
         />
       )}
           
 
-{/* TOP LEFT NAV */}
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              padding: '.5rem 0',
-              marginBottom: '40px',
-              borderBottom: '1px solid #151515'
-            }}>
+{/* MARKETPLACE MASTHEAD */}
+<section
+  style={{
+    position: 'relative',
 
-                        <TopBar
-                          onFilterClick={() =>
-                            setShowMobileFilters(true)
-                          }
-                        />
+    minHeight:
+      isMobile
+        ? '420px'
+        : '360px',
 
-                          <div className="floating-filter-button">
-                            <FilterButton
-                              onClick={() => setShowMobileFilters(true)}
-                            />
-                          </div>
+    marginBottom:
+      '24px',
 
-{/* TOP RIGHT NAV */}
-             
-            
+    borderRadius:
+      '28px',
 
-            </div>
+    overflow:
+      'hidden',
 
-            {/* HEADER */}
-            <div style={{
-              textAlign: 'center',
-              marginBottom: '40px'
-            }}>
+    backgroundImage:
+      theme === 'dark'
+        ? 'url(/images/rent-dark.webp)'
+        : 'url(/images/rent-light.webp)',
 
-          <h1 style={{
-            fontSize: '72px',
-            marginBottom: '10px',
-            fontWeight: 'bold'
-          }}>
-            Twuanis
-          </h1>
+    backgroundSize:
+      'cover',
 
-          <p style={{
-            color: '#999',
-            fontSize: '22px'
-          }}>
-            Encuentra una Propiedad en Alquiler o Arrendamiento Comercial
-          </p>
+    backgroundPosition:
+      'center center',
 
-        </div>
+    backgroundRepeat:
+      'no-repeat',
 
+    border:
+      theme === 'dark'
+        ? '1px solid rgba(255,255,255,.08)'
+        : '1px solid rgba(0,0,0,.10)',
+
+    transition:
+      'background-image .25s ease, border-color .25s ease'
+  }}
+>
+  {/* IMAGE CONTRAST LAYER */}
+  <div
+    aria-hidden="true"
+    style={{
+      position: 'absolute',
+
+      inset: 0,
+
+      background:
+        theme === 'dark'
+          ? 'linear-gradient(180deg, rgba(0,0,0,.30) 0%, rgba(0,0,0,.40) 55%, rgba(0,0,0,.62) 100%)'
+          : 'linear-gradient(180deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.18) 55%, rgba(255,255,255,.42) 100%)',
+
+      pointerEvents:
+        'none'
+    }}
+  />
+
+  {/* MASTHEAD CONTENT */}
       <div
+        style={{
+          position: 'relative',
+
+          zIndex: 1,
+
+          minHeight:
+            isMobile
+              ? '420px'
+              : '360px',
+
+          padding:
+            isMobile
+              ? '14px'
+              : '16px 24px 28px',
+
+          boxSizing:
+            'border-box',
+
+          display:
+            'flex',
+
+          flexDirection:
+            'column'
+        }}
+      >
+        {/* TOP NAV */}
+        <div
           style={{
+            width: '100%',
+
             display: 'flex',
-            justifyContent: 'center',
-            marginBottom: '24px',
-            gap: '12px',
-            flexWrap: 'wrap',
+
+            justifyContent:
+              'center',
+
+            alignItems:
+              'flex-start',
+
+            position:
+              'relative'
           }}
         >
-          <button
-            type="button"
-            onClick={handleSaveSearch}
-            style={{
-              background: '#fff',
-              border: '1px solid #fff',
-              color: '#000',
-              padding: '12px 20px',
-              borderRadius: '999px',
-              cursor: 'pointer',
-              fontWeight: 'bold'
-            }}
-          >
-            Guardar búsqueda
-          </button>
+          <TopBar
+            theme={theme}
 
-          <Link
-            href="/es/favoritos"
-            style={{
-              background: '#161616',
-              border: '1px solid #C7A44B',
-              color: '#C7A44B',
-              padding: '12px 20px',
-              borderRadius: '999px',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-              textDecoration: 'none'
-            }}
-          >
-            Abrir Favoritos
-          </Link>
+            onThemeToggle={() =>
+              setTheme(current =>
+                current === 'dark'
+                  ? 'light'
+                  : 'dark'
+              )
+            }
 
+            onFilterClick={() =>
+              setShowMobileFilters(true)
+            }
+          />
+
+          <div
+            className="floating-filter-button"
+          >
+            <FilterButton
+              onClick={() =>
+                setShowMobileFilters(true)
+              }
+            />
+          </div>
         </div>
+
+        {/* HEADER + ACTIONS */}
+        <div
+          style={{
+            flex: 1,
+
+            display:
+              'flex',
+
+            flexDirection:
+              'column',
+
+            alignItems:
+              'center',
+
+            justifyContent:
+              'center',
+
+            padding:
+              isMobile
+                ? '28px 12px 18px'
+                : '24px 20px 12px'
+          }}
+        >
+          <div
+            style={{
+              textAlign:
+                'center',
+
+              marginBottom:
+                '40px'
+            }}
+          >
+            <h1
+              style={{
+                fontSize:
+                  '72px',
+
+                marginBottom:
+                  '10px',
+
+                color:
+                  theme === 'dark'
+                    ? '#ffffff'
+                    : '#000000',
+
+                WebkitTextStroke:
+                  '2px #d4af37',
+
+                textShadow:
+                  `
+                  0 0 8px rgba(212,175,55,.45),
+                  0 0 18px rgba(212,175,55,.25)
+                  `
+              }}
+            >
+              Twuanis
+            </h1>
+
+            <p
+              style={{
+                color:
+                  theme === 'dark'
+                    ? '#ffffff'
+                    : '#000000',
+
+                fontSize:
+                  '22px'
+              }}
+            >
+              Encuentra una Propiedad en Alquiler o Arrendamiento Comercial
+            </p>
+          </div>
+
+          <div
+            style={{
+              display:
+                'flex',
+
+              justifyContent:
+                'center',
+
+              gap:
+                '12px',
+
+              flexWrap:
+                'wrap'
+            }}
+          >
+            <button
+              type="button"
+
+              onClick={
+                handleSaveSearch
+              }
+
+              style={{
+                background:
+                  theme === 'dark'
+                    ? '#ffffff'
+                    : '#111111',
+
+                border:
+                  theme === 'dark'
+                    ? '1px solid #ffffff'
+                    : '1px solid #111111',
+
+                color:
+                  theme === 'dark'
+                    ? '#000000'
+                    : '#ffffff',
+
+                padding:
+                  '12px 20px',
+
+                borderRadius:
+                  '999px',
+
+                cursor:
+                  'pointer',
+
+                fontWeight:
+                  'bold',
+
+                transition:
+                  'background .25s ease, color .25s ease, border-color .25s ease'
+              }}
+            >
+              Guardar búsqueda
+            </button>
+
+            <Link
+              href="/es/favoritos"
+
+              style={{
+                background:
+                  theme === 'dark'
+                    ? 'rgba(0,0,0,.72)'
+                    : 'rgba(255,255,255,.88)',
+
+                border:
+                  '1px solid #C7A44B',
+
+                color:
+                  theme === 'dark'
+                    ? '#C7A44B'
+                    : '#6f5315',
+
+                padding:
+                  '12px 20px',
+
+                borderRadius:
+                  '999px',
+
+                cursor:
+                  'pointer',
+
+                fontWeight:
+                  'bold',
+
+                textDecoration:
+                  'none',
+
+                backdropFilter:
+                  'blur(10px)',
+
+                WebkitBackdropFilter:
+                  'blur(10px)',
+
+                transition:
+                  'background .25s ease, color .25s ease'
+              }}
+            >
+              Abrir Favoritos
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
 
         {/* MAIN GRID */}
           <div style={{
@@ -1051,20 +1287,48 @@ const filteredProperties = properties.filter((property) => {
         {/* BUY EXPERIENCE */}
           <div
             style={{
-              background: '#111',
-              borderRadius: '28px',
-              overflow: isMobile
-                ? 'visible'
-                : 'hidden',
-              textDecoration: 'none',
-              color: '#fff',
-              border: '1px solid #222',
-              display: 'grid',
-              gridTemplateColumns: isMobile
-                ? '1fr'
-                : '320px 1fr',
-              minHeight: '620px',
-              width: '100%'
+              background:
+                theme === 'dark'
+                  ? '#111111'
+                  : '#ffffff',
+
+              borderRadius:
+                '28px',
+
+              overflow:
+                isMobile
+                  ? 'visible'
+                  : 'hidden',
+
+              textDecoration:
+                'none',
+
+              color:
+                theme === 'dark'
+                  ? '#ffffff'
+                  : '#111111',
+
+              border:
+                theme === 'dark'
+                  ? '1px solid #222222'
+                  : '1px solid rgba(0,0,0,.12)',
+
+              display:
+                'grid',
+
+              gridTemplateColumns:
+                isMobile
+                  ? '1fr'
+                  : '320px 1fr',
+
+              transition:
+                'background .25s ease, color .25s ease, border-color .25s ease',
+
+              minHeight:
+                '620px',
+
+              width:
+                '100%'
             }}
           >
 
@@ -1142,363 +1406,106 @@ const filteredProperties = properties.filter((property) => {
             setFilters={setFilters}
           />
 
-{/* PROPERTY PREVIEW right-center column */}
-                <div
-                  style={{
-                    padding: isMobile ? '16px' : '30px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    width: '100%',
-                    overflow: 'hidden'
-                  }}
-                >
+        <MarketplaceListingGrid
+            theme={theme}
 
-                  <div>
+            listings={
+              rankedProperties
+            }
 
-                    <div
-                      style={{
-                        display: 'grid',
-                        gridTemplateColumns:
-  isMobile
-    ? '1fr'
-    : 'repeat(5, 1fr)',
-                        gap: '1.25rem',
-                        alignContent: 'start'
-                      }}
-                    >
+            transactionType="rent"
 
-                              {rankedProperties.map((property) => (
+            language="es"
 
-                                <Link
-                                  href={`/es/alquilar-arrendar/anuncio/${property.id}`}
-                                  key={property.id}
-                                  style={{
-                                    textDecoration: 'none',
-                                    color: 'inherit'
-                                  }}
-                                >
+            favoriteIds={
+              favoriteIds
+            }
 
-                                  <div
-                                    style={{
-                                      background: '#181818',
-                                      border: '1px solid #222',
-                                      borderRadius: '22px',
-                                      overflow: 'hidden',
-                                      cursor: 'pointer'
-                                    }}
-                                  >
+            isSelected={
+              isSelected
+            }
 
-                                    {/* PROPERTY IMAGE */}
-                                    <div
-                                      style={{
-                                        aspectRatio: '4 / 3',
-                                        overflow: 'hidden',
-                                        position: 'relative',
-                                        background: '#111'
-                                      }}
-                                    >
+            maximumProperties={
+              maximumProperties
+            }
 
-                                      {Array.isArray(property.images) &&
-                                      property.images[0] ? (
+            selectedPropertyIds={
+              propertyIds
+            }
 
-                                        <img
-                                          src={property.images[0]}
-                                          alt={property.title}
-                                          style={{
-                                            width: '100%',
-                                            height: '100%',
-                                            objectFit: 'cover',
-                                            display: 'block'
-                                          }}
-                                        />
+            onToggleCompare={
+              toggleProperty
+            }
 
-                                      ) : (
+            onToggleFavorite={async property => {
+              const alreadySaved =
+                favoriteIds.includes(
+                  property.id
+                )
 
-                                        <div
-                                          style={{
-                                            height: '100%',
-                                            background:
-                                              'linear-gradient(135deg, #222 0%, #333 100%)',
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            color: '#555',
-                                            fontSize: '20px'
-                                          }}
-                                        >
-                                          Sin Imagen
-                                        </div>
+              await toggleFavorite(
+                property.id
+              )
 
-                                      )}
+              const ids =
+                await getListingFavoriteIds()
 
-                                      <button
+              setFavoriteIds(ids)
 
-                                            onClick={async (e) => {
+              const metadata = {
+                title:
+                  property.title,
 
-                                                e.preventDefault()
-                                                e.stopPropagation()
+                province:
+                  property.province,
 
-                                                const alreadySaved =
-                                                  favoriteIds.includes(
-                                                    property.id
-                                                  )
+                canton:
+                  property.canton,
 
-                                                await toggleFavorite(
-                                                    property.id
-                                                  )
+                district:
+                  property.district,
 
-                                                const metadata = {
-                                                  title: property.title,
-                                                  province: property.province,
-                                                  canton: property.canton,
-                                                  district: property.district,
-                                                  propertyType: property.property_type,
-                                                  transactionType: 'buy',
-                                                  pathname: window.location.pathname,
-                                                  href: window.location.href,
-                                                  source: 'search-results'
-                                                }
+                propertyType:
+                  property.property_type,
 
-                                                if (alreadySaved) {
+                transactionType:
+                  'rent',
 
-                                                  await trackListingRemoved({
-                                                    listingId: property.id,
-                                                    metadata
-                                                  })
+                pathname:
+                  window.location.pathname,
 
-                                                } else {
+                href:
+                  window.location.href,
 
-                                                  await recordListingSaved({
-                                                    listingId: property.id,
-                                                    metadata
-                                                  })
+                source:
+                  'search-results'
+              }
 
-                                                }
+              if (alreadySaved) {
+                await trackListingRemoved({
+                  listingId:
+                    property.id,
 
-                                              }}
-                                        style={{
-                                          position: 'absolute',
-                                          top: '1rem',
-                                          right: '1rem',
-                                          width: '2.75rem',
-                                          height: '2.75rem',
-                                          borderRadius: '999px',
-                                          border: '1px solid rgba(255,255,255,.15)',
-                                          background: 'rgba(0,0,0,.55)',
-                                          backdropFilter: 'blur(8px)',
-                                          display: 'flex',
-                                          justifyContent: 'center',
-                                          alignItems: 'center',
-                                          cursor: 'pointer',
-                                          zIndex: 20
-                                        }}
-                                      >
+                  metadata
+                })
+              } else {
+                await recordListingSaved({
+                  listingId:
+                    property.id,
 
-                                        <span style={{
-                                          fontSize: '1.25rem',
-                                          color:
-                                            favoriteIds.includes(property.id)
-                                              ? '#D4AF37'
-                                              : '#fff',
-                                          transition: 'all .2s ease'
-                                        }}>
-                                          ♥
-                                        </span>
+                  metadata
+                })
+              }
+            }}
+          />
 
-                                      </button>
+          </div>
 
-                                <button
-                                    type="button"
-                                    onClick={e => {
-                                      e.preventDefault()
-                                      e.stopPropagation()
-
-                                      toggleProperty(
-                                        property.id
-                                      )
-                                    }}
-                                    style={{
-                                      position: 'absolute',
-                                      left: '1rem',
-                                      bottom: '1rem',
-                                      zIndex: 20,
-                                      border:
-                                        isSelected(property.id)
-                                          ? '1px solid #fff'
-                                          : '1px solid rgba(255,255,255,.25)',
-                                      borderRadius: '999px',
-                                      padding: '.55rem .8rem',
-                                      background:
-                                        isSelected(property.id)
-                                          ? '#fff'
-                                          : 'rgba(0,0,0,.65)',
-                                      color:
-                                        isSelected(property.id)
-                                          ? '#000'
-                                          : '#fff',
-                                      backdropFilter: 'blur(8px)',
-                                      cursor:
-                                        !isSelected(property.id) &&
-                                        propertyIds.length >=
-                                          maximumProperties
-                                          ? 'not-allowed'
-                                          : 'pointer',
-                                      fontSize: '.75rem',
-                                      fontWeight: 700,
-                                      opacity:
-                                        !isSelected(property.id) &&
-                                        propertyIds.length >=
-                                          maximumProperties
-                                          ? 0.45
-                                          : 1
-                                    }}
-                                    disabled={
-                                      !isSelected(property.id) &&
-                                      propertyIds.length >=
-                                        maximumProperties
-                                    }
-                                  >
-                                    {isSelected(property.id)
-                                      ? 'Selected'
-                                      : '+ Comparar'}
-                                  </button>
-
-                                    </div>
-
-                                    {/* CONTENT */}
-                                    <div
-                                      style={{
-                                        padding: '1.25rem'
-                                      }}
-                                    >
-
-                                      <h2
-                                        style={{
-                                          fontSize: '1.25rem',
-                                          marginBottom: '.75rem'
-                                        }}
-                                      >
-                                        {property.title}
-                                      </h2>
-
-                                      <p
-                                        style={{
-                                          color: '#888',
-                                          marginBottom: '16px'
-                                        }}
-                                      >
-                                        {property.province} → {property.canton} → {property.district}
-                                      </p>
-
-                                      <div
-                                        style={{
-                                          display: 'flex',
-                                          flexWrap: 'wrap',
-                                          gap: '10px'
-                                        }}
-                                      >
-
-                                       <span style={pill}>
-                                          {property.property_type}
-                                        </span>
-
-                                        {property.marketplace_original_price && (
-                                          <span style={pill}>
-                                            {property.marketplace_original_currency === 'USD'
-                                              ? `$${Number(property.marketplace_original_price).toLocaleString()}`
-                                              : `₡${Number(property.marketplace_original_price).toLocaleString()}`}
-                                            /mes
-                                          </span>
-                                        )}
-
-                                        {property.property_area && (
-                                          <span style={pill}>
-                                            {property.property_area}
-                                          </span>
-                                        )}
-
-                                        {property.construction_area && (
-                                          <span style={pill}>
-                                            {property.construction_area} Construcción
-                                          </span>
-                                        )}
-
-                                        {property.bedrooms && (
-                                          <span style={pill}>
-                                            {property.bedrooms
-                                              ?.replace('Bedroom', 'Habitación')
-                                              .replace('Bedrooms', 'Habitaciones')}
-                                          </span>
-                                        )}
-
-                                        {property.bathrooms && (
-                                          <span style={pill}>
-                                            {property.bathrooms
-                                              ?.replace('Bathroom', 'Baño')
-                                              .replace('Bathrooms', 'Baños')}
-                                          </span>
-                                        )}
-
-                                        {property.parking && (
-                                          <span style={pill}>
-                                            {property.parking
-                                              ?.replace('Vehicle', 'Vehículo')
-                                              .replace('Vehicles', 'Vehículos')}
-                                          </span>
-                                        )}
-
-                                      </div>
-
-                                    </div>
-
-                                  </div>
-
-                                </Link>
-
-                              ))}
-
-                     
-
-                      {filteredProperties.length === 0 && (
-
-                        <div
-                          style={{
-                            background: '#181818',
-                            border: '1px solid #222',
-                            borderRadius: '22px',
-                            padding: '40px',
-                            textAlign: 'center'
-                          }}
-                        >
-
-                          <h2
-                            style={{
-                              marginBottom: '10px'
-                            }}
-                          >
-                            No hay propiedades que coincidan con los filtros
-                          </h2>
-
-                          <p
-                            style={{
-                              color: '#777'
-                            }}
-                          >
-                            Intenta ajustar los filtros de propiedad.
-                          </p>
-
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-           </div>     
+        </div>   
        <PropertyComparisonTray
-          properties={properties}
-          language="en"
-        />
+  properties={properties}
+  language="es"
+/>
     </main>
   )
 }

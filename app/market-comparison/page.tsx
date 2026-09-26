@@ -1,3 +1,4 @@
+import CanonicalMarketApplyPanel from '@/app/components/CanonicalMarketApplyPanel'
 import MarketFilters from '@/app/components/MarketFilters'
 import MarketComparisonResults from '@/app/market-comparison/MarketComparisonResults'
 
@@ -17,6 +18,8 @@ export default async function MarketComparisonPage({
     await getExplorerOptions()
 
   const leftFilters = {
+    a_transaction_type: params.a_transaction_type,
+    a_distance_to_paved_road_range: params.a_distance_to_paved_road_range,
     a_province: params.a_province,
     a_canton: params.a_canton,
     a_district: params.a_district,
@@ -36,6 +39,8 @@ export default async function MarketComparisonPage({
   }
 
   const rightFilters = {
+    b_transaction_type: params.b_transaction_type,
+    b_distance_to_paved_road_range: params.b_distance_to_paved_road_range,
     b_province: params.b_province,
     b_canton: params.b_canton,
     b_district: params.b_district,
@@ -59,10 +64,7 @@ export default async function MarketComparisonPage({
     ...rightFilters
   }
 
-  const comparison =
-    await getMarketComparison(leftFilters, rightFilters, 'en')
-
-  return (
+return (
     <main
       style={{
         maxWidth: '1400px',
@@ -79,17 +81,9 @@ export default async function MarketComparisonPage({
         location, property, price, size, and ontology-based attributes.
       </p>
 
-      <MarketFilters
-        language="en"
-        workspace="comparison"
-        options={options}
-        filters={filters}
-        basePath="/market-comparison"
-      />
+      <CanonicalMarketApplyPanel workspace="comparison" options={options} filters={filters} language="en"/>
 
-      <MarketComparisonResults
-        comparison={comparison}
-      />
+      
     </main>
   )
 }

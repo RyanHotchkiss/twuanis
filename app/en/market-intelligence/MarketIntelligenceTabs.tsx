@@ -1,4 +1,6 @@
 'use client'
+import CanonicalMarketApplyPanel from '@/app/components/CanonicalMarketApplyPanel'
+
 
 import Link from 'next/link'
 
@@ -15,15 +17,11 @@ import {
   createMarketComparisonName,
   saveMarketComparison
 } from '@/lib/market-comparisons'
-import ExploreResults from '@/app/explore/ExploreResults'
 import PricingStrategyResults from '@/app/pricing-strategy/PricingStrategyResults'
-import MarketScarcityResults from '@/app/market-scarcity/MarketScarcityResults'
 import BuyerDemandResults from '@/app/buyer-demand/BuyerDemandResults'
-import MarketMatchingResults from '@/app/market-matching/MarketMatchingResults'
 import ValuationResults from '@/app/valuation/ValuationResults'
 import MarketFilters from '@/app/components/MarketFilters'
 import PriceMeterApplyPanel from '@/app/components/PriceMeterApplyPanel'
-import MarketComparisonResults from '@/app/market-comparison/MarketComparisonResults'
 
 import {
   Compass,
@@ -479,7 +477,7 @@ const tabs = [
           <PriceMeterApplyPanel options={options} filters={filters} language="en" source="workspace" />
         </div>
         {activeTab !== 'price-meter' && (
-        <MarketFilters
+        (['explorer','scarcity','matching','comparison'].includes(activeTab) ? <CanonicalMarketApplyPanel key={activeTab} workspace={activeTab as 'explorer'|'scarcity'|'matching'|'comparison'} options={options} filters={filters} language="en"/> : <MarketFilters
             language="en"
             workspace={
               activeTab as IntelligenceWorkspaceId
@@ -496,7 +494,7 @@ const tabs = [
                 }`
               : `/en/market-intelligence?tab=${activeTab}`
           }
-        />
+        />)
         )}
       </section>
 
@@ -557,19 +555,7 @@ const tabs = [
 
       <div style={content}>
 
-        {activeTab ===
-          'explorer' && (
-          explorerResult
-            ? (
-              <ExploreResults
-                result={explorerResult}
-                embedded={embedded}
-              />
-            )
-            : (
-              <EmptyState />
-            )
-        )}
+        
 
         {activeTab === 'pricing' && (
           <PricingStrategyResults
@@ -578,19 +564,9 @@ const tabs = [
           />
         )}
 
-        {activeTab === 'scarcity' && (
-          <MarketScarcityResults
-            filters={filters}
-            scarcity={marketScarcity}
-          />
-        )}
+        
 
-        {activeTab === 'matching' && (
-          <MarketMatchingResults
-            filters={filters}
-            matches={marketMatches}
-          />
-        )}
+        
 
         {activeTab === 'valuation' && (
           <ValuationResults
@@ -599,11 +575,7 @@ const tabs = [
           />
         )}
 
-        {activeTab === 'comparison' && (
-          <MarketComparisonResults
-            comparison={comparison}
-          />
-        )}
+        
 
         {activeTab === 'buyer-demand' && (
           <BuyerDemandResults

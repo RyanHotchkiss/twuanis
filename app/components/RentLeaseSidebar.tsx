@@ -16,12 +16,13 @@ import ConstructionAreaFilterS from '@/app/components/filter-bar/ConstructionAre
 
 export default function BuySidebar(props: any) {
 
-const {
-
+        const {
+                theme,
                 isMobile,
+                desktopCollapsed,
+                setDesktopCollapsed,          
                 showMobileFilters,
                 setShowMobileFilters,
-
                 showLocationOptions,
                 setShowLocationOptions,
                 showProvinceOptions,
@@ -153,48 +154,177 @@ const {
   return (
 
     <div
-      style={{
-        background: '#000000',
-        borderRight: '1px solid #D4AF37',
+        style={{
+            background: '#000000',
 
-        padding: '25px',
+            borderRight:
+            '1px solid #D4AF37',
 
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '28px',
-
-        position: isMobile
-            ? 'fixed'
-            : 'sticky',
-
-        top: isMobile
-            ? 0
-            : '1rem',
-
-        left:
-            isMobile && !showMobileFilters
-            ? '-100%'
-            : '0',
-
-        width:
+            padding:
             isMobile
-            ? '85vw'
-            : '320px',
+                ? '25px'
+                : desktopCollapsed
+                ? '16px 0'
+                : '25px',
 
-        height:
+            display: 'flex',
+
+            flexDirection:
+            'column',
+
+            gap:
+            desktopCollapsed && !isMobile
+                ? 0
+                : '28px',
+
+            position:
             isMobile
-            ? '100vh'
-            : 'calc(100vh - 2rem)',
+                ? 'fixed'
+                : 'sticky',
 
-        overflowY: 'auto',
+            top:
+            isMobile
+                ? 0
+                : '1rem',
 
-        alignSelf: 'flex-start',
+            left:
+            isMobile &&
+            !showMobileFilters
+                ? '-100%'
+                : '0',
 
-        zIndex: 1500,
+            width:
+            isMobile
+                ? '85vw'
+                : desktopCollapsed
+                ? '48px'
+                : '320px',
 
-        transition: 'left .3s ease'
+            minWidth:
+            isMobile
+                ? undefined
+                : desktopCollapsed
+                ? '48px'
+                : '320px',
+
+            height:
+            isMobile
+                ? '100vh'
+                : 'calc(100vh - 2rem)',
+
+            overflowY:
+            desktopCollapsed &&
+            !isMobile
+                ? 'hidden'
+                : 'auto',
+
+            overflowX:
+            'hidden',
+
+            alignSelf:
+            'flex-start',
+
+            zIndex:
+            1500,
+
+            boxSizing:
+            'border-box',
+
+            transition:
+            isMobile
+                ? 'left .3s ease'
+                : 'width .28s ease, min-width .28s ease, padding .28s ease'
         }}
-    >
+        >
+
+        {/* DESKTOP SIDEBAR COLLAPSE */}
+            {!isMobile && (
+            <button
+                type="button"
+
+                aria-label={
+                desktopCollapsed
+                    ? 'Expand filters'
+                    : 'Collapse filters'
+                }
+
+                title={
+                desktopCollapsed
+                    ? 'Expand filters'
+                    : 'Collapse filters'
+                }
+
+                onClick={() =>
+                setDesktopCollapsed(
+                    (current: boolean) =>
+                    !current
+                )
+                }
+
+                style={{
+                width:
+                    desktopCollapsed
+                    ? '100%'
+                    : '42px',
+
+                height:
+                    '42px',
+
+                minHeight:
+                    '42px',
+
+                alignSelf:
+                    desktopCollapsed
+                    ? 'stretch'
+                    : 'flex-end',
+
+                display:
+                    'flex',
+
+                alignItems:
+                    'center',
+
+                justifyContent:
+                    'center',
+
+                padding:
+                    0,
+
+                margin:
+                    desktopCollapsed
+                    ? 0
+                    : '0 0 -8px',
+
+                background:
+                    'transparent',
+
+                border:
+                    'none',
+
+                color:
+                    '#ff3b00',
+
+                fontSize:
+                    '32px',
+
+                fontWeight:
+                    700,
+
+                lineHeight:
+                    1,
+
+                cursor:
+                    'pointer',
+
+                flexShrink:
+                    0
+                }}
+            >
+                {desktopCollapsed
+                ? '›'
+                : '‹'}
+            </button>
+            )}
 
       {isMobile && (
 
@@ -244,20 +374,9 @@ const {
 
       )}
 
-      <h2
-        style={{
-          color: '#fff',
-          textAlign: 'center',
+      {(isMobile || !desktopCollapsed) && (
+        <>
 
-          textShadow:
-            '-1px -1px 0 #D4AF37,' +
-            '1px -1px 0 #D4AF37,' +
-            '-1px 1px 0 #D4AF37,' +
-            '1px 1px 0 #D4AF37'
-        }}
-      >
-        Filters
-      </h2>
 
 <LocationFilter
                 showLocationOptions={showLocationOptions}
@@ -641,6 +760,9 @@ const {
                 />
                 
       {children}
+
+        </>
+        )}
 
     </div>
 

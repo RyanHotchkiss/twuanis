@@ -1,3 +1,4 @@
+import CanonicalMarketApplyPanel from '@/app/components/CanonicalMarketApplyPanel'
 import Link from 'next/link'
 import { exploreMarket } from '@/lib/explorer-engine'
 import { getExplorerOptions } from '@/lib/explorer-options-engine'
@@ -17,6 +18,10 @@ import {
 
 type ExplorePageProps = {
   searchParams: Promise<{
+    analysis_question?: string
+    year_built?: string
+    property_area?: string
+    construction_area?: string
     transaction_type?: string
     province?: string
     canton?: string
@@ -41,6 +46,10 @@ export default async function ExplorePage({
   const options = await getExplorerOptions()
 
   const filters = {
+    analysis_question: params.analysis_question,
+    year_built: params.year_built,
+    property_area: params.property_area,
+    construction_area: params.construction_area,
     transaction_type: params.transaction_type,
     province: params.province,
     canton: params.canton,
@@ -57,36 +66,6 @@ export default async function ExplorePage({
       params.distance_to_paved_road_range,
     legal_status: params.legal_status
   }
-
-  const hasFilters = Object.values(filters).some(Boolean)
-
-  const result = hasFilters
-    ? await exploreMarket(filters)
-    : null
-
-  const placedResult =
-  result &&
-  Array.isArray(
-    result.listings
-  )
-    ? {
-        ...result,
-
-        listings:
-          (
-            await resolveMarketplacePlacement({
-              supabase:
-                supabaseAdmin,
-
-              listings:
-                result.listings,
-
-              surface:
-                'market-explorer'
-            })
-          ).listings
-      }
-    : result
 
   return (
     <main
@@ -111,11 +90,7 @@ export default async function ExplorePage({
 
       <br></br>
 
-      <MarketFilters
-        workspace="explorer"
-        options={options}
-        filters={filters}
-      />
+      <CanonicalMarketApplyPanel workspace="explorer" options={options} filters={filters} language="en"/>
 
       
       <Link
@@ -129,15 +104,9 @@ export default async function ExplorePage({
         Reset Explorer
       </Link>
 
-      {!result && (
-        <p>Select a market combination to begin exploring.</p>
-      )}
+      
 
-      {placedResult && (
-        <ExploreResults
-          result={placedResult}
-        />
-      )}
+      
     </main>
   )
 }

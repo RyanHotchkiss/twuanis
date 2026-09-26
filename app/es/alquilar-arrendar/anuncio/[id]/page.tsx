@@ -1,3 +1,4 @@
+import PropertyPriceValuationListing from '@/app/components/PropertyPriceValuationListing'
 import PriceMeterPropertyPositionListing from '@/app/components/PriceMeterPropertyPositionListing'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
@@ -802,6 +803,7 @@ return (
             listingId={listing.id}
             lang="es"
           />
+          <PropertyPriceValuationListing listingId={listing.id} lang="es" />
 
     </main>
    </>

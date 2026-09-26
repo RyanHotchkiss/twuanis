@@ -1,3 +1,4 @@
+import CanonicalMarketApplyPanel from '@/app/components/CanonicalMarketApplyPanel'
 import MarketFilters from '@/app/components/MarketFilters'
 import ResultadosEscasezMercado from './ResultadosEscasezMercado'
 
@@ -39,10 +40,7 @@ export default async function EscasezMercadoPage({
   const options =
     await getExplorerOptions()
 
-  const scarcity =
-    await getMarketScarcity(filters, 'es')
-
-  return (
+return (
     <main
       style={{
         maxWidth: '1400px',
@@ -72,27 +70,11 @@ export default async function EscasezMercadoPage({
         características del mercado inmobiliario de Costa Rica.
       </p>
 
-      <MarketFilters
-        workspace="scarcity"
-        options={options}
-        filters={filters}
-        basePath="/es/escasez-de-mercado"
-        language="es"
-      />
+      <CanonicalMarketApplyPanel workspace="scarcity" options={options} filters={filters} language="es"/>
 
-        <AnalysisActions
-          engineType="scarcity"
-          language="es"
-          filters={filters}
-          result={scarcity}
-          defaultName="Escasez de Mercado"
-        />
+        
 
-      <ResultadosEscasezMercado
-        filters={filters}
-        scarcity={scarcity}
-        options={options}
-      />
+      
     </main>
   )
 }

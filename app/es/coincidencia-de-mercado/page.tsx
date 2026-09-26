@@ -1,3 +1,4 @@
+import CanonicalMarketApplyPanel from '@/app/components/CanonicalMarketApplyPanel'
 import MarketFilters from '@/app/components/MarketFilters'
 import ResultadosCoincidenciaMercado from './ResultadosCoincidenciaMercado'
 
@@ -38,10 +39,7 @@ export default async function CoincidenciaMercadoPage({
   const options =
     await getExplorerOptions()
 
-  const matches =
-    await getMarketMatches(filters, 'es')
-
-  return (
+return (
     <main
       style={{
         maxWidth: '1400px',
@@ -69,17 +67,9 @@ export default async function CoincidenciaMercadoPage({
         características, ubicación y condiciones de mercado que buscas.
       </p>
 
-      <MarketFilters
-        workspace="matching"
-        options={options}
-        filters={filters}
-        basePath="/es/coincidencia-de-mercado"
-      />
+      <CanonicalMarketApplyPanel workspace="matching" options={options} filters={filters} language="es"/>
 
-      <ResultadosCoincidenciaMercado
-        filters={filters}
-        matches={matches}
-      />
+      
     </main>
   )
 }

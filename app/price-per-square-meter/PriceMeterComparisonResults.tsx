@@ -896,7 +896,7 @@ const cohortGrid = {
     'grid',
 
   gridTemplateColumns:
-    'repeat(auto-fit, minmax(320px, 1fr))',
+    'repeat(auto-fit, minmax(min(320px, 100%), 1fr))',
 
   gap:
     '1.5rem'

@@ -767,8 +767,8 @@ export default function MarketHubMarketIntelligence({
         BarChart3,
       href:
         language === 'es'
-          ? '/es/inteligencia-de-mercado?tab=price-per-square-meter'
-          : '/en/market-intelligence?tab=price-per-square-meter'
+          ? '/es/inteligencia-de-mercado?tab=price-meter'
+          : '/en/market-intelligence?tab=price-meter'
     },
     'buyer-demand': {
     name: labels.buyerDemand,

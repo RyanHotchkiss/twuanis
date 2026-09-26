@@ -97,23 +97,27 @@ const tick=()=>new Promise(resolve=>setImmediate(resolve));
  const render=()=>{cursor=0;return ui.default(props)},flush=()=>{for(const i of pending.splice(0)){cleanups[i]?.();cleanups[i]=effects[i].fn()}};
  fetchMock=(url,init)=>{const d=deferred();requests.push({url,init,...d});return d.promise};
  render();flush();ok(requests.length===1&&!requests[0].init.method,'one configuration request');
- // StrictMode cleanup/setup replay must not issue another default request.
+ // StrictMode replay and mount fetch configuration only; analytical work needs a command.
  for(const i of Object.keys(effects)){cleanups[i]?.();cleanups[i]=effects[i].fn()}
- requests[0].resolve(Response.json(config));await tick();ok(requests.length===2&&requests[1].init.method==='POST','exactly one default analysis across StrictMode replay');
- requests[1].resolve(Response.json(browser));await tick();let tree=render();flush();
+ requests[0].resolve(Response.json(config));await tick();ok(requests.length===1,'zero analysis across mount/StrictMode');
  const find=(node,type)=>{if(!node)return[];if(Array.isArray(node))return node.flatMap(n=>find(n,type));if(typeof node!=='object')return[];return [...(node.type===type?[node]:[]),...find(node.props?.children,type)]};
- let selects=find(tree,'select');ok(selects.length===2,'only geography and normalization controls');
- selects[0].props.onChange({target:{value:'canton'}});tree=render();selects=find(tree,'select');selects[0].props.onChange({target:{value:'province'}});
- ok(requests.length===4,'one new analysis per geography change, no fanout');
+ let tree=render();flush();let selects=find(tree,'select');ok(selects.length===2,'existing geography and normalization controls');
+ find(tree,'button')[0].props.onClick();ok(requests.length===2&&requests[1].init.method==='POST','one explicitly committed analysis');
+ requests[1].resolve(Response.json(browser));await tick();tree=render();
+ find(tree,'select')[0].props.onChange({target:{value:'canton'}});tree=render();
+ ok(requests.length===2&&find(tree,ui.PositionEvidence)[0].props.result.n===browser.n,'draft change does no analysis and preserves result');
+ find(tree,'button')[0].props.onClick();tree=render();find(tree,'select')[0].props.onChange({target:{value:'province'}});tree=render();find(tree,'button')[0].props.onClick();
+ ok(requests.length===4,'exactly one request per explicit command');
  const newest={...browser,n:99};requests[3].resolve(Response.json(newest));await tick();requests[2].resolve(Response.json({...browser,n:88}));await tick();tree=render();
  ok(find(tree,ui.PositionEvidence)[0].props.result.n===99,'stale old reply cannot replace latest');
  props={...props,lang:'es'};render();flush();await tick();ok(requests.length===4,'language changes cause zero acquisition');
- tree=render();find(tree,'select')[1].props.onChange({target:{value:'land'}});ok(requests.length===5&&JSON.parse(requests[4].init.body).requestedNormalizationBasis==='land','one explicit lens execution');
+ tree=render();find(tree,'select')[1].props.onChange({target:{value:'land'}});ok(requests.length===4,'normalization draft change causes zero acquisition');tree=render();find(tree,'button')[0].props.onClick();ok(requests.length===5&&JSON.parse(requests[4].init.body).requestedNormalizationBasis==='land','one explicit lens command');
+ requests[4].reject(Error('offline failure'));await tick();tree=render();ok(find(tree,ui.PositionEvidence)[0].props.result.n===99,'failed request preserves committed result');
 
  // Missing default District must not issue any automatic broader analysis.
  for(const i of Object.keys(cleanups))cleanups[i]?.();slots=[];effects=[];pending=[];cleanups=[];requests=[];props={listingId:id(1),lang:'en'};
  render();flush();requests[0].resolve(Response.json(noDistrict));await tick();tree=render();flush();ok(requests.length===1&&find(tree,'select')[0].props.value==='','missing district yields zero default analyses');
- find(tree,'select')[0].props.onChange({target:{value:'canton'}});ok(requests.length===2&&JSON.parse(requests[1].init.body).requestedGeographyLevel==='canton','broader question requires explicit selection');
+ find(tree,'select')[0].props.onChange({target:{value:'canton'}});ok(requests.length===1,'broader draft selection does no analysis');tree=render();find(tree,'button')[0].props.onClick();ok(requests.length===2&&JSON.parse(requests[1].init.body).requestedGeographyLevel==='canton','broader question requires explicit command');
 
  for(const i of Object.keys(cleanups))cleanups[i]?.();slots=[];effects=[];pending=[];cleanups=[];requests=[];
  render();flush();for(const i of Object.keys(cleanups))cleanups[i]?.();requests[0].resolve(Response.json(config));await tick();ok(requests.length===1,'unmounted configuration cannot launch a late default analysis');

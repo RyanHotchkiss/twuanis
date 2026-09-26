@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo } from 'react'
+import { MARKET_YEAR_BUILT_OPTIONS } from '@/lib/market-year-built-options'
 
 import {
   pavedRoadDistanceRangeOptions
@@ -257,7 +258,7 @@ export default function FilterColumn({
         return options.construction_area
 
       case 'year_built':
-        return options.year_built
+        return MARKET_YEAR_BUILT_OPTIONS.map(option => ({slug: option.key, term_name_en: option.en, term_name_es: option.es}))
 
       case 'environment':
         return options.environment

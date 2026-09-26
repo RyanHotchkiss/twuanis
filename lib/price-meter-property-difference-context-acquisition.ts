@@ -40,6 +40,13 @@ export async function acquireComparisons(e:EstablishedExecution,definitions:Reso
  const cohorts=definitions.flatMap(d=>[d.request.cohortA,d.request.cohortB])
  const rowsById=new Map(e.working.rows.map(r=>[r.id,r]))
  const evidence=new Map<string,Set<string>>()
+ // Reuse only the foundation's proven positive type membership; its rows are
+ // not a substitute for the population of a different geographic/type question.
+ for(const row of e.working.rows){
+  const type=row.canonicalEvidence.selections.filter(t=>t.dimension==='property_type')
+  if(type.length!==1||type[0].ontology_term_id!==e.result.reference.propertyType.id)throw new Error('Incoherent foundation type proof.')
+  evidence.set(row.id,new Set([type[0].ontology_term_id]))
+ }
  const candidatesByBoundary=new Map<string,string[]>()
  const boundary=(c:typeof cohorts[number])=>String(c.geography.id)+':'+String(c.propertyType.ontologyTermId)
  const query=()=>supabaseAdmin.from('listings_ontology_terms').select('listing_id,ontology_term_id::text,listings!inner(canonical_domain_version,listing_status,transaction_type)',{count:'exact'})
@@ -72,10 +79,13 @@ export async function acquireComparisons(e:EstablishedExecution,definitions:Reso
  }
  const ids=[...new Set([...candidatesByBoundary.values()].flat())].sort()
  const terms=[...new Set(cohorts.flatMap(c=>[c.propertyType,...c.characteristics].map(t=>safeTerm(t.ontologyTermId))))]
- for(let offset=0;offset<ids.length;offset+=25){
-  const batch=ids.slice(offset,offset+25)
-  const rows=await complete<Assignment>(()=>query().in('listing_id',batch).in('ontology_term_id',terms).order('listing_id').order('ontology_term_id'),r=>r.listing_id+':'+r.ontology_term_id)
-  if(rows.some(r=>!batch.includes(r.listing_id)||!terms.includes(r.ontology_term_id)))throw new Error('Unexpected membership.')
+ const pendingGroups=new Map<string,{terms:string[];ids:string[]}>()
+ for(const id of ids){const needed=terms.filter(term=>!evidence.get(id)?.has(term));if(!needed.length)continue
+  const key=JSON.stringify(needed),group=pendingGroups.get(key)??{terms:needed,ids:[]};group.ids.push(id);pendingGroups.set(key,group)}
+ for(const group of pendingGroups.values())for(let offset=0;offset<group.ids.length;offset+=25){
+  const batch=group.ids.slice(offset,offset+25),needed=group.terms
+  const rows=await complete<Assignment>(()=>query().in('listing_id',batch).in('ontology_term_id',needed).order('listing_id').order('ontology_term_id'),r=>r.listing_id+':'+r.ontology_term_id)
+  if(rows.some(r=>!batch.includes(r.listing_id)||!needed.includes(r.ontology_term_id)))throw new Error('Unexpected membership.')
   record(rows)
  }
  const required=[...new Set(cohorts.flatMap(c=>candidatesByBoundary.get(boundary(c))!.filter(id=>[c.propertyType,...c.characteristics].every(t=>evidence.get(id)?.has(String(t.ontologyTermId))))))].sort()

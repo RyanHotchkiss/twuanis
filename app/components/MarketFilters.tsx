@@ -85,12 +85,12 @@ export default function MarketFilters({
   useEffect(() => {
     // A server-action rerender with identical URL configuration must not reset
     // an ordinary PPM2 draft or its relationship to the retained result.
-    if (workspace !== 'price-meter' || previousConfiguration.current.workspace !== workspace ||
+    if ((!isPpm2 && !onApply) || previousConfiguration.current.workspace !== workspace ||
         previousConfiguration.current.key !== incomingConfiguration) {
       setDraftFilters(filters)
     }
     previousConfiguration.current = { workspace, key: incomingConfiguration }
-  }, [filters, workspace, incomingConfiguration])
+  }, [filters, workspace, incomingConfiguration, isPpm2, onApply])
 
   function handleFilterChange(
     key: string,
@@ -107,10 +107,10 @@ export default function MarketFilters({
   }
 
   async function handleApplyFilters() {
-    if (isPpm2) {
+    if (isPpm2 || onApply) {
       if (inFlight.current || alreadyApplied) return
       try {
-        validatePriceMeterApply(draftFilters)
+        if(isPpm2) validatePriceMeterApply(draftFilters)
       } catch {
         setApplyError(language === 'es'
           ? 'Selecciona Provincia, Cantón, Tipo de Transacción y Tipo de Propiedad.'
@@ -235,7 +235,7 @@ export default function MarketFilters({
         <button
           type="button"
           onClick={handleApplyFilters}
-          disabled={isPpm2 && (submitting || alreadyApplied)}
+          disabled={!!(isPpm2 || onApply) && (submitting || alreadyApplied)}
           aria-busy={isPpm2 && submitting}
           style={{
             background: isPpm2 && (alreadyApplied || submitting) ? '#666' : '#fff',

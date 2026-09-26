@@ -31,9 +31,7 @@ import {
   resolvePriceMeterConstructionLandIdentity
 } from '@/lib/price-meter-construction-land'
 
-import {
-  resolvePriceMeterConstructionLandCohort
-} from '@/lib/price-meter-construction-land-cohorts'
+import { resolveStructuralComparableDimensions, matchesStructuralComparableDimension, intersectStructuralComparables } from './structural-comparable-population'
 
 
 export type PriceMeterComparableActiveDimension = {
@@ -136,290 +134,6 @@ function assertNoDuplicateCanonicalObservations(
 }
 
 
-function getSubjectCharacteristic({
-  subject,
-  dimension
-}: {
-  subject:
-    PriceMeterComparableSubjectIdentity
-
-  dimension:
-    PriceMeterComparableDimension
-}): PriceMeterCharacteristicIdentity | null {
-
-  if (
-    dimension ===
-      'construction_land'
-  ) {
-    return null
-  }
-
-
-  const matches =
-    subject.characteristics.filter(
-      characteristic =>
-        characteristic.termType ===
-          dimension
-    )
-
-
-  if (
-    matches.length >
-      1
-  ) {
-    throw new Error(
-      `Phase 12A subject contains multiple canonical ${dimension} identities.`
-    )
-  }
-
-
-  return (
-    matches[0] ??
-    null
-  )
-}
-
-
-function resolveActiveDimensions({
-  subject,
-  activeDimensions
-}: {
-  subject:
-    PriceMeterComparableSubjectIdentity
-
-  activeDimensions:
-    PriceMeterComparableDimension[]
-}): PriceMeterComparableActiveDimension[] {
-
-  const requested =
-    new Set(
-      activeDimensions
-    )
-
-
-  if (
-    requested.size !==
-      activeDimensions.length
-  ) {
-    throw new Error(
-      'Phase 12A active dimensions contain duplicates.'
-    )
-  }
-
-
-  const ordered =
-    PRICE_METER_COMPARABLE_DIMENSION_ORDER
-      .filter(
-        dimension =>
-          requested.has(
-            dimension
-          )
-      )
-
-
-  if (
-    ordered.length !==
-      activeDimensions.length
-  ) {
-    throw new Error(
-      'Phase 12A active dimensions contain an unsupported dimension.'
-    )
-  }
-
-
-  return ordered.map(
-    dimension => {
-
-      if (
-        dimension ===
-          'construction_land'
-      ) {
-        const identity =
-          subject
-            .positionIdentity
-            .constructionToLandIdentity
-
-
-        if (
-          identity ===
-            null
-        ) {
-          throw new Error(
-            'Construction-to-Land cannot constrain this Phase 12A subject.'
-          )
-        }
-
-
-        const cohort =
-          resolvePriceMeterConstructionLandCohort(
-            identity
-              .constructionToLandRatio
-          )
-
-
-        if (
-          cohort ===
-            null
-        ) {
-          throw new Error(
-            'Subject Construction-to-Land ratio does not resolve to a canonical cohort.'
-          )
-        }
-
-
-        return {
-          dimension,
-
-          characteristic:
-            null,
-
-          constructionLandCohortKey:
-            cohort.key
-        }
-      }
-
-
-      const characteristic =
-        getSubjectCharacteristic({
-          subject,
-          dimension
-        })
-
-
-      if (
-        !characteristic
-      ) {
-        throw new Error(
-          `Phase 12A cannot activate ${dimension} because the subject has no canonical value for that dimension.`
-        )
-      }
-
-
-      return {
-        dimension,
-
-        characteristic,
-
-        constructionLandCohortKey:
-          null
-      }
-    }
-  )
-}
-
-
-function matchesOntologyDimension({
-  observation,
-  activeDimension,
-  membershipsByListingId
-}: {
-  observation:
-    PriceMeterObservation
-
-  activeDimension:
-    PriceMeterComparableActiveDimension
-
-  membershipsByListingId:
-    Map<
-      string,
-      Set<number>
-    >
-}): boolean {
-
-  if (
-    observation.listingId ===
-      null
-  ) {
-    return false
-  }
-
-
-  const requiredTermId =
-    activeDimension
-      .characteristic
-      ?.ontologyTermId
-
-
-  if (
-    requiredTermId ===
-      undefined
-  ) {
-    return false
-  }
-
-
-  return (
-    membershipsByListingId
-      .get(
-        observation.listingId
-      )
-      ?.has(
-        requiredTermId
-      ) ??
-    false
-  )
-}
-
-
-function matchesConstructionLandDimension({
-  observation,
-  activeDimension
-}: {
-  observation:
-    PriceMeterObservation
-
-  activeDimension:
-    PriceMeterComparableActiveDimension
-}): boolean {
-
-  const requiredCohortKey =
-    activeDimension
-      .constructionLandCohortKey
-
-
-  if (
-    requiredCohortKey ===
-      null
-  ) {
-    return false
-  }
-
-
-  const identity =
-    resolvePriceMeterConstructionLandIdentity(
-      observation
-        .analyticalIdentity
-    )
-
-
-  if (
-    identity ===
-      null
-  ) {
-    return false
-  }
-
-
-  const cohort =
-    resolvePriceMeterConstructionLandCohort(
-      identity
-        .constructionToLandRatio
-    )
-
-
-  if (
-    cohort ===
-      null
-  ) {
-    return false
-  }
-
-
-  return (
-    cohort.key ===
-      requiredCohortKey
-  )
-}
 
 
 export function buildPriceMeterComparablePopulation({
@@ -545,8 +259,8 @@ export function buildPriceMeterComparablePopulation({
    */
 
   const resolvedActiveDimensions =
-    resolveActiveDimensions({
-      subject,
+    resolveStructuralComparableDimensions({
+      subject: { characteristics: subject.characteristics, constructionToLandIdentity: subject.positionIdentity.constructionToLandIdentity },
       activeDimensions
     })
 
@@ -555,70 +269,22 @@ export function buildPriceMeterComparablePopulation({
    * Cumulative intersection.
    */
 
-  let currentObservations =
-    basePeerObservations
-
-
-  const trailSteps:
-    Array<{
-      dimension:
-        PriceMeterComparableDimension
-
-      beforeCount:
-        number
-
-      afterCount:
-        number
-    }> =
-      []
-
-
-  for (
-    const activeDimension of
-      resolvedActiveDimensions
-  ) {
-    const beforeCount =
-      currentObservations.length
-
-
-    currentObservations =
-      currentObservations.filter(
-        observation => {
-
-          if (
-            activeDimension.dimension ===
-              'construction_land'
-          ) {
-            return (
-              matchesConstructionLandDimension({
-                observation,
-                activeDimension
-              })
-            )
-          }
-
-
-          return (
-            matchesOntologyDimension({
-              observation,
-              activeDimension,
-              membershipsByListingId
-            })
-          )
-        }
+  const intersection = intersectStructuralComparables({
+    rows: basePeerObservations,
+    subjectId: subjectListingId,
+    listingId: observation => observation.listingId!,
+    dimensions: resolvedActiveDimensions,
+    matches: (observation, activeDimension) => {
+      const ratio = activeDimension.dimension === 'construction_land'
+        ? resolvePriceMeterConstructionLandIdentity(observation.analyticalIdentity)?.constructionToLandRatio ?? null
+        : null
+      return matchesStructuralComparableDimension(
+        membershipsByListingId.get(observation.listingId!), ratio, activeDimension
       )
-
-
-    trailSteps.push({
-      dimension:
-        activeDimension.dimension,
-
-      beforeCount,
-
-      afterCount:
-        currentObservations.length
-    })
-  }
+    }
+  })
+  const currentObservations = intersection.rows
+  const trailSteps = intersection.steps
 
 
   /*

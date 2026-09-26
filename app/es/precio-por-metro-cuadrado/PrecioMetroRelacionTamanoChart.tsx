@@ -1,3 +1,5 @@
+import PriceMeterChartViewport from '@/app/price-per-square-meter/PriceMeterChartViewport'
+
 type Coordinate = {
   area:
     number
@@ -170,6 +172,7 @@ export default function PrecioMetroRelacionTamanoChart({
 
 
   return (
+    <PriceMeterChartViewport label="Gráfico de relación de área; desplácese horizontalmente para ver todas las etiquetas">
     <div style={chartShell}>
       <div style={chartYAxisLabel}>
         Precio / {ratioLabel}
@@ -242,6 +245,7 @@ export default function PrecioMetroRelacionTamanoChart({
         normalizado.
       </div>
     </div>
+    </PriceMeterChartViewport>
   )
 }
 
@@ -254,7 +258,7 @@ const chartShell = {
     '1.25rem',
 
   padding:
-    '1.5rem 1.5rem 1.25rem 4.5rem',
+    '1.5rem 6rem 1.25rem 6rem',
 
   background:
     '#111',
@@ -268,6 +272,7 @@ const chartShell = {
 
 
 const plot = {
+  marginBottom: '4rem',
   position:
     'relative' as const,
 
@@ -340,7 +345,7 @@ const pointLabel = {
   gap:
     '.15rem',
 
-  minWidth:
+  width:
     '180px',
 
   textAlign:
@@ -350,7 +355,9 @@ const pointLabel = {
     '.75rem',
 
   whiteSpace:
-    'nowrap' as const
+    'normal' as const,
+
+  overflowWrap: 'anywhere' as const
 }
 
 

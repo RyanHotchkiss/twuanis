@@ -5,6 +5,9 @@ import {
   type ReactNode
 } from 'react'
 
+import TopBar
+  from '@/app/components/TopBar'
+
 import {
   Bell,
   BookOpen,
@@ -92,6 +95,8 @@ export default function MarketHubShell({
       false
     )
 
+  const [theme, setTheme] =
+    useState<'dark' | 'light'>('dark')
 
   const labels =
     language === 'es'
@@ -477,8 +482,22 @@ export default function MarketHubShell({
 
 
   return (
-    <>
-      <div className="marketHubShell">
+      <div
+        className={`marketHubTheme marketHubTheme-${theme}`}
+      >
+        <TopBar
+          theme={theme}
+
+          onThemeToggle={() =>
+            setTheme(current =>
+              current === 'dark'
+                ? 'light'
+                : 'dark'
+            )
+          }
+        />
+
+        <div className="marketHubShell">
 
         <aside
           className={
@@ -650,13 +669,86 @@ export default function MarketHubShell({
 
 
       <style>{`
+        .marketHubTheme {
+          min-height: 100vh;
+
+          background:
+            var(--hub-bg);
+
+          color:
+            var(--hub-text);
+
+          transition:
+            background 250ms ease,
+            color 250ms ease;
+        }
+
+
+        .marketHubTheme-dark {
+          --hub-bg: #0a0a0a;
+
+          --hub-rail-start: #101010;
+          --hub-rail-end: #0d0d0d;
+
+          --hub-text: #ededed;
+          --hub-text-strong: #ffffff;
+          --hub-text-secondary: #858585;
+          --hub-text-muted: #656565;
+
+          --hub-border: #242424;
+          --hub-border-soft: #202020;
+
+          --hub-nav-hover: #171717;
+          --hub-nav-active: #1b1b1b;
+
+          --hub-nav-text: #8c8c8c;
+          --hub-nav-hover-text: #dddddd;
+
+          --hub-divider-start: #303030;
+          --hub-divider-middle: #1c1c1c;
+
+          --hub-control-bg: #151515;
+          --hub-control-border: #292929;
+
+          --hub-empty-border: #2b2b2b;
+        }
+
+
+        .marketHubTheme-light {
+          --hub-bg: #f7f7f4;
+
+          --hub-rail-start: #ffffff;
+          --hub-rail-end: #f1f1ed;
+
+          --hub-text: #222222;
+          --hub-text-strong: #000000;
+          --hub-text-secondary: #555555;
+          --hub-text-muted: #777777;
+
+          --hub-border: #d8d8d2;
+          --hub-border-soft: #ddddda;
+
+          --hub-nav-hover: #ecece7;
+          --hub-nav-active: #e3e3dc;
+
+          --hub-nav-text: #666666;
+          --hub-nav-hover-text: #111111;
+
+          --hub-divider-start: #c8c8c2;
+          --hub-divider-middle: #ddddda;
+
+          --hub-control-bg: #ffffff;
+          --hub-control-border: #d4d4ce;
+
+          --hub-empty-border: #c9c9c3;
+        }
         .marketHubShell {
           width: 100%;
           min-height: calc(100vh - 72px);
           display: grid;
           grid-template-columns: 228px minmax(0, 1fr);
-          background: #0a0a0a;
-          color: #ededed;
+          background: var(--hub-bg);
+          color: var(--hub-text);
         }
 
         .marketHubRail {
@@ -670,10 +762,12 @@ export default function MarketHubShell({
           background:
             linear-gradient(
               180deg,
-              #101010 0%,
-              #0d0d0d 100%
+              var(--hub-rail-start) 0%,
+              var(--hub-rail-end) 100%
             );
-          border-right: 1px solid #242424;
+
+          border-right:
+            1px solid var(--hub-border);
           z-index: 40;
         }
 
@@ -686,7 +780,7 @@ export default function MarketHubShell({
         }
 
         .marketHubBrand {
-          color: #fff;
+          color: var(--hub-text-strong);
           font-size: 20px;
           font-weight: 750;
           letter-spacing: -0.025em;
@@ -694,7 +788,7 @@ export default function MarketHubShell({
 
         .marketHubRailEyebrow {
           margin-top: 5px;
-          color: #656565;
+          color: var(--hub-text-muted);
           font-size: 10px;
           font-weight: 700;
           letter-spacing: .12em;
@@ -704,7 +798,7 @@ export default function MarketHubShell({
         .marketHubRailClose {
           display: none;
           padding: 6px;
-          color: #aaa;
+          color: var(--hub-text-secondary);
           background: transparent;
           border: 0;
           cursor: pointer;
@@ -724,7 +818,7 @@ export default function MarketHubShell({
           align-items: center;
           gap: 9px;
           padding: 0 11px;
-          color: #8c8c8c;
+          color: var(--hub-nav-text);
           background: transparent;
           border: 0;
           border-radius: 9px;
@@ -738,13 +832,13 @@ export default function MarketHubShell({
         }
 
         .marketHubNavigationItem:hover {
-          color: #ddd;
-          background: #171717;
+          color: var(--hub-nav-hover-text);
+          background: var(--hub-nav-hover);
         }
 
         .marketHubNavigationItemActive {
-          color: #fff;
-          background: #1b1b1b;
+          color: var(--hub-text-strong);
+          background: var(--hub-nav-active);
         }
 
         .marketHubNavigationItemActive::before {
@@ -779,7 +873,7 @@ export default function MarketHubShell({
 
         .marketHubNavigationArrow {
           opacity: 0;
-          color: #666;
+          color: var(--hub-text-muted);
           transition: opacity 140ms ease;
         }
 
@@ -796,9 +890,10 @@ export default function MarketHubShell({
           align-items: center;
           gap: 8px;
           padding: 16px 10px 2px;
-          color: #656565;
+          color: var(--hub-text-muted);
           font-size: 11px;
-          border-top: 1px solid #202020;
+          border-top:
+            1px solid var(--hub-border-soft);
         }
 
         .marketHubWorkspace {
@@ -829,7 +924,7 @@ export default function MarketHubShell({
 
         .marketHubWorkspaceTitle {
           margin: 0;
-          color: #fff;
+          color: var(--hub-text-strong);
           font-size: clamp(28px, 3.1vw, 42px);
           font-weight: 720;
           line-height: 1.05;
@@ -839,7 +934,7 @@ export default function MarketHubShell({
         .marketHubWorkspaceDescription {
           max-width: 760px;
           margin: 11px 0 0;
-          color: #858585;
+          color: var(--hub-text-secondary);
           font-size: 14px;
           line-height: 1.6;
         }
@@ -850,12 +945,12 @@ export default function MarketHubShell({
           height: 1px;
           margin: 28px auto 0;
           background:
-            linear-gradient(
-              90deg,
-              #303030 0%,
-              #1c1c1c 65%,
-              transparent 100%
-            );
+          linear-gradient(
+            90deg,
+            var(--hub-divider-start) 0%,
+            var(--hub-divider-middle) 65%,
+            transparent 100%
+          );
         }
 
         .marketHubWorkspaceCanvas {
@@ -872,9 +967,11 @@ export default function MarketHubShell({
           height: 38px;
           flex: 0 0 auto;
           margin-top: 1px;
-          color: #ddd;
-          background: #151515;
-          border: 1px solid #292929;
+          color: var(--hub-text-strong);
+          background:
+            var(--hub-control-bg);
+          border:
+            1px solid var(--hub-control-border);
           border-radius: 9px;
           cursor: pointer;
         }
@@ -889,15 +986,16 @@ export default function MarketHubShell({
           place-items: center;
           align-content: center;
           gap: 14px;
-          color: #666;
-          border: 1px dashed #2b2b2b;
+          color: var(--hub-text-muted);
+            border:
+              1px dashed var(--hub-empty-border);
           border-radius: 14px;
         }
 
         .marketHubEmptyWorkspace p {
           max-width: 420px;
           margin: 0;
-          color: #777;
+          color: var(--hub-text-secondary);
           font-size: 13px;
           line-height: 1.6;
           text-align: center;
@@ -956,6 +1054,6 @@ export default function MarketHubShell({
           }
         }
       `}</style>
-    </>
+    </div>
   )
 }

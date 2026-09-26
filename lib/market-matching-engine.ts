@@ -1,235 +1,40 @@
-import { getMarketStatistics } from '@/lib/statistics-engine'
+import 'server-only'
+import { matchingCardEvidence } from './market-matching-presentation'
+import { supabaseAdmin } from './supabase-admin'
+import { resolveCanonicalMarketRequest } from './canonical-market-request'
+import { readCanonicalMarketScalars } from './canonical-market-population'
+import { acquireMarketPreferenceEvidence,evaluateMarketPreferences,rankMarketPreferences } from './canonical-market-preferences'
+import { resolveListingOriginalMonetaryValue } from './listing-monetary-value'
+import { resolveListingImages } from '@/app/utils/resolveListingImages'
 
-import {
-  resolveListingAmountCrc
-} from '@/lib/listing-monetary-value'
-
-import {
-  resolveListingImages
-} from '@/app/utils/resolveListingImages'
-
-type MatchingLanguage = 'en' | 'es'
-
-type MarketMatchingFilters = {
-  transaction_type?: string
-  province?: string
-  canton?: string
-  district?: string
-  property_type?: string
-  bedrooms?: string
-  bathrooms?: string
-  parking?: string
-  year_built?: string
-  property_area?: string
-  construction_area?: string
-  utility?: string
-  environment?: string
-  terrain?: string
-  accessibility?: string
-  distance_to_paved_road_range?: string
-  legal_status?: string
-}
-
-
-
-function formatCRC(value: number | null) {
-  if (value === null || Number.isNaN(value)) return null
-
-  return `₡${Math.round(value).toLocaleString()}`
-}
-
-function splitValues(value?: string) {
-  if (!value) return []
-
-  return value
-    .split(',')
-    .map(item => item.trim())
-    .filter(Boolean)
-}
-
-function normalize(value: any) {
-  return String(value || '')
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/\+/g, 'plus')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '')
-}
-
-function labelize(value: string) {
-  return value
-    .replace(/-/g, ' ')
-    .replace(/\b\w/g, letter => letter.toUpperCase())
-}
-
-const matchFields = [
-  { key: 'province', label: 'Province', weight: 15 },
-  { key: 'canton', label: 'Canton', weight: 12 },
-  { key: 'district', label: 'District', weight: 10 },
-  { key: 'property_type', label: 'Property Type', weight: 15 },
-  { key: 'bedrooms', label: 'Bedrooms', weight: 8 },
-  { key: 'bathrooms', label: 'Bathrooms', weight: 8 },
-  { key: 'parking', label: 'Parking', weight: 5 },
-  { key: 'environment', label: 'Environment', weight: 8 },
-  { key: 'terrain', label: 'Terrain', weight: 6 },
-  { key: 'utility', label: 'Utility', weight: 7 },
-  { key: 'accessibility', label: 'Accessibility', weight: 4 },
-  {
-    key: 'distance_to_paved_road_range',
-    label: 'Distance to Paved Road',
-    weight: 4
-  },
-  { key: 'legal_status', label: 'Legal Status', weight: 7 }
-]
-
-function scoreListing(
-  listing: any,
-  filters: MarketMatchingFilters,
-  language: MatchingLanguage
-) {
-  let earned = 0
-  let possible = 0
-
-  const matchReasons: string[] = []
-  const missingFeatures: string[] = []
-
-  matchFields.forEach((field) => {
-    const requestedValues =
-      splitValues(filters[field.key as keyof MarketMatchingFilters])
-
-    if (!requestedValues.length) return
-
-    possible += field.weight
-
-    const listingValue =
-      listing[field.key]
-
-    const listingValues =
-      Array.isArray(listingValue)
-        ? listingValue
-        : splitValues(String(listingValue || ''))
-
-    const matched =
-        requestedValues.some(requested =>
-            listingValues.some((listingValue: any) =>
-            normalize(listingValue).includes(normalize(requested)) ||
-            normalize(requested).includes(normalize(listingValue))
-            )
-        )
-
-    if (matched) {
-      earned += field.weight
-
-      matchReasons.push(
-        language === 'es'
-          ? `Coincide con ${field.label}: ${requestedValues.map(labelize).join(', ')}`
-          : `Matches ${field.label}: ${requestedValues.map(labelize).join(', ')}`
-      )
-    } else {
-      missingFeatures.push(
-        language === 'es'
-          ? `${field.label}: ${requestedValues.map(labelize).join(', ')}`
-          : `${field.label}: ${requestedValues.map(labelize).join(', ')}`
-      )
-    }
+export async function getMarketMatches(filters:Record<string,string|undefined>,language:'en'|'es'='en'){
+  const request=await resolveCanonicalMarketRequest(filters,language)
+  const fields=[...(request.propertyArea?['property_area' as const]:[]),...(request.constructionArea?['construction_area' as const]:[])]
+  const candidates=await readCanonicalMarketScalars(request.base,fields)
+  const evidence=await acquireMarketPreferenceEvidence(request,candidates.map(row=>row.id))
+  const labels:Record<string,[string,string]>={property_area:['Property Area','Área del terreno'],construction_area:['Construction Area','Área de construcción'],year_built:['Year Built','Año de construcción'],distance_to_paved_road:['Distance to paved road','Distancia a carretera pavimentada']}
+  const ranked=rankMarketPreferences(candidates.map(row=>({id:row.id,preferences:evaluateMarketPreferences(request,row,evidence).map(p=>({...p,label:labels[p.dimension]?.[language==='es'?1:0]??p.label}))})))
+  const displayed=ranked.slice(0,12),presentation=new Map<string,Record<string,any>>()
+  if(displayed.length){
+    const {data,error,count}=await supabaseAdmin.from('listings')
+      .select('id,title,images,canonical_domain_version,transaction_type,current_price,monthly_price,currency',{count:'exact'})
+      .in('id',displayed.map(r=>r.id)).eq('canonical_domain_version',1).eq('listing_status','active')
+      .order('id').limit(13)
+    if(error||!Array.isArray(data)||count!==displayed.length||data.length!==count)throw Error('Matching presentation changed or is incomplete.')
+    const wanted=new Set(displayed.map(r=>r.id))
+    for(const row of data){if(!wanted.has(row.id)||presentation.has(row.id)||row.canonical_domain_version!==1||!['sale','rent'].includes(row.transaction_type)||request.base.transaction&&row.transaction_type!==request.base.transaction)throw Error('Invalid matching presentation.');presentation.set(row.id,row)}
+  }
+  const cards=await matchingCardEvidence(displayed.map(r=>r.id),evidence.canonical,request.terms.filter(t=>['bedrooms','bathrooms'].includes(t.dimension)).map(t=>t.dimension),language)
+  const listings=displayed.map(result=>{
+    const row=presentation.get(result.id)!,money=resolveListingOriginalMonetaryValue(row)
+    // Explicit browser projection. No spread of candidate rows/canonical envelopes.
+    return {id:result.id,province:cards.get(result.id)?.province??null,canton:cards.get(result.id)?.canton??null,property_type:cards.get(result.id)?.property_type??null,bedrooms:cards.get(result.id)?.bedrooms??null,bathrooms:cards.get(result.id)?.bathrooms??null,title:typeof row.title==='string'?row.title:null,images:resolveListingImages(row.images).slice(0,1),
+      formattedPrice:money?`${money.currency} ${money.amount.toLocaleString(language==='es'?'es-CR':'en-US')}`:null,
+      matchScore:result.matchScore,matchState:result.matchState,confirmedMatches:result.confirmedMatches,
+      confirmedNonmatches:result.confirmedNonmatches,unknown:result.unknown,preferences:result.preferences,
+      matchReasons:result.preferences.filter(p=>p.state==='MATCH').map(p=>p.label),
+      missingFeatures:result.preferences.filter(p=>p.state==='NONMATCH').map(p=>p.label),
+      unknownFeatures:result.preferences.filter(p=>p.state==='UNKNOWN').map(p=>p.label)}
   })
-
-  const matchScore =
-    possible > 0
-      ? Math.round((earned / possible) * 100)
-      : 0
-
-  return {
-    matchScore,
-    matchReasons,
-    missingFeatures
-  }
-}
-
-function decorateListing(
-  listing: any,
-  filters: MarketMatchingFilters,
-  language: MatchingLanguage,
-  usdToCrcRate: number
-) {
-  const price =
-    resolveListingAmountCrc(
-      listing,
-      usdToCrcRate
-    )
-
-  const scoring =
-    scoreListing(listing, filters, language)
-
-  return {
-    ...listing,
-
-    images:
-      resolveListingImages(
-        listing.images
-      ),
-
-    formattedPrice:
-      price ? formatCRC(price) : null,
-
-    matchScore:
-      scoring.matchScore,
-
-    matchReasons:
-      scoring.matchReasons,
-
-    missingFeatures:
-      scoring.missingFeatures
-  }
-}
-
-export async function getMarketMatches(
-  filters: MarketMatchingFilters,
-  language: MatchingLanguage = 'en'
-) {
-  const broadFilters = {
-    transaction_type: filters.transaction_type,
-    province: filters.province,
-    canton: filters.canton,
-    district: filters.district,
-    property_area: filters.property_area,
-    construction_area: filters.construction_area
-  }
-
-  const market =
-    await getMarketStatistics(
-      broadFilters
-    )
-
-  const usdToCrcRate =
-    market.analyticalContext.fx.rate
-
-  const listings =
-    market.listings || []
-
-  const decoratedListings =
-    listings
-      .map((listing: any) =>
-        decorateListing(
-            listing,
-            filters,
-            language,
-            usdToCrcRate
-          )
-      )
-      .sort((a: any, b: any) =>
-        b.matchScore - a.matchScore ||
-        (a.id < b.id ? -1 : a.id > b.id ? 1 : 0)
-      )
-
-  return {
-    filters,
-
-    totalListings:
-      listings.length,
-
-    listings:
-      decoratedListings.slice(0, 12)
-  }
+  return {language,filters,totalListings:candidates.length,listings}
 }

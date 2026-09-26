@@ -48,16 +48,20 @@ import {
 } from '@/lib/marketplace-area-ranges'
 
 function HomePageContent({
-                ontologyTerms,
-                ontologyRelationships,
-                listings,
-                homePageSchema
-                }: {
-                ontologyTerms: any[]
-                ontologyRelationships: any[]
-                listings: any[]
-                homePageSchema: any[]
-                }) {
+      ontologyTerms,
+      ontologyRelationships,
+      listings,
+      saleCount,
+      rentCount,
+      homePageSchema
+    }: {
+      ontologyTerms: any[]
+      ontologyRelationships: any[]
+      listings: any[]
+      saleCount: number
+      rentCount: number
+      homePageSchema: any[]
+    }) {
 
 
   const [properties, setProperties] = useState(listings)
@@ -79,8 +83,16 @@ function HomePageContent({
  
   const [showPoster, setShowPoster] = useState(true)
 
-const [showMainOverlay, setShowMainOverlay] =
+  const [showMainOverlay, setShowMainOverlay] =
   useState(false)
+
+  const [
+    expandedEngine,
+    setExpandedEngine
+  ] = useState<string | null>(null)
+
+  const [theme, setTheme] =
+  useState<'dark' | 'light'>('dark')
 
   const [isMobile, setIsMobile] =
             useState(false)
@@ -381,24 +393,72 @@ useEffect(() => {
 {/* MOBILE EN INTRO */}
       {showPoster && (
         <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 9998,
-            background: '#080808',
-            overflowY: 'auto',
-            WebkitOverflowScrolling: 'touch',
-          }}
-        >
-          <TopBar />
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 9998,
+              background: '#080808',
+              overflowY: 'auto',
+              WebkitOverflowScrolling: 'touch',
+            }}
+          >
+            {/* HOMEPAGE HERO IMAGE */}
+            <div
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: '100vh',
+                minHeight: 760,
+                backgroundImage:
+                  theme === 'dark'
+                    ? 'url(/images/house.webp)'
+                    : 'url(/images/home0.webp)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center center',
+                backgroundRepeat: 'no-repeat',
+                pointerEvents: 'none',
+              }}
+            />
+
+            {/* HERO DARKENING LAYER */}
+            <div
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: '100vh',
+                minHeight: 760,
+                background:
+                  theme === 'dark'
+                    ? 'linear-gradient(180deg, rgba(0,0,0,.40) 0%, rgba(0,0,0,.50) 58%, rgba(0,0,0,.76) 88%, #080808 100%)'
+                    : 'linear-gradient(180deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,.20) 58%, rgba(255,255,255,.50) 88%, #f7f7f4 100%)',
+                pointerEvents: 'none',
+              }}
+            />
+          <TopBar
+            theme={theme}
+            onThemeToggle={() =>
+              setTheme(current =>
+                current === 'dark'
+                  ? 'light'
+                  : 'dark'
+              )
+            }
+          />
 
           <main
             style={{
-              width: '100%',
-              maxWidth: 720,
+              width: 'min(94vw, 1600px)',
               margin: '0 auto',
               padding: '24px 18px 42px',
               boxSizing: 'border-box',
+              position: 'relative',
+              zIndex: 1,
             }}
           >
             {/* TWUANIS INTRO */}
@@ -429,7 +489,10 @@ useEffect(() => {
                   >
                     <div
                       style={{
-                        color: '#ffffff',
+                        color:
+                          theme === 'dark'
+                            ? '#ffffff'
+                            : '#000000',
                         fontFamily: 'var(--font-cinzel), serif',
                         fontSize: 'clamp(52px, 16vw, 82px)',
                         lineHeight: 0.95,
@@ -442,7 +505,11 @@ useEffect(() => {
                     </div>
 
                     <img
-                      src="/images/twuanis-mobius.svg"
+                      src={
+                            theme === 'dark'
+                              ? '/images/twuanis-mobius.svg'
+                              : '/images/twuanis-mobius-0.svg'
+                          }
                       alt=""
                       aria-hidden="true"
                       style={{
@@ -461,7 +528,10 @@ useEffect(() => {
 
               <div
                 style={{
-                  color: '#ffffff',
+                  color:
+                    theme === 'dark'
+                      ? '#ffffff'
+                      : '#000000',
                   fontSize: 15,
                   fontWeight: 700,
                   textShadow:
@@ -479,101 +549,260 @@ useEffect(() => {
 
             </section>
 
-            {/* ENGINE EXAMPLES */}
-            <section
-              style={{
-                border: '1px solid rgba(201, 154, 50, 0.45)',
-                borderRadius: 24,
-                padding: '8px 16px',
-                background: '#101820',
-              }}
-            >
-              {mobileEngineExamples.map(
-                ({ id, title, Icon, color, question, answer }, index) => (
-                  <article
-                    key={id}
+            {/* INTELLIGENCE RAIL */}
+                <section
+                  style={{
+                    width: '100%',
+                    padding: '10px 0 18px',
+                  }}
+                >
+                  <div
                     style={{
-                      padding: '28px 0 30px',
-                      borderBottom:
-                        index < mobileEngineExamples.length - 1
-                          ? '1px solid rgba(201, 154, 50, 0.35)'
-                          : 'none',
+                      display: 'flex',
+                      gap: 12,
+                      width: '100%',
+                      overflowX: 'auto',
+                      alignItems: 'center',
+                      justifyContent: isMobile
+                        ? 'flex-start'
+                        : 'center',
+                      padding: '4px 2px 16px',
+                      boxSizing: 'border-box',
+                      scrollbarWidth: 'none',
+                      WebkitOverflowScrolling: 'touch',
                     }}
                   >
-                    {/* CLICKABLE ENGINE CARD */}
-                    <Link
-                      href={`/en/market-intelligence?tab=${id}`}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 14,
-                        width: '100%',
-                        boxSizing: 'border-box',
-                        padding: '14px 16px',
-                        marginBottom: 18,
-                        border: `2px solid ${color}`,
-                        borderRadius: 18,
-                        background: '#171717',
+                    {homepageIntelligenceCards.map(
+                      ({
+                        id,
+                        label,
+                        description,
+                        Icon,
                         color,
-                        textDecoration: 'none',
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: 58,
-                          height: 58,
-                          flexShrink: 0,
-                          border: `1px solid ${color}`,
-                          borderRadius: 15,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }}
-                      >
-                        <Icon size={32} strokeWidth={1.35} />
-                      </div>
+                      }) => {
+                        const expanded =
+                          expandedEngine === id
 
-                      <div
-                        style={{
-                          textAlign: 'left',
-                          fontFamily: 'var(--font-cinzel), serif',
-                          fontSize: 20,
-                          lineHeight: 1.15,
-                          color: '#ffffff',
-                        }}
-                      >
-                        {title}
-                      </div>
-                    </Link>
+                        return (
+                          <div
+                            key={id}
+                            onMouseEnter={() => {
+                              if (!isMobile) {
+                                setExpandedEngine(id)
+                              }
+                            }}
+                            onMouseLeave={() => {
+                              if (!isMobile) {
+                                setExpandedEngine(null)
+                              }
+                            }}
+                            onClick={() => {
+                              if (isMobile) {
+                                setExpandedEngine(
+                                  expanded
+                                    ? null
+                                    : id
+                                )
+                              }
+                            }}
+                            style={{
+                              flex: '0 0 150px',
+                              width: 150,
+                              height: 220,
+                              position: 'relative',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              overflow: 'visible',
+                            }}
+                          >
+                            {/* RESTING CARD */}
+                                  <article
+                                    style={{
+                                      position: 'absolute',
+                                      left: '50%',
+                                      top: '50%',
+                                      width: 150,
+                                      height: 100,
+                                      transform:
+                                        'translate(-50%, -50%)',
+                                      padding: '16px 12px',
+                                      boxSizing: 'border-box',
 
-                    {/* QUESTION */}
-                    <div
-                      style={{
-                        fontSize: 14,
-                        lineHeight: 1.5,
-                        color: '#f4f4f4',
-                        marginBottom: 12,
-                      }}
-                    >
-                      <strong style={{ color }}>Hypothetical Question:</strong>{' '}
-                      {question}
-                    </div>
+                                      border:
+                                        theme === 'dark'
+                                          ? '2px solid #333'
+                                          : '2px solid rgba(0,0,0,.22)',
 
-                    {/* ANSWER */}
-                    <div
-                      style={{
-                        fontSize: 14,
-                        lineHeight: 1.55,
-                        color: '#dddddd',
-                      }}
-                    >
-                      <strong style={{ color }}>Potential Answer:</strong>{' '}
-                      {answer}
-                    </div>
-                  </article>
-                )
-              )}
-            </section>
+                                      borderRadius: 18,
+
+                                      background:
+                                        theme === 'dark'
+                                          ? '#121212'
+                                          : 'rgba(255,255,255,.92)',
+
+                                      display: 'flex',
+                                      flexDirection: 'column',
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                      cursor: 'pointer',
+
+                                      opacity: expanded
+                                        ? 0
+                                        : 1,
+
+                                      transition:
+                                        'opacity .12s ease, background .25s ease, border-color .25s ease',
+                                    }}
+                                  >
+                                    <Icon
+                                      size={30}
+                                      strokeWidth={0.8}
+                                      color="#C7A44B"
+                                      style={{
+                                        flexShrink: 0,
+                                      }}
+                                    />
+
+                                    <div
+                                      style={{
+                                        marginTop: 10,
+
+                                        color:
+                                          theme === 'dark'
+                                            ? '#fff'
+                                            : '#111',
+
+                                        fontFamily:
+                                          'var(--font-cinzel), serif',
+                                        fontSize: '.78rem',
+                                        lineHeight: 1.2,
+                                        textAlign: 'center',
+                                        letterSpacing: '.025em',
+
+                                        transition:
+                                          'color .25s ease',
+                                      }}
+                                    >
+                                      {label}
+                                    </div>
+                                  </article>
+
+                                  {/* EXPANDED CARD */}
+                                  <article
+                                    style={{
+                                      position: 'absolute',
+                                      left: '50%',
+                                      top: '50%',
+                                      width: 300,
+                                      minHeight: 200,
+
+                                      transform: expanded
+                                        ? 'translate(-50%, -50%) scale(1)'
+                                        : 'translate(-50%, -50%) scale(.92)',
+
+                                      padding: '28px',
+                                      boxSizing: 'border-box',
+
+                                      border:
+                                        `2px solid ${color}`,
+
+                                      borderRadius: 18,
+
+                                      background:
+                                        theme === 'dark'
+                                          ? '#181818'
+                                          : 'rgba(255,255,255,.96)',
+
+                                      display: 'flex',
+                                      flexDirection: 'column',
+                                      justifyContent: 'flex-start',
+                                      alignItems: 'flex-start',
+                                      cursor: 'pointer',
+
+                                      opacity: expanded
+                                        ? 1
+                                        : 0,
+
+                                      visibility: expanded
+                                        ? 'visible'
+                                        : 'hidden',
+
+                                      pointerEvents: expanded
+                                        ? 'auto'
+                                        : 'none',
+
+                                      zIndex: 50,
+
+                                      transition:
+                                        'opacity .16s ease, transform .22s ease, border-color .2s ease, background .25s ease',
+                                    }}
+                                  >
+                                    <div
+                                      style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: 14,
+                                        width: '100%',
+                                      }}
+                                    >
+                                      <Icon
+                                        size={30}
+                                        strokeWidth={0.8}
+                                        color="#C7A44B"
+                                        style={{
+                                          flexShrink: 0,
+                                        }}
+                                      />
+
+                                      <div
+                                        style={{
+                                          color:
+                                            theme === 'dark'
+                                              ? '#fff'
+                                              : '#111',
+
+                                          fontFamily:
+                                            'var(--font-cinzel), serif',
+                                          fontSize: '1.2rem',
+                                          lineHeight: 1.2,
+                                          textAlign: 'left',
+                                          letterSpacing: '.025em',
+
+                                          transition:
+                                            'color .25s ease',
+                                        }}
+                                      >
+                                        {label}
+                                      </div>
+                                    </div>
+
+                                    <div
+                                      style={{
+                                        width: '100%',
+                                        marginTop: 18,
+
+                                        color:
+                                          theme === 'dark'
+                                            ? '#9a9a9a'
+                                            : '#555',
+
+                                        fontSize: '.9rem',
+                                        lineHeight: 1.4,
+
+                                        transition:
+                                          'color .25s ease',
+                                      }}
+                                    >
+                                      {description}
+                                    </div>
+                                  </article>
+                                  </div>
+                                  )
+                                  }
+                                  )}
+                                  </div>
+                                  </section>
 
             {/* CONTINUE */}
             <button
@@ -1918,11 +2147,78 @@ const sellButton = {
 }
 
         type HomePageClientProps = {
-                    ontologyTerms: any[]
-                    ontologyRelationships: any[]
-                    listings: any[]
-                    homePageSchema: any[]
-                    }
+            ontologyTerms: any[]
+            ontologyRelationships: any[]
+            listings: any[]
+            saleCount: number
+            rentCount: number
+            homePageSchema: any[]
+          }
+
+const homepageIntelligenceCards = [
+  {
+    id: 'explorer',
+    label: 'Market Explorer',
+    description:
+      'Explore listings and market characteristics.',
+    Icon: Compass,
+    color: '#2ecc71',
+  },
+
+  {
+    id: 'valuation',
+    label: 'Valuation',
+    description:
+      'Estimate what a property is worth.',
+    Icon: BadgeDollarSign,
+    color: '#0066cc',
+  },
+
+  {
+    id: 'pricing',
+    label: 'Pricing Strategy',
+    description:
+      'Choose a competitive listing price.',
+    Icon: CircleDot,
+    color: '#0066cc',
+  },
+
+  {
+    id: 'matching',
+    label: 'Property Matching',
+    description:
+      'Find better matching properties.',
+    Icon: HandHeart,
+    color: '#0066cc',
+  },
+
+  {
+    id: 'comparison',
+    label: 'Market Comparison',
+    description:
+      'Compare two real estate markets.',
+    Icon: Scale,
+    color: '#ff3b00',
+  },
+
+  {
+    id: 'scarcity',
+    label: 'Market Frequency',
+    description:
+      'Measure how common or uncommon property characteristics are.',
+    Icon: ChartNoAxesColumnIncreasing,
+    color: '#ff3b00',
+  },
+
+  {
+    id: 'price-meter',
+    label: 'Price / m² Intelligence',
+    description:
+      'Analyze pricing efficiency across markets.',
+    Icon: Ruler,
+    color: '#ffd700',
+  },
+]
 
 const mobileEngineExamples = [
   {

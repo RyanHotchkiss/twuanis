@@ -56,6 +56,7 @@ export type MarketIntelligenceSearchParams = {
   a_distance_to_paved_road_range?: string
   distance_to_paved_road_range?: string
   legal_status?: string
+  analysis_question?: string
   tab?: string
 
 // TEMP PPM2 TRACE BEGIN
@@ -416,7 +417,7 @@ if (typeof params.__ppm2trace === 'string') {
 
 
     return (
-      match?.term_name ??
+      match?.slug ??
       value
     )
   }
@@ -458,11 +459,7 @@ if (typeof params.__ppm2trace === 'string') {
         options.parking
       ),
 
-    year_built:
-      resolveFilterValue(
-        enginefilters.year_built,
-        options.year_built
-      ),
+    year_built: enginefilters.year_built,
 
     property_area:
       resolveFilterValue(
@@ -551,9 +548,7 @@ if (typeof params.__ppm2trace === 'string') {
 
   switch (activeTab) {
     case 'explorer':
-      explorerResult = hasFilters
-        ? await exploreMarket(engineFilters)
-        : null
+      // Explicit browser command owns execution; navigation restores draft only.
       break
 
     case 'price-meter':
@@ -569,19 +564,11 @@ if (typeof params.__ppm2trace === 'string') {
       break
 
     case 'scarcity':
-      marketScarcity =
-        await getMarketScarcity(
-          engineFilters,
-          language
-        )
+      // Explicit browser command owns execution; navigation restores draft only.
       break
 
     case 'matching':
-      marketMatches =
-        await getMarketMatches(
-          engineFilters,
-          language
-        )
+      // Explicit browser command owns execution; navigation restores draft only.
       break
 
     case 'valuation':
@@ -601,12 +588,7 @@ if (typeof params.__ppm2trace === 'string') {
       break
 
     case 'comparison':
-      comparison =
-        await getMarketComparison(
-          comparisonFilters,
-          comparisonFilters,
-          language
-        )
+      // Explicit browser command owns execution; navigation restores draft only.
       break
   }
 
@@ -621,7 +603,7 @@ if (typeof params.__ppm2trace === 'string') {
     activeTab ===
       'comparison'
       ? comparisonFilters
-      : enginefilters
+      : {...enginefilters,analysis_question:params.analysis_question}
 
 
   /*

@@ -1,3 +1,4 @@
+import PropertyPriceValuationListing from '@/app/components/PropertyPriceValuationListing'
 import PriceMeterPropertyPositionListing from '@/app/components/PriceMeterPropertyPositionListing'
 import Link from 'next/link'
 
@@ -790,6 +791,7 @@ const schema = buildListingSchema({
               listingId={listing.id}
               lang="en"
           />
+          <PropertyPriceValuationListing listingId={listing.id} lang="en" />
 
     </main>
 </>

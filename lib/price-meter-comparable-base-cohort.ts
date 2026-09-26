@@ -12,14 +12,7 @@ import type {
   PriceMeterComparableSubjectIdentity
 } from '@/lib/price-meter-comparable-subject-identity'
 
-import {
-  matchesPriceMeterComparableGeography
-} from '@/lib/price-meter-comparable-geography'
-
-import {
-  matchesPropertyAreaConstraint,
-  matchesConstructionAreaConstraint
-} from '@/lib/market-intelligence-area-ranges'
+import { matchesStructuralComparableBase } from '@/lib/structural-comparable-population'
 
 
 export type PriceMeterComparableMembership = {
@@ -100,99 +93,29 @@ export function buildPriceMeterComparableBaseCohort({
         }
 
 
-        if (
-          observation.transactionType !==
-            subjectPosition.transactionType ||
-          observation.propertyBasis !==
-            subjectPosition.propertyBasis ||
-          observation.normalizationBasis !==
-            subjectPosition.normalizationBasis
-        ) {
-          return false
-        }
+        // Monetary/observation eligibility remains owned by Phase 12A.
+        if (!observation.analyticalIdentity.eligibility.eligible) return false
 
-
-        if (
-          !observation
-            .analyticalIdentity
-            .eligibility
-            .eligible
-        ) {
-          return false
-        }
-
-
-        if (
-          !matchesPriceMeterComparableGeography({
-            observation,
-            geography
-          })
-        ) {
-          return false
-        }
-
-
-        const membership =
-          membershipsByListingId.get(
-            observation.listingId
-          )
-
-
-        if (
-          !membership ||
-          !membership.has(
-            subject
-              .propertyType
-              .ontologyTermId
-          )
-        ) {
-          return false
-        }
-
-
-        if (
-          !matchesPropertyAreaConstraint(
-            observation
-              .analyticalIdentity
-              .propertyAreaM2,
-
-            subject.propertyAreaRange
-          )
-        ) {
-          return false
-        }
-
-
-        if (
-          subjectPosition.propertyBasis ===
-            'improved_property'
-        ) {
-          if (
-            subject.constructionAreaRange ===
-              null
-          ) {
-            throw new Error(
-              'Improved Property Phase 12A base cohort requires canonical Construction Area range.'
-            )
+        return matchesStructuralComparableBase({
+          question: {
+            transactionType: subjectPosition.transactionType,
+            propertyBasis: subjectPosition.propertyBasis,
+            normalizationBasis: subjectPosition.normalizationBasis,
+            geography,
+            propertyTypeOntologyTermId: subject.propertyType.ontologyTermId,
+            propertyAreaRange: subject.propertyAreaRange,
+            constructionAreaRange: subject.constructionAreaRange
+          },
+          candidate: {
+            transactionType: observation.transactionType,
+            propertyBasis: observation.propertyBasis,
+            normalizationBasis: observation.normalizationBasis,
+            geography: observation.geography,
+            propertyAreaM2: observation.analyticalIdentity.propertyAreaM2,
+            constructionAreaM2: observation.analyticalIdentity.constructionAreaM2,
+            memberships: membershipsByListingId.get(observation.listingId)
           }
-
-
-          if (
-            !matchesConstructionAreaConstraint(
-              observation
-                .analyticalIdentity
-                .constructionAreaM2,
-
-              subject
-                .constructionAreaRange
-            )
-          ) {
-            return false
-          }
-        }
-
-
-        return true
+        })
       }
     )
 

@@ -1,3 +1,4 @@
+import CanonicalMarketApplyPanel from '@/app/components/CanonicalMarketApplyPanel'
 import MarketFilters from '@/app/components/MarketFilters'
 import MarketScarcityResults from './MarketScarcityResults'
 
@@ -39,10 +40,7 @@ export default async function MarketScarcityPage({
   const options =
     await getExplorerOptions()
 
-  const scarcity =
-    await getMarketScarcity(filters, 'en')
-
-  return (
+return (
     <main
       style={{
         maxWidth: '1400px',
@@ -72,25 +70,11 @@ export default async function MarketScarcityPage({
         market characteristics.
       </p>
 
-      <MarketFilters
-        workspace="scarcity"
-        options={options}
-        filters={filters}
-        basePath="/market-scarcity"
-      />
+      <CanonicalMarketApplyPanel workspace="scarcity" options={options} filters={filters} language="en"/>
 
-      <AnalysisActions
-            engineType="scarcity"
-            language="en"
-            filters={filters}
-            result={scarcity}
-            defaultName="Market Scarcity"
-      />
+      
 
-      <MarketScarcityResults
-        filters={filters}
-        scarcity={scarcity}
-      />
+      
     </main>
   )
 }

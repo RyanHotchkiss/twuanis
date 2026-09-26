@@ -1,3 +1,5 @@
+import PriceMeterChartViewport from './PriceMeterChartViewport'
+
 type Cohort = {
   definition: {
     key:
@@ -56,6 +58,7 @@ export default function PriceMeterConstructionLandDistributionChart({
 
 
   return (
+    <PriceMeterChartViewport label="Construction-to-Land cohort chart; scroll horizontally to inspect all cohorts">
     <div style={chartShell}>
       <div style={chartYAxisLabel}>
         Properties
@@ -119,6 +122,7 @@ export default function PriceMeterConstructionLandDistributionChart({
         including cohorts with n = 0.
       </div>
     </div>
+    </PriceMeterChartViewport>
   )
 }
 

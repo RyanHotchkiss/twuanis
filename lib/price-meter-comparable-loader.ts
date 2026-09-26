@@ -50,6 +50,7 @@ import {
 
 import {
   isPriceMeterCharacteristicType,
+  PRICE_METER_CHARACTERISTIC_TYPES,
   type PriceMeterCharacteristicIdentity
 } from '@/lib/price-meter-characteristic-identity'
 
@@ -363,7 +364,8 @@ function idChunks(ids: string[]): string[][] {
 
 async function loadMembershipDetails(
   listingIds:
-    string[]
+    string[],
+  dimensions:readonly string[]=PRICE_METER_CHARACTERISTIC_TYPES
 ): Promise<
   Array<{
     listingId:
@@ -377,6 +379,8 @@ async function loadMembershipDetails(
   }>
 > {
 
+  if(dimensions.some(d=>!isPriceMeterCharacteristicType(d)))throw new Error('Invalid membership dimensions.')
+  if(!dimensions.length)return listingIds.map(listingId=>({listingId,characteristics:[],ontologyTermIds:[]}))
   const uniqueListingIds =
     Array.from(
       new Set(
@@ -397,9 +401,9 @@ async function loadMembershipDetails(
   for (const chunk of idChunks(uniqueListingIds)) {
     data.push(...await completeRows((from, to) => supabaseAdmin
       .from('listings_ontology_terms')
-      .select(`listing_id, ontology_terms (id, term_name, term_name_en, term_name_es,
+      .select(`listing_id, ontology_terms!inner (id, term_name, term_name_en, term_name_es,
         term_type, slug, slug_en, slug_es)`, {count:'exact'})
-      .in('listing_id', chunk).order('listing_id').order('ontology_term_id').range(from,to)))
+      .in('listing_id', chunk).in('ontology_terms.term_type',[...dimensions]).order('listing_id').order('ontology_term_id').range(from,to)))
   }
 
   const membershipMap =
@@ -844,8 +848,8 @@ function applyAreaConstraint(
     any,
 
   column:
-    'property_area' |
-    'construction_area',
+    'property_area' | 'construction_area' |
+    'listings.property_area' | 'listings.construction_area',
 
   constraint: {
     min:
@@ -1111,8 +1115,8 @@ async function loadBoundedCandidateListings({
 }
 
 
-async function loadCanonicalCandidates({subject, geography}: {
-  subject: PriceMeterComparableSubjectIdentity; geography: CanonicalGeographyTerm
+async function loadCanonicalCandidates({subject, geography, dimensions}: {
+  subject: PriceMeterComparableSubjectIdentity; geography: CanonicalGeographyTerm; dimensions:readonly string[]
 }) {
   const position = subject.positionIdentity
   const propertyRange = resolvePropertyAreaConstraint(subject.propertyAreaRange)
@@ -1125,17 +1129,27 @@ async function loadCanonicalCandidates({subject, geography}: {
   if (!/^[1-9][0-9]*$/.test(geographyId) || (typeof geography.id === 'number' && !Number.isSafeInteger(geography.id))) {
     throw new Error('Invalid Phase 12A geography identity.')
   }
-  const candidates = await completeRows((from,to) => supabaseAdmin.from('listings_ontology_terms')
-    .select('listing_id,listings!inner(canonical_domain_version,listing_status,transaction_type)', {count:'exact'})
-    .eq('ontology_term_id',geographyId).eq('listings.canonical_domain_version',1)
-    .eq('listings.listing_status','active').eq('listings.transaction_type',position.transactionType)
-    .neq('listing_id',position.listingId).order('listing_id').range(from,to))
-  const memberships = await loadMembershipDetails(candidates.map(row => row.listing_id))
-  const ids = memberships.filter(row => row.ontologyTermIds.includes(subject.propertyType.ontologyTermId)).map(row => row.listingId)
+  const candidates = await completeRows((from,to) => {
+    let query:any=supabaseAdmin.from('listings_ontology_terms')
+      .select('listing_id,listings!inner(canonical_domain_version,listing_status,transaction_type)',{count:'exact'})
+      .eq('ontology_term_id',geographyId).eq('listings.canonical_domain_version',1)
+      .eq('listings.listing_status','active').eq('listings.transaction_type',position.transactionType)
+      .neq('listing_id',position.listingId).order('listing_id').range(from,to)
+    query=applyAreaConstraint(query,'listings.property_area',propertyRange)
+    if(constructionRange)query=applyAreaConstraint(query,'listings.construction_area',constructionRange)
+    return query
+  })
+  const ids:string[]=[]
+  for(const chunk of idChunks(candidates.map(row=>row.listing_id))){
+    const typed=await completeRows((from,to)=>supabaseAdmin.from('listings_ontology_terms')
+      .select('listing_id',{count:'exact'}).in('listing_id',chunk).eq('ontology_term_id',subject.propertyType.ontologyTermId)
+      .order('listing_id').range(from,to))
+    for(const row of typed){if(!chunk.includes(row.listing_id)||ids.includes(row.listing_id))throw new Error('Invalid canonical type population.');ids.push(row.listing_id)}
+  }
   const rows: PriceMeterComparableRawListing[] = []
   for (const chunk of idChunks(ids)) {
     rows.push(...await completeRows((from,to) => {
-      let query: any = supabaseAdmin.from('listings').select(LISTING_SELECT,{count:'exact'})
+      let query: any = supabaseAdmin.from('listings').select('id,canonical_domain_version,listing_status,transaction_type,current_price,monthly_price,currency,property_area,construction_area',{count:'exact'})
         .eq('canonical_domain_version',1).eq('listing_status','active').eq('transaction_type',position.transactionType)
         .in('id',chunk).order('id').range(from,to)
       query = applyAreaConstraint(query,'property_area',propertyRange)
@@ -1145,6 +1159,7 @@ async function loadCanonicalCandidates({subject, geography}: {
   }
   if (new Set(rows.map(row=>row.id)).size !== rows.length) throw new Error('Duplicate Phase 12A listing evidence.')
   const listings = await hydrateCanonicalPopulation(rows, undefined, [])
+  const memberships=(await loadMembershipDetails(rows.map(r=>r.id),dimensions.filter(d=>d!=='construction_land'&&d!=='property_type'))).map(m=>({...m,characteristics:[subject.propertyType,...m.characteristics],ontologyTermIds:[subject.propertyType.ontologyTermId,...m.ontologyTermIds]}))
   return {listings: listings as PriceMeterComparableRawListing[], memberships}
 }
 
@@ -1182,8 +1197,10 @@ function selectObservationUniverse({
 export async function loadPriceMeterComparableBoundedPopulation({
   subjectListingId,
   geographyLevel,
-  normalizationBasis
+  normalizationBasis,
+  activeDimensions=PRICE_METER_CHARACTERISTIC_TYPES
 }: {
+  activeDimensions?:readonly string[]
   subjectListingId:
     string
 
@@ -1265,7 +1282,7 @@ const subjectObservation =
    */
 
   const canonicalCandidates = subjectListing.canonical_domain_version === 1
-    ? await loadCanonicalCandidates({subject:subjectIdentity, geography}) : null
+    ? await loadCanonicalCandidates({subject:subjectIdentity, geography,dimensions:activeDimensions}) : null
   const candidateListings = canonicalCandidates?.listings ?? await loadBoundedCandidateListings({
     subject:subjectIdentity, geography, subjectListing
   })
