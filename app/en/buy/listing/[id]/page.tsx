@@ -73,11 +73,11 @@ function StatCard({
     }) {
       return (
         <>
-          <div style={{ color: '#fff', fontSize: '1.6rem', fontWeight: 'bold' }}>
+          <div style={{ color: 'var(--foreground)', fontSize: '1.6rem', fontWeight: 'bold' }}>
             {usd ? `$${Math.round(usd).toLocaleString()}` : 'Not enough data'}
           </div>
           {crc && (
-            <div style={{ color: '#888', fontSize: '1rem', marginTop: '.35rem' }}>
+            <div style={{ color: 'var(--muted)', fontSize: '1rem', marginTop: '.35rem' }}>
               ₡{Math.round(crc).toLocaleString()}
             </div>
           )}
@@ -94,9 +94,9 @@ if (!data) {
   return (
     <main
       style={{
-        background: '#000',
+        background: 'var(--background)',
         minHeight: '100vh',
-        color: '#fff',
+        color: 'var(--foreground)',
         padding: '2rem'
       }}
     >
@@ -260,9 +260,9 @@ const schema = buildListingSchema({
           />
 
     <main style={{
-      background: '#000',
+      background: 'var(--background)',
       minHeight: '100vh',
-      color: '#fff',
+      color: 'var(--foreground)',
       padding: '2rem'
     }}>
 
@@ -283,7 +283,7 @@ const schema = buildListingSchema({
             borderRadius: '1.5rem',
             overflow: 'hidden',
             marginBottom: '1rem',
-            background: '#111'
+            background: 'var(--surface)'
           }}>
 
             {listing.images?.[0] ? (
@@ -307,7 +307,7 @@ const schema = buildListingSchema({
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                color: '#555'
+                color: 'var(--muted)'
               }}>
                 No Image
               </div>
@@ -340,7 +340,7 @@ const schema = buildListingSchema({
                       height:'8rem',
                       objectFit:'cover',
                       borderRadius:'1rem',
-                      border:'1px solid #222'
+                      border:'1px solid var(--border)'
                     }}
                   />
 
@@ -357,8 +357,8 @@ const schema = buildListingSchema({
         <div>
 
           <div style={{
-            background: '#111',
-            border: '1px solid #222',
+            background: 'var(--surface)',
+            border: '1px solid var(--border)',
             borderRadius: '1.5rem',
             padding: '2rem',
             position: 'sticky',
@@ -394,7 +394,7 @@ const schema = buildListingSchema({
             />
 
             <p style={{
-              color: '#999',
+              color: 'var(--muted)',
               marginBottom: '2rem',
               lineHeight: 1.6
             }}>
@@ -800,7 +800,7 @@ const schema = buildListingSchema({
 }
 
 const label = {
-  color: '#777',
+  color: 'var(--muted)',
   fontSize: '.8rem',
   textTransform: 'uppercase' as const,
   letterSpacing: '1px',
@@ -809,11 +809,11 @@ const label = {
 }
 
 const entityCard = {
-  background: '#0d0d0d',
-  border: '1px solid #222',
+  background: 'var(--surface)',
+  border: '1px solid var(--border)',
   borderRadius: '1rem',
   padding: '1rem 1.25rem',
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '1rem',
   lineHeight: 1.6
 }
@@ -825,17 +825,17 @@ const pillContainer = {
 }
 
 const pillEntity = {
-  background: '#181818',
-  border: '1px solid #2a2a2a',
+  background: 'var(--surface-raised)',
+  border: '1px solid var(--border)',
   borderRadius: '999px',
   padding: '.75rem 1rem',
-  color: '#ddd',
+  color: 'var(--foreground)',
   fontSize: '.95rem'
 }
 
 const priceCard = {
-  background: '#FFFFFF',
-  color: '#000',
+  background: 'var(--foreground)',
+  color: 'var(--background)',
   borderRadius: '1rem',
   padding: '1.25rem',
   fontSize: '1.5rem',
@@ -851,14 +851,14 @@ const cardGrid = {
 }
 
 const statCard = {
-  background: '#111',
-  border: '1px solid #222',
+  background: 'var(--surface)',
+  border: '1px solid var(--border)',
   borderRadius: '1rem',
   padding: '1.5rem'
 }
 
 const statLabel = {
-  color: '#888',
+  color: 'var(--muted)',
   fontSize: '.9rem',
   marginBottom: '.5rem'
 }
@@ -870,7 +870,7 @@ const statValue = {
 
 const secondaryValue = {
   marginTop: '.35rem',
-  color: '#888',
+  color: 'var(--muted)',
   fontSize: '1rem',
   fontWeight: 400
 }

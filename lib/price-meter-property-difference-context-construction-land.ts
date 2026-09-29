@@ -12,7 +12,7 @@ export function constructionLandContext(e:EstablishedExecution,key:ContextKey,in
  const subjectIdentity=subject.constructionToLandIdentity
  const observations=e.working.observations.flatMap(o=>{const identity=o.listingId===e.result.subject.listingId?subjectIdentity:resolvePriceMeterConstructionLandIdentity(o.analyticalIdentity);return identity?[identity]:[]})
  const population=buildPriceMeterConstructionLandPopulation({transactionType:r.transactionType,observations})
- const statistics=buildPriceMeterConstructionLandStatistics(population)
+ const statistics=buildPriceMeterConstructionLandStatistics(population,'both')
  const relationship=(r.normalizationBasis==='land'?buildPriceMeterConstructionLandLandRelationship:buildPriceMeterConstructionLandConstructionRelationship)(statistics)
  item.privateEvidence={population,statistics,relationship};item.populations[0].representedN=statistics.representedObservationCount
  item.populations.push({...item.populations[0],key:'ratio_eligible',constructionLand:'exact_ratio_required',n:statistics.representedObservationCount,representedN:statistics.representedObservationCount,subjectIncluded:observations.includes(subjectIdentity)})

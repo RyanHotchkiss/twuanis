@@ -1,4 +1,5 @@
 'use client'
+import {useSiteTheme} from './theme/ThemeProvider'
 
 import Link from 'next/link'
 
@@ -41,9 +42,11 @@ const UTILITY_ORANGE = '#ff3b00'
 
 function TopBarContent({
   onFilterClick,
-  theme = 'dark',
-  onThemeToggle
+  theme: _legacyTheme,
+  onThemeToggle: _legacyToggle
 }: TopBarProps) {
+  const {theme,setTheme}=useSiteTheme()
+  const onThemeToggle=()=>setTheme(t=>t==='dark'?'light':'dark')
 
   const pathname =
     usePathname()
@@ -626,10 +629,12 @@ const isSpanish =
         {/* APPEARANCE */}
           <button
             type="button"
+            data-theme-control="true"
+            aria-pressed={theme === 'light'}
             aria-label={
               theme === 'dark'
-                ? 'Switch to light mode'
-                : 'Switch to dark mode'
+                ? (isSpanish?'Cambiar a modo claro':'Switch to light mode')
+                : (isSpanish?'Cambiar a modo oscuro':'Switch to dark mode')
             }
             title={
               theme === 'dark'
@@ -693,8 +698,8 @@ const isSpanish =
               )}
             >
               {theme === 'dark'
-                ? 'Light Mode'
-                : 'Dark Mode'}
+                ? (isSpanish?'Modo claro':'Light Mode')
+                : (isSpanish?'Modo oscuro':'Dark Mode')}
             </span>
           </button>
 

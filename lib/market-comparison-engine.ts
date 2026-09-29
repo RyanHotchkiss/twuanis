@@ -262,6 +262,8 @@ const listings =
   return {
     filters,
     prevalence,
+    // Already-calculated statistics for chart geometry; no parsing formatted text.
+    metrics: {averageSalePrice,medianSalePrice,averageRent,medianRent,averagePropertyArea,averageConstructionArea},
 
     sampleSize:
       listings.length,

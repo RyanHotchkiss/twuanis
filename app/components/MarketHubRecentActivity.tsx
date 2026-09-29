@@ -312,7 +312,7 @@ const styles: Record<
     padding: '24px',
     border: '1px solid #e5e7eb',
     borderRadius: '20px',
-    background: '#ffffff',
+    background: 'var(--surface)',
     boxShadow:
       '0 12px 32px rgba(15, 23, 42, 0.06)'
   },
@@ -327,14 +327,14 @@ const styles: Record<
 
   title: {
     margin: 0,
-    color: '#111827',
+    color: 'var(--foreground)',
     fontSize: '1.35rem',
     fontWeight: 700
   },
 
   description: {
     margin: '8px 0 0',
-    color: '#6b7280',
+    color: 'var(--muted)',
     fontSize: '0.95rem',
     lineHeight: 1.6
   },
@@ -342,8 +342,8 @@ const styles: Record<
   empty: {
     padding: '32px 20px',
     borderRadius: '14px',
-    background: '#f9fafb',
-    color: '#6b7280',
+    background: 'var(--surface-raised)',
+    color: 'var(--muted)',
     textAlign: 'center'
   },
 
@@ -386,13 +386,13 @@ const styles: Record<
   },
 
   activityType: {
-    color: '#111827',
+    color: 'var(--foreground)',
     fontSize: '0.9rem',
     fontWeight: 700
   },
 
   time: {
-    color: '#6b7280',
+    color: 'var(--muted)',
     fontSize: '0.8rem'
   },
 
@@ -417,7 +417,7 @@ const styles: Record<
   propertyTitle: {
     margin: '0 0 8px',
     overflow: 'hidden',
-    color: '#1f2937',
+    color: 'var(--foreground)',
     fontSize: '0.95rem',
     fontWeight: 600,
     textOverflow: 'ellipsis',

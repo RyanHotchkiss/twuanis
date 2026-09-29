@@ -2439,8 +2439,8 @@ export default function MarketHubPackagesLoader({
 
 const messageCard = {
   padding: '2rem',
-  color: '#aaa',
-  background: '#151515',
+  color: 'var(--muted)',
+  background: 'var(--surface)',
   border: '1px solid #303030',
   borderRadius: '18px'
 }

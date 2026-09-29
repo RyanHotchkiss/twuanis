@@ -66,7 +66,7 @@ return (
                     justifyContent:'space-between',
                     alignItems:'center',
 
-                    background:'#181818',
+                    background:'var(--surface)',
                     border:'1px solid #222',
 
                     borderRadius:'1rem',
@@ -88,14 +88,14 @@ return (
 
                   <span
                     style={{
-                      color:'#fff',
+                      color:'var(--foreground)',
                       lineHeight:'1.5'
                     }}
                   >
                     Location
                     <br />
 
-                    <span style={{ color:'#FFFFFF' }}>
+                    <span style={{ color:'var(--foreground)' }}>
                       {selectedprovince}
                       {' → '}
                       {selectedcanton}
@@ -126,7 +126,7 @@ return (
                       background:'transparent',
                       border:'none',
 
-                      color:'#ff6666',
+                      color:'var(--error-text)',
 
                       cursor:'pointer',
 
@@ -341,13 +341,13 @@ return (
                               ? <>
                                       {selectedprovince}
 
-                                      <span style={{ color:'#fff' }}>
+                                      <span style={{ color:'var(--foreground)' }}>
                                         {' → '}
                                       </span>
 
                                       {selectedcanton}
 
-                                      <span style={{ color:'#fff' }}>
+                                      <span style={{ color:'var(--foreground)' }}>
                                         {' → '}
                                       </span>
 
@@ -412,7 +412,7 @@ const filterHeading = {
 const sectionHeading0 = {
   fontSize:'.8rem',
   marginBottom:'1rem',
-  color:'#FFFFFF'
+  color:'var(--foreground)'
 }
 
 const scrollPanel = {
@@ -429,9 +429,9 @@ const scrollPanel = {
 }
 
 const listButton = {
-  background:'#181818',
+  background:'var(--surface)',
   border:'1px solid #D4AF3750',
-  color:'#fff',
+  color:'var(--foreground)',
   padding:'1rem 1rem',
   borderRadius:'.75rem',
   textAlign:'left' as const,
@@ -455,14 +455,14 @@ const breadcrumbBar = {
 }
 
 const breadcrumbText = {
-  color:'#FFFFFF',
+  color:'var(--foreground)',
   fontSize:'.85rem'
 }
 
 const backButton = {
   background:'transparent',
   border:'none',
-  color:'#FFFFFF70',
+  color:'var(--muted)',
   cursor:'pointer',
   fontSize:'.85rem'
 }
@@ -471,7 +471,7 @@ const summaryCard = {
   display:'flex',
   justifyContent:'space-between',
   alignItems:'flex-start',
-  background:'#181818',
+  background:'var(--surface)',
   border:'1px solid #FFFFFF50',
   borderRadius:'1rem',
   padding:'1rem',
@@ -481,7 +481,7 @@ const summaryCard = {
 const resetButton = {
   background:'transparent',
   border:'none',
-  color:'#ff6666',
+  color:'var(--error-text)',
   cursor:'pointer',
   fontSize:'1rem'
 }

@@ -334,8 +334,9 @@ function resolveOntologyTerm(
 
 
 // Exact totals distinguish a complete short page from transport truncation.
-async function completeRows(page: (from: number, to: number) => PromiseLike<{data: any[] | null; error: unknown; count: number | null}>): Promise<any[]> {
+async function completeRows(page: (from: number, to: number) => PromiseLike<{data: any[] | null; error: unknown; count: number | null}>, identity:(row:any)=>string): Promise<any[]> {
   const rows: any[] = []
+  const seen = new Set<string>()
   let expected: number | null = null
   do {
     const result = await page(rows.length, rows.length + 499)
@@ -343,8 +344,14 @@ async function completeRows(page: (from: number, to: number) => PromiseLike<{dat
     const count = result.count
     if (count === null || !Number.isSafeInteger(count) || count < 0 || (expected !== null && count !== expected)) throw new Error('Incomplete Phase 12A evidence count.')
     expected = count
-    const next = result.data ?? []
+    if (!Array.isArray(result.data) || result.data.length > 500) throw new Error('Invalid Phase 12A transport page.')
+    const next = result.data
     if (rows.length + next.length > count || (!next.length && rows.length < count)) throw new Error('Incomplete Phase 12A evidence page.')
+    for (const row of next) {
+      const key = identity(row)
+      if (!key || seen.has(key)) throw new Error('Incomplete Phase 12A unique identity coverage.')
+      seen.add(key)
+    }
     rows.push(...next)
   } while (rows.length < expected)
   return rows
@@ -403,7 +410,11 @@ async function loadMembershipDetails(
       .from('listings_ontology_terms')
       .select(`listing_id, ontology_terms!inner (id, term_name, term_name_en, term_name_es,
         term_type, slug, slug_en, slug_es)`, {count:'exact'})
-      .in('listing_id', chunk).in('ontology_terms.term_type',[...dimensions]).order('listing_id').order('ontology_term_id').range(from,to)))
+      .in('listing_id', chunk).in('ontology_terms.term_type',[...dimensions]).order('listing_id').order('ontology_term_id').range(from,to), row => {
+        const term=resolveOntologyTerm(row)
+        if (!chunk.includes(row.listing_id) || !term || !dimensions.includes(term.term_type) || !term.id) throw new Error('Invalid Phase 12A membership transport identity.')
+        return JSON.stringify([row.listing_id,term.id])
+      }))
   }
 
   const membershipMap =
@@ -743,7 +754,8 @@ async function loadSubjectListing(
 
 export async function loadPriceMeterComparableSubjectConfiguration(
   subjectListingId:
-    string
+    string,
+  selectedNormalization?:PriceMeterNormalizationBasis
 ): Promise<
   PriceMeterComparableSubjectConfigurationLoad
 > {
@@ -790,7 +802,7 @@ export async function loadPriceMeterComparableSubjectConfiguration(
 
   const observations =
     buildPriceMeterObservations(
-      decoratedSubject
+      decoratedSubject, selectedNormalization
     )
 
 
@@ -933,7 +945,7 @@ async function loadBoundedCandidateListings({
         'listings'
       )
       .select(
-        LISTING_SELECT
+        LISTING_SELECT, {count:'exact'}
       )
       .eq(
         'listing_status',
@@ -1096,22 +1108,8 @@ async function loadBoundedCandidateListings({
   }
 
 
-  const {
-    data,
-    error
-  } =
-    await query
-
-
-  if (error) {
-    throw error
-  }
-
-
-  return (
-    data ??
-    []
-  ) as PriceMeterComparableRawListing[]
+  return await completeRows((from,to) => query.order('id').range(from,to), row =>
+    typeof row.id === 'string' ? row.id : '') as PriceMeterComparableRawListing[]
 }
 
 
@@ -1138,12 +1136,12 @@ async function loadCanonicalCandidates({subject, geography, dimensions}: {
     query=applyAreaConstraint(query,'listings.property_area',propertyRange)
     if(constructionRange)query=applyAreaConstraint(query,'listings.construction_area',constructionRange)
     return query
-  })
+  }, row => typeof row.listing_id === 'string' ? row.listing_id : '')
   const ids:string[]=[]
   for(const chunk of idChunks(candidates.map(row=>row.listing_id))){
     const typed=await completeRows((from,to)=>supabaseAdmin.from('listings_ontology_terms')
       .select('listing_id',{count:'exact'}).in('listing_id',chunk).eq('ontology_term_id',subject.propertyType.ontologyTermId)
-      .order('listing_id').range(from,to))
+      .order('listing_id').range(from,to), row => typeof row.listing_id === 'string' ? row.listing_id : '')
     for(const row of typed){if(!chunk.includes(row.listing_id)||ids.includes(row.listing_id))throw new Error('Invalid canonical type population.');ids.push(row.listing_id)}
   }
   const rows: PriceMeterComparableRawListing[] = []
@@ -1155,9 +1153,13 @@ async function loadCanonicalCandidates({subject, geography, dimensions}: {
       query = applyAreaConstraint(query,'property_area',propertyRange)
       if (constructionRange) query = applyAreaConstraint(query,'construction_area',constructionRange)
       return query
+    }, row => {
+      if (!chunk.includes(row.id)) throw new Error('Out-of-bound Phase 12A listing transport identity.')
+      return row.id
     }))
   }
   if (new Set(rows.map(row=>row.id)).size !== rows.length) throw new Error('Duplicate Phase 12A listing evidence.')
+  if (rows.length !== ids.length) throw new Error('Incomplete Phase 12A listing identity coverage.')
   const listings = await hydrateCanonicalPopulation(rows, undefined, [])
   const memberships=(await loadMembershipDetails(rows.map(r=>r.id),dimensions.filter(d=>d!=='construction_land'&&d!=='property_type'))).map(m=>({...m,characteristics:[subject.propertyType,...m.characteristics],ontologyTermIds:[subject.propertyType.ontologyTermId,...m.ontologyTermIds]}))
   return {listings: listings as PriceMeterComparableRawListing[], memberships}
@@ -1198,8 +1200,10 @@ export async function loadPriceMeterComparableBoundedPopulation({
   subjectListingId,
   geographyLevel,
   normalizationBasis,
+  selectedOnly=false,
   activeDimensions=PRICE_METER_CHARACTERISTIC_TYPES
 }: {
+  selectedOnly?:boolean
   activeDimensions?:readonly string[]
   subjectListingId:
     string
@@ -1219,7 +1223,7 @@ export async function loadPriceMeterComparableBoundedPopulation({
    */
 const subjectConfiguration =
     await loadPriceMeterComparableSubjectConfiguration(
-      subjectListingId
+      subjectListingId, selectedOnly ? normalizationBasis : undefined
     )
 
 
@@ -1324,7 +1328,7 @@ const subjectObservation =
     selectObservationUniverse({
       observations:
         buildPriceMeterObservations(
-          decoratedCandidates
+          decoratedCandidates, selectedOnly ? normalizationBasis : undefined
         ),
 
       subject:
@@ -1333,11 +1337,12 @@ const subjectObservation =
 
 
   /*
-   * Rebuild the subject with the same final FX context used
-   * for the candidate population.
+   * Historical callers rebuild with the final FX context. Direct selected
+   * execution reuses its established subject: USD already resolved FX, while
+   * native CRC subject evidence is unaffected by a USD-only peer conversion.
    */
 
-  const finalDecoratedSubject =
+  const finalDecoratedSubject = selectedOnly ? null :
     decorateListings({
       listings: [
         subjectListing
@@ -1351,11 +1356,11 @@ const subjectObservation =
     })
 
 
-  const finalSubjectObservation =
+  const finalSubjectObservation = selectedOnly ? subjectObservation :
     selectSubjectObservation({
       observations:
         buildPriceMeterObservations(
-          finalDecoratedSubject
+          finalDecoratedSubject!
         ),
 
       normalizationBasis

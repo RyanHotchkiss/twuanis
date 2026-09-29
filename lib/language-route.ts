@@ -9,6 +9,10 @@ type RoutePair = {
 
 const exactRoutePairs: RoutePair[] = [
   {
+    en: '/price-per-square-meter',
+    es: '/es/precio-por-metro-cuadrado'
+  },
+  {
     en: '/en',
     es: '/es'
   },

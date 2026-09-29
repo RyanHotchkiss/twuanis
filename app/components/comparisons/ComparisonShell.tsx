@@ -69,7 +69,7 @@ const header = {
 
 const eyebrow = {
   margin: '0 0 0.5rem',
-  color: '#888',
+  color: 'var(--muted)',
   fontSize: '0.75rem',
   fontWeight: 700,
   letterSpacing: '0.12em',
@@ -78,14 +78,14 @@ const eyebrow = {
 
 const heading = {
   margin: 0,
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: 'clamp(2rem, 5vw, 3.5rem)'
 }
 
 const descriptionStyle = {
   maxWidth: '760px',
   margin: '0.75rem 0 0',
-  color: '#aaa',
+  color: 'var(--muted)',
   fontSize: '1rem',
   lineHeight: 1.6
 }

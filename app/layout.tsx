@@ -1,6 +1,11 @@
 import type { Metadata } from 'next'
 import { Cinzel } from 'next/font/google'
 import './globals.css'
+import ThemeProvider from './components/theme/ThemeProvider'
+import ThemeToggle from './components/theme/ThemeToggle'
+import {themeBootstrap} from './components/theme/theme-contract'
+import HomepageEntranceProvider from './components/HomepageEntrance'
+import FloatingHomeMark from './components/FloatingHomeMark'
 
 const cinzel = Cinzel({
   subsets: ['latin'],
@@ -23,11 +28,19 @@ export default function RootLayout({
 
     <html lang="en">
 
+      <head><script dangerouslySetInnerHTML={{__html:themeBootstrap}} /></head>
+
       <body
         className={`${cinzel.variable} antialiased`}
       >
 
-        {children}
+        <ThemeProvider>
+          <HomepageEntranceProvider>
+          <FloatingHomeMark />
+          {children}
+          <ThemeToggle fallback />
+          </HomepageEntranceProvider>
+        </ThemeProvider>
 
       </body>
 

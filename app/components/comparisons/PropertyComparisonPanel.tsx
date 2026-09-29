@@ -236,8 +236,8 @@ const message = {
   padding: '2rem',
   border: '1px solid #262626',
   borderRadius: '16px',
-  background: '#111',
-  color: '#aaa',
+  background: 'var(--surface)',
+  color: 'var(--muted)',
   textAlign: 'center' as const
 }
 
@@ -250,12 +250,12 @@ const empty = {
 
 const emptyTitle = {
   margin: 0,
-  color: '#fff'
+  color: 'var(--foreground)'
 }
 
 const emptyDescription = {
   maxWidth: '520px',
   margin: '0.75rem auto 0',
-  color: '#888',
+  color: 'var(--muted)',
   lineHeight: 1.6
 }

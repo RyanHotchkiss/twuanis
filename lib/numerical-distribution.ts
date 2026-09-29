@@ -65,7 +65,7 @@ export type NumericalDistribution = {
  * numerical population.
  */
 
-function percentile(
+export function percentile(
   sortedValues:
     number[],
 

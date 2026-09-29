@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import {useSiteTheme} from './theme/ThemeProvider'
 
 import {
   subscribeToPush,
@@ -153,6 +154,7 @@ export default function MarketHubSettings({
   accountRecoverySettings,
   deleteAccountSettings
 }: MarketHubSettingsProps) {
+  const {theme,setTheme}=useSiteTheme()
 
   const [pushEnabled, setPushEnabled] =
   useState(
@@ -265,7 +267,7 @@ export default function MarketHubSettings({
           appearance:
           'Apariencia',
           appearanceDescription:
-          'Seleccione el tema visual predeterminado para MarketHub.',
+          'Seleccione Claro u Oscuro para Twuanis. La preferencia se guarda en este navegador.',
           light:
           'Claro',
           dark:
@@ -565,7 +567,7 @@ export default function MarketHubSettings({
           appearance:
           'Appearance',
           appearanceDescription:
-          'Choose the default visual theme for MarketHub.',
+          'Choose Light or Dark for Twuanis. Your preference is saved in this browser.',
           light:
           'Light',
           dark:
@@ -1335,16 +1337,15 @@ export default function MarketHubSettings({
                         </div>
                         <div style={appearanceGrid}>
                           {[
-                            labels.light,
-                            labels.dark,
-                            labels.system
+                            'light',
+                            'dark'
                           ].map(option => (
                             <label
                               key={option}
                               style={{
                                 ...appearanceCard,
                                 border:
-                                  appearancePreferences.appearance === option
+                                  theme === option
                                     ? '2px solid #C7A44B'
                                     : '1px solid #303030'
                               }}
@@ -1353,28 +1354,19 @@ export default function MarketHubSettings({
                                 type="radio"
                                 name="appearance"
                                 value={option}
-                                defaultChecked={
-                                  appearancePreferences.appearance === option
-                                }
+                                checked={theme === option}
+                                onChange={()=>setTheme(option as 'light'|'dark')}
                                 style={{
                                   marginBottom: '1rem'
                                 }}
                               />
                               <h5 style={appearanceTitle}>
-                                {option}
+                                {option === 'light' ? labels.light : labels.dark}
                               </h5>
                             </label>
                           ))}
                         </div>
-                        <button
-                          type="button"
-                          style={{
-                            ...primaryButton,
-                            marginTop: '1.5rem'
-                          }}
-                        >
-                          {labels.saveChanges}
-                        </button>
+
                       </section>
 
                  <section style={regionalSection}>
@@ -2074,7 +2066,7 @@ export default function MarketHubSettings({
 
 const section: React.CSSProperties = {
   padding: '1.5rem',
-  background: '#151515',
+  background: 'var(--surface)',
   border: '1px solid #303030',
   borderRadius: '18px'
 }
@@ -2087,7 +2079,7 @@ const titleRow: React.CSSProperties = {
 
 const heading: React.CSSProperties = {
   margin: 0,
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '1.75rem',
   lineHeight: 1.2
 }
@@ -2095,7 +2087,7 @@ const heading: React.CSSProperties = {
 const purpose: React.CSSProperties = {
   maxWidth: '700px',
   margin: '.6rem 0 0',
-  color: '#aaa',
+  color: 'var(--muted)',
   fontSize: '.92rem',
   lineHeight: 1.5
 }
@@ -2103,7 +2095,7 @@ const purpose: React.CSSProperties = {
 const divider: React.CSSProperties = {
   height: '1px',
   margin: '1.5rem 0',
-  background: '#303030'
+  background: 'var(--border)'
 }
 
 const profileSection: React.CSSProperties = {
@@ -2132,7 +2124,7 @@ const stepHeader: React.CSSProperties = {
 
 const stepEyebrow: React.CSSProperties = {
   marginBottom: '.4rem',
-  color: '#777',
+  color: 'var(--muted)',
   fontSize: '.7rem',
   fontWeight: 700,
   letterSpacing: '.06em',
@@ -2141,13 +2133,13 @@ const stepEyebrow: React.CSSProperties = {
 
 const stepHeading: React.CSSProperties = {
   margin: 0,
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '1.05rem'
 }
 
 const stepDescription: React.CSSProperties = {
   margin: '.45rem 0 0',
-  color: '#888',
+  color: 'var(--muted)',
   fontSize: '.86rem',
   lineHeight: 1.5
 }
@@ -2166,7 +2158,7 @@ const profilePhotoCard: React.CSSProperties = {
   alignItems: 'center',
   minHeight: '350px',
   padding: '1.25rem',
-  background: '#191919',
+  background: 'var(--surface-raised)',
   border: '1px solid #303030',
   borderRadius: '16px'
 }
@@ -2179,7 +2171,7 @@ const profilePhotoContainer: React.CSSProperties = {
   height: '9rem',
   marginTop: '1.5rem',
   overflow: 'hidden',
-  background: '#202020',
+  background: 'var(--surface-raised)',
   border: '1px solid #3a3a3a',
   borderRadius: '999px'
 }
@@ -2196,7 +2188,7 @@ const profileFormCard: React.CSSProperties = {
   gap: '1.25rem',
   minHeight: '350px',
   padding: '1.25rem',
-  background: '#191919',
+  background: 'var(--surface-raised)',
   border: '1px solid #303030',
   borderRadius: '16px'
 }
@@ -2207,7 +2199,7 @@ const fieldGroup: React.CSSProperties = {
 }
 
 const fieldLabel: React.CSSProperties = {
-  color: '#aaa',
+  color: 'var(--muted)',
   fontSize: '.76rem',
   fontWeight: 700,
   letterSpacing: '.04em',
@@ -2218,8 +2210,8 @@ const textInput: React.CSSProperties = {
   width: '100%',
   boxSizing: 'border-box',
   padding: '.85rem 1rem',
-  color: '#fff',
-  background: '#111',
+  color: 'var(--foreground)',
+  background: 'var(--surface)',
   border: '1px solid #3a3a3a',
   borderRadius: '10px',
   fontSize: '.9rem',
@@ -2230,8 +2222,8 @@ const textArea: React.CSSProperties = {
   width: '100%',
   boxSizing: 'border-box',
   padding: '.85rem 1rem',
-  color: '#fff',
-  background: '#111',
+  color: 'var(--foreground)',
+  background: 'var(--surface)',
   border: '1px solid #3a3a3a',
   borderRadius: '10px',
   resize: 'vertical',
@@ -2262,8 +2254,8 @@ const secondaryButton: React.CSSProperties = {
   width: '100%',
   marginTop: 'auto',
   padding: '.8rem 1rem',
-  color: '#fff',
-  background: '#292929',
+  color: 'var(--foreground)',
+  background: 'var(--surface-raised)',
   border: '1px solid #444',
   borderRadius: '10px',
   cursor: 'pointer',
@@ -2282,7 +2274,7 @@ const contactCard: React.CSSProperties = {
     gap: '1rem',
     marginTop: '1.25rem',
     padding: '1.25rem',
-    background: '#191919',
+    background: 'var(--surface-raised)',
     border: '1px solid #303030',
     borderRadius: '16px'
 }
@@ -2298,7 +2290,7 @@ const professionalCard: React.CSSProperties = {
   gap: '1rem',
   marginTop: '1.25rem',
   padding: '1.25rem',
-  background: '#191919',
+  background: 'var(--surface-raised)',
   border: '1px solid #303030',
   borderRadius: '16px'
 }
@@ -2314,7 +2306,7 @@ const publicProfileCard: React.CSSProperties = {
   gap: '1rem',
   marginTop: '1.25rem',
   padding: '1.25rem',
-  background: '#191919',
+  background: 'var(--surface-raised)',
   border: '1px solid #303030',
   borderRadius: '16px'
 }
@@ -2330,7 +2322,7 @@ const preferencesCard: React.CSSProperties = {
   gap: '1rem',
   marginTop: '1.25rem',
   padding: '1.25rem',
-  background: '#191919',
+  background: 'var(--surface-raised)',
   border: '1px solid #303030',
   borderRadius: '16px'
 }
@@ -2339,7 +2331,7 @@ const radioRow: React.CSSProperties = {
   display: 'flex',
   alignItems: 'center',
   gap: '.75rem',
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '.95rem'
 }
 
@@ -2353,7 +2345,7 @@ const notificationCard: React.CSSProperties = {
   display: 'grid',
   marginTop: '1.25rem',
   padding: '1.25rem',
-  background: '#191919',
+  background: 'var(--surface-raised)',
   border: '1px solid #303030',
   borderRadius: '16px'
 }
@@ -2373,14 +2365,14 @@ const notificationCopy: React.CSSProperties = {
 }
 
 const notificationName: React.CSSProperties = {
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '.95rem',
   fontWeight: 700
 }
 
 const notificationDescription: React.CSSProperties = {
   maxWidth: '600px',
-  color: '#888',
+  color: 'var(--muted)',
   fontSize: '.8rem',
   lineHeight: 1.45
 }
@@ -2396,7 +2388,7 @@ const notificationCheckbox: React.CSSProperties = {
 const notificationDivider: React.CSSProperties = {
   height: '1px',
   margin: '1rem 0',
-  background: '#303030'
+  background: 'var(--border)'
 }
 
 const appearanceSection: React.CSSProperties = {
@@ -2418,7 +2410,7 @@ const appearanceCard: React.CSSProperties = {
   flexDirection: 'column',
   alignItems: 'flex-start',
   padding: '1.5rem',
-  background: '#191919',
+  background: 'var(--surface-raised)',
   borderRadius: '16px',
   cursor: 'pointer',
   transition: '.2s'
@@ -2426,7 +2418,7 @@ const appearanceCard: React.CSSProperties = {
 
 const appearanceTitle: React.CSSProperties = {
   margin: 0,
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '1rem'
 }
 
@@ -2441,7 +2433,7 @@ const regionalCard: React.CSSProperties = {
   gap: '1rem',
   marginTop: '1.25rem',
   padding: '1.25rem',
-  background: '#191919',
+  background: 'var(--surface-raised)',
   border: '1px solid #303030',
   borderRadius: '16px'
 }
@@ -2456,7 +2448,7 @@ const privacyCard: React.CSSProperties = {
   display: 'grid',
   marginTop: '1.25rem',
   padding: '1.25rem',
-  background: '#191919',
+  background: 'var(--surface-raised)',
   border: '1px solid #303030',
   borderRadius: '16px'
 }
@@ -2482,7 +2474,7 @@ const securityCard: React.CSSProperties = {
   minHeight: '230px',
   padding: '1.25rem',
   background:
-    'linear-gradient(145deg, #1d1d1d 0%, #171717 100%)',
+    'linear-gradient(145deg, var(--surface-raised) 0%, var(--surface) 100%)',
   border: '1px solid #303030',
   borderRadius: '16px'
 }
@@ -2496,14 +2488,14 @@ const securityCardHeader: React.CSSProperties = {
 
 const securityTitle: React.CSSProperties = {
   margin: 0,
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '.95rem'
 }
 
 const securityDescription: React.CSSProperties = {
   maxWidth: '480px',
   margin: '.45rem 0 0',
-  color: '#888',
+  color: 'var(--muted)',
   fontSize: '.8rem',
   lineHeight: 1.45
 }
@@ -2536,7 +2528,7 @@ const securityToggleRow: React.CSSProperties = {
 }
 
 const securityToggleLabel: React.CSSProperties = {
-  color: '#aaa',
+  color: 'var(--muted)',
   fontSize: '.8rem',
   fontWeight: 700
 }
@@ -2563,7 +2555,7 @@ const sessionCard: React.CSSProperties = {
   minHeight: '180px',
   padding: '1.5rem',
   background:
-    'linear-gradient(145deg,#1d1d1d 0%,#171717 100%)',
+    'linear-gradient(145deg,var(--surface-raised) 0%,var(--surface) 100%)',
   border: '1px solid #303030',
   borderRadius: '16px'
 }
@@ -2577,7 +2569,7 @@ const sessionNumber: React.CSSProperties = {
 
 const sessionTitle: React.CSSProperties = {
   marginTop: '.85rem',
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '.9rem',
   textAlign: 'center'
 }
@@ -2585,7 +2577,7 @@ const sessionTitle: React.CSSProperties = {
 const dangerButton: React.CSSProperties = {
   width: '100%',
   padding: '.9rem 1rem',
-  color: '#fff',
+  color: 'white',
   background: '#7a1f1f',
   border: '1px solid #a53b3b',
   borderRadius: '10px',
@@ -2615,7 +2607,7 @@ const connectedAccountCard: React.CSSProperties = {
   minHeight: '220px',
   padding: '1.25rem',
   background:
-    'linear-gradient(145deg, #1d1d1d 0%, #171717 100%)',
+    'linear-gradient(145deg, var(--surface-raised) 0%, var(--surface) 100%)',
   border: '1px solid',
   borderRadius: '16px'
 }
@@ -2648,7 +2640,7 @@ const connectedAccountCopy: React.CSSProperties = {
 
 const connectedAccountTitle: React.CSSProperties = {
   margin: 0,
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '.95rem'
 }
 
@@ -2659,7 +2651,7 @@ const connectedAccountStatus: React.CSSProperties = {
 
 const connectedAccountEmail: React.CSSProperties = {
   margin: 0,
-  color: '#888',
+  color: 'var(--muted)',
   fontSize: '.78rem',
   lineHeight: 1.4,
   wordBreak: 'break-word'
@@ -2676,7 +2668,7 @@ const exportDataCard: React.CSSProperties = {
   marginTop: '1.25rem',
   padding: '1.25rem',
   background:
-    'linear-gradient(145deg, #1d1d1d 0%, #171717 100%)',
+    'linear-gradient(145deg, var(--surface-raised) 0%, var(--surface) 100%)',
   border: '1px solid #303030',
   borderRadius: '16px'
 }
@@ -2697,21 +2689,21 @@ const exportDataCopy: React.CSSProperties = {
 }
 
 const exportDataName: React.CSSProperties = {
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '.88rem',
   fontWeight: 700
 }
 
 const exportDataDescription: React.CSSProperties = {
   maxWidth: '620px',
-  color: '#888',
+  color: 'var(--muted)',
   fontSize: '.76rem',
   lineHeight: 1.45
 }
 
 const exportDataDivider: React.CSSProperties = {
   height: '1px',
-  background: '#303030'
+  background: 'var(--border)'
 }
 
 const exportDataButton: React.CSSProperties = {
@@ -2730,7 +2722,7 @@ const exportDataButton: React.CSSProperties = {
 const phaseDescription: React.CSSProperties = {
   maxWidth: '700px',
   margin: '.5rem 0 0',
-  color: '#888',
+  color: 'var(--muted)',
   fontSize: '.9rem',
   lineHeight: 1.6
 }
@@ -2758,7 +2750,7 @@ const billingRecordCard: React.CSSProperties = {
   minHeight: '200px',
   padding: '1.5rem',
   background:
-    'linear-gradient(145deg,#1d1d1d 0%,#171717 100%)',
+    'linear-gradient(145deg,var(--surface-raised) 0%,var(--surface) 100%)',
   border: '1px solid #303030',
   borderRadius: '16px'
 }
@@ -2770,7 +2762,7 @@ const billingNumber: React.CSSProperties = {
 }
 
 const billingTitle: React.CSSProperties = {
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '.9rem',
   fontWeight: 700,
   textAlign: 'center'
@@ -2797,20 +2789,20 @@ const accountRecoveryCard: React.CSSProperties = {
   minHeight: '250px',
   padding: '1.25rem',
   background:
-    'linear-gradient(145deg, #1d1d1d 0%, #171717 100%)',
+    'linear-gradient(145deg, var(--surface-raised) 0%, var(--surface) 100%)',
   border: '1px solid #303030',
   borderRadius: '16px'
 }
 
 const accountRecoveryTitle: React.CSSProperties = {
   margin: 0,
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '.95rem'
 }
 
 const accountRecoveryDescription: React.CSSProperties = {
   margin: '.45rem 0 0',
-  color: '#888',
+  color: 'var(--muted)',
   fontSize: '.78rem',
   lineHeight: 1.45
 }
@@ -2829,7 +2821,7 @@ const recoveryMetricNumber: React.CSSProperties = {
 }
 
 const recoveryMetricLabel: React.CSSProperties = {
-  color: '#888',
+  color: 'var(--muted)',
   fontSize: '.72rem',
   fontWeight: 700
 }
@@ -2864,20 +2856,20 @@ const deleteCard: React.CSSProperties = {
   minHeight: '260px',
   padding: '1.5rem',
   background:
-    'linear-gradient(145deg,#1d1d1d 0%,#171717 100%)',
+    'linear-gradient(145deg,var(--surface-raised) 0%,var(--surface) 100%)',
   border: '1px solid #303030',
   borderRadius: '16px'
 }
 
 const deleteCardTitle: React.CSSProperties = {
   margin: 0,
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '.95rem'
 }
 
 const deleteCardDescription: React.CSSProperties = {
   margin: 0,
-  color: '#888',
+  color: 'var(--muted)',
   fontSize: '.78rem',
   lineHeight: 1.45
 }
@@ -2889,7 +2881,7 @@ const deleteMetric: React.CSSProperties = {
 }
 
 const deleteMetricLabel: React.CSSProperties = {
-  color: '#888',
+  color: 'var(--muted)',
   fontSize: '.72rem',
   fontWeight: 700
 }
@@ -2897,7 +2889,7 @@ const deleteMetricLabel: React.CSSProperties = {
 const deleteForeverButton: React.CSSProperties = {
   marginTop: 'auto',
   padding: '1rem',
-  color: '#fff',
+  color: 'white',
   background: '#7a1f1f',
   border: '1px solid #b23b3b',
   borderRadius: '10px',

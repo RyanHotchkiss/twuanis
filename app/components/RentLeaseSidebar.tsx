@@ -1,4 +1,5 @@
 'use client'
+import SidebarArrowToggle from './SidebarArrowToggle'
 import LocationFilter from '@/app/components/filter-bar/LocationFilter'
 import PriceFilterRL from '@/app/components/filter-bar/PriceFilterRL'
 import PropertyTypeFilter from '@/app/components/filter-bar/PropertyTypeFilter'
@@ -155,7 +156,7 @@ export default function BuySidebar(props: any) {
 
     <div
         style={{
-            background: '#000000',
+            background: 'var(--background)',
 
             borderRight:
             '1px solid #D4AF37',
@@ -239,91 +240,7 @@ export default function BuySidebar(props: any) {
 
         {/* DESKTOP SIDEBAR COLLAPSE */}
             {!isMobile && (
-            <button
-                type="button"
-
-                aria-label={
-                desktopCollapsed
-                    ? 'Expand filters'
-                    : 'Collapse filters'
-                }
-
-                title={
-                desktopCollapsed
-                    ? 'Expand filters'
-                    : 'Collapse filters'
-                }
-
-                onClick={() =>
-                setDesktopCollapsed(
-                    (current: boolean) =>
-                    !current
-                )
-                }
-
-                style={{
-                width:
-                    desktopCollapsed
-                    ? '100%'
-                    : '42px',
-
-                height:
-                    '42px',
-
-                minHeight:
-                    '42px',
-
-                alignSelf:
-                    desktopCollapsed
-                    ? 'stretch'
-                    : 'flex-end',
-
-                display:
-                    'flex',
-
-                alignItems:
-                    'center',
-
-                justifyContent:
-                    'center',
-
-                padding:
-                    0,
-
-                margin:
-                    desktopCollapsed
-                    ? 0
-                    : '0 0 -8px',
-
-                background:
-                    'transparent',
-
-                border:
-                    'none',
-
-                color:
-                    '#ff3b00',
-
-                fontSize:
-                    '32px',
-
-                fontWeight:
-                    700,
-
-                lineHeight:
-                    1,
-
-                cursor:
-                    'pointer',
-
-                flexShrink:
-                    0
-                }}
-            >
-                {desktopCollapsed
-                ? '›'
-                : '‹'}
-            </button>
+            <SidebarArrowToggle collapsed={desktopCollapsed} stretchCollapsed label={desktopCollapsed?'Expand filters':'Collapse filters'} onToggle={()=>setDesktopCollapsed((current:boolean)=>!current)}/>
             )}
 
       {isMobile && (

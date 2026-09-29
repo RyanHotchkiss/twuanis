@@ -1,9 +1,12 @@
 'use client'
+import {HomepageIdentity} from '@/app/components/HomepageEntrance'
+import {useSiteTheme} from '@/app/components/theme/ThemeProvider'
 
 import { buildHomePageSchema }
 from '@/lib/schema/buildHomePageSchema'
 import JsonLd from '@/app/components/JsonLd'
 import Link from 'next/link'
+import HomeEngineCards from '@/app/components/home-engine-cards/HomeEngineCards'
 import TopBar from '@/app/components/TopBar'
 import {
   Compass,
@@ -91,8 +94,7 @@ const [
     setExpandedEngine
   ] = useState<string | null>(null)
 
-  const [theme, setTheme] =
-    useState<'dark' | 'light'>('dark')
+  const {theme,setTheme} = useSiteTheme()
 
   const [isMobile, setIsMobile] =
             useState(false)
@@ -337,9 +339,9 @@ useEffect(() => {
     />
 
     <main style={{        
-              background: '#000',
+              background: 'var(--background)',
               minHeight: '100vh',
-              color: '#fff',
+              color: 'var(--foreground)',
               padding: '20px',
               position: 'relative',
               overflow: 'hidden'
@@ -498,6 +500,7 @@ useEffect(() => {
       }}
     >
       {/* TWUANIS INTRO */}
+            <HomepageIdentity>
       <section
         style={{
           textAlign:
@@ -607,376 +610,11 @@ useEffect(() => {
           <span>◆</span>
         </div>
       </section>
+            </HomepageIdentity>
 
-      {/* INTELLIGENCE RAIL */}
-      <section
-        style={{
-          width: '100%',
-          padding: '10px 0 18px',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            gap: 12,
-            width: '100%',
-            overflowX: 'auto',
-            alignItems: 'center',
+      <HomeEngineCards language="es"/>
 
-            justifyContent:
-              isMobile
-                ? 'flex-start'
-                : 'center',
-
-            padding:
-              '4px 2px 16px',
-
-            boxSizing:
-              'border-box',
-
-            scrollbarWidth:
-              'none',
-
-            WebkitOverflowScrolling:
-              'touch',
-          }}
-        >
-          {homepageIntelligenceCards.map(
-            ({
-              id,
-              label,
-              description,
-              Icon,
-              color,
-            }) => {
-              const expanded =
-                expandedEngine === id
-
-              return (
-                <div
-                  key={id}
-
-                  onMouseEnter={() => {
-                    if (!isMobile) {
-                      setExpandedEngine(id)
-                    }
-                  }}
-
-                  onMouseLeave={() => {
-                    if (!isMobile) {
-                      setExpandedEngine(null)
-                    }
-                  }}
-
-                  onClick={() => {
-                    if (isMobile) {
-                      setExpandedEngine(
-                        expanded
-                          ? null
-                          : id
-                      )
-                    }
-                  }}
-
-                  style={{
-                    flex:
-                      '0 0 150px',
-
-                    width:
-                      150,
-
-                    height:
-                      220,
-
-                    position:
-                      'relative',
-
-                    display:
-                      'flex',
-
-                    alignItems:
-                      'center',
-
-                    justifyContent:
-                      'center',
-
-                    overflow:
-                      'visible',
-                  }}
-                >
-                  {/* RESTING CARD */}
-                  <article
-                    style={{
-                      position:
-                        'absolute',
-
-                      left:
-                        '50%',
-
-                      top:
-                        '50%',
-
-                      width:
-                        150,
-
-                      height:
-                        100,
-
-                      transform:
-                        'translate(-50%, -50%)',
-
-                      padding:
-                        '16px 12px',
-
-                      boxSizing:
-                        'border-box',
-
-                      border:
-                        theme === 'dark'
-                          ? '2px solid #333'
-                          : '2px solid rgba(0,0,0,.22)',
-
-                      borderRadius:
-                        18,
-
-                      background:
-                        theme === 'dark'
-                          ? '#121212'
-                          : 'rgba(255,255,255,.92)',
-
-                      display:
-                        'flex',
-
-                      flexDirection:
-                        'column',
-
-                      justifyContent:
-                        'center',
-
-                      alignItems:
-                        'center',
-
-                      cursor:
-                        'pointer',
-
-                      opacity:
-                        expanded
-                          ? 0
-                          : 1,
-
-                      transition:
-                        'opacity .12s ease, background .25s ease, border-color .25s ease',
-                    }}
-                  >
-                    <Icon
-                      size={30}
-                      strokeWidth={0.8}
-                      color="#C7A44B"
-
-                      style={{
-                        flexShrink: 0,
-                      }}
-                    />
-
-                    <div
-                      style={{
-                        marginTop:
-                          10,
-
-                        color:
-                          theme === 'dark'
-                            ? '#fff'
-                            : '#111',
-
-                        fontFamily:
-                          'var(--font-cinzel), serif',
-
-                        fontSize:
-                          '.78rem',
-
-                        lineHeight:
-                          1.2,
-
-                        textAlign:
-                          'center',
-
-                        letterSpacing:
-                          '.025em',
-
-                        transition:
-                          'color .25s ease',
-                      }}
-                    >
-                      {label}
-                    </div>
-                  </article>
-
-                  {/* EXPANDED CARD */}
-                  <article
-                    style={{
-                      position:
-                        'absolute',
-
-                      left:
-                        '50%',
-
-                      top:
-                        '50%',
-
-                      width:
-                        300,
-
-                      minHeight:
-                        200,
-
-                      transform:
-                        expanded
-                          ? 'translate(-50%, -50%) scale(1)'
-                          : 'translate(-50%, -50%) scale(.92)',
-
-                      padding:
-                        '28px',
-
-                      boxSizing:
-                        'border-box',
-
-                      border:
-                        `2px solid ${color}`,
-
-                      borderRadius:
-                        18,
-
-                      background:
-                        theme === 'dark'
-                          ? '#181818'
-                          : 'rgba(255,255,255,.96)',
-
-                      display:
-                        'flex',
-
-                      flexDirection:
-                        'column',
-
-                      justifyContent:
-                        'flex-start',
-
-                      alignItems:
-                        'flex-start',
-
-                      cursor:
-                        'pointer',
-
-                      opacity:
-                        expanded
-                          ? 1
-                          : 0,
-
-                      visibility:
-                        expanded
-                          ? 'visible'
-                          : 'hidden',
-
-                      pointerEvents:
-                        expanded
-                          ? 'auto'
-                          : 'none',
-
-                      zIndex:
-                        50,
-
-                      transition:
-                        'opacity .16s ease, transform .22s ease, border-color .2s ease, background .25s ease',
-                    }}
-                  >
-                    <div
-                      style={{
-                        display:
-                          'flex',
-
-                        alignItems:
-                          'center',
-
-                        gap:
-                          14,
-
-                        width:
-                          '100%',
-                      }}
-                    >
-                      <Icon
-                        size={30}
-                        strokeWidth={0.8}
-                        color="#C7A44B"
-
-                        style={{
-                          flexShrink: 0,
-                        }}
-                      />
-
-                      <div
-                        style={{
-                          color:
-                            theme === 'dark'
-                              ? '#fff'
-                              : '#111',
-
-                          fontFamily:
-                            'var(--font-cinzel), serif',
-
-                          fontSize:
-                            '1.2rem',
-
-                          lineHeight:
-                            1.2,
-
-                          textAlign:
-                            'left',
-
-                          letterSpacing:
-                            '.025em',
-
-                          transition:
-                            'color .25s ease',
-                        }}
-                      >
-                        {label}
-                      </div>
-                    </div>
-
-                    <div
-                      style={{
-                        width:
-                          '100%',
-
-                        marginTop:
-                          18,
-
-                        color:
-                          theme === 'dark'
-                            ? '#9a9a9a'
-                            : '#555',
-
-                        fontSize:
-                          '.9rem',
-
-                        lineHeight:
-                          1.4,
-
-                        transition:
-                          'color .25s ease',
-                      }}
-                    >
-                      {description}
-                    </div>
-                  </article>
-                </div>
-              )
-            }
-          )}
-        </div>
-      </section>
-
-      {/* CONTINUE */}
+            {/* CONTINUE */}
       <button
         type="button"
 
@@ -2195,13 +1833,13 @@ const overlayBackButton = {
 const filterHeading = {
   marginBottom: '14px',
   fontSize: '15px',
-  color: '#888',
+  color: 'var(--muted)',
   textTransform: 'uppercase' as const,
   letterSpacing: '1px'
 }
 
 const miniHeading = {
-  color: '#666',
+  color: 'var(--muted)',
   fontSize: '13px',
   marginBottom: '10px'
 }
@@ -2213,9 +1851,9 @@ const pillWrap = {
 }
 
 const pill = {
-  background: '#181818',
-  border: '1px solid #2a2a2a',
-  color: '#bbb',
+  background: 'var(--surface)',
+  border: '1px solid var(--border)',
+  color: 'var(--muted)',
   padding: '10px 14px',
   borderRadius: '999px',
   cursor: 'pointer',
@@ -2223,9 +1861,9 @@ const pill = {
 }
 
 const activePill = {
-  background: '#FFFFFF',
-  border: '1px solid #FFFFFF',
-  color: '#000',
+  background: 'var(--foreground)',
+  border: '1px solid var(--foreground)',
+  color: 'var(--background)',
   padding: '10px 14px',
   borderRadius: '999px',
   cursor: 'pointer',
@@ -2271,9 +1909,9 @@ const scrollPanel = {
 }
 
 const listButton = {
-  background: '#181818',
-  border: '1px solid #222',
-  color: '#bbb',
+  background: 'var(--surface)',
+  border: '1px solid var(--border)',
+  color: 'var(--muted)',
   padding: '14px 16px',
   borderRadius: '14px',
   cursor: 'pointer',
@@ -2282,9 +1920,9 @@ const listButton = {
 }
 
 const activeListButton = {
-  background: '#FFFFFF',
-  border: '1px solid #FFFFFF',
-  color: '#000',
+  background: 'var(--foreground)',
+  border: '1px solid var(--foreground)',
+  color: 'var(--background)',
   padding: '14px 16px',
   borderRadius: '14px',
   cursor: 'pointer',
@@ -2301,14 +1939,14 @@ const breadcrumbBar = {
 }
 
 const breadcrumbText = {
-  color: '#888',
+  color: 'var(--muted)',
   fontSize: '13px'
 }
 
 const backButton = {
   background: 'transparent',
   border: 'none',
-  color: '#FFFFFF',
+  color: 'var(--foreground)',
   cursor: 'pointer',
   padding: 0,
   fontSize: '14px',
@@ -2316,16 +1954,16 @@ const backButton = {
 }
 
 const navLink = {
-  color: '#888',
+  color: 'var(--muted)',
   textDecoration: 'none',
   fontSize: '.875rem',
   transition: 'all .2s ease'
 }
 
 const navButton = {
-  background: '#181818',
-  border: '.0625rem solid #222',
-  color: '#fff',
+  background: 'var(--surface)',
+  border: '.0625rem solid var(--border)',
+  color: 'var(--foreground)',
   padding: '.75rem 1rem',
   borderRadius: '.75rem',
   cursor: 'pointer',
@@ -2333,8 +1971,8 @@ const navButton = {
 }
 
 const sellButton = {
-  background: '#FFFFFF',
-  color: '#000',
+  background: 'var(--foreground)',
+  color: 'var(--background)',
   textDecoration: 'none',
   padding: '.75rem 1.125rem',
   borderRadius: '.875rem',
@@ -2350,71 +1988,6 @@ const sellButton = {
             rentCount: number
             homePageSchema: any[]
           }
-
-const homepageIntelligenceCards = [
-  {
-    id: 'explorer',
-    label: 'Explorador de Mercado',
-    description:
-      'Explora propiedades y características del mercado.',
-    Icon: Compass,
-    color: '#2ecc71',
-  },
-
-  {
-    id: 'valuation',
-    label: 'Valoración',
-    description:
-      'Estima el valor de una propiedad.',
-    Icon: BadgeDollarSign,
-    color: '#0066cc',
-  },
-
-  {
-    id: 'pricing',
-    label: 'Estrategia de Precios',
-    description:
-      'Define una estrategia competitiva de precio.',
-    Icon: CircleDot,
-    color: '#0066cc',
-  },
-
-  {
-    id: 'matching',
-    label: 'Compatibilidad de Propiedades',
-    description:
-      'Encuentra propiedades que coincidan con criterios seleccionados.',
-    Icon: HandHeart,
-    color: '#0066cc',
-  },
-
-  {
-    id: 'comparison',
-    label: 'Comparación de Mercados',
-    description:
-      'Compara dos mercados inmobiliarios definidos.',
-    Icon: Scale,
-    color: '#ff3b00',
-  },
-
-  {
-    id: 'scarcity',
-    label: 'Frecuencia de Mercado',
-    description:
-      'Mide la frecuencia de características inmobiliarias.',
-    Icon: ChartNoAxesColumnIncreasing,
-    color: '#ff3b00',
-  },
-
-  {
-    id: 'price-meter',
-    label: 'Inteligencia de Precio / m²',
-    description:
-      'Analiza precios de mercado por metro cuadrado.',
-    Icon: Ruler,
-    color: '#ffd700',
-  },
-]
 
 const mobileEngineExamples = [
   {

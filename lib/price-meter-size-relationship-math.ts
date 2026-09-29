@@ -529,7 +529,11 @@ export function calculateModeledAreaChange(
         )
       }
 
-      export function buildPriceMeterSizeRelationshipResult({
+export type PriceMeterDescriptiveSizeRelationshipResult = Omit<PriceMeterSizeRelationshipResult, 'regression'> & {
+  regression: Omit<PriceMeterSizeRelationshipRegression, 'modeledTenPercentAreaChange'> | null
+}
+
+export function buildPriceMeterDescriptiveSizeRelationshipResult({
   coordinates,
   representedObservationCount
 }: {
@@ -538,7 +542,7 @@ export function calculateModeledAreaChange(
 
   representedObservationCount:
     number
-}): PriceMeterSizeRelationshipResult {
+}, modelExecution: 'authorized' | 'withheld_mathematical_coupling' = 'authorized'): PriceMeterDescriptiveSizeRelationshipResult {
 
   const evidence =
     buildPriceMeterSizeRelationshipEvidence(
@@ -588,19 +592,10 @@ export function calculateModeledAreaChange(
 
 
   const logLogRegression =
-    calculateLogLogRegression(
+    modelExecution === 'withheld_mathematical_coupling' ? null : calculateLogLogRegression(
       xValues,
       yValues
     )
-
-
-  const modeledTenPercentAreaChange =
-    logLogRegression
-      ? calculateModeledAreaChange(
-          logLogRegression.beta,
-          10
-        )
-      : null
 
 
   const rSquared =
@@ -630,10 +625,21 @@ export function calculateModeledAreaChange(
             beta:
               logLogRegression.beta,
 
-            modeledTenPercentAreaChange,
-
             rSquared
           }
         : null
   }
+}
+
+// Existing contextual/cross-dimensional contracts retain their explicit model
+// interpretation. The automatic size answer uses the descriptive builder above.
+export function buildPriceMeterSizeRelationshipResult(input: {
+  coordinates: PriceMeterSizeRelationshipCoordinate[]
+  representedObservationCount: number
+}, modelExecution: 'authorized' | 'withheld_mathematical_coupling' = 'authorized'): PriceMeterSizeRelationshipResult {
+  const result = buildPriceMeterDescriptiveSizeRelationshipResult(input, modelExecution)
+  return {...result, regression: result.regression ? {
+    ...result.regression,
+    modeledTenPercentAreaChange: calculateModeledAreaChange(result.regression.beta, 10)
+  } : null}
 }

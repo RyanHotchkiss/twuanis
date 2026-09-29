@@ -250,8 +250,8 @@ const messageCard = {
   maxWidth: '90rem',
   margin: '0 auto',
   padding: '2rem',
-  color: '#aaa',
-  background: '#111',
+  color: 'var(--muted)',
+  background: 'var(--surface)',
   border: '1px solid #222',
   borderRadius: '1.5rem'
 }

@@ -1889,8 +1889,8 @@ export default function SaleListingEditForm({
 const page = {
   minHeight: '100vh',
   padding: '1rem',
-  background: '#000',
-  color: '#fff'
+  background: 'var(--background)',
+  color: 'var(--foreground)'
 }
 
 const container = {
@@ -1909,7 +1909,7 @@ const header = {
 
 const eyebrow = {
   margin: '0 0 .5rem',
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '.8rem',
   fontWeight: 700,
   letterSpacing: '.12em',
@@ -1918,7 +1918,7 @@ const eyebrow = {
 
 const heading = {
   margin: 0,
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize:
     'clamp(2.5rem, 6vw, 4rem)'
 }
@@ -1926,7 +1926,7 @@ const heading = {
 const intro = {
   maxWidth: '48rem',
   margin: '1rem 0 0',
-  color: '#888',
+  color: 'var(--muted)',
   fontSize: '1.05rem',
   lineHeight: 1.7
 }
@@ -1949,8 +1949,8 @@ const editorPanel = {
     'column' as const,
   gap: '2rem',
   padding: '2rem',
-  background: '#111',
-  border: '1px solid #222',
+  background: 'var(--surface)',
+  border: '1px solid var(--border)',
   borderRadius: '1.5rem'
 }
 
@@ -1959,8 +1959,8 @@ const previewPanel = {
     'sticky' as const,
   top: '1rem',
   padding: '2rem',
-  background: '#0d0d0d',
-  border: '1px solid #222',
+  background: 'var(--surface)',
+  border: '1px solid var(--border)',
   borderRadius: '1.5rem'
 }
 
@@ -1969,13 +1969,13 @@ const textSection = {
   gap: '1.25rem',
   paddingTop: '1rem',
   borderTop:
-    '1px solid #292929'
+    '1px solid var(--border)'
 }
 
 const fieldLabel = {
   display: 'grid',
   gap: '.55rem',
-  color: '#aaa',
+  color: 'var(--muted)',
   fontSize: '.85rem',
   fontWeight: 600
 }
@@ -1983,9 +1983,9 @@ const fieldLabel = {
 const input = {
   width: '100%',
   padding: '1rem',
-  background: '#090909',
-  color: '#fff',
-  border: '1px solid #333',
+  background: 'var(--input)',
+  color: 'var(--foreground)',
+  border: '1px solid var(--border)',
   borderRadius: '.85rem',
   fontSize: '1rem',
   outline: 'none'
@@ -2002,12 +2002,12 @@ const textarea = {
 const imageSection = {
   paddingTop: '1rem',
   borderTop:
-    '1px solid #292929'
+    '1px solid var(--border)'
 }
 
 const sectionHeading = {
   margin: '0 0 1rem',
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '1.1rem'
 }
 
@@ -2020,8 +2020,8 @@ const imageGrid = {
 
 const imageCard = {
   overflow: 'hidden',
-  background: '#090909',
-  border: '1px solid #292929',
+  background: 'var(--input)',
+  border: '1px solid var(--border)',
   borderRadius: '1rem'
 }
 
@@ -2038,10 +2038,10 @@ const removeButton = {
   width: '100%',
   padding: '.7rem',
   background: 'transparent',
-  color: '#ff9b9b',
+  color: 'var(--error-text)',
   border: 0,
   borderTop:
-    '1px solid #292929',
+    '1px solid var(--border)',
   cursor: 'pointer'
 }
 
@@ -2059,14 +2059,14 @@ const actions = {
   gap: '1rem',
   paddingTop: '1rem',
   borderTop:
-    '1px solid #292929'
+    '1px solid var(--border)'
 }
 
 const secondaryButton = {
   padding: '.9rem 1.4rem',
   background: 'transparent',
-  color: '#fff',
-  border: '1px solid #444',
+  color: 'var(--foreground)',
+  border: '1px solid var(--border)',
   borderRadius: '999px',
   fontWeight: 700,
   cursor: 'pointer'
@@ -2074,8 +2074,8 @@ const secondaryButton = {
 
 const primaryButton = {
   padding: '.9rem 1.4rem',
-  background: '#fff',
-  color: '#000',
+  background: 'var(--foreground)',
+  color: 'var(--background)',
   border: 0,
   borderRadius: '999px',
   fontWeight: 800,
@@ -2092,9 +2092,9 @@ const imageActions = {
 
 const imageActionButton = {
   padding: '.65rem',
-  background: '#151515',
-  color: '#ddd',
-  border: '1px solid #333',
+  background: 'var(--surface-raised)',
+  color: 'var(--foreground)',
+  border: '1px solid var(--border)',
   borderRadius: '.6rem',
   cursor: 'pointer'
 }

@@ -9,5 +9,10 @@ queries=[];base=0;r=await m.exports.getMarketScarcity({utility:'water,fiber'});e
 base=10;matching=11;await assert.rejects(()=>m.exports.getMarketScarcity({}));n++;
 terms=[];year={kind:'interval'};matching=4;queries=[];r=await m.exports.getMarketScarcity({year_built:'1980s'});eq(r.matchingCount,4);eq(queries.length,2);eq(r.selectedCombination.attributes[0].category,'year_built');
 base=100;matching=20;year=null;
-for(const k of [1,2,3,12,25]){terms=Array.from({length:k},(_,i)=>({id:String(i+1),dimension:'utility',label:'label'}));queries=[];const r=await m.exports.getMarketScarcity({});eq(queries.length,2);eq(queries[1][1].membershipGroups.length,k+2);eq(r.combinations,[]);eq(r.percentage,20)}
+for(const k of [1,2,3,5,10,12,25]){terms=Array.from({length:k},(_,i)=>({id:String(i+1),dimension:'utility',label:'label'}));queries=[];const r=await m.exports.getMarketScarcity({});eq(queries.length,2);eq(queries[1][1].membershipGroups.length,k+2);eq(r.combinations,[]);eq(r.percentage,20)}
+
+// Zero positive evidence deliberately does not distinguish unknown/nonmembership.
+base=100;matching=0;queries=[];let zero=await m.exports.getMarketScarcity({utility:'water'});eq(zero.matchingCount,0);eq(zero.percentage,0);eq(zero.state,'ESTABLISHED');eq(Object.hasOwn(zero,'unknownCount'),false);eq(Object.hasOwn(zero,'evaluableCount'),false);
+const firstGroups=queries[1][1].membershipGroups.slice(2).map(g=>g[0]).sort();terms=terms.slice().reverse();queries=[];zero=await m.exports.getMarketScarcity({});eq(queries[1][1].membershipGroups.slice(2).map(g=>g[0]).sort(),firstGroups);eq(zero.percentage,0);
+base=1;matching=1;eq((await m.exports.getMarketScarcity({})).percentage,100);
 console.log('CONFIGURATION FREQUENCY PASS:',n,'offline assertions; rare discovery execution absent.');})().catch(e=>{console.error(e);process.exitCode=1});

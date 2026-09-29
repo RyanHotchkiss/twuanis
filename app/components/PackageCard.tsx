@@ -216,21 +216,21 @@ const card = {
   gap: '1.75rem',
   minHeight: '100%',
   padding: '1.5rem',
-  background: '#181818',
+  background: 'var(--surface-raised)',
   border: '2px solid',
   borderRadius: '18px'
 }
 
 const packageName = {
   margin: 0,
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '1.55rem',
   lineHeight: 1.2
 }
 
 const description = {
   margin: '.75rem 0 0',
-  color: '#aaa',
+  color: 'var(--muted)',
   fontSize: '.95rem',
   lineHeight: 1.5
 }
@@ -246,13 +246,13 @@ const primaryPrice = {
 
 const secondaryPrice = {
   marginTop: '.25rem',
-  color: '#ddd',
+  color: 'var(--foreground)',
   fontSize: '1.05rem'
 }
 
 const billingPeriod = {
   marginTop: '.2rem',
-  color: '#777',
+  color: 'var(--muted)',
   fontSize: '.8rem'
 }
 
@@ -278,14 +278,14 @@ const engineCard = {
 }
 
 const engineName = {
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '1rem',
   fontWeight: 600
 }
 
 const enginePurpose = {
   marginTop: '.2rem',
-  color: '#999',
+  color: 'var(--muted)',
   fontSize: '.84rem',
   lineHeight: 1.4
 }
@@ -308,7 +308,7 @@ const buttonRow = {
 const secondaryButton = {
   padding: '.85rem 1rem',
   background: 'transparent',
-  color: '#ddd',
+  color: 'var(--foreground)',
   border: '1px solid #444',
   borderRadius: '10px',
   cursor: 'pointer'
@@ -334,14 +334,14 @@ const dashboardFeature = {
 }
 
 const dashboardName = {
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '1rem',
   fontWeight: 600
 }
 
 const dashboardDescription = {
   marginTop: '.25rem',
-  color: '#999',
+  color: 'var(--muted)',
   fontSize: '.84rem',
   lineHeight: 1.45
 }

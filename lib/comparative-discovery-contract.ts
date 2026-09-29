@@ -11,6 +11,12 @@ export type Phase14ListingPresentation = Readonly<{
 }>
 export type Phase14ApplicationResponse = Readonly<{
   analysis: Phase14BrowserResult; listings?: readonly Phase14ListingPresentation[]
+  context?: Readonly<{
+    analyticalDate:string|null;
+    propertyBases:readonly ('land_only'|'improved_property'|'unknown')[];
+    hydratedCount:number;excludedCount:number;
+    fx:Readonly<{source:'BCCR';rate:number;effectiveDate:string;rateType:'reference_sale';resolutionMode:'exact'|'latest_applicable_prior_observation'}>|null;
+  }>
 }>
 export type Phase14Option = Readonly<{
   id: string; type: string; en: string; es: string; code: string | null; parentId: string | null

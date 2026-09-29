@@ -141,9 +141,13 @@ function position(mod,subjectObservation,observations,participation){
  // Read-only graph verification also covers unguarded analytical modules.
  const graph=fs.readFileSync(root+'/scripts/verification/canonical-reader-import-graph.cjs','utf8');let reached;
  vm.runInNewContext(graph+'\nreport([...visited]);',{require,console:{log(){}},process:{env:{S6_REPO_ROOT:root},exitCode:0},__dirname:root+'/scripts/verification',report:v=>{reached=v}});
- // Standalone Phase12 now has an approved labels/formatting-only client module.
+ // Presentation and strict browser-intent parsing contain no analytical work.
+ // Engine 14 validates/restores the same three-field request before execution.
  const browserPresentation=path.join(root,'lib/price-meter-property-position-presentation.ts');
- ok(!reached.some(p=>/price-meter-(property-position|comparable)/.test(p)&&p!==browserPresentation),'no client runtime reaches either analytical path; only explicit presentation module allowed');
+ const browserIntent=path.join(root,'lib/price-meter-property-position-request.ts');
+ // Engine 15's presentation component shares the comparable path prefix, not its server machinery.
+ const comparableWorkspace=path.join(root,'app/components/price-meter-comparables/ComparableWorkspace.tsx');
+ ok(!reached.some(p=>/price-meter-(property-position|comparable)/.test(p)&&p!==browserPresentation&&p!==browserIntent&&p!==comparableWorkspace&&p!==path.join(root,'app/components/price-meter-comparables/comparables.module.css')),'no client runtime reaches either analytical path; only explicit presentation and intent parser allowed');
  ok(fs.readFileSync(root+'/lib/price-meter-property-position-math.ts','utf8').startsWith("import 'server-only'"),'shared math explicitly server-only');
  const protectedFiles=['price-meter-comparable-loader','price-meter-comparable-base-cohort','price-meter-comparable-population','price-meter-comparable-population-trail','price-meter-comparable-dimensions','price-meter-comparable-request','price-meter-comparable-subject-identity','price-meter-comparable-geography','price-meter-comparable-engine','price-meter-comparable-dto','price-meter-comparable-browser-contract','price-meter-property-position-construction-land'];
  if(baseline)for(const f of protectedFiles)ok(fs.readFileSync(root+'/lib/'+f+'.ts','utf8')===fs.readFileSync(baseline+'/lib/'+f+'.ts','utf8'),'protected source unchanged '+f);

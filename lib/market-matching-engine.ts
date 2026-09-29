@@ -1,4 +1,5 @@
 import 'server-only'
+import { explainMarketPreference } from './market-matching-explanation'
 import { matchingCardEvidence } from './market-matching-presentation'
 import { supabaseAdmin } from './supabase-admin'
 import { resolveCanonicalMarketRequest } from './canonical-market-request'
@@ -14,7 +15,8 @@ export async function getMarketMatches(filters:Record<string,string|undefined>,l
   const evidence=await acquireMarketPreferenceEvidence(request,candidates.map(row=>row.id))
   const labels:Record<string,[string,string]>={property_area:['Property Area','Área del terreno'],construction_area:['Construction Area','Área de construcción'],year_built:['Year Built','Año de construcción'],distance_to_paved_road:['Distance to paved road','Distancia a carretera pavimentada']}
   const ranked=rankMarketPreferences(candidates.map(row=>({id:row.id,preferences:evaluateMarketPreferences(request,row,evidence).map(p=>({...p,label:labels[p.dimension]?.[language==='es'?1:0]??p.label}))})))
-  const displayed=ranked.slice(0,12),presentation=new Map<string,Record<string,any>>()
+  const candidateById=new Map(candidates.map(row=>[row.id,row]))
+  const displayed=ranked.slice(0,12).map(result=>({...result,preferences:result.preferences.map(p=>({...p,explanation:explainMarketPreference(request,candidateById.get(result.id)!,evidence,p)}))})),presentation=new Map<string,Record<string,any>>()
   if(displayed.length){
     const {data,error,count}=await supabaseAdmin.from('listings')
       .select('id,title,images,canonical_domain_version,transaction_type,current_price,monthly_price,currency',{count:'exact'})
@@ -28,7 +30,7 @@ export async function getMarketMatches(filters:Record<string,string|undefined>,l
   const listings=displayed.map(result=>{
     const row=presentation.get(result.id)!,money=resolveListingOriginalMonetaryValue(row)
     // Explicit browser projection. No spread of candidate rows/canonical envelopes.
-    return {id:result.id,province:cards.get(result.id)?.province??null,canton:cards.get(result.id)?.canton??null,property_type:cards.get(result.id)?.property_type??null,bedrooms:cards.get(result.id)?.bedrooms??null,bathrooms:cards.get(result.id)?.bathrooms??null,title:typeof row.title==='string'?row.title:null,images:resolveListingImages(row.images).slice(0,1),
+    return {id:result.id,transaction:row.transaction_type,province:cards.get(result.id)?.province??null,canton:cards.get(result.id)?.canton??null,property_type:cards.get(result.id)?.property_type??null,bedrooms:cards.get(result.id)?.bedrooms??null,bathrooms:cards.get(result.id)?.bathrooms??null,title:typeof row.title==='string'?row.title:null,images:resolveListingImages(row.images).slice(0,1),
       formattedPrice:money?`${money.currency} ${money.amount.toLocaleString(language==='es'?'es-CR':'en-US')}`:null,
       matchScore:result.matchScore,matchState:result.matchState,confirmedMatches:result.confirmedMatches,
       confirmedNonmatches:result.confirmedNonmatches,unknown:result.unknown,preferences:result.preferences,

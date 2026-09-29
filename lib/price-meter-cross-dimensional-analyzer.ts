@@ -55,7 +55,7 @@ import {
 } from '@/lib/price-meter-distribution'
 
 import {
-  buildPriceMeterGeographicDistributions,
+  buildPriceMeterGeographicLevel,
   type PriceMeterGeographicIdentity
 } from '@/lib/price-meter-geographic-distribution'
 
@@ -310,25 +310,19 @@ function buildGeographicEvidence<
 
 
   /*
-   * Reconstruct Phase 7 geographic distributions inside
-   * this secondary population and consume only the
-   * comparison level authorized by the canonical scope.
+   * Reconstruct only the Phase 7 comparison level authorized
+   * by the canonical scope inside this secondary population.
    */
 
-  const geographicDistributions =
-    buildPriceMeterGeographicDistributions({
+  const comparisonDistributions =
+    buildPriceMeterGeographicLevel({
       observations:
         cohort.observations,
 
       transactionType:
-        identity.transactionType
+        identity.transactionType,
+      level: comparisonLevel
     })
-
-
-  const comparisonDistributions =
-    geographicDistributions[
-      comparisonLevel
-    ]
 
 
   const statistics =
@@ -509,6 +503,9 @@ function buildSizeEvidence<
     })
 
 
+  const modeledStatisticsWithheld =
+    identity.mathematicalAuthorization === 'explicit_coupling_validation_required'
+
   const relationship =
     buildPriceMeterSizeRelationshipResult({
       coordinates:
@@ -517,7 +514,7 @@ function buildSizeEvidence<
       representedObservationCount:
         population
           .representedObservationCount
-    })
+    }, modeledStatisticsWithheld ? 'withheld_mathematical_coupling' : 'authorized')
 
 
   /*
@@ -546,12 +543,6 @@ function buildSizeEvidence<
    * defined using one of the variables participating in
    * the modeled relationship.
    */
-
-  const modeledStatisticsWithheld =
-    identity
-      .mathematicalAuthorization ===
-      'explicit_coupling_validation_required'
-
 
   const regression =
     modeledStatisticsWithheld
@@ -714,12 +705,6 @@ function buildConstructionLandEvidence<
     })
 
 
-  const statistics =
-    buildPriceMeterConstructionLandStatistics(
-      population
-    )
-
-
     /*
    * Phase 9 exposes two analytically distinct relationship
    * builders.
@@ -732,10 +717,10 @@ function buildConstructionLandEvidence<
     identity.normalizationBasis ===
       'land'
       ? buildPriceMeterConstructionLandLandRelationship(
-          statistics
+          buildPriceMeterConstructionLandStatistics(population, 'land')
         )
       : buildPriceMeterConstructionLandConstructionRelationship(
-          statistics
+          buildPriceMeterConstructionLandStatistics(population, 'construction')
         )
 
 

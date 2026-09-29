@@ -51,4 +51,12 @@
 
 .panel input,.panel select,.panel button,.panel a { background:var(--p14-bg); color:var(--p14-fg); }
 .mobilePrice { display:none; }
+.panel[data-hub=true] { border:0; padding:0; margin-block:0; font-family:inherit; overflow-wrap:anywhere; }
+.panel[data-hub=true]>h2 { font-size:clamp(1.8rem,4vw,2.5rem); font-weight:500; }
+.panel[data-hub=true]>h2+p { font-size:clamp(1.2rem,2.1vw,1.6rem); line-height:1.45; margin-bottom:24px; padding-bottom:24px; border-bottom:1px solid var(--border); }
+.panel[data-hub=true] form { padding:18px; border:1px solid var(--border); border-radius:12px; background:var(--surface); }
+.panel[data-hub=true] button { min-height:44px; }
+.panel[data-hub=true] button[type=submit] { background:#d4af37; color:#111; border-color:#d4af37; font-weight:650; padding:10px 20px; }
+.panel[data-hub=true] summary { min-height:44px; align-content:center; }
+.panel[data-hub=true] :focus-visible { outline-color:#d4af37; }
 @media(max-width:640px) { .priceColumn { display:none; } .mobilePrice { display:block; font-size:.72rem; } }

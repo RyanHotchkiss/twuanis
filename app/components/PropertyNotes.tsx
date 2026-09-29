@@ -648,13 +648,13 @@ export default function PropertyNotes({
         .property-note-rendered blockquote {
             margin: 0.75rem 0;
             padding-left: 0.85rem;
-            color: #aaa;
+            color: var(--muted);
             border-left: 3px solid #c7a44b;
         }
 
         .property-note-rendered h3 {
             margin: 0.75rem 0 0.5rem;
-            color: #fff;
+            color: var(--foreground);
         }
         `}</style>
 
@@ -694,7 +694,7 @@ const container = {
   gap: '1rem',
   marginBottom: '2rem',
   padding: '1.25rem',
-  background: '#0d0d0d',
+  background: 'var(--surface)',
   border: '1px solid #2a2a2a',
   borderRadius: '1rem'
 }
@@ -712,7 +712,7 @@ const heading = {
 
 const description = {
   margin: 0,
-  color: '#888',
+  color: 'var(--muted)',
   fontSize: '.85rem',
   lineHeight: 1.5
 }
@@ -727,8 +727,8 @@ const textarea = {
   minHeight: '110px',
   resize: 'vertical' as const,
   padding: '.85rem',
-  color: '#fff',
-  background: '#111',
+  color: 'var(--foreground)',
+  background: 'var(--surface)',
   border: '1px solid #3a3a3a',
   borderRadius: '10px',
   fontFamily: 'inherit',
@@ -751,8 +751,8 @@ const primaryButton = {
 
 const secondaryButton = {
   padding: '.55rem .75rem',
-  color: '#ddd',
-  background: '#1b1b1b',
+  color: 'var(--foreground)',
+  background: 'var(--surface-raised)',
   border: '1px solid #444',
   borderRadius: '8px',
   fontFamily: 'inherit',
@@ -761,8 +761,8 @@ const secondaryButton = {
 
 const deleteButton = {
   padding: '.55rem .75rem',
-  color: '#e58b8b',
-  background: '#1b1b1b',
+  color: 'var(--error-text)',
+  background: 'var(--surface-raised)',
   border: '1px solid #5c3030',
   borderRadius: '8px',
   fontFamily: 'inherit',
@@ -771,7 +771,7 @@ const deleteButton = {
 
 const dangerButton = {
   padding: '.55rem .75rem',
-  color: '#fff',
+  color: 'white',
   background: '#8f2d2d',
   border: '1px solid #b34747',
   borderRadius: '8px',
@@ -782,14 +782,14 @@ const dangerButton = {
 
 const errorText = {
   margin: 0,
-  color: '#e58b8b',
+  color: 'var(--error-text)',
   fontSize: '.85rem'
 }
 
 const emptyState = {
   padding: '1rem',
-  color: '#777',
-  background: '#111',
+  color: 'var(--muted)',
+  background: 'var(--surface)',
   border: '1px dashed #333',
   borderRadius: '10px',
   textAlign: 'center' as const
@@ -804,14 +804,14 @@ const noteCard = {
   display: 'grid',
   gap: '.8rem',
   padding: '1rem',
-  background: '#151515',
+  background: 'var(--surface)',
   border: '1px solid #303030',
   borderRadius: '10px'
 }
 
 const noteContent = {
   margin: 0,
-  color: '#ddd',
+  color: 'var(--foreground)',
   fontSize: '.9rem',
   lineHeight: 1.6,
   overflowWrap:
@@ -827,7 +827,7 @@ const noteFooter = {
 }
 
 const updatedAt = {
-  color: '#777',
+  color: 'var(--muted)',
   fontSize: '.75rem'
 }
 
@@ -839,6 +839,6 @@ const actions = {
 }
 
 const confirmText = {
-  color: '#aaa',
+  color: 'var(--muted)',
   fontSize: '.8rem'
 }

@@ -90,7 +90,7 @@ export default function PriceSelectorS({
 
   <div style={{
     fontSize: '.95rem',
-    color: '#888',
+    color: 'var(--muted)',
     marginTop: '.35rem'
   }}>
     {usdToCrcRate !== null
@@ -138,9 +138,9 @@ const priceWheelContainer = {
 }
 
 const priceArrow = {
-  background:'#181818',
+  background:'var(--surface)',
   border:'1px solid #333',
-  color:'#FFFFFF',
+  color:'var(--foreground)',
   width:'3rem',
   height:'3rem',
   borderRadius:'.75rem',
@@ -162,6 +162,6 @@ const priceDisplay = {
 
 const priceConversion = {
   textAlign:'center' as const,
-  color:'#888',
+  color:'var(--muted)',
   fontSize:'1rem'
 }

@@ -254,6 +254,19 @@ function assertGeographicIdentity({
  * or Normalization Basis.
  */
 
+// The same compatibility rules are usable before acquisition. No population is
+// fabricated to validate a request; observation consistency is checked afterward.
+export function validatePriceMeterCrossDimensionalRequestIdentity({questionKey,propertyBasis,normalizationBasis,geographicScope}:{
+  questionKey:PriceMeterCrossDimensionalQuestionKey;
+  propertyBasis:PriceMeterPropertyBasis;
+  normalizationBasis:PriceMeterNormalizationBasis;
+  geographicScope:PriceMeterGeographicScope;
+}):void {
+  const question=getPriceMeterCrossDimensionalQuestion(questionKey)
+  assertOwningPhaseIdentity({owningPhase:question.owningPhase,secondaryDimension:question.secondaryDimension,propertyBasis,normalizationBasis})
+  assertGeographicIdentity({primaryRelationship:question.primaryRelationship,secondaryDimension:question.secondaryDimension,geography:geographicScope})
+}
+
 export function resolvePriceMeterCrossDimensionalIdentity<
   T extends PriceMeterTransactionType
 >({

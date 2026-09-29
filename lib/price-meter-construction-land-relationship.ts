@@ -49,7 +49,7 @@ import {
 } from '@/lib/price-meter-size-relationship-math'
 
 import type {
-  PriceMeterConstructionLandStatistics
+  ScopedConstructionLandStatistics
 } from '@/lib/price-meter-construction-land-statistics'
 
 
@@ -119,7 +119,7 @@ export function buildPriceMeterConstructionLandLandRelationship<
   T extends PriceMeterTransactionType
 >(
   statistics:
-    PriceMeterConstructionLandStatistics<T>
+    Pick<ScopedConstructionLandStatistics<T, 'land'>, 'transactionType' | 'populatedCohorts'>
 ): PriceMeterConstructionLandLandRelationship<T> {
 
   const coordinates =
@@ -277,7 +277,7 @@ export function buildPriceMeterConstructionLandConstructionRelationship<
   T extends PriceMeterTransactionType
 >(
   statistics:
-    PriceMeterConstructionLandStatistics<T>
+    Pick<ScopedConstructionLandStatistics<T, 'construction'>, 'transactionType' | 'populatedCohorts'>
 ): PriceMeterConstructionLandConstructionRelationship<T> {
 
   const coordinates =

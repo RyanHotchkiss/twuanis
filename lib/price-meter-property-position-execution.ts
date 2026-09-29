@@ -27,22 +27,24 @@ export async function resolvePositionFx(rows: PositionRow[], analyticalDate: str
   return { conversionApplied: true, analyticalDate, baseCurrency: 'USD', quoteCurrency: 'CRC',
     rate: fx.rate, rateType: 'reference_sale', effectiveDate: fx.effectiveDate, source: 'BCCR', resolutionMode: fx.resolutionMode }
 }
-export function buildPositionObservations(rows: PositionRow[], analyticalDate: string, fxIdentity: PriceMeterFxIdentity | null) {
-  return buildPriceMeterObservations(rows.map(row => ({ ...row, analyticalIdentity: resolvePriceMeterAnalyticalIdentity(row,{analyticalDate,fxIdentity}) })))
+export function buildPositionObservations(rows: PositionRow[], analyticalDate: string, fxIdentity: PriceMeterFxIdentity | null, normalization?:PositionRequest['requestedNormalizationBasis']) {
+  return buildPriceMeterObservations(rows.map(row => ({ ...row, analyticalIdentity: resolvePriceMeterAnalyticalIdentity(row,{analyticalDate,fxIdentity}) })),normalization)
 }
-function configuration(row: PositionRow, date: string, fx: PriceMeterFxIdentity | null): PositionConfiguration | PositionFailure {
-  const observed = buildPositionObservations([row],date,fx)
-  if (!observed.length) return failure('subject_ineligible','canonical_observation_not_established')
-  const normalized = buildPriceMeterPropertyPositionNormalization({ identities: observed.map(resolvePriceMeterPropertyPositionIdentity) })
+function configuration(row: PositionRow, date: string, fx: PriceMeterFxIdentity | null, selectedOnly = false): PositionConfiguration | PositionFailure {
+  // The Hub reads eligibility metadata without constructing sibling observations.
+  const identity = selectedOnly ? resolvePriceMeterAnalyticalIdentity(row,{analyticalDate:date,fxIdentity:fx}) : null
+  const observed = selectedOnly ? [] : buildPositionObservations([row],date,fx)
+  if (identity ? (!identity.eligibility.eligible || !identity.price.analyticallyUsable || identity.price.analyticalAmount === null || identity.transactionType === null || identity.propertyBasis === 'unknown' || !identity.availableNormalizationBases.length) : !observed.length) return failure('subject_ineligible','canonical_observation_not_established')
+  const normalized = selectedOnly ? null : buildPriceMeterPropertyPositionNormalization({ identities: observed.map(resolvePriceMeterPropertyPositionIdentity) })
   const geographies: PositionConfiguration['geographies'] = {}
   for (const term of row.canonicalEvidence.geography) {
     geographies[term.term_type] = { id: term.id, label: term.term_name, labelEn: term.term_name_en, labelEs: term.term_name_es }
   }
   const type = row.canonicalEvidence.selections.find(s => s.dimension === 'property_type')!
-  const normalizations = ([normalized.land,normalized.construction]).flatMap(lens => lens ? [lens.normalizationBasis] : [])
+  const normalizations = identity ? identity.availableNormalizationBases : ([normalized!.land,normalized!.construction]).flatMap(lens => lens ? [lens.normalizationBasis] : [])
   return { state: geographies.district ? 'ok' : 'reference_definition_invalid', listingId: row.id, geographies, normalizations,
     defaultGeography: geographies.district ? 'district' : null,
-    defaultNormalization: normalized.construction ? 'construction' : 'land',
+    defaultNormalization: normalizations.includes('construction') ? 'construction' : 'land',
     propertyType: { id: type.ontology_term_id, label: type.term_name }, reason: geographies.district ? 'ready' : 'district_not_established' }
 }
 // Only called after the dedicated route has authorized the cookie-backed caller.
@@ -63,18 +65,18 @@ export type PositionWorkingEvidence = {
 export type PositionExecution =
  | {result: Extract<PositionResult,{state:'ok'}>; working: PositionWorkingEvidence}
  | {result: Exclude<PositionResult,{state:'ok'}>; working: null}
-export async function executePropertyPositionWithWorkingEvidence(request: PositionRequest): Promise<PositionExecution> {
+export async function executePropertyPositionWithWorkingEvidence(request: PositionRequest, selectedOnly = false): Promise<PositionExecution> {
   try {
     const row = await loadPositionSubject(request.listingId)
     if (!row) return {result:failure('subject_unavailable','active_canonical_subject_not_found'),working:null}
     const analyticalDate = getCurrentAnalyticalDate()
     let fx = await resolvePositionFx([row],analyticalDate)
-    const config = configuration(row,analyticalDate,fx)
+    const config = configuration(row,analyticalDate,fx,selectedOnly)
     if (!('geographies' in config)) return {result:config,working:null}
     const geography: PositionPlace | undefined = config.geographies[request.requestedGeographyLevel]
     if (!geography) return {result:failure('reference_definition_invalid','canonical_geography_not_established'),working:null}
     if (!config.normalizations.includes(request.requestedNormalizationBasis)) return {result:failure('normalization_not_applicable','exact_normalization_not_established'),working:null}
-    let subjectObservation = buildPositionObservations([row],analyticalDate,fx).find(o => o.normalizationBasis === request.requestedNormalizationBasis)!
+    let subjectObservation = buildPositionObservations([row],analyticalDate,fx,selectedOnly ? request.requestedNormalizationBasis : undefined).find(o => o.normalizationBasis === request.requestedNormalizationBasis)!
     const reference: PositionReference = {
       subjectListingId: row.id, geographyLevel: request.requestedGeographyLevel, geography, propertyType: config.propertyType,
       transactionType: subjectObservation.transactionType, propertyBasis: subjectObservation.propertyBasis,
@@ -87,9 +89,11 @@ export async function executePropertyPositionWithWorkingEvidence(request: Positi
     catch (cause) { return {result:failure('reference_evidence_incomplete','complete_canonical_reference_not_established',cause),working:null} }
     // Resolve at most one USD rate per execution. Rebuild both sides in the same context.
     if (!fx) fx = await resolvePositionFx(rows,analyticalDate)
-    subjectObservation = buildPositionObservations([row],analyticalDate,fx).find(o => o.normalizationBasis === request.requestedNormalizationBasis)!
+    // A USD subject already resolved FX; a native CRC subject is unaffected by
+    // reference-only USD conversion. Keep its single selected observation.
+    if (!selectedOnly) subjectObservation = buildPositionObservations([row],analyticalDate,fx).find(o => o.normalizationBasis === request.requestedNormalizationBasis)!
     const subject = resolvePriceMeterPropertyPositionIdentity(subjectObservation)
-    const candidates = buildPositionObservations(rows,analyticalDate,fx).filter(o => o.propertyBasis === reference.propertyBasis && o.normalizationBasis === reference.normalizationBasis)
+    const candidates = buildPositionObservations(rows,analyticalDate,fx,selectedOnly ? request.requestedNormalizationBasis : undefined).filter(o => o.propertyBasis === reference.propertyBasis && o.normalizationBasis === reference.normalizationBasis)
     let population
     try { population = buildPriceMeterPropertyPositionPopulation({ subject, observations: candidates, participation: 'SUBJECT_INCLUDED' }) }
     catch (cause) { return {result:failure('subject_participation_invalid','actual_subject_not_represented_once_consistently',cause),working:null} }

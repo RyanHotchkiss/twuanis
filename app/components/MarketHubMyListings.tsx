@@ -1533,14 +1533,14 @@ gap: '1rem'
 
 const heading = {
 margin: 0,
-color: '#fff',
+color: 'var(--foreground)',
 fontSize: '1.75rem',
 lineHeight: 1.2
 }
 
 const summary = {
 margin: '.45rem 0 0',
-color: '#999',
+color: 'var(--muted)',
 fontSize: '.95rem'
 }
 
@@ -1551,7 +1551,7 @@ justifyContent: 'center',
 gap: '.55rem',
 padding: '.8rem 1rem',
 color: '#C7A44B',
-background: '#1d1d1d',
+background: 'var(--surface-raised)',
 borderRadius: '10px',
 border: '1px solid #C7A44B',
 cursor: 'pointer',
@@ -1563,7 +1563,7 @@ fontWeight: 600
 const divider = {
 height: '1px',
 margin: '1.5rem 0',
-background: '#303030'
+background: 'var(--border)'
 }
 
 const sectionHeading = {
@@ -1582,8 +1582,8 @@ justifyContent: 'center',
 minWidth: '1.7rem',
 height: '1.7rem',
 padding: '0 .45rem',
-color: '#fff',
-background: '#292929',
+color: 'var(--foreground)',
+background: 'var(--surface-raised)',
 borderRadius: '999px',
 fontSize: '.78rem'
 }
@@ -1591,14 +1591,14 @@ fontSize: '.78rem'
 const emptyState = {
 padding: '2rem',
 textAlign: 'center' as const,
-background: '#191919',
+background: 'var(--surface-raised)',
 border: '1px dashed #3a3a3a',
 borderRadius: '14px'
 }
 
 const emptyText = {
 margin: 0,
-color: '#999'
+color: 'var(--muted)'
 }
 
 const emptyLink = {
@@ -1622,7 +1622,7 @@ const listingGrid = {
 
 const listingCard = {
 overflow: 'hidden',
-background: '#1b1b1b',
+background: 'var(--surface-raised)',
 border: '1px solid #303030',
 borderRadius: '14px'
 }
@@ -1640,7 +1640,7 @@ alignItems: 'center',
 justifyContent: 'center',
 width: '100%',
 height: '170px',
-background: '#111'
+background: 'var(--surface)'
 }
 
 const listingContent = {
@@ -1649,14 +1649,14 @@ padding: '1rem'
 
 const listingTitle = {
 margin: 0,
-color: '#fff',
+color: 'var(--foreground)',
 fontSize: '1.05rem',
 lineHeight: 1.35
 }
 
 const listingMeta = {
 marginTop: '.45rem',
-color: '#888',
+color: 'var(--muted)',
 fontSize: '.85rem'
 }
 
@@ -1669,7 +1669,7 @@ fontWeight: 600
 
 const secondarySection = {
 marginTop: '1rem',
-background: '#191919',
+background: 'var(--surface-raised)',
 border: '1px solid #303030',
 borderRadius: '14px',
 overflow: 'hidden'
@@ -1682,7 +1682,7 @@ alignItems: 'center',
 justifyContent: 'space-between',
 gap: '1rem',
 padding: '1rem',
-color: '#fff',
+color: 'var(--foreground)',
 background: 'transparent',
 border: 'none',
 cursor: 'pointer',
@@ -1704,9 +1704,9 @@ padding: '0 1rem 1rem'
 
 const secondaryEmpty = {
 padding: '1.25rem',
-color: '#888',
+color: 'var(--muted)',
 textAlign: 'center' as const,
-background: '#161616',
+background: 'var(--surface)',
 border: '1px dashed #333',
 borderRadius: '10px'
 }
@@ -1728,13 +1728,13 @@ alignItems: 'center',
 gap: '.55rem',
 minWidth: 0,
 padding: '.6rem',
-background: '#171717',
+background: 'var(--surface-raised)',
 border: '1px solid #292929',
 borderRadius: '9px'
 }
 
 const analyticsValue = {
-color: '#fff',
+color: 'var(--foreground)',
 fontSize: '.95rem',
 fontWeight: 700,
 lineHeight: 1.1
@@ -1742,7 +1742,7 @@ lineHeight: 1.1
 
 const analyticsLabel = {
 marginTop: '.15rem',
-color: '#808080',
+color: 'var(--muted)',
 fontSize: '.68rem',
 lineHeight: 1.25
 }
@@ -1753,7 +1753,7 @@ alignItems: 'center',
 gap: '.45rem',    
 marginTop: '1rem',
 padding: 0,
-color: '#ddd',
+color: 'var(--foreground)',
 background: 'transparent',
 border: 0,
 fontFamily: 'inherit',
@@ -1782,7 +1782,7 @@ const workspaceHeader = {
 const workspaceDescription = {
   maxWidth: '680px',
   margin: '.55rem 0 0',
-  color: '#7f7f7f',
+  color: 'var(--muted)',
   fontSize: '.88rem',
   lineHeight: 1.55
 }
@@ -1824,7 +1824,7 @@ const workspaceToolbar = {
 }
 
 const workspaceResultCount = {
-  color: '#666',
+  color: 'var(--muted)',
   fontSize: '.75rem'
 }
 
@@ -1840,7 +1840,7 @@ const workspaceEmptyState = {
 
 const workspaceListingCard = {
   overflow: 'hidden',
-  background: '#141414',
+  background: 'var(--surface)',
   border: '1px solid #292929',
   borderRadius: '12px'
 }
@@ -1869,7 +1869,7 @@ const compactMetrics = {
   gap: '.85rem',
   marginTop: '1rem',
   paddingTop: '.85rem',
-  color: '#777',
+  color: 'var(--muted)',
   borderTop: '1px solid #252525'
 }
 

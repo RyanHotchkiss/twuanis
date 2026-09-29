@@ -66,7 +66,7 @@ import {
 } from '@/lib/price-meter-size-relationship-population'
 
 import {
-  buildPriceMeterSizeRelationshipResult
+  buildPriceMeterDescriptiveSizeRelationshipResult as buildPriceMeterSizeRelationshipResult
 } from '@/lib/price-meter-size-relationship-math'
 
 import {

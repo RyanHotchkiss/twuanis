@@ -29,7 +29,7 @@ export const assetSection = {
 }
 
 export const assetHeading = {
-  color: '#FFD700',
+  color: 'var(--ih-input-label, #D4AF37)',
   fontSize: '.9rem',
   textTransform: 'uppercase' as const,
   letterSpacing: '.08rem',

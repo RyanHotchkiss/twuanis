@@ -66,8 +66,8 @@ const error = {
   maxWidth: '1200px',
   margin: '4rem auto',
   padding: '2rem',
-  border: '1px solid #333',
+  border: '1px solid var(--border)',
   borderRadius: '16px',
-  background: '#111',
-  color: '#fff'
+  background: 'var(--surface)',
+  color: 'var(--foreground)'
 }

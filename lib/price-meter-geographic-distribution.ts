@@ -276,27 +276,20 @@ function geographyTermId(
  */
 
 
-export function buildPriceMeterGeographicDistributions<
+export function buildPriceMeterGeographicLevel<
   T extends PriceMeterTransactionType
 >({
   observations,
-  transactionType
+  transactionType,
+  level
 }: {
   observations:
     PriceMeterObservation[]
 
   transactionType:
     T
-}): {
-  province:
-    PriceMeterGeographicDistribution<T>[]
-
-  canton:
-    PriceMeterGeographicDistribution<T>[]
-
-  district:
-    PriceMeterGeographicDistribution<T>[]
-} {
+  level: PriceMeterGeographyLevel
+}): PriceMeterGeographicDistribution<T>[] {
 
   /*
    * Sale and Rent must remain analytically isolated.
@@ -491,20 +484,11 @@ export function buildPriceMeterGeographicDistributions<
   }
 
 
-  return {
-    province:
-      buildLevel(
-        'province'
-      ),
+  return buildLevel(level)
+}
 
-    canton:
-      buildLevel(
-        'canton'
-      ),
-
-    district:
-      buildLevel(
-        'district'
-      )
-  }
+// Compatibility API for existing internal complete results; Engine 8 calls the
+// single-level owner above directly and never constructs discarded levels.
+export function buildPriceMeterGeographicDistributions<T extends PriceMeterTransactionType>(input:{observations:PriceMeterObservation[];transactionType:T}) {
+ return {province:buildPriceMeterGeographicLevel({...input,level:'province'}),canton:buildPriceMeterGeographicLevel({...input,level:'canton'}),district:buildPriceMeterGeographicLevel({...input,level:'district'})}
 }

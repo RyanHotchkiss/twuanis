@@ -26,7 +26,7 @@ console.log('S9 BROWSER RESULT',checks,'checks passed; cached completed fixture,
    if(k==='./price-meter-selected-engine')return {async getSelectedPriceMeterAnalysis(filters,lang,permit){permitModule.consumePriceMeterApplyPermit(permit,filters,lang);events.push('engine');return project(fixture,'sale')}};
    if(k==='./price-meter-selected-contract')return load('lib/price-meter-selected-contract');if(k.startsWith('@/'))return load(k.slice(2));throw Error('Forbidden action dependency '+k);
   }});
-  const result=await action.exports.executePriceMeterApply({province:'3',canton:'304',property_type:'house',transaction_type:'sale'},language,source,['distribution']);
+  const result=await action.exports.executePriceMeterApply({province:'3',canton:'304',property_type:'house',transaction_type:'sale'},language,source,['distribution'],{propertyBasis:'improved_property',normalizationBasis:'construction'});
   ok(JSON.stringify(result)===JSON.stringify(project(fixture,'sale')),'actual action projects cached internal result');
   ok(events.join(',')==='authority,engine','existing action sequencing preserved');
  }

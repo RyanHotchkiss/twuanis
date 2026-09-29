@@ -625,7 +625,7 @@ const sheet = {
   display: 'grid',
   gridTemplateRows:
   'auto auto auto minmax(0, 1fr) auto',
-  background: '#141414',
+  background: 'var(--surface)',
   border: '1px solid #333',
   borderTop: '3px solid',
   borderRadius: '24px 24px 0 0',
@@ -661,7 +661,7 @@ const sheetHeader = {
     '1rem 1.5rem 1.25rem',
   borderBottom:
     '1px solid #2d2d2d',
-  background: '#141414',
+  background: 'var(--surface)',
   zIndex: 2
 }
 
@@ -672,7 +672,7 @@ const headerText = {
 const title = {
   margin: 0,
   paddingRight: '2.5rem',
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize:
     'clamp(1.6rem, 4vw, 2.35rem)',
   lineHeight: 1.15
@@ -681,7 +681,7 @@ const title = {
 const description = {
   maxWidth: '760px',
   margin: '.75rem 0 0',
-  color: '#aaa',
+  color: 'var(--muted)',
   fontSize: '1rem',
   lineHeight: 1.6
 }
@@ -696,8 +696,8 @@ const closeButton = {
   width: '2.75rem',
   height: '2.75rem',
   padding: 0,
-  color: '#aaa',
-  background: '#222',
+  color: 'var(--muted)',
+  background: 'var(--surface-raised)',
   border: '1px solid #3a3a3a',
   borderRadius: '999px',
   cursor: 'pointer',
@@ -736,12 +736,12 @@ const primaryPrice = {
 }
 
 const priceDivider = {
-  color: '#555',
+  color: 'var(--muted)',
   fontSize: '1.5rem'
 }
 
 const secondaryPrice = {
-  color: '#ddd',
+  color: 'var(--foreground)',
   fontSize:
     'clamp(1.25rem, 4vw, 1.75rem)',
   fontWeight: 600
@@ -749,7 +749,7 @@ const secondaryPrice = {
 
 const monthly = {
   marginTop: '.5rem',
-  color: '#777',
+  color: 'var(--muted)',
   fontSize: '.9rem'
 }
 
@@ -780,7 +780,7 @@ const engineCard = {
   gap: '1rem',
   alignItems: 'start',
   padding: '1rem',
-  background: '#1b1b1b',
+  background: 'var(--surface-raised)',
   border: '1px solid #303030',
   borderRadius: '14px'
 }
@@ -794,7 +794,7 @@ const engineIconWrap = {
 }
 
 const engineName = {
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '1.05rem',
   fontWeight: 600,
   lineHeight: 1.3
@@ -802,7 +802,7 @@ const engineName = {
 
 const enginePurpose = {
   marginTop: '.35rem',
-  color: '#999',
+  color: 'var(--muted)',
   fontSize: '.9rem',
   lineHeight: 1.5
 }
@@ -825,7 +825,7 @@ const accentBar = {
 const sheetFooter = {
   padding: '1rem 1.5rem',
   background:
-    'linear-gradient(to top, #141414 70%, rgba(20, 20, 20, .92))',
+    'var(--surface)',
   borderTop:
     '1px solid #2d2d2d',
   zIndex: 2
@@ -834,7 +834,7 @@ const sheetFooter = {
 const chooseButton = {
   width: '100%',
   padding: '1rem 1.25rem',
-  background: '#1b1b1b',
+  background: 'var(--surface-raised)',
   border: '2px solid',
   borderRadius: '12px',
   fontSize: '1rem',
@@ -851,7 +851,7 @@ const dashboardCard = {
   alignItems: 'start',
   marginTop: '1rem',
   padding: '1rem',
-  background: '#1b1b1b',
+  background: 'var(--surface-raised)',
   border: '1px solid #303030',
   borderRadius: '14px'
 }

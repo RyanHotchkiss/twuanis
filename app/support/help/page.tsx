@@ -47,9 +47,9 @@ export default function HelpPage() {
   return (
 
     <main style={{
-      background:'#000',
+      background:'var(--background)',
       minHeight:'100vh',
-      color:'#fff',
+      color:'var(--foreground)',
       padding:'20px',
       overflow:'hidden'
     }}>
@@ -61,7 +61,7 @@ export default function HelpPage() {
         alignItems:'center',
         padding:'.5rem 0',
         marginBottom:'40px',
-        borderBottom:'1px solid #151515'
+        borderBottom:'1px solid var(--border)'
       }}>
 
         <TopBar
@@ -88,7 +88,7 @@ export default function HelpPage() {
         </h1>
 
         <p style={{
-          color:'#999',
+          color:'var(--muted)',
           fontSize:isMobile
             ? '18px'
             : '22px',
@@ -110,7 +110,7 @@ export default function HelpPage() {
               ? '24px'
               : '40px',
 
-            borderBottom:'1px solid #1d1d1d'
+            borderBottom:'1px solid var(--border)'
           }}>
 
             <h2 style={sectionHeading}>
@@ -280,8 +280,8 @@ export default function HelpPage() {
 
       {/* MAIN PANEL */}
       <div style={{
-        background:'#111',
-        border:'1px solid #222',
+        background:'var(--surface)',
+        border:'1px solid var(--border)',
         borderRadius:'28px',
         overflow:'hidden',
         width:'100%'
@@ -293,7 +293,7 @@ export default function HelpPage() {
             ? '24px'
             : '40px',
 
-          borderBottom:'1px solid #1d1d1d'
+          borderBottom:'1px solid var(--border)'
         }}>
 
           <h2 style={sectionHeading}>
@@ -390,7 +390,7 @@ export default function HelpPage() {
             ? '24px'
             : '40px',
 
-          borderBottom:'1px solid #1d1d1d'
+          borderBottom:'1px solid var(--border)'
         }}>
 
           <h2 style={sectionHeading}>
@@ -443,7 +443,7 @@ export default function HelpPage() {
             ? '24px'
             : '40px',
 
-          borderBottom:'1px solid #1d1d1d'
+          borderBottom:'1px solid var(--border)'
         }}>
 
           <h2 style={sectionHeading}>
@@ -484,7 +484,7 @@ export default function HelpPage() {
           </h2>
 
           <p style={{
-            color:'#999',
+            color:'var(--muted)',
             lineHeight:'1.8',
             marginBottom:'24px',
             maxWidth:'42rem'
@@ -534,8 +534,8 @@ const iconGrid = {
 }
 
 const iconCard = {
-  background:'#181818',
-  border:'1px solid #222',
+  background:'var(--surface-raised)',
+  border:'1px solid var(--border)',
   borderRadius:'20px',
   padding:'1.25rem',
   display:'flex',
@@ -554,7 +554,7 @@ const iconTitle = {
 }
 
 const iconDescription = {
-  color:'#888',
+  color:'var(--muted)',
   lineHeight:'1.6',
   fontSize:'.95rem'
 }
@@ -566,8 +566,8 @@ const stackWrap = {
 }
 
 const infoCard = {
-  background:'#181818',
-  border:'1px solid #222',
+  background:'var(--surface-raised)',
+  border:'1px solid var(--border)',
   borderRadius:'18px',
   padding:'1.25rem'
 }
@@ -578,16 +578,16 @@ const infoHeading = {
 }
 
 const infoText = {
-  color:'#888',
+  color:'var(--muted)',
   lineHeight:'1.7'
 }
 
 const ruleCard = {
-  background:'#181818',
-  border:'1px solid #222',
+  background:'var(--surface-raised)',
+  border:'1px solid var(--border)',
   borderRadius:'18px',
   padding:'1rem 1.25rem',
-  color:'#bbb'
+  color:'var(--muted)'
 }
 
 const whatsappButton = {
@@ -598,7 +598,7 @@ const whatsappButton = {
   background:'#FFFFFF50',
   border:'1px solid #ffffff50',
 
-  color:'#fff',
+  color:'var(--foreground)',
   textDecoration:'none',
 
   padding:'1rem 1.5rem',

@@ -192,7 +192,7 @@ export function buildPriceMeterConstructionLandAnalysis<
 
   const statistics =
     buildPriceMeterConstructionLandStatistics(
-      population
+      population, 'both'
     )
 
 

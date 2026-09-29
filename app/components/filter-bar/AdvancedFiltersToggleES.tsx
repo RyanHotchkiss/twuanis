@@ -101,7 +101,7 @@ const filterHeading = {
 const toggleButton = {
   background:'transparent',
   border:'none',
-  color:'#FFFFFF',
+  color:'var(--foreground)',
   fontSize:'13px',
   cursor:'pointer'
 }

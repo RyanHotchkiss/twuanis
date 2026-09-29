@@ -881,13 +881,13 @@ export default function MarketHubPropertyNotes({
         .markethub-property-note-rendered blockquote {
           margin: 0.75rem 0;
           padding-left: 0.85rem;
-          color: #aaa;
+          color: var(--muted);
           border-left: 3px solid #c7a44b;
         }
 
         .markethub-property-note-rendered h3 {
           margin: 0.75rem 0 0.5rem;
-          color: #fff;
+          color: var(--foreground);
         }
       `}</style>
     </section>
@@ -1033,7 +1033,7 @@ const container = {
   margin:
     '1.25rem auto 0',
   padding: '1.5rem',
-  background: '#0d0d0d',
+  background: 'var(--surface)',
   border:
     '1px solid #222',
   borderRadius: '1.5rem'
@@ -1051,7 +1051,7 @@ const header = {
 
 const heading = {
   margin: 0,
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '1.6rem'
 }
 
@@ -1059,7 +1059,7 @@ const description = {
   maxWidth: '680px',
   margin:
     '.45rem 0 0',
-  color: '#888',
+  color: 'var(--muted)',
   fontSize: '.9rem',
   lineHeight: 1.6
 }
@@ -1086,8 +1086,8 @@ const searchInput = {
   width: '100%',
   padding:
     '.85rem 2.75rem .85rem 1rem',
-  color: '#fff',
-  background: '#111',
+  color: 'var(--foreground)',
+  background: 'var(--surface)',
   border:
     '1px solid #333',
   borderRadius: '10px',
@@ -1108,7 +1108,7 @@ const clearButton = {
   width: '1.8rem',
   height: '1.8rem',
   padding: 0,
-  color: '#aaa',
+  color: 'var(--muted)',
   background:
     'transparent',
   border: 'none',
@@ -1129,7 +1129,7 @@ const noteCard = {
   alignContent: 'start',
   gap: '1rem',
   padding: '1.1rem',
-  background: '#141414',
+  background: 'var(--surface)',
   border:
     '1px solid #303030',
   borderRadius: '12px'
@@ -1147,7 +1147,7 @@ const propertyHeader = {
 
 const propertyTitle = {
   margin: 0,
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '1.05rem',
   lineHeight: 1.4
 }
@@ -1155,7 +1155,7 @@ const propertyTitle = {
 const propertyLocation = {
   margin:
     '.35rem 0 .5rem',
-  color: '#888',
+  color: 'var(--muted)',
   fontSize: '.8rem',
   lineHeight: 1.45
 }
@@ -1165,8 +1165,8 @@ const propertyTypeBadge = {
     'inline-block',
   padding:
     '.3rem .5rem',
-  color: '#bbb',
-  background: '#222',
+  color: 'var(--muted)',
+  background: 'var(--surface-raised)',
   border:
     '1px solid #3a3a3a',
   borderRadius: '6px',
@@ -1174,7 +1174,7 @@ const propertyTypeBadge = {
 }
 
 const updatedAt = {
-  color: '#666',
+  color: 'var(--muted)',
   fontSize: '.7rem',
   lineHeight: 1.4
 }
@@ -1183,8 +1183,8 @@ const noteContent = {
   maxHeight: '240px',
   overflow: 'auto',
   padding: '.9rem',
-  color: '#ddd',
-  background: '#101010',
+  color: 'var(--foreground)',
+  background: 'var(--surface)',
   border:
     '1px solid #292929',
   borderRadius: '9px',
@@ -1232,8 +1232,8 @@ const primaryButton = {
 const secondaryButton = {
   padding:
     '.55rem .75rem',
-  color: '#ddd',
-  background: '#1b1b1b',
+  color: 'var(--foreground)',
+  background: 'var(--surface-raised)',
   border:
     '1px solid #444',
   borderRadius: '8px',
@@ -1244,8 +1244,8 @@ const secondaryButton = {
 const deleteButton = {
   padding:
     '.55rem .75rem',
-  color: '#e58b8b',
-  background: '#1b1b1b',
+  color: 'var(--error-text)',
+  background: 'var(--surface-raised)',
   border:
     '1px solid #5c3030',
   borderRadius: '8px',
@@ -1256,7 +1256,7 @@ const deleteButton = {
 const dangerButton = {
   padding:
     '.55rem .75rem',
-  color: '#fff',
+  color: 'white',
   background: '#8f2d2d',
   border:
     '1px solid #b34747',
@@ -1267,20 +1267,20 @@ const dangerButton = {
 }
 
 const confirmText = {
-  color: '#aaa',
+  color: 'var(--muted)',
   fontSize: '.78rem'
 }
 
 const errorText = {
   margin: 0,
-  color: '#e58b8b',
+  color: 'var(--error-text)',
   fontSize: '.85rem'
 }
 
 const emptyState = {
   padding: '1.25rem',
-  color: '#777',
-  background: '#111',
+  color: 'var(--muted)',
+  background: 'var(--surface)',
   border:
     '1px dashed #333',
   borderRadius: '10px',

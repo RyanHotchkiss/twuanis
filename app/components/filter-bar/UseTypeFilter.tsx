@@ -71,9 +71,9 @@ const pillWrap = {
 }
 
 const pill = {
-  background:'#181818',
+  background:'var(--surface)',
   border:'.25px solid #D4AF3750',
-  color:'#fff',
+  color:'var(--foreground)',
   padding:'.85rem 1rem',
   borderRadius:'999rem',
   cursor:'pointer',

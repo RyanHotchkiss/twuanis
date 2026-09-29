@@ -120,14 +120,14 @@ export default function PriceFilter({
 
 
 const breadcrumbText = {
-  color:'#FFFFFF',
+  color:'var(--foreground)',
   fontSize:'.85rem'
 }
 
 const resetButton = {
   background:'transparent',
   border:'none',
-  color:'#ff6666',
+  color:'var(--error-text)',
   cursor:'pointer',
   fontSize:'1rem'
 }
@@ -143,7 +143,7 @@ const summaryCard = {
   flexDirection:'row' as const,
   justifyContent:'space-between',
   alignItems:'center',
-  background:'#181818',
+  background:'var(--surface)',
   border:'1px solid #FFFFFF50',
   borderRadius:'1rem',
   padding:'1rem',
@@ -159,9 +159,9 @@ const pillWrap = {
 }
 
 const pill = {
-  background:'#181818',
+  background:'var(--surface)',
   border:'.25px solid #D4AF3750',
-  color:'#fff',
+  color:'var(--foreground)',
   padding:'.85rem 1rem',
   borderRadius:'999rem',
   cursor:'pointer',
@@ -182,13 +182,13 @@ const activePill = {
 
 const priceColones = {
   fontSize:'.8rem',
-  color:'#fff',
+  color:'var(--foreground)',
   fontWeight:'500'
 }
 
 const priceDollars = {
   fontSize:'.75rem',
-  color:'#888'
+  color:'var(--muted)'
 }
 
 /*

@@ -940,8 +940,8 @@ const cornerCell = {
     '1px solid #292929',
   borderBottom:
     '1px solid #292929',
-  background: '#111',
-  color: '#777',
+  background: 'var(--surface)',
+  color: 'var(--muted)',
   fontSize: '.8rem',
   fontWeight: 700,
   textTransform:
@@ -954,13 +954,13 @@ const propertyHeader = {
     '1px solid #292929',
   borderBottom:
     '1px solid #292929',
-  background: '#111'
+  background: 'var(--surface)'
 }
 
 const imageWrap = {
   width: '100%',
   aspectRatio: '16 / 10',
-  background: '#191919',
+  background: 'var(--surface-raised)',
   overflow: 'hidden'
 }
 
@@ -976,7 +976,7 @@ const imageFallback = {
   height: '100%',
   alignItems: 'center',
   justifyContent: 'center',
-  color: '#666'
+  color: 'var(--muted)'
 }
 
 const propertyHeaderContent = {
@@ -987,7 +987,7 @@ const propertyHeaderContent = {
 }
 
 const propertyType = {
-  color: '#777',
+  color: 'var(--muted)',
   fontSize: '.72rem',
   fontWeight: 700,
   letterSpacing: '.08em',
@@ -997,7 +997,7 @@ const propertyType = {
 
 const propertyTitle = {
   margin: '.6rem 0 0',
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '1rem',
   lineHeight: 1.4
 }
@@ -1005,7 +1005,7 @@ const propertyTitle = {
 const propertyPrice = {
   marginTop: 'auto',
   paddingTop: '1rem',
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '1.05rem'
 }
 
@@ -1015,8 +1015,8 @@ const rowLabel = {
     '1px solid #292929',
   borderBottom:
     '1px solid #292929',
-  background: '#111',
-  color: '#aaa',
+  background: 'var(--surface)',
+  color: 'var(--muted)',
   fontSize: '.85rem',
   fontWeight: 700
 }
@@ -1028,8 +1028,8 @@ const valueCell = {
     '1px solid #292929',
   borderBottom:
     '1px solid #292929',
-  background: '#0c0c0c',
-  color: '#ddd',
+  background: 'var(--surface)',
+  color: 'var(--foreground)',
   fontSize: '.88rem',
   lineHeight: 1.5
 }
@@ -1044,8 +1044,8 @@ const tag = {
   padding: '.3rem .5rem',
   border: '1px solid #303030',
   borderRadius: '999px',
-  background: '#171717',
-  color: '#bbb',
+  background: 'var(--surface-raised)',
+  color: 'var(--muted)',
   fontSize: '.72rem'
 }
 
@@ -1053,8 +1053,8 @@ const message = {
   padding: '3rem 2rem',
   border: '1px solid #262626',
   borderRadius: '16px',
-  background: '#111',
-  color: '#aaa',
+  background: 'var(--surface)',
+  color: 'var(--muted)',
   textAlign: 'center' as const
 }
 
@@ -1067,13 +1067,13 @@ const empty = {
 
 const emptyTitle = {
   margin: 0,
-  color: '#fff'
+  color: 'var(--foreground)'
 }
 
 const emptyDescription = {
   maxWidth: '520px',
   margin: '.75rem auto 1.25rem',
-  color: '#888',
+  color: 'var(--muted)',
   lineHeight: 1.6
 }
 
@@ -1081,8 +1081,8 @@ const browseButton = {
   display: 'inline-block',
   padding: '.75rem 1rem',
   borderRadius: '999px',
-  background: '#ededed',
-  color: '#111',
+  background: 'var(--foreground)',
+  color: 'var(--background)',
   fontWeight: 700,
   textDecoration: 'none'
 }
@@ -1092,7 +1092,7 @@ const noteBox = {
   padding: '.75rem',
   border: '1px solid #2b2b2b',
   borderRadius: '.75rem',
-  background: '#181818'
+  background: 'var(--surface-raised)'
 }
 
 const noteHeading = {
@@ -1105,7 +1105,7 @@ const noteHeading = {
 
 const noteText = {
   margin: 0,
-  color: '#ccc',
+  color: 'var(--foreground)',
   fontSize: '.82rem',
   lineHeight: 1.45,
   whiteSpace: 'pre-wrap' as const

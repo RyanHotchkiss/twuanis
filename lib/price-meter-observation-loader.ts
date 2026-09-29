@@ -1,4 +1,5 @@
 import 'server-only'
+import {validateDistributionIdentity,type PriceMeterDistributionIdentity} from './price-meter-selected-contract'
 import {
   loadCanonicalMarketObservationRows
 } from '@/lib/canonical-market-observation-rows'
@@ -73,7 +74,8 @@ export type PriceMeterObservationLoadResult = {
 
 export async function loadPriceMeterObservations(
   filters:
-    PriceMeterMarketFilters
+    PriceMeterMarketFilters,
+  selectedIdentity?: PriceMeterDistributionIdentity
 ): Promise<PriceMeterObservationLoadResult> {
 
   /*
@@ -84,6 +86,8 @@ export async function loadPriceMeterObservations(
    * Market filters are applied before Price / m²
    * observations are constructed.
    */
+
+  const scope=selectedIdentity===undefined?undefined:validateDistributionIdentity(selectedIdentity)
 
   const listings =
     await loadCanonicalMarketObservationRows(filters)
@@ -232,7 +236,8 @@ export async function loadPriceMeterObservations(
 
   const observations =
     buildPriceMeterObservations(
-      decoratedListings
+      scope?decoratedListings.filter(listing=>listing.analyticalIdentity.propertyBasis===scope.propertyBasis):decoratedListings,
+      scope?.normalizationBasis
     )
 
 

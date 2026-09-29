@@ -389,8 +389,8 @@ const modal = {
   padding: '2rem',
   border: '1px solid #222',
   borderRadius: '2rem',
-  background: '#111',
-  color: '#fff'
+  background: 'var(--surface)',
+  color: 'var(--foreground)'
 }
 
 const closeButton = {
@@ -399,7 +399,7 @@ const closeButton = {
   right: '1.25rem',
   border: 'none',
   background: 'transparent',
-  color: '#888',
+  color: 'var(--muted)',
   fontSize: '2rem',
   cursor: 'pointer'
 }
@@ -413,7 +413,7 @@ const heading = {
 
 const description = {
   margin: '1rem 0 1.5rem',
-  color: '#aaa',
+  color: 'var(--muted)',
   lineHeight: 1.7,
   textAlign: 'center' as const
 }
@@ -430,8 +430,8 @@ const input = {
   padding: '1rem',
   border: '1px solid #333',
   borderRadius: '1rem',
-  background: '#181818',
-  color: '#fff',
+  background: 'var(--surface-raised)',
+  color: 'var(--foreground)',
   fontSize: '1rem'
 }
 
@@ -440,8 +440,8 @@ const submitButton = {
   padding: '1rem',
   border: 'none',
   borderRadius: '999rem',
-  background: '#fff',
-  color: '#000',
+  background: 'var(--foreground)',
+  color: 'var(--background)',
   fontSize: '1rem',
   fontWeight: 700
 }
@@ -465,12 +465,12 @@ const textButton = {
 
 const successMessage = {
   marginTop: '1rem',
-  color: '#7ee2a8',
+  color: 'var(--success-text)',
   lineHeight: 1.6
 }
 
 const errorText = {
   marginTop: '1rem',
-  color: '#ff8b8b',
+  color: 'var(--error-text)',
   lineHeight: 1.6
 }

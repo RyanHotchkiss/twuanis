@@ -18,7 +18,10 @@ import {
 } from './styles'
 
 type Props = {
+  compact?: boolean
+  emptyLabel?: string
   label: string
+  accessibleLabel?: string
   filterKey: string
   options?: FilterOption[]
   filters: Filters
@@ -31,7 +34,10 @@ type Props = {
 }
 
 export default function FilterSelect({
+  compact = false,
+  emptyLabel,
   label,
+  accessibleLabel,
   filterKey,
   options = [],
   filters,
@@ -39,12 +45,13 @@ export default function FilterSelect({
   onFilterChange
 }: Props) {
   return (
-    <div style={assetSection}>
+    <div style={compact ? {minWidth:0} : assetSection}>
       <h3 style={assetHeading}>
         {label}
       </h3>
 
       <select
+        aria-label={accessibleLabel ?? label}
         value={
           filters[filterKey] || ''
         }
@@ -57,7 +64,7 @@ export default function FilterSelect({
         style={select}
       >
         <option value="">
-          {label}
+          {emptyLabel || label}
         </option>
 
         {options.map(option => {

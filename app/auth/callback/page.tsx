@@ -119,17 +119,17 @@ const main = {
   alignItems: 'center',
   justifyContent: 'center',
   padding: '2rem',
-  background: '#0a0a0a',
-  color: '#fff'
+  background: 'var(--background)',
+  color: 'var(--foreground)'
 }
 
 const card = {
   width: '100%',
   maxWidth: '34rem',
   padding: '2rem',
-  border: '1px solid #222',
+  border: '1px solid var(--border)',
   borderRadius: '2rem',
-  background: '#111',
+  background: 'var(--surface)',
   textAlign: 'center' as const
 }
 
@@ -141,6 +141,6 @@ const heading = {
 
 const messageStyle = {
   margin: '1rem 0 0',
-  color: '#aaa',
+  color: 'var(--muted)',
   lineHeight: 1.7
 }

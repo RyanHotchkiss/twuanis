@@ -24,6 +24,6 @@ export default function ComparacionesDeEntidadesPage() {
 
 const main = {
   minHeight: '100vh',
-  background: '#0a0a0a',
-  color: '#ededed'
+  background: 'var(--background)',
+  color: 'var(--foreground)'
 }

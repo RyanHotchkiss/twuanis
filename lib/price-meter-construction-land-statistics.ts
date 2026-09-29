@@ -144,12 +144,41 @@ export type PriceMeterConstructionLandStatistics<
 }
 
 
+export type ConstructionLandNormalizationScope = 'land' | 'construction' | 'both'
+
+type ScopedCohort<S extends ConstructionLandNormalizationScope> =
+  Pick<PriceMeterConstructionLandCohortStatistic, 'definition' | 'observationCount' | 'medianExactRatio'> &
+  (S extends 'land' ? Pick<PriceMeterConstructionLandCohortStatistic, 'landNormalized'> :
+   S extends 'construction' ? Pick<PriceMeterConstructionLandCohortStatistic, 'constructionNormalized'> :
+   Pick<PriceMeterConstructionLandCohortStatistic, 'landNormalized' | 'constructionNormalized'>)
+
+export type ScopedConstructionLandStatistics<T extends PriceMeterTransactionType, S extends ConstructionLandNormalizationScope> =
+  Omit<PriceMeterConstructionLandStatistics<T>, 'cohorts' | 'populatedCohorts' | 'adjacentComparisons'> & {
+    cohorts: ScopedCohort<S>[]
+    populatedCohorts: ScopedCohort<S>[]
+    adjacentComparisons: (Omit<PriceMeterConstructionLandAdjacentComparison, 'landNormalized' | 'constructionNormalized'> &
+      (S extends 'land' ? Pick<PriceMeterConstructionLandAdjacentComparison, 'landNormalized'> :
+       S extends 'construction' ? Pick<PriceMeterConstructionLandAdjacentComparison, 'constructionNormalized'> :
+       Pick<PriceMeterConstructionLandAdjacentComparison, 'landNormalized' | 'constructionNormalized'>))[]
+  }
+
 export function buildPriceMeterConstructionLandStatistics<
+  T extends PriceMeterTransactionType,
+  S extends ConstructionLandNormalizationScope
+>(population: PriceMeterConstructionLandPopulation<T>, scope: S): ScopedConstructionLandStatistics<T, S> {
+  if (scope !== 'land' && scope !== 'construction' && scope !== 'both') {
+    throw new Error('Explicit Construction-to-Land normalization scope required.')
+  }
+  return buildScopedStatistics(population, scope) as ScopedConstructionLandStatistics<T, S>
+}
+
+function buildScopedStatistics<
   T extends PriceMeterTransactionType
 >(
   population:
-    PriceMeterConstructionLandPopulation<T>
-): PriceMeterConstructionLandStatistics<T> {
+    PriceMeterConstructionLandPopulation<T>,
+  scope: ConstructionLandNormalizationScope
+) {
 
   const cohorts =
     population.cohorts.map(
@@ -161,7 +190,7 @@ export function buildPriceMeterConstructionLandStatistics<
          */
 
         const landNormalizedValues =
-          cohort.observations.map(
+          scope !== 'construction' ? cohort.observations.map(
             observation => {
 
               const analyticalPrice =
@@ -212,11 +241,11 @@ export function buildPriceMeterConstructionLandStatistics<
 
               return value
             }
-          )
+          ) : undefined
 
 
         const constructionNormalizedValues =
-          cohort.observations.map(
+          scope !== 'land' ? cohort.observations.map(
             observation => {
 
               const analyticalPrice =
@@ -267,19 +296,19 @@ export function buildPriceMeterConstructionLandStatistics<
 
               return value
             }
-          )
+          ) : undefined
 
 
         const landNormalized =
-          buildNumericalDistribution(
+          landNormalizedValues ? buildNumericalDistribution(
             landNormalizedValues
-          )
+          ) : undefined
 
 
         const constructionNormalized =
-          buildNumericalDistribution(
+          constructionNormalizedValues ? buildNumericalDistribution(
             constructionNormalizedValues
-          )
+          ) : undefined
 
 
         /*
@@ -291,10 +320,10 @@ export function buildPriceMeterConstructionLandStatistics<
          */
 
         if (
-          landNormalized.sampleSize !==
-            cohort.observationCount ||
-          constructionNormalized.sampleSize !==
-            cohort.observationCount
+          (landNormalized && landNormalized.sampleSize !==
+            cohort.observationCount) ||
+          (constructionNormalized && constructionNormalized.sampleSize !==
+            cohort.observationCount)
         ) {
           throw new Error(
             'Construction-to-Land normalization distributions do not represent the complete canonical cohort.'
@@ -312,9 +341,9 @@ export function buildPriceMeterConstructionLandStatistics<
           medianExactRatio:
             cohort.medianExactRatio,
 
-          landNormalized,
+          ...(landNormalized ? {landNormalized} : {}),
 
-          constructionNormalized
+          ...(constructionNormalized ? {constructionNormalized} : {})
         }
       }
     )
@@ -347,9 +376,7 @@ export function buildPriceMeterConstructionLandStatistics<
    * - causality
    */
 
-  const adjacentComparisons:
-    PriceMeterConstructionLandAdjacentComparison[] =
-      []
+  const adjacentComparisons = []
 
 
   for (
@@ -376,23 +403,19 @@ export function buildPriceMeterConstructionLandStatistics<
 
     const lowerLandMedian =
       lowerCohort
-        .landNormalized
-        .median
+        .landNormalized?.median
 
     const higherLandMedian =
       higherCohort
-        .landNormalized
-        .median
+        .landNormalized?.median
 
     const lowerConstructionMedian =
       lowerCohort
-        .constructionNormalized
-        .median
+        .constructionNormalized?.median
 
     const higherConstructionMedian =
       higherCohort
-        .constructionNormalized
-        .median
+        .constructionNormalized?.median
 
 
     /*
@@ -401,14 +424,8 @@ export function buildPriceMeterConstructionLandStatistics<
      */
 
     if (
-      lowerLandMedian ===
-        null ||
-      higherLandMedian ===
-        null ||
-      lowerConstructionMedian ===
-        null ||
-      higherConstructionMedian ===
-        null
+      (scope !== 'construction' && (lowerLandMedian == null || higherLandMedian == null)) ||
+      (scope !== 'land' && (lowerConstructionMedian == null || higherConstructionMedian == null))
     ) {
       throw new Error(
         'Populated Construction-to-Land cohort is missing a canonical Price / m² median.'
@@ -417,13 +434,13 @@ export function buildPriceMeterConstructionLandStatistics<
 
 
     const landAbsoluteDifference =
-      higherLandMedian -
-      lowerLandMedian
+      scope !== 'construction' ? higherLandMedian! -
+      lowerLandMedian! : undefined
 
 
     const constructionAbsoluteDifference =
-      higherConstructionMedian -
-      lowerConstructionMedian
+      scope !== 'land' ? higherConstructionMedian! -
+      lowerConstructionMedian! : undefined
 
 
     adjacentComparisons.push({
@@ -439,7 +456,7 @@ export function buildPriceMeterConstructionLandStatistics<
       higherObservationCount:
         higherCohort.observationCount,
 
-      landNormalized: {
+      ...(scope !== 'construction' ? {landNormalized: {
         lowerMedian:
           lowerLandMedian,
 
@@ -451,13 +468,13 @@ export function buildPriceMeterConstructionLandStatistics<
 
         percentageDifference:
           (
-            landAbsoluteDifference /
-            lowerLandMedian
+            landAbsoluteDifference! /
+            lowerLandMedian!
           ) *
           100
-      },
+      }} : {}),
 
-      constructionNormalized: {
+      ...(scope !== 'land' ? {constructionNormalized: {
         lowerMedian:
           lowerConstructionMedian,
 
@@ -469,11 +486,11 @@ export function buildPriceMeterConstructionLandStatistics<
 
         percentageDifference:
           (
-            constructionAbsoluteDifference /
-            lowerConstructionMedian
+            constructionAbsoluteDifference! /
+            lowerConstructionMedian!
           ) *
           100
-      }
+      }} : {})
     })
   }
 

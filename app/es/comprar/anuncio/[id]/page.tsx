@@ -65,9 +65,9 @@ if (!data) {
   return (
     <main
       style={{
-        background: '#000',
+        background: 'var(--background)',
         minHeight: '100vh',
-        color: '#fff',
+        color: 'var(--foreground)',
         padding: '2rem'
       }}
     >
@@ -212,9 +212,9 @@ let neighborTerms: any[] = []
                     }
 
   const navButton = {
-            background:'#FFFFFF',
-            border:'.0625rem solid #FFFFFF',
-            color:'#000',
+            background:'var(--foreground)',
+            border:'.0625rem solid var(--foreground)',
+            color:'var(--background)',
             borderRadius:'999rem',
             padding:'.85rem 1.25rem',
             fontWeight:'bold',
@@ -257,9 +257,9 @@ return (
 
     <main
       style={{
-        background: '#000',
+        background: 'var(--background)',
         minHeight: '100vh',
-        color: '#fff',
+        color: 'var(--foreground)',
         padding: '2rem'
       }}
     >
@@ -281,7 +281,7 @@ return (
             borderRadius: '1.5rem',
             overflow: 'hidden',
             marginBottom: '1rem',
-            background: '#111'
+            background: 'var(--surface)'
           }}>
 
             {listing.images?.[0] ? (
@@ -305,7 +305,7 @@ return (
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                color: '#555'
+                color: 'var(--muted)'
               }}>
                 Sin Imagen
               </div>
@@ -335,7 +335,7 @@ return (
                             height:'8rem',
                             objectFit:'cover',
                             borderRadius:'1rem',
-                            border:'1px solid #222'
+                            border:'1px solid var(--border)'
                           }}
                         />
 
@@ -357,8 +357,8 @@ return (
         <div>
 
           <div style={{
-            background: '#111',
-            border: '1px solid #222',
+            background: 'var(--surface)',
+            border: '1px solid var(--border)',
             borderRadius: '1.5rem',
             padding: '2rem',
             position: 'sticky',
@@ -394,7 +394,7 @@ return (
             />
 
             <p style={{
-              color: '#999',
+              color: 'var(--muted)',
               marginBottom: '2rem',
               lineHeight: 1.6
             }}>
@@ -812,7 +812,7 @@ listingPricePerM2CRC !== null ? (
 
 
 const label = {
-  color: '#777',
+  color: 'var(--muted)',
   fontSize: '.8rem',
   textTransform: 'uppercase' as const,
   letterSpacing: '1px',
@@ -821,11 +821,11 @@ const label = {
 }
 
 const entityCard = {
-  background: '#0d0d0d',
-  border: '1px solid #222',
+  background: 'var(--surface)',
+  border: '1px solid var(--border)',
   borderRadius: '1rem',
   padding: '1rem 1.25rem',
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '1rem',
   lineHeight: 1.6
 }
@@ -837,17 +837,17 @@ const pillContainer = {
 }
 
 const pillEntity = {
-  background: '#181818',
-  border: '1px solid #2a2a2a',
+  background: 'var(--surface-raised)',
+  border: '1px solid var(--border)',
   borderRadius: '999px',
   padding: '.75rem 1rem',
-  color: '#ddd',
+  color: 'var(--foreground)',
   fontSize: '.95rem'
 }
 
 const priceCard = {
-  background: '#FFFFFF',
-  color: '#000',
+  background: 'var(--foreground)',
+  color: 'var(--background)',
   borderRadius: '1rem',
   padding: '1.25rem',
   fontSize: '1.5rem',
@@ -863,14 +863,14 @@ const cardGrid = {
 }
 
 const statCard = {
-  background: '#111',
-  border: '1px solid #222',
+  background: 'var(--surface)',
+  border: '1px solid var(--border)',
   borderRadius: '1rem',
   padding: '1.5rem'
 }
 
 const statLabel = {
-  color: '#888',
+  color: 'var(--muted)',
   fontSize: '.9rem',
   marginBottom: '.5rem'
 }
@@ -882,7 +882,7 @@ const statValue = {
 
 const secondaryValue = {
   marginTop: '.35rem',
-  color: '#888',
+  color: 'var(--muted)',
   fontSize: '1rem',
   fontWeight: 400
 }

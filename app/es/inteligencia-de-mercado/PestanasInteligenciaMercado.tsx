@@ -1,4 +1,9 @@
 'use client'
+import AskingPriceDistribution from '@/app/components/AskingPriceDistribution'
+import type { Catalog } from '@/lib/asking-price-contract'
+import IntelligenceHubShell from '@/app/components/IntelligenceHubShell'
+import hubStyles from '@/app/components/market-summary/workspace.module.css'
+import LegacyHubApplyPanel from '@/app/components/LegacyHubApplyPanel'
 import CanonicalMarketApplyPanel from '@/app/components/CanonicalMarketApplyPanel'
 
 
@@ -48,6 +53,7 @@ import type {
 } from '@/app/components/market-filters/filter-registry'
 
 type Props = {
+  askingPriceCatalog?: Catalog
   activeTab: string
   filters: any
   explorerResult: any
@@ -113,7 +119,7 @@ const tabs = [
         package: 'Paquete de Análisis de Mercado',
         color: '#ff3b00',
         icon: ChartColumnIncreasing,
-        label: 'Frecuencia del Mercado',
+        label: 'Frecuencia de configuración de propiedades',
         description: 'Mida qué tan comunes o poco comunes son las características de las propiedades.'
       },
 
@@ -122,7 +128,7 @@ const tabs = [
         package: 'Paquete de Inteligencia de Precios',
         color: '#ffd700',
         icon: Ruler,
-        label: 'Inteligencia de Precio / m²',
+        label: 'Distribución del precio por m²',
         description: 'Analice la eficiencia del precio entre mercados.'
       },
 
@@ -178,7 +184,8 @@ const tabs = [
     ]
 
     export default function PestanasInteligenciaMercado({
-          activeTab,
+          askingPriceCatalog,
+        activeTab,
           options,
           filters,
           explorerResult,
@@ -393,93 +400,21 @@ const tabs = [
           ])
 
           return (
-            <>
+            <IntelligenceHubShell tabs={tabs} activeTab={activeTab} query={queryString} basePath="/es/inteligencia-de-mercado" language="es" embedded={embedded}>
 
-{!embedded && (
-    <div style={tabBar}>
 
-    {tabs.map(tab => {
-          const Icon = tab.icon
-
-          return (
-          <Link
-            key={tab.id}
-                prefetch={false}
-            href={`/es/inteligencia-de-mercado?${query.toString()}&tab=${tab.id}`}
-            style={{
-              ...card,
-              borderColor:
-                activeTab === tab.id
-                  ? tab.color
-                  : '#333',
-              opacity:
-                tab.disabled ? .45 : 1,
-              pointerEvents:
-                tab.disabled ? 'none' : 'auto'
-            }}
-          >
-            <div
-              style={{
-                marginBottom: '.8rem'
-              }}
-            >
-              <Icon
-                size={42}
-                strokeWidth={0.5}
-                color="#C7A44B"
-              />
-            </div>
-
-            <div
-              style={{
-                color: '#fff',
-                fontSize: '1.35rem',
-                lineHeight: 1.2,
-                marginBottom: '.55rem'
-              }}
-            >
-              {tab.label}
-            </div>
-
-            <div
-              style={{
-                color: '#9a9a9a',
-                fontSize: '.9rem',
-                lineHeight: 1.4
-              }}
-            >
-              {tab.description}
-            </div>
-
-            <div
-              style={{
-                marginTop: 'auto',
-                paddingTop: '1.25rem',
-                color: tab.color,
-                fontWeight: 700,
-                fontSize: '.75rem',
-                textTransform: 'uppercase',
-                letterSpacing: '.08em'
-              }}
-            >
-              {tab.package}
-            </div>
-          </Link>
-         )
-        })}
-  </div>
-)}
-
+      {activeTab==='asking-price'?<AskingPriceDistribution lang="es" catalog={askingPriceCatalog??{state:'unavailable'}}/>:<>
+      <div className={hubStyles.workspace}>
 <section style={filterSection}>
-        <h2 style={sectionTitle}>
+        {!['explorer','matching','comparison','scarcity','price-meter'].includes(activeTab) && <h2 style={sectionTitle}>
           Filtros del Mercado
-        </h2>
+        </h2>}
 
-        <div hidden={activeTab !== 'price-meter'}>
-          <PriceMeterApplyPanel options={options} filters={filters} language="es" source="workspace" />
-        </div>
+        {activeTab === 'price-meter' && <div>
+          <PriceMeterApplyPanel key={filters.analysis_question} options={options} filters={filters} language="es" source="workspace" />
+        </div>}
         {activeTab !== 'price-meter' && (
-        (['explorer','scarcity','matching','comparison'].includes(activeTab) ? <CanonicalMarketApplyPanel key={activeTab} workspace={activeTab as 'explorer'|'scarcity'|'matching'|'comparison'} options={options} filters={filters} language="es"/> : <MarketFilters
+        (['explorer','scarcity','matching','comparison'].includes(activeTab) ? <CanonicalMarketApplyPanel hideSelector={!embedded} inventoryQuestion={embedded ? undefined : filters.analysis_question==='composition'?'composition':'summary'} key={`${activeTab}:${filters.analysis_question || ""}`} workspace={activeTab as 'explorer'|'scarcity'|'matching'|'comparison'} options={options} filters={filters} language="es"/> : (['pricing','valuation','buyer-demand'].includes(activeTab) ? <LegacyHubApplyPanel key={activeTab} engine={activeTab as 'pricing'|'valuation'|'buyer-demand'} options={options} filters={filters} language="es"/> : <MarketFilters
             language="es"
             workspace={
               activeTab as IntelligenceWorkspaceId
@@ -496,7 +431,7 @@ const tabs = [
                   }`
                 : `/es/inteligencia-de-mercado?tab=${activeTab}`
             }
-          />)
+          />))
         )}
       </section>
 
@@ -510,7 +445,7 @@ const tabs = [
                     '1rem'
                 }}
               >
-                <button hidden={activeTab === 'price-meter'}
+                <button hidden={['price-meter','explorer','matching','scarcity','comparison','pricing','valuation','buyer-demand'].includes(activeTab)}
                   type="button"
                   onClick={
                     handleSaveAnalysis
@@ -581,7 +516,7 @@ const tabs = [
 
         
 
-        {activeTab === 'pricing' && (
+        {activeTab === 'pricing' && pricingStrategy && (
           <PricingStrategyResults
             filters={filters}
             strategy={pricingStrategy}
@@ -592,7 +527,7 @@ const tabs = [
 
         
 
-        {activeTab === 'valuation' && (
+        {activeTab === 'valuation' && valuation && (
           <ValuationResults
             filters={filters}
             valuation={valuation}
@@ -601,7 +536,7 @@ const tabs = [
 
         
 
-        {activeTab === 'buyer-demand' && (
+        {activeTab === 'buyer-demand' && buyerDemand && (
           <BuyerDemandResults
             filters={filters}
             demand={buyerDemand}
@@ -609,7 +544,9 @@ const tabs = [
         )}
 
       </div>
-    </>
+      </div>
+    </>}
+    </IntelligenceHubShell>
   )
 }
 

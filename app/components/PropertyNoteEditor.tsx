@@ -289,8 +289,8 @@ export default function PropertyNoteEditor({
         .property-note-editor {
           min-height: 110px;
           padding: 0.85rem;
-          color: #fff;
-          background: #111;
+          color: var(--foreground);
+          background: var(--surface);
           outline: none;
           font-size: 0.9rem;
           line-height: 1.6;
@@ -313,19 +313,19 @@ export default function PropertyNoteEditor({
         .property-note-editor blockquote {
           margin: 0.75rem 0;
           padding-left: 0.85rem;
-          color: #aaa;
+          color: var(--muted);
           border-left: 3px solid #c7a44b;
         }
 
         .property-note-editor h3 {
           margin: 0.75rem 0 0.5rem;
-          color: #fff;
+          color: var(--foreground);
           font-size: 1.1rem;
         }
 
         .property-note-editor:empty::before {
           content: attr(data-placeholder);
-          color: #666;
+          color: var(--muted);
           pointer-events: none;
         }
       `}</style>
@@ -335,7 +335,7 @@ export default function PropertyNoteEditor({
 
 const editorShell = {
   overflow: 'hidden',
-  background: '#111',
+  background: 'var(--surface)',
   border: '1px solid #3a3a3a',
   borderRadius: '10px'
 }
@@ -346,7 +346,7 @@ const toolbar = {
   gap: '.4rem',
   flexWrap: 'wrap' as const,
   padding: '.55rem',
-  background: '#181818',
+  background: 'var(--surface-raised)',
   borderBottom:
     '1px solid #333'
 }
@@ -354,8 +354,8 @@ const toolbar = {
 const toolbarButton = {
   minWidth: '2rem',
   padding: '.4rem .55rem',
-  color: '#bbb',
-  background: '#222',
+  color: 'var(--muted)',
+  background: 'var(--surface-raised)',
   border: '1px solid #3a3a3a',
   borderRadius: '6px',
   fontFamily: 'inherit',

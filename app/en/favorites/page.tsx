@@ -574,7 +574,7 @@ if (
       {favorites.length === 0 ? (
 
         <div style={{
-          color: '#777'
+          color: 'var(--muted)'
         }}>
           No saved listings yet.
         </div>
@@ -593,7 +593,7 @@ if (
               key={property.id}
               style={{
                 position: 'relative',
-                background: '#181818',
+                background: 'var(--surface-raised)',
                 border:
                   selectedIds.has(
                     property.id
@@ -637,7 +637,7 @@ if (
                   style={{
                     display: 'block',
                     overflow: 'hidden',
-                    color: '#fff',
+                    color: 'var(--foreground)',
                     borderRadius: '1.5rem',
                     textDecoration: 'none'
                   }}
@@ -646,7 +646,7 @@ if (
                     style={{
                       aspectRatio: '4 / 3',
                       overflow: 'hidden',
-                      background: '#111'
+                      background: 'var(--surface)'
                     }}
                   >
                     {property.images?.[0] ? (
@@ -668,7 +668,7 @@ if (
                           justifyContent:
                             'center',
                           alignItems: 'center',
-                          color: '#555'
+                          color: 'var(--muted)'
                         }}
                       >
                         No Image
@@ -690,7 +690,7 @@ if (
                       {property.title}
                     </h2>
 
-                    <p style={{ color: '#888' }}>
+                    <p style={{ color: 'var(--muted)' }}>
                       {property.province}
                       {' → '}
                       {property.canton}
@@ -724,9 +724,9 @@ if (
 }
 
 const mainStyle = {
-  background: '#000',
+  background: 'var(--background)',
   minHeight: '100vh',
-  color: '#fff',
+  color: 'var(--foreground)',
   padding: '2rem'
 }
 
@@ -735,8 +735,8 @@ const bulkToolbar = {
   gap: '.8rem',
   marginBottom: '2rem',
   padding: '1rem',
-  background: '#111',
-  border: '1px solid #292929',
+  background: 'var(--surface)',
+  border: '1px solid var(--border)',
   borderRadius: '1rem'
 }
 
@@ -759,9 +759,9 @@ const bulkActions = {
 const collectionSelect = {
   minWidth: '210px',
   padding: '.7rem',
-  color: '#fff',
-  background: '#090909',
-  border: '1px solid #444',
+  color: 'var(--foreground)',
+  background: 'var(--input)',
+  border: '1px solid var(--border)',
   borderRadius: '8px'
 }
 
@@ -777,9 +777,9 @@ const primaryButton = {
 
 const secondaryButton = {
   padding: '.7rem 1rem',
-  color: '#fff',
-  background: '#1c1c1c',
-  border: '1px solid #444',
+  color: 'var(--foreground)',
+  background: 'var(--surface-raised)',
+  border: '1px solid var(--border)',
   borderRadius: '8px',
   cursor: 'pointer'
 }
@@ -796,7 +796,7 @@ const dangerButton = {
 
 const bulkStatusStyle = {
   margin: 0,
-  color: '#aaa',
+  color: 'var(--muted)',
   fontSize: '.85rem'
 }
 

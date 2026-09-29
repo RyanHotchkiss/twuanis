@@ -84,7 +84,7 @@ const loadingPage = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  background: '#0a0a0a',
-  color: '#aaa',
+  background: 'var(--background)',
+  color: 'var(--muted)',
   fontSize: '1.1rem'
 }

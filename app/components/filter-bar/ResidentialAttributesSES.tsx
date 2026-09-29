@@ -151,7 +151,7 @@ export default function ResidentialAttributesS({
 
                     <span
                         style={{
-                          color: '#FFFFFF',
+                          color: 'var(--foreground)',
                           lineHeight: '1.7',
                           wordBreak: 'break-word',
                           paddingRight: '1rem',
@@ -168,7 +168,7 @@ export default function ResidentialAttributesS({
                             <span>
                               {residentialLabels[bedrooms] || bedrooms}
                             </span>
-                            <span style={{ color: '#fff' }}>•</span>
+                            <span style={{ color: 'var(--foreground)' }}>•</span>
                           </>
                         )}
 
@@ -177,7 +177,7 @@ export default function ResidentialAttributesS({
                             <span>
                               {residentialLabels[bathrooms] || bathrooms}
                             </span>
-                            <span style={{ color: '#fff' }}>•</span>
+                            <span style={{ color: 'var(--foreground)' }}>•</span>
                           </>
                         )}
 
@@ -186,7 +186,7 @@ export default function ResidentialAttributesS({
                             <span>
                               {residentialLabels[parking] || parking}
                             </span>
-                            <span style={{ color: '#fff' }}>•</span>
+                            <span style={{ color: 'var(--foreground)' }}>•</span>
                           </>
                         )}
 
@@ -592,9 +592,9 @@ const pillWrap = {
 }
 
 const pill = {
-  background:'#181818',
+  background:'var(--surface)',
   border:'.25px solid #D4AF3750',
-  color:'#fff',
+  color:'var(--foreground)',
   padding:'.85rem 1rem',
   borderRadius:'999rem',
   cursor:'pointer',
@@ -612,7 +612,7 @@ const summaryCard = {
       display:'flex',
       justifyContent:'space-between',
       alignItems:'center',
-      background:'#181818',
+      background:'var(--surface)',
       border:'1px solid #D4AF37',
       borderRadius:'1rem',
       padding:'1rem'
@@ -621,7 +621,7 @@ const summaryCard = {
     const resetButton = {
       background:'transparent',
       border:'none',
-      color:'#ff6666',
+      color:'var(--error-text)',
       cursor:'pointer',
       fontSize:'1rem'
     }

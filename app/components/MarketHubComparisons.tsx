@@ -208,7 +208,7 @@ const section = {
   padding: '1.5rem',
   border: '1px solid #262626',
   borderRadius: '18px',
-  background: '#111'
+  background: 'var(--surface)'
 }
 
 const header = {
@@ -221,7 +221,7 @@ const header = {
 
 const eyebrow = {
   margin: '0 0 0.45rem',
-  color: '#777',
+  color: 'var(--muted)',
   fontSize: '0.72rem',
   fontWeight: 700,
   letterSpacing: '0.12em',
@@ -230,14 +230,14 @@ const eyebrow = {
 
 const heading = {
   margin: 0,
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '1.5rem'
 }
 
 const description = {
   maxWidth: '680px',
   margin: '0.65rem 0 0',
-  color: '#999',
+  color: 'var(--muted)',
   lineHeight: 1.6
 }
 
@@ -255,7 +255,7 @@ const card = {
   padding: '1.1rem',
   border: '1px solid #292929',
   borderRadius: '14px',
-  background: '#0b0b0b',
+  background: 'var(--surface)',
   color: 'inherit',
   textDecoration: 'none'
 }
@@ -269,8 +269,8 @@ const iconWrap = {
   justifyContent: 'center',
   border: '1px solid #303030',
   borderRadius: '12px',
-  background: '#171717',
-  color: '#ddd'
+  background: 'var(--surface-raised)',
+  color: 'var(--foreground)'
 }
 
 const cardContent = {
@@ -282,13 +282,13 @@ const cardContent = {
 
 const cardTitle = {
   margin: 0,
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '1.05rem'
 }
 
 const cardDescription = {
   margin: '0.65rem 0 0',
-  color: '#888',
+  color: 'var(--muted)',
   fontSize: '0.9rem',
   lineHeight: 1.5
 }
@@ -299,7 +299,7 @@ const action = {
   gap: '0.4rem',
   marginTop: 'auto',
   paddingTop: '1rem',
-  color: '#ddd',
+  color: 'var(--foreground)',
   fontSize: '0.85rem',
   fontWeight: 700
 }

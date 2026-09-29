@@ -1,20 +1,20 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { loadCurrentUserPermissionContext } from '@/lib/current-user-permissions-action'
 import { resolveWidgetGate, type UserPermissionContext, type RestrictedWidgetBehavior } from '@/lib/permissions'
 import PermissionGate from './PermissionGate'
 import Phase14Discovery from './Phase14Discovery'
 
-export function ComparativeDiscoveryPermissionSurface({ user, language, restrictedBehavior = 'lock' }: {
-  user: UserPermissionContext; language: 'en' | 'es'; restrictedBehavior?: RestrictedWidgetBehavior
+export function ComparativeDiscoveryPermissionSurface({ user, language, restrictedBehavior = 'lock', children }: {
+  user: UserPermissionContext; language: 'en' | 'es'; restrictedBehavior?: RestrictedWidgetBehavior; children?:ReactNode
 }) {
   const allowed = resolveWidgetGate('price-per-square-meter', user, restrictedBehavior) === 'allow'
   return <PermissionGate widgetId="price-per-square-meter" user={user} restrictedBehavior={restrictedBehavior} language={language}>
-    {allowed ? <Phase14Discovery language={language} /> : <div style={{ minHeight: 280 }} />}
+    {allowed ? children ?? <Phase14Discovery language={language} /> : <div style={{ minHeight: 280 }} />}
   </PermissionGate>
 }
 
-export default function ComparativeDiscoveryAccess({ language }: { language: 'en' | 'es' }) {
+export default function ComparativeDiscoveryAccess({ language, children }: { language: 'en' | 'es'; children?:ReactNode }) {
   const [user, setUser] = useState<UserPermissionContext>({ authenticated: false, premium: false, enterprise: false, roles: [] })
   useEffect(() => {
     let active = true
@@ -23,5 +23,5 @@ export default function ComparativeDiscoveryAccess({ language }: { language: 'en
     })
     return () => { active = false }
   }, [])
-  return <ComparativeDiscoveryPermissionSurface user={user} language={language} />
+  return <ComparativeDiscoveryPermissionSurface user={user} language={language}>{children}</ComparativeDiscoveryPermissionSurface>
 }

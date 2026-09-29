@@ -280,9 +280,9 @@ console.log('BedroomFilterS', BedroomFilterS)
                     return (
 
                     <main style={{
-                        background: '#000',
+                        background: 'var(--background)',
                         minHeight: '100vh',
-                        color: '#FFFFFF',
+                        color: 'var(--foreground)',
                         padding: '1rem'
                     }}>
 
@@ -321,7 +321,7 @@ console.log('BedroomFilterS', BedroomFilterS)
                         </h1>
 
                         <p style={{
-                        color: '#888',
+                        color: 'var(--muted)',
                         fontSize: '1.1rem',
                         maxWidth: '50rem',
                         lineHeight: '1.7'
@@ -335,7 +335,7 @@ console.log('BedroomFilterS', BedroomFilterS)
 
   {/* RIGHT CSV TOOL */}
                     <div style={{
-                        background: '#111',
+                        background: 'var(--surface)',
                         border: '1px solid #222',
                         borderRadius: '1rem',
                         padding: '1rem',
@@ -354,13 +354,13 @@ console.log('BedroomFilterS', BedroomFilterS)
 
                         <label
                         style={{
-                            background: '#1a1a1a',
+                            background: 'var(--surface-raised)',
                             border: '1px dashed #444',
                             borderRadius: '.75rem',
                             padding: '1rem',
                             cursor: 'pointer',
                             textAlign: 'center',
-                            color: '#888',
+                            color: 'var(--muted)',
                             fontSize: '.9rem'
                         }}
                         >
@@ -467,8 +467,8 @@ console.log('BedroomFilterS', BedroomFilterS)
 
                                 }}
                                 style={{
-                                    background: '#FFFFFF',
-                                    color: '#000',
+                                    background: 'var(--foreground)',
+                                    color: 'var(--background)',
                                     border: 'none',
                                     borderRadius: '999px',
                                     padding: '.85rem 1rem',
@@ -498,7 +498,7 @@ console.log('BedroomFilterS', BedroomFilterS)
             }}>
                 {/* LEFT SIDE */}
                 <div style={{
-                    background: '#111',
+                    background: 'var(--surface)',
                     border: '.0625rem solid #222',
                     borderRadius: '1.5rem',
                     padding: '2rem',
@@ -974,7 +974,7 @@ console.log('BedroomFilterS', BedroomFilterS)
 
                 <div
                 style={{
-                    background: '#0d0d0d',
+                    background: 'var(--surface)',
                     border: '.0625rem solid #222',
                     borderRadius: '1.5rem',
                     padding: '2rem',

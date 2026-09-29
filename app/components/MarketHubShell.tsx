@@ -1,4 +1,5 @@
 'use client'
+import {useSiteTheme} from '@/app/components/theme/ThemeProvider'
 
 import {
   useState,
@@ -95,8 +96,7 @@ export default function MarketHubShell({
       false
     )
 
-  const [theme, setTheme] =
-    useState<'dark' | 'light'>('dark')
+  const {theme,setTheme} = useSiteTheme()
 
   const labels =
     language === 'es'

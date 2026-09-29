@@ -148,7 +148,11 @@ export async function getPriceMeterComparisonAnalysis({
 
   const observations =
     buildPriceMeterObservations(
-      analyticallyDecoratedCandidates
+      analyticallyDecoratedCandidates.filter(listing =>
+        listing.analyticalIdentity.transactionType === request.transactionType &&
+        listing.analyticalIdentity.propertyBasis === request.propertyBasis
+      ),
+      request.normalizationBasis
     )
 
   const transactionCohorts =
@@ -191,6 +195,7 @@ export async function getPriceMeterComparisonAnalysis({
 
   return {
     request,
+    fxIdentity,
 
     analyticalIdentity: {
       transactionType:

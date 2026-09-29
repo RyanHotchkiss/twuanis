@@ -155,7 +155,7 @@ const {
 
     <div
       style={{
-        background: '#000000',
+        background: 'var(--background)',
         borderRight: '1px solid #D4AF37',
 
         padding: '25px',
@@ -247,7 +247,7 @@ const {
 
       <h2
         style={{
-          color: '#fff',
+          color: 'var(--foreground)',
           textAlign: 'center',
 
           textShadow:

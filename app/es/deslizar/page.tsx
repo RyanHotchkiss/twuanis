@@ -54,8 +54,8 @@ export default function SwipeHubPage() {
 
 const page = {
   minHeight: '100vh',
-  background: '#000',
-  color: '#fff',
+  background: 'var(--background)',
+  color: 'var(--foreground)',
   padding: '2rem'
 }
 
@@ -81,7 +81,7 @@ const title = {
 }
 
 const description = {
-  color: '#999',
+  color: 'var(--muted)',
   fontSize: '1.1rem',
   margin: '1.25rem 0 3rem'
 }
@@ -97,10 +97,10 @@ const choice = {
   minHeight: '180px',
   border: '1px solid #D4AF3760',
   borderRadius: '24px',
-  background: '#111',
+  background: 'var(--surface)',
   padding: '2rem',
   textDecoration: 'none',
-  color: '#fff',
+  color: 'var(--foreground)',
   display: 'flex',
   flexDirection: 'column' as const,
   justifyContent: 'center',
@@ -114,6 +114,6 @@ const choiceTitle = {
 }
 
 const choiceDescription = {
-  color: '#aaa',
+  color: 'var(--muted)',
   lineHeight: 1.6
 }

@@ -106,7 +106,7 @@ export default function TerrainFilter({
                           <span key={item}>
 
                             {index > 0 && (
-                              <span style={{ color:'#fff' }}>
+                              <span style={{ color:'var(--foreground)' }}>
                                 {' • '}
                               </span>
                             )}
@@ -155,9 +155,9 @@ const pillWrap = {
 }
 
 const pill = {
-  background:'#181818',
+  background:'var(--surface)',
   border:'.25px solid #D4AF3750',
-  color:'#fff',
+  color:'var(--foreground)',
   padding:'.85rem 1rem',
   borderRadius:'999rem',
   cursor:'pointer',
@@ -175,7 +175,7 @@ const summaryCard = {
   display:'flex',
   justifyContent:'space-between',
   alignItems:'flex-start',
-  background:'#181818',
+  background:'var(--surface)',
   border:'1px solid #FFFFFF50',
   borderRadius:'1rem',
   padding:'1rem',
@@ -183,14 +183,14 @@ const summaryCard = {
 }
 
 const breadcrumbText = {
-  color:'#FFFFFF',
+  color:'var(--foreground)',
   fontSize:'.85rem'
 }
 
 const resetButton = {
   background:'transparent',
   border:'none',
-  color:'#ff6666',
+  color:'var(--error-text)',
   cursor:'pointer',
   fontSize:'1rem'
 }

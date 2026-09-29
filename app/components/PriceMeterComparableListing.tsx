@@ -1088,7 +1088,7 @@ const title = {
 
 const description = {
   color:
-    '#aaa',
+    'var(--muted)',
   maxWidth:
     '760px',
   lineHeight:
@@ -1104,7 +1104,7 @@ const controlBlock = {
 
 const controlLabel = {
   color:
-    '#aaa',
+    'var(--muted)',
   fontSize:
     '.8rem',
   textTransform:
@@ -1126,9 +1126,9 @@ const buttonRow = {
 
 const optionButton = {
   background:
-    '#111',
+    'var(--surface)',
   color:
-    '#fff',
+    'var(--foreground)',
   border:
     '1px solid #333',
   borderRadius:
@@ -1159,7 +1159,7 @@ const baseCard = {
   padding:
     '1.25rem',
   background:
-    '#0d0d0d',
+    'var(--surface)',
   border:
     '1px solid #222',
   borderRadius:
@@ -1195,7 +1195,7 @@ const selectedDimension = {
 
 const dimensionLabel = {
   color:
-    '#888',
+    'var(--muted)',
   fontSize:
     '.75rem',
   textTransform:
@@ -1204,7 +1204,7 @@ const dimensionLabel = {
 
 const dimensionValue = {
   color:
-    '#fff',
+    'var(--foreground)',
   fontWeight:
     700
 }
@@ -1222,7 +1222,7 @@ const resultsGrid = {
 
 const evidenceCard = {
   background:
-    '#0d0d0d',
+    'var(--surface)',
   border:
     '1px solid #222',
   borderRadius:
@@ -1233,7 +1233,7 @@ const evidenceCard = {
 
 const evidenceLabel = {
   color:
-    '#888',
+    'var(--muted)',
   fontSize:
     '.75rem',
   textTransform:
@@ -1246,7 +1246,7 @@ const evidenceValue = {
   marginTop:
     '.5rem',
   color:
-    '#fff',
+    'var(--foreground)',
   fontSize:
     '1.25rem',
   fontWeight:
@@ -1283,7 +1283,7 @@ const trailRow = {
   gap:
     '1rem',
   color:
-    '#aaa',
+    'var(--muted)',
   fontSize:
     '.9rem',
   padding:
@@ -1296,11 +1296,11 @@ const message = {
   padding:
     '1rem',
   background:
-    '#0d0d0d',
+    'var(--surface)',
   border:
     '1px solid #222',
   borderRadius:
     '.75rem',
   color:
-    '#aaa'
+    'var(--muted)'
 }

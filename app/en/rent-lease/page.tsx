@@ -1,4 +1,5 @@
 'use client'
+import {useSiteTheme} from '@/app/components/theme/ThemeProvider'
 
 import {
   Suspense,
@@ -150,8 +151,7 @@ const navButton = {
       setDesktopSidebarCollapsed
     ] = useState(false)
 
-  const [theme, setTheme] =
-    useState<'dark' | 'light'>('dark')
+  const {theme,setTheme} = useSiteTheme()
 
   const [
     showSaveSearchAuth,
@@ -1517,13 +1517,13 @@ const filteredProperties = properties.filter((property) => {
 const filterHeading = {
   marginBottom: '14px',
   fontSize: '15px',
-  color: '#888',
+  color: 'var(--muted)',
   textTransform: 'uppercase' as const,
   letterSpacing: '1px'
 }
 
 const miniHeading = {
-  color: '#666',
+  color: 'var(--muted)',
   fontSize: '13px',
   marginBottom: '10px'
 }
@@ -1535,9 +1535,9 @@ const pillWrap = {
 }
 
 const pill = {
-  background: '#181818',
-  border: '1px solid #2a2a2a',
-  color: '#bbb',
+  background: 'var(--surface)',
+  border: '1px solid var(--border)',
+  color: 'var(--muted)',
   padding: '10px 14px',
   borderRadius: '999px',
   cursor: 'pointer',
@@ -1545,9 +1545,9 @@ const pill = {
 }
 
 const activePill = {
-  background: '#FFFFFF',
-  border: '1px solid #FFFFFF',
-  color: '#000',
+  background: 'var(--foreground)',
+  border: '1px solid var(--foreground)',
+  color: 'var(--background)',
   padding: '10px 14px',
   borderRadius: '999px',
   cursor: 'pointer',
@@ -1593,9 +1593,9 @@ const scrollPanel = {
 }
 
 const listButton = {
-  background: '#181818',
-  border: '1px solid #222',
-  color: '#bbb',
+  background: 'var(--surface)',
+  border: '1px solid var(--border)',
+  color: 'var(--muted)',
   padding: '14px 16px',
   borderRadius: '14px',
   cursor: 'pointer',
@@ -1604,9 +1604,9 @@ const listButton = {
 }
 
 const activeListButton = {
-  background: '#FFFFFF',
-  border: '1px solid #FFFFFF',
-  color: '#000',
+  background: 'var(--foreground)',
+  border: '1px solid var(--foreground)',
+  color: 'var(--background)',
   padding: '14px 16px',
   borderRadius: '14px',
   cursor: 'pointer',
@@ -1623,14 +1623,14 @@ const breadcrumbBar = {
 }
 
 const breadcrumbText = {
-  color: '#888',
+  color: 'var(--muted)',
   fontSize: '13px'
 }
 
 const backButton = {
   background: 'transparent',
   border: 'none',
-  color: '#FFFFFF',
+  color: 'var(--foreground)',
   cursor: 'pointer',
   padding: 0,
   fontSize: '14px',
@@ -1638,16 +1638,16 @@ const backButton = {
 }
 
 const navLink = {
-  color: '#888',
+  color: 'var(--muted)',
   textDecoration: 'none',
   fontSize: '.875rem',
   transition: 'all .2s ease'
 }
 
 const navButton = {
-  background: '#181818',
+  background: 'var(--surface)',
   border: '.0625rem solid #fff',
-  color: '#fff',
+  color: 'var(--foreground)',
   padding: '.75rem 1rem',
   borderRadius: '.75rem',
   cursor: 'pointer',
@@ -1657,7 +1657,7 @@ const navButton = {
 const navButton0 = {
   background: '#D4AF3795',
   border: '.0625rem solid #ffffff50',
-  color: '#fff',
+  color: 'var(--foreground)',
   padding: '.75rem 1rem',
   borderRadius: '.75rem',
   cursor: 'pointer',
@@ -1666,7 +1666,7 @@ const navButton0 = {
 
 const sellButton = {
   background: '#FFFFFF50',
-  color: '#fff',
+  color: 'var(--foreground)',
   border:'.0625rem solid #ffffff50',
   textDecoration: 'none',
   padding: '.75rem 1.125rem',

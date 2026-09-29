@@ -153,17 +153,17 @@ const page = {
   alignItems: 'center',
   justifyContent: 'center',
   padding: '1.5rem',
-  background: '#0a0a0a'
+  background: 'var(--background)'
 }
 
 const card = {
   width: '100%',
   maxWidth: '32rem',
   padding: '2rem',
-  border: '1px solid #222',
+  border: '1px solid var(--border)',
   borderRadius: '2rem',
-  background: '#111',
-  color: '#fff'
+  background: 'var(--surface)',
+  color: 'var(--foreground)'
 }
 
 const heading = {
@@ -182,10 +182,10 @@ const input = {
   width: '100%',
   boxSizing: 'border-box' as const,
   padding: '1rem',
-  border: '1px solid #333',
+  border: '1px solid var(--border)',
   borderRadius: '1rem',
-  background: '#181818',
-  color: '#fff',
+  background: 'var(--input)',
+  color: 'var(--foreground)',
   fontSize: '1rem'
 }
 
@@ -194,8 +194,8 @@ const button = {
   padding: '1rem',
   border: 'none',
   borderRadius: '999rem',
-  background: '#fff',
-  color: '#000',
+  background: 'var(--foreground)',
+  color: 'var(--background)',
   fontSize: '1rem',
   fontWeight: 700,
   cursor: 'pointer'
@@ -203,6 +203,6 @@ const button = {
 
 const errorText = {
   marginTop: '1rem',
-  color: '#ff8b8b',
+  color: 'var(--error-text)',
   lineHeight: 1.6
 }

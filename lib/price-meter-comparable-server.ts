@@ -1,4 +1,5 @@
 import 'server-only'
+import type {PriceMeterFxIdentity} from './price-meter-identity'
 
 import {
   validatePriceMeterComparableRequest,
@@ -133,6 +134,7 @@ export async function executePriceMeterComparableConfiguration(
 }
 
 export type PriceMeterComparableServerResult = {
+  context?:{subjectTitle:string|null;analyticalDate:string;fx:PriceMeterFxIdentity|null}
   userId:
     string
 
@@ -146,7 +148,8 @@ export type PriceMeterComparableServerResult = {
 
 export async function executePriceMeterComparableAnalysis(
   rawRequest:
-    PriceMeterComparableRequest
+    PriceMeterComparableRequest,
+  selectedOnly=false
 ): Promise<
   PriceMeterComparableServerResult
 > {
@@ -188,6 +191,7 @@ export async function executePriceMeterComparableAnalysis(
 
   const loaded =
     await loadPriceMeterComparableBoundedPopulation({
+      selectedOnly,
       activeDimensions:request.activeDimensions,
       subjectListingId:
         request.subjectListingId,
@@ -257,6 +261,7 @@ const presentation =
    */
 
     return {
+    ...(selectedOnly?{context:{subjectTitle:typeof loaded.subject.listing.title==='string'?loaded.subject.listing.title:null,analyticalDate:loaded.analyticalDate,fx:loaded.fxIdentity}}:{}),
     userId,
     analysis,
     presentation

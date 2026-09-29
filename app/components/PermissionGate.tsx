@@ -281,7 +281,7 @@ const lockPanel: CSSProperties = {
   border: '1px solid #4b4127',
   borderRadius: '14px',
   background:
-    'rgba(17, 17, 17, 0.97)',
+    'var(--surface)',
   textAlign: 'center',
   boxShadow:
     '0 20px 50px rgba(0, 0, 0, 0.5)'
@@ -296,18 +296,18 @@ const iconContainer: CSSProperties = {
   margin: '0 auto .9rem',
   border: '1px solid #4b4127',
   borderRadius: '12px',
-  background: '#17140d'
+  background: 'var(--evidence-surface)'
 }
 
 const lockTitle: CSSProperties = {
   margin: 0,
-  color: '#ededed',
+  color: 'var(--foreground)',
   fontSize: '1rem'
 }
 
 const lockDescription: CSSProperties = {
   margin: '.55rem 0 0',
-  color: '#aaa',
+  color: 'var(--muted)',
   fontSize: '.86rem',
   lineHeight: 1.5
 }
@@ -346,7 +346,7 @@ const learnMoreButton: CSSProperties = {
   border: '1px solid #444',
   borderRadius: '9px',
   background: 'transparent',
-  color: '#ddd',
+  color: 'var(--foreground)',
   fontSize: '.82rem',
   fontWeight: 700,
   cursor: 'pointer'

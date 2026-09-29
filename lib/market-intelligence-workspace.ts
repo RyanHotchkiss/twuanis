@@ -1,3 +1,4 @@
+import {comparisonKeys} from '@/app/components/price-meter-comparison/contract'
 import {
   getExplorerOptions
 } from '@/lib/explorer-options-engine'
@@ -56,7 +57,28 @@ export type MarketIntelligenceSearchParams = {
   a_distance_to_paved_road_range?: string
   distance_to_paved_road_range?: string
   legal_status?: string
+  weighted_request?: string
+  ratio_request?: string
+  comparable_request?: string
+  position_request?: string
+  discovery_request?: string
+  cross_question?: string
+  cross_cohort?: string
   analysis_question?: string
+  property_basis?: string
+  normalization_basis?: string
+  reference_cohort?: string
+  a_characteristic_1_type?: string
+  a_characteristic_1?: string
+  a_characteristic_2_type?: string
+  a_characteristic_2?: string
+  b_characteristic_1_type?: string
+  b_characteristic_1?: string
+  b_characteristic_2_type?: string
+  b_characteristic_2?: string
+  a_construction_land_cohort?: string
+  b_construction_land_cohort?: string
+  cl_normalization?: string
   tab?: string
 
 // TEMP PPM2 TRACE BEGIN
@@ -157,13 +179,15 @@ export type ResolvedMarketIntelligenceWorkspace = {
 
 export async function resolveMarketIntelligenceWorkspace({
   params,
-  language
+  language,
+  explicitLegacyCommand
 }: {
   params:
     MarketIntelligenceSearchParams
 
   language:
     MarketIntelligenceLanguage
+  explicitLegacyCommand?: 'pricing' | 'valuation' | 'buyer-demand'
 }): Promise<
   ResolvedMarketIntelligenceWorkspace
 > {
@@ -546,6 +570,7 @@ if (typeof params.__ppm2trace === 'string') {
   let buyerDemand = null
   let comparison = null
 
+  // Only the validated Server Action supplies this command. Routes never do.
   switch (activeTab) {
     case 'explorer':
       // Explicit browser command owns execution; navigation restores draft only.
@@ -556,6 +581,7 @@ if (typeof params.__ppm2trace === 'string') {
       break
 
     case 'pricing':
+      if (explicitLegacyCommand !== activeTab) break
       pricingStrategy =
         await getPricingStrategy(
           engineFilters,
@@ -572,6 +598,7 @@ if (typeof params.__ppm2trace === 'string') {
       break
 
     case 'valuation':
+      if (explicitLegacyCommand !== activeTab) break
       valuation =
         await getValuation(
           engineFilters,
@@ -580,6 +607,7 @@ if (typeof params.__ppm2trace === 'string') {
       break
 
     case 'buyer-demand':
+      if (explicitLegacyCommand !== activeTab) break
       buyerDemand =
         await getBuyerDemand(
           engineFilters,
@@ -603,7 +631,7 @@ if (typeof params.__ppm2trace === 'string') {
     activeTab ===
       'comparison'
       ? comparisonFilters
-      : {...enginefilters,analysis_question:params.analysis_question}
+      : {...enginefilters,...(params.analysis_question==='cohort-comparison'?Object.fromEntries(comparisonKeys.map(k=>[k,params[k as keyof MarketIntelligenceSearchParams]])):{}),weighted_request:params.weighted_request,ratio_request:params.ratio_request,comparable_request:params.comparable_request,position_request:params.position_request,discovery_request:params.discovery_request,cross_question:params.cross_question,cross_cohort:params.cross_cohort,analysis_question:params.analysis_question,cl_normalization:params.cl_normalization}
 
 
   /*

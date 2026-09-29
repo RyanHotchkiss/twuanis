@@ -428,7 +428,7 @@ const trigger = {
   width: '100%',
   padding: '.65rem',
   color: '#C7A44B',
-  background: '#151515',
+  background: 'var(--surface)',
   border: '1px solid #333',
   borderRadius: '8px',
   cursor: 'pointer',
@@ -442,7 +442,7 @@ const panel = {
   top: 'calc(100% + .5rem)',
   width: '280px',
   padding: '1rem',
-  background: '#111',
+  background: 'var(--surface)',
   border: '1px solid #444',
   borderRadius: '12px',
   boxShadow:
@@ -450,11 +450,11 @@ const panel = {
 }
 
 const heading = {
-  color: '#fff'
+  color: 'var(--foreground)'
 }
 
 const empty = {
-  color: '#888',
+  color: 'var(--muted)',
   fontSize: '.8rem'
 }
 
@@ -469,15 +469,15 @@ const collectionButton = {
   justifyContent:
     'space-between',
   padding: '.65rem',
-  color: '#fff',
-  background: '#1c1c1c',
+  color: 'var(--foreground)',
+  background: 'var(--surface-raised)',
   border: '1px solid #333',
   borderRadius: '8px',
   cursor: 'pointer'
 }
 
 const count = {
-  color: '#888'
+  color: 'var(--muted)'
 }
 
 const createRow = {
@@ -491,8 +491,8 @@ const createRow = {
 const input = {
   minWidth: 0,
   padding: '.65rem',
-  color: '#fff',
-  background: '#090909',
+  color: 'var(--foreground)',
+  background: 'var(--input)',
   border: '1px solid #333',
   borderRadius: '8px'
 }
@@ -510,7 +510,7 @@ const createButton = {
 
 const statusText = {
   margin: '.65rem 0 0',
-  color: '#aaa',
+  color: 'var(--muted)',
   fontSize: '.78rem'
 }
 

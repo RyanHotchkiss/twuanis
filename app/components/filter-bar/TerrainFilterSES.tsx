@@ -146,9 +146,9 @@ const sectionHeading = {
 }
 
 const collapseButton = {
-  background:'#181818',
+  background:'var(--surface)',
   border:'1px solid #333',
-  color:'#fff',
+  color:'var(--foreground)',
   width:'2rem',
   height:'2rem',
   borderRadius:'999rem',
@@ -159,7 +159,7 @@ const summaryCard = {
   display:'flex',
   justifyContent:'space-between',
   alignItems:'flex-start',
-  background:'#181818',
+  background:'var(--surface)',
   border:'1px solid #D4AF3750',
   borderRadius:'1rem',
   padding:'1rem',
@@ -169,7 +169,7 @@ const summaryCard = {
 const resetButton = {
   background:'transparent',
   border:'none',
-  color:'#ff6666',
+  color:'var(--error-text)',
   cursor:'pointer',
   fontSize:'1rem'
 }
@@ -181,9 +181,9 @@ const pillWrap = {
 }
 
 const pill = {
-  background:'#181818',
+  background:'var(--surface)',
   border:'.25px solid #D4AF3750',
-  color:'#fff',
+  color:'var(--foreground)',
   padding:'.85rem 1rem',
   borderRadius:'999rem',
   cursor:'pointer',

@@ -1,0 +1,6 @@
+'use client'
+import Link from 'next/link'
+import {Compass,Ruler,Scale} from 'lucide-react'
+import {homeCards,homeRows,cardUrl} from './catalog'
+import styles from './cards.module.css'
+export default function HomeEngineCards({language}:{language:'en'|'es'}){return <div className={styles.rows} data-home-engines>{homeRows.map(row=><section key={row.id} aria-labelledby={'home-row-'+row.id}><h2 id={'home-row-'+row.id}>{row.heading[language]}</h2><div className={styles.grid}>{row.ids.map(id=>{const card=homeCards.find(c=>c.id===id)!,Icon=row.id==='market'?Compass:row.id==='comparison'?Scale:Ruler;return <Link prefetch={false} href={cardUrl(id,language)} key={id} data-engine-card={id} className={styles.slot} style={{'--card-accent':row.color} as React.CSSProperties}><article className={styles.rest} aria-hidden="true"><Icon size={30} strokeWidth={.8}/><span>{card.name[language]}</span></article><article className={styles.expanded}><div className={styles.identity}><Icon size={30} strokeWidth={.8} aria-hidden="true"/><h3>{card.name[language]}</h3></div><p>{card.question[language]}</p><span className={styles.open}>{language==='es'?'Abrir análisis':'Open analysis'} →</span></article></Link>})}</div></section>)}</div>}

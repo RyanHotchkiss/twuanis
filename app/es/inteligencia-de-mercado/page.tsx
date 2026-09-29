@@ -1,3 +1,4 @@
+import { readAskingPriceCatalog } from '@/lib/asking-price-data'
 import TopBar
   from '@/app/components/TopBar'
 
@@ -57,14 +58,12 @@ export default async function MarketIntelligencePage({
           Inteligencia de Mercado
         </h1>
 
-        <p style={intro}>
-          Explore el mercado inmobiliario de Costa Rica a través de múltiples perspectivas analíticas.
-          Primero elija la pregunta del mercado; después filtre el mercado.
-        </p>
+
       </section>
 
 
       <PestanasInteligenciaMercado
+        askingPriceCatalog={workspace.activeTab==='asking-price'?await readAskingPriceCatalog():undefined}
         activeTab={
           workspace.activeTab
         }
@@ -119,13 +118,28 @@ const main = {
     '100vh',
 
   padding:
-    '2rem',
+    'clamp(1rem, 3vw, 2rem)',
 
-  background:
-    '#0a0a0a',
+  backgroundColor:
+    'var(--background)',
+
+  backgroundImage:
+    'var(--ih-background-image)',
+
+  backgroundSize:
+    'cover',
+
+  backgroundPosition:
+    'center top',
+
+  backgroundRepeat:
+    'no-repeat',
+
+  backgroundAttachment:
+    'fixed',
 
   color:
-    '#ededed'
+    'var(--foreground)'
 }
 
 
@@ -140,7 +154,7 @@ const hero = {
 
 const heading = {
   fontSize:
-    '3rem',
+    'clamp(1.6rem, 4vw, 3rem)',
 
   marginBottom:
     '.75rem'
@@ -155,7 +169,7 @@ const intro = {
     '0 auto',
 
   color:
-    '#ccc',
+    'var(--muted)',
 
   lineHeight:
     1.6,

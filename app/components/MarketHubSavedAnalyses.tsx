@@ -380,7 +380,7 @@ const section = {
   padding: '1.5rem',
   border: '1px solid #262626',
   borderRadius: '18px',
-  background: '#111'
+  background: 'var(--surface)'
 }
 
 const header = {
@@ -390,7 +390,7 @@ const header = {
 
 const eyebrow = {
   margin: '0 0 .45rem',
-  color: '#777',
+  color: 'var(--muted)',
   fontSize: '.72rem',
   fontWeight: 700,
   letterSpacing: '.12em',
@@ -399,13 +399,13 @@ const eyebrow = {
 
 const heading = {
   margin: 0,
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '1.5rem'
 }
 
 const description = {
   margin: '.65rem 0 0',
-  color: '#999',
+  color: 'var(--muted)',
   lineHeight: 1.6
 }
 
@@ -433,7 +433,7 @@ const card = {
   padding: '1.1rem',
   border: '1px solid #292929',
   borderRadius: '14px',
-  background: '#0b0b0b'
+  background: 'var(--surface)'
 }
 
 const cardTop = {
@@ -450,7 +450,7 @@ const iconWrap = {
   justifyContent: 'center',
   border: '1px solid #303030',
   borderRadius: '12px',
-  background: '#171717',
+  background: 'var(--surface-raised)',
   fontSize: '22px'
 }
 
@@ -462,18 +462,18 @@ const cardContent = {
 
 const cardTitle = {
   margin: 0,
-  color: '#fff',
+  color: 'var(--foreground)',
   fontSize: '1.05rem'
 }
 
 const cardDescription = {
   margin: '.65rem 0 0',
-  color: '#888',
+  color: 'var(--muted)',
   fontSize: '.9rem'
 }
 
 const openLink = {
-  color: '#ddd',
+  color: 'var(--foreground)',
   fontWeight: 700,
   textDecoration: 'none'
 }
@@ -491,8 +491,8 @@ const actionButton = {
   padding: '.55rem .8rem',
   border: '1px solid #333',
   borderRadius: '999px',
-  background: '#171717',
-  color: '#ddd',
+  background: 'var(--surface-raised)',
+  color: 'var(--foreground)',
   cursor: 'pointer'
 }
 
@@ -503,6 +503,6 @@ const deleteButton = {
 }
 
 const empty = {
-  color: '#777',
+  color: 'var(--muted)',
   padding: '2rem'
 }
