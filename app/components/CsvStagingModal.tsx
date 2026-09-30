@@ -63,12 +63,12 @@ export default function CsvStagingModal({
 
         )}
 
-          <button
-            onClick={() => setShowCsvStaging(false)}
-            style={closeButton}
-          >
-            Close
-          </button>
+            <button
+                onClick={() => setShowCsvStaging(false)}
+                style={closeButton}
+              >
+                Close
+            </button>
 
         </div>
 
@@ -103,6 +103,7 @@ const header = {
   display:'flex',
   justifyContent:'space-between',
   alignItems:'center',
+  gap:'1rem',
   marginBottom:'3rem'
 }
 
@@ -118,7 +119,7 @@ const description = {
 
 const closeButton = {
   background:'#181818',
-  border:'1px solid #333',
+  border:'1px solid #888',
   color:'#ff6666',
   borderRadius:'999px',
   padding:'.85rem 1.25rem',
