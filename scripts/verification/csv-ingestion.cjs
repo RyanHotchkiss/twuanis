@@ -265,7 +265,7 @@ function row(raw) {
   return {
     ...raw,
 
-    property_type: 'INFERRED',
+    property_type: raw.property_type,
     bathrooms: '3 Bathrooms',
 
     source_observation_input:

@@ -91,8 +91,19 @@ export async function ingestCsvObservation(
       )
     }
 
-    const changes: Record<string, unknown> = {
-      property_type: raw.property_type,
+    const normalizedPropertyType =
+        typeof row.property_type === 'string'
+          ? row.property_type.trim()
+          : ''
+
+      if (!normalizedPropertyType) {
+        throw Error(
+          'Normalized canonical property type is missing.'
+        )
+      }
+
+      const changes: Record<string, unknown> = {
+        property_type: normalizedPropertyType,
       province: geography.province.term_name,
       canton: geography.canton.term_name,
       district:
