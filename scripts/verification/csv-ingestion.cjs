@@ -60,10 +60,69 @@ const TYPE_IDS = {
 let canonicalInput
 let persistenceFailure = false
 let canonicalFailure = false
+let geographyFailure = false
 
 const engine = load(
   'lib/csv-source-ingestion.ts',
   {
+    '@/lib/geography/resolve-listing-geography': {
+      resolveListingGeography:
+        async ({ province, canton, district }) => {
+          if (geographyFailure) {
+            return {
+              province: null,
+              canton: null,
+              district: null,
+              complete: false,
+              reasons: {
+                province: 'unrecognized',
+                canton: 'unrecognized',
+                district: 'unrecognized'
+              }
+            }
+          }
+
+          return {
+          province: province
+            ? {
+                id: 'province-3',
+                term_name: 'Cartago',
+                official_code: '3'
+              }
+            : null,
+          canton: canton
+            ? {
+                id: 'canton-304',
+                term_name: 'Jiménez',
+                official_code: '304'
+              }
+            : null,
+          district: district
+            ? {
+                id: 'district-30403',
+                term_name: 'Pejivalle',
+                official_code: '30403'
+              }
+            : null,
+          complete: Boolean(
+            province &&
+            canton &&
+            district
+          ),
+          reasons: {
+            province: province
+              ? 'resolved'
+              : 'missing',
+            canton: canton
+              ? 'resolved'
+              : 'missing',
+            district: district
+              ? 'resolved'
+              : 'missing'
+                }
+              }
+            }
+    },
     '@/lib/canonical-customer-edit': {
       customerEditDomains:
         async (db, changes) => {
@@ -328,8 +387,18 @@ async function expectBlocked(
 
   ok(
     canonicalInput.district === 'Pejivalle',
-    'frozen source alias resolved upstream'
+    'canonical geography resolution supplies canonical district'
   )
+
+  geographyFailure = true
+
+    await expectBlocked(
+      baseRaw('House'),
+      'Exact geographic identity is unresolved.',
+      'unresolved canonical geography'
+    )
+
+    geographyFailure = false
 
   const condo = baseRaw('Condo')
   condo.raw_property_area = ''

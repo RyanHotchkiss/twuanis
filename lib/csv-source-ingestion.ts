@@ -1,6 +1,7 @@
 import 'server-only'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { customerEditDomains } from '@/lib/canonical-customer-edit'
+import { resolveListingGeography } from '@/lib/geography/resolve-listing-geography'
 
 export function csvEvidenceEnvelope(row: Record<string, unknown>) {
   if(typeof row.source_observation_input!=='string'||typeof row.unresolved_normalizer_review!=='string')throw Error('Original observation evidence is required; historical CSV cannot be promoted.')
@@ -73,23 +74,30 @@ export async function ingestCsvObservation(
       )
     }
 
-    const changes: Record<string, unknown> = {
-      property_type: raw.property_type,
-      province: raw.province,
-      canton: raw.canton,
-      district: raw.district ?? null
+    const geography =
+      await resolveListingGeography({
+        supabase: admin,
+        province: raw.province,
+        canton: raw.canton,
+        district: raw.district
+      })
+
+    if (
+      !geography.province ||
+      !geography.canton
+    ) {
+      throw Error(
+        'Exact geographic identity is unresolved.'
+      )
     }
 
-    /*
-     * Frozen source alias upstream of exact
-     * parent-scoped DTA resolution.
-     */
-    if (
-      raw.province === 'Cartago' &&
-      raw.canton === 'Jiménez' &&
-      raw.district === 'Pejibaye'
-    ) {
-      changes.district = 'Pejivalle'
+    const changes: Record<string, unknown> = {
+      property_type: raw.property_type,
+      province: geography.province.term_name,
+      canton: geography.canton.term_name,
+      district:
+        geography.district?.term_name ??
+        null
     }
 
     /*
