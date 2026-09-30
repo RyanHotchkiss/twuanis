@@ -646,10 +646,15 @@ const output =
   Papa.unparse(normalized)
 
 const outputFile =
-  inputFile.replace(
-    '-raw.csv',
-    '-normalized.csv'
-  )
+  inputFile
+    .replace(
+      '-raw-with-whatsapp.csv',
+      '-normalized.csv'
+    )
+    .replace(
+      '-raw.csv',
+      '-normalized.csv'
+    )
 
 fs.writeFileSync(
   outputFile,

@@ -22,7 +22,7 @@ async function clickWhatsapp(page) {
     '.ActionLeadButtons-whatsapp button, button:has-text("WhatsApp"), button:has-text("Whatsapp")'
   ).first()
 
-  await button.click({ timeout: 10000 })
+  await button.click({ timeout: 5000 })
 }
 
 async function submitLeadFormIfVisible(page) {
@@ -40,16 +40,42 @@ async function submitLeadFormIfVisible(page) {
 }
 
 async function extractWhatsapp(page) {
-  const text = await page.evaluate(() => {
-    const candidates = Array.from(document.querySelectorAll('[role="dialog"], .modal, .fixed, body'))
-    return candidates.map(el => el.innerText || '').join('\n')
-  })
+      const text = await page.evaluate(() => {
+        const candidates =
+          Array.from(
+            document.querySelectorAll(
+              '[role="dialog"], .modal, .fixed'
+            )
+          )
 
-  const match =
-    text.match(/\+506\s?\d{4}\s?\d{4}/) ||
-    text.match(/\+506\d{8}/)
+        return candidates
+          .map(el => el.innerText || '')
+          .join('\n')
+      })
 
-  return match ? match[0].replace(/\s+/g, '') : ''
+      const match =
+        text.match(
+          /\+\d[\d\s()-]{7,18}\d/
+        )
+
+      if (!match) {
+        return ''
+      }
+
+      return match[0]
+        .replace(/[^\d+]/g, '')
+    }
+
+async function isWhatsappDisabled(page) {
+  const text =
+    await page.locator('body')
+      .innerText()
+      .catch(() => '')
+
+  return (
+    /WhatsApp\s+Deshabilitado/i.test(text) ||
+    /contacto\s+por\s+WhatsApp\s+deshabilitado/i.test(text)
+  )
 }
 
 async function main() {
@@ -89,14 +115,43 @@ async function main() {
       })
 
       await clickWhatsapp(page)
-      await sleep(1000)
 
-      await submitLeadFormIfVisible(page)
+          for (let attempt = 0; attempt < 10; attempt++) {
+            whatsapp =
+              await extractWhatsapp(page)
 
-      await clickWhatsapp(page).catch(() => {})
-      await sleep(1000)
+            if (whatsapp) {
+              break
+            }
 
-      whatsapp = await extractWhatsapp(page)
+            if (await isWhatsappDisabled(page)) {
+              break
+            }
+
+            await sleep(200)
+          }
+
+          if (
+            !whatsapp &&
+            !(await isWhatsappDisabled(page))
+          ) {
+            await submitLeadFormIfVisible(page)
+
+            for (let attempt = 0; attempt < 10; attempt++) {
+              whatsapp =
+                await extractWhatsapp(page)
+
+              if (whatsapp) {
+                break
+              }
+
+              if (await isWhatsappDisabled(page)) {
+                break
+              }
+
+              await sleep(200)
+            }
+          }
 
       console.log('Found:', whatsapp || 'NONE')
     } catch (error) {

@@ -336,21 +336,11 @@ function extractRawParking(insightAttributes) {
 }
 
 function extractAreaFromDescription(description, patterns) {
-  for (const pattern of patterns) {
-    const match = String(description || '').match(pattern)
-    if (match?.[1]) {
-      return `${match[1].replace(',', '.')} m²`
-    }
-  }
-  return ''
-}
-
-function extractAreaFromDescription(description, patterns) {
       for (const pattern of patterns) {
         const match = String(description || '').match(pattern)
 
         if (match?.[1]) {
-          return cleanAreaNumber(match[1])
+          return cleanExactAreaEvidence(match[1])
         }
       }
 
@@ -390,11 +380,13 @@ function extractRawPropertyArea(detailAttributes) {
   return findAttributeValue(
     detailAttributes,
     [
-      'Lot Size',
-      'Tamaño del lote',
-      'Tamano del lote',
-      'Terreno',
-      'Property Area'
+       'Área total',
+        'Area total',
+        'Lot Size',
+        'Tamaño del lote',
+        'Tamano del lote',
+        'Terreno',
+        'Property Area'
     ]
   )
 }
@@ -701,20 +693,102 @@ function resolveRentPriceIdentity({
 }
 
 
-function extractFlightAd(html) {
-  const match = html.match(/"ad":(\{.*?\}),"googleMapsApiKey"/s)
-  if (!match) return null
+function extractFlightAd(html, sourceListingId) {
+      const decoded =
+        String(html || '')
+          .replace(/\\"/g, '"')
+          .replace(/\\u0026/g, '&')
 
-  try {
-    return JSON.parse(
-      match[1]
-        .replace(/\\"/g, '"')
-        .replace(/\\u0026/g, '&')
-    )
-  } catch {
-    return null
-  }
-}
+      const marker =
+        `"id":"${sourceListingId}"`
+
+      const idIndex =
+        decoded.indexOf(marker)
+
+      if (idIndex === -1) {
+        return null
+      }
+
+      /*
+      * Find the target ad object containing this exact
+      * source listing ID. Related ads may contain their
+      * own square/lotSize values, so extraction MUST
+      * remain bound to sourceListingId.
+      */
+      const adStart =
+        decoded.lastIndexOf(
+          '"ad":{',
+          idIndex
+        )
+
+      if (adStart === -1) {
+        return null
+      }
+
+      const objectStart =
+        adStart + '"ad":'.length
+
+      let depth = 0
+      let inString = false
+      let escaped = false
+
+      for (
+        let i = objectStart;
+        i < decoded.length;
+        i++
+      ) {
+        const char = decoded[i]
+
+        if (escaped) {
+          escaped = false
+          continue
+        }
+
+        if (char === '\\') {
+          escaped = true
+          continue
+        }
+
+        if (char === '"') {
+          inString = !inString
+          continue
+        }
+
+        if (inString) {
+          continue
+        }
+
+        if (char === '{') {
+          depth++
+          continue
+        }
+
+        if (char === '}') {
+          depth--
+
+          if (depth === 0) {
+            try {
+              const ad =
+                JSON.parse(
+                  decoded.slice(
+                    objectStart,
+                    i + 1
+                  )
+                )
+
+              return String(ad?.id) ===
+                String(sourceListingId)
+                  ? ad
+                  : null
+            } catch {
+              return null
+            }
+          }
+        }
+      }
+
+      return null
+    }
 
 function extractProjectSquareFromHtml(html) {
       const matches = [
@@ -753,6 +827,21 @@ function validRoomCount(value) {
 
     return ''
   }
+
+function usesConstructionAreaOnly(propertyType) {
+  const normalized =
+    normalizeText(propertyType)
+
+  return (
+    normalized === 'apartamento' ||
+    normalized === 'apartamentos' ||
+    normalized === 'condominio' ||
+    normalized === 'condominios' ||
+    normalized === 'locales comerciales y bodegas' ||
+    normalized === 'alquiler de oficinas'
+  )
+}
+
 function cleanAreaNumber(value) {
   let text =
     String(value || '')
@@ -852,7 +941,16 @@ function cleanAreaNumber(value) {
   return String(parsed)
 }
 
+function cleanExactAreaEvidence(value) {
+  const number =
+    cleanAreaNumber(value)
 
+  if (!number) {
+    return ''
+  }
+
+  return `${number} m²`
+}
 
 async function scrapeListing({
   browser,
@@ -871,7 +969,14 @@ async function scrapeListing({
   const observation_id = crypto.randomUUID()
   const observed_at = new Date().toISOString()
 
-const flightAd = extractFlightAd(html)
+    const sourceListingId =
+      createSourceListingId(listingUrl)
+
+    const flightAd =
+      extractFlightAd(
+        html,
+        sourceListingId
+      )
 const sourcePropertyType = extractSourcePropertyType(html, createSourceListingId(listingUrl))
 
   const $ =
@@ -899,6 +1004,8 @@ const sourcePropertyType = extractSourcePropertyType(html, createSourceListingId
     extractTitle($, schema)
   const description =
     extractDescription(schema)
+  const evidenceDescription =
+    clean(flightAd?.description || description)
   const insightAttributes =
     extractInsightAttributes($)
   const detailAttributes =
@@ -935,10 +1042,10 @@ const sourcePropertyType = extractSourcePropertyType(html, createSourceListingId
   ])
 
 const rawConstructionAreaResult =
-  flightAd?.square
+  cleanExactAreaEvidence(flightAd?.square)
     ? {
         value:
-          cleanAreaNumber(
+          cleanExactAreaEvidence(
             flightAd.square
           ),
         source:
@@ -956,7 +1063,7 @@ const rawConstructionAreaResult =
         if (detailValue) {
           return {
             value:
-              cleanAreaNumber(
+              cleanExactAreaEvidence(
                 detailValue
               ),
             source:
@@ -975,7 +1082,7 @@ const rawConstructionAreaResult =
         if (insightValue) {
           return {
             value:
-              cleanAreaNumber(
+              cleanExactAreaEvidence(
                 insightValue
               ),
             source:
@@ -987,17 +1094,21 @@ const rawConstructionAreaResult =
 
         const descriptionValue =
           extractAreaFromDescription(
-            description,
+            evidenceDescription,
             [
               /Construcción:\s*([\d,.]+)\s*m²?/i,
               /Construccion:\s*([\d,.]+)\s*m²?/i,
               /Construcci[oó]n:\s*([\d,.]+)\s*m2/i,
               /Área construida\s*([\d,.]+)\s*m²/i,
               /Area construida\s*([\d,.]+)\s*m²/i,
+              /[ÁA]rea constructiva\s*([\d,.]+)\s*m2?/i,
+              /([\d,.]+)\s*m²?\s+de\s+[áa]rea\s+de\s+oficina/i,
               /Area de Construcci[oó]n,\s*m2:\s*([\d,.]+)/i,
               /([\d.,]+)\s*m²?\s+de\s+construcci[oó]n/i,
               /([\d.,]+)\s*m2\s+de\s+construcci[oó]n/i,
               /([\d.,]+)\s*m²?\s+construidos/i,
+              /([\d,.]+)\s*m²?\s+de\s+espacio\s+total/i,
+              /construcci[oó]n\s+de\s+([\d,.]+)\s*m²?/i,
               /Construcci[oó]n\s+\d{4}\s*[–-]\s*([\d,.]+)\s*m²?/i
             ]
           )
@@ -1013,7 +1124,50 @@ const rawConstructionAreaResult =
           }
         }
 
-        
+        if (usesConstructionAreaOnly(sourcePropertyType)) {
+          const genericArea =
+            extractAreaFromDescription(
+              evidenceDescription,
+              [
+                /(?:Área|Area)\s*:?\s*([\d,.]+)\s*m²?/i,
+                /(?:Área|Area)\s*:?\s*([\d,.]+)\s*m2/i,
+                /(?:Tamaño|Tamano)\s*:?\s*([\d,.]+)\s*m²?/i,
+                /(?:Tamaño|Tamano)\s*:?\s*([\d,.]+)\s*m2/i,
+                /(?:cuenta\s+con|ofrece)\s+([\d,.]+)\s*m²?/i
+              ]
+            )
+
+          if (genericArea) {
+              return {
+                value:
+                  genericArea,
+                source:
+                  'description',
+                field:
+                  'generic_area_construction_only_property_type'
+              }
+            }
+          }
+
+          const titleConstruction =
+            extractAreaFromDescription(
+              title,
+              [
+                /([\d,.]+)\s*m²?\s*construcci[oó]n/i,
+                /([\d,.]+)\s*m2\s*construcci[oó]n/i
+              ]
+            )
+
+          if (titleConstruction) {
+            return {
+              value:
+                titleConstruction,
+              source:
+                'title',
+              field:
+                'explicit_construction'
+            }
+          }
 
         return {
           value:
@@ -1032,7 +1186,7 @@ const rawConstructionArea =
   flightAd?.lotSize
     ? {
         value:
-          cleanAreaNumber(
+          cleanExactAreaEvidence(
             flightAd.lotSize
           ),
         source:
@@ -1041,9 +1195,27 @@ const rawConstructionArea =
           'lotSize'
       }
     : (() => {
+        const detailValue =
+          extractRawPropertyArea(
+            detailAttributes
+          )
+
+        if (detailValue) {
+          return {
+            value:
+              cleanExactAreaEvidence(
+                detailValue
+              ),
+            source:
+              'detail_attribute',
+            field:
+              'explicit_land'
+          }
+        }
+
         const descriptionValue =
           extractAreaFromDescription(
-            description,
+            evidenceDescription,
             [
               /(?:Área|Area)\s+de\s+lote[:\s,]*([\d.,]+)\s*m²?/i,
               /(?:Área|Area)\s+del\s+lote[:\s,]*([\d.,]+)\s*m²?/i,
@@ -1074,15 +1246,10 @@ const rawConstructionArea =
           }
         }
 
-        
-
         return {
-          value:
-            '',
-          source:
-            '',
-          field:
-            ''
+          value: '',
+          source: '',
+          field: ''
         }
       })()
 
@@ -1127,15 +1294,12 @@ const rawPropertyArea =
   source_url: listingUrl,
   transaction_type: TRANSACTION_TYPE,
   listing_status: 'active',
-
   province: location.province,
   canton: location.canton,
   district: location.district,
   raw_breadcrumbs: location.raw_breadcrumbs,
-
   title,
-  description: clean(flightAd?.description || description),
-
+  description: evidenceDescription,
   property_type: sourcePropertyType,
   raw_property_type: sourcePropertyType,
 
@@ -1416,7 +1580,7 @@ console.log('FINISHED LISTING:', listingUrl)
     const fileName =
       path.join(
         os.homedir(),
-        'Downloads',
+        'Desktop',
         `${regionSlug}-rent-raw.csv`
       )
 
