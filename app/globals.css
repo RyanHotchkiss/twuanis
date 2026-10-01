@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
- --background:#0a0a0a;--ih-background-image:url('/images/dark-mode-IH-bg.png'); --foreground:#ededed; --ih-input-label:#d4af37; --surface:#131313;--surface-raised:#202020;--muted:#b8b8b8;--border:#666;--input:#1c1c1c;--shadow:rgba(0,0,0,.35);--accent-text:#f4db87;--evidence-surface:#19170f;--error-text:#ffb4a5;--success-text:#7ee2a8;color-scheme:dark;
+ --background:#0a0a0a;--ih-background-image:url('/images/dark-mode-IH-bg.png'); --foreground:#ededed; --ih-input-label:#d4af37; --surface:#131313;--surface-raised:#202020;--muted:#b8b8b8;--border:#666;--input:#1c1c1c;--shadow:rgba(0,0,0,.35);--accent-text:#f4db87;--evidence-surface:#19170f;--analysis-evidence-surface:rgba(10,10,10,.90);--error-text:#ffb4a5;--success-text:#7ee2a8;color-scheme:dark;
 }
 
 @theme inline {
