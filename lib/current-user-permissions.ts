@@ -1,10 +1,44 @@
 import 'server-only'
-import { createServerSupabaseClient } from './supabase-server'
+
+import { createClient } from '@supabase/supabase-js'
 import type { UserPermissionContext } from './permissions'
 
-export async function resolveCurrentUserPermissionContext():
-  Promise<UserPermissionContext> {
+function createAuthenticatedSupabaseClient(
+  accessToken: string
+) {
+  const supabaseUrl =
+    process.env.NEXT_PUBLIC_SUPABASE_URL
 
+  const supabaseAnonKey =
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error(
+      'Supabase environment variables are not configured.'
+    )
+  }
+
+  return createClient(
+    supabaseUrl,
+    supabaseAnonKey,
+    {
+      global: {
+        headers: {
+          Authorization:
+            `Bearer ${accessToken}`
+        }
+      },
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false
+      }
+    }
+  )
+}
+
+export async function resolveCurrentUserPermissionContext(
+  accessToken: string
+): Promise<UserPermissionContext> {
   const unresolved: UserPermissionContext = {
     authenticated: false,
     premium: false,
@@ -12,81 +46,58 @@ export async function resolveCurrentUserPermissionContext():
     roles: []
   }
 
-  try {
-    const client =
-      await createServerSupabaseClient()
+  if (!accessToken) {
+    return unresolved
+  }
 
-    const {
-      data,
-      error
-    } =
-      await client.auth.getUser()
-
-    if (
-      error ||
-      !data.user ||
-      typeof data.user.id !== 'string' ||
-      !data.user.id
-    ) {
-      return {
-        ...unresolved,
-        roles: ['buyer']
-      }
-    }
-
-    const {
-      data: administrator,
-      error: administratorError
-    } =
-      await client.rpc(
-        'is_current_user_administrator'
-      )
-
-    if (administratorError) {
-      return {
-        ...unresolved,
-        authenticated: true,
-        roles: ['seller']
-      }
-    }
-
-    console.warn(
-      '[permissions] administrator RPC result',
-      {
-        userId: data.user.id,
-        administrator
-      }
+  const client =
+    createAuthenticatedSupabaseClient(
+      accessToken
     )
 
-    if (administrator === true) {
-      return {
-        authenticated: true,
-        premium: true,
-        enterprise: true,
-        roles: [
-          'buyer',
-          'seller',
-          'agent',
-          'brokerage',
-          'developer'
-        ]
-      }
-    }
+  const {
+    data: {
+      user
+    },
+    error: userError
+  } =
+    await client.auth.getUser(
+      accessToken
+    )
 
-    // Current subscription/package sources do not yet establish
-    // Premium/Enterprise presentation equivalence.
-    // No authoritative MarketHub role assignment source is
-    // currently connected either.
+  if (userError || !user) {
+    return unresolved
+  }
+
+  const {
+    data: administrator,
+    error: administratorError
+  } =
+    await client.rpc(
+      'is_current_user_administrator'
+    )
+
+  if (administratorError) {
+    throw administratorError
+  }
+
+  if (administrator === true) {
     return {
-      ...unresolved,
-      authenticated: true
+      authenticated: true,
+      premium: true,
+      enterprise: true,
+      roles: [
+        'buyer',
+        'seller',
+        'agent',
+        'brokerage',
+        'developer'
+      ]
     }
-  } catch (error) {
-    console.error(
-      '[permissions] resolution failed',
-      error
-    )
+  }
 
-    throw error
+  return {
+    ...unresolved,
+    authenticated: true
   }
 }
