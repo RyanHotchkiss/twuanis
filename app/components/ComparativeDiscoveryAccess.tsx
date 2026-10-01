@@ -14,34 +14,79 @@ export function ComparativeDiscoveryPermissionSurface({ user, language, restrict
   </PermissionGate>
 }
 
-export default function ComparativeDiscoveryAccess({ language, children }: { language: 'en' | 'es'; children?:ReactNode }) {
-  const [user, setUser] = useState<UserPermissionContext>({ authenticated: false, premium: false, enterprise: false, roles: [] })
+export default function ComparativeDiscoveryAccess({
+  language,
+  children
+}: {
+  language: 'en' | 'es'
+  children?: ReactNode
+}) {
+  const [user, setUser] =
+    useState<UserPermissionContext>({
+      authenticated: false,
+      premium: false,
+      enterprise: false,
+      roles: []
+    })
+
+  const [diagnostic, setDiagnostic] =
+    useState('WAITING FOR SERVER ACTION')
 
   useEffect(() => {
     let active = true
-    loadCurrentUserPermissionContext().then(context => { if (active) setUser(context) }).catch(() => {
-      if (active) setUser({ authenticated: false, premium: false, enterprise: false, roles: [] })
-    })
-    return () => { active = false }
-  }, [])
-  return (
-  <>
-    <pre style={{
-      position: 'relative',
-      zIndex: 9999,
-      padding: 12,
-      background: '#000',
-      color: '#0f0'
-    }}>
-      {JSON.stringify(user, null, 2)}
-    </pre>
 
-    <ComparativeDiscoveryPermissionSurface
-      user={user}
-      language={language}
-    >
-      {children}
-    </ComparativeDiscoveryPermissionSurface>
-  </>
-)
+    loadCurrentUserPermissionContext()
+      .then(context => {
+        if (!active) return
+
+        setUser(context)
+        setDiagnostic(
+          `SERVER ACTION RETURNED:\n${JSON.stringify(
+            context,
+            null,
+            2
+          )}`
+        )
+      })
+      .catch(error => {
+        if (!active) return
+
+        setDiagnostic(
+          `SERVER ACTION REJECTED:\n${
+            error instanceof Error
+              ? error.message
+              : String(error)
+          }`
+        )
+      })
+
+    return () => {
+      active = false
+    }
+  }, [])
+
+  return (
+    <>
+      <pre
+        style={{
+          position: 'relative',
+          zIndex: 9999,
+          padding: 12,
+          background: '#000',
+          color: '#0f0',
+          fontSize: 12,
+          whiteSpace: 'pre-wrap'
+        }}
+      >
+        {diagnostic}
+      </pre>
+
+      <ComparativeDiscoveryPermissionSurface
+        user={user}
+        language={language}
+      >
+        {children}
+      </ComparativeDiscoveryPermissionSurface>
+    </>
+  )
 }
