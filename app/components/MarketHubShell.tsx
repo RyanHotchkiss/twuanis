@@ -672,20 +672,38 @@ export default function MarketHubShell({
         .marketHubTheme {
           min-height: 100vh;
 
-          background:
+          background-color:
             var(--hub-bg);
+
+          background-image:
+            var(--hub-background-image);
+
+          background-size:
+            cover;
+
+          background-position:
+            center top;
+
+          background-repeat:
+            no-repeat;
+
+          background-attachment:
+            fixed;
 
           color:
             var(--hub-text);
 
           transition:
-            background 250ms ease,
+            background-color 250ms ease,
             color 250ms ease;
         }
 
 
         .marketHubTheme-dark {
           --hub-bg: #0a0a0a;
+
+          --hub-background-image:
+          url('/images/market-hub-dark.webp');
 
           --hub-rail-start: #101010;
           --hub-rail-end: #0d0d0d;
@@ -716,6 +734,9 @@ export default function MarketHubShell({
 
         .marketHubTheme-light {
           --hub-bg: #f7f7f4;
+
+          --hub-background-image:
+          url('/images/market-hub-light.webp');
 
           --hub-rail-start: #ffffff;
           --hub-rail-end: #f1f1ed;

@@ -532,10 +532,7 @@ const intelligenceTabMap:
 
 const page = {
   minHeight:
-    '100vh',
-
-  background:
-    '#0a0a0a'
+    '100vh'
 }
 
 
