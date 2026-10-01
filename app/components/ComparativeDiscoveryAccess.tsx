@@ -16,6 +16,7 @@ export function ComparativeDiscoveryPermissionSurface({ user, language, restrict
 
 export default function ComparativeDiscoveryAccess({ language, children }: { language: 'en' | 'es'; children?:ReactNode }) {
   const [user, setUser] = useState<UserPermissionContext>({ authenticated: false, premium: false, enterprise: false, roles: [] })
+
   useEffect(() => {
     let active = true
     loadCurrentUserPermissionContext().then(context => { if (active) setUser(context) }).catch(() => {
@@ -23,5 +24,24 @@ export default function ComparativeDiscoveryAccess({ language, children }: { lan
     })
     return () => { active = false }
   }, [])
-  return <ComparativeDiscoveryPermissionSurface user={user} language={language}>{children}</ComparativeDiscoveryPermissionSurface>
+  return (
+  <>
+    <pre style={{
+      position: 'relative',
+      zIndex: 9999,
+      padding: 12,
+      background: '#000',
+      color: '#0f0'
+    }}>
+      {JSON.stringify(user, null, 2)}
+    </pre>
+
+    <ComparativeDiscoveryPermissionSurface
+      user={user}
+      language={language}
+    >
+      {children}
+    </ComparativeDiscoveryPermissionSurface>
+  </>
+)
 }
