@@ -768,7 +768,7 @@ export default function MarketHubShell({
           min-height: calc(100vh - 72px);
           display: grid;
           grid-template-columns: 228px minmax(0, 1fr);
-          background: var(--hub-bg);
+          background: transparent;
           color: var(--hub-text);
         }
 
