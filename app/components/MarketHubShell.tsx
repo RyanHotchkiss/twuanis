@@ -719,6 +719,12 @@ export default function MarketHubShell({
           --hub-nav-hover: #171717;
           --hub-nav-active: #1b1b1b;
 
+          --hub-nav-surface:
+            rgba(15, 15, 15, .92);
+
+          --hub-nav-surface-border:
+            rgba(199, 164, 75, .18);
+
           --hub-nav-text: #8c8c8c;
           --hub-nav-hover-text: #dddddd;
 
@@ -752,6 +758,12 @@ export default function MarketHubShell({
           --hub-nav-hover: #ecece7;
           --hub-nav-active: #e3e3dc;
 
+          --hub-nav-surface:
+            rgba(255, 255, 252, .92);
+
+          --hub-nav-surface-border:
+            rgba(199, 164, 75, .22);
+
           --hub-nav-text: #666666;
           --hub-nav-hover-text: #111111;
 
@@ -781,11 +793,7 @@ export default function MarketHubShell({
           flex-direction: column;
           padding: 28px 16px 18px;
           background:
-            linear-gradient(
-              180deg,
-              var(--hub-rail-start) 0%,
-              var(--hub-rail-end) 100%
-            );
+            transparent;
 
           border-right:
             1px solid var(--hub-border);
@@ -827,7 +835,7 @@ export default function MarketHubShell({
 
         .marketHubNavigation {
           display: grid;
-          gap: 4px;
+          gap: 8px;
         }
 
         .marketHubNavigationItem {
@@ -840,9 +848,15 @@ export default function MarketHubShell({
           gap: 9px;
           padding: 0 11px;
           color: var(--hub-nav-text);
-          background: transparent;
-          border: 0;
-          border-radius: 9px;
+          background:
+            var(--hub-nav-surface);
+
+          border:
+            1px solid
+            var(--hub-nav-surface-border);
+
+          border-radius:
+            10px;
           font-family: inherit;
           font-size: 13px;
           text-align: left;
