@@ -31,6 +31,7 @@
 @media(max-width:760px){.sidebarArrowPosition{display:none}
 .sidebarRegion{
   padding-top:0;
+    padding-bottom:0;
   position:static;
   max-height:none;
   overflow-y:visible;

@@ -323,7 +323,7 @@ const isSpanish =
       style={
         manuallyExpanded
           ? floatingTopBarShell(theme)
-          : stickyShell(theme)
+          : stickyShell(theme, isMobile)
       }
     >
 
@@ -637,16 +637,17 @@ const isSpanish =
             : 'ES'}
           </span>
 
-          <span
-            style={labelStyle(
-              labelVisible('language'),
-              isMobile
-            )}
-          >
-            {isSpanish
-            ? 'English'
-            : 'Español'}
-          </span>
+          {!isMobile && (
+            <span
+              style={labelStyle(
+                labelVisible('language')
+              )}
+            >
+              {isSpanish
+                ? 'English'
+                : 'Español'}
+            </span>
+          )}
         </Link>
 
         {/* APPEARANCE */}
@@ -714,16 +715,17 @@ const isSpanish =
               ◐
             </span>
 
-            <span
-              style={labelStyle(
-                labelVisible('appearance'),
-                isMobile
-              )}
-            >
-              {theme === 'dark'
-                ? (isSpanish?'Modo claro':'Light Mode')
-                : (isSpanish?'Modo oscuro':'Dark Mode')}
-            </span>
+            {!isMobile && (
+              <span
+                style={labelStyle(
+                  labelVisible('appearance')
+                )}
+              >
+                {theme === 'dark'
+                  ? (isSpanish ? 'Modo claro' : 'Light Mode')
+                  : (isSpanish ? 'Modo oscuro' : 'Dark Mode')}
+              </span>
+            )}
           </button>
 
             </nav>
@@ -749,12 +751,15 @@ export default function TopBar(
 
 
 const stickyShell = (
-  theme: 'dark' | 'light'
-) => ({
+    theme: 'dark' | 'light',
+    isMobile: boolean
+  ) => ({
   position:
     'sticky' as const,
 
-  top: '1rem',
+  top: isMobile
+    ? '1.5rem'
+    : '1rem',
 
   zIndex: 3000,
 
