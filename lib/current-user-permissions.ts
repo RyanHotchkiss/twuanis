@@ -48,7 +48,7 @@ export async function resolveCurrentUserPermissionContext():
       throw administratorError
     }
 
-    console.info(
+    console.warn(
       '[permissions] administrator RPC result',
       {
         userId: data.user.id,
