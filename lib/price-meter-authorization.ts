@@ -75,27 +75,44 @@ export async function authorizePriceMeterIntelligenceExecution():
    * Never evaluate this gate with the service-role client.
    */
 
-  const {
-    data: entitlementData,
-    error: entitlementError
-  } =
-    await supabase.rpc(
-      'current_user_has_entitlement',
-      {
-        requested_entitlement_slug:
-          PRICE_METER_INTELLIGENCE_ENTITLEMENT
-      }
-    )
+    const [
+    entitlementResult,
+    administratorResult
+  ] =
+    await Promise.all([
+      supabase.rpc(
+        'current_user_has_entitlement',
+        {
+          requested_entitlement_slug:
+            PRICE_METER_INTELLIGENCE_ENTITLEMENT
+        }
+      ),
+      supabase.rpc(
+        'is_current_user_administrator'
+      )
+    ])
 
 
-  if (entitlementError) {
-    throw entitlementError
+  if (entitlementResult.error) {
+    throw entitlementResult.error
   }
 
 
+  if (administratorResult.error) {
+    throw administratorResult.error
+  }
+
+
+  const commerciallyAuthorized =
+    entitlementResult.data === true
+
+  const administrativelyAuthorized =
+    administratorResult.data === true
+
+
   if (
-    entitlementData !==
-      true
+    !commerciallyAuthorized &&
+    !administrativelyAuthorized
   ) {
     throw new PriceMeterComparableAuthorizationError()
   }
