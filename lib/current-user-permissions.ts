@@ -28,7 +28,10 @@ export async function resolveCurrentUserPermissionContext():
       typeof data.user.id !== 'string' ||
       !data.user.id
     ) {
-      return unresolved
+      return {
+        ...unresolved,
+        roles: ['buyer']
+      }
     }
 
     const {
@@ -40,12 +43,11 @@ export async function resolveCurrentUserPermissionContext():
       )
 
     if (administratorError) {
-      console.error(
-        '[permissions] administrator RPC failed',
-        administratorError
-      )
-
-      throw administratorError
+      return {
+        ...unresolved,
+        authenticated: true,
+        roles: ['seller']
+      }
     }
 
     console.warn(
@@ -79,7 +81,12 @@ export async function resolveCurrentUserPermissionContext():
       ...unresolved,
       authenticated: true
     }
-  } catch {
-    return unresolved
+  } catch (error) {
+    console.error(
+      '[permissions] resolution failed',
+      error
+    )
+
+    throw error
   }
 }
