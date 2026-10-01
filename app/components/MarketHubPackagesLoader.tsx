@@ -1688,21 +1688,6 @@ export default function MarketHubPackagesLoader({
 
     loadSubscription(true)
 
-    const usageRefreshInterval =
-      window.setInterval(
-        () => {
-          loadCommercialState()
-        },
-        60000
-      )
-
-    const refreshInterval =
-      window.setInterval(
-        () => {
-          loadSubscription(false)
-        },
-        15000
-      )
 
     const handleWindowFocus = () => {
         loadSubscription(false)
@@ -1725,14 +1710,6 @@ export default function MarketHubPackagesLoader({
 
     return () => {
         active = false
-
-        window.clearInterval(
-          refreshInterval
-        )
-
-        window.clearInterval(
-          usageRefreshInterval
-        )
 
         window.removeEventListener(
           'focus',
