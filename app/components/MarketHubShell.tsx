@@ -505,6 +505,22 @@ export default function MarketHubShell({
             }
           />
 
+          {mobileMenuFloating && (
+            <button
+              type="button"
+              className="marketHubFloatingMenu"
+              onClick={() =>
+                setMobileNavigationOpen(true)
+              }
+              aria-label="Open MarketHub navigation"
+            >
+              <Menu
+                size={21}
+                strokeWidth={1.25}
+              />
+            </button>
+          )}
+
         <div className="marketHubShell">
 
         <aside
@@ -630,15 +646,9 @@ export default function MarketHubShell({
 
               <button
                 type="button"
-                className={
-                  mobileMenuFloating
-                    ? 'marketHubMobileMenu marketHubMobileMenuFloating'
-                    : 'marketHubMobileMenu'
-                }
+                className="marketHubMobileMenu"
                 onClick={() =>
-                  setMobileNavigationOpen(
-                    true
-                  )
+                  setMobileNavigationOpen(true)
                 }
                 aria-label="Open MarketHub navigation"
               >
@@ -1124,9 +1134,39 @@ export default function MarketHubShell({
           text-align: center;
         }
 
+        .marketHubFloatingMenu {
+          display: none;
+        }
+
         @media (max-width: 900px) {
           .marketHubShell {
             grid-template-columns: minmax(0, 1fr);
+          }
+
+          .marketHubFloatingMenu {
+            position: fixed;
+            top: 1rem;
+            right: calc(50% + 8px);
+            z-index: 10000;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 50px;
+            height: 50px;
+
+            color: var(--hub-text-strong);
+            background: var(--hub-control-bg);
+
+            border:
+              1px solid var(--hub-control-border);
+
+            border-radius: 18px;
+            cursor: pointer;
+
+            box-shadow:
+              0 8px 30px rgba(0, 0, 0, .18);
           }
 
           .marketHubRail {
@@ -1166,20 +1206,6 @@ export default function MarketHubShell({
             margin: 0;
 
             border-radius: 18px;
-          }
-
-          .marketHubMobileMenuFloating {
-            position: fixed;
-
-            top: 1rem;
-
-            right: calc(50% + 8px);
-            left: auto;
-
-            z-index: 10000;
-
-            box-shadow:
-              0 8px 30px rgba(0, 0, 0, .18);
           }
 
           .marketHubWorkspace {
