@@ -51,6 +51,15 @@ function TopBarContent({
   const pathname =
     usePathname()
 
+  const isHomepage =
+  pathname === '/en' ||
+  pathname === '/es'
+
+  const lightTopBarBackground =
+  isHomepage
+    ? 'rgba(255, 255, 255, .92)'
+    : 'rgba(248, 243, 229, .94)'
+
   const searchParams =
     useSearchParams()
 
@@ -286,7 +295,10 @@ const isSpanish =
 
   return (
     <div
-      style={floatingHamburgerShell(theme)}
+      style={floatingHamburgerShell(
+  theme,
+  lightTopBarBackground
+)}
     >
         <button
           type="button"
@@ -322,8 +334,15 @@ const isSpanish =
     <div
       style={
         manuallyExpanded
-          ? floatingTopBarShell(theme)
-          : stickyShell(theme, isMobile)
+          ? floatingTopBarShell(
+            theme,
+            lightTopBarBackground
+          )
+          : stickyShell(
+            theme,
+            isMobile,
+            lightTopBarBackground
+          )
       }
     >
 
@@ -751,9 +770,10 @@ export default function TopBar(
 
 
 const stickyShell = (
-    theme: 'dark' | 'light',
-    isMobile: boolean
-  ) => ({
+  theme: 'dark' | 'light',
+  isMobile: boolean,
+  lightBackground: string
+) => ({
   position:
     'sticky' as const,
 
@@ -772,9 +792,9 @@ const stickyShell = (
   padding: '.55rem .7rem',
 
   background:
-    theme === 'dark'
-      ? 'rgba(0, 0, 0, .88)'
-      : 'rgba(248, 243, 229, .94)',
+  theme === 'dark'
+    ? 'rgba(0, 0, 0, .88)'
+    : lightBackground,
 
   backdropFilter:
     'blur(14px)',
@@ -826,7 +846,8 @@ const hamburgerButton = {
 }
 
 const floatingHamburgerShell = (
-  theme: 'dark' | 'light'
+  theme: 'dark' | 'light',
+  lightBackground: string
 ) => ({
   position:
     'fixed' as const,
@@ -852,7 +873,7 @@ const floatingHamburgerShell = (
   background:
     theme === 'dark'
       ? 'rgba(0, 0, 0, .88)'
-      : 'rgba(248, 243, 229, .94)',
+      : lightBackground,
 
   backdropFilter:
     'blur(14px)',
@@ -878,7 +899,8 @@ const floatingHamburgerShell = (
 })
 
 const floatingTopBarShell = (
-  theme: 'dark' | 'light'
+  theme: 'dark' | 'light',
+  lightBackground: string
 ) => ({
   position:
     'fixed' as const,
@@ -908,9 +930,9 @@ const floatingTopBarShell = (
     '.55rem .7rem',
 
   background:
-    theme === 'dark'
-      ? 'rgba(0, 0, 0, .88)'
-      : 'rgba(248, 243, 229, .94)',
+  theme === 'dark'
+    ? 'rgba(0, 0, 0, .88)'
+    : lightBackground,
 
   backdropFilter:
     'blur(14px)',
