@@ -735,6 +735,24 @@ export default function MarketHubShell({
           --hub-control-border: #292929;
 
           --hub-empty-border: #2b2b2b;
+
+          --hub-surface-primary:
+            rgba(21, 21, 21, .96);
+
+          --hub-surface-secondary:
+            rgba(27, 27, 27, .96);
+
+          --hub-surface-tertiary:
+            rgba(18, 18, 18, .96);
+
+          --hub-surface-border:
+            #303030;
+
+          --hub-surface-text:
+            #ffffff;
+
+          --hub-surface-muted:
+            #999999;
         }
 
 
@@ -756,10 +774,11 @@ export default function MarketHubShell({
           --hub-border-soft: #ddddda;
 
           --hub-nav-hover: #ecece7;
-          --hub-nav-active: #e3e3dc;
+          --hub-nav-active:
+            rgba(239, 232, 213, .97);
 
           --hub-nav-surface:
-            rgba(255, 255, 252, .92);
+            rgba(248, 243, 229, .94);
 
           --hub-nav-surface-border:
             rgba(199, 164, 75, .22);
@@ -774,6 +793,24 @@ export default function MarketHubShell({
           --hub-control-border: #d4d4ce;
 
           --hub-empty-border: #c9c9c3;
+
+          --hub-surface-primary:
+            rgba(248, 243, 229, .96);
+
+          --hub-surface-secondary:
+            rgba(252, 248, 238, .96);
+
+          --hub-surface-tertiary:
+            rgba(239, 232, 213, .96);
+
+          --hub-surface-border:
+            rgba(113, 96, 58, .28);
+
+          --hub-surface-text:
+            #222222;
+
+          --hub-surface-muted:
+            #68645c;
         }
         .marketHubShell {
           width: 100%;
