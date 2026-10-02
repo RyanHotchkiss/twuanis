@@ -23,6 +23,10 @@ function VisibleHomeMark() {
 
   const homeHref = isSpanish ? '/es' : '/en'
 
+  const isHomepage =
+    pathname === '/en' ||
+    pathname === '/es'
+
   const logoSrc =
     theme === 'light'
       ? '/images/black-20S-logo.svg'
@@ -41,6 +45,8 @@ function VisibleHomeMark() {
       href={homeHref}
       className="floating-home-mark"
       aria-label={isSpanish ? 'Inicio' : 'Home'}
+      data-theme={theme}
+      data-homepage={isHomepage}
     >
       <span
         className="floating-home-logo"
