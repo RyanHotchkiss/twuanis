@@ -1148,8 +1148,25 @@ export default function MarketHubShell({
           }
 
           .marketHubMobileMenu {
-            display: inline-flex;
-          }
+              position: fixed;
+
+              top: 1rem;
+              left: calc(50% + 42px);
+
+              z-index: 10000;
+
+              display: inline-flex;
+
+              width: 50px;
+              height: 50px;
+
+              margin: 0;
+
+              border-radius: 18px;
+
+              box-shadow:
+                0 8px 30px rgba(0, 0, 0, .18);
+            }
 
           .marketHubWorkspace {
             padding:
