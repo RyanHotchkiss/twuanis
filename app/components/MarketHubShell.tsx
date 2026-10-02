@@ -842,7 +842,27 @@ export default function MarketHubShell({
           align-items: flex-start;
           justify-content: space-between;
           gap: 12px;
-          padding: 0 10px 28px;
+
+          margin:
+            0 0 20px;
+
+          padding:
+            14px 16px;
+
+          background:
+            var(--hub-nav-surface);
+
+          border:
+            1px solid var(--hub-nav-surface-border);
+
+          border-radius:
+            14px;
+
+          backdrop-filter:
+            blur(8px);
+
+          -webkit-backdrop-filter:
+            blur(8px);
         }
 
         .marketHubBrand {
@@ -974,10 +994,31 @@ export default function MarketHubShell({
         }
 
         .marketHubWorkspaceHeader {
-          width: 100%;
-          max-width: 1500px;
-          margin: 0 auto;
-        }
+            width: 100%;
+            max-width: 1500px;
+            margin: 0 auto;
+
+            padding:
+              18px 22px;
+
+            background:
+              var(--hub-nav-surface);
+
+            border:
+              1px solid var(--hub-nav-surface-border);
+
+            border-radius:
+              16px;
+
+            backdrop-filter:
+              blur(8px);
+
+            -webkit-backdrop-filter:
+              blur(8px);
+
+            box-sizing:
+              border-box;
+          }
 
         .marketHubWorkspaceIdentity {
           display: flex;
@@ -1015,7 +1056,7 @@ export default function MarketHubShell({
           width: 100%;
           max-width: 1500px;
           height: 1px;
-          margin: 28px auto 0;
+          margin: 20px auto 0;
           background:
           linear-gradient(
             90deg,
