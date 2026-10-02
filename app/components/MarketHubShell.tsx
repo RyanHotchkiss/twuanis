@@ -2,6 +2,7 @@
 import {useSiteTheme} from '@/app/components/theme/ThemeProvider'
 
 import {
+  useEffect,
   useState,
   type ReactNode
 } from 'react'
@@ -96,7 +97,61 @@ export default function MarketHubShell({
       false
     )
 
+  const [
+      mobileMenuFloating,
+      setMobileMenuFloating
+    ] =
+      useState(false)
+
   const {theme,setTheme} = useSiteTheme()
+
+  useEffect(() => {
+      let lastScrollY =
+        window.scrollY
+
+      function handleScroll() {
+        const currentScrollY =
+          window.scrollY
+
+        if (currentScrollY <= 12) {
+          setMobileMenuFloating(false)
+
+          lastScrollY =
+            currentScrollY
+
+          return
+        }
+
+        if (
+          currentScrollY >
+          lastScrollY + 6
+        ) {
+          setMobileMenuFloating(true)
+        }
+
+        if (
+          currentScrollY <
+          lastScrollY - 6
+        ) {
+          setMobileMenuFloating(false)
+        }
+
+        lastScrollY =
+          currentScrollY
+      }
+
+      window.addEventListener(
+        'scroll',
+        handleScroll,
+        { passive: true }
+      )
+
+      return () =>
+        window.removeEventListener(
+          'scroll',
+          handleScroll
+        )
+    }, [])
 
   const labels =
     language === 'es'
@@ -614,9 +669,19 @@ export default function MarketHubShell({
           />
         )}
 
-         <button
+        <section className="marketHubWorkspace">
+
+          <header className="marketHubWorkspaceHeader">
+
+            <div className="marketHubWorkspaceIdentity">
+
+              <button
                 type="button"
-                className="marketHubMobileMenu"
+                className={
+                  mobileMenuFloating
+                    ? 'marketHubMobileMenu marketHubMobileMenuFloating'
+                    : 'marketHubMobileMenu'
+                }
                 onClick={() =>
                   setMobileNavigationOpen(
                     true
@@ -629,12 +694,6 @@ export default function MarketHubShell({
                   strokeWidth={1.25}
                 />
               </button>
-
-        <section className="marketHubWorkspace">
-
-          <header className="marketHubWorkspaceHeader">
-
-            <div className="marketHubWorkspaceIdentity">
 
               <div>
                 <div className="marketHubWorkspaceEyebrow">
@@ -1146,13 +1205,6 @@ export default function MarketHubShell({
           }
 
           .marketHubMobileMenu {
-            position: fixed;
-
-            top: 1rem;
-            left: calc(50% + 48px);
-
-            z-index: 10000;
-
             display: inline-flex;
 
             width: 50px;
@@ -1161,6 +1213,17 @@ export default function MarketHubShell({
             margin: 0;
 
             border-radius: 18px;
+          }
+
+          .marketHubMobileMenuFloating {
+            position: fixed;
+
+            top: 1rem;
+
+            right: calc(50% + 8px);
+            left: auto;
+
+            z-index: 10000;
 
             box-shadow:
               0 8px 30px rgba(0, 0, 0, .18);
