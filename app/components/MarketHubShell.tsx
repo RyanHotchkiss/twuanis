@@ -1176,6 +1176,9 @@ export default function MarketHubShell({
             left: 0;
             width: min(290px, 86vw);
             height: 100dvh;
+
+            z-index: 10002;
+
             transform: translateX(-105%);
             box-shadow: 24px 0 60px rgba(0, 0, 0, .45);
             transition: transform 180ms ease;
@@ -1195,7 +1198,7 @@ export default function MarketHubShell({
             display: block;
             background: rgba(0, 0, 0, .62);
             border: 0;
-            z-index: 30;
+            z-index: 10001;
           }
 
           .marketHubMobileMenu {
