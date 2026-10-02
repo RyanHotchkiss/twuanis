@@ -614,14 +614,7 @@ export default function MarketHubShell({
           />
         )}
 
-
-        <section className="marketHubWorkspace">
-
-          <header className="marketHubWorkspaceHeader">
-
-            <div className="marketHubWorkspaceIdentity">
-
-              <button
+         <button
                 type="button"
                 className="marketHubMobileMenu"
                 onClick={() =>
@@ -637,6 +630,11 @@ export default function MarketHubShell({
                 />
               </button>
 
+        <section className="marketHubWorkspace">
+
+          <header className="marketHubWorkspaceHeader">
+
+            <div className="marketHubWorkspaceIdentity">
 
               <div>
                 <div className="marketHubWorkspaceEyebrow">
@@ -1148,25 +1146,25 @@ export default function MarketHubShell({
           }
 
           .marketHubMobileMenu {
-              position: fixed;
+            position: fixed;
 
-              top: 1rem;
-              left: calc(50% + 42px);
+            top: 1rem;
+            left: calc(50% + 48px);
 
-              z-index: 10000;
+            z-index: 10000;
 
-              display: inline-flex;
+            display: inline-flex;
 
-              width: 50px;
-              height: 50px;
+            width: 50px;
+            height: 50px;
 
-              margin: 0;
+            margin: 0;
 
-              border-radius: 18px;
+            border-radius: 18px;
 
-              box-shadow:
-                0 8px 30px rgba(0, 0, 0, .18);
-            }
+            box-shadow:
+              0 8px 30px rgba(0, 0, 0, .18);
+          }
 
           .marketHubWorkspace {
             padding:
