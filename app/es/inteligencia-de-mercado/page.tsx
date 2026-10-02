@@ -116,9 +116,8 @@ export default async function MarketIntelligencePage({
 const main = {
   minHeight:
     '100vh',
-
   padding:
-   'clamp(8.5rem, 18vw, 10rem) clamp(1rem, 3vw, 2rem) clamp(1rem, 3vw, 2rem)',
+    'clamp(1rem, 3vw, 2rem)',
 
   backgroundColor:
     'var(--background)',
