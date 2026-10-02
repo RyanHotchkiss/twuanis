@@ -17,9 +17,103 @@
 }
 
 .navigator a,.navigator span{padding:12px;color:var(--muted);text-decoration:none;border-radius:6px;line-height:1.4;font-size:.9rem}.navigator a:hover,.navigator a:focus-visible{color:var(--foreground);background:var(--surface-raised);outline:1px solid #c7a44b}.navigator a[aria-current=page]{color:var(--accent-text);background:var(--evidence-surface);border-left:2px solid #d4af37}.navigator span{opacity:.45}.navigator small{display:block;font-size:.75rem;color:#aaa}.navQuestion{display:block}.selector{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:24px;color:#bbb}.selector select{background:var(--surface);color:var(--foreground);border:1px solid var(--border);border-radius:6px;padding:10px;font:inherit;max-width:100%;min-height:44px}@media(max-width:760px){.hub{grid-template-columns:minmax(0,1fr);gap:24px}.navigator{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:0;border-bottom:1px solid var(--border);padding:0 0 16px}.navigator a,.navigator span{padding:10px;font-size:.82rem}.inputs{padding:16px}.identity{align-items:flex-start;flex-direction:column;gap:12px}.transactions dl{gap:40px}.primaryQuestion{font-size:1.2rem}.navQuestion{display:block}.summary{width:100%}}
-.navItems{display:flex;flex-direction:column;gap:4px}.mobileNavToggle{display:none}@media(max-width:760px){.navigator{display:block}.mobileNavToggle{display:block;width:100%;text-align:left;background:var(--surface);color:var(--accent-text);border:1px solid #6c5e32;border-radius:8px;padding:12px;font:inherit;min-height:44px}.navItems{display:none;margin-top:12px}.navItems[data-expanded=true]{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}}
+.navItems{display:flex;flex-direction:column;gap:4px}
 
-.hubControls{display:flex;align-items:center;flex-wrap:wrap;gap:12px 20px;margin-bottom:24px}.hubControls .selector{margin:0}.sidebarToggle{font:inherit;min-height:44px;padding:10px 14px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--foreground);cursor:pointer}.hubControls :focus-visible,.mobileNavToggle:focus-visible{outline:2px solid #d4af37;outline-offset:4px}.sidebarRegion{min-width:0}.hub[data-collapsed=true]{grid-template-columns:minmax(0,1fr)}.hub[data-collapsed=true] .sidebarRegion{display:none}.hub .summary{max-width:none}@media(max-width:760px){.sidebarToggle{display:none}.hub[data-collapsed=true] .sidebarRegion{display:block}.hubControls{min-width:0}.hubControls .selector{max-width:100%}}
+.mobileNavToggle {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .navigator {
+    display: block;
+  }
+
+  .mobileNavToggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    width: 100%;
+    min-height: 44px;
+    padding: 12px 18px;
+
+    text-align: left;
+    background: var(--surface);
+    color: var(--accent-text);
+    border: 1px solid #6c5e32;
+    border-radius: 8px;
+    font: inherit;
+  }
+
+  .mobileNavToggle > span:first-child {
+    padding: 0;
+  }
+
+  .navItems {
+    display: none;
+    margin-top: 12px;
+  }
+
+  .navItems[data-expanded=true] {
+    display: grid;
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+.mobileNavCaretDown,
+.mobileNavCaretUp {
+  flex: 0 0 auto;
+  width: 12px;
+  height: 12px;
+  padding: 0 !important;
+  opacity: 1 !important;
+}
+
+.mobileNavCaretDown {
+  background-image:
+    linear-gradient(
+      45deg,
+      transparent 50%,
+      var(--ih-input-label) 50%
+    ),
+    linear-gradient(
+      135deg,
+      var(--ih-input-label) 50%,
+      transparent 50%
+    );
+  background-position:
+    left center,
+    right center;
+  background-size:
+    6px 6px;
+  background-repeat:
+    no-repeat;
+}
+
+.mobileNavCaretUp {
+  background-image:
+    linear-gradient(
+      135deg,
+      transparent 50%,
+      var(--ih-input-label) 50%
+    ),
+    linear-gradient(
+      45deg,
+      var(--ih-input-label) 50%,
+      transparent 50%
+    );
+  background-position:
+    left center,
+    right center;
+  background-size:
+    6px 6px;
+  background-repeat:
+    no-repeat;
+}
+
+.sidebarRegion{min-width:0}.hub[data-collapsed=true]{grid-template-columns:minmax(0,1fr)}.hub[data-collapsed=true] .sidebarRegion{display:none}.hub .summary{max-width:none}@media(max-width:760px){.sidebarToggle{display:none}.hub[data-collapsed=true] .sidebarRegion{display:block}.hubControls{min-width:0}.hubControls .selector{max-width:100%}}
 
 .hub{position:relative}.sidebarArrowPosition{position:absolute;left:209px;top:0}.sidebarArrowPosition button:focus-visible{outline:2px solid #ff3b00;outline-offset:2px}
 

@@ -13,10 +13,7 @@ import {distributionQuestion} from './price-meter-distribution/contract'
 import {configurationQuestion} from './configuration-frequency/contract'
 import {comparisonQuestion} from './market-comparison/contract'
 import Link from 'next/link'
-import {
-  ChevronDown,
-  ChevronUp
-} from 'lucide-react'
+
 import { hubEngineUrl } from './intelligence-hub-navigation'
 import { useId, useState } from 'react'
 import { compositionQuestion } from './market-composition/contract'
@@ -53,21 +50,14 @@ export default function IntelligenceHubNavigator({tabs,activeTab,basePath,query,
             }
         </span>
 
-        {expanded
-            ? (
-            <ChevronUp
-                size={20}
-                strokeWidth={1.25}
-                aria-hidden="true"
+        <span
+            className={
+                expanded
+                ? styles.mobileNavCaretUp
+                : styles.mobileNavCaretDown
+            }
+            aria-hidden="true"
             />
-            )
-            : (
-            <ChevronDown
-                size={20}
-                strokeWidth={1.25}
-                aria-hidden="true"
-            />
-            )}
         </button>
     
     <div id={id} className={styles.navItems} data-expanded={expanded}>{tabs.map(tab=>{
