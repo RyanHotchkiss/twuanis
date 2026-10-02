@@ -1146,7 +1146,8 @@ export default function MarketHubShell({
           .marketHubFloatingMenu {
             position: fixed;
             top: 1rem;
-            right: calc(50% + 8px);
+            left: 2rem;
+              right: auto;
             z-index: 10000;
 
             display: inline-flex;
