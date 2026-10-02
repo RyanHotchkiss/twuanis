@@ -263,7 +263,7 @@ html[style*="color-scheme: light"] .floating-home-logo-light {
 
 /* Brian */
 
-@media (max-width: 760px) {
+  @media (max-width: 760px) {
   .floating-home-mark {
     right: 12px;
     bottom: 12px;

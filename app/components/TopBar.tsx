@@ -787,7 +787,10 @@ const stickyShell = (
 
   maxWidth: '100%',
 
-  margin: '0 auto',
+  margin:
+  isMobile
+    ? '0 auto 1rem'
+    : '0 auto',
 
   padding: '.55rem .7rem',
 
