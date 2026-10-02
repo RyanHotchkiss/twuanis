@@ -17,7 +17,8 @@ import {
 import {
   Suspense,
   useEffect,
-  useState
+  useState,
+  type ReactNode
 } from 'react'
 
 import {
@@ -33,6 +34,9 @@ type TopBarProps = {
   onFilterClick?: () => void
   theme?: 'dark' | 'light'
   onThemeToggle?: () => void
+  onCollapsedChange?: (
+    collapsed: boolean
+  ) => void
 }
 
 const GOLD = '#C7A44B'
@@ -43,7 +47,8 @@ const UTILITY_ORANGE = '#ff3b00'
 function TopBarContent({
   onFilterClick,
   theme: _legacyTheme,
-  onThemeToggle: _legacyToggle
+  onThemeToggle: _legacyToggle,
+  onCollapsedChange
 }: TopBarProps) {
   const {theme,setTheme}=useSiteTheme()
   const onThemeToggle=()=>setTheme(t=>t==='dark'?'light':'dark')
@@ -90,6 +95,15 @@ const isSpanish =
 
   const [collapsed, setCollapsed] =
     useState(false)
+
+  useEffect(() => {
+    onCollapsedChange?.(
+      collapsed
+    )
+  }, [
+    collapsed,
+    onCollapsedChange
+  ])
 
   const [manuallyExpanded, setManuallyExpanded] =
     useState(false)

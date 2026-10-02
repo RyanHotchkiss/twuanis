@@ -2,7 +2,6 @@
 import {useSiteTheme} from '@/app/components/theme/ThemeProvider'
 
 import {
-  useEffect,
   useState,
   type ReactNode
 } from 'react'
@@ -104,54 +103,6 @@ export default function MarketHubShell({
       useState(false)
 
   const {theme,setTheme} = useSiteTheme()
-
-  useEffect(() => {
-      let lastScrollY =
-        window.scrollY
-
-      function handleScroll() {
-        const currentScrollY =
-          window.scrollY
-
-        if (currentScrollY <= 12) {
-          setMobileMenuFloating(false)
-
-          lastScrollY =
-            currentScrollY
-
-          return
-        }
-
-        if (
-          currentScrollY >
-          lastScrollY + 6
-        ) {
-          setMobileMenuFloating(true)
-        }
-
-        if (
-          currentScrollY <
-          lastScrollY - 6
-        ) {
-          setMobileMenuFloating(false)
-        }
-
-        lastScrollY =
-          currentScrollY
-      }
-
-      window.addEventListener(
-        'scroll',
-        handleScroll,
-        { passive: true }
-      )
-
-      return () =>
-        window.removeEventListener(
-          'scroll',
-          handleScroll
-        )
-    }, [])
 
   const labels =
     language === 'es'
@@ -541,16 +492,18 @@ export default function MarketHubShell({
         className={`marketHubTheme marketHubTheme-${theme}`}
       >
         <TopBar
-          theme={theme}
-
-          onThemeToggle={() =>
-            setTheme(current =>
-              current === 'dark'
-                ? 'light'
-                : 'dark'
-            )
-          }
-        />
+            theme={theme}
+            onThemeToggle={() =>
+              setTheme(current =>
+                current === 'dark'
+                  ? 'light'
+                  : 'dark'
+              )
+            }
+            onCollapsedChange={
+              setMobileMenuFloating
+            }
+          />
 
         <div className="marketHubShell">
 
