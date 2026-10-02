@@ -774,7 +774,7 @@ const stickyShell = (
   background:
     theme === 'dark'
       ? 'rgba(0, 0, 0, .88)'
-      : 'rgba(255, 255, 255, .92)',
+      : 'rgba(248, 243, 229, .94)',
 
   backdropFilter:
     'blur(14px)',
@@ -852,7 +852,7 @@ const floatingHamburgerShell = (
   background:
     theme === 'dark'
       ? 'rgba(0, 0, 0, .88)'
-      : 'rgba(255, 255, 255, .92)',
+      : 'rgba(248, 243, 229, .94)',
 
   backdropFilter:
     'blur(14px)',
@@ -910,7 +910,7 @@ const floatingTopBarShell = (
   background:
     theme === 'dark'
       ? 'rgba(0, 0, 0, .88)'
-      : 'rgba(255, 255, 255, .92)',
+      : 'rgba(248, 243, 229, .94)',
 
   backdropFilter:
     'blur(14px)',
