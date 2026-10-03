@@ -96,12 +96,44 @@ const listing = {
                 : []
           }
 
+          const canonicalEvidence =
+            data.canonical_domain_version === 1
+              ? (data as typeof data & {
+                  canonicalEvidence: import(
+                    '@/lib/canonical-listing-reader'
+                  ).CanonicalEvidence
+                }).canonicalEvidence
+              : null
+
     const valuation = await getValuation(
       {
         transaction_type: 'rent',
-        province: listing.province,
-        canton: listing.canton,
-        district: listing.district,
+        province:
+          canonicalEvidence
+            ?.geography
+            .find(term =>
+              term.term_type === 'province'
+            )
+            ?.slug ??
+          listing.province,
+
+        canton:
+          canonicalEvidence
+            ?.geography
+            .find(term =>
+              term.term_type === 'canton'
+            )
+            ?.slug ??
+          listing.canton,
+
+        district:
+          canonicalEvidence
+            ?.geography
+            .find(term =>
+              term.term_type === 'district'
+            )
+            ?.slug ??
+          listing.district,
         property_type: listing.property_type,
         subjectListing: listing,
       },
