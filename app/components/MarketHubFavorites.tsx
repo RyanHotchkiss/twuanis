@@ -3458,7 +3458,7 @@ const summaryDashboardHeader = {
 
 const summaryDashboardHeading = {
   margin: 0,
-  color: '#fff',
+  color: 'var(--hub-surface-text)',
   fontSize: '1.1rem'
 }
 
@@ -3478,9 +3478,12 @@ const summaryCard = {
   columnGap: '.75rem',
   alignItems: 'center',
   padding: '1rem',
-  color: '#fff',
-  background: '#1b1b1b',
-  border: '1px solid #303030',
+  color:
+    'var(--hub-surface-text)',
+  background:
+    'var(--hub-surface-secondary)',
+  border:
+    '1px solid var(--hub-surface-border)',
   borderRadius: '14px',
   textDecoration: 'none'
 }
@@ -3492,12 +3495,14 @@ const summaryCardIcon = {
   justifyContent: 'center',
   width: '2.75rem',
   height: '2.75rem',
-  background: '#121212',
+  background:
+    'var(--hub-surface-tertiary)',
   borderRadius: '999px'
 }
 
 const summaryCardCount = {
-  color: '#fff',
+  color:
+    'var(--hub-surface-text)',
   fontSize: '1.45rem',
   fontWeight: 700,
   lineHeight: 1
@@ -3505,7 +3510,8 @@ const summaryCardCount = {
 
 const summaryCardLabel = {
   marginTop: '.25rem',
-  color: '#999',
+  color:
+    'var(--hub-surface-muted)',
   fontSize: '.78rem',
   lineHeight: 1.3
 }
@@ -3761,7 +3767,8 @@ const searchIconWrap = {
   justifyContent: 'center',
   width: '2.75rem',
   height: '2.75rem',
-  background: '#161616',
+  background:
+  'var(--hub-surface-tertiary)',
   borderRadius: '999px'
 }
 

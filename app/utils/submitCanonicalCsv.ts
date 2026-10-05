@@ -15,5 +15,20 @@ export async function submitCanonicalCsv(rows:any[],setShow:(v:boolean)=>void,se
   }
   setRows(remaining)
   if(!remaining.length)setShow(false)
-  alert(`${published} published; ${remaining.length} require review or retry.`)
+
+    const failureDetails = remaining
+      .map((row, index) => {
+        const sourceId =
+          row.source_listing_id ||
+          row.source_id ||
+          `Row ${index + 1}`
+
+        return `${sourceId}: ${row.canonicalImportError}`
+      })
+      .join('\n')
+
+    alert(
+      `${published} published; ${remaining.length} require review or retry.` +
+        (failureDetails ? `\n\n${failureDetails}` : '')
+    )
 }

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { supabaseAdmin } from '@/lib/supabase-admin'
+import { createAdministrativeImportTransport } from '@/lib/administrative-import'
 import { ingestCsvObservation } from '@/lib/csv-source-ingestion'
 export const runtime='nodejs'
 export const dynamic='force-dynamic'
@@ -19,7 +20,8 @@ export async function POST(request:NextRequest) {
   text+=decoder.decode()
   const row=JSON.parse(text)
   if(!row||typeof row!=='object'||Array.isArray(row))throw Error('One source observation object required.')
-  const result=await ingestCsvObservation(supabaseAdmin,row)
+  const writes=await createAdministrativeImportTransport(customer,supabaseAdmin)
+  const result=await ingestCsvObservation(supabaseAdmin,row,writes)
   return NextResponse.json(result,{status:result.success?200:422})
  }catch(error){return NextResponse.json({success:false,error:error instanceof Error?error.message:'Import not confirmed; retry same observation.'},{status:409})}
 }

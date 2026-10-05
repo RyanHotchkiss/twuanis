@@ -1,0 +1,6 @@
+.customer-payment{min-width:0;max-width:100%;overflow-wrap:anywhere;padding:1rem;box-sizing:border-box}
+.customer-payment form,.customer-payment label{min-width:0;max-width:100%;box-sizing:border-box}
+.customer-payment label{flex:1 1 240px}
+.customer-payment input,.customer-payment select{min-width:0;width:100%;max-width:100%;box-sizing:border-box}
+.customer-payment button{max-width:100%;white-space:normal}
+.customer-payment :focus-visible{outline:3px solid #ff6a00;outline-offset:2px}

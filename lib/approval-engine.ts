@@ -559,21 +559,7 @@ async function commitPurchaseDecision({
   metadata = {}
 }: PurchaseDecisionInput): Promise<ResolvedPurchase> {
 
-  return commitPurchaseDecision({
-
-    supabase,
-
-    purchaseId,
-
-    reviewerId,
-
-    notes,
-
-    metadata,
-
-    decision:
-      'approved'
-  })
+  throw new Error('Generic payment approval is retired. Canonical SINPE requires trusted Order review.')
 }
 
 export async function rejectPurchase({

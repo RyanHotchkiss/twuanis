@@ -1,0 +1,548 @@
+{
+  "schemaVersion": 1,
+  "role": "approved canonical design and installation seed specification; NOT runtime catalog",
+  "runtimeAuthority": "server/database; no application imports this file",
+  "packages": [
+    {
+      "id": "pkg-geographic-distribution-price-range",
+      "name": {
+        "en": "Property Listings Geographic Distribution and Price Range Package",
+        "es": null
+      },
+      "question": {
+        "en": "What is the geographic-area listing count, how are the property characteristics distributed among the listings in that defined market area, and what are the distribution and range of asking prices for those listings?",
+        "es": null
+      },
+      "translationStatus": "Spanish commercial copy requires approval",
+      "engineNavigationReferences": [
+        "explorer",
+        "composition",
+        "asking-price"
+      ],
+      "standard": {
+        "USD": "10",
+        "CRC": "5000"
+      },
+      "introductory": {
+        "USD": "1",
+        "CRC": "500"
+      },
+      "term": {
+        "unit": "calendar_month",
+        "count": 1
+      },
+      "automaticRenewal": false,
+      "automaticCharge": false,
+      "listingAuthority": false
+    },
+    {
+      "id": "pkg-matching-market-comparison",
+      "name": {
+        "en": "Characteristics-to-Property Matching and Market Price Comparisons Package",
+        "es": null
+      },
+      "question": {
+        "en": "Which properties match the selected property characteristics within a defined Costa Rican real estate market, and how do the matched properties and selected markets compare with respect to asking-price evidence and Price / m² across the relevant geographic areas?",
+        "es": null
+      },
+      "translationStatus": "Spanish commercial copy requires approval",
+      "engineNavigationReferences": [
+        "matching",
+        "comparison",
+        "geography",
+        "discovery"
+      ],
+      "standard": {
+        "USD": "50",
+        "CRC": "25000"
+      },
+      "introductory": {
+        "USD": "20",
+        "CRC": "10000"
+      },
+      "term": {
+        "unit": "calendar_month",
+        "count": 1
+      },
+      "automaticRenewal": false,
+      "automaticCharge": false,
+      "listingAuthority": false
+    },
+    {
+      "id": "pkg-pricing-position-relationships",
+      "name": {
+        "en": "Property Pricing, Market Position & Property-Price Relationships Package",
+        "es": null
+      },
+      "question": {
+        "en": "How is Price / m² distributed within a defined Costa Rican real estate market; how common or uncommon is a selected property configuration within its eligible market population; how does Price / m² vary in relation to property size and the relationship between construction area and property area; where does a selected property's Price / m² fall within its established reference population; which properties satisfy a user-defined comparable cohort and how do explicitly defined cohorts compare with respect to Price / m²; what pricing patterns, differences, ordering, magnitudes, reversals, consistency, and ranges appear when Price / m² is analyzed across selected dimensions; what relationship exists between construction-area Price / m² and property-area Price / m² as construction area and property area vary; and what is the property's weighted Price / m² under the explicitly defined weighting question?",
+        "es": null
+      },
+      "translationStatus": "Spanish commercial copy requires approval",
+      "engineNavigationReferences": [
+        "scarcity",
+        "price-meter",
+        "size",
+        "construction-land",
+        "position",
+        "comparables",
+        "cohort-comparison",
+        "cross-dimensional",
+        "asking-area-ratio",
+        "weighted-price"
+      ],
+      "standard": {
+        "USD": "100",
+        "CRC": "50000"
+      },
+      "introductory": {
+        "USD": "40",
+        "CRC": "20000"
+      },
+      "term": {
+        "unit": "calendar_month",
+        "count": 1
+      },
+      "automaticRenewal": false,
+      "automaticCharge": false,
+      "listingAuthority": false
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "cap-market-summary",
+      "navigationReference": "explorer",
+      "name": {
+        "en": "Market Summary",
+        "es": "Resumen del mercado"
+      },
+      "question": {
+        "en": "How many listings are in the defined Costa Rica real estate market?",
+        "es": "¿Cuántos anuncios hay en el mercado inmobiliario definido de Costa Rica?"
+      },
+      "packageId": "pkg-geographic-distribution-price-range"
+    },
+    {
+      "id": "cap-market-composition",
+      "navigationReference": "composition",
+      "name": {
+        "en": "Market Composition",
+        "es": "Composición del mercado"
+      },
+      "question": {
+        "en": "What characteristics compose the defined Costa Rica real estate market?",
+        "es": "¿Qué características componen el mercado inmobiliario definido de Costa Rica?"
+      },
+      "packageId": "pkg-geographic-distribution-price-range"
+    },
+    {
+      "id": "cap-market-asking-price-distribution",
+      "navigationReference": "asking-price",
+      "name": {
+        "en": "Market Asking Price Distribution",
+        "es": "Distribución de precios de oferta del mercado"
+      },
+      "question": {
+        "en": "How are asking prices distributed across the defined Costa Rica real estate market?",
+        "es": "¿Cómo se distribuyen los precios de oferta en el mercado inmobiliario definido de Costa Rica?"
+      },
+      "packageId": "pkg-geographic-distribution-price-range"
+    },
+    {
+      "id": "cap-property-matching",
+      "navigationReference": "matching",
+      "name": {
+        "en": "Property Matching",
+        "es": "Coincidencia de Propiedades"
+      },
+      "question": {
+        "en": "Which listings most closely match the selected property attributes?",
+        "es": "¿Qué anuncios coinciden más con los atributos de propiedad seleccionados?"
+      },
+      "packageId": "pkg-matching-market-comparison"
+    },
+    {
+      "id": "cap-market-comparison",
+      "navigationReference": "comparison",
+      "name": {
+        "en": "Market Comparison",
+        "es": "Comparación de Mercados"
+      },
+      "question": {
+        "en": "How do two defined Costa Rica real estate markets differ?",
+        "es": "¿Cómo difieren dos mercados inmobiliarios definidos de Costa Rica?"
+      },
+      "packageId": "pkg-matching-market-comparison"
+    },
+    {
+      "id": "cap-property-configuration-frequency",
+      "navigationReference": "scarcity",
+      "name": {
+        "en": "Property Configuration Frequency",
+        "es": "Frecuencia de configuración de propiedades"
+      },
+      "question": {
+        "en": "How many listings in the defined Costa Rica real estate market positively establish the selected property configuration?",
+        "es": "¿Cuántos anuncios del mercado inmobiliario definido de Costa Rica acreditan con evidencia positiva la configuración de propiedad seleccionada?"
+      },
+      "packageId": "pkg-pricing-position-relationships"
+    },
+    {
+      "id": "cap-price-m2-distribution",
+      "navigationReference": "price-meter",
+      "name": {
+        "en": "Price / m² Distribution",
+        "es": "Distribución del precio por m²"
+      },
+      "question": {
+        "en": "How is Price / m² distributed across the defined Costa Rica real estate market?",
+        "es": "¿Cómo se distribuye el precio por m² en el mercado inmobiliario definido de Costa Rica?"
+      },
+      "packageId": "pkg-pricing-position-relationships"
+    },
+    {
+      "id": "cap-geographic-price-m2-comparison",
+      "navigationReference": "geography",
+      "name": {
+        "en": "Geographic Price / m² Comparison",
+        "es": "Comparación geográfica del precio por m²"
+      },
+      "question": {
+        "en": "How does Price / m² differ across geographic areas in the defined Costa Rica real estate market?",
+        "es": "¿Cómo difiere el precio por m² entre áreas geográficas del mercado inmobiliario definido de Costa Rica?"
+      },
+      "packageId": "pkg-matching-market-comparison"
+    },
+    {
+      "id": "cap-size-price-m2",
+      "navigationReference": "size",
+      "name": {
+        "en": "Size → Price / m²",
+        "es": "Tamaño → Precio por m²"
+      },
+      "question": {
+        "en": "How does Price / m² vary with size in the defined Costa Rica real estate market?",
+        "es": "¿Cómo varía el precio por m² con el tamaño en el mercado inmobiliario definido de Costa Rica?"
+      },
+      "packageId": "pkg-pricing-position-relationships"
+    },
+    {
+      "id": "cap-construction-land-price-m2",
+      "navigationReference": "construction-land",
+      "name": {
+        "en": "Construction-to-Land → Price / m²",
+        "es": "Construcción/terreno → Precio por m²"
+      },
+      "question": {
+        "en": "How does Price / m² vary with the Construction-to-Land ratio in the defined Costa Rica real estate market?",
+        "es": "¿Cómo varía el precio por m² con la relación construcción/terreno en el mercado inmobiliario definido de Costa Rica?"
+      },
+      "packageId": "pkg-pricing-position-relationships"
+    },
+    {
+      "id": "cap-user-defined-cohort-price-m2-comparison",
+      "navigationReference": "cohort-comparison",
+      "name": {
+        "en": "User-Defined Cohort Price / m² Comparison",
+        "es": "Comparación de precio por m² entre cohortes definidas por el usuario"
+      },
+      "question": {
+        "en": "How does median Price / m² differ between two user-defined property cohorts?",
+        "es": "¿Cómo difiere la mediana del precio por m² entre dos cohortes de propiedades definidas por el usuario?"
+      },
+      "packageId": "pkg-pricing-position-relationships"
+    },
+    {
+      "id": "cap-cross-dimensional-analysis",
+      "navigationReference": "cross-dimensional",
+      "name": {
+        "en": "Cross-Dimensional Analysis",
+        "es": "Análisis multidimensional"
+      },
+      "question": {
+        "en": "Does the selected Price / m² relationship persist, vary, or reverse across the selected secondary dimension?",
+        "es": "¿La relación de precio por m² seleccionada persiste, varía o se revierte entre los grupos de la dimensión secundaria seleccionada?"
+      },
+      "packageId": "pkg-pricing-position-relationships"
+    },
+    {
+      "id": "cap-comparative-price-m2-discovery",
+      "navigationReference": "discovery",
+      "name": {
+        "en": "Comparative Price / m² Discovery",
+        "es": "Descubrimiento comparativo de precio / m²"
+      },
+      "question": {
+        "en": "Where does each eligible listing sit within the defined market’s Price / m² distribution?",
+        "es": "¿Dónde se sitúa cada anuncio elegible dentro de la distribución del precio por m² del mercado definido?"
+      },
+      "packageId": "pkg-matching-market-comparison"
+    },
+    {
+      "id": "cap-property-price-m2-position",
+      "navigationReference": "position",
+      "name": {
+        "en": "Property Price / m² Position",
+        "es": "Posición del precio por m² de una propiedad"
+      },
+      "question": {
+        "en": "Where does this property’s asking Price / m² sit within its defined reference population?",
+        "es": "¿Dónde se sitúa el precio de oferta por m² de esta propiedad dentro de su población de referencia definida?"
+      },
+      "packageId": "pkg-pricing-position-relationships"
+    },
+    {
+      "id": "cap-user-defined-comparable-cohort",
+      "navigationReference": "comparables",
+      "name": {
+        "en": "User-Defined Comparable Cohort",
+        "es": "Cohorte comparable definida por el usuario"
+      },
+      "question": {
+        "en": "How does this property's asking Price / m² compare with the cohort matching its compulsory boundaries and selected canonical characteristics?",
+        "es": "¿Cómo se compara el precio de oferta por m² de esta propiedad con la cohorte que cumple sus límites obligatorios y las características canónicas seleccionadas?"
+      },
+      "packageId": "pkg-pricing-position-relationships"
+    },
+    {
+      "id": "cap-asking-area-coefficient-ratio",
+      "navigationReference": "asking-area-ratio",
+      "name": {
+        "en": "Construction Area-to-Property Area Asking-Price Relationship Ratio",
+        "es": "Relación entre los coeficientes del precio de oferta por m² de área de construcción y de área del terreno"
+      },
+      "question": {
+        "en": "What is the modeled asking-price relationship per square meter of Construction Area divided by the modeled asking-price relationship per square meter of Property Area?",
+        "es": "¿Cuál es la relación modelada del precio de oferta por metro cuadrado de área de construcción dividida por la relación modelada por metro cuadrado de área del terreno?"
+      },
+      "packageId": "pkg-pricing-position-relationships"
+    },
+    {
+      "id": "cap-weighted-price-m2",
+      "navigationReference": "weighted-price",
+      "name": {
+        "en": "Weighted Price / m²",
+        "es": "Precio ponderado por m²"
+      },
+      "question": {
+        "en": "What is this property's Price / m² when Property Area and Construction Area are weighted by their modeled asking-price relationships in the selected market?",
+        "es": "¿Cuál es el precio por m² de esta propiedad cuando las áreas del terreno y de construcción se ponderan por sus relaciones modeladas con el precio de oferta en el mercado seleccionado?"
+      },
+      "packageId": "pkg-pricing-position-relationships"
+    }
+  ],
+  "placementAddOns": [
+    {
+      "id": "addon-featured-listing",
+      "name": "Featured Listing",
+      "target": "listing",
+      "fulfillment": "placement_entitlement",
+      "availability": "launch",
+      "durationDays": 60,
+      "standard": {
+        "USD": "12",
+        "CRC": "6000"
+      },
+      "introductory": {
+        "USD": "3",
+        "CRC": "1500"
+      },
+      "benefit": "featured_collection",
+      "capacity": null
+    },
+    {
+      "id": "addon-listing-boost",
+      "name": "Listing Boost",
+      "target": "listing",
+      "fulfillment": "placement_entitlement",
+      "availability": "launch",
+      "durationDays": 14,
+      "standard": {
+        "USD": "5",
+        "CRC": "2500"
+      },
+      "introductory": {
+        "USD": "1.25",
+        "CRC": "625"
+      },
+      "benefit": "priority_over_organic",
+      "capacity": null
+    },
+    {
+      "id": "addon-homepage-exposure",
+      "name": "Homepage Exposure",
+      "target": "listing",
+      "fulfillment": "placement_entitlement",
+      "availability": "launch",
+      "durationDays": 14,
+      "standard": {
+        "USD": "35",
+        "CRC": "17500"
+      },
+      "introductory": {
+        "USD": "8.75",
+        "CRC": "4375"
+      },
+      "benefit": "homepage_carousel",
+      "capacity": 10
+    },
+    {
+      "id": "addon-province-exposure",
+      "name": "Province Exposure",
+      "target": "listing",
+      "fulfillment": "placement_entitlement",
+      "availability": "launch",
+      "durationDays": 28,
+      "standard": {
+        "USD": "18",
+        "CRC": "9000"
+      },
+      "introductory": {
+        "USD": "4.50",
+        "CRC": "2250"
+      },
+      "benefit": "province_contextual_priority",
+      "capacity": null
+    },
+    {
+      "id": "addon-property-type-exposure",
+      "name": "Property-Type Exposure",
+      "target": "listing",
+      "fulfillment": "placement_entitlement",
+      "availability": "launch",
+      "durationDays": 28,
+      "standard": {
+        "USD": "18",
+        "CRC": "9000"
+      },
+      "introductory": {
+        "USD": "4.50",
+        "CRC": "2250"
+      },
+      "benefit": "property_type_contextual_priority",
+      "capacity": null
+    }
+  ],
+  "bulkImport": {
+    "id": "addon-bulk-listing-import",
+    "target": "operation",
+    "fulfillment": "import_operation",
+    "availability": "launch",
+    "wallet": false,
+    "quantityAuthority": "server-validated actual submitted job",
+    "tiers": [
+      {
+        "min": 1,
+        "max": 25,
+        "standardUSD": "0.50",
+        "introductoryUSD": "0.25"
+      },
+      {
+        "min": 26,
+        "max": 100,
+        "standardUSD": "0.25",
+        "introductoryUSD": "0.12"
+      },
+      {
+        "min": 101,
+        "max": 500,
+        "standardUSD": "0.10",
+        "introductoryUSD": "0.05"
+      }
+    ],
+    "method": "whole_job",
+    "unpricedQuantities": "not quotable; do not infer a tier"
+  },
+  "founder": {
+    "id": "addon-2026-founding-membership",
+    "target": "account",
+    "fulfillment": "founding_pricing_entitlement",
+    "availability": "launch",
+    "standard": {
+      "USD": "500"
+    },
+    "introductory": {
+      "USD": "200"
+    },
+    "oneTime": true,
+    "duration": "lifetime",
+    "grantsProductAccess": false,
+    "eligibleProducts": "explicit only",
+    "futureIntroductoryOffers": "eligible products only",
+    "post2026ProductName": "not decided; no invented replacement"
+  },
+  "template": {
+    "id": "addon-premium-listing-template",
+    "target": "listing",
+    "fulfillment": "listing_experience_entitlement",
+    "availability": "inactive",
+    "price": null,
+    "benefits": null
+  },
+  "retired": [
+    "premium-gallery",
+    "verified-ownership",
+    "market-explorer-exposure",
+    "csv-import-25",
+    "csv-import-100",
+    "csv-import-500"
+  ],
+  "offer": {
+    "standardSeparate": true,
+    "selection": "lowest_applicable_authoritative_price",
+    "arithmeticStacking": false,
+    "publicIntroductoryEndExclusiveDate": "2027-01-01",
+    "lastIntroductoryDate": "2026-12-31",
+    "instantConversion": "Requires explicit commercial time-zone configuration before executable pricing; no browser/system-local midnight",
+    "founderPreservation": true
+  },
+  "trial": {
+    "lifetimeAllowance": 3,
+    "allocation": "any package allocation",
+    "durationHours": 24,
+    "startsAt": "entitlement activation",
+    "monthlyPriceDivisor": 30,
+    "crcRounding": "nearest whole colon",
+    "usdRounding": "not specified; do not invent",
+    "requiresPayment": true,
+    "autoRenew": false,
+    "autoConvert": false,
+    "autoCharge": false,
+    "consumeAt": "later approved payment/fulfillment boundary; never opening checkout",
+    "exactlyOncePerFulfilledTrial": true
+  },
+  "owner": {
+    "fullAdministrativeAuthority": true,
+    "administrator": "explicit granted capabilities only",
+    "paymentReview": "explicit capability",
+    "permissionManagement": "separately delegated",
+    "selfEscalation": false
+  },
+  "identityBoundaries": [
+    "commercial capability != navigation ID",
+    "package != listing publication",
+    "add-on != placement",
+    "offer != product",
+    "promotion campaign != listing placement",
+    "order != payment",
+    "payment evidence != payment verification",
+    "fulfillment != approval",
+    "entitlement != UI lock"
+  ],
+  "snapshots": [
+    "productId",
+    "productType",
+    "targetIdentity",
+    "quantity",
+    "duration",
+    "currency",
+    "resolvedPrice",
+    "offerIdentity",
+    "fulfillmentTerms",
+    "createdAt",
+    "monthlyPriceBasisForTrial",
+    "trialIdentity",
+    "trialOpportunity",
+    "founderPricingEvidenceWhenApplicable"
+  ]
+}

@@ -1,0 +1,3 @@
+// Explicit browser projection. No entitlement, payment or fulfillment authority.
+export type AddonProjection={id:string;name_en:string;name_es:string|null;description_en:string|null;description_es:string|null;target:'listing'|'account'|'operation';behavior:string;termKind:'elapsed_days'|'whole_job'|'lifetime'|'unconfigured';state:'draft'|'active'|'inactive'|'archived';revision:string;configurationId:string;version:string;durationDays:number|null;capacity:number|null;standardPrices:Partial<Record<'USD'|'CRC',string>>;quantityTiers:{min:number;max:number;currency:'USD';unitRate:string}[];acquisitionAvailable:false;acquisitionState:string}
+export type AddonCatalog={products:AddonProjection[];createBehaviors:string[]}

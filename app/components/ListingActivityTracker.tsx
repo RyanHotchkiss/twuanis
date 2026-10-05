@@ -78,11 +78,9 @@ export default function ListingActivityTracker({
             storageKey,
             'true'
             )
-        } catch (activityError) {
-            console.error(
-            'Unable to record listing view:',
-            activityError
-            )
+        } catch {
+          // Anonymous public listing views are not
+          // persisted as authenticated activity.
         }
         }
 

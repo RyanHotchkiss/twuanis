@@ -96,6 +96,12 @@ export default function MarketHubShell({
       false
     )
 
+  const [
+      mobileMenuFloating,
+      setMobileMenuFloating
+    ] =
+      useState(false)
+
   const {theme,setTheme} = useSiteTheme()
 
   const labels =
@@ -486,16 +492,34 @@ export default function MarketHubShell({
         className={`marketHubTheme marketHubTheme-${theme}`}
       >
         <TopBar
-          theme={theme}
+            theme={theme}
+            onThemeToggle={() =>
+              setTheme(current =>
+                current === 'dark'
+                  ? 'light'
+                  : 'dark'
+              )
+            }
+            onCollapsedChange={
+              setMobileMenuFloating
+            }
+          />
 
-          onThemeToggle={() =>
-            setTheme(current =>
-              current === 'dark'
-                ? 'light'
-                : 'dark'
-            )
-          }
-        />
+          {mobileMenuFloating && (
+            <button
+              type="button"
+              className="marketHubFloatingMenu"
+              onClick={() =>
+                setMobileNavigationOpen(true)
+              }
+              aria-label="Open MarketHub navigation"
+            >
+              <Menu
+                size={21}
+                strokeWidth={1.25}
+              />
+            </button>
+          )}
 
         <div className="marketHubShell">
 
@@ -614,7 +638,6 @@ export default function MarketHubShell({
           />
         )}
 
-
         <section className="marketHubWorkspace">
 
           <header className="marketHubWorkspaceHeader">
@@ -625,9 +648,7 @@ export default function MarketHubShell({
                 type="button"
                 className="marketHubMobileMenu"
                 onClick={() =>
-                  setMobileNavigationOpen(
-                    true
-                  )
+                  setMobileNavigationOpen(true)
                 }
                 aria-label="Open MarketHub navigation"
               >
@@ -636,7 +657,6 @@ export default function MarketHubShell({
                   strokeWidth={1.25}
                 />
               </button>
-
 
               <div>
                 <div className="marketHubWorkspaceEyebrow">
@@ -672,20 +692,38 @@ export default function MarketHubShell({
         .marketHubTheme {
           min-height: 100vh;
 
-          background:
+          background-color:
             var(--hub-bg);
+
+          background-image:
+            var(--hub-background-image);
+
+          background-size:
+            cover;
+
+          background-position:
+            center top;
+
+          background-repeat:
+            no-repeat;
+
+          background-attachment:
+            fixed;
 
           color:
             var(--hub-text);
 
           transition:
-            background 250ms ease,
+            background-color 250ms ease,
             color 250ms ease;
         }
 
 
         .marketHubTheme-dark {
           --hub-bg: #0a0a0a;
+
+          --hub-background-image:
+          url('/images/market-hub-dark.webp');
 
           --hub-rail-start: #101010;
           --hub-rail-end: #0d0d0d;
@@ -701,6 +739,12 @@ export default function MarketHubShell({
           --hub-nav-hover: #171717;
           --hub-nav-active: #1b1b1b;
 
+          --hub-nav-surface:
+            rgba(15, 15, 15, .92);
+
+          --hub-nav-surface-border:
+            rgba(199, 164, 75, .18);
+
           --hub-nav-text: #8c8c8c;
           --hub-nav-hover-text: #dddddd;
 
@@ -711,11 +755,32 @@ export default function MarketHubShell({
           --hub-control-border: #292929;
 
           --hub-empty-border: #2b2b2b;
+
+          --hub-surface-primary:
+            rgba(21, 21, 21, .96);
+
+          --hub-surface-secondary:
+            rgba(27, 27, 27, .96);
+
+          --hub-surface-tertiary:
+            rgba(18, 18, 18, .96);
+
+          --hub-surface-border:
+            #303030;
+
+          --hub-surface-text:
+            #ffffff;
+
+          --hub-surface-muted:
+            #999999;
         }
 
 
         .marketHubTheme-light {
           --hub-bg: #f7f7f4;
+
+          --hub-background-image:
+          url('/images/market-hub-light.webp');
 
           --hub-rail-start: #ffffff;
           --hub-rail-end: #f1f1ed;
@@ -729,7 +794,14 @@ export default function MarketHubShell({
           --hub-border-soft: #ddddda;
 
           --hub-nav-hover: #ecece7;
-          --hub-nav-active: #e3e3dc;
+          --hub-nav-active:
+            rgba(239, 232, 213, .97);
+
+          --hub-nav-surface:
+            rgba(248, 243, 229, .94);
+
+          --hub-nav-surface-border:
+            rgba(199, 164, 75, .22);
 
           --hub-nav-text: #666666;
           --hub-nav-hover-text: #111111;
@@ -741,13 +813,31 @@ export default function MarketHubShell({
           --hub-control-border: #d4d4ce;
 
           --hub-empty-border: #c9c9c3;
+
+          --hub-surface-primary:
+            rgba(248, 243, 229, .96);
+
+          --hub-surface-secondary:
+            rgba(252, 248, 238, .96);
+
+          --hub-surface-tertiary:
+            rgba(239, 232, 213, .96);
+
+          --hub-surface-border:
+            rgba(113, 96, 58, .28);
+
+          --hub-surface-text:
+            #222222;
+
+          --hub-surface-muted:
+            #68645c;
         }
         .marketHubShell {
           width: 100%;
           min-height: calc(100vh - 72px);
           display: grid;
           grid-template-columns: 228px minmax(0, 1fr);
-          background: var(--hub-bg);
+          background: transparent;
           color: var(--hub-text);
         }
 
@@ -760,11 +850,7 @@ export default function MarketHubShell({
           flex-direction: column;
           padding: 28px 16px 18px;
           background:
-            linear-gradient(
-              180deg,
-              var(--hub-rail-start) 0%,
-              var(--hub-rail-end) 100%
-            );
+            transparent;
 
           border-right:
             1px solid var(--hub-border);
@@ -776,7 +862,27 @@ export default function MarketHubShell({
           align-items: flex-start;
           justify-content: space-between;
           gap: 12px;
-          padding: 0 10px 28px;
+
+          margin:
+            0 0 20px;
+
+          padding:
+            14px 16px;
+
+          background:
+            var(--hub-nav-surface);
+
+          border:
+            1px solid var(--hub-nav-surface-border);
+
+          border-radius:
+            14px;
+
+          backdrop-filter:
+            blur(8px);
+
+          -webkit-backdrop-filter:
+            blur(8px);
         }
 
         .marketHubBrand {
@@ -806,7 +912,7 @@ export default function MarketHubShell({
 
         .marketHubNavigation {
           display: grid;
-          gap: 4px;
+          gap: 8px;
         }
 
         .marketHubNavigationItem {
@@ -819,9 +925,15 @@ export default function MarketHubShell({
           gap: 9px;
           padding: 0 11px;
           color: var(--hub-nav-text);
-          background: transparent;
-          border: 0;
-          border-radius: 9px;
+          background:
+            var(--hub-nav-surface);
+
+          border:
+            1px solid
+            var(--hub-nav-surface-border);
+
+          border-radius:
+            10px;
           font-family: inherit;
           font-size: 13px;
           text-align: left;
@@ -902,10 +1014,31 @@ export default function MarketHubShell({
         }
 
         .marketHubWorkspaceHeader {
-          width: 100%;
-          max-width: 1500px;
-          margin: 0 auto;
-        }
+            width: 100%;
+            max-width: 1500px;
+            margin: 0 auto;
+
+            padding:
+              18px 22px;
+
+            background:
+              var(--hub-nav-surface);
+
+            border:
+              1px solid var(--hub-nav-surface-border);
+
+            border-radius:
+              16px;
+
+            backdrop-filter:
+              blur(8px);
+
+            -webkit-backdrop-filter:
+              blur(8px);
+
+            box-sizing:
+              border-box;
+          }
 
         .marketHubWorkspaceIdentity {
           display: flex;
@@ -943,7 +1076,7 @@ export default function MarketHubShell({
           width: 100%;
           max-width: 1500px;
           height: 1px;
-          margin: 28px auto 0;
+          margin: 20px auto 0;
           background:
           linear-gradient(
             90deg,
@@ -1001,9 +1134,40 @@ export default function MarketHubShell({
           text-align: center;
         }
 
+        .marketHubFloatingMenu {
+          display: none;
+        }
+
         @media (max-width: 900px) {
           .marketHubShell {
             grid-template-columns: minmax(0, 1fr);
+          }
+
+          .marketHubFloatingMenu {
+            position: fixed;
+            top: 1rem;
+            left: 2rem;
+              right: auto;
+            z-index: 10000;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 50px;
+            height: 50px;
+
+            color: var(--hub-text-strong);
+            background: var(--hub-control-bg);
+
+            border:
+              1px solid var(--hub-control-border);
+
+            border-radius: 18px;
+            cursor: pointer;
+
+            box-shadow:
+              0 8px 30px rgba(0, 0, 0, .18);
           }
 
           .marketHubRail {
@@ -1012,6 +1176,9 @@ export default function MarketHubShell({
             left: 0;
             width: min(290px, 86vw);
             height: 100dvh;
+
+            z-index: 10002;
+
             transform: translateX(-105%);
             box-shadow: 24px 0 60px rgba(0, 0, 0, .45);
             transition: transform 180ms ease;
@@ -1031,11 +1198,18 @@ export default function MarketHubShell({
             display: block;
             background: rgba(0, 0, 0, .62);
             border: 0;
-            z-index: 30;
+            z-index: 10001;
           }
 
           .marketHubMobileMenu {
             display: inline-flex;
+
+            width: 50px;
+            height: 50px;
+
+            margin: 0;
+
+            border-radius: 18px;
           }
 
           .marketHubWorkspace {

@@ -1,5 +1,5 @@
 import 'server-only'
-import {authorizePriceMeterIntelligenceExecution,PriceMeterComparableAuthenticationError,PriceMeterComparableAuthorizationError} from './price-meter-authorization'
+import {authorizeLegacyPropertyValuationExecution,PriceMeterComparableAuthenticationError,PriceMeterComparableAuthorizationError} from './price-meter-authorization'
 import {validateValuationQuestion,InvalidValuationQuestion} from './property-price-valuation-question'
 import {establishSubject,establishStructuralQuestion,acquireStructuralPeers,acquirePeerMoney,ValuationSubjectUnavailable,IncompleteValuationEvidence,InsufficientValuationEvidence} from './property-price-valuation-data'
 import {resolveListingOriginalMonetaryValue} from './listing-monetary-value'
@@ -14,7 +14,7 @@ import {VALUATION_ENGINE,type Response,type Result} from './property-price-valua
 export async function executePropertyPriceValuation(input:unknown):Promise<Response>{
  try {
   // Gate precedes subject, dictionary, peer, monetary and FX acquisition.
-  const userId=await authorizePriceMeterIntelligenceExecution()
+  const userId=await authorizeLegacyPropertyValuationExecution()
   const q=validateValuationQuestion(input)
   const subject=await establishSubject(q,userId)
   const {base,dimensions}=establishStructuralQuestion(q,subject)

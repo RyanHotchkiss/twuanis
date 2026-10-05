@@ -12,7 +12,6 @@ import GeographicWorkspace from './price-meter-geography/GeographicWorkspace'
 import SizeWorkspace from './price-meter-size/SizeWorkspace'
 import DistributionWorkspace from './price-meter-distribution/DistributionWorkspace'
 import { startTransition, useState, useRef } from 'react'
-import ComparativeDiscoveryAccess from './ComparativeDiscoveryAccess'
 import MarketFilters from '@/app/components/MarketFilters'
 import AnalysisActions from '@/app/components/AnalysisActions'
 import PriceMeterResults from '@/app/price-per-square-meter/PriceMeterResults'
@@ -84,6 +83,6 @@ export default function PriceMeterApplyPanel({ options, filters, language, sourc
     </p>}
     </>}
     <p className="my-4"><a className="underline" href={`/${language}/property-price-valuation`}>{spanish ? 'Valoración del precio de la propiedad' : 'Property Price Valuation'}</a></p>
-    <ComparativeDiscoveryAccess language={language} />
+    
   </>
 }

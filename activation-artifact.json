@@ -1,0 +1,22 @@
+{
+  "baseCommit": "4eccdb902097e2c3008003acaf90ca2ff2f6e50a",
+  "overlays": {
+    "lib/administrative-control.ts": "ea87a5962e4b14e23570eee7d20ff44820655018d436fae995def79571b589c5",
+    "lib/administrative-import.ts": "86032083bd76faffa97fe5c5d362866e6c6b0625a1bde1ea3087d9b111644574",
+    "lib/commercial-canonical-contract.ts": "5aef07fc0185b479fca6b8e96fc98aa6c4f1544f34da5282b8386ff989a53e35",
+    "lib/csv-source-ingestion.ts": "f6a3b56e86c26e591c065608386d3ffca42a59580ce4a668327a69103b5696cf",
+    "app/api/import-canonical-csv/route.ts": "73beee7c0e924ac240bce59bc25952bf040f31cfe35cc520844166e2648249f0",
+    "lib/supabase.ts": "b1902d6ebefbd20e4b751ecba2aa6977d96996c395ec8175d54f935500d37571",
+    "app/components/MarketHubSettings.tsx": "156f08bc80396cad4b3cf06a04313ff516f2ac3aac52ab98907015cd56a0ab9d",
+    "app/admin/AdminCreate.tsx": "3b6fb2768b9935fde6bd1880413660427571c21ab0e084534bbe0cecfa3265f4",
+    "app/admin/AdminHub.tsx": "e3271d133fa5eda54d4722beaf20579b1ba07b912eb04bb6be15b2b0ba0ab1eb",
+    "app/admin/AdminListings.tsx": "16838f71edfc5b526dbdf554e704253c8388b4978c8c3d7ab7bac8d37e625456",
+    "app/admin/AdminMedia.tsx": "f6763d50ccc8539e912ac2705b130e92dc359577c97797f0feaa16afd2944215",
+    "app/admin/AdminOverview.tsx": "9d37b331395597e9ba0aad5a15ff8cda1563e60a36b3e54320fb395b65798b07",
+    "app/admin/actions.ts": "dbefbfec1007512258abce51f5a94388a7e6d97d951d676e74f771381f21d863",
+    "app/admin/admin-contract.ts": "cbe5ac04ba4bfefe6c80c1f71d578b3b4670debaf022781a1188748c7a8e19db",
+    "app/admin/admin.css": "f1fdef2780637bdbebc2eff00191b08f9bc762a88984a4f726d64be84a26884f",
+    "app/admin/media-actions.ts": "e0249008e1d29860c80b71d24cd79e6612629973bb843853fc65bc9aa6134a56",
+    "app/admin/page.tsx": "f35f46411864c605602e959aa1c9da440483a2e8775e243089c877cddbd365c1"
+  }
+}

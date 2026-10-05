@@ -15,7 +15,7 @@ import FilterButton from '@/app/components/FilterButton'
 import TopBar from '@/app/components/TopBar'
 import BuyHeaderES from '@/app/components/BuyHeaderES'
 import BuySidebarES from '@/app/components/BuySidebarES'
-import MarketplaceListingGrid from '@/app/components/marketplace/MarketplaceListingGrid'
+import MarketplaceListingGrid from '@/app/components/marketplace/AddonMarketplaceGrid'
 import { normalizeText } from '@/lib/normalizeText' 
 import {
   getSavedSearch,
@@ -1334,7 +1334,7 @@ const filteredProperties = properties.filter((property) => {
 
             />
 
-          <MarketplaceListingGrid
+          <MarketplaceListingGrid province={filters.province} propertyType={filters.property_type}
                 theme={theme}
 
                 listings={

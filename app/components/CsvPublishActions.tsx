@@ -1,5 +1,7 @@
 'use client'
 
+import { useState } from 'react'
+
 import {
   publishCsvListings
 } from '@/app/utils/publishCsvListings'
@@ -16,22 +18,49 @@ export default function CsvPublishActions({
   setShowCsvStaging
 }: CsvPublishActionsProps) {
 
+  const [isPublishing, setIsPublishing] =
+    useState(false)
+
+  async function handlePublish() {
+    if (isPublishing) return
+
+    setIsPublishing(true)
+
+    try {
+      await publishCsvListings(
+        csvListings,
+        setShowCsvStaging,
+        setCsvListings
+      )
+    } finally {
+      setIsPublishing(false)
+    }
+  }
+
   return (
 
     <div style={container}>
 
-      <button
-        onClick={() =>
-          publishCsvListings(
-            csvListings,
-            setShowCsvStaging,
-            setCsvListings
-          )
-        }
-        style={publishButton}
-      >
-        Publish Listings
-      </button>
+            <button
+              onClick={handlePublish}
+              disabled={isPublishing}
+              style={{
+                ...publishButton,
+                background: isPublishing
+                  ? '#666'
+                  : '#FFFFFF',
+                color: isPublishing
+                  ? '#ccc'
+                  : '#000',
+                cursor: isPublishing
+                  ? 'not-allowed'
+                  : 'pointer'
+              }}
+            >
+              {isPublishing
+                ? 'Publishing...'
+                : 'Publish Listings'}
+            </button>
 
     </div>
 

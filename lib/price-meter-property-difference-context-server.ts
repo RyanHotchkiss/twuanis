@@ -12,7 +12,7 @@ import type { DifferenceResult,ContextItem } from './price-meter-property-differ
 export class DifferenceRequestError extends Error {}
 const phase=(s:ContextSelection):7|8|9|10=>s.questionKey==='geographic_children'?7:s.questionKey.includes('_area_to_')?8:s.questionKey==='characteristic_comparison'?10:9
 export async function executeDifferenceContext(input:unknown):Promise<DifferenceResult> {
- await authorizePriceMeterIntelligenceExecution()
+ await authorizePriceMeterIntelligenceExecution('cap-property-price-m2-position')
  let request
  try {request=parseDifferenceRequest(input)}catch{throw new DifferenceRequestError('Invalid context request.')}
  const execution=await executePropertyPositionWithWorkingEvidence(request.positionRequest)

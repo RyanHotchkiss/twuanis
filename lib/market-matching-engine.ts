@@ -1,4 +1,5 @@
 import 'server-only'
+import {authorizePreviouslyPublicCapability} from './package-capability-authorization'
 import { explainMarketPreference } from './market-matching-explanation'
 import { matchingCardEvidence } from './market-matching-presentation'
 import { supabaseAdmin } from './supabase-admin'
@@ -9,6 +10,8 @@ import { resolveListingOriginalMonetaryValue } from './listing-monetary-value'
 import { resolveListingImages } from '@/app/utils/resolveListingImages'
 
 export async function getMarketMatches(filters:Record<string,string|undefined>,language:'en'|'es'='en'){
+ await authorizePreviouslyPublicCapability('cap-property-matching')
+
   const request=await resolveCanonicalMarketRequest(filters,language)
   const fields=[...(request.propertyArea?['property_area' as const]:[]),...(request.constructionArea?['construction_area' as const]:[])]
   const candidates=await readCanonicalMarketScalars(request.base,fields)

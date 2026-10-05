@@ -17,7 +17,9 @@ export function csvEvidenceEnvelope(row: Record<string, unknown>) {
 
 export async function ingestCsvObservation(
   admin: SupabaseClient,
-  row: Record<string, unknown>
+  row: Record<string, unknown>,
+  // Human-triggered ingestion supplies an actor-bound transport. Geography reads stay separate.
+  writes: Pick<SupabaseClient, 'rpc'> = admin
 ) {
   const { raw, review } =
     csvEvidenceEnvelope(row)
@@ -29,7 +31,7 @@ export async function ingestCsvObservation(
    * contract must never erase the observation.
    */
   const retained =
-    await admin.rpc(
+    await writes.rpc(
       'retain_csv_source_evidence',
       {
         p_raw: raw,
@@ -91,8 +93,19 @@ export async function ingestCsvObservation(
       )
     }
 
-    const changes: Record<string, unknown> = {
-      property_type: raw.property_type,
+    const normalizedPropertyType =
+        typeof row.property_type === 'string'
+          ? row.property_type.trim()
+          : ''
+
+      if (!normalizedPropertyType) {
+        throw Error(
+          'Normalized canonical property type is missing.'
+        )
+      }
+
+      const changes: Record<string, unknown> = {
+        property_type: normalizedPropertyType,
       province: geography.province.term_name,
       canton: geography.canton.term_name,
       district:
@@ -410,7 +423,7 @@ export async function ingestCsvObservation(
     }
 
     const applied =
-      await admin.rpc(
+      await writes.rpc(
         'ingest_canonical_source_observation',
         {
           p_evidence:

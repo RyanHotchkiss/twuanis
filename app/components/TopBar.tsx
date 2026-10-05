@@ -17,7 +17,8 @@ import {
 import {
   Suspense,
   useEffect,
-  useState
+  useState,
+  type ReactNode
 } from 'react'
 
 import {
@@ -33,6 +34,9 @@ type TopBarProps = {
   onFilterClick?: () => void
   theme?: 'dark' | 'light'
   onThemeToggle?: () => void
+  onCollapsedChange?: (
+    collapsed: boolean
+  ) => void
 }
 
 const GOLD = '#C7A44B'
@@ -43,13 +47,23 @@ const UTILITY_ORANGE = '#ff3b00'
 function TopBarContent({
   onFilterClick,
   theme: _legacyTheme,
-  onThemeToggle: _legacyToggle
+  onThemeToggle: _legacyToggle,
+  onCollapsedChange
 }: TopBarProps) {
   const {theme,setTheme}=useSiteTheme()
   const onThemeToggle=()=>setTheme(t=>t==='dark'?'light':'dark')
 
   const pathname =
     usePathname()
+
+  const isHomepage =
+  pathname === '/en' ||
+  pathname === '/es'
+
+  const lightTopBarBackground =
+  isHomepage
+    ? 'rgba(255, 255, 255, .92)'
+    : 'rgba(248, 243, 229, .94)'
 
   const searchParams =
     useSearchParams()
@@ -82,11 +96,43 @@ const isSpanish =
   const [collapsed, setCollapsed] =
     useState(false)
 
+  useEffect(() => {
+    onCollapsedChange?.(
+      collapsed
+    )
+  }, [
+    collapsed,
+    onCollapsedChange
+  ])
+
   const [manuallyExpanded, setManuallyExpanded] =
     useState(false)
 
   const [isMobile, setIsMobile] =
     useState(false)
+
+  useEffect(() => {
+    const mediaQuery =
+      window.matchMedia('(max-width: 768px)')
+
+    const updateIsMobile = () => {
+      setIsMobile(mediaQuery.matches)
+    }
+
+    updateIsMobile()
+
+    mediaQuery.addEventListener(
+      'change',
+      updateIsMobile
+    )
+
+    return () => {
+      mediaQuery.removeEventListener(
+        'change',
+        updateIsMobile
+      )
+    }
+  }, [])
 
   const [hoveredItem, setHoveredItem] =
     useState<string | null>(null)
@@ -263,7 +309,10 @@ const isSpanish =
 
   return (
     <div
-      style={floatingHamburgerShell(theme)}
+      style={floatingHamburgerShell(
+  theme,
+  lightTopBarBackground
+)}
     >
         <button
           type="button"
@@ -299,8 +348,15 @@ const isSpanish =
     <div
       style={
         manuallyExpanded
-          ? floatingTopBarShell(theme)
-          : stickyShell(theme)
+          ? floatingTopBarShell(
+            theme,
+            lightTopBarBackground
+          )
+          : stickyShell(
+            theme,
+            isMobile,
+            lightTopBarBackground
+          )
       }
     >
 
@@ -614,16 +670,17 @@ const isSpanish =
             : 'ES'}
           </span>
 
-          <span
-            style={labelStyle(
-              labelVisible('language'),
-              isMobile
-            )}
-          >
-            {isSpanish
-            ? 'English'
-            : 'Español'}
-          </span>
+          {!isMobile && (
+            <span
+              style={labelStyle(
+                labelVisible('language')
+              )}
+            >
+              {isSpanish
+                ? 'English'
+                : 'Español'}
+            </span>
+          )}
         </Link>
 
         {/* APPEARANCE */}
@@ -691,16 +748,17 @@ const isSpanish =
               ◐
             </span>
 
-            <span
-              style={labelStyle(
-                labelVisible('appearance'),
-                isMobile
-              )}
-            >
-              {theme === 'dark'
-                ? (isSpanish?'Modo claro':'Light Mode')
-                : (isSpanish?'Modo oscuro':'Dark Mode')}
-            </span>
+            {!isMobile && (
+              <span
+                style={labelStyle(
+                  labelVisible('appearance')
+                )}
+              >
+                {theme === 'dark'
+                  ? (isSpanish ? 'Modo claro' : 'Light Mode')
+                  : (isSpanish ? 'Modo oscuro' : 'Dark Mode')}
+              </span>
+            )}
           </button>
 
             </nav>
@@ -726,12 +784,16 @@ export default function TopBar(
 
 
 const stickyShell = (
-  theme: 'dark' | 'light'
+  theme: 'dark' | 'light',
+  isMobile: boolean,
+  lightBackground: string
 ) => ({
   position:
     'sticky' as const,
 
-  top: '1rem',
+  top: isMobile
+    ? '1.5rem'
+    : '1rem',
 
   zIndex: 3000,
 
@@ -739,14 +801,17 @@ const stickyShell = (
 
   maxWidth: '100%',
 
-  margin: '0 auto',
+  margin:
+  isMobile
+    ? '0 auto 1rem'
+    : '0 auto',
 
   padding: '.55rem .7rem',
 
   background:
-    theme === 'dark'
-      ? 'rgba(0, 0, 0, .88)'
-      : 'rgba(255, 255, 255, .92)',
+  theme === 'dark'
+    ? 'rgba(0, 0, 0, .88)'
+    : lightBackground,
 
   backdropFilter:
     'blur(14px)',
@@ -798,7 +863,8 @@ const hamburgerButton = {
 }
 
 const floatingHamburgerShell = (
-  theme: 'dark' | 'light'
+  theme: 'dark' | 'light',
+  lightBackground: string
 ) => ({
   position:
     'fixed' as const,
@@ -824,7 +890,7 @@ const floatingHamburgerShell = (
   background:
     theme === 'dark'
       ? 'rgba(0, 0, 0, .88)'
-      : 'rgba(255, 255, 255, .92)',
+      : lightBackground,
 
   backdropFilter:
     'blur(14px)',
@@ -850,7 +916,8 @@ const floatingHamburgerShell = (
 })
 
 const floatingTopBarShell = (
-  theme: 'dark' | 'light'
+  theme: 'dark' | 'light',
+  lightBackground: string
 ) => ({
   position:
     'fixed' as const,
@@ -880,9 +947,9 @@ const floatingTopBarShell = (
     '.55rem .7rem',
 
   background:
-    theme === 'dark'
-      ? 'rgba(0, 0, 0, .88)'
-      : 'rgba(255, 255, 255, .92)',
+  theme === 'dark'
+    ? 'rgba(0, 0, 0, .88)'
+    : lightBackground,
 
   backdropFilter:
     'blur(14px)',

@@ -9,13 +9,47 @@ import {useHomepageEntrance} from './HomepageEntrance'
 
 export default function FloatingHomeMark() {
   const stage = useHomepageEntrance()
-  return stage === 'complete' ? <VisibleHomeMark /> : null
+  const pathname = usePathname()
+
+  const isHomepage =
+    pathname === '/en' ||
+    pathname === '/es'
+
+  return stage === 'complete'
+    ? (
+      <VisibleHomeMark
+        delayEntrance={!isHomepage}
+      />
+    )
+    : null
 }
 
-function VisibleHomeMark() {
+function VisibleHomeMark({
+      delayEntrance
+    }: {
+      delayEntrance: boolean
+    }) {
   const pathname = usePathname()
   const { theme } = useSiteTheme()
+      
   const [showLabel, setShowLabel] = useState(true)
+
+  const [visible, setVisible] =
+      useState(!delayEntrance)
+
+      useEffect(() => {
+          if (!delayEntrance) {
+            setVisible(true)
+            return
+          }
+
+          const timer = window.setTimeout(() => {
+            setVisible(true)
+          }, 5000)
+
+          return () =>
+            window.clearTimeout(timer)
+        }, [delayEntrance])
 
   const isSpanish =
     pathname === '/es' ||
@@ -23,24 +57,39 @@ function VisibleHomeMark() {
 
   const homeHref = isSpanish ? '/es' : '/en'
 
+  const isHomepage =
+    pathname === '/en' ||
+    pathname === '/es'
+
   const logoSrc =
     theme === 'light'
       ? '/images/black-20S-logo.svg'
       : '/images/white-20s-logo.svg'
 
   useEffect(() => {
-    const timer = window.setTimeout(() => {
-      setShowLabel(false)
-    }, 5000)
+      if (!visible) {
+        return
+      }
 
-    return () => window.clearTimeout(timer)
-  }, [])
+      const timer = window.setTimeout(() => {
+        setShowLabel(false)
+      }, 5000)
+
+      return () =>
+        window.clearTimeout(timer)
+    }, [visible])
+
+    if (!visible) {
+        return null
+      }
 
   return (
     <Link
       href={homeHref}
       className="floating-home-mark"
       aria-label={isSpanish ? 'Inicio' : 'Home'}
+      data-theme={theme}
+      data-homepage={isHomepage}
     >
       <span
         className="floating-home-logo"

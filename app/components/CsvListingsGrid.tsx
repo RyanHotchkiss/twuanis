@@ -20,6 +20,43 @@ export default function CsvListingsGrid({
   isRentLease = false
 }: CsvListingsGridProps) {
 
+    function resolvePreviewImage(
+        images: unknown
+      ): string | null {
+
+        if (
+          typeof images === 'string'
+        ) {
+          const firstUrl = images
+            .split('|')
+            .map(value => value.trim())
+            .find(Boolean)
+
+          return firstUrl || null
+        }
+
+        if (
+          Array.isArray(images) &&
+          images.length > 0
+        ) {
+          const firstImage = images[0]
+
+          if (typeof firstImage === 'string') {
+            return firstImage
+          }
+
+          if (
+            firstImage &&
+            typeof firstImage === 'object' &&
+            typeof firstImage.preview === 'string'
+          ) {
+            return firstImage.preview
+          }
+        }
+
+        return null
+      }
+
   function formatOriginalPrice(
     listing: any
   ): string {
@@ -72,9 +109,13 @@ export default function CsvListingsGrid({
 
     <div style={grid}>
 
-      {csvListings.map((listing, index) => (
+      {csvListings.map((listing, index) => {
 
-        <div
+        const previewImage =
+          resolvePreviewImage(listing.images)
+
+        return (
+          <div
           key={index}
           style={card}
         >
@@ -82,10 +123,10 @@ export default function CsvListingsGrid({
           {/* IMAGE AREA */}
           <div style={imageArea}>
 
-            {listing.images.length > 0 ? (
+            {previewImage ? (
 
               <img
-                src={listing.images[0].preview}
+                src={previewImage}
                 alt=""
                 style={heroImage}
               />
@@ -134,7 +175,9 @@ export default function CsvListingsGrid({
 
         </div>
 
-      ))}
+          )
+          
+        })}
 
     </div>
 

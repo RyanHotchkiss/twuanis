@@ -79,14 +79,17 @@ export default function MarketHubActivityEngine({
 
 const card = {
   padding: '1.5rem',
-  background: '#111',
-  border: '1px solid #222',
+  background:
+    'var(--hub-surface-primary)',
+  border:
+    '1px solid var(--hub-surface-border)',
   borderRadius: '1rem'
 }
 
 const eyebrow = {
   marginBottom: '.5rem',
-  color: '#777',
+  color:
+    'var(--hub-surface-muted)',
   fontSize: '.75rem',
   textTransform: 'uppercase' as const,
   letterSpacing: '1px'
@@ -94,7 +97,8 @@ const eyebrow = {
 
 const heading = {
   margin: '0 0 1.25rem',
-  color: '#fff',
+  color:
+    'var(--hub-surface-text)',
   fontSize: '1.5rem'
 }
 
@@ -107,19 +111,23 @@ const grid = {
 
 const eventCard = {
   padding: '1.25rem',
-  background: '#181818',
-  border: '1px solid #2a2a2a',
+  background:
+    'var(--hub-surface-secondary)',
+  border:
+    '1px solid var(--hub-surface-border)',
   borderRadius: '.9rem'
 }
 
 const count = {
-  color: '#fff',
+  color:
+    'var(--hub-surface-text)',
   fontSize: '2rem',
   fontWeight: 700
 }
 
 const label = {
   marginTop: '.35rem',
-  color: '#999',
+  color:
+    'var(--hub-surface-muted)',
   fontSize: '.9rem'
 }

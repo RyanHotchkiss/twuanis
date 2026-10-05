@@ -842,8 +842,10 @@ function ProgressMetric({
 
 const section = {
   padding: '1.5rem',
-  background: '#151515',
-  border: '1px solid #303030',
+  background:
+    'var(--hub-surface-primary)',
+  border:
+    '1px solid var(--hub-surface-border)',
   borderRadius: '18px'
 }
 
@@ -871,14 +873,17 @@ const titleIcon = {
   width: '3.5rem',
   height: '3.5rem',
   color: '#C7A44B',
-  background: '#1b1b1b',
-  border: '1px solid #303030',
+  background:
+    'var(--hub-surface-tertiary)',
+  border:
+    '1px solid var(--hub-surface-border)',
   borderRadius: '999px'
 }
 
 const heading = {
   margin: 0,
-  color: '#fff',
+  color:
+    'var(--hub-surface-text)',
   fontSize: '1.75rem',
   lineHeight: 1.2
 }
@@ -886,7 +891,8 @@ const heading = {
 const purpose = {
   maxWidth: '750px',
   margin: '.55rem 0 0',
-  color: '#aaa',
+  color:
+    'var(--hub-surface-muted)',
   fontSize: '.92rem',
   lineHeight: 1.5
 }
@@ -894,13 +900,15 @@ const purpose = {
 const divider = {
   height: '1px',
   margin: '1.5rem 0',
-  background: '#303030'
+  background:
+    'var(--hub-surface-border)'
 }
 
 const phaseDivider = {
   height: '1px',
   margin: '2rem 0 1.5rem',
-  background: '#303030'
+  background:
+    'var(--hub-surface-border)'
 }
 
 const stepHeader = {
@@ -911,7 +919,8 @@ const stepHeader = {
 }
 
 const stepLabel = {
-  color: '#777',
+  color:
+    'var(--hub-surface-muted)',
   fontSize: '.72rem',
   fontWeight: 700,
   letterSpacing: '.08em',
@@ -934,8 +943,10 @@ const contentGrid = {
 
 const card = {
   padding: '1.25rem',
-  background: '#191919',
-  border: '1px solid #303030',
+  background:
+    'var(--hub-surface-secondary)',
+  border:
+    '1px solid var(--hub-surface-border)',
   borderRadius: '14px'
 }
 
@@ -966,20 +977,24 @@ const widgetIcon = {
   width: '2.75rem',
   height: '2.75rem',
   color: '#C7A44B',
-  background: '#202020',
-  border: '1px solid #343434',
+  background:
+    'var(--hub-surface-tertiary)',
+  border:
+    '1px solid var(--hub-surface-border)',
   borderRadius: '10px'
 }
 
 const widgetHeading = {
   margin: 0,
-  color: '#fff',
+  color:
+    'var(--hub-surface-text)',
   fontSize: '1rem'
 }
 
 const widgetDescription = {
   margin: '.4rem 0 0',
-  color: '#929292',
+  color:
+    'var(--hub-surface-muted)',
   fontSize: '.82rem',
   lineHeight: 1.5
 }
@@ -995,8 +1010,10 @@ const overviewItem = {
   alignItems: 'center',
   gap: '.7rem',
   padding: '.8rem',
-  background: '#1d1d1d',
-  border: '1px solid #303030',
+  background:
+    'var(--hub-surface-tertiary)',
+  border:
+    '1px solid var(--hub-surface-border)',
   borderRadius: '10px'
 }
 
@@ -1009,7 +1026,8 @@ const overviewItemIcon = {
 }
 
 const overviewItemText = {
-  color: '#bbb',
+  color:
+    'var(--hub-surface-muted)',
   fontSize: '.84rem',
   lineHeight: 1.4
 }
@@ -1043,7 +1061,8 @@ const secondaryButton = {
   gap: '.5rem',
   padding: '.75rem 1rem',
   color: '#C7A44B',
-  background: '#1d1d1d',
+  background:
+    'var(--hub-surface-tertiary)',
   border: '1px solid #C7A44B',
   borderRadius: '10px',
   textDecoration: 'none',
@@ -1064,14 +1083,17 @@ const checklistItem = {
   alignItems: 'center',
   gap: '.9rem',
   padding: '1rem',
-  background: '#1d1d1d',
-  border: '1px solid #303030',
+  background:
+    'var(--hub-surface-tertiary)',
+  border:
+    '1px solid var(--hub-surface-border)',
   borderRadius: '12px'
 }
 
 const completedChecklistItem = {
   opacity: 0.72,
-  background: '#191919'
+  background:
+    'var(--hub-surface-secondary)'
 }
 
 const checklistStatus = {
@@ -1108,13 +1130,15 @@ const checklistItemIcon = {
 
 const checklistItemTitle = {
   margin: 0,
-  color: '#fff',
+  color:
+    'var(--hub-surface-text)',
   fontSize: '.9rem'
 }
 
 const checklistItemDescription = {
   margin: '.35rem 0 0',
-  color: '#8e8e8e',
+  color:
+    'var(--hub-surface-muted)',
   fontSize: '.78rem',
   lineHeight: 1.45
 }
@@ -1126,7 +1150,8 @@ const checklistButton = {
   gap: '.4rem',
   padding: '.6rem .8rem',
   color: '#C7A44B',
-  background: '#202020',
+  background:
+  'var(--hub-surface-tertiary)',
   border: '1px solid #C7A44B',
   borderRadius: '8px',
   textDecoration: 'none',
@@ -1145,13 +1170,15 @@ const completedText = {
 const stepDivider = {
   height: '1px',
   margin: '1.5rem 0',
-  background: '#292929'
+  background:
+  'var(--hub-surface-border)'
 }
 
 const stepDescription = {
   maxWidth: '700px',
   margin: '.5rem 0 0',
-  color: '#929292',
+  color:
+  'var(--hub-surface-muted)',
   fontSize: '.82rem',
   lineHeight: 1.5
 }
@@ -1170,8 +1197,10 @@ const exploreCard = {
   justifyContent: 'space-between',
   minHeight: '190px',
   padding: '1.25rem',
-  background: '#191919',
-  border: '1px solid #303030',
+  background:
+    'var(--hub-surface-secondary)',
+  border:
+    '1px solid var(--hub-surface-border)',
   borderRadius: '14px'
 }
 
@@ -1192,7 +1221,8 @@ const exploreButton = {
   marginTop: '1.25rem',
   padding: '.65rem .85rem',
   color: '#C7A44B',
-  background: '#202020',
+  background:
+  'var(--hub-surface-tertiary)',
   border: '1px solid #C7A44B',
   borderRadius: '8px',
   textDecoration: 'none',
@@ -1203,8 +1233,10 @@ const exploreButton = {
 const progressCard = {
   marginTop: '1.25rem',
   padding: '1.25rem',
-  background: '#191919',
-  border: '1px solid #303030',
+  background:
+  'var(--hub-surface-secondary)',
+  border:
+    '1px solid var(--hub-surface-border)',
   borderRadius: '14px'
 }
 
@@ -1233,22 +1265,26 @@ const progressSummary = {
 const progressMetric = {
   minWidth: '105px',
   padding: '.8rem 1rem',
-  background: '#1d1d1d',
-  border: '1px solid #303030',
+  background:
+  'var(--hub-surface-tertiary)',
+  border:
+    '1px solid var(--hub-surface-border)',
   borderRadius: '10px',
   textAlign: 'center' as const
 }
 
 const progressMetricValue = {
   display: 'block',
-  color: '#fff',
+  color:
+  'var(--hub-surface-text)',
   fontSize: '1.2rem'
 }
 
 const progressMetricLabel = {
   display: 'block',
   marginTop: '.25rem',
-  color: '#888',
+  color:
+    'var(--hub-surface-muted)',
   fontSize: '.72rem'
 }
 
@@ -1257,7 +1293,8 @@ const progressTrack = {
   height: '.65rem',
   marginTop: '1.25rem',
   overflow: 'hidden',
-  background: '#292929',
+  background:
+  'var(--hub-surface-border)',
   borderRadius: '999px'
 }
 
@@ -1271,7 +1308,8 @@ const progressBar = {
 
 const progressTotal = {
   margin: '.65rem 0 0',
-  color: '#777',
+  color:
+  'var(--hub-surface-muted)',
   fontSize: '.75rem',
   textAlign: 'right' as const
 }
@@ -1279,8 +1317,10 @@ const progressTotal = {
 const dismissCard = {
   marginTop: '1.25rem',
   padding: '1.25rem',
-  background: '#191919',
-  border: '1px solid #303030',
+  background:
+  'var(--hub-surface-secondary)',
+  border:
+    '1px solid var(--hub-surface-border)',
   borderRadius: '14px'
 }
 
@@ -1304,9 +1344,12 @@ const hideWelcomeButton = {
   alignItems: 'center',
   justifyContent: 'center',
   padding: '.75rem 1rem',
-  color: '#aaa',
-  background: '#1d1d1d',
-  border: '1px solid #444',
+  color:
+  'var(--hub-surface-muted)',
+  background:
+    'var(--hub-surface-tertiary)',
+  border:
+    '1px solid var(--hub-surface-border)',
   borderRadius: '10px',
   cursor: 'pointer',
   fontFamily: 'inherit',

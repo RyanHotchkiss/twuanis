@@ -1,4 +1,5 @@
 import 'server-only'
+import {authorizePreviouslyPublicCapability} from './package-capability-authorization'
 import { resolveCanonicalMarketRequest } from './canonical-market-request'
 import { countCanonicalMarket } from './canonical-market-population'
 import { countMarketNumericalSurvivors } from './canonical-market-acquisition'
@@ -6,6 +7,8 @@ import { countMarketNumericalSurvivors } from './canonical-market-acquisition'
 // Historical route name retained; the surviving product is Configuration Frequency.
 // No Rare Configuration Discovery, powerset, weighting, or scarcity score executes.
 export async function getMarketScarcity(filters:Record<string,string|undefined>,language:'en'|'es'='en'){
+ await authorizePreviouslyPublicCapability('cap-property-configuration-frequency')
+
   const request=await resolveCanonicalMarketRequest(filters,language)
   const marketSize=await countCanonicalMarket(request.base)
   const configuration=request.terms.filter(t=>t.dimension!=='property_type')

@@ -1,3 +1,5 @@
+import {loadAddonHomepage} from '@/lib/addon-homepage-server'
+import {canonicalAddonPlacementEnabled} from '@/lib/addon-placement-server'
 import HomePageClient from './HomePageClient'
 import {
   supabaseAdmin
@@ -39,7 +41,7 @@ const [
     rentListings.length
 
   const homepagePlacement =
-    await resolveMarketplacePlacement({
+    canonicalAddonPlacementEnabled()?{listings:saleListings}:await resolveMarketplacePlacement({
       supabase:
         supabaseAdmin,
 
@@ -49,6 +51,8 @@ const [
       surface:
         'homepage'
     })
+
+  const addonHomepage = await loadAddonHomepage()
 
   const homePageSchema =
     buildHomePageSchema({
@@ -60,7 +64,7 @@ const [
     })
 
   return (
-    <HomePageClient
+    <HomePageClient addonHomepage={addonHomepage}
       ontologyTerms={
         ontologyTerms || []
       }

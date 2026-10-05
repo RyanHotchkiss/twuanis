@@ -118,7 +118,7 @@ const main = {
     '100vh',
 
   padding:
-    'clamp(1rem, 3vw, 2rem)',
+     'clamp(1rem, 3vw, 2rem)',
 
   backgroundColor:
     'var(--background)',

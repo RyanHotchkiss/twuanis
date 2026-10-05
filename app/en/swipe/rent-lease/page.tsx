@@ -1,4 +1,5 @@
 'use client'
+import {loadSwipeAddonPlacement} from '@/app/components/marketplace/swipe-addon-placement'
 
 import {
   useEffect,
@@ -77,9 +78,7 @@ async function fetchProperties() {
         })
       )
 
-    setProperties(
-      normalizedListings
-    )
+    setProperties(await loadSwipeAddonPlacement(normalizedListings,'swipe-rent'))
   } catch (error) {
     console.error(
       'Unable to load rent listings',
@@ -788,7 +787,8 @@ useEffect(() => {
           padding: '1.75rem'
         }}>
 
-          <h1 style={{
+          {currentProperty.addonFeatured&&<span style={{display:'inline-block',background:'#ff3b00',color:'#fff',padding:'4px 10px',borderRadius:8}}>Featured</span>}
+<h1 style={{
             fontSize: '1.8rem',
             marginBottom: '.75rem'
           }}>

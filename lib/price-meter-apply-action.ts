@@ -15,8 +15,10 @@ import { issuePriceMeterApplyPermit } from '@/lib/price-meter-apply-permit'
 export async function executePriceMeterApply(
   input: unknown, language: 'en' | 'es', source: 'workspace' | 'standalone', selected:unknown, distributionIdentity?:unknown, geographicCommand?:unknown, constructionLandNormalization?:unknown
 ) {
-  await authorizePriceMeterIntelligenceExecution()
   const engines=validateSelectedPriceMeterEngines(selected)
+  const capabilities={distribution:'cap-price-m2-distribution',geography:'cap-geographic-price-m2-comparison','property-area':'cap-size-price-m2','construction-area':'cap-size-price-m2','construction-land':'cap-construction-land-price-m2'} as const
+  // Pure bounded dispatch first; every requested capability before permits/acquisition.
+  for(const capability of new Set(engines.map(engine=>capabilities[engine])))await authorizePriceMeterIntelligenceExecution(capability)
   const cl=engines.includes('construction-land')?validateConstructionLandNormalization(constructionLandNormalization):undefined
   if(cl&&(engines.length!==1||distributionIdentity!==undefined||geographicCommand!==undefined))throw Error('Select one Construction-to-Land question.')
   if(!cl&&constructionLandNormalization!==undefined)throw Error('Unexpected Construction-to-Land identity.')

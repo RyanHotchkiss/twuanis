@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import {useSiteTheme} from './theme/ThemeProvider'
 
 import {
@@ -163,6 +163,30 @@ export default function MarketHubSettings({
 
   const [savingPush, setSavingPush] =
     useState(false)
+
+  const signOutPending = useRef(false)
+  const [signingOut, setSigningOut] = useState(false)
+
+  async function signOutEverywhere() {
+    if (signOutPending.current) return
+    signOutPending.current = true
+    setSigningOut(true)
+    try {
+      const { error } = await supabase.auth.signOut({ scope: 'global' })
+      if (error) throw error
+      // Full navigation discards stale authenticated UI and requests fresh server identity.
+      window.location.replace(`/${language === 'es' ? 'es/centro-de-mercado' : 'en/market-hub'}`)
+    } catch {
+      // Auth can clear this session even when global revocation fails. Keep the
+      // failure visible if the authenticated parent has already unmounted Settings.
+      window.alert(language === 'es'
+        ? 'No pudimos confirmar el cierre de sesión en todos los dispositivos. Es posible que se haya cerrado esta sesión. Vuelva a iniciar sesión e inténtelo de nuevo.'
+        : 'We could not confirm sign-out on all devices. This session may have ended. Sign in again and retry.')
+      signOutPending.current = false
+      setSigningOut(false)
+    }
+  }
+
 
   const labels =
     language === 'es'
@@ -1658,8 +1682,13 @@ export default function MarketHubSettings({
                       <button
                         type="button"
                         style={dangerButton}
+                        onClick={signOutEverywhere}
+                        disabled={signingOut}
+                        aria-busy={signingOut}
                       >
-                        {labels.signOutEverywhere}
+                        {signingOut
+                          ? (language === 'es' ? 'Cerrando sesión…' : 'Signing out…')
+                          : labels.signOutEverywhere}
                       </button>
                     </article>
                   </div>

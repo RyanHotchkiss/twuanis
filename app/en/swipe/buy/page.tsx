@@ -1,4 +1,5 @@
 'use client'
+import {loadSwipeAddonPlacement} from '@/app/components/marketplace/swipe-addon-placement'
 
 import { useEffect, useMemo, useState } from 'react'
 import { supabase } from '@/lib/supabase'
@@ -69,9 +70,7 @@ export default function SwipePage() {
                   })
                 )
 
-              setProperties(
-                normalizedListings
-              )
+              setProperties(await loadSwipeAddonPlacement(normalizedListings,'swipe-buy'))
             } catch (error) {
               console.error(
                 'Unable to load sale listings',
@@ -778,7 +777,8 @@ return (
           padding: '1.75rem'
         }}>
 
-          <h1 style={{
+          {currentProperty.addonFeatured&&<span style={{display:'inline-block',background:'#ff3b00',color:'#fff',padding:'4px 10px',borderRadius:8}}>Featured</span>}
+<h1 style={{
             fontSize: '1.2rem',
             marginBottom: '.75rem'
           }}>

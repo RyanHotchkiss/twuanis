@@ -1,4 +1,5 @@
 import 'server-only'
+import {canonicalPackageEnforcement,authorizeCanonicalCapability,ANALYTICAL_CAPABILITIES,type AnalyticalCapability} from './package-capability-authorization'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 
 export const PRICE_METER_INTELLIGENCE_ENTITLEMENT =
@@ -33,9 +34,32 @@ export class PriceMeterComparableAuthorizationError
 }
 
 
-export async function authorizePriceMeterIntelligenceExecution():
+export async function authorizePriceMeterIntelligenceExecution(capability: AnalyticalCapability):
   Promise<string> {
 
+  if (!ANALYTICAL_CAPABILITIES.includes(capability)) throw new PriceMeterComparableAuthorizationError()
+  if (canonicalPackageEnforcement()) {
+    try { return await authorizeCanonicalCapability(capability) }
+    catch { throw new PriceMeterComparableAuthorizationError() }
+  }
+  return authorizeLegacyPriceMeterExecution()
+}
+
+// Explicit temporary compatibility for the surviving non-17-capability total-price
+// valuation product. It is NOT a grant of any new catalog capability. Retirement or
+// commercial reassignment requires its own reviewed cutover; no generic fallback.
+export async function authorizeLegacyPropertyValuationExecution(): Promise<string> {
+  if (canonicalPackageEnforcement()) {
+    const db=await createServerSupabaseClient()
+    const {data,error}=await db.auth.getUser()
+    if(error||!data.user)throw new PriceMeterComparableAuthenticationError()
+    const access=await db.rpc('current_account_has_legacy_valuation_access')
+    if(access.error||access.data!==true)throw new PriceMeterComparableAuthorizationError()
+    return data.user.id
+  }
+  return authorizeLegacyPriceMeterExecution()
+}
+async function authorizeLegacyPriceMeterExecution(): Promise<string> {
   const supabase =
     await createServerSupabaseClient()
 
@@ -75,27 +99,44 @@ export async function authorizePriceMeterIntelligenceExecution():
    * Never evaluate this gate with the service-role client.
    */
 
-  const {
-    data: entitlementData,
-    error: entitlementError
-  } =
-    await supabase.rpc(
-      'current_user_has_entitlement',
-      {
-        requested_entitlement_slug:
-          PRICE_METER_INTELLIGENCE_ENTITLEMENT
-      }
-    )
+    const [
+    entitlementResult,
+    administratorResult
+  ] =
+    await Promise.all([
+      supabase.rpc(
+        'current_user_has_entitlement',
+        {
+          requested_entitlement_slug:
+            PRICE_METER_INTELLIGENCE_ENTITLEMENT
+        }
+      ),
+      supabase.rpc(
+        'is_current_user_administrator'
+      )
+    ])
 
 
-  if (entitlementError) {
-    throw entitlementError
+  if (entitlementResult.error) {
+    throw entitlementResult.error
   }
 
 
+  if (administratorResult.error) {
+    throw administratorResult.error
+  }
+
+
+  const commerciallyAuthorized =
+    entitlementResult.data === true
+
+  const administrativelyAuthorized =
+    administratorResult.data === true
+
+
   if (
-    entitlementData !==
-      true
+    !commerciallyAuthorized &&
+    !administrativelyAuthorized
   ) {
     throw new PriceMeterComparableAuthorizationError()
   }

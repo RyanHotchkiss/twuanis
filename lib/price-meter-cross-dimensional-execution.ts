@@ -58,7 +58,7 @@ export async function executeCrossDimensionalRequest(
   request: {json: () => Promise<unknown>}
 ) {
   try {
-    await authorizePriceMeterIntelligenceExecution()
+    await authorizePriceMeterIntelligenceExecution('cap-cross-dimensional-analysis')
   } catch (error) {
     return reply({ error: 'Price / m² authorization is required.' }, {
       status: error instanceof PriceMeterComparableAuthenticationError ? 401 :

@@ -14,7 +14,7 @@ import FilterButton from '@/app/components/FilterButton'
 import TopBar from '@/app/components/TopBar'
 import BuyHeader from '@/app/components/BuyHeader'
 import BuySidebar from '@/app/components/BuySidebar'
-import MarketplaceListingGrid from '@/app/components/marketplace/MarketplaceListingGrid'
+import MarketplaceListingGrid from '@/app/components/marketplace/AddonMarketplaceGrid'
 import { normalizeText } from '@/lib/normalizeText' 
 import {
   getSavedSearch,
@@ -1362,7 +1362,7 @@ const filteredProperties = properties.filter((property) => {
                 overflow: 'hidden'
               }}
             >
-              <MarketplaceListingGrid
+              <MarketplaceListingGrid province={filters.province} propertyType={filters.property_type}
                 theme={theme}
                 listings={rankedProperties}
 
