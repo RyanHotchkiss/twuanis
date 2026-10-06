@@ -1,5 +1,5 @@
 'use client'
-import {useHomeMarketplace, useMarketplaceFilters, MarketplaceContextHeading} from '../home-marketplace/MarketplaceContext'
+import {useHomeMarketplace, useMarketplaceFilters, MarketplaceContextHeading, HomeSidebarLayer} from '../home-marketplace/MarketplaceContext'
 import {useSiteTheme} from '@/app/components/theme/ThemeProvider'
 
 import {
@@ -1352,7 +1352,7 @@ const filteredProperties = properties.filter((property) => {
           >
 
 {/* SIDEBAR LEFT */}
-          <RentLeaseSidebarES
+          <HomeSidebarLayer isMobile={isMobile} open={showMobileFilters} onOpen={() => setShowMobileFilters(true)} language="es"><RentLeaseSidebarES
               desktopCollapsed={embedded && desktopSidebarCollapsed}
               setDesktopCollapsed={embedded ? setDesktopSidebarCollapsed : undefined}
 
@@ -1425,7 +1425,7 @@ const filteredProperties = properties.filter((property) => {
             
             filters={filters}
             setFilters={setFilters}
-          />
+          /></HomeSidebarLayer>
 
         <MarketplaceListingGrid province={filters.province} propertyType={filters.property_type}
             theme={theme}

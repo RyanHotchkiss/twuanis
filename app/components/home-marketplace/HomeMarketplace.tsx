@@ -33,7 +33,7 @@ function HomeContent(props:Props) {
   const interact = () => {touched.current = true}
   useEffect(() => {
     const timer = window.setTimeout(() => {if (!touched.current) setOrienting(false)},5000)
-    const sidebarTimer = window.setTimeout(() => {if (!touched.current) setSidebarOrienting(false)},10000)
+    const sidebarTimer = window.setTimeout(() => {if (!touched.current) setSidebarOrienting(false)},window.innerWidth <= 768 ? 2000 : 10000)
     return () => {window.clearTimeout(timer);window.clearTimeout(sidebarTimer)}
   },[])
   // Preserve the existing topbar's seller entry and original publication workflow.

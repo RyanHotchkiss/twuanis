@@ -1,5 +1,7 @@
 "use client"
 import {createContext, useContext, useState, type Dispatch, type SetStateAction, type ReactNode} from 'react'
+import {createPortal} from 'react-dom'
+import SidebarArrowToggle from '../SidebarArrowToggle'
 export type MarketplaceFilters = Record<string, string | string[]>
 export type HomeMarketplaceState = {
   filters: MarketplaceFilters
@@ -25,19 +27,31 @@ export function useMarketplaceFilters<T extends MarketplaceFilters>(defaults: T)
     return typeof action === 'function' ? action(value) : action
   })]
 }
-export function MarketplaceContextHeading({language, mode, filters, count, loading, onFilters, children}: {
+export function MarketplaceContextHeading({language, mode, count, loading, onFilters, children}: {
   language: 'en' | 'es'; mode: 'sale' | 'rent'; filters: MarketplaceFilters; count: number;
   loading: boolean; onFilters: () => void; children: ReactNode
 }) {
   const es = language === 'es'
-  const transaction = mode === 'sale' ? (es ? 'EN VENTA' : 'FOR SALE') : (es ? 'EN ALQUILER / ARRENDAMIENTO' : 'FOR RENT / LEASE')
-  const geography = [filters.district, filters.canton, filters.province].filter(Boolean).join(' / ') || 'Costa Rica'
   return <header style={{display:'flex',gap:12,flexWrap:'wrap',alignItems:'center',marginBottom:20}}>
     <div style={{flex:'1 1 260px'}}>
-      <h2 style={{margin:'0 0 8px',fontSize:'1.1rem'}}>{transaction} → {geography}</h2>
-      <p aria-live="polite" data-marketplace-count style={{margin:0}}>{loading ? (es ? 'Cargando propiedades…' : 'Loading listings…') : `${count.toLocaleString(es ? 'es-CR' : 'en-US')} ${mode === 'sale' ? (es ? 'Propiedades en Venta' : 'Sale Listings') : (es ? 'Propiedades en Alquiler' : 'Rental Listings')}`}</p>
+      <p aria-live="polite" data-marketplace-count style={{margin:0}}>{loading ? (es ? 'Cargando propiedades…' : 'Loading listings…') : `${count.toLocaleString(es ? 'es-CR' : 'en-US')} ${mode === 'sale' ? (es ? 'Propiedades en Venta' : 'For Sale Listings') : (es ? 'Propiedades en Alquiler / Arrendamiento' : 'For Rent / For Lease Listings')}`}</p>
     </div>
     <button type="button" onClick={onFilters} style={{border:'1px solid var(--border)',borderRadius:999,padding:'12px 20px',background:'var(--surface)',color:'var(--foreground)',cursor:'pointer'}}>{es ? 'Filtros' : 'Filters'}</button>
     {children}
   </header>
+}
+
+// Lift only the embedded mobile sidebar out of marketplace stacking contexts.
+// The existing sidebar owns all drawer/filter behavior.
+export function HomeSidebarLayer({isMobile, open, onOpen, language, children}: {
+  isMobile: boolean; open: boolean; onOpen: () => void; language: 'en' | 'es'; children: ReactNode
+}) {
+  const home = useHomeMarketplace()
+  if (!home || !isMobile) return children
+  return createPortal(<div data-home-sidebar-layer style={{position:'fixed',inset:0,zIndex:4000,pointerEvents:'none'}} onPointerDownCapture={home.interact} onKeyDownCapture={home.interact}>
+    <div style={{pointerEvents:'auto'}}>{children}</div>
+    {!open && <div style={{position:'fixed',left:0,top:'50%',transform:'translateY(-50%)',pointerEvents:'auto'}}>
+      <SidebarArrowToggle collapsed label={language === 'es' ? 'Expandir filtros' : 'Expand filters'} onToggle={onOpen}/>
+    </div>}
+  </div>, document.body)
 }
