@@ -35,10 +35,10 @@ function HomeContent(props:Props) {
   useEffect(() => {
     const timer = window.setTimeout(() => {if (!touched.current) setOrienting(false)},5000)
     const delay = window.innerWidth <= 768 ? 2000 : 10000
-    const collapseEmphasis = window.setTimeout(() => {if (!touched.current) setArrowOrientation('collapse')},delay-250)
+    const collapseEmphasis = window.setTimeout(() => {if (!touched.current) setArrowOrientation('collapse')},delay-500)
     const sidebarTimer = window.setTimeout(() => {if (!touched.current) {setSidebarOrienting(false);setArrowOrientation('idle')}},delay)
     const expandEmphasis = window.setTimeout(() => {if (!touched.current) setArrowOrientation('expand')},delay+1000)
-    const emphasisEnd = window.setTimeout(() => setArrowOrientation('idle'),delay+2000)
+    const emphasisEnd = window.setTimeout(() => setArrowOrientation('idle'),delay+2400)
     return () => {[timer,collapseEmphasis,sidebarTimer,expandEmphasis,emphasisEnd].forEach(id=>window.clearTimeout(id))}
   },[])
   // Preserve the existing topbar's seller entry and original publication workflow.
