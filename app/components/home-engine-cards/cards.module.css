@@ -18,3 +18,10 @@
  .paged .slot[data-open=true]{flex-basis:min(340px,100%);z-index:2}
  .paged .slot[data-open=true] .expanded{width:100%}
 }
+
+/* Small, content-hugging photo contrast treatments; shared across viewport sizes. */
+.rows[data-heading-theme=dark]{--category-glass:rgba(255,255,255,.2);--category-text-edge:rgba(255,255,255,.95)}
+.rows[data-heading-theme=light]{--category-glass:rgba(0,0,0,.2);--category-text-edge:rgba(0,0,0,.95)}
+.categoryControls,.categoryTitle{background:var(--category-glass);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);border-radius:8px;text-shadow:0 0 2px var(--category-text-edge)}
+.categoryControls{width:fit-content;max-width:100%;box-sizing:border-box;margin-left:auto;margin-right:auto;padding:0 8px}
+.categoryTitle{padding:3px 8px;box-decoration-break:clone;-webkit-box-decoration-break:clone;overflow-wrap:anywhere}
