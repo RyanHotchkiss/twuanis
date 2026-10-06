@@ -3,9 +3,12 @@
 /* Fade only the image’s final tenth; the page background below supplies its theme color. */
 .backdrop{position:absolute;inset:0 0 auto;height:100svh;z-index:-1;pointer-events:none;background-size:cover;background-position:center center;background-repeat:no-repeat;mask-image:linear-gradient(to bottom,#000 0%,#000 90%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 90%,transparent 100%)}
 
+.home[data-arrow-theme=dark],.sidebarLayer[data-arrow-theme=dark]{--sidebar-glow-rgb:255,255,255}
+.home[data-arrow-theme=light],.sidebarLayer[data-arrow-theme=light]{--sidebar-glow-rgb:0,0,0}
+
 /* One-time homepage orientation only; dedicated sidebars keep their existing behavior. */
 .home[data-arrow-orientation=collapse] :global([data-sidebar-arrow=collapse]),.sidebarLayer[data-arrow-orientation=collapse] :global([data-sidebar-arrow=collapse]){animation:sidebarCollapseHint 1s ease-out forwards}
 .home[data-arrow-orientation=expand] :global([data-sidebar-arrow=expand]),.sidebarLayer[data-arrow-orientation=expand] :global([data-sidebar-arrow=expand]){animation:sidebarExpandHint 2.2s ease-in-out}
-@keyframes sidebarCollapseHint{0%,100%{transform:scale(3);text-shadow:0 0 3px #fff,0 0 8px #fff,0 0 14px rgba(255,255,255,.95)}}
-@keyframes sidebarExpandHint{100%{transform:scale(1);text-shadow:none}0%,90.909091%{transform:scale(3);text-shadow:0 0 3px #fff,0 0 8px #fff,0 0 14px rgba(255,255,255,.95)}}
+@keyframes sidebarCollapseHint{0%,100%{transform:scale(3);text-shadow:0 0 3px rgb(var(--sidebar-glow-rgb)),0 0 8px rgb(var(--sidebar-glow-rgb)),0 0 14px rgba(var(--sidebar-glow-rgb),.95)}}
+@keyframes sidebarExpandHint{100%{transform:scale(1);text-shadow:none}0%,90.909091%{transform:scale(3);text-shadow:0 0 3px rgb(var(--sidebar-glow-rgb)),0 0 8px rgb(var(--sidebar-glow-rgb)),0 0 14px rgba(var(--sidebar-glow-rgb),.95)}}
 @media(prefers-reduced-motion:reduce){.home[data-arrow-orientation] :global([data-sidebar-arrow]),.sidebarLayer[data-arrow-orientation] :global([data-sidebar-arrow]){animation:none}}

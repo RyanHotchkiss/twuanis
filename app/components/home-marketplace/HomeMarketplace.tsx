@@ -53,7 +53,7 @@ function HomeContent(props:Props) {
     setFilters(current => sharedMarketplaceFilters(current))
     setMode(next)
   }
-  return <div className={styles.home} data-arrow-orientation={arrowOrientation} onWheelCapture={interact}>
+  return <div className={styles.home} data-arrow-theme={theme} data-arrow-orientation={arrowOrientation} onWheelCapture={interact}>
     <div aria-hidden="true" className={styles.backdrop} style={{backgroundImage: `url(${theme === 'dark' ? '/images/home.webp' : '/images/home0.webp'})`}}/>
     <JsonLd data={homePageSchema}/>
     <aside className={styles.banner} aria-label={language === 'es' ? 'Preguntas sobre el mercado' : 'Market questions'}>

@@ -1,8 +1,9 @@
 "use client"
-import {createContext, useContext, useState, type Dispatch, type SetStateAction, type ReactNode} from 'react'
+import {createContext, useContext, useState, useLayoutEffect, type Dispatch, type SetStateAction, type ReactNode} from 'react'
 import {createPortal} from 'react-dom'
 import SidebarArrowToggle from '../SidebarArrowToggle'
 import styles from './home.module.css'
+import {useSiteTheme} from '../theme/ThemeProvider'
 export type MarketplaceFilters = Record<string, string | string[]>
 export type HomeMarketplaceState = {
   filters: MarketplaceFilters
@@ -49,10 +50,25 @@ export function HomeSidebarLayer({isMobile, open, onOpen, onClose, language, chi
   isMobile: boolean; open: boolean; onOpen: () => void; onClose: () => void; language: 'en' | 'es'; children: ReactNode
 }) {
   const home = useHomeMarketplace()
+  const {theme} = useSiteTheme()
+  const [expandTop,setExpandTop] = useState(0)
+  const embedded = home !== null
+  useLayoutEffect(() => {
+    if (!embedded || !isMobile || open) return
+    const engines = document.querySelector<HTMLElement>('[data-home-engines]')
+    // Include clearance for the existing 3x arrow and glow; never overlap the cards.
+    const position = () => setExpandTop(Math.max(window.innerHeight * .8, (engines?.getBoundingClientRect().bottom ?? 0) + 112))
+    position()
+    const observer = new ResizeObserver(position)
+    if (engines) observer.observe(engines)
+    window.addEventListener('scroll',position,{passive:true})
+    window.addEventListener('resize',position)
+    return () => {observer.disconnect();window.removeEventListener('scroll',position);window.removeEventListener('resize',position)}
+  },[embedded,isMobile,open])
   if (!home || !isMobile) return children
-  return createPortal(<div data-home-sidebar-layer className={styles.sidebarLayer} data-arrow-orientation={home.arrowOrientation} style={{position:'fixed',inset:0,zIndex:4000,pointerEvents:'none'}} onPointerDownCapture={home.interact} onKeyDownCapture={home.interact} onWheelCapture={home.interact}>
+  return createPortal(<div data-home-sidebar-layer className={styles.sidebarLayer} data-arrow-theme={theme} data-arrow-orientation={home.arrowOrientation} style={{position:'fixed',inset:0,zIndex:4000,pointerEvents:'none'}} onPointerDownCapture={home.interact} onKeyDownCapture={home.interact} onWheelCapture={home.interact}>
     <div style={{pointerEvents:'auto'}}>{children}</div>
-    {<div style={{position:'fixed',left:open?'calc(85vw - 42px)':0,top:'50%',transform:'translateY(-50%)',pointerEvents:'auto',zIndex:10000}}>
+    {<div style={{position:'fixed',left:open?'calc(85vw - 42px)':0,top:open?'50%':expandTop,transform:'translateY(-50%)',pointerEvents:'auto',zIndex:10000}}>
       <SidebarArrowToggle collapsed={!open} label={open ? (language === 'es' ? 'Contraer filtros' : 'Collapse filters') : (language === 'es' ? 'Expandir filtros' : 'Expand filters')} onToggle={open ? onClose : onOpen}/>
     </div>}
   </div>, document.body)
