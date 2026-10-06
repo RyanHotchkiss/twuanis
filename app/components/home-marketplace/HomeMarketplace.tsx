@@ -29,12 +29,17 @@ function HomeContent(props:Props) {
   const [filters,setFilters] = useState<MarketplaceFilters>({})
   const [orienting,setOrienting] = useState(true)
   const [sidebarOrienting,setSidebarOrienting] = useState(true)
+  const [arrowOrientation,setArrowOrientation] = useState<'idle'|'collapse'|'expand'>('idle')
   const touched = useRef(false)
-  const interact = () => {touched.current = true}
+  const interact = () => {touched.current = true;setArrowOrientation('idle')}
   useEffect(() => {
     const timer = window.setTimeout(() => {if (!touched.current) setOrienting(false)},5000)
-    const sidebarTimer = window.setTimeout(() => {if (!touched.current) setSidebarOrienting(false)},window.innerWidth <= 768 ? 2000 : 10000)
-    return () => {window.clearTimeout(timer);window.clearTimeout(sidebarTimer)}
+    const delay = window.innerWidth <= 768 ? 2000 : 10000
+    const collapseEmphasis = window.setTimeout(() => {if (!touched.current) setArrowOrientation('collapse')},delay-250)
+    const sidebarTimer = window.setTimeout(() => {if (!touched.current) {setSidebarOrienting(false);setArrowOrientation('idle')}},delay)
+    const expandEmphasis = window.setTimeout(() => {if (!touched.current) setArrowOrientation('expand')},delay+1000)
+    const emphasisEnd = window.setTimeout(() => setArrowOrientation('idle'),delay+2000)
+    return () => {[timer,collapseEmphasis,sidebarTimer,expandEmphasis,emphasisEnd].forEach(id=>window.clearTimeout(id))}
   },[])
   // Preserve the existing topbar's seller entry and original publication workflow.
   if (search.get('overlay') === 'posting') {
@@ -48,7 +53,7 @@ function HomeContent(props:Props) {
     setFilters(current => sharedMarketplaceFilters(current))
     setMode(next)
   }
-  return <div className={styles.home}>
+  return <div className={styles.home} data-arrow-orientation={arrowOrientation} onWheelCapture={interact}>
     <div aria-hidden="true" className={styles.backdrop} style={{backgroundImage: `url(${theme === 'dark' ? '/images/home.webp' : '/images/home0.webp'})`}}/>
     <JsonLd data={homePageSchema}/>
     <aside className={styles.banner} aria-label={language === 'es' ? 'Preguntas sobre el mercado' : 'Market questions'}>
@@ -150,7 +155,7 @@ function HomeContent(props:Props) {
         <button type="button" aria-pressed={mode === 'rent'} onClick={() => switchMode('rent')}>{language === 'es' ? 'EN ALQUILER / ARRENDAMIENTO' : 'FOR RENT / LEASE'}</button>
       </div>
       {addonHomepage.length > 0 && <div className={styles.homepagePlacement}><AddonHomepageCarousel items={addonHomepage} language={language}/></div>}
-      <MarketplaceContext.Provider value={{filters,setFilters,orienting:sidebarOrienting,interact}}>
+      <MarketplaceContext.Provider value={{filters,setFilters,orienting:sidebarOrienting,arrowOrientation,interact}}>
         <Marketplace key={mode}/>
       </MarketplaceContext.Provider>
     </div>

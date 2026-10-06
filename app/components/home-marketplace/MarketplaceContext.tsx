@@ -2,11 +2,13 @@
 import {createContext, useContext, useState, type Dispatch, type SetStateAction, type ReactNode} from 'react'
 import {createPortal} from 'react-dom'
 import SidebarArrowToggle from '../SidebarArrowToggle'
+import styles from './home.module.css'
 export type MarketplaceFilters = Record<string, string | string[]>
 export type HomeMarketplaceState = {
   filters: MarketplaceFilters
   setFilters: Dispatch<SetStateAction<MarketplaceFilters>>
   orienting: boolean
+  arrowOrientation?: 'idle'|'collapse'|'expand'
   interact: () => void
 }
 export const MarketplaceContext = createContext<HomeMarketplaceState | null>(null)
@@ -48,7 +50,7 @@ export function HomeSidebarLayer({isMobile, open, onOpen, onClose, language, chi
 }) {
   const home = useHomeMarketplace()
   if (!home || !isMobile) return children
-  return createPortal(<div data-home-sidebar-layer style={{position:'fixed',inset:0,zIndex:4000,pointerEvents:'none'}} onPointerDownCapture={home.interact} onKeyDownCapture={home.interact}>
+  return createPortal(<div data-home-sidebar-layer className={styles.sidebarLayer} data-arrow-orientation={home.arrowOrientation} style={{position:'fixed',inset:0,zIndex:4000,pointerEvents:'none'}} onPointerDownCapture={home.interact} onKeyDownCapture={home.interact} onWheelCapture={home.interact}>
     <div style={{pointerEvents:'auto'}}>{children}</div>
     {<div style={{position:'fixed',left:open?'calc(85vw - 42px)':0,top:'50%',transform:'translateY(-50%)',pointerEvents:'auto',zIndex:10000}}>
       <SidebarArrowToggle collapsed={!open} label={open ? (language === 'es' ? 'Contraer filtros' : 'Collapse filters') : (language === 'es' ? 'Expandir filtros' : 'Expand filters')} onToggle={open ? onClose : onOpen}/>
