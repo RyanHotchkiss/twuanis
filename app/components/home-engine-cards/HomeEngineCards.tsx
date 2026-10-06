@@ -4,10 +4,8 @@ import {useEffect,useRef,useState} from 'react'
 import {Compass,Ruler,Scale} from 'lucide-react'
 import {homeCards,homeRows,cardUrl} from './catalog'
 import styles from './cards.module.css'
-import {useSiteTheme} from '../theme/ThemeProvider'
 export default function HomeEngineCards({language,categoryPaging=false,initiallyOpen=false,onInteract}:{language:'en'|'es';categoryPaging?:boolean;initiallyOpen?:boolean;onInteract?:()=>void}){
- const {theme}=useSiteTheme()
- const headingColor=theme==='dark'?'#ffffff':'#000000'
+ const headingColor='#ff3b00'
  const [category,setCategory]=useState(0)
  const [open,setOpen]=useState<string|null>(null)
  const [interacted,setInteracted]=useState(false)

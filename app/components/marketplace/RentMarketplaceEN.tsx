@@ -1334,7 +1334,7 @@ const filteredProperties = properties.filter((property) => {
 
 {/* SIDEBAR LEFT */}
           {/* SIDEBAR LEFT */}
-          <HomeSidebarLayer isMobile={isMobile} open={showMobileFilters} onOpen={() => setShowMobileFilters(true)} language="en"><RentLeaseSidebar
+          <HomeSidebarLayer isMobile={isMobile} open={showMobileFilters} onOpen={() => setShowMobileFilters(true)} onClose={() => setShowMobileFilters(false)} language="en"><RentLeaseSidebar
             theme={theme}
 
             isMobile={isMobile}

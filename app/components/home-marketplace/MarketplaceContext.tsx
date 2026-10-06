@@ -43,15 +43,15 @@ export function MarketplaceContextHeading({language, mode, count, loading, onFil
 
 // Lift only the embedded mobile sidebar out of marketplace stacking contexts.
 // The existing sidebar owns all drawer/filter behavior.
-export function HomeSidebarLayer({isMobile, open, onOpen, language, children}: {
-  isMobile: boolean; open: boolean; onOpen: () => void; language: 'en' | 'es'; children: ReactNode
+export function HomeSidebarLayer({isMobile, open, onOpen, onClose, language, children}: {
+  isMobile: boolean; open: boolean; onOpen: () => void; onClose: () => void; language: 'en' | 'es'; children: ReactNode
 }) {
   const home = useHomeMarketplace()
   if (!home || !isMobile) return children
   return createPortal(<div data-home-sidebar-layer style={{position:'fixed',inset:0,zIndex:4000,pointerEvents:'none'}} onPointerDownCapture={home.interact} onKeyDownCapture={home.interact}>
     <div style={{pointerEvents:'auto'}}>{children}</div>
-    {!open && <div style={{position:'fixed',left:0,top:'50%',transform:'translateY(-50%)',pointerEvents:'auto'}}>
-      <SidebarArrowToggle collapsed label={language === 'es' ? 'Expandir filtros' : 'Expand filters'} onToggle={onOpen}/>
+    {<div style={{position:'fixed',left:open?'calc(85vw - 42px)':0,top:'50%',transform:'translateY(-50%)',pointerEvents:'auto',zIndex:10000}}>
+      <SidebarArrowToggle collapsed={!open} label={open ? (language === 'es' ? 'Contraer filtros' : 'Collapse filters') : (language === 'es' ? 'Expandir filtros' : 'Expand filters')} onToggle={open ? onClose : onOpen}/>
     </div>}
   </div>, document.body)
 }

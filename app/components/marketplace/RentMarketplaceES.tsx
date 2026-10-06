@@ -1352,7 +1352,7 @@ const filteredProperties = properties.filter((property) => {
           >
 
 {/* SIDEBAR LEFT */}
-          <HomeSidebarLayer isMobile={isMobile} open={showMobileFilters} onOpen={() => setShowMobileFilters(true)} language="es"><RentLeaseSidebarES
+          <HomeSidebarLayer isMobile={isMobile} open={showMobileFilters} onOpen={() => setShowMobileFilters(true)} onClose={() => setShowMobileFilters(false)} language="es"><RentLeaseSidebarES
               desktopCollapsed={embedded && desktopSidebarCollapsed}
               setDesktopCollapsed={embedded ? setDesktopSidebarCollapsed : undefined}
 

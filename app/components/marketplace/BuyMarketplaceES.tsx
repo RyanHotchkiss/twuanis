@@ -1291,7 +1291,7 @@ const filteredProperties = properties.filter((property) => {
 
 {/* SIDEBAR */}
 
-           <HomeSidebarLayer isMobile={isMobile} open={showMobileFilters} onOpen={() => setShowMobileFilters(true)} language="es"><BuySidebarES
+           <HomeSidebarLayer isMobile={isMobile} open={showMobileFilters} onOpen={() => setShowMobileFilters(true)} onClose={() => setShowMobileFilters(false)} language="es"><BuySidebarES
               desktopCollapsed={embedded && desktopSidebarCollapsed}
               setDesktopCollapsed={embedded ? setDesktopSidebarCollapsed : undefined}
 

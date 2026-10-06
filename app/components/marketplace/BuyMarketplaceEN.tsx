@@ -1296,7 +1296,7 @@ const filteredProperties = properties.filter((property) => {
 
 {/* SIDEBAR */}
 
-           <HomeSidebarLayer isMobile={isMobile} open={showMobileFilters} onOpen={() => setShowMobileFilters(true)} language="en"><BuySidebar
+           <HomeSidebarLayer isMobile={isMobile} open={showMobileFilters} onOpen={() => setShowMobileFilters(true)} onClose={() => setShowMobileFilters(false)} language="en"><BuySidebar
               theme={theme}
 
               isMobile={isMobile}
