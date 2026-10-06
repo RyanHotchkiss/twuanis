@@ -30,7 +30,7 @@ export const homeCards:Card[]=[
  card('price-meter','Price / m² Distribution','Distribución del precio por m²',distributionQuestion),
  card('geography','Geographic Price / m² Comparison','Comparación geográfica del precio por m²',geographicQuestion),
  card('size','Size → Price / m²','Tamaño → Precio por m²',sizeQuestion),
- card('construction-land','Construction-to-Land → Price / m²','Construcción/terreno → Precio por m²',constructionLandQuestion),
+ card('construction-land','Construction-to-Land → Price / m²','Construcción / Terreno → Precio por m²',constructionLandQuestion),
  {id:'cohort-comparison',name:cohortTitle,question:cohortQuestion},
  {id:'cross-dimensional',name:crossTitle,question:crossQuestion},
  card('discovery','Comparative Price / m² Discovery','Descubrimiento comparativo de precio / m²',discoveryQuestion),
