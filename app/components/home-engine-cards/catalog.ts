@@ -40,10 +40,10 @@ export const homeCards:Card[]=[
  {id:'weighted-price',name:weightedTitle,question:weightedQuestion}
 ]
 export const homeRows=[
- {id:'market',heading:{en:'Market inventory and distributions',es:'Inventario y distribuciones del mercado'},ids:['explorer','composition','asking-price','scarcity','price-meter'],color:'#2ecc71'},
- {id:'comparison',heading:{en:'Matching, comparison and discovery',es:'Coincidencia, comparación y descubrimiento'},ids:['matching','comparison','cohort-comparison','discovery'],color:'#ff3b00'},
- {id:'relationships',heading:{en:'Price / m² relationships',es:'Relaciones del precio por m²'},ids:['geography','size','construction-land','cross-dimensional'],color:'#0066cc'},
- {id:'property',heading:{en:'Property-specific reference evidence',es:'Evidencia de referencia de una propiedad'},ids:['position','comparables'],color:'#ffd700'},
- {id:'weighting',heading:{en:'Asking-price relationships and weighted normalization',es:'Relaciones del precio de oferta y normalización ponderada'},ids:['asking-area-ratio','weighted-price'],color:'#ffd700'}
+ {id:'market',heading:{en:'Market Inventory & Distribution Lenses',es:'Perspectivas del inventario y la distribución del mercado'},ids:['explorer','composition','asking-price','scarcity','price-meter'],color:'#2ecc71'},
+ {id:'comparison',heading:{en:'Matching, Comparison & Discovery Engines',es:'Motores de coincidencia, comparación y descubrimiento'},ids:['matching','comparison','cohort-comparison','discovery'],color:'#ff3b00'},
+ {id:'relationships',heading:{en:'Price / m² Relationship Engines',es:'Motores de relaciones del precio por m²'},ids:['geography','size','construction-land','cross-dimensional'],color:'#0066cc'},
+ {id:'property',heading:{en:'Property-Specific Reference Lenses',es:'Perspectivas de referencia específicas de la propiedad'},ids:['position','comparables'],color:'#ffd700'},
+ {id:'weighting',heading:{en:'Asking-Price Relationship & Normalization Engines',es:'Motores de relaciones del precio de oferta y normalización'},ids:['asking-area-ratio','weighted-price'],color:'#ffd700'}
 ]
 export function cardUrl(id:string,language:'en'|'es'){return hubEngineUrl(language==='es'?'/es/inteligencia-de-mercado':'/en/market-intelligence','',id)}
