@@ -5,7 +5,36 @@ import Link from 'next/link'
 import EmailAuthModal from './EmailAuthModal'
 import './customer-commercial.css'
 type Language='en'|'es'
-export function CommercialCatalog({language,listing,onOrder}:{language:Language;listing?:string;onOrder?:(id:string)=>void}){
+
+const packageNumbers:Record<string,number>={
+ 'pkg-geographic-distribution-price-range':1,
+ 'pkg-matching-market-comparison':2,
+ 'pkg-pricing-position-relationships':3
+}
+function packageQuestions(copy:string|undefined|null,language:Language){
+ return (copy??'').split(/(?<=[;?])\s+|\n+|(?<=,)\s+(?=(?:and |y )?(?:how|what|which|where|cómo|qué|cuáles|dónde)(?=\s))|\s+(?=(?:and|y) (?:how|what|which|where|cómo|qué|cuáles|dónde)(?=\s))/iu).filter(Boolean).map(question=>{
+  const body=question.trim().replace(/^¿\s*/u,'').replace(/^(?:and|y)\s+/iu,'').replace(/[;,?]+$/u,'').trim()
+  const sentence=body.charAt(0).toLocaleUpperCase(language==='es'?'es-CR':'en-US')+body.slice(1)
+  return `${language==='es'?'¿':''}${sentence}?`
+ })
+}
+function packagePrice(value:string|number|null|undefined,currency:'USD'|'CRC',language:Language){
+ if(value===null||value===undefined||value==='')return '—'
+ const amount=Number(value)
+ return Number.isFinite(amount)?new Intl.NumberFormat(language==='es'?'es-CR':'en-US',{style:'currency',currency,currencyDisplay:'narrowSymbol',minimumFractionDigits:0,maximumFractionDigits:2}).format(amount):'—'
+}
+function packageOfferEnd(value:string|undefined,language:Language){
+ if(!value)return null
+ let end=new Date(value)
+ if(!Number.isFinite(end.getTime()))return null
+ const time=new Intl.DateTimeFormat('en-GB',{timeZone:'America/Costa_Rica',hourCycle:'h23',hour:'2-digit',minute:'2-digit',second:'2-digit'}).format(end)
+ // An inclusive end-of-day boundary is presented as the following calendar date.
+ if(time==='23:59:59')end=new Date(end.getTime()+1000-end.getUTCMilliseconds())
+ const date=new Intl.DateTimeFormat(language==='es'?'es-CR':'en-US',{timeZone:'America/Costa_Rica',month:'long',day:'numeric',year:'numeric'}).format(end)
+ return language==='es'?`(Hasta el ${date})`:`(Until ${date})`
+}
+
+export function CommercialCatalog({language,listing,onOrder,inventory}:{inventory?:{sale:number|null;rent:number|null};language:Language;listing?:string;onOrder?:(id:string)=>void}){
  const es=language==='es',t=(en:string,sp:string)=>es?sp:en
  const [currency,setCurrency]=useState<'USD'|'CRC'>('USD'),[after,setAfter]=useState<string|null>(null),[data,setData]=useState<Awaited<ReturnType<typeof commercialCatalog>>|null>(null),[busy,setBusy]=useState(false),[error,setError]=useState(''),[order,setOrder]=useState('')
  const [signIn,setSignIn]=useState(false)
@@ -13,13 +42,24 @@ export function CommercialCatalog({language,listing,onOrder}:{language:Language;
  useEffect(()=>{const c=new URLSearchParams(window.location.search).get('currency');if(c==='USD'||c==='CRC')setCurrency(c)},[])
  useEffect(()=>{let live=true;setData(null);commercialCatalog(listing?'addon':'package',currency,after,listing).then(r=>{if(live)setData(r)}).catch(()=>{if(live)setData({ok:false})});return()=>{live=false}},[listing,currency,after])
  async function purchase(product:string){if(busy)return;setBusy(true);setError('');const key=JSON.stringify({product,currency,listing});if(retry.current?.key!==key){const storeKey='twuanis-commercial-intent:'+key;let id=sessionStorage.getItem(storeKey);if(!id){id=crypto.randomUUID();sessionStorage.setItem(storeKey,id)}retry.current={key,id}};try{const r=await purchaseCommercial({request:retry.current.id,kind:listing?'addon':'package',product,currency,...(listing?{listing}:{})});setBusy(false);if(r.ok){sessionStorage.removeItem('twuanis-commercial-intent:'+key);setOrder(r.id);onOrder?.(r.id)}else setError(r.reason)}catch{setError('unavailable')}finally{setBusy(false)}}
- return <section className="customer-commercial">{signIn&&<EmailAuthModal onClose={()=>setSignIn(false)} redirectTo={window.location.pathname+'?currency='+currency+'&lang='+language}/>}<h2>{listing?t('Enhance this listing (optional)','Mejore este anuncio (opcional)'):t('Intelligence Packages','Paquetes de inteligencia')}</h2>
+ return <section className="customer-commercial">{signIn&&<EmailAuthModal onClose={()=>setSignIn(false)} redirectTo={window.location.pathname+'?currency='+currency+'&lang='+language}/>}{!listing&&inventory&&<div className="package-inventory">{(['sale','rent'] as const).map(kind=><span key={kind}>{inventory[kind]===null?'—':new Intl.NumberFormat(language==='es'?'es-CR':'en-US').format(inventory[kind])} {kind==='sale'?t('For Sale Listings','Propiedades en Venta'):t('For Rent / For Lease Listings','Propiedades en Alquiler / Arrendamiento')}</span>)}</div>}<h2 className={!listing?"intelligence-packages-heading":undefined}>{listing?t('Enhance this listing (optional)','Mejore este anuncio (opcional)'):t('Intelligence Packages','Paquetes de inteligencia')}</h2>
  {listing&&<p>{t('Choose at most one Add-on. Payment does not prevent ordinary publication.','Elija como máximo un complemento. El pago no impide la publicación ordinaria.')}</p>}
  <label>{t('Currency','Moneda')} <select value={currency} disabled={busy} onChange={e=>{setCurrency(e.target.value as 'USD'|'CRC');setAfter(null)}}><option>USD</option><option>CRC</option></select></label>
  {error&&<p role="alert">{error==='authentication'?<>{t('Sign in to continue.','Inicie sesión para continuar.')} <button onClick={()=>setSignIn(true)}>{t('Sign in','Iniciar sesión')}</button></>:error==='inactive'?t('Purchasing is not available yet.','La compra aún no está disponible.'):t('This purchase is unavailable or another acquisition is in progress. Check your Orders before retrying unchanged input.','Esta compra no está disponible o hay otra adquisición en curso. Revise sus pedidos antes de reintentar sin cambios.')}</p>}
  {data?.ok&&data.availability?.order&&<p>{t('An acquisition is already in progress.','Hay una adquisición en curso.')} <Link href={`/commercial/${data.availability.order}?lang=${language}`}>{t('View existing Order','Ver pedido existente')}</Link></p>}
- {order?<p role="status">{t('Order created. Publication remains independent.','Pedido creado. La publicación es independiente.')} <Link href={`/commercial/${order}?lang=${language}`}>{t('View Order / payment','Ver pedido / pago')}</Link></p>:!data?<p role="status">{t('Loading authoritative prices…','Cargando precios oficiales…')}</p>:!data.ok?<p role="alert">{t('Prices could not be loaded. Reload to retry.','No se pudieron cargar los precios. Vuelva a cargar para reintentar.')}</p>:<div className="commercial-grid">{data.products.filter(p=>!listing||p.termKind==='elapsed_days').map(p=><article key={p.id}><h3>{es?(p.nameES||p.nameEN):p.nameEN}</h3><p>{es?(p.questionES||p.questionEN):p.questionEN}</p>{Array.isArray(p.capabilities)&&p.capabilities.length>0&&<ul>{p.capabilities.map((c:{id:string;en:string;es:string})=><li key={c.id}>{es?c.es:c.en}</li>)}</ul>}<p>{t('Standard price','Precio estándar')}: {currency} {p.pricing.standardPrice??'—'}</p>{p.pricing.source==='OFFER'&&<p><strong>{t('Offer price','Precio de oferta')}: {currency} {p.pricing.effectivePrice}</strong></p>}{p.termQuantity&&<p>{p.termQuantity} {t('calendar month(s)','mes(es) calendario')}</p>}{listing&&<p>{t('Availability is rechecked at Order creation and fulfillment. No capacity is reserved by payment.','La disponibilidad se verifica al crear el pedido y al entregar el beneficio. El pago no reserva capacidad.')}</p>}{p.durationDays&&<p>{p.durationDays} {t('days from successful fulfillment','días desde la entrega efectiva')}</p>}
- {data.enabled&&p.pricing.available&&(!listing||data.availability?.products.some(a=>a.id===p.id&&a.available))?<button disabled={busy} onClick={()=>void purchase(p.id)}>{t('Create Order','Crear pedido')}</button>:<p>{t('Acquisition unavailable','Adquisición no disponible')}</p>}</article>)}</div>}
+ {order?<p role="status">{t('Order created. Publication remains independent.','Pedido creado. La publicación es independiente.')} <Link href={`/commercial/${order}?lang=${language}`}>{t('View Order / payment','Ver pedido / pago')}</Link></p>:!data?<p role="status">{t('Loading authoritative prices…','Cargando precios oficiales…')}</p>:!data.ok?<p role="alert">{t('Prices could not be loaded. Reload to retry.','No se pudieron cargar los precios. Vuelva a cargar para reintentar.')}</p>:<div className="commercial-grid">{data.products.filter(p=>!listing||p.termKind==='elapsed_days').map(p=>listing?<article key={p.id}><h3>{es?(p.nameES||p.nameEN):p.nameEN}</h3><p>{es?(p.questionES||p.questionEN):p.questionEN}</p>{Array.isArray(p.capabilities)&&p.capabilities.length>0&&<ul>{p.capabilities.map((c:{id:string;en:string;es:string})=><li key={c.id}>{es?c.es:c.en}</li>)}</ul>}<p>{t('Standard price','Precio estándar')}: {currency} {p.pricing.standardPrice??'—'}</p>{p.pricing.source==='OFFER'&&<p><strong>{t('Offer price','Precio de oferta')}: {currency} {p.pricing.effectivePrice}</strong></p>}{p.termQuantity&&<p>{p.termQuantity} {t('calendar month(s)','mes(es) calendario')}</p>}{listing&&<p>{t('Availability is rechecked at Order creation and fulfillment. No capacity is reserved by payment.','La disponibilidad se verifica al crear el pedido y al entregar el beneficio. El pago no reserva capacidad.')}</p>}{p.durationDays&&<p>{p.durationDays} {t('days from successful fulfillment','días desde la entrega efectiva')}</p>}
+ {data.enabled&&p.pricing.available&&(!listing||data.availability?.products.some(a=>a.id===p.id&&a.available))?<button disabled={busy} onClick={()=>void purchase(p.id)}>{t('Create Order','Crear pedido')}</button>:<p>{t('Acquisition unavailable','Adquisición no disponible')}</p>}</article>:<article key={p.id} className="intelligence-package" data-package-number={packageNumbers[p.id]} tabIndex={0} onPointerDown={event=>{if(event.pointerType==='touch')event.currentTarget.focus({preventScroll:true})}}>
+ <h3 className="package-title">{packageNumbers[p.id]&&<span className="package-number">{t('Package','Paquete')} #{packageNumbers[p.id]}: </span>}{es?p.nameES:p.nameEN}</h3>
+ <section className="package-section"><h4>{t('Questions this Package answers','Preguntas que responde este Paquete')}</h4><div className="package-questions">{packageQuestions(es?p.questionES:p.questionEN,language).map((question,index)=><p key={index}>{question}</p>)}</div></section>
+ <section className="package-section"><h4>{t('Included Engines & Lenses','Motores y perspectivas incluidos')}</h4><ul className="package-capabilities">{Array.isArray(p.capabilities)&&p.capabilities.map((c:{id:string;en:string;es:string})=><li key={c.id}>{es?c.es:c.en}</li>)}</ul></section>
+ <section className="package-section package-pricing"><h4>{t('Price','Precio')}</h4>{p.pricing.source==='OFFER'?<>
+ <p className="package-standard-price"><del>{packagePrice(p.pricing.standardPrice,currency,language)}</del></p>
+ <p className="package-offer-price">{packagePrice(p.pricing.effectivePrice,currency,language)}</p>
+ {packageOfferEnd(p.pricing.offerEnd,language)&&<p className="package-offer-end">{packageOfferEnd(p.pricing.offerEnd,language)}</p>}
+ </>:<p className="package-current-price">{packagePrice(p.pricing.standardPrice,currency,language)}</p>}</section>
+ <section className="package-section"><h4>{t('Duration','Duración')}</h4>{p.termQuantity&&<p>{p.termQuantity} {p.termQuantity===1?t('calendar month','mes calendario'):t('calendar months','meses calendario')}</p>}{p.durationDays&&<p>{p.durationDays} {t('days from successful fulfillment','días desde la entrega efectiva')}</p>}</section>
+ <section className="package-section package-acquisition"><h4>{t('Acquisition / Action','Adquisición / Acción')}</h4>{data.enabled&&p.pricing.available&&(!listing||data.availability?.products.some(a=>a.id===p.id&&a.available))?<button disabled={busy} onClick={()=>void purchase(p.id)}>{t('Create Order','Crear pedido')}</button>:<p>{t('Acquisition unavailable','Adquisición no disponible')}</p>}</section>
+ </article>)}</div>}
  {data?.ok&&data.next&&!order&&<button disabled={busy} onClick={()=>setAfter(data.next)}>{t('Next','Siguiente')}</button>}{after&&<button onClick={()=>setAfter(null)}>{t('First page','Primera página')}</button>}
  </section>
 }

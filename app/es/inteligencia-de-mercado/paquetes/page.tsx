@@ -1,19 +1,15 @@
+import IntelligencePackagesSurface from '@/app/components/IntelligencePackagesSurface'
+import {getPublicListingCounts} from '@/lib/public-listings-server'
 import TopBar from '@/app/components/TopBar'
 
 import PaquetesInteligenciaMercado from './PaquetesInteligenciaMercado'
 
-export default function PaquetesInteligenciaMercadoPage() {
+export default async function PaquetesInteligenciaMercadoPage() {
+  const inventory = await getPublicListingCounts()
   return (
-    <main style={main}>
-      <TopBar />
-      <PaquetesInteligenciaMercado />
-    </main>
+    <IntelligencePackagesSurface>
+      <TopBar intelligence />
+      <PaquetesInteligenciaMercado inventory={inventory} />
+    </IntelligencePackagesSurface>
   )
-}
-
-const main = {
-  minHeight: '100vh',
-  padding: '2rem',
-  background: 'var(--background)',
-  color: 'var(--foreground)'
 }

@@ -31,6 +31,7 @@ import {
 } from '@/lib/language-route'
 
 type TopBarProps = {
+  intelligence?: boolean
   onFilterClick?: () => void
   theme?: 'dark' | 'light'
   onThemeToggle?: () => void
@@ -45,6 +46,7 @@ const UTILITY_ORANGE = '#ff3b00'
 
 
 function TopBarContent({
+  intelligence = false,
   onFilterClick,
   theme: _legacyTheme,
   onThemeToggle: _legacyToggle,
@@ -61,7 +63,7 @@ function TopBarContent({
   pathname === '/es'
 
   const lightTopBarBackground =
-  isHomepage
+  intelligence ? WHITE : isHomepage
     ? 'rgba(255, 255, 255, .92)'
     : 'rgba(248, 243, 229, .94)'
 
@@ -309,10 +311,10 @@ const isSpanish =
 
   return (
     <div
-      style={floatingHamburgerShell(
+      style={{...floatingHamburgerShell(
   theme,
   lightTopBarBackground
-)}
+), ...(intelligence && theme === 'light' ? {border: `1px solid ${GOLD}`} : {})}}
     >
         <button
           type="button"
@@ -346,7 +348,7 @@ const isSpanish =
   return (
 
     <div
-      style={
+      style={{...(
         manuallyExpanded
           ? floatingTopBarShell(
             theme,
@@ -357,7 +359,7 @@ const isSpanish =
             isMobile,
             lightTopBarBackground
           )
-      }
+      ), ...(intelligence && theme === 'light' ? {border: `1px solid ${GOLD}`} : {})}}
     >
 
       <nav style={navContainer}>

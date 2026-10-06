@@ -25,3 +25,5 @@
 .categoryControls,.categoryTitle{background:var(--category-glass);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);border-radius:8px;text-shadow:0 0 2px var(--category-text-edge)}
 .categoryControls{width:fit-content;max-width:100%;box-sizing:border-box;margin-left:auto;margin-right:auto;padding:0 8px}
 .categoryTitle{padding:3px 8px;box-decoration-break:clone;-webkit-box-decoration-break:clone;overflow-wrap:anywhere}
+
+.intelligence .categoryControls,.intelligence .categoryTitle{background:none;backdrop-filter:none;-webkit-backdrop-filter:none;text-shadow:none}
