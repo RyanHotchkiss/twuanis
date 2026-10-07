@@ -30,7 +30,10 @@ import {
   getAlternateLanguageUrl
 } from '@/lib/language-route'
 
+import './mobile-page-fit.css'
+
 type TopBarProps = {
+  mobileFit?: boolean
   intelligence?: boolean
   onFilterClick?: () => void
   theme?: 'dark' | 'light'
@@ -47,6 +50,7 @@ const UTILITY_ORANGE = '#ff3b00'
 
 function TopBarContent({
   intelligence = false,
+  mobileFit = false,
   onFilterClick,
   theme: _legacyTheme,
   onThemeToggle: _legacyToggle,
@@ -348,6 +352,7 @@ const isSpanish =
   return (
 
     <div
+      className={mobileFit ? "mobile-topbar-fit" : undefined}
       style={{...(
         manuallyExpanded
           ? floatingTopBarShell(

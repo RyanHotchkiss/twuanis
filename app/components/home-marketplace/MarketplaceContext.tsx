@@ -55,15 +55,10 @@ export function HomeSidebarLayer({isMobile, open, onOpen, onClose, language, chi
   const embedded = home !== null
   useLayoutEffect(() => {
     if (!embedded || !isMobile || open) return
-    const engines = document.querySelector<HTMLElement>('[data-home-engines]')
-    // Include clearance for the existing 3x arrow and glow; never overlap the cards.
-    const position = () => setExpandTop(Math.max(window.innerHeight * .8, (engines?.getBoundingClientRect().bottom ?? 0) + 112))
+    const position = () => setExpandTop(window.innerHeight * .5)
     position()
-    const observer = new ResizeObserver(position)
-    if (engines) observer.observe(engines)
-    window.addEventListener('scroll',position,{passive:true})
     window.addEventListener('resize',position)
-    return () => {observer.disconnect();window.removeEventListener('scroll',position);window.removeEventListener('resize',position)}
+    return () => {window.removeEventListener('resize',position)}
   },[embedded,isMobile,open])
   if (!home || !isMobile) return children
   return createPortal(<div data-home-sidebar-layer className={styles.sidebarLayer} data-arrow-theme={theme} data-arrow-orientation={home.arrowOrientation} style={{position:'fixed',inset:0,zIndex:4000,pointerEvents:'none'}} onPointerDownCapture={home.interact} onKeyDownCapture={home.interact} onWheelCapture={home.interact}>

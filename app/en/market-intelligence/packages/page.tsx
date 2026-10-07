@@ -8,7 +8,7 @@ export default async function MarketIntelligencePackagesPage() {
   const inventory = await getPublicListingCounts()
   return (
     <IntelligencePackagesSurface>
-      <TopBar intelligence />
+      <TopBar mobileFit intelligence />
 
       <MarketIntelligencePackages inventory={inventory} />
     </IntelligencePackagesSurface>
