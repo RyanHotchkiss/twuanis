@@ -27,3 +27,5 @@
 .categoryTitle{padding:3px 8px;box-decoration-break:clone;-webkit-box-decoration-break:clone;overflow-wrap:anywhere}
 
 .intelligence .categoryControls,.intelligence .categoryTitle{background:none;backdrop-filter:none;-webkit-backdrop-filter:none;text-shadow:none}
+
+.rows:not(.intelligence)[data-heading-theme=dark] .categoryTitle{background:none;backdrop-filter:none;-webkit-backdrop-filter:none;text-shadow:0 0 2px #fff,0 0 4px rgba(255,255,255,.95)}
