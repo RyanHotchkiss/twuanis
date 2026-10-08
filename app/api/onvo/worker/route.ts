@@ -1,0 +1,3 @@
+import {OnvoAutomation,onvoAutomationEnabled,onvoConfiguration,workerAuthorized,deliverSinpeNotification} from '@/lib/providers/onvo-automation'
+export const runtime='nodejs'
+export async function POST(request:Request){if(!onvoAutomationEnabled())return Response.json({error:'unavailable'},{status:503});if(!workerAuthorized(request.headers.get('authorization')))return Response.json({error:'unauthorized'},{status:401});try{const result=await new OnvoAutomation(onvoConfiguration()).run();let notification;try{notification=await deliverSinpeNotification()}catch{notification={state:'RETRY'}}return Response.json({...result,notification})}catch{return Response.json({error:'worker_unavailable'},{status:503})}}

@@ -1,150 +1,25 @@
-'use client'
-
-import {
-  FormEvent,
-  useState
-} from 'react'
-
-import { useRouter } from 'next/navigation'
-
+ 'use client'
+import { FormEvent, useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
-
-export default function ResetPasswordPage() {
-  const router = useRouter()
-
-  const [password, setPassword] =
-    useState('')
-
-  const [confirmPassword, setConfirmPassword] =
-    useState('')
-
-  const [loading, setLoading] =
-    useState(false)
-
-  const [errorMessage, setErrorMessage] =
-    useState('')
-
-  async function handleSubmit(
-    event: FormEvent<HTMLFormElement>
-  ) {
-    event.preventDefault()
-
-    if (password.length < 6) {
-      setErrorMessage(
-        'Your password must contain at least 6 characters.'
-      )
-      return
-    }
-
-    if (password !== confirmPassword) {
-      setErrorMessage(
-        'The passwords do not match.'
-      )
-      return
-    }
-
-    try {
-      setLoading(true)
-      setErrorMessage('')
-
-      const { error } =
-        await supabase.auth.updateUser({
-          password
-        })
-
-      if (error) {
-        throw error
-      }
-
-      const next =
-        new URLSearchParams(
-          window.location.search
-        ).get('next')
-
-      router.replace(
-        next || '/en/market-hub'
-      )
-    } catch (error) {
-      console.error(
-        'PASSWORD RESET ERROR:',
-        error
-      )
-
-      setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : 'Unable to update password.'
-      )
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  return (
-    <main style={page}>
-      <section style={card}>
-        <h1 style={heading}>
-          Create a New Password
-        </h1>
-
-        <form
-          onSubmit={handleSubmit}
-          style={form}
-        >
-          <input
-            type="password"
-            value={password}
-            onChange={event =>
-              setPassword(
-                event.target.value
-              )
-            }
-            placeholder="New password"
-            autoComplete="new-password"
-            required
-            minLength={6}
-            style={input}
-          />
-
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={event =>
-              setConfirmPassword(
-                event.target.value
-              )
-            }
-            placeholder="Confirm new password"
-            autoComplete="new-password"
-            required
-            minLength={6}
-            style={input}
-          />
-
-          <button
-            type="submit"
-            disabled={loading}
-            style={{
-              ...button,
-              opacity: loading
-                ? 0.65
-                : 1
-            }}
-          >
-            {loading
-              ? 'Saving...'
-              : 'Save Password'}
-          </button>
-        </form>
-
-        {errorMessage && (
-          <p style={errorText}>
-            {errorMessage}
-          </p>
-        )}
-      </section>
-    </main>
-  )
+import { authReturnContext, validateAuthEntry, usableAuthUser, type AuthLocale } from '@/lib/auth/account-access'
+import { accountCopy } from '@/lib/auth/account-copy'
+export default function ResetPasswordPage(){
+ const [locale,setLocale]=useState<AuthLocale>('en'),[next,setNext]=useState('/en/market-hub'),[ready,setReady]=useState(false),[failed,setFailed]=useState(false),[loading,setLoading]=useState(false),[saved,setSaved]=useState(false)
+ const [password,setPassword]=useState(''),[confirmPassword,setConfirmPassword]=useState(''),[error,setError]=useState('')
+ useEffect(()=>{let active=true;const c=authReturnContext(window.location.search);setLocale(c.locale);setNext(c.next)
+ const timer=window.setTimeout(()=>{if(active){active=false;setFailed(true)}},10000)
+ validateAuthEntry(window.location.search,window.location.hash).then(()=>{if(active){setReady(true);window.clearTimeout(timer)}}).catch(()=>{if(active){setFailed(true);window.clearTimeout(timer)}})
+ return()=>{active=false;window.clearTimeout(timer)}},[])
+ const t=accountCopy(locale)
+ async function submit(e:FormEvent<HTMLFormElement>){e.preventDefault();if(!ready||failed||loading||saved)return
+ if(password.length<6){setError(t.shortPassword);return}if(password!==confirmPassword){setError(t.mismatch);return}
+ setLoading(true);setError('');try{await usableAuthUser();const {error}=await supabase.auth.updateUser({password});if(error)throw error;setPassword('');setConfirmPassword('');setSaved(true)}catch{setError(t.failure)}finally{setLoading(false)}}
+ return <main style={page}><section style={card}><h1 style={heading}>{t.newPassword}</h1>
+ {failed?<p role="alert" style={errorText}>{t.badLink}</p>:!ready?<p role="status">{t.working}</p>:saved?<><p role="status">{t.saved}</p><a href={next}>{t.returnHub}</a></>:<form onSubmit={submit} style={form}>
+ <input aria-label={t.password} type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder={t.password} autoComplete="new-password" required minLength={6} style={input}/>
+ <input aria-label={t.confirmNew} type="password" value={confirmPassword} onChange={e=>setConfirmPassword(e.target.value)} placeholder={t.confirmNew} autoComplete="new-password" required minLength={6} style={input}/>
+ <button type="submit" disabled={loading} style={button}>{loading?t.working:t.savePassword}</button></form>}
+ {error&&<p role="alert" style={errorText}>{error}</p>}</section></main>
 }
 
 const page = {

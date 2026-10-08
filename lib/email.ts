@@ -60,3 +60,12 @@ export async function sendTestEmail() {
 
   return data
 }
+// Stable plain-text operational payload; no customer/credential/banking fields.
+export async function sendSinpePurchaseNotification(orderId:string,payload:Record<string,unknown>):Promise<string>{
+ const from=process.env.EMAIL_FROM;if(!from)throw Error('Email unavailable')
+ const fields=['nameEN','productId','productClass','unit','quantity','durationDays','termKind','amount','currency','orderId','receivedAt','confirmedAt','payment','fulfillment','startsAt','endsAt','asOf']
+ const duration=payload.productClass==='PACKAGE'?(payload.unit==='day'?'24 consecutive hours':'One continuous calendar month'):payload.productClass==='FOUNDING_MEMBERSHIP'?'Lifetime':payload.durationDays?`${payload.durationDays} days`:'Product-specific term / operation'
+ const text='Twuanis paid SINPE purchase\nDuration: '+duration+'\nStatus as of the timestamp below. Fulfillment is separate from payment.\n'+fields.map(k=>`${k}: ${payload[k]??'not available'}`).join('\n')
+ const {data,error}=await getResendClient().emails.send({from,to:'ryanjonhotchkiss@gmail.com',subject:'Twuanis — paid SINPE purchase',text},{idempotencyKey:'sinpe-order-'+orderId})
+ if(error||!data?.id)throw Error('Email delivery not confirmed');return data.id
+}

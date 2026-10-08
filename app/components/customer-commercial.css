@@ -1,0 +1,34 @@
+.customer-commercial{min-width:0;max-width:100%;overflow-wrap:anywhere;padding:1rem;color:var(--foreground);background:var(--background)}
+.customer-commercial nav{display:flex;flex-wrap:wrap;gap:.5rem;margin-block:1rem}.commercial-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:1rem;margin-block:1rem}.commercial-grid article{min-width:0;border:1px solid var(--border,#888);border-radius:12px;padding:1rem}.customer-commercial button,.customer-commercial select{max-width:100%;min-height:44px;padding:.5rem .8rem;margin:.2rem;white-space:normal}.customer-commercial :focus-visible{outline:3px solid #ff6a00;outline-offset:3px}.customer-commercial a{text-decoration:underline}.customer-commercial [role=alert]{border-left:3px solid #f65;padding:.7rem}.customer-commercial label{display:inline-block;margin:.5rem}
+
+/* Package presentation only; existing Add-on and activity cards retain their styling. */
+.commercial-grid .intelligence-package{align-self:start;padding:clamp(1.25rem,2vw,2rem);overflow-wrap:anywhere}
+.intelligence-package .package-title{font-size:clamp(1.4rem,2vw,1.8rem);line-height:1.25;margin:0;font-weight:700}
+.intelligence-package .package-section{margin-top:2rem;min-width:0}
+.intelligence-package .package-section h4{font-size:.8rem;line-height:1.5;letter-spacing:.06em;text-transform:uppercase;margin:0 0 1rem;color:#ff3b00}
+.intelligence-package .package-section p{margin:0;line-height:1.65}
+.intelligence-package .package-questions{display:grid;gap:1rem}
+.intelligence-package .package-capabilities{display:grid;gap:.75rem;margin:0;padding-left:1.2rem;line-height:1.55}
+.intelligence-package .package-standard-price{font-size:1.1rem;color:var(--muted,var(--foreground))}
+.intelligence-package .package-standard-price del{text-decoration-thickness:2px}
+.intelligence-package .package-pricing .package-offer-price,.intelligence-package .package-pricing .package-current-price{font-size:2.25rem;font-weight:700;line-height:1.2;margin-top:.35rem}
+.intelligence-package .package-pricing .package-offer-end{font-size:.85rem;margin-top:.5rem;color:var(--muted,var(--foreground))}
+
+.customer-commercial .intelligence-packages-heading{font-size:clamp(2rem,4vw,3rem);line-height:1.2;color:#ff3b00;margin:2.5rem 0 1.5rem}
+.intelligence-package .package-number{color:var(--package-accent)}
+.intelligence-package[data-package-number="1"]{--package-accent:#0066cc}
+.intelligence-package[data-package-number="2"]{--package-accent:#cc0000}
+.intelligence-package[data-package-number="3"]{--package-accent:#c7a44b}
+.commercial-grid .intelligence-package:is(:hover,:focus,:focus-within){background:var(--surface-raised);border-color:var(--package-accent);border-width:3px;padding:calc(clamp(1.25rem,2vw,2rem) - 2px)}
+.customer-commercial .intelligence-package:focus-visible{outline:2px solid var(--package-accent);outline-offset:3px}
+
+.package-inventory{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;margin-top:2rem;overflow-wrap:anywhere}
+
+.package-duration-options{display:flex;flex-wrap:wrap;gap:.4rem;min-width:0}
+.intelligence-package .duration-option{border:2px solid var(--package-accent);background:var(--surface);color:var(--foreground);flex:1 1 9rem}
+.intelligence-package .duration-option[aria-pressed="true"]{outline:2px solid var(--package-accent);outline-offset:2px;font-weight:700}
+.intelligence-package .package-purchase{background:var(--package-accent);color:white;border:2px solid var(--package-accent);font-weight:700;width:100%}
+.intelligence-package[data-package-number="3"] .package-purchase{color:black}
+.intelligence-package .package-purchase:hover:not(:disabled){filter:brightness(1.12)}
+.intelligence-package .package-purchase:is(:active,:focus-visible):not(:disabled){background:black;color:white;filter:none}
+.intelligence-package button:disabled{opacity:.55;cursor:not-allowed}

@@ -39,7 +39,8 @@
     "resend": "^6.18.0",
     "twilio": "^6.0.2",
     "web-push": "^3.6.7",
-    "ws": "^8.21.0"
+    "ws": "^8.21.0",
+    "libphonenumber-js": "1.13.14"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

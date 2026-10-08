@@ -2,6 +2,7 @@
 import {useSiteTheme} from './theme/ThemeProvider'
 
 import Link from 'next/link'
+import {useNavigationAvatar} from '@/lib/account-identity/navigation-avatar-client'
 
 import {
   CircleUser,
@@ -30,7 +31,11 @@ import {
   getAlternateLanguageUrl
 } from '@/lib/language-route'
 
+import './mobile-page-fit.css'
+
 type TopBarProps = {
+  mobileFit?: boolean
+  intelligence?: boolean
   onFilterClick?: () => void
   theme?: 'dark' | 'light'
   onThemeToggle?: () => void
@@ -45,12 +50,16 @@ const UTILITY_ORANGE = '#ff3b00'
 
 
 function TopBarContent({
+  intelligence = false,
+  mobileFit = false,
   onFilterClick,
   theme: _legacyTheme,
   onThemeToggle: _legacyToggle,
   onCollapsedChange
 }: TopBarProps) {
   const {theme,setTheme}=useSiteTheme()
+  const avatar=useNavigationAvatar()
+  const [failedAvatar,setFailedAvatar]=useState<string|null>(null)
   const onThemeToggle=()=>setTheme(t=>t==='dark'?'light':'dark')
 
   const pathname =
@@ -61,7 +70,7 @@ function TopBarContent({
   pathname === '/es'
 
   const lightTopBarBackground =
-  isHomepage
+  intelligence ? WHITE : isHomepage
     ? 'rgba(255, 255, 255, .92)'
     : 'rgba(248, 243, 229, .94)'
 
@@ -309,10 +318,10 @@ const isSpanish =
 
   return (
     <div
-      style={floatingHamburgerShell(
+      style={{...floatingHamburgerShell(
   theme,
   lightTopBarBackground
-)}
+), ...(intelligence && theme === 'light' ? {border: `1px solid ${GOLD}`} : {})}}
     >
         <button
           type="button"
@@ -346,7 +355,8 @@ const isSpanish =
   return (
 
     <div
-      style={
+      className={mobileFit ? "mobile-topbar-fit" : undefined}
+      style={{...(
         manuallyExpanded
           ? floatingTopBarShell(
             theme,
@@ -357,7 +367,7 @@ const isSpanish =
             isMobile,
             lightTopBarBackground
           )
-      }
+      ), ...(intelligence && theme === 'light' ? {border: `1px solid ${GOLD}`} : {})}}
     >
 
       <nav style={navContainer}>
@@ -377,6 +387,9 @@ const isSpanish =
             setHoveredItem(null)
           }
         >
+          {avatar && avatar!==failedAvatar ? <img src={avatar} alt="" width={50} height={50} onError={()=>setFailedAvatar(avatar)}
+            style={{width:50,height:'auto',aspectRatio:'1 / 1',maxWidth:'100%',objectFit:'cover',borderRadius:'50%',boxSizing:'border-box',border:`0.65px solid ${theme==='dark'?WHITE:'#000000'}`,flexShrink:0}}
+          /> : (
           <CircleUser
             size={50}
             strokeWidth={0.65}
@@ -386,6 +399,7 @@ const isSpanish =
                   : '#000000'
               }
           />
+          )}
 
           <span
             style={labelStyle(

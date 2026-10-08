@@ -134,7 +134,7 @@ export async function POST(
       )
     }
 
-    await sendWhatsApp({
+    const delivery = await sendWhatsApp({
       to:
         normalizedPhone,
 
@@ -142,14 +142,12 @@ export async function POST(
         normalizedToken
     })
 
+    if (!delivery.success) return NextResponse.json({success:false,error:'The WhatsApp publishing link could not be confirmed.'},{status:502})
+
     return NextResponse.json({
       success: true
     })
-  } catch (error) {
-    console.error(
-      'SEND PUBLISH LINK ERROR:',
-      error
-    )
+  } catch {
 
     return NextResponse.json(
       {

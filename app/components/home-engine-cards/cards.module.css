@@ -3,3 +3,29 @@
 @media(prefers-reduced-motion:reduce){.expanded,.rest{transition:none;transform:none}}
 
 .rows section{scroll-margin-top:120px}.slot{scroll-margin-top:120px}
+
+/* Homepage containment and explicit open state. Existing card internals remain authoritative. */
+.paged section+section{margin-top:0}.categoryControls{display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:16px}.categoryControls button{background:transparent;border:0;color:#ff3b00;font-size:32px;cursor:pointer}.categoryControls button:focus-visible{outline:3px solid #c7a44b}.categoryViewport{overflow:hidden;transition:height .22s ease}.categoryTrack{display:flex;align-items:flex-start;transition:transform .28s ease}.category{flex:0 0 100%;min-width:0;box-sizing:border-box;padding:6px}.paged .slot[data-open=true] .expanded{opacity:1;transform:scale(1)}.paged .slot[data-open=true] .rest{opacity:0}
+@media(hover:none),(max-width:768px){.paged .slot[data-open=false] .expanded{opacity:0;transform:scale(.92)}.paged .slot[data-open=false] .rest{display:flex;opacity:1}.paged .slot[data-open=true] .rest{display:none}}
+@media(prefers-reduced-motion:reduce){.categoryTrack,.categoryViewport{transition:none}.paged .slot[data-open=false] .expanded{transform:none}}
+
+/* Mobile category arrows select a category; native scrolling stays inside its engine row. */
+@media(max-width:768px){
+ .paged .grid{display:flex;flex-wrap:nowrap;gap:24px;overflow-x:auto;overscroll-behavior-x:contain;padding:6px;scroll-padding:6px;box-sizing:border-box;align-items:flex-start}
+ .paged .slot{flex:0 0 calc((100% - 48px)/2.5);min-width:0}
+ .paged .slot[data-open=false] .rest{position:relative;width:100%}
+ .paged .slot[data-open=false] .expanded{display:none}
+ .paged .slot[data-open=true]{flex-basis:min(340px,100%);z-index:2}
+ .paged .slot[data-open=true] .expanded{width:100%}
+}
+
+/* Small, content-hugging photo contrast treatments; shared across viewport sizes. */
+.rows[data-heading-theme=dark]{--category-glass:rgba(255,255,255,.2);--category-text-edge:rgba(255,255,255,.95)}
+.rows[data-heading-theme=light]{--category-glass:rgba(0,0,0,.2);--category-text-edge:rgba(0,0,0,.95)}
+.categoryControls,.categoryTitle{background:var(--category-glass);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);border-radius:8px;text-shadow:0 0 2px var(--category-text-edge)}
+.categoryControls{width:fit-content;max-width:100%;box-sizing:border-box;margin-left:auto;margin-right:auto;padding:0 8px}
+.categoryTitle{padding:3px 8px;box-decoration-break:clone;-webkit-box-decoration-break:clone;overflow-wrap:anywhere}
+
+.intelligence .categoryControls,.intelligence .categoryTitle{background:none;backdrop-filter:none;-webkit-backdrop-filter:none;text-shadow:none}
+
+.rows:not(.intelligence)[data-heading-theme=dark] .categoryTitle{display:inline;color:#ff3b00;background:rgba(0,0,0,.6);padding:1px 2px;border-radius:2px;border:none;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;text-shadow:none;box-decoration-break:clone;-webkit-box-decoration-break:clone}

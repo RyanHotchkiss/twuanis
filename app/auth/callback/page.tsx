@@ -1,116 +1,19 @@
-'use client'
-
-import {
-  useEffect,
-  useState
-} from 'react'
-
+ 'use client'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-
-import { supabase } from '@/lib/supabase'
-
-export default function AuthCallbackPage() {
-  const router = useRouter()
-
-  const [message, setMessage] =
-    useState(
-      'Completing your secure sign-in...'
-    )
-
-  useEffect(() => {
-  let mounted = true
-
-  async function completeAuthentication() {
-    const params =
-      new URLSearchParams(
-        window.location.search
-      )
-
-    const next =
-      params.get('next') ||
-      '/en/market-hub'
-
-    const {
-      data: { session },
-      error
-    } = await supabase.auth.getSession()
-
-    if (!mounted) {
-      return
-    }
-
-    if (error) {
-      console.error(error)
-
-      setMessage(
-        'We could not complete your sign-in.'
-      )
-
-      return
-    }
-
-    if (session) {
-      router.replace(next)
-      router.refresh()
-      return
-    }
-
-    const {
-      data: { subscription }
-    } =
-      supabase.auth.onAuthStateChange(
-        event => {
-          if (
-            event === 'SIGNED_IN' ||
-            event === 'INITIAL_SESSION'
-          ) {
-            router.replace(next)
-            router.refresh()
-          }
-        }
-      )
-
-    window.setTimeout(() => {
-      if (mounted) {
-        setMessage(
-          'The sign-in link may have expired. Please request another link.'
-        )
-      }
-    }, 8000)
-
-    return () => {
-      subscription.unsubscribe()
-    }
-  }
-
-  let unsubscribe:
-    | (() => void)
-    | undefined
-
-  completeAuthentication().then(
-    cleanup => {
-      unsubscribe = cleanup
-    }
-  )
-
-  return () => {
-    mounted = false
-    unsubscribe?.()
-  }
-}, [router])
-    return (
-    <main style={main}>
-      <div style={card}>
-        <h1 style={heading}>
-          MarketHub
-        </h1>
-
-        <p style={messageStyle}>
-          {message}
-        </p>
-      </div>
-    </main>
-  )
+import { authReturnContext, validateAuthEntry, type AuthLocale } from '@/lib/auth/account-access'
+import { accountCopy } from '@/lib/auth/account-copy'
+export default function AuthCallbackPage(){
+ const router=useRouter();const [locale,setLocale]=useState<AuthLocale>('en');const [failed,setFailed]=useState(false)
+ useEffect(()=>{
+  let active=true;const {locale,next}=authReturnContext(window.location.search);setLocale(locale)
+  const timer=window.setTimeout(()=>{if(active){active=false;setFailed(true)}},10000)
+  // SDK initialization resolves URL exchange; no INITIAL_SESSION-based success or duplicate token exchange.
+  validateAuthEntry(window.location.search,window.location.hash).then(()=>{if(active){active=false;window.clearTimeout(timer);router.replace(next);router.refresh()}}).catch(()=>{if(active){active=false;window.clearTimeout(timer);setFailed(true)}})
+  return()=>{active=false;window.clearTimeout(timer)}
+ },[router])
+ const t=accountCopy(locale)
+ return <main style={main}><div style={card}><h1 style={heading}>MarketHub</h1><p role={failed?'alert':'status'} style={messageStyle}>{failed?t.badLink:t.callback}</p></div></main>
 }
 
 const main = {

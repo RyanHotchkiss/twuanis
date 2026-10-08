@@ -6,6 +6,9 @@ import {
 } from 'react'
 
 import { supabase } from '@/lib/supabase'
+import { usePathname } from 'next/navigation'
+import { authLocale, authReturnContext, safeAuthNext, authRedirect, usableAuthUser } from '@/lib/auth/account-access'
+import { accountCopy, safeAuthError } from '@/lib/auth/account-copy'
 
 type EmailAuthModalProps = {
   onClose?: () => void
@@ -19,8 +22,12 @@ type AuthMode =
 
 export default function EmailAuthModal({
   onClose,
-  redirectTo = '/en/market-hub'
+  redirectTo
 }: EmailAuthModalProps) {
+  const pathname=usePathname()
+  const locale=redirectTo?.includes('?')?authReturnContext('?'+redirectTo.split('?')[1]+'&next='+encodeURIComponent(redirectTo.split('?')[0])).locale:authLocale(redirectTo || pathname)
+  const t=accountCopy(locale)
+  const destination=safeAuthNext(redirectTo,locale)
   const [mode, setMode] =
     useState<AuthMode>('sign-in')
 
@@ -62,9 +69,9 @@ export default function EmailAuthModal({
     const normalizedEmail =
       email.trim().toLowerCase()
 
-    if (!normalizedEmail) {
+    if (normalizedEmail.length>254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
       setErrorMessage(
-        'Enter your email address.'
+        t.invalidEmail
       )
       return
     }
@@ -74,7 +81,7 @@ export default function EmailAuthModal({
       password.length < 6
     ) {
       setErrorMessage(
-        'Your password must contain at least 6 characters.'
+        t.shortPassword
       )
       return
     }
@@ -84,7 +91,7 @@ export default function EmailAuthModal({
       password !== confirmPassword
     ) {
       setErrorMessage(
-        'The passwords do not match.'
+        t.mismatch
       )
       return
     }
@@ -94,34 +101,23 @@ export default function EmailAuthModal({
       clearMessages()
 
       if (mode === 'sign-in') {
-        const { error } =
+        const { data, error } =
           await supabase.auth
             .signInWithPassword({
               email: normalizedEmail,
               password
             })
 
-        if (error) {
-          throw error
-        }
-
-        window.location.href =
-          redirectTo
+        if (error) {throw error}
+        if(!data.session)throw new Error('auth_context')
+        await usableAuthUser()
+        window.location.href = destination
 
         return
       }
 
       if (mode === 'sign-up') {
-        const callbackUrl =
-          new URL(
-            '/auth/callback',
-            window.location.origin
-          )
-
-        callbackUrl.searchParams.set(
-          'next',
-          redirectTo
-        )
+        const callbackUrl=authRedirect('/auth/callback',destination,locale)
 
         const {
           data,
@@ -131,7 +127,7 @@ export default function EmailAuthModal({
           password,
           options: {
             emailRedirectTo:
-              callbackUrl.toString()
+              callbackUrl
           }
         })
 
@@ -139,30 +135,22 @@ export default function EmailAuthModal({
           throw error
         }
 
-        if (data.session) {
+        if (data.session && data.user?.email_confirmed_at) {
+          await usableAuthUser()
           window.location.href =
-            redirectTo
+            destination
 
           return
         }
 
         setMessage(
-          'Account created. Check your email to confirm your account.'
+          t.confirmation
         )
 
         return
       }
 
-      const resetUrl =
-        new URL(
-          '/auth/reset-password',
-          window.location.origin
-        )
-
-      resetUrl.searchParams.set(
-        'next',
-        redirectTo
-      )
+      const resetUrl=authRedirect('/auth/reset-password',destination,locale)
 
       const { error } =
         await supabase.auth
@@ -170,7 +158,7 @@ export default function EmailAuthModal({
             normalizedEmail,
             {
               redirectTo:
-                resetUrl.toString()
+                resetUrl
             }
           )
 
@@ -179,44 +167,18 @@ export default function EmailAuthModal({
       }
 
       setMessage(
-        'Check your email for the password-reset link.'
+        t.recoverySent
       )
     } catch (error) {
-      console.error(
-        'MARKETHUB AUTH ERROR:',
-        error
-      )
-
-      setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : 'Authentication failed.'
-      )
+      setErrorMessage(safeAuthError(error,locale))
     } finally {
       setLoading(false)
     }
   }
 
-  const headingText =
-    mode === 'sign-in'
-      ? 'Sign In to MarketHub'
-      : mode === 'sign-up'
-        ? 'Create Your MarketHub Account'
-        : 'Reset Your Password'
-
-  const descriptionText =
-    mode === 'sign-in'
-      ? 'Enter your email address and password.'
-      : mode === 'sign-up'
-        ? 'Create an account using your email address and password.'
-        : 'Enter your email address. We will send you a password-reset link.'
-
-  const submitText =
-    mode === 'sign-in'
-      ? 'Sign In'
-      : mode === 'sign-up'
-        ? 'Create Account'
-        : 'Send Reset Link'
+  const headingText=mode==='sign-in'?t.signInTitle:mode==='sign-up'?t.signUpTitle:t.resetTitle
+  const descriptionText=mode==='sign-in'?t.signInDescription:mode==='sign-up'?t.signUpDescription:t.resetDescription
+  const submitText=mode==='sign-in'?t.signIn:mode==='sign-up'?t.signUp:t.reset
 
   return (
     <div style={overlay}>
@@ -226,7 +188,7 @@ export default function EmailAuthModal({
             type="button"
             onClick={onClose}
             style={closeButton}
-            aria-label="Close"
+            aria-label={t.close}
           >
             ×
           </button>
@@ -250,7 +212,8 @@ export default function EmailAuthModal({
             onChange={event =>
               setEmail(event.target.value)
             }
-            placeholder="you@example.com"
+            placeholder={t.email}
+            aria-label={t.email}
             autoComplete="email"
             required
             style={input}
@@ -265,7 +228,8 @@ export default function EmailAuthModal({
                   event.target.value
                 )
               }
-              placeholder="Password"
+              placeholder={t.password}
+              aria-label={t.password}
               autoComplete={
                 mode === 'sign-in'
                   ? 'current-password'
@@ -286,7 +250,8 @@ export default function EmailAuthModal({
                   event.target.value
                 )
               }
-              placeholder="Confirm password"
+              placeholder={t.confirmPassword}
+              aria-label={t.confirmPassword}
               autoComplete="new-password"
               required
               minLength={6}
@@ -308,19 +273,19 @@ export default function EmailAuthModal({
             }}
           >
             {loading
-              ? 'Working...'
+              ? t.working
               : submitText}
           </button>
         </form>
 
         {message && (
-          <p style={successMessage}>
+          <p role="status" style={successMessage}>
             {message}
           </p>
         )}
 
         {errorMessage && (
-          <p style={errorText}>
+          <p role="alert" style={errorText}>
             {errorMessage}
           </p>
         )}
@@ -334,7 +299,7 @@ export default function EmailAuthModal({
               }
               style={textButton}
             >
-              Sign In
+              {t.signIn}
             </button>
           )}
 
@@ -346,7 +311,7 @@ export default function EmailAuthModal({
               }
               style={textButton}
             >
-              Create Account
+              {t.signUp}
             </button>
           )}
 
@@ -361,7 +326,7 @@ export default function EmailAuthModal({
               }
               style={textButton}
             >
-              Forgot Password?
+              {t.forgot}
             </button>
           )}
         </div>
