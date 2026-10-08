@@ -1,4 +1,6 @@
 'use client'
+import {useState} from 'react'
+import OfferCatalog from './OfferCatalog'
 
 import {
     CalendarDays,
@@ -89,6 +91,7 @@ export type MarketHubPackagesProps = {
   usageSummary: UsageSummary
   packageUsage: PackageUsage | null
   packageUsageError: string
+  legacyAcquisitionEnabled?: boolean
   upgradePackages: UpgradePackage[]
   availableUpgradeCount: number
   listingAddons: ListingAddon[]
@@ -563,6 +566,7 @@ export default function MarketHubPackages({
     usageSummary,
     packageUsage,
     packageUsageError,
+    legacyAcquisitionEnabled = false,
     upgradePackages,
     availableUpgradeCount,
     listingAddons,
@@ -589,6 +593,7 @@ export default function MarketHubPackages({
     pendingUpgrade,
     upgradeOutcome,
 }: MarketHubPackagesProps) {
+  const [offerPresentation,setOfferPresentation]=useState(true)
   const labels =
     language === 'es'
       ? {
@@ -1434,6 +1439,7 @@ export default function MarketHubPackages({
                 </div>
                 </article>
 
+              {!offerPresentation && <>
               <article style={detailCard}>
                 <div style={cardHeadingRow}>
                   <div style={iconContainer}>
@@ -1454,6 +1460,7 @@ export default function MarketHubPackages({
                 </div>
               </article>
 
+              </>}
               <article style={detailCard}>
               <div style={cardHeadingRow}>
                 <div style={iconContainer}>
@@ -1940,7 +1947,7 @@ export default function MarketHubPackages({
                       </p>
                     </div>
 
-                    {isNearPackageLimit &&
+                    {!offerPresentation && isNearPackageLimit &&
                       availableUpgradeCount > 0 && (
                         <div style={usageWarning}>
                           <strong>
@@ -2006,9 +2013,11 @@ export default function MarketHubPackages({
                             </div>
                           </>
                         ) : (
+                          packageUsage.listingLimit === null && (
                           <div style={unlimitedBadge}>
                             {labels.unlimited}
                           </div>
+                          )
                         )}
                       </article>
 
@@ -2060,9 +2069,11 @@ export default function MarketHubPackages({
                               />
                             </div>
                           ) : (
+                            packageUsage.featuredListingLimit === null && (
                             <div style={unlimitedBadge}>
                               {labels.unlimited}
                             </div>
+                            )
                           )
                         ) : (
                           <div style={usagePendingMessage}>
@@ -2126,9 +2137,11 @@ export default function MarketHubPackages({
                             </div>
                           </>
                         ) : (
+                          packageUsage.storageLimitBytes === null && (
                           <div style={unlimitedBadge}>
                             {labels.unlimited}
                           </div>
+                          )
                         )}
                       </article>
                     </div>
@@ -2358,6 +2371,7 @@ export default function MarketHubPackages({
 
                     <div style={phaseDivider} />
 
+                    {!offerPresentation && <>
                     <div style={upgradeSection}>
                     <div style={upgradeSectionHeader}>
                         <div>
@@ -2446,7 +2460,7 @@ export default function MarketHubPackages({
 
                             <button
                                 type="button"
-                                disabled={packageItem.current}
+                                disabled={packageItem.current || !legacyAcquisitionEnabled}
                                 onClick={() =>
                                   onSelectUpgradePackage(
                                     packageItem
@@ -2466,7 +2480,7 @@ export default function MarketHubPackages({
                             >
                             {packageItem.current
                                 ? labels.currentPlanButton
-                                : packageItem.name}
+                                : !legacyAcquisitionEnabled ? (language === 'es' ? 'Adquisición no disponible' : 'Acquisition unavailable') : packageItem.name}
                             </button>
                         </article>
                         ))}
@@ -2549,6 +2563,7 @@ export default function MarketHubPackages({
 
                                         <button
                                           type="button"
+                                          disabled={!legacyAcquisitionEnabled}
                                           onClick={() =>
                                             onSelectUpgradePackage(
                                               packageItem
@@ -2556,12 +2571,14 @@ export default function MarketHubPackages({
                                           }
                                           style={premiumButton}
                                         >
-                                          {labels.upgrade}
+                                          {legacyAcquisitionEnabled ? labels.upgrade : (language === 'es' ? 'Adquisición no disponible' : 'Acquisition unavailable')}
                                         </button>
                                     </article>
                                 ))}
                         </div>
                         </div>
+
+                    </>}
 
                         {upgradeOutcome && (
                           <section
@@ -2717,7 +2734,7 @@ export default function MarketHubPackages({
                           </section>
                         )}
 
-                        {selectedUpgradePackage && (
+                        {!offerPresentation && legacyAcquisitionEnabled && selectedUpgradePackage && (
                           <section style={upgradeCheckoutSection}>
                             <div style={upgradeCheckoutHeader}>
                               <div>
@@ -2920,6 +2937,8 @@ export default function MarketHubPackages({
                           </section>
                         )}
 
+                        <OfferCatalog language={language} onState={setOfferPresentation}/>
+                        {!offerPresentation&&<>
                         <section style={listingAddonsSection}>
                         <div style={listingAddonsHeader}>
                             <div style={listingAddonsEyebrow}>
@@ -3221,6 +3240,7 @@ export default function MarketHubPackages({
                         </div>
                         </section>
 
+                        </>}
                         <section style={trustSection}>
                             <div style={trustHeader}>
                                 <div style={trustEyebrow}>

@@ -1,4 +1,6 @@
 'use client'
+import CustomerCommercial from './CustomerCommercial'
+import {customerCommerceMode} from '@/app/commercial/actions'
 
 import {
   useEffect,
@@ -318,7 +320,7 @@ function normalizeBillingCycle(
   }
 }
 
-export default function MarketHubPackagesLoader({
+function LegacyMarketHubPackagesLoader({
   language
 }: MarketHubPackagesLoaderProps) {
   const [
@@ -441,6 +443,8 @@ export default function MarketHubPackagesLoader({
       PublicPromotionEvidence | null
     >
   >({})
+
+    const [legacyAcquisitionEnabled,setLegacyAcquisitionEnabled]=useState(false)
 
     const [
       selectedUpgradePackage,
@@ -807,6 +811,11 @@ export default function MarketHubPackagesLoader({
       }
 
       setErrorMessage('')
+      // One bounded intake read per load; failure keeps new acquisition closed.
+      setLegacyAcquisitionEnabled(false)
+      const intake = await supabase.rpc('customer_commerce_ready').then(r => r, () => ({data:false,error:true}))
+      if (!active) return
+      setLegacyAcquisitionEnabled(!intake.error && intake.data === true)
 
     const {
         data: availablePackageData,
@@ -2039,6 +2048,7 @@ export default function MarketHubPackagesLoader({
         priceCRC: string
       }
     ) => {
+      if (!legacyAcquisitionEnabled) return
       setSelectedUpgradePackage({
         packageId:
           packageItem.packageId,
@@ -2067,6 +2077,7 @@ export default function MarketHubPackagesLoader({
     const handleSubmitUpgrade =
       async (): Promise<void> => {
         if (
+          !legacyAcquisitionEnabled ||
           !selectedUpgradePackage ||
           submittingUpgrade
         ) {
@@ -2329,6 +2340,7 @@ export default function MarketHubPackagesLoader({
           packageUsageError
         }
 
+        legacyAcquisitionEnabled={legacyAcquisitionEnabled}
         upgradePackages={
           upgradePackages
         }
@@ -2420,4 +2432,12 @@ const messageCard = {
   background: 'var(--surface)',
   border: '1px solid #303030',
   borderRadius: '18px'
+}
+export default function MarketHubPackagesLoader(props:MarketHubPackagesLoaderProps){
+ const [mode,setMode]=useState<boolean|null>(null)
+ const [modeError,setModeError]=useState(false)
+ useEffect(()=>{let live=true;customerCommerceMode().then(x=>{if(live)setMode(x)}).catch(()=>{if(live)setModeError(true)});return()=>{live=false}},[])
+ if(modeError)return <p role="alert">{props.language==='es'?'No se pudo cargar el estado comercial.':'Commercial state could not be loaded.'}</p>
+ if(mode===null)return <p role="status">{props.language==='es'?'Cargando…':'Loading…'}</p>
+ return mode?<CustomerCommercial language={props.language}/>:<LegacyMarketHubPackagesLoader {...props}/>
 }

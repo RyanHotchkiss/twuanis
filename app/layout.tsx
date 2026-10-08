@@ -5,6 +5,7 @@ import ThemeProvider from './components/theme/ThemeProvider'
 import ThemeToggle from './components/theme/ThemeToggle'
 import {themeBootstrap} from './components/theme/theme-contract'
 import HomepageEntranceProvider from './components/HomepageEntrance'
+import CampaignPlacements from './components/CampaignPlacements'
 import FloatingHomeMark from './components/FloatingHomeMark'
 
 const cinzel = Cinzel({
@@ -38,6 +39,7 @@ export default function RootLayout({
           <HomepageEntranceProvider>
           <FloatingHomeMark />
           {children}
+          <CampaignPlacements />
           <ThemeToggle fallback />
           </HomepageEntranceProvider>
         </ThemeProvider>

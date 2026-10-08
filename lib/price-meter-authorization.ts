@@ -1,4 +1,5 @@
 import 'server-only'
+import {canonicalPackageEnforcement,authorizeCanonicalCapability,ANALYTICAL_CAPABILITIES,type AnalyticalCapability} from './package-capability-authorization'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 
 export const PRICE_METER_INTELLIGENCE_ENTITLEMENT =
@@ -33,9 +34,32 @@ export class PriceMeterComparableAuthorizationError
 }
 
 
-export async function authorizePriceMeterIntelligenceExecution():
+export async function authorizePriceMeterIntelligenceExecution(capability: AnalyticalCapability):
   Promise<string> {
 
+  if (!ANALYTICAL_CAPABILITIES.includes(capability)) throw new PriceMeterComparableAuthorizationError()
+  if (canonicalPackageEnforcement()) {
+    try { return await authorizeCanonicalCapability(capability) }
+    catch { throw new PriceMeterComparableAuthorizationError() }
+  }
+  return authorizeLegacyPriceMeterExecution()
+}
+
+// Explicit temporary compatibility for the surviving non-17-capability total-price
+// valuation product. It is NOT a grant of any new catalog capability. Retirement or
+// commercial reassignment requires its own reviewed cutover; no generic fallback.
+export async function authorizeLegacyPropertyValuationExecution(): Promise<string> {
+  if (canonicalPackageEnforcement()) {
+    const db=await createServerSupabaseClient()
+    const {data,error}=await db.auth.getUser()
+    if(error||!data.user)throw new PriceMeterComparableAuthenticationError()
+    const access=await db.rpc('current_account_has_legacy_valuation_access')
+    if(access.error||access.data!==true)throw new PriceMeterComparableAuthorizationError()
+    return data.user.id
+  }
+  return authorizeLegacyPriceMeterExecution()
+}
+async function authorizeLegacyPriceMeterExecution(): Promise<string> {
   const supabase =
     await createServerSupabaseClient()
 

@@ -1,8 +1,11 @@
 import 'server-only'
+import {authorizePreviouslyPublicCapability} from './package-capability-authorization'
 import { resolveCanonicalMarketRequest,canonicalMarketFilterBoundary } from './canonical-market-request'
 import { countMarketNumericalSurvivors,readMarketNumericalSurvivors } from './canonical-market-acquisition'
 import { canonicalMarketPrevalence } from './canonical-market-prevalence'
 export async function getMarketSummary(filters:Record<string,string|undefined>){
+ await authorizePreviouslyPublicCapability('cap-market-summary')
+
  const request=await resolveCanonicalMarketRequest(filters)
  const boundary=canonicalMarketFilterBoundary(request)
  if(request.year||request.road){
@@ -19,6 +22,8 @@ export async function getMarketSummary(filters:Record<string,string|undefined>){
  return {engine:'summary' as const,filters,n,saleCount,rentCount,state:n?'ESTABLISHED':'EMPTY_POPULATION'}
 }
 export async function getMarketComposition(filters:Record<string,string|undefined>){
+ await authorizePreviouslyPublicCapability('cap-market-composition')
+
  const request=await resolveCanonicalMarketRequest(filters)
  const rows=await readMarketNumericalSurvivors(request,canonicalMarketFilterBoundary(request),[])
  return {engine:'composition' as const,filters,...await canonicalMarketPrevalence(rows.map(row=>row.id))}

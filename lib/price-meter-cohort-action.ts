@@ -8,7 +8,7 @@ import {comparisonKeys} from '@/app/components/price-meter-comparison/contract'
 import type {CohortResult,Label} from '@/app/components/price-meter-comparison/contract'
 
 export async function executePriceMeterCohortComparison(input:unknown,language:'en'|'es'):Promise<CohortResult|{invalidRequest:true;message:string}>{
- await authorizePriceMeterIntelligenceExecution()
+ await authorizePriceMeterIntelligenceExecution('cap-user-defined-cohort-price-m2-comparison')
  if((language!=='en'&&language!=='es')||!input||typeof input!=='object'||Array.isArray(input))throw Error('Invalid comparison request.')
  const params:Record<string,string|undefined>={}
  for(const [key,value]of Object.entries(input)){

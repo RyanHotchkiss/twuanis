@@ -279,7 +279,7 @@ console.log('BedroomFilterS', BedroomFilterS)
 
                     return (
 
-                    <main style={{
+                    <main className="mobile-page-fit" style={{
                         background: 'var(--background)',
                         minHeight: '100vh',
                         color: 'var(--foreground)',
@@ -305,7 +305,7 @@ console.log('BedroomFilterS', BedroomFilterS)
                     flexWrap: 'wrap'
                     }}>
 
-                    <TopBar
+                    <TopBar mobileFit
                         onFilterClick={() =>
                             setShowMobileFilters(true)
                         }
@@ -317,7 +317,7 @@ console.log('BedroomFilterS', BedroomFilterS)
                         fontSize: '4rem',
                         marginBottom: '.5rem'
                         }}>
-                        Define Your Property
+                        Sell Your Property
                         </h1>
 
                         <p style={{

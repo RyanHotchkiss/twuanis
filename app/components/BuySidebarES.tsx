@@ -1,4 +1,5 @@
 'use client'
+import SidebarArrowToggle from './SidebarArrowToggle'
 import LocationFilter from '@/app/components/filter-bar/LocationFilterES'
 import PriceFilter from '@/app/components/filter-bar/PriceFilterES'
 import PropertyTypeFilter from '@/app/components/filter-bar/PropertyTypeFilterES'
@@ -151,6 +152,7 @@ const {
                     }
 
 
+  if (!props.isMobile && props.desktopCollapsed) return <div style={{width:48,position:'sticky',top:'1rem',borderRight:'1px solid #D4AF37',background:'var(--background)'}}><SidebarArrowToggle collapsed label="Expandir filtros" onToggle={()=>props.setDesktopCollapsed(false)}/></div>
   return (
 
     <div
@@ -196,6 +198,8 @@ const {
         transition: 'left .3s ease'
         }}
     >
+      {!isMobile && props.setDesktopCollapsed && <SidebarArrowToggle collapsed={false} label="Contraer filtros" onToggle={()=>props.setDesktopCollapsed(true)}/>}
+
 
       {isMobile && (
 

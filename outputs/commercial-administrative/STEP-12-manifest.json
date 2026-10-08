@@ -1,0 +1,27 @@
+{
+  "status": "STEP12_COMPLETE",
+  "recordedAt": "2026-10-05T22:58:07.446075+00:00",
+  "productionDeployment": "dpl_CdY2uTNLZTrkSVDASKZ4xXTyG6ro",
+  "productionSourceManifestSha256": "790d11f346bf84dc02b06e60ea578e9991af865d062b95c69218207813cb7bf8",
+  "selectedRepairFiles": [
+    {
+      "path": "supabase/migrations/048_spanish_addon_names.sql",
+      "sha256": "26f6aa6da80d85400e33cb200dc3fafd03c3328c9b76b9602d3713026da4d057"
+    },
+    {
+      "path": "supabase/migrations/049_legacy_customer_intake_gate.sql",
+      "sha256": "3c66c3aaf0ff5e57ce7fde3d43c186f58a964fc6f247068a55f112c6c98d07b0"
+    },
+    {
+      "path": "app/components/MarketHubPackages.tsx",
+      "sha256": "b1e62289dc7493c002aec249ed228a231a9fa600debea885b4b5b3425b6f1b50"
+    },
+    {
+      "path": "app/components/MarketHubPackagesLoader.tsx",
+      "sha256": "39c059895e5f2421cdbb6b69a4bd6a6702afb6f9c7baf685a59f9b23b70ed57e"
+    }
+  ],
+  "pendingProductionRepairs": [],
+  "operationB": "NOT_STARTED",
+  "decisionS12005": "Single configured duration per product V1; no implementation change"
+}

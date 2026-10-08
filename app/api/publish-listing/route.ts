@@ -12,8 +12,9 @@ export async function POST(request:NextRequest) {
   const {data:{user},error}=await customer.auth.getUser(accessToken)
   if(error||!user)return NextResponse.json({success:false,error:'Authentication required.'},{status:401})
   const body=await request.json()
-  if(typeof body.token!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(body.token)||Object.keys(body).some(k=>k!=='token'))throw Error('Only the original publishing token is accepted.')
-  const result=await completeTokenCreation(supabaseAdmin,customer,user.id,body.token)
+  if(typeof body.token!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(body.token)||Object.keys(body).some(k=>!['token','phase'].includes(k))||(body.phase!==undefined&&!['prepare','publish'].includes(body.phase)))throw Error('Only the original publishing token is accepted.')
+  const commerce=process.env.TWUANIS_SINPE_PAYMENTS==='canonical'&&process.env.TWUANIS_PACKAGE_ENFORCEMENT==='canonical'
+  const result=await completeTokenCreation(supabaseAdmin,customer,user.id,body.token,commerce&&body.phase==='prepare')
   return NextResponse.json(result,{status:result.success?200:409})
  }catch(error){return NextResponse.json({success:false,error:error instanceof Error?error.message:'Publication not confirmed. Retry the same token.'},{status:409})}
 }

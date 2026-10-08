@@ -1,0 +1,5 @@
+@media(max-width:768px){
+.mobile-page-fit,.intelligence-packages-surface{padding-left:.5rem!important;padding-right:.5rem!important;box-sizing:border-box;min-width:0}
+.mobile-page-fit h1{overflow-wrap:anywhere}
+.mobile-topbar-fit{box-sizing:border-box;max-width:calc(100vw - 16px)!important}
+}

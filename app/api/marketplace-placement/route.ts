@@ -1,3 +1,5 @@
+import {rankListings} from '@/lib/listing-ranking'
+import {canonicalAddonPlacementEnabled} from '@/lib/addon-placement-server'
 import {
   NextResponse
 } from 'next/server'
@@ -107,6 +109,9 @@ export async function POST(
       )
     }
 
+
+    // Establish the existing organic order before the independent canonical placement pass.
+    if(canonicalAddonPlacementEnabled())return NextResponse.json({listings:rankListings({listings})})
 
     const placement =
       await resolveMarketplacePlacement({

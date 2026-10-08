@@ -1,0 +1,9 @@
+@media(max-width:768px){
+.swipe-mobile-page{box-sizing:border-box;min-height:100svh!important;padding:7.5rem .75rem calc(1.5rem + env(safe-area-inset-bottom))!important;align-items:flex-start!important;overflow-x:clip!important;overflow-y:visible!important}
+.swipe-mobile-page .swipe-active-card{margin-top:0!important;min-width:0;touch-action:pan-y!important}
+.swipe-mobile-page .swipe-property-image{height:clamp(150px,28svh,230px)!important}
+.swipe-mobile-page .swipe-property-content{padding:1rem!important;overflow-wrap:anywhere}
+.swipe-mobile-page .swipe-property-content>h1,.swipe-mobile-page .swipe-property-content>p,.swipe-mobile-page .swipe-property-content>div{margin-bottom:.75rem!important}
+.swipe-mobile-page .swipe-property-content>div:last-child{margin-bottom:0!important}
+.swipe-mobile-page .swipe-property-content button{min-height:44px}
+}

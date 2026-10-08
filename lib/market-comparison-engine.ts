@@ -1,4 +1,5 @@
 import 'server-only'
+import {authorizePreviouslyPublicCapability} from './package-capability-authorization'
 import { resolveCanonicalMarketRequest,canonicalMarketFilterBoundary } from './canonical-market-request'
 import { readMarketNumericalSurvivors } from './canonical-market-acquisition'
 import { canonicalMarketPrevalence } from './canonical-market-prevalence'
@@ -351,6 +352,8 @@ export async function getMarketComparison(
   rightFilters: SideFilters,
   language: Language = 'en'
 ) {
+ await authorizePreviouslyPublicCapability('cap-market-comparison')
+
   const analyticalContext =
     await resolveMarketAnalyticalContext()
 
