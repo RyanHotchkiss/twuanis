@@ -1,0 +1,188 @@
+{
+  "authority": "Owner-accepted production workstream closure supersedes earlier preparation statuses; historical scoped test results remain preserved.",
+  "excluded": "Credentials, customer and actor identities, session evidence, raw provider logs, database exports, Storage payloads, encrypted recovery images, browser profiles, private filesystem destinations and superseded duplicate drafts. Source references are provenance labels, not public download links.",
+  "inventoryFileCount": 1330,
+  "recordedDate": "2026-10-11",
+  "sources": [
+    {
+      "bytes": 2842,
+      "localSourceReference": "outputs/remates/TWUANIS-R16-R17-PRODUCTION-WORKSTREAM-CLOSURE.md",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "e63dc811ac81a0547f3c9d59fcffae89bdff142d0d29828593d385bd1068204e"
+    },
+    {
+      "bytes": 7625,
+      "localSourceReference": "outputs/remates/TWUANIS-R17-SAVED-ANALYSIS-PRODUCTION-DEPLOYMENT.md",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "e96a55ea3f79b87070c5ff21c6e1073aaa8970a4d5b338402341cc087a6fc3f2"
+    },
+    {
+      "bytes": 16494,
+      "localSourceReference": "outputs/remates/TWUANIS-R17-PRODUCTION-INSTALLATION-AND-SMOKE-VERIFICATION.md",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "df37a331e33480d7c5c3f80015db80cb310344cbba00bc4a2ad8f183eb960439"
+    },
+    {
+      "bytes": 10237,
+      "localSourceReference": "outputs/remates/TWUANIS-R17-PRODUCTION-SMOKE-CLOSURE.md",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "25cbd7a9ce723b5c953b659d4924a18348992e0e07fa291725320146ea3ec611"
+    },
+    {
+      "bytes": 9369,
+      "localSourceReference": "outputs/remates/TWUANIS-R16-FINAL-HOSTED-NOTIFICATION-SCHEDULER-ACCEPTANCE.md",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "c8856f8b7830118ded467b54339be6689797aa233526f08bab4968d734b2369d"
+    },
+    {
+      "bytes": 193088,
+      "localSourceReference": "outputs/remates/TWUANIS-R16-REMAINING-ACCEPTANCE-CONSOLIDATION.md",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "8b0ad845d4707dabb6e8a7d23e1b2851425be3da1519b6f995bd3ef9f63ccba8"
+    },
+    {
+      "bytes": 97563,
+      "localSourceReference": "outputs/remates/TWUANIS-R16-R17-FINAL-PRODUCTION-RELEASE-READINESS.md",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "19e5bca01f0041044e0b36a8fc845a6bcbd51bb4d86b1163a77b84df327ab50c"
+    },
+    {
+      "bytes": 307514,
+      "localSourceReference": "outputs/remates/REMATES-IMPLEMENTATION-MANIFEST.md",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "6b95cf88fa5def85da6652010e63b4bf446fa7c57231821e96ea44d56f845f6c"
+    },
+    {
+      "bytes": 349701,
+      "localSourceReference": "outputs/remates/REMATES-PHASE-WORK-TRUCKS.md",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "b8fe9cd723f0a2a288aa4e86b145b2541a897e99fe962ebd7b8ea5817e99c065"
+    },
+    {
+      "bytes": 291798,
+      "localSourceReference": "outputs/remates/REMATES-PRE-DEPLOYMENT-COMPLETENESS-LEDGER.md",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "f19a861fb37a207e258908e0e91ec40b7141d11107b0b876c77b03ca3c71958d"
+    },
+    {
+      "bytes": 32427,
+      "localSourceReference": "outputs/remates/TWUANIS-R16-SHOT-1-LINUX-PDF-AND-SESSION-PREPARATION.md",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "899e3999440c6f67158fcd284f817b71515a69d17ec07d4f2012ba03f2aaa257"
+    },
+    {
+      "bytes": 38677,
+      "localSourceReference": "outputs/remates/TWUANIS-R16-SHOT-2-INTEGRATED-HOSTED-ACCEPTANCE.md",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "94b3b19aa003a8d225f275e1823d5d335df32d91f913028e8802eb45d07f66b4"
+    },
+    {
+      "bytes": 44942,
+      "localSourceReference": "outputs/remates/TWUANIS-R16-SHOT-3-DISPOSITION-REPAIR.md",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "a64aae213808dee829d90bdfc48f71e2281ea5f9a20fa2dc3fe81fe3239aa890"
+    },
+    {
+      "bytes": 44781,
+      "localSourceReference": "outputs/remates/TWUANIS-R16-SHOT-4-HOSTED-SECURITY-ACCEPTANCE.md",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "36390d9b8becc44cae2c53f62480e82ef7d2370dd2079572d9c2101cb58865f1"
+    },
+    {
+      "bytes": 37092,
+      "localSourceReference": "outputs/remates/TWUANIS-R16-SHOT-5-NATIVE-BROWSER-ACCESSIBILITY-ACCEPTANCE.md",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "95be92ce9b3477e39252205a051b14bdbed85555570032c1c972743de0aab307"
+    },
+    {
+      "bytes": 40563,
+      "localSourceReference": "outputs/remates/TWUANIS-R16-SHOT-6B-HOSTED-SYNTHETIC-HTTP-ACCEPTANCE.md",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "0f665aac09e3de8bcb7a0ba477401c209040e597043bd8b7d7c1e9dc73521c6a"
+    },
+    {
+      "bytes": 22019,
+      "localSourceReference": "outputs/remates/TWUANIS-MIGRATION-085-HOSTED-RETRIEVAL-ACCEPTANCE.md",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "a22dffa5ba0b3c048921efcae6dca33db8296b946f59d8b2812d32dcd6b35635"
+    },
+    {
+      "bytes": 6497,
+      "localSourceReference": "outputs/remates/TWUANIS-STAGING-AUTOMATION-CREDENTIAL-ROTATION.md",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "51da4c6cd5fb5429393d56bf77e6ed0a1d46078b6338903186cdb9b9cab94327"
+    },
+    {
+      "bytes": 68970,
+      "localSourceReference": "outputs/remates/TWUANIS-R15-STAGE-5-HOSTED-NUMERICAL-ACCEPTANCE.md",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "260c30d93ff4cec314e588b3d7c16dc32c850de9e63e74db64f9ba50db2151ef"
+    },
+    {
+      "bytes": 14126,
+      "localSourceReference": "outputs/remates/TWUANIS-R17-PRODUCTION-COMPATIBILITY-CORRECTIONS.md",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "977104858c58f4666c124e432eba4b051436699ecb70f6192cea9a4218b1ecf7"
+    },
+    {
+      "bytes": 9850,
+      "localSourceReference": "outputs/remates/TWUANIS-R17-PRODUCTION-BACKUP-RECOVERY-REHEARSAL.md",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "4c468a7f1f80e494fe3e1ea1da04f52ac573d902bae0cfcd329d7ac1e69782f5"
+    },
+    {
+      "bytes": 21462,
+      "localSourceReference": "outputs/remates/TWUANIS-R17-FINAL-RECOVERY-AND-INSTALLATION-PREPARATION.md",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "198f336dd26adfbfe779b42d402ddf161d30ea7a1dd0b3a204417086dc226e90"
+    },
+    {
+      "bytes": 41866,
+      "localSourceReference": "outputs/remates/TWUANIS-R16-FINAL-ENGINEERING-PROXY-PAGINATION-ACCEPTANCE.md",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "62827a38c370696d7b0ec880b87e50ae533365288e97a1cfff664fad57690ec0"
+    },
+    {
+      "bytes": 17589,
+      "localSourceReference": "outputs/remates/TWUANIS-R16-NOTIFICATION-RUNTIME-GUARD-CORRECTION.md",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "efba3d479fa4b59f8567754b3e83cc52b19200ea26fefb0590972dbc0abfa25f"
+    },
+    {
+      "bytes": 9691,
+      "localSourceReference": "outputs/remates/release-readiness/r17-production-installation/migration-execution.json",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "cfe3b900b135b4a0f1f967672d087eb8b16fc1a5bf8437c216dce939c23f0e42"
+    },
+    {
+      "bytes": 792,
+      "localSourceReference": "outputs/remates/release-readiness/r17-production-installation/database-postconditions.json",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "c5439120d974d957b5f38ca3c1a2bbf36c9e619115e8440ca2ac8e38c95a8a17"
+    },
+    {
+      "bytes": 123546,
+      "localSourceReference": "outputs/remates/release-readiness/r17-production-smoke-closure/candidate.json",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "f1d08eaee5255e5140b1be8824c43d860676d84383e581bb1b4250f7ac493219"
+    },
+    {
+      "bytes": 1890,
+      "localSourceReference": "outputs/remates/release-readiness/r17-saved-analysis-production-deployment/deployment-receipt.json",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "54c658e7d8a2cfdb317d6e009fd69719eb98817a97fb3c9857ce254120eaccac"
+    },
+    {
+      "bytes": 240,
+      "localSourceReference": "outputs/remates/release-readiness/r17-saved-analysis-production-deployment/deployed-source-verification.json",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "030eeb6c0be00bc5fe367b1ec36b026a3eb5235936d838426804f57eaf987058"
+    },
+    {
+      "bytes": 697,
+      "localSourceReference": "outputs/remates/release-readiness/r17-saved-analysis-production-deployment/postconditions.json",
+      "publication": "Curated non-sensitive results in this documentation bundle; raw operational source withheld.",
+      "sha256": "fa7078cf84adaf2a3a9e28cfc5f55ec933b58aad276cf64eb3f828c96c9fa6a9"
+    }
+  ]
+}
