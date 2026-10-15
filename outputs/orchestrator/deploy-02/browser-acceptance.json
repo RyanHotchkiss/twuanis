@@ -1,0 +1,71 @@
+{
+  "observedAt": "2026-10-15T18:31:33.548029+00:00",
+  "routes": [
+    {
+      "url": "https://twuanis.com/en/orchestrators",
+      "rendered": true,
+      "robots": "noindex, nofollow"
+    },
+    {
+      "url": "https://twuanis.com/es/orquestadores",
+      "rendered": true,
+      "robots": "noindex, nofollow"
+    },
+    {
+      "url": "https://twuanis.com/en/orchestrator-status",
+      "rendered": true,
+      "robots": "noindex, nofollow"
+    },
+    {
+      "url": "https://twuanis.com/es/estado-orquestadores",
+      "rendered": true,
+      "robots": "noindex, nofollow"
+    }
+  ],
+  "statusPages": {
+    "sectionsPerLanguage": 16,
+    "languages": [
+      "en",
+      "es"
+    ],
+    "desktopWidth": 1280,
+    "mobileWidth": 390,
+    "horizontalOverflowObserved": false,
+    "lightMode": "PASS",
+    "darkMode": "PASS",
+    "deployedGit": "1a592d2818a2b24f2f545b5cf53e63f400fab0be",
+    "deployedId": "dpl_H6ebhzMrskz88s7Bo16JfbwLp6CX"
+  },
+  "owner": {
+    "canonicalSelectors": "PASS",
+    "configurations": [
+      7,
+      17
+    ],
+    "populationOptions": [
+      "PRIVATE",
+      "BANK",
+      "COMBINED"
+    ],
+    "selectedPopulationAfterControlCheck": "COMBINED",
+    "secondExecutionRun": false,
+    "savedReportReopened": "ac4885bc-9e7f-4def-8d56-ac523c2a6600"
+  },
+  "loggedOut": {
+    "runDisabled": true,
+    "authorityMessage": "Execution authority is unavailable",
+    "unexpectedServerAction500": 2
+  },
+  "robots": {
+    "url": "https://twuanis.com/robots.txt",
+    "allow": "/",
+    "disallow": [
+      "/en/orchestrators",
+      "/es/orquestadores",
+      "/en/orchestrator-status",
+      "/es/estado-orquestadores"
+    ],
+    "sitemap": "https://twuanis.com/sitemap.xml"
+  },
+  "scope": "Actual browser observations; route HTTP codes independently recorded from Vercel request logs. No claim of paid-customer lifecycle acceptance in production."
+}

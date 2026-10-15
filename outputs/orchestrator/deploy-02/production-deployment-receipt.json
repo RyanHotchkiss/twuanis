@@ -1,0 +1,45 @@
+{
+  "id": "dpl_H6ebhzMrskz88s7Bo16JfbwLp6CX",
+  "url": "twuanis-0-6njs6hxsi-ryans-projects-71456f46.vercel.app",
+  "readyState": "READY",
+  "target": "production",
+  "createdAt": 1792087602497,
+  "ready": 1792087700116,
+  "projectId": "prj_XTn9YvpEiY9uyq5eHauJ9MNWhnxk",
+  "alias": [
+    "twuanis.com",
+    "www.twuanis.com",
+    "twuanis-0.vercel.app",
+    "twuanis-0-ryans-projects-71456f46.vercel.app",
+    "twuanis-0-git-main-ryans-projects-71456f46.vercel.app"
+  ],
+  "crons": [
+    {
+      "path": "/api/cron/saved-search-alerts",
+      "schedule": "0 12 * * *"
+    },
+    {
+      "path": "/api/cron/cleanup-temporary-listing-images",
+      "schedule": "30 12 * * *"
+    },
+    {
+      "path": "/api/cron/account-registration-notifications",
+      "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/cron/remates-retrieval",
+      "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/cron/remates-alerts",
+      "schedule": "*/5 * * * *"
+    }
+  ],
+  "gitSource": {
+    "ref": "main",
+    "repoId": 1237587086,
+    "sha": "1a592d2818a2b24f2f545b5cf53e63f400fab0be",
+    "type": "github",
+    "prId": null
+  }
+}

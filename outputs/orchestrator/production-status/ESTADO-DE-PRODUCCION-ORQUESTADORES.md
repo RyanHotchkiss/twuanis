@@ -142,3 +142,18 @@ Reanudación mínima: revisar por separado el terminador faltante de 107, conser
 ### Registro de conservación en Git
 
 La implementación y las pruebas se conservaron en el commit local `f641ea56bafa974e8882ec130a638a7d3543c41d`, rama `codex/orch-deploy-01-preservation`, dentro de un árbol de trabajo del repositorio existente. El seguimiento registra únicamente este comprobante y la referencia Git de las páginas de estado. No se realizó ningún envío remoto: la rama de producción es `main` y publicar una aplicación sin los contratos requeridos infringiría la regla de detenerse ante dependencias faltantes. El trabajo local ajeno y el historial Git permanecen intactos. Véase `GIT-PRESERVATION-RECEIPT.json`.
+
+
+## ORCH-DEPLOY-02 — Resultado de producción, 2026-10-15
+
+Esta actualización sustituye el resultado bloqueado de ORCH-DEPLOY-01 sin eliminar el registro histórico. Aplicación desplegada y READY: `dpl_H6ebhzMrskz88s7Bo16JfbwLp6CX`. Commit publicado en `origin/main`: `1a592d2818a2b24f2f545b5cf53e63f400fab0be`. Los 1.081 archivos del manifiesto coinciden con ese commit.
+
+Las migraciones 103–112 y la metodología aprobada quedaron instaladas y verificadas: 54 definiciones/propietarios de funciones, 11 tablas protegidas y una inscripción exacta de metodología. TypeScript, compilación y ensayos secuencial y atómico: PASS. Las cuatro páginas EN/ES devuelven GET 200 y conservan `noindex, nofollow`, exclusión en robots y ausencia en el sitemap y la navegación pública. Las páginas de estado contienen 16 secciones en cada idioma; se verificaron escritorio, móvil y los modos claro y oscuro.
+
+Una sesión canónica del Owner completó y volvió a abrir un informe PRIVATE de tres observaciones: 17 resultados de motor, 10 sustantivos y 7 explícitamente indefinidos por falta de entradas o poblaciones requeridas. La lectura independiente confirmó una ejecución, un informe, un testigo inmutable y cero tokens cobrados. No se fabricaron pagos ni cargos. Las solicitudes RPC anónimas a créditos, informes y evidencia fueron rechazadas con HTTP 401 / 42501.
+
+Aceptación de producción: PARCIAL. Se observaron dos respuestas 500 de acciones de la página española sin sesión, con el mensaje `Execution-credit accounting is unavailable`; la ejecución permaneció bloqueada. No se corrigió ese comportamiento durante esta entrega. Las matrices completas de clientes de pago, caducidad, revocación y aislamiento conservan su evidencia local, pero no se simularon en producción.
+
+La capacidad de producción NO ESTÁ ESTABLECIDA. La ejecución completa con 5.000 observaciones sigue BLOQUEADA por el límite de memoria local documentado. Las capacidades de 10.000 y 25.000 NO ESTÁN VERIFICADAS. No se modificaron infraestructura, límites, variables de entorno ni los cinco cron. No se inició otra fase de optimización.
+
+El informe exacto y todos los recibos están en `outputs/orchestrator/deploy-02/FINAL-ACCEPTANCE.md` y los JSON de aceptación del mismo directorio. El commit del código desplegado se mantiene separado del registro posterior de aceptación.

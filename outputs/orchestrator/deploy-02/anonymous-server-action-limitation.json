@@ -1,0 +1,19 @@
+{
+  "context": "Logged-out ES browser verification. Run disabled; no unauthorized execution. These errors are not a successful paid-customer accounting test.",
+  "errors": [
+    {
+      "id": "kghlk-1792088375359-09c71579f2c3",
+      "timestamp": 1792088375359,
+      "requestPath": "/es/orquestadores",
+      "responseStatusCode": 500,
+      "message": "Error: Execution-credit accounting is unavailable.\n    at j (.next/server/chunks/4333.js:14:40889)\n    at async bu (.next/server/chunks/4333.js:1:73866)\n    at async o (.next/server/chunks/2430.js:140:41725)\n    at async r (.next/server/chunks/2430.js:141:4523) {\n  digest: '1980830760'\n}"
+    },
+    {
+      "id": "75nk4-1792088375188-ced01d3da0da",
+      "timestamp": 1792088375188,
+      "requestPath": "/es/orquestadores",
+      "responseStatusCode": 500,
+      "message": "Error: Execution-credit accounting is unavailable.\n    at j (.next/server/chunks/4333.js:14:40889)\n    at async bt (.next/server/chunks/4333.js:1:73019)\n    at async o (.next/server/chunks/2430.js:140:41725)\n    at async r (.next/server/chunks/2430.js:141:4523) {\n  digest: '3162335913'\n}"
+    }
+  ]
+}

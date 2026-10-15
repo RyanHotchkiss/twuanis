@@ -1,0 +1,18 @@
+{
+  "reports": 1,
+  "witnesses": 1,
+  "executions": 1,
+  "test_report": {
+    "id": "ac4885bc-9e7f-4def-8d56-ac523c2a6600",
+    "kind": "OWNER_UNMETERED",
+    "engines": 17,
+    "execution": "af26833a-62da-4e19-83bb-0620c7427a09",
+    "population": "PRIVATE",
+    "substantive": 10,
+    "witness_count": 1,
+    "methodology_release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "private_observations": 3
+  },
+  "charged_tokens": 0,
+  "owner_completed": 1
+}
