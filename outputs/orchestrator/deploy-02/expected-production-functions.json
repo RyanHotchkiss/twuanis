@@ -1,0 +1,326 @@
+[
+  {
+    "signature": "create_execution_credit_order(uuid,text,text,integer)",
+    "definitionMd5": "b6c51b968df8f6969417f4de26bba3bb",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres,authenticated=X/postgres}"
+  },
+  {
+    "signature": "execution_credit_commerce_ready()",
+    "definitionMd5": "ca060a9ad974a4ffd9e1898fe7acf234",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}"
+  },
+  {
+    "signature": "execution_credit_service(jsonb,uuid,jsonb)",
+    "definitionMd5": "bf39f331dd4af451f9043a1ec90967ec",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres,service_role=X/postgres}"
+  },
+  {
+    "signature": "fulfill_execution_credit_purchase(uuid,uuid,uuid)",
+    "definitionMd5": "9815f01c7513a1658dcf0f6f5093861b",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres,service_role=X/postgres}"
+  },
+  {
+    "signature": "onvo_service_command(text,jsonb)",
+    "definitionMd5": "0dfc65b27121b92598c1089e685b6f27",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres,service_role=X/postgres}"
+  },
+  {
+    "signature": "orchestrator_execution_claim_v2(jsonb,uuid,uuid,text,text,jsonb,uuid,text)",
+    "definitionMd5": "2a6ab8558928c53a7bccc5a49172d95f",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres,service_role=X/postgres}"
+  },
+  {
+    "signature": "orchestrator_execution_claim(jsonb,uuid,uuid,text,text,jsonb,uuid)",
+    "definitionMd5": "d7458400d8ecb349ffea668b5b3e3d33",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres,service_role=X/postgres}"
+  },
+  {
+    "signature": "orchestrator_execution_commit(jsonb,uuid,uuid,uuid,jsonb,uuid)",
+    "definitionMd5": "e7662bf8dfe1147dd30f81332f794a0a",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres,service_role=X/postgres}"
+  },
+  {
+    "signature": "orchestrator_witness_finalize(jsonb,uuid,uuid,integer,text,uuid,uuid,jsonb,jsonb)",
+    "definitionMd5": "fb7a7381a0a327eb3204356b2a840861",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres,service_role=X/postgres}"
+  },
+  {
+    "signature": "read_canonical_bank_analytical_evidence(uuid,text,text,uuid)",
+    "definitionMd5": "0dfbfa3cd82f3a9653e865c8e618e221",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres,service_role=X/postgres}"
+  },
+  {
+    "signature": "read_completed_execution_report(uuid)",
+    "definitionMd5": "59f82ff760310a1fbeae9c30b4b851cf",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres,authenticated=X/postgres}"
+  },
+  {
+    "signature": "read_customer_commercial(text,uuid,uuid,uuid,boolean)",
+    "definitionMd5": "15621ecf3f1a72f4c89f7d9fc3066346",
+    "owner": "postgres",
+    "acl": null
+  },
+  {
+    "signature": "read_execution_credit_authority(text,text)",
+    "definitionMd5": "64cc62b39ab3428550b51aba0cdc1f0c",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres,authenticated=X/postgres}"
+  },
+  {
+    "signature": "read_execution_credit_catalog(text)",
+    "definitionMd5": "15dcc6fe08d08af252b5c63e1b347946",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}"
+  },
+  {
+    "signature": "read_execution_credits(uuid,bigint)",
+    "definitionMd5": "ce3968441a9778b352629094b427c264",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres,authenticated=X/postgres}"
+  },
+  {
+    "signature": "read_orchestrator_bank_evidence(jsonb,text,text,text,jsonb,uuid)",
+    "definitionMd5": "4acccf0ac81b86c6496bf4d3754e623f",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres,service_role=X/postgres}"
+  },
+  {
+    "signature": "read_orchestrator_bank_evidence(jsonb,text,text,text,uuid)",
+    "definitionMd5": "0a92bd8c28decef3d6db55b5cae07a3c",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres,service_role=X/postgres}"
+  },
+  {
+    "signature": "read_orchestrator_evidence_chunk(uuid,integer,text)",
+    "definitionMd5": "cfc049b59a46832bebed9d727e3ad52f",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres,authenticated=X/postgres}"
+  },
+  {
+    "signature": "read_orchestrator_reports(uuid)",
+    "definitionMd5": "034f59fb39238669a6149b4d9d63f9d4",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres,authenticated=X/postgres}"
+  },
+  {
+    "signature": "record_execution_credit_report(jsonb,uuid,uuid,jsonb)",
+    "definitionMd5": "723fcd32cdf1386601c0c1eb9950e8d3",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres,service_role=X/postgres}"
+  },
+  {
+    "signature": "retry_sinpe_fulfillment(uuid,uuid)",
+    "definitionMd5": "93ecdc568a61342fb12f5d5543c0fa51",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres,authenticated=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.assert_execution_credit_delivery(uuid)",
+    "definitionMd5": "79bf9f8eb24725a6a2ecc5f6c55c1a3d",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.assert_execution_credit_payment(uuid,uuid)",
+    "definitionMd5": "04f22ec44ec506f1d049b906297d62b9",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.commit_execution_credit_purchase(uuid,uuid,uuid)",
+    "definitionMd5": "e6acd64084270a372d84b94774a1ebd7",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.create_offer_order_snapshot(uuid,uuid,text,text,text,uuid,uuid,integer)",
+    "definitionMd5": "df3192de8b26ddb9e380112040ee4e01",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.customer_order_projection(uuid)",
+    "definitionMd5": "117d26a277ebd1ba01e4654e0c8d6895",
+    "owner": "postgres",
+    "acl": null
+  },
+  {
+    "signature": "twuanis_canonical_private.customer_product_copy(text,text)",
+    "definitionMd5": "8135713a7eaa14cb05062ed6a9701bd0",
+    "owner": "postgres",
+    "acl": null
+  },
+  {
+    "signature": "twuanis_canonical_private.evidence_v2_bank_scope(jsonb)",
+    "definitionMd5": "fb080f1f9f640ae17c356a66c0d2a2ea",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.evidence_v2_call_relationships(jsonb)",
+    "definitionMd5": "27fb969526f43ae9e16506272a8a4ec6",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.evidence_v2_decode_indexed(text,integer)",
+    "definitionMd5": "87d90283c1193d6e45bfa9ccce745c12",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.evidence_v2_decode(jsonb,text,integer)",
+    "definitionMd5": "5125197552b70276908e548a299a8f1d",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.evidence_v2_field(jsonb,text,text)",
+    "definitionMd5": "3cdc8fa3e8941126a6e3caf3edbb91c1",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.evidence_v2_json(jsonb)",
+    "definitionMd5": "574fab69485ebe09cdcf3e89a3e078b1",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.evidence_v2_private_sources(jsonb)",
+    "definitionMd5": "1a9ee4a6de8e76f19da4f3620740af98",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.evidence_v2_report_body(jsonb)",
+    "definitionMd5": "df5270482fe0569716934162e638d3c2",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.evidence_v2_validate(jsonb,uuid,uuid,uuid)",
+    "definitionMd5": "31cc302bda3c0783440dd9f65595b666",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.evidence_v2_witness_binding(jsonb,uuid,uuid,uuid)",
+    "definitionMd5": "3baa7d6038c73745c85f505e690e974d",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.execution_credit_actor()",
+    "definitionMd5": "76d2e36265e8b4edceba5a370b6ca957",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.execution_credit_allocation_live(uuid)",
+    "definitionMd5": "35559c56455d9a751b159578a0b19734",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.execution_credit_authority(text,text)",
+    "definitionMd5": "ce17869da331c58c6108e63ea4816676",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.execution_credit_bridge(jsonb)",
+    "definitionMd5": "99036c14d708fe00793644bf9e127176",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.execution_credit_event(uuid,uuid,uuid,uuid,text,bigint,uuid,uuid,jsonb)",
+    "definitionMd5": "fd326d86d56ce2af86a9a95c0382dd44",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.execution_credit_execution_state(uuid)",
+    "definitionMd5": "ece03d00ea06e59d73848698e286d8c7",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.execution_credit_is_admin(uuid)",
+    "definitionMd5": "7fa4811b4ef19ba34c5edd57c79da3cb",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.execution_credit_issue(uuid,text,bigint,text,text,uuid,uuid,uuid,timestamp with time zone,timestamp with time zone,jsonb,uuid)",
+    "definitionMd5": "94d97ceffca2771cc74399fc3207fa99",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.execution_credit_maintain(uuid,uuid)",
+    "definitionMd5": "e7210eee906252e298b3e7aff68efb65",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.execution_credit_monthly_term_source(uuid)",
+    "definitionMd5": "3dad191d91f7ed3d2011fbd16fec9f8a",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.execution_credit_qualifying_term(uuid)",
+    "definitionMd5": "0a2d655729398394f8b789baee8b5b63",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.execution_credit_remaining(uuid)",
+    "definitionMd5": "60f3ef66b44bba193ed50f40abe9cbfd",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.execution_credit_sync(uuid,uuid)",
+    "definitionMd5": "a938b75de3208187b29458af1e1dccc9",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.execution_credit_term_allocation()",
+    "definitionMd5": "38a9a0d3b2ba11fbb97188cc67580875",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.orchestrator_bank_scope_page(jsonb,uuid)",
+    "definitionMd5": "96cf49af1ed6e17f4f2611c21d8b943a",
+    "owner": "postgres",
+    "acl": "{postgres=X/postgres}"
+  },
+  {
+    "signature": "twuanis_canonical_private.resolve_offer_price(text,text,text,integer,timestamp with time zone)",
+    "definitionMd5": "412c995fdb5ea51365c95f09a103f194",
+    "owner": "postgres",
+    "acl": null
+  },
+  {
+    "signature": "twuanis_remates_private.classification_minimum_valid(uuid)",
+    "definitionMd5": "582b753afe7b0ee9b84cee6cf4a618d4",
+    "owner": "postgres",
+    "acl": null
+  }
+]

@@ -506,6 +506,6 @@ BEGIN
  ) bounded;
 
  RETURN rows||jsonb_build_object('authority',authority);
-END$function$
+END$function$;
 
 COMMIT;

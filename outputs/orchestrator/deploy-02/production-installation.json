@@ -1,0 +1,35 @@
+{
+  "status": "INSTALLED AND VERIFIED",
+  "project": "szhpqemhjyvvqgjgsmsw",
+  "evidence": "Canonical Supabase production SQL Editor; Owner-confirmed exact atomic script. Success. No rows returned. Subsequent read-only verification returned 54 54 1 11 0 0 0.",
+  "scriptSha256": "04234b733058bf44ac06d91d624fe0d0b747f85c3d438ef44747390ab0c7a5c3",
+  "migrationsInstalled": [
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    111,
+    112
+  ],
+  "verifiedFunctionDefinitionsAndOwners": 54,
+  "expectedFunctionDefinitionsAndOwners": 54,
+  "methodologyExactRows": 1,
+  "methodologyRelease": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+  "protectedNewTables": 11,
+  "executionsAfterInstall": 0,
+  "reportsAfterInstall": 0,
+  "chargesAfterInstall": 0,
+  "permissionComparison": "49 exact ACL strings. Five existing functions preserve production ACLs that are more restrictive than the local fixture NULL/default ACL. All 54 definitions/owners match; no permission weakening.",
+  "preservedRestrictedAcls": [
+    "read_customer_commercial(text,uuid,uuid,uuid,boolean): postgres and authenticated EXECUTE only",
+    "twuanis_canonical_private.customer_order_projection(uuid): postgres only",
+    "twuanis_canonical_private.customer_product_copy(text,text): postgres only",
+    "twuanis_canonical_private.resolve_offer_price(text,text,text,integer,timestamp with time zone): postgres only",
+    "twuanis_remates_private.classification_minimum_valid(uuid): postgres only"
+  ],
+  "recordedAt": "2026-10-15T17:52:46.589707+00:00"
+}

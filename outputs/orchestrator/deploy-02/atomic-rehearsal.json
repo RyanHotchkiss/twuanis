@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "database": "twuanis_orch_deploy_02_atomic",
+  "transaction": "Single atomic transaction",
+  "verificationSeconds": 0.10665641600000002,
+  "harnessNote": "Initial tuple/list assertion corrected in test harness; all 391 installed definitions and permissions are identical. No SQL repair.",
+  "scriptSha256": "04234b733058bf44ac06d91d624fe0d0b747f85c3d438ef44747390ab0c7a5c3",
+  "bytes": 269519,
+  "migrations": [
+    "103_execution_credit_ledger.sql",
+    "104_execution_credit_commercial_integration.sql",
+    "105_orchestrator_execution.sql",
+    "106_bank_analytical_attribute_projection.sql",
+    "107_orchestrator_immutable_evidence_v2.sql",
+    "108_orchestrator_validation_lookup_indexes.sql",
+    "109_orchestrator_scoped_population_acquisition.sql",
+    "110_orchestrator_classification_plan_cache.sql",
+    "111_orchestrator_indexed_graph_traversal.sql",
+    "112_orchestrator_expired_reservation_replay.sql"
+  ],
+  "functionDefinitionsAndPermissionsMatchSeparateRehearsal": true,
+  "changedOrAddedFunctions": 54,
+  "methodologyRegistered": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+  "archiveSha256": "9aed567cf7dd7f32e68af625242bee8626f1e77b40d9e7a98adcc875540b3f26",
+  "productionChanges": []
+}

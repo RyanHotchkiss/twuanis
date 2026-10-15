@@ -1,0 +1,16 @@
+{
+  "id": "prj_XTn9YvpEiY9uyq5eHauJ9MNWhnxk",
+  "name": "twuanis-0",
+  "nodeVersion": "24.x",
+  "framework": "nextjs",
+  "buildCommand": null,
+  "installCommand": null,
+  "rootDirectory": null,
+  "commandForIgnoringBuildStep": null,
+  "gitLink": {
+    "type": "github",
+    "repo": "twuanis",
+    "org": "RyanHotchkiss",
+    "productionBranch": "main"
+  }
+}

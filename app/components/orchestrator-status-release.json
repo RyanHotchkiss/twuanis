@@ -1,16 +1,16 @@
 {
-  "state": "BLOCKED — no production installation or deployment",
-  "stateEs": "BLOQUEADO — sin instalación ni despliegue en producción",
+  "state": "ORCH-DEPLOY-02 — production database contracts installed; capacity qualification remains incomplete.",
+  "stateEs": "ORCH-DEPLOY-02 — contratos de base de datos instalados en producción; la capacidad continúa sin calificación completa.",
   "gitRevision": "f641ea56bafa974e8882ec130a638a7d3543c41d",
   "deploymentId": null,
-  "databaseState": "Required orchestrator contracts 103–112 are absent. No production migrations installed by this task.",
-  "databaseStateEs": "Los contratos requeridos 103–112 están ausentes. Esta tarea no instaló migraciones en producción.",
+  "databaseState": "Migrations 103–112 installed and verified: 54 function definitions/owners, 11 protected tables, and the exact approved methodology release. Installation created zero executions, reports, or charges.",
+  "databaseStateEs": "Migraciones 103–112 instaladas y verificadas: 54 definiciones de funciones y propietarios, 11 tablas protegidas y la versión metodológica aprobada exacta. La instalación no creó ejecuciones, informes ni cargos.",
   "blockers": [
-    "Migration 107 fails exact-artifact rehearsal with SQLSTATE 42601: missing semicolon after END$function$ at line 509; PostgreSQL rejects COMMIT at line 511. No repair applied.",
-    "Live deployment and acceptance were stopped under the Owner dependency rule. Local results are retained separately."
+    "5,000-observation complete execution remains blocked by the documented local memory guard. 10,000 and 25,000 remain unverified. Production capacity is not established.",
+    "The migration 107 syntax defect is corrected. Full migration rehearsal, methodology registration, TypeScript and the production candidate build passed. Hosted acceptance is recorded separately; deployment does not establish unrestricted production readiness."
   ],
   "blockersEs": [
-    "La migración 107 falla en el ensayo del artefacto exacto con SQLSTATE 42601: falta un punto y coma después de END$function$ en la línea 509; PostgreSQL rechaza COMMIT en la línea 511. No se corrigió el artefacto.",
-    "El despliegue y la aceptación en vivo se detuvieron según la regla de dependencias del Propietario. Los resultados locales se conservan por separado."
+    "La ejecución completa con 5.000 observaciones sigue bloqueada por el límite preventivo de memoria documentado en pruebas locales. 10.000 y 25.000 siguen sin verificarse. La capacidad de producción no está establecida.",
+    "El defecto sintáctico de la migración 107 está corregido. Pasaron el ensayo completo de migraciones, el registro metodológico, TypeScript y la compilación del candidato de producción. La aceptación en producción se registra por separado; desplegar no establece una capacidad de producción sin restricciones."
   ]
 }

@@ -1,0 +1,84 @@
+{
+  "scriptSha256": "04234b733058bf44ac06d91d624fe0d0b747f85c3d438ef44747390ab0c7a5c3",
+  "newTables": [
+    {
+      "table": "twuanis_canonical_private.execution_credit_allocations",
+      "rlsEnabled": true,
+      "anonAnyTablePrivilege": false,
+      "authenticatedAnyTablePrivilege": false,
+      "serviceRoleAnyTablePrivilege": false
+    },
+    {
+      "table": "twuanis_canonical_private.execution_credit_events",
+      "rlsEnabled": true,
+      "anonAnyTablePrivilege": false,
+      "authenticatedAnyTablePrivilege": false,
+      "serviceRoleAnyTablePrivilege": false
+    },
+    {
+      "table": "twuanis_canonical_private.execution_credit_executions",
+      "rlsEnabled": true,
+      "anonAnyTablePrivilege": false,
+      "authenticatedAnyTablePrivilege": false,
+      "serviceRoleAnyTablePrivilege": false
+    },
+    {
+      "table": "twuanis_canonical_private.execution_credit_orchestrators",
+      "rlsEnabled": true,
+      "anonAnyTablePrivilege": false,
+      "authenticatedAnyTablePrivilege": false,
+      "serviceRoleAnyTablePrivilege": false
+    },
+    {
+      "table": "twuanis_canonical_private.execution_credit_price_versions",
+      "rlsEnabled": true,
+      "anonAnyTablePrivilege": false,
+      "authenticatedAnyTablePrivilege": false,
+      "serviceRoleAnyTablePrivilege": false
+    },
+    {
+      "table": "twuanis_canonical_private.execution_credit_receipts",
+      "rlsEnabled": true,
+      "anonAnyTablePrivilege": false,
+      "authenticatedAnyTablePrivilege": false,
+      "serviceRoleAnyTablePrivilege": false
+    },
+    {
+      "table": "twuanis_canonical_private.execution_credit_reports",
+      "rlsEnabled": true,
+      "anonAnyTablePrivilege": false,
+      "authenticatedAnyTablePrivilege": false,
+      "serviceRoleAnyTablePrivilege": false
+    },
+    {
+      "table": "twuanis_canonical_private.orchestrator_execution_claims",
+      "rlsEnabled": true,
+      "anonAnyTablePrivilege": false,
+      "authenticatedAnyTablePrivilege": false,
+      "serviceRoleAnyTablePrivilege": false
+    },
+    {
+      "table": "twuanis_canonical_private.orchestrator_execution_witnesses",
+      "rlsEnabled": true,
+      "anonAnyTablePrivilege": false,
+      "authenticatedAnyTablePrivilege": false,
+      "serviceRoleAnyTablePrivilege": false
+    },
+    {
+      "table": "twuanis_canonical_private.orchestrator_methodology_releases",
+      "rlsEnabled": true,
+      "anonAnyTablePrivilege": false,
+      "authenticatedAnyTablePrivilege": false,
+      "serviceRoleAnyTablePrivilege": false
+    },
+    {
+      "table": "twuanis_canonical_private.orchestrator_witness_attempts",
+      "rlsEnabled": true,
+      "anonAnyTablePrivilege": false,
+      "authenticatedAnyTablePrivilege": false,
+      "serviceRoleAnyTablePrivilege": false
+    }
+  ],
+  "existingTableRlsOrAclChanges": [],
+  "result": "All new tables explicitly enable RLS and deny direct table privileges to anon/authenticated/service_role. The dashboard warning is a static-parser false positive for dynamic RLS statements. Run without RLS means no dashboard-added SQL; the reviewed script itself enables RLS."
+}

@@ -1,0 +1,10 @@
+--- supabase/migrations/107_orchestrator_immutable_evidence_v2.sql (reviewed)
++++ supabase/migrations/107_orchestrator_immutable_evidence_v2.sql (syntax correction)
+@@ -506,6 +506,6 @@
+  ) bounded;
+ 
+  RETURN rows||jsonb_build_object('authority',authority);
+-END$function$
++END$function$;
+ 
+ COMMIT;

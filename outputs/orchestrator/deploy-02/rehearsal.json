@@ -1,0 +1,78 @@
+{
+  "database": "twuanis_orch_deploy_02",
+  "candidateBaselineCommit": "abb48351ecd37345b70915806f58037392fc94e5",
+  "candidateSourceHashesVerified": 1081,
+  "predecessorHashesMatchProductionEvidence": true,
+  "classificationPredecessorMatch": true,
+  "localSchemaPrivilegeAlignedToVerifiedProduction": true,
+  "results": [
+    {
+      "migration": "103_execution_credit_ledger.sql",
+      "sha256": "c08e48017ccfb1ef449c9f5313da331e8fd90a685ffeac5e03dcec13df3d2761",
+      "seconds": 0.05931474999999997,
+      "status": "PASS"
+    },
+    {
+      "migration": "104_execution_credit_commercial_integration.sql",
+      "sha256": "9935ffc2771070a538fd2cae912763dd58b66f9d03e9aad208fa56e4ab3f0494",
+      "seconds": 0.015797167000000112,
+      "status": "PASS"
+    },
+    {
+      "migration": "105_orchestrator_execution.sql",
+      "sha256": "fccd74b16daedcc72da876144fd18ae8b5be3b40564eef38de57a81515b1c52f",
+      "seconds": 0.007809208999999928,
+      "status": "PASS"
+    },
+    {
+      "migration": "106_bank_analytical_attribute_projection.sql",
+      "sha256": "75e5fb9ac14380321c16e32f5938e4c77dff024c63fdebf1bc2be48a6f9bb6e8",
+      "seconds": 0.0019814590000000187,
+      "status": "PASS"
+    },
+    {
+      "migration": "107_orchestrator_immutable_evidence_v2.sql",
+      "sha256": "be7bc16fde84e6dccc7f56bff6955043d0f4d620b7e57b3d334fb6b9ac29bab7",
+      "seconds": 0.02728070799999971,
+      "status": "PASS"
+    },
+    {
+      "migration": "108_orchestrator_validation_lookup_indexes.sql",
+      "sha256": "6795ead34703417777dbd1da04f65412e381697490d5f05ebe88704bd8a664dd",
+      "seconds": 0.003806500000000046,
+      "status": "PASS"
+    },
+    {
+      "migration": "109_orchestrator_scoped_population_acquisition.sql",
+      "sha256": "ac68bf3a5d337fdc5056236b4af6ac82d26e0dc627a68b5203a7980a8bb4c65b",
+      "seconds": 0.015246541999999863,
+      "status": "PASS"
+    },
+    {
+      "migration": "110_orchestrator_classification_plan_cache.sql",
+      "sha256": "adbcf0c6af6e2c34ecb9bc4a589cb3904ccc82ca07b1f26eb8f9e17a1cf3e7e7",
+      "seconds": 0.00448816700000032,
+      "status": "PASS"
+    },
+    {
+      "migration": "111_orchestrator_indexed_graph_traversal.sql",
+      "sha256": "bbb9f215f4c6b47c0576ebb9af1482b4b4cda85b541f3cf88502d552fa269e9a",
+      "seconds": 0.01630049999999983,
+      "status": "PASS"
+    },
+    {
+      "migration": "112_orchestrator_expired_reservation_replay.sql",
+      "sha256": "e6f753654eb998f01b433fdcea9552a9387f3c4c0c398b53352ff7c69ad792c2",
+      "seconds": 0.004197791000000173,
+      "status": "PASS"
+    }
+  ],
+  "methodologyRegistration": {
+    "status": "PASS",
+    "id": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "archiveSha256": "9aed567cf7dd7f32e68af625242bee8626f1e77b40d9e7a98adcc875540b3f26",
+    "exactRowReadback": true
+  },
+  "productionChanges": [],
+  "status": "PASS"
+}
