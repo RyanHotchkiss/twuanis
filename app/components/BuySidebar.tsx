@@ -240,7 +240,7 @@ const {
         >
 
         {/* DESKTOP SIDEBAR COLLAPSE */}
-            {!isMobile && (
+            {!isMobile && desktopCollapsed && (
             <SidebarArrowToggle collapsed={desktopCollapsed} stretchCollapsed label={desktopCollapsed?'Expand filters':'Collapse filters'} onToggle={()=>setDesktopCollapsed((current:boolean)=>!current)}/>
             )}
 
@@ -297,6 +297,7 @@ const {
 
 
 <LocationFilter
+                headingControl={!isMobile && <SidebarArrowToggle collapsed={false} label="Collapse filters" onToggle={()=>setDesktopCollapsed(true)}/>}
                 showLocationOptions={showLocationOptions}
                 setShowLocationOptions={setShowLocationOptions}
 

@@ -1,0 +1,195 @@
+app/components/BuySidebarES.tsx:201: trailing whitespace.
++      
+app/components/RentLeaseSidebarES.tsx:201: trailing whitespace.
++      
+app/components/home-marketplace/HomeMarketplace.tsx:205: new blank line at EOF.
+app/components/marketplace/BuyMarketplaceEN.tsx:24: trailing whitespace.
++import { normalizeText } from '@/lib/normalizeText' 
+app/components/marketplace/BuyMarketplaceEN.tsx:249: trailing whitespace.
++    
+app/components/marketplace/BuyMarketplaceEN.tsx:473: trailing whitespace.
++    
+app/components/marketplace/BuyMarketplaceEN.tsx:512: trailing whitespace.
++  
+app/components/marketplace/BuyMarketplaceEN.tsx:1340: trailing whitespace.
++              
+app/components/marketplace/BuyMarketplaceEN.tsx:1606: new blank line at EOF.
+app/components/marketplace/BuyMarketplaceES.tsx:25: trailing whitespace.
++import { normalizeText } from '@/lib/normalizeText' 
+app/components/marketplace/BuyMarketplaceES.tsx:502: trailing whitespace.
++                          
+app/components/marketplace/BuyMarketplaceES.tsx:1316: trailing whitespace.
++          
+app/components/marketplace/BuyMarketplaceES.tsx:1415: trailing whitespace.
++                                
+app/components/marketplace/BuyMarketplaceES.tsx:1587: new blank line at EOF.
+app/components/marketplace/RentMarketplaceEN.tsx:21: trailing whitespace.
++import { normalizeText } from '@/lib/normalizeText' 
+app/components/marketplace/RentMarketplaceEN.tsx:434: trailing whitespace.
++      
+app/components/marketplace/RentMarketplaceEN.tsx:476: trailing whitespace.
++                   
+app/components/marketplace/RentMarketplaceEN.tsx:1012: trailing whitespace.
++      
+app/components/marketplace/RentMarketplaceEN.tsx:1021: trailing whitespace.
++          
+app/components/marketplace/RentMarketplaceEN.tsx:1250: trailing whitespace.
++                  : '#ffffff',  
+app/components/marketplace/RentMarketplaceEN.tsx:1359: trailing whitespace.
++           
+app/components/marketplace/RentMarketplaceEN.tsx:1642: new blank line at EOF.
+app/components/marketplace/RentMarketplaceES.tsx:22: trailing whitespace.
++import { normalizeText } from '@/lib/normalizeText' 
+app/components/marketplace/RentMarketplaceES.tsx:431: trailing whitespace.
++      
+app/components/marketplace/RentMarketplaceES.tsx:473: trailing whitespace.
++           
+app/components/marketplace/RentMarketplaceES.tsx:1007: trailing whitespace.
++      
+app/components/marketplace/RentMarketplaceES.tsx:1016: trailing whitespace.
++          
+app/components/marketplace/RentMarketplaceES.tsx:1371: trailing whitespace.
++            
+app/components/marketplace/RentMarketplaceES.tsx:1471: trailing whitespace.
++        </div>   
+app/components/marketplace/RentMarketplaceES.tsx:1641: new blank line at EOF.
+app/en/orchestrators/page.tsx:62: new blank line at EOF.
+app/es/orquestadores/page.tsx:61: new blank line at EOF.
+app/globals.css:309: new blank line at EOF.
+outputs/orchestrator/final-01/production-build.log:14: trailing whitespace.
++  Generating static pages using 7 workers (31/126) 
+outputs/orchestrator/final-01/production-build.log:15: trailing whitespace.
++  Generating static pages using 7 workers (62/126) 
+outputs/orchestrator/final-01/production-build.log:16: trailing whitespace.
++  Generating static pages using 7 workers (94/126) 
+outputs/orchestrator/final-01/production-build.log:239: new blank line at EOF.
+server-archives/0c790542c64ee9bc6f41500e46afed382447b8cbcf6e48b613a65d36ae16a4aa.cjs:16016: trailing whitespace.
++  
+server-archives/0c790542c64ee9bc6f41500e46afed382447b8cbcf6e48b613a65d36ae16a4aa.cjs:16275: trailing whitespace.
++  *   
+server-archives/0c790542c64ee9bc6f41500e46afed382447b8cbcf6e48b613a65d36ae16a4aa.cjs:16344: trailing whitespace.
++  *   
+server-archives/0c790542c64ee9bc6f41500e46afed382447b8cbcf6e48b613a65d36ae16a4aa.cjs:16435: trailing whitespace.
++  *   
+server-archives/0c790542c64ee9bc6f41500e46afed382447b8cbcf6e48b613a65d36ae16a4aa.cjs:16523: trailing whitespace.
++  *   
+server-archives/67740b282f0797c1110a982212d14e34f1abd895dcd69f1a61798fc6c8d76ee9.cjs:16032: trailing whitespace.
++  
+server-archives/67740b282f0797c1110a982212d14e34f1abd895dcd69f1a61798fc6c8d76ee9.cjs:16291: trailing whitespace.
++  *   
+server-archives/67740b282f0797c1110a982212d14e34f1abd895dcd69f1a61798fc6c8d76ee9.cjs:16360: trailing whitespace.
++  *   
+server-archives/67740b282f0797c1110a982212d14e34f1abd895dcd69f1a61798fc6c8d76ee9.cjs:16451: trailing whitespace.
++  *   
+server-archives/67740b282f0797c1110a982212d14e34f1abd895dcd69f1a61798fc6c8d76ee9.cjs:16539: trailing whitespace.
++  *   
+server-archives/713f97cb688eee61a896a69b1fd9c0fca5d9f51eaf27763992dd35d1aed932ed.cjs:16107: trailing whitespace.
++  
+server-archives/713f97cb688eee61a896a69b1fd9c0fca5d9f51eaf27763992dd35d1aed932ed.cjs:16366: trailing whitespace.
++  *   
+server-archives/713f97cb688eee61a896a69b1fd9c0fca5d9f51eaf27763992dd35d1aed932ed.cjs:16435: trailing whitespace.
++  *   
+server-archives/713f97cb688eee61a896a69b1fd9c0fca5d9f51eaf27763992dd35d1aed932ed.cjs:16526: trailing whitespace.
++  *   
+server-archives/713f97cb688eee61a896a69b1fd9c0fca5d9f51eaf27763992dd35d1aed932ed.cjs:16614: trailing whitespace.
++  *   
+server-archives/91a778fe55198f199c107535c18c7b25934fd21fc03f2412da28912d80d66f81.cjs:16107: trailing whitespace.
++  
+server-archives/91a778fe55198f199c107535c18c7b25934fd21fc03f2412da28912d80d66f81.cjs:16366: trailing whitespace.
++  *   
+server-archives/91a778fe55198f199c107535c18c7b25934fd21fc03f2412da28912d80d66f81.cjs:16435: trailing whitespace.
++  *   
+server-archives/91a778fe55198f199c107535c18c7b25934fd21fc03f2412da28912d80d66f81.cjs:16526: trailing whitespace.
++  *   
+server-archives/91a778fe55198f199c107535c18c7b25934fd21fc03f2412da28912d80d66f81.cjs:16614: trailing whitespace.
++  *   
+server-archives/9aed567cf7dd7f32e68af625242bee8626f1e77b40d9e7a98adcc875540b3f26.cjs:16107: trailing whitespace.
++  
+server-archives/9aed567cf7dd7f32e68af625242bee8626f1e77b40d9e7a98adcc875540b3f26.cjs:16366: trailing whitespace.
++  *   
+server-archives/9aed567cf7dd7f32e68af625242bee8626f1e77b40d9e7a98adcc875540b3f26.cjs:16435: trailing whitespace.
++  *   
+server-archives/9aed567cf7dd7f32e68af625242bee8626f1e77b40d9e7a98adcc875540b3f26.cjs:16526: trailing whitespace.
++  *   
+server-archives/9aed567cf7dd7f32e68af625242bee8626f1e77b40d9e7a98adcc875540b3f26.cjs:16614: trailing whitespace.
++  *   
+server-archives/analytical-release.cjs:16107: trailing whitespace.
++  
+server-archives/analytical-release.cjs:16366: trailing whitespace.
++  *   
+server-archives/analytical-release.cjs:16435: trailing whitespace.
++  *   
+server-archives/analytical-release.cjs:16526: trailing whitespace.
++  *   
+server-archives/analytical-release.cjs:16614: trailing whitespace.
++  *   
+server-archives/b15ae49986978e513846273e35a6a46a7369dc5042a4d48d2eca4d58b6c4b4c3.cjs:16012: trailing whitespace.
++  
+server-archives/b15ae49986978e513846273e35a6a46a7369dc5042a4d48d2eca4d58b6c4b4c3.cjs:16271: trailing whitespace.
++  *   
+server-archives/b15ae49986978e513846273e35a6a46a7369dc5042a4d48d2eca4d58b6c4b4c3.cjs:16340: trailing whitespace.
++  *   
+server-archives/b15ae49986978e513846273e35a6a46a7369dc5042a4d48d2eca4d58b6c4b4c3.cjs:16431: trailing whitespace.
++  *   
+server-archives/b15ae49986978e513846273e35a6a46a7369dc5042a4d48d2eca4d58b6c4b4c3.cjs:16519: trailing whitespace.
++  *   
+server-archives/d0ef0e049abe46b609713095b383da173298eeadee81a4be7c91703755527ff1.cjs:16027: trailing whitespace.
++  
+server-archives/d0ef0e049abe46b609713095b383da173298eeadee81a4be7c91703755527ff1.cjs:16286: trailing whitespace.
++  *   
+server-archives/d0ef0e049abe46b609713095b383da173298eeadee81a4be7c91703755527ff1.cjs:16355: trailing whitespace.
++  *   
+server-archives/d0ef0e049abe46b609713095b383da173298eeadee81a4be7c91703755527ff1.cjs:16446: trailing whitespace.
++  *   
+server-archives/d0ef0e049abe46b609713095b383da173298eeadee81a4be7c91703755527ff1.cjs:16534: trailing whitespace.
++  *   
+server-archives/e13fb3bb7e30371d09eb2a32dd056ade41e19e925ed0f2daa1aa1151026583ed.cjs:16034: trailing whitespace.
++  
+server-archives/e13fb3bb7e30371d09eb2a32dd056ade41e19e925ed0f2daa1aa1151026583ed.cjs:16293: trailing whitespace.
++  *   
+server-archives/e13fb3bb7e30371d09eb2a32dd056ade41e19e925ed0f2daa1aa1151026583ed.cjs:16362: trailing whitespace.
++  *   
+server-archives/e13fb3bb7e30371d09eb2a32dd056ade41e19e925ed0f2daa1aa1151026583ed.cjs:16453: trailing whitespace.
++  *   
+server-archives/e13fb3bb7e30371d09eb2a32dd056ade41e19e925ed0f2daa1aa1151026583ed.cjs:16541: trailing whitespace.
++  *   
+server-archives/e2a2891e3498dbb84d81612b3c3da60c84b0fb98a53ff9fdd18b8a513bd1895b.cjs:16112: trailing whitespace.
++  
+server-archives/e2a2891e3498dbb84d81612b3c3da60c84b0fb98a53ff9fdd18b8a513bd1895b.cjs:16371: trailing whitespace.
++  *   
+server-archives/e2a2891e3498dbb84d81612b3c3da60c84b0fb98a53ff9fdd18b8a513bd1895b.cjs:16440: trailing whitespace.
++  *   
+server-archives/e2a2891e3498dbb84d81612b3c3da60c84b0fb98a53ff9fdd18b8a513bd1895b.cjs:16531: trailing whitespace.
++  *   
+server-archives/e2a2891e3498dbb84d81612b3c3da60c84b0fb98a53ff9fdd18b8a513bd1895b.cjs:16619: trailing whitespace.
++  *   
+server-archives/e506dc11edaba1e7e65d7eb8bc620abf3ee8bfe24020cadd7a8f034da9290f3d.cjs:16023: trailing whitespace.
++  
+server-archives/e506dc11edaba1e7e65d7eb8bc620abf3ee8bfe24020cadd7a8f034da9290f3d.cjs:16282: trailing whitespace.
++  *   
+server-archives/e506dc11edaba1e7e65d7eb8bc620abf3ee8bfe24020cadd7a8f034da9290f3d.cjs:16351: trailing whitespace.
++  *   
+server-archives/e506dc11edaba1e7e65d7eb8bc620abf3ee8bfe24020cadd7a8f034da9290f3d.cjs:16442: trailing whitespace.
++  *   
+server-archives/e506dc11edaba1e7e65d7eb8bc620abf3ee8bfe24020cadd7a8f034da9290f3d.cjs:16530: trailing whitespace.
++  *   
+server-archives/f4f75954b77420c112b7e73f091c4279eef5c6e25c15d5617175486e50a8974f.cjs:16112: trailing whitespace.
++  
+server-archives/f4f75954b77420c112b7e73f091c4279eef5c6e25c15d5617175486e50a8974f.cjs:16371: trailing whitespace.
++  *   
+server-archives/f4f75954b77420c112b7e73f091c4279eef5c6e25c15d5617175486e50a8974f.cjs:16440: trailing whitespace.
++  *   
+server-archives/f4f75954b77420c112b7e73f091c4279eef5c6e25c15d5617175486e50a8974f.cjs:16531: trailing whitespace.
++  *   
+server-archives/f4f75954b77420c112b7e73f091c4279eef5c6e25c15d5617175486e50a8974f.cjs:16619: trailing whitespace.
++  *   
+server-archives/f602dcbbd561157bc302794c2dc0f1a99f9ed225f362dd1ff6c1bc75879d4d8b.cjs:16033: trailing whitespace.
++  
+server-archives/f602dcbbd561157bc302794c2dc0f1a99f9ed225f362dd1ff6c1bc75879d4d8b.cjs:16292: trailing whitespace.
++  *   
+server-archives/f602dcbbd561157bc302794c2dc0f1a99f9ed225f362dd1ff6c1bc75879d4d8b.cjs:16361: trailing whitespace.
++  *   
+server-archives/f602dcbbd561157bc302794c2dc0f1a99f9ed225f362dd1ff6c1bc75879d4d8b.cjs:16452: trailing whitespace.
++  *   
+server-archives/f602dcbbd561157bc302794c2dc0f1a99f9ed225f362dd1ff6c1bc75879d4d8b.cjs:16540: trailing whitespace.
++  *   

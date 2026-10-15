@@ -1,0 +1,26 @@
+{
+  "history-expiry": {
+    "id": "ba00faa5-4edd-4988-926b-2b0ef86dc72c",
+    "term": {
+      "term": "5c8e4305-92a5-4443-a42e-6cf483207a61",
+      "order": "2ac0143e-0772-4a31-9534-db82afa8d081",
+      "ack": "916312c9-adcb-4aad-ac9e-42b909b50c30",
+      "package": "pkg-pricing-position-relationships",
+      "bank": true,
+      "account": "ba00faa5-4edd-4988-926b-2b0ef86dc72c"
+    },
+    "endsAt": "2026-10-15 15:19:16.440941+00"
+  },
+  "during-execution-expiry": {
+    "id": "4fcbffb7-3b45-4487-983a-e24ccee9ff2d",
+    "term": {
+      "term": "5a71d346-b499-4c05-afb9-3bcaf6f87919",
+      "order": "2565bc2b-96cd-4edf-81af-82461fab6fcd",
+      "ack": "d4a6aa6f-dd65-4d81-a382-be7ebc1d8db1",
+      "package": "pkg-pricing-position-relationships",
+      "bank": true,
+      "account": "4fcbffb7-3b45-4487-983a-e24ccee9ff2d"
+    },
+    "endsAt": "2026-10-15 15:18:41.88486+00"
+  }
+}

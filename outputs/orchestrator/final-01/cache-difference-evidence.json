@@ -1,0 +1,17 @@
+[
+  {
+    "path": "/acquisition/sourceDataRevision",
+    "before": "fd8c65b6e605c35b24880490b0b2ae10238e040a3cff58eef7ea5356cfa14445",
+    "after": "0fc7a714e41766a42124b66db0e7afa983b2e459d4e63408de7bb3988bc1a432"
+  },
+  {
+    "path": "/acquisition/cacheIdentity",
+    "before": "97e8d19dbc2838d062ff8748f7aeaf28e2d6088215e11fc0252a21fe9d278baa",
+    "after": "854541f2038edc4c46a249610375347a0421213a6824f90e066cbf799588e100"
+  },
+  {
+    "path": "/scope/dataRevision",
+    "before": "67ec857d0f1b51264f752dc2fc56d2db",
+    "after": "cdf1bc338e96d98b0705550b266dc166"
+  }
+]

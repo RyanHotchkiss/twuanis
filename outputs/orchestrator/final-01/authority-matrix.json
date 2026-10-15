@@ -1,0 +1,1089 @@
+[
+  {
+    "actor": "p2",
+    "orchestrator": "orchestrator-market-comparison",
+    "population": "PRIVATE",
+    "expectedHttp": 200,
+    "http": 200,
+    "result": {
+      "kind": "PACKAGE",
+      "endsAt": "2026-11-14T21:49:29.536612+00:00",
+      "termId": "d0670bf5-288d-42db-84ca-a31dc1d0cdaa",
+      "version": 1,
+      "startsAt": "2026-10-14T21:49:29.536612+00:00",
+      "accountId": "213749eb-4daa-4fc3-bfbe-1f836d3b1766",
+      "packageId": "pkg-matching-market-comparison",
+      "population": "PRIVATE",
+      "capabilities": [
+        "cap-market-summary",
+        "cap-market-composition",
+        "cap-market-asking-price-distribution",
+        "cap-property-matching",
+        "cap-market-comparison",
+        "cap-geographic-price-m2-comparison",
+        "cap-comparative-price-m2-discovery"
+      ],
+      "orchestrator": "orchestrator-market-comparison",
+      "configurationId": "05600000-0000-4000-8000-000000000002"
+    },
+    "pass": true
+  },
+  {
+    "actor": "p2",
+    "orchestrator": "orchestrator-market-comparison",
+    "population": "BANK",
+    "expectedHttp": 200,
+    "http": 200,
+    "result": {
+      "kind": "PACKAGE",
+      "endsAt": "2026-11-14T21:49:29.536612+00:00",
+      "termId": "d0670bf5-288d-42db-84ca-a31dc1d0cdaa",
+      "version": 1,
+      "startsAt": "2026-10-14T21:49:29.536612+00:00",
+      "accountId": "213749eb-4daa-4fc3-bfbe-1f836d3b1766",
+      "packageId": "pkg-matching-market-comparison",
+      "population": "BANK",
+      "capabilities": [
+        "cap-market-summary",
+        "cap-market-composition",
+        "cap-market-asking-price-distribution",
+        "cap-property-matching",
+        "cap-market-comparison",
+        "cap-geographic-price-m2-comparison",
+        "cap-comparative-price-m2-discovery"
+      ],
+      "orchestrator": "orchestrator-market-comparison",
+      "configurationId": "05600000-0000-4000-8000-000000000002"
+    },
+    "pass": true
+  },
+  {
+    "actor": "p2",
+    "orchestrator": "orchestrator-market-comparison",
+    "population": "COMBINED",
+    "expectedHttp": 200,
+    "http": 200,
+    "result": {
+      "kind": "PACKAGE",
+      "endsAt": "2026-11-14T21:49:29.536612+00:00",
+      "termId": "d0670bf5-288d-42db-84ca-a31dc1d0cdaa",
+      "version": 1,
+      "startsAt": "2026-10-14T21:49:29.536612+00:00",
+      "accountId": "213749eb-4daa-4fc3-bfbe-1f836d3b1766",
+      "packageId": "pkg-matching-market-comparison",
+      "population": "COMBINED",
+      "capabilities": [
+        "cap-market-summary",
+        "cap-market-composition",
+        "cap-market-asking-price-distribution",
+        "cap-property-matching",
+        "cap-market-comparison",
+        "cap-geographic-price-m2-comparison",
+        "cap-comparative-price-m2-discovery"
+      ],
+      "orchestrator": "orchestrator-market-comparison",
+      "configurationId": "05600000-0000-4000-8000-000000000002"
+    },
+    "pass": true
+  },
+  {
+    "actor": "p2",
+    "orchestrator": "orchestrator-markets-current-valuation-of-property",
+    "population": "PRIVATE",
+    "expectedHttp": 403,
+    "http": 403,
+    "result": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    },
+    "pass": true
+  },
+  {
+    "actor": "p2",
+    "orchestrator": "orchestrator-markets-current-valuation-of-property",
+    "population": "BANK",
+    "expectedHttp": 403,
+    "http": 403,
+    "result": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    },
+    "pass": true
+  },
+  {
+    "actor": "p2",
+    "orchestrator": "orchestrator-markets-current-valuation-of-property",
+    "population": "COMBINED",
+    "expectedHttp": 403,
+    "http": 403,
+    "result": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    },
+    "pass": true
+  },
+  {
+    "actor": "p3",
+    "orchestrator": "orchestrator-market-comparison",
+    "population": "PRIVATE",
+    "expectedHttp": 200,
+    "http": 200,
+    "result": {
+      "kind": "PACKAGE",
+      "endsAt": "2026-11-14T21:49:29.780909+00:00",
+      "termId": "63eb01cb-851b-4073-9387-07fa65bcb5bc",
+      "version": 1,
+      "startsAt": "2026-10-14T21:49:29.780909+00:00",
+      "accountId": "f15f7406-f9da-4d6d-a116-83b98d5a0862",
+      "packageId": "pkg-pricing-position-relationships",
+      "population": "PRIVATE",
+      "capabilities": [
+        "cap-market-summary",
+        "cap-market-composition",
+        "cap-market-asking-price-distribution",
+        "cap-property-matching",
+        "cap-market-comparison",
+        "cap-geographic-price-m2-comparison",
+        "cap-comparative-price-m2-discovery"
+      ],
+      "orchestrator": "orchestrator-market-comparison",
+      "configurationId": "05600000-0000-4000-8000-000000000003"
+    },
+    "pass": true
+  },
+  {
+    "actor": "p3",
+    "orchestrator": "orchestrator-market-comparison",
+    "population": "BANK",
+    "expectedHttp": 200,
+    "http": 200,
+    "result": {
+      "kind": "PACKAGE",
+      "endsAt": "2026-11-14T21:49:29.780909+00:00",
+      "termId": "63eb01cb-851b-4073-9387-07fa65bcb5bc",
+      "version": 1,
+      "startsAt": "2026-10-14T21:49:29.780909+00:00",
+      "accountId": "f15f7406-f9da-4d6d-a116-83b98d5a0862",
+      "packageId": "pkg-pricing-position-relationships",
+      "population": "BANK",
+      "capabilities": [
+        "cap-market-summary",
+        "cap-market-composition",
+        "cap-market-asking-price-distribution",
+        "cap-property-matching",
+        "cap-market-comparison",
+        "cap-geographic-price-m2-comparison",
+        "cap-comparative-price-m2-discovery"
+      ],
+      "orchestrator": "orchestrator-market-comparison",
+      "configurationId": "05600000-0000-4000-8000-000000000003"
+    },
+    "pass": true
+  },
+  {
+    "actor": "p3",
+    "orchestrator": "orchestrator-market-comparison",
+    "population": "COMBINED",
+    "expectedHttp": 200,
+    "http": 200,
+    "result": {
+      "kind": "PACKAGE",
+      "endsAt": "2026-11-14T21:49:29.780909+00:00",
+      "termId": "63eb01cb-851b-4073-9387-07fa65bcb5bc",
+      "version": 1,
+      "startsAt": "2026-10-14T21:49:29.780909+00:00",
+      "accountId": "f15f7406-f9da-4d6d-a116-83b98d5a0862",
+      "packageId": "pkg-pricing-position-relationships",
+      "population": "COMBINED",
+      "capabilities": [
+        "cap-market-summary",
+        "cap-market-composition",
+        "cap-market-asking-price-distribution",
+        "cap-property-matching",
+        "cap-market-comparison",
+        "cap-geographic-price-m2-comparison",
+        "cap-comparative-price-m2-discovery"
+      ],
+      "orchestrator": "orchestrator-market-comparison",
+      "configurationId": "05600000-0000-4000-8000-000000000003"
+    },
+    "pass": true
+  },
+  {
+    "actor": "p3",
+    "orchestrator": "orchestrator-markets-current-valuation-of-property",
+    "population": "PRIVATE",
+    "expectedHttp": 200,
+    "http": 200,
+    "result": {
+      "kind": "PACKAGE",
+      "endsAt": "2026-11-14T21:49:29.780909+00:00",
+      "termId": "63eb01cb-851b-4073-9387-07fa65bcb5bc",
+      "version": 1,
+      "startsAt": "2026-10-14T21:49:29.780909+00:00",
+      "accountId": "f15f7406-f9da-4d6d-a116-83b98d5a0862",
+      "packageId": "pkg-pricing-position-relationships",
+      "population": "PRIVATE",
+      "capabilities": [
+        "cap-market-summary",
+        "cap-market-composition",
+        "cap-market-asking-price-distribution",
+        "cap-property-matching",
+        "cap-market-comparison",
+        "cap-property-configuration-frequency",
+        "cap-price-m2-distribution",
+        "cap-geographic-price-m2-comparison",
+        "cap-size-price-m2",
+        "cap-construction-land-price-m2",
+        "cap-user-defined-cohort-price-m2-comparison",
+        "cap-cross-dimensional-analysis",
+        "cap-comparative-price-m2-discovery",
+        "cap-property-price-m2-position",
+        "cap-user-defined-comparable-cohort",
+        "cap-asking-area-coefficient-ratio",
+        "cap-weighted-price-m2"
+      ],
+      "orchestrator": "orchestrator-markets-current-valuation-of-property",
+      "configurationId": "05600000-0000-4000-8000-000000000003"
+    },
+    "pass": true
+  },
+  {
+    "actor": "p3",
+    "orchestrator": "orchestrator-markets-current-valuation-of-property",
+    "population": "BANK",
+    "expectedHttp": 200,
+    "http": 200,
+    "result": {
+      "kind": "PACKAGE",
+      "endsAt": "2026-11-14T21:49:29.780909+00:00",
+      "termId": "63eb01cb-851b-4073-9387-07fa65bcb5bc",
+      "version": 1,
+      "startsAt": "2026-10-14T21:49:29.780909+00:00",
+      "accountId": "f15f7406-f9da-4d6d-a116-83b98d5a0862",
+      "packageId": "pkg-pricing-position-relationships",
+      "population": "BANK",
+      "capabilities": [
+        "cap-market-summary",
+        "cap-market-composition",
+        "cap-market-asking-price-distribution",
+        "cap-property-matching",
+        "cap-market-comparison",
+        "cap-property-configuration-frequency",
+        "cap-price-m2-distribution",
+        "cap-geographic-price-m2-comparison",
+        "cap-size-price-m2",
+        "cap-construction-land-price-m2",
+        "cap-user-defined-cohort-price-m2-comparison",
+        "cap-cross-dimensional-analysis",
+        "cap-comparative-price-m2-discovery",
+        "cap-property-price-m2-position",
+        "cap-user-defined-comparable-cohort",
+        "cap-asking-area-coefficient-ratio",
+        "cap-weighted-price-m2"
+      ],
+      "orchestrator": "orchestrator-markets-current-valuation-of-property",
+      "configurationId": "05600000-0000-4000-8000-000000000003"
+    },
+    "pass": true
+  },
+  {
+    "actor": "p3",
+    "orchestrator": "orchestrator-markets-current-valuation-of-property",
+    "population": "COMBINED",
+    "expectedHttp": 200,
+    "http": 200,
+    "result": {
+      "kind": "PACKAGE",
+      "endsAt": "2026-11-14T21:49:29.780909+00:00",
+      "termId": "63eb01cb-851b-4073-9387-07fa65bcb5bc",
+      "version": 1,
+      "startsAt": "2026-10-14T21:49:29.780909+00:00",
+      "accountId": "f15f7406-f9da-4d6d-a116-83b98d5a0862",
+      "packageId": "pkg-pricing-position-relationships",
+      "population": "COMBINED",
+      "capabilities": [
+        "cap-market-summary",
+        "cap-market-composition",
+        "cap-market-asking-price-distribution",
+        "cap-property-matching",
+        "cap-market-comparison",
+        "cap-property-configuration-frequency",
+        "cap-price-m2-distribution",
+        "cap-geographic-price-m2-comparison",
+        "cap-size-price-m2",
+        "cap-construction-land-price-m2",
+        "cap-user-defined-cohort-price-m2-comparison",
+        "cap-cross-dimensional-analysis",
+        "cap-comparative-price-m2-discovery",
+        "cap-property-price-m2-position",
+        "cap-user-defined-comparable-cohort",
+        "cap-asking-area-coefficient-ratio",
+        "cap-weighted-price-m2"
+      ],
+      "orchestrator": "orchestrator-markets-current-valuation-of-property",
+      "configurationId": "05600000-0000-4000-8000-000000000003"
+    },
+    "pass": true
+  },
+  {
+    "actor": "both",
+    "orchestrator": "orchestrator-market-comparison",
+    "population": "PRIVATE",
+    "expectedHttp": 200,
+    "http": 200,
+    "result": {
+      "kind": "PACKAGE",
+      "endsAt": "2026-11-14T21:49:29.980815+00:00",
+      "termId": "a8e4da3a-d73b-4e57-9329-eb06940733bc",
+      "version": 1,
+      "startsAt": "2026-10-14T21:49:29.980815+00:00",
+      "accountId": "6d07558d-1676-409f-b2f5-4fb3e01bd39e",
+      "packageId": "pkg-matching-market-comparison",
+      "population": "PRIVATE",
+      "capabilities": [
+        "cap-market-summary",
+        "cap-market-composition",
+        "cap-market-asking-price-distribution",
+        "cap-property-matching",
+        "cap-market-comparison",
+        "cap-geographic-price-m2-comparison",
+        "cap-comparative-price-m2-discovery"
+      ],
+      "orchestrator": "orchestrator-market-comparison",
+      "configurationId": "05600000-0000-4000-8000-000000000002"
+    },
+    "pass": true
+  },
+  {
+    "actor": "both",
+    "orchestrator": "orchestrator-market-comparison",
+    "population": "BANK",
+    "expectedHttp": 200,
+    "http": 200,
+    "result": {
+      "kind": "PACKAGE",
+      "endsAt": "2026-11-14T21:49:29.980815+00:00",
+      "termId": "a8e4da3a-d73b-4e57-9329-eb06940733bc",
+      "version": 1,
+      "startsAt": "2026-10-14T21:49:29.980815+00:00",
+      "accountId": "6d07558d-1676-409f-b2f5-4fb3e01bd39e",
+      "packageId": "pkg-matching-market-comparison",
+      "population": "BANK",
+      "capabilities": [
+        "cap-market-summary",
+        "cap-market-composition",
+        "cap-market-asking-price-distribution",
+        "cap-property-matching",
+        "cap-market-comparison",
+        "cap-geographic-price-m2-comparison",
+        "cap-comparative-price-m2-discovery"
+      ],
+      "orchestrator": "orchestrator-market-comparison",
+      "configurationId": "05600000-0000-4000-8000-000000000002"
+    },
+    "pass": true
+  },
+  {
+    "actor": "both",
+    "orchestrator": "orchestrator-market-comparison",
+    "population": "COMBINED",
+    "expectedHttp": 200,
+    "http": 200,
+    "result": {
+      "kind": "PACKAGE",
+      "endsAt": "2026-11-14T21:49:29.980815+00:00",
+      "termId": "a8e4da3a-d73b-4e57-9329-eb06940733bc",
+      "version": 1,
+      "startsAt": "2026-10-14T21:49:29.980815+00:00",
+      "accountId": "6d07558d-1676-409f-b2f5-4fb3e01bd39e",
+      "packageId": "pkg-matching-market-comparison",
+      "population": "COMBINED",
+      "capabilities": [
+        "cap-market-summary",
+        "cap-market-composition",
+        "cap-market-asking-price-distribution",
+        "cap-property-matching",
+        "cap-market-comparison",
+        "cap-geographic-price-m2-comparison",
+        "cap-comparative-price-m2-discovery"
+      ],
+      "orchestrator": "orchestrator-market-comparison",
+      "configurationId": "05600000-0000-4000-8000-000000000002"
+    },
+    "pass": true
+  },
+  {
+    "actor": "both",
+    "orchestrator": "orchestrator-markets-current-valuation-of-property",
+    "population": "PRIVATE",
+    "expectedHttp": 200,
+    "http": 200,
+    "result": {
+      "kind": "PACKAGE",
+      "endsAt": "2026-11-14T21:49:30.165473+00:00",
+      "termId": "0dc1ea4f-2710-4187-919e-f4640aa6e699",
+      "version": 1,
+      "startsAt": "2026-10-14T21:49:30.165473+00:00",
+      "accountId": "6d07558d-1676-409f-b2f5-4fb3e01bd39e",
+      "packageId": "pkg-pricing-position-relationships",
+      "population": "PRIVATE",
+      "capabilities": [
+        "cap-market-summary",
+        "cap-market-composition",
+        "cap-market-asking-price-distribution",
+        "cap-property-matching",
+        "cap-market-comparison",
+        "cap-property-configuration-frequency",
+        "cap-price-m2-distribution",
+        "cap-geographic-price-m2-comparison",
+        "cap-size-price-m2",
+        "cap-construction-land-price-m2",
+        "cap-user-defined-cohort-price-m2-comparison",
+        "cap-cross-dimensional-analysis",
+        "cap-comparative-price-m2-discovery",
+        "cap-property-price-m2-position",
+        "cap-user-defined-comparable-cohort",
+        "cap-asking-area-coefficient-ratio",
+        "cap-weighted-price-m2"
+      ],
+      "orchestrator": "orchestrator-markets-current-valuation-of-property",
+      "configurationId": "05600000-0000-4000-8000-000000000003"
+    },
+    "pass": true
+  },
+  {
+    "actor": "both",
+    "orchestrator": "orchestrator-markets-current-valuation-of-property",
+    "population": "BANK",
+    "expectedHttp": 200,
+    "http": 200,
+    "result": {
+      "kind": "PACKAGE",
+      "endsAt": "2026-11-14T21:49:30.165473+00:00",
+      "termId": "0dc1ea4f-2710-4187-919e-f4640aa6e699",
+      "version": 1,
+      "startsAt": "2026-10-14T21:49:30.165473+00:00",
+      "accountId": "6d07558d-1676-409f-b2f5-4fb3e01bd39e",
+      "packageId": "pkg-pricing-position-relationships",
+      "population": "BANK",
+      "capabilities": [
+        "cap-market-summary",
+        "cap-market-composition",
+        "cap-market-asking-price-distribution",
+        "cap-property-matching",
+        "cap-market-comparison",
+        "cap-property-configuration-frequency",
+        "cap-price-m2-distribution",
+        "cap-geographic-price-m2-comparison",
+        "cap-size-price-m2",
+        "cap-construction-land-price-m2",
+        "cap-user-defined-cohort-price-m2-comparison",
+        "cap-cross-dimensional-analysis",
+        "cap-comparative-price-m2-discovery",
+        "cap-property-price-m2-position",
+        "cap-user-defined-comparable-cohort",
+        "cap-asking-area-coefficient-ratio",
+        "cap-weighted-price-m2"
+      ],
+      "orchestrator": "orchestrator-markets-current-valuation-of-property",
+      "configurationId": "05600000-0000-4000-8000-000000000003"
+    },
+    "pass": true
+  },
+  {
+    "actor": "both",
+    "orchestrator": "orchestrator-markets-current-valuation-of-property",
+    "population": "COMBINED",
+    "expectedHttp": 200,
+    "http": 200,
+    "result": {
+      "kind": "PACKAGE",
+      "endsAt": "2026-11-14T21:49:30.165473+00:00",
+      "termId": "0dc1ea4f-2710-4187-919e-f4640aa6e699",
+      "version": 1,
+      "startsAt": "2026-10-14T21:49:30.165473+00:00",
+      "accountId": "6d07558d-1676-409f-b2f5-4fb3e01bd39e",
+      "packageId": "pkg-pricing-position-relationships",
+      "population": "COMBINED",
+      "capabilities": [
+        "cap-market-summary",
+        "cap-market-composition",
+        "cap-market-asking-price-distribution",
+        "cap-property-matching",
+        "cap-market-comparison",
+        "cap-property-configuration-frequency",
+        "cap-price-m2-distribution",
+        "cap-geographic-price-m2-comparison",
+        "cap-size-price-m2",
+        "cap-construction-land-price-m2",
+        "cap-user-defined-cohort-price-m2-comparison",
+        "cap-cross-dimensional-analysis",
+        "cap-comparative-price-m2-discovery",
+        "cap-property-price-m2-position",
+        "cap-user-defined-comparable-cohort",
+        "cap-asking-area-coefficient-ratio",
+        "cap-weighted-price-m2"
+      ],
+      "orchestrator": "orchestrator-markets-current-valuation-of-property",
+      "configurationId": "05600000-0000-4000-8000-000000000003"
+    },
+    "pass": true
+  },
+  {
+    "actor": "none",
+    "orchestrator": "orchestrator-market-comparison",
+    "population": "PRIVATE",
+    "expectedHttp": 403,
+    "http": 403,
+    "result": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    },
+    "pass": true
+  },
+  {
+    "actor": "none",
+    "orchestrator": "orchestrator-market-comparison",
+    "population": "BANK",
+    "expectedHttp": 403,
+    "http": 403,
+    "result": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    },
+    "pass": true
+  },
+  {
+    "actor": "none",
+    "orchestrator": "orchestrator-market-comparison",
+    "population": "COMBINED",
+    "expectedHttp": 403,
+    "http": 403,
+    "result": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    },
+    "pass": true
+  },
+  {
+    "actor": "none",
+    "orchestrator": "orchestrator-markets-current-valuation-of-property",
+    "population": "PRIVATE",
+    "expectedHttp": 403,
+    "http": 403,
+    "result": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    },
+    "pass": true
+  },
+  {
+    "actor": "none",
+    "orchestrator": "orchestrator-markets-current-valuation-of-property",
+    "population": "BANK",
+    "expectedHttp": 403,
+    "http": 403,
+    "result": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    },
+    "pass": true
+  },
+  {
+    "actor": "none",
+    "orchestrator": "orchestrator-markets-current-valuation-of-property",
+    "population": "COMBINED",
+    "expectedHttp": 403,
+    "http": 403,
+    "result": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    },
+    "pass": true
+  },
+  {
+    "actor": "expired",
+    "orchestrator": "orchestrator-market-comparison",
+    "population": "PRIVATE",
+    "expectedHttp": 403,
+    "http": 403,
+    "result": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    },
+    "pass": true
+  },
+  {
+    "actor": "expired",
+    "orchestrator": "orchestrator-market-comparison",
+    "population": "BANK",
+    "expectedHttp": 403,
+    "http": 403,
+    "result": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    },
+    "pass": true
+  },
+  {
+    "actor": "expired",
+    "orchestrator": "orchestrator-market-comparison",
+    "population": "COMBINED",
+    "expectedHttp": 403,
+    "http": 403,
+    "result": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    },
+    "pass": true
+  },
+  {
+    "actor": "expired",
+    "orchestrator": "orchestrator-markets-current-valuation-of-property",
+    "population": "PRIVATE",
+    "expectedHttp": 403,
+    "http": 403,
+    "result": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    },
+    "pass": true
+  },
+  {
+    "actor": "expired",
+    "orchestrator": "orchestrator-markets-current-valuation-of-property",
+    "population": "BANK",
+    "expectedHttp": 403,
+    "http": 403,
+    "result": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    },
+    "pass": true
+  },
+  {
+    "actor": "expired",
+    "orchestrator": "orchestrator-markets-current-valuation-of-property",
+    "population": "COMBINED",
+    "expectedHttp": 403,
+    "http": 403,
+    "result": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    },
+    "pass": true
+  },
+  {
+    "actor": "admin",
+    "orchestrator": "orchestrator-market-comparison",
+    "population": "PRIVATE",
+    "expectedHttp": 403,
+    "http": 403,
+    "result": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    },
+    "pass": true
+  },
+  {
+    "actor": "admin",
+    "orchestrator": "orchestrator-market-comparison",
+    "population": "BANK",
+    "expectedHttp": 403,
+    "http": 403,
+    "result": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    },
+    "pass": true
+  },
+  {
+    "actor": "admin",
+    "orchestrator": "orchestrator-market-comparison",
+    "population": "COMBINED",
+    "expectedHttp": 403,
+    "http": 403,
+    "result": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    },
+    "pass": true
+  },
+  {
+    "actor": "admin",
+    "orchestrator": "orchestrator-markets-current-valuation-of-property",
+    "population": "PRIVATE",
+    "expectedHttp": 403,
+    "http": 403,
+    "result": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    },
+    "pass": true
+  },
+  {
+    "actor": "admin",
+    "orchestrator": "orchestrator-markets-current-valuation-of-property",
+    "population": "BANK",
+    "expectedHttp": 403,
+    "http": 403,
+    "result": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    },
+    "pass": true
+  },
+  {
+    "actor": "admin",
+    "orchestrator": "orchestrator-markets-current-valuation-of-property",
+    "population": "COMBINED",
+    "expectedHttp": 403,
+    "http": 403,
+    "result": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    },
+    "pass": true
+  },
+  {
+    "actor": "private",
+    "orchestrator": "orchestrator-market-comparison",
+    "population": "PRIVATE",
+    "expectedHttp": 200,
+    "http": 200,
+    "result": {
+      "kind": "PACKAGE",
+      "endsAt": "2026-11-14T21:49:30.363255+00:00",
+      "termId": "d6ce09f2-bd06-44b3-91b4-f8a3bc7295ca",
+      "version": 1,
+      "startsAt": "2026-10-14T21:49:30.363255+00:00",
+      "accountId": "fe2479fd-a5a0-43e4-8807-8dc250355ff0",
+      "packageId": "pkg-pricing-position-relationships",
+      "population": "PRIVATE",
+      "capabilities": [
+        "cap-market-summary",
+        "cap-market-composition",
+        "cap-market-asking-price-distribution",
+        "cap-property-matching",
+        "cap-market-comparison",
+        "cap-geographic-price-m2-comparison",
+        "cap-comparative-price-m2-discovery"
+      ],
+      "orchestrator": "orchestrator-market-comparison",
+      "configurationId": "05600000-0000-4000-8000-000000000003"
+    },
+    "pass": true
+  },
+  {
+    "actor": "private",
+    "orchestrator": "orchestrator-market-comparison",
+    "population": "BANK",
+    "expectedHttp": 403,
+    "http": 403,
+    "result": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    },
+    "pass": true
+  },
+  {
+    "actor": "private",
+    "orchestrator": "orchestrator-market-comparison",
+    "population": "COMBINED",
+    "expectedHttp": 403,
+    "http": 403,
+    "result": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    },
+    "pass": true
+  },
+  {
+    "actor": "private",
+    "orchestrator": "orchestrator-markets-current-valuation-of-property",
+    "population": "PRIVATE",
+    "expectedHttp": 200,
+    "http": 200,
+    "result": {
+      "kind": "PACKAGE",
+      "endsAt": "2026-11-14T21:49:30.363255+00:00",
+      "termId": "d6ce09f2-bd06-44b3-91b4-f8a3bc7295ca",
+      "version": 1,
+      "startsAt": "2026-10-14T21:49:30.363255+00:00",
+      "accountId": "fe2479fd-a5a0-43e4-8807-8dc250355ff0",
+      "packageId": "pkg-pricing-position-relationships",
+      "population": "PRIVATE",
+      "capabilities": [
+        "cap-market-summary",
+        "cap-market-composition",
+        "cap-market-asking-price-distribution",
+        "cap-property-matching",
+        "cap-market-comparison",
+        "cap-property-configuration-frequency",
+        "cap-price-m2-distribution",
+        "cap-geographic-price-m2-comparison",
+        "cap-size-price-m2",
+        "cap-construction-land-price-m2",
+        "cap-user-defined-cohort-price-m2-comparison",
+        "cap-cross-dimensional-analysis",
+        "cap-comparative-price-m2-discovery",
+        "cap-property-price-m2-position",
+        "cap-user-defined-comparable-cohort",
+        "cap-asking-area-coefficient-ratio",
+        "cap-weighted-price-m2"
+      ],
+      "orchestrator": "orchestrator-markets-current-valuation-of-property",
+      "configurationId": "05600000-0000-4000-8000-000000000003"
+    },
+    "pass": true
+  },
+  {
+    "actor": "private",
+    "orchestrator": "orchestrator-markets-current-valuation-of-property",
+    "population": "BANK",
+    "expectedHttp": 403,
+    "http": 403,
+    "result": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    },
+    "pass": true
+  },
+  {
+    "actor": "private",
+    "orchestrator": "orchestrator-markets-current-valuation-of-property",
+    "population": "COMBINED",
+    "expectedHttp": 403,
+    "http": 403,
+    "result": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    },
+    "pass": true
+  },
+  {
+    "actor": "owner",
+    "orchestrator": "orchestrator-market-comparison",
+    "population": "PRIVATE",
+    "expectedHttp": 200,
+    "http": 200,
+    "result": {
+      "kind": "OWNER_UNMETERED",
+      "version": 1,
+      "accountId": "fe0f4718-ac10-4091-8ec3-081a96765991",
+      "population": "PRIVATE",
+      "capabilities": [
+        "cap-market-summary",
+        "cap-market-composition",
+        "cap-market-asking-price-distribution",
+        "cap-property-matching",
+        "cap-market-comparison",
+        "cap-geographic-price-m2-comparison",
+        "cap-comparative-price-m2-discovery"
+      ],
+      "orchestrator": "orchestrator-market-comparison"
+    },
+    "pass": true
+  },
+  {
+    "actor": "owner",
+    "orchestrator": "orchestrator-market-comparison",
+    "population": "BANK",
+    "expectedHttp": 200,
+    "http": 200,
+    "result": {
+      "kind": "OWNER_UNMETERED",
+      "version": 1,
+      "accountId": "fe0f4718-ac10-4091-8ec3-081a96765991",
+      "population": "BANK",
+      "capabilities": [
+        "cap-market-summary",
+        "cap-market-composition",
+        "cap-market-asking-price-distribution",
+        "cap-property-matching",
+        "cap-market-comparison",
+        "cap-geographic-price-m2-comparison",
+        "cap-comparative-price-m2-discovery"
+      ],
+      "orchestrator": "orchestrator-market-comparison"
+    },
+    "pass": true
+  },
+  {
+    "actor": "owner",
+    "orchestrator": "orchestrator-market-comparison",
+    "population": "COMBINED",
+    "expectedHttp": 200,
+    "http": 200,
+    "result": {
+      "kind": "OWNER_UNMETERED",
+      "version": 1,
+      "accountId": "fe0f4718-ac10-4091-8ec3-081a96765991",
+      "population": "COMBINED",
+      "capabilities": [
+        "cap-market-summary",
+        "cap-market-composition",
+        "cap-market-asking-price-distribution",
+        "cap-property-matching",
+        "cap-market-comparison",
+        "cap-geographic-price-m2-comparison",
+        "cap-comparative-price-m2-discovery"
+      ],
+      "orchestrator": "orchestrator-market-comparison"
+    },
+    "pass": true
+  },
+  {
+    "actor": "owner",
+    "orchestrator": "orchestrator-markets-current-valuation-of-property",
+    "population": "PRIVATE",
+    "expectedHttp": 200,
+    "http": 200,
+    "result": {
+      "kind": "OWNER_UNMETERED",
+      "version": 1,
+      "accountId": "fe0f4718-ac10-4091-8ec3-081a96765991",
+      "population": "PRIVATE",
+      "capabilities": [
+        "cap-market-summary",
+        "cap-market-composition",
+        "cap-market-asking-price-distribution",
+        "cap-property-matching",
+        "cap-market-comparison",
+        "cap-property-configuration-frequency",
+        "cap-price-m2-distribution",
+        "cap-geographic-price-m2-comparison",
+        "cap-size-price-m2",
+        "cap-construction-land-price-m2",
+        "cap-user-defined-cohort-price-m2-comparison",
+        "cap-cross-dimensional-analysis",
+        "cap-comparative-price-m2-discovery",
+        "cap-property-price-m2-position",
+        "cap-user-defined-comparable-cohort",
+        "cap-asking-area-coefficient-ratio",
+        "cap-weighted-price-m2"
+      ],
+      "orchestrator": "orchestrator-markets-current-valuation-of-property"
+    },
+    "pass": true
+  },
+  {
+    "actor": "owner",
+    "orchestrator": "orchestrator-markets-current-valuation-of-property",
+    "population": "BANK",
+    "expectedHttp": 200,
+    "http": 200,
+    "result": {
+      "kind": "OWNER_UNMETERED",
+      "version": 1,
+      "accountId": "fe0f4718-ac10-4091-8ec3-081a96765991",
+      "population": "BANK",
+      "capabilities": [
+        "cap-market-summary",
+        "cap-market-composition",
+        "cap-market-asking-price-distribution",
+        "cap-property-matching",
+        "cap-market-comparison",
+        "cap-property-configuration-frequency",
+        "cap-price-m2-distribution",
+        "cap-geographic-price-m2-comparison",
+        "cap-size-price-m2",
+        "cap-construction-land-price-m2",
+        "cap-user-defined-cohort-price-m2-comparison",
+        "cap-cross-dimensional-analysis",
+        "cap-comparative-price-m2-discovery",
+        "cap-property-price-m2-position",
+        "cap-user-defined-comparable-cohort",
+        "cap-asking-area-coefficient-ratio",
+        "cap-weighted-price-m2"
+      ],
+      "orchestrator": "orchestrator-markets-current-valuation-of-property"
+    },
+    "pass": true
+  },
+  {
+    "actor": "owner",
+    "orchestrator": "orchestrator-markets-current-valuation-of-property",
+    "population": "COMBINED",
+    "expectedHttp": 200,
+    "http": 200,
+    "result": {
+      "kind": "OWNER_UNMETERED",
+      "version": 1,
+      "accountId": "fe0f4718-ac10-4091-8ec3-081a96765991",
+      "population": "COMBINED",
+      "capabilities": [
+        "cap-market-summary",
+        "cap-market-composition",
+        "cap-market-asking-price-distribution",
+        "cap-property-matching",
+        "cap-market-comparison",
+        "cap-property-configuration-frequency",
+        "cap-price-m2-distribution",
+        "cap-geographic-price-m2-comparison",
+        "cap-size-price-m2",
+        "cap-construction-land-price-m2",
+        "cap-user-defined-cohort-price-m2-comparison",
+        "cap-cross-dimensional-analysis",
+        "cap-comparative-price-m2-discovery",
+        "cap-property-price-m2-position",
+        "cap-user-defined-comparable-cohort",
+        "cap-asking-area-coefficient-ratio",
+        "cap-weighted-price-m2"
+      ],
+      "orchestrator": "orchestrator-markets-current-valuation-of-property"
+    },
+    "pass": true
+  }
+]

@@ -9,7 +9,7 @@ import EnglishResults from '@/app/price-per-square-meter/PriceMeterComparisonRes
 import SpanishResults from '@/app/es/precio-por-metro-cuadrado/ResultadosComparacionPrecioMetro'
 
 export async function executePriceMeterComparison(input: unknown, language: 'en' | 'es') {
-  await authorizePriceMeterIntelligenceExecution()
+  await authorizePriceMeterIntelligenceExecution('cap-user-defined-cohort-price-m2-comparison')
   if ((language !== 'en' && language !== 'es') || !input || typeof input !== 'object' || Array.isArray(input)) {
     throw new Error('Invalid comparison request.')
   }

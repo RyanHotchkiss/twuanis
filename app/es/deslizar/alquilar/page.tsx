@@ -1,4 +1,6 @@
 'use client'
+import '@/app/components/swipe-mobile.css'
+import {loadSwipeAddonPlacement} from '@/app/components/marketplace/swipe-addon-placement'
 
 import {
   useEffect,
@@ -77,9 +79,7 @@ async function fetchProperties() {
         })
       )
 
-    setProperties(
-      normalizedListings
-    )
+    setProperties(await loadSwipeAddonPlacement(normalizedListings,'swipe-rent'))
   } catch (error) {
     console.error(
       'Unable to load rent listings',
@@ -558,7 +558,7 @@ useEffect(() => {
 
   return (
 
-    <main style={{
+    <main className="swipe-mobile-page" style={{
       background: '#000',
       minHeight: '100vh',
       overflow: 'hidden',
@@ -645,7 +645,7 @@ useEffect(() => {
       />
     )}
 
-    <main style={{
+    <main className="swipe-mobile-page" style={{
       background: '#000',
       minHeight: '100vh',
       overflow: 'hidden',
@@ -686,10 +686,11 @@ useEffect(() => {
 
       {/* ACTIVE CARD */}
       <div
+        className="swipe-active-card"
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
-        onPointerCancel={handlePointerUp}
+        onPointerCancel={isMobile ? () => {setIsDragging(false);setDragX(0)} : handlePointerUp}
         style={{
           position: 'relative',
           zIndex: 2,
@@ -747,7 +748,7 @@ useEffect(() => {
         )}
 
         {/* IMAGE */}
-        <div style={{
+        <div className="swipe-property-image" style={{
           height: '340px',
           background: '#111'
         }}>
@@ -782,11 +783,12 @@ useEffect(() => {
         </div>
 
         {/* CONTENT */}
-        <div style={{
+        <div className="swipe-property-content" style={{
           padding: '1.75rem'
         }}>
 
-          <h1 style={{
+          {currentProperty.addonFeatured&&<span style={{display:'inline-block',background:'#ff3b00',color:'#fff',padding:'4px 10px',borderRadius:8}}>Destacada</span>}
+<h1 style={{
             fontSize: '1.8rem',
             marginBottom: '.75rem'
           }}>

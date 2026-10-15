@@ -1,4 +1,5 @@
 import 'server-only'
+import {authorizePreviouslyPublicCapability} from './package-capability-authorization'
 import { ENGINE, type Response, type Result, type Fx } from './asking-price-contract'
 import { validateQuestion, InvalidQuestion } from './asking-price-question'
 import { resolveReferences, acquireMarketIds, constrainMarket, acquireMoney } from './asking-price-data'
@@ -18,6 +19,8 @@ function project(result:Result):Result {
  methodology:'linear_interpolation_n_minus_1_p',statistics:{minimum:s.minimum,p10:s.p10,p25:s.p25,median:s.median,average:s.average,p75:s.p75,p90:s.p90,maximum:s.maximum,iqr:s.iqr},completeness:{complete:true,snapshotGuaranteed:false}}
 }
 export async function executeAskingPrice(input:unknown):Promise<Response>{
+ await authorizePreviouslyPublicCapability('cap-market-asking-price-distribution')
+
  try{
   const capability=authorizePublicExecution();if(!capability.allowed)throw Error()
   let q;try{q=validateQuestion(input)}catch{throw new InvalidQuestion()}

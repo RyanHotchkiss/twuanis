@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { bankPath, exactMoney } from '@/lib/remates/public-types'
 import { listingHref } from '@/lib/listing-route'
 
 type PropertyCardProps = {
@@ -46,6 +47,8 @@ export default function PropertyCard({
   onToggleCompare
 }: PropertyCardProps) {
 
+  const bank = property.market === 'remates'
+  compareDisabled = compareDisabled || bank
   const noImageLabel =
     language === 'es'
       ? 'Sin Imagen'
@@ -83,7 +86,7 @@ export default function PropertyCard({
 
   return (
     <Link
-      href={listingHref(property.id, transactionType === 'rent' ? 'rent' : 'sale', language)}
+      href={bank ? `${bankPath(language)}/${property.id}` : listingHref(property.id, transactionType === 'rent' ? 'rent' : 'sale', language)}
       style={{
         textDecoration: 'none',
         color: 'inherit',
@@ -150,6 +153,11 @@ export default function PropertyCard({
               {noImageLabel}
             </div>
           )}
+
+          {property.market === 'remates' && <>
+            {property.images?.[0] && <div aria-hidden="true" data-bank-image-overlay style={{position:'absolute',inset:0,background:'rgba(240,242,243,0.22)',pointerEvents:'none'}} />}
+            <span data-bank-ribbon style={{position:'absolute',top:12,left:12,padding:'6px 12px',borderRadius:6,background:'#f0f2f3',color:'#111',fontSize:13,fontWeight:700,pointerEvents:'none'}}>{language === 'es' ? 'Remate' : 'Bank Property'}</span>
+          </>}
 
           {/* FAVORITE */}
           <button
@@ -310,11 +318,21 @@ export default function PropertyCard({
           >
             {property.property_type && (
               <span style={pill(theme)}>
-                {property.property_type}
+                {bank ? property.marketplace_property_type_label : property.property_type}
               </span>
             )}
 
-            {property.marketplace_original_price && (
+            {bank && <span style={pill(theme)}>
+              {property.bank_evidence.financial_kind === 'AUCTION_BASE'
+                ? (language === 'es' ? 'Base del remate' : 'Auction base')
+                : property.bank_evidence.financial_kind === 'SELLING_PRICE'
+                  ? (language === 'es' ? 'Precio de venta' : 'Selling price')
+                  : (language === 'es' ? 'Precio no publicado' : 'Price not published')}
+              {property.bank_evidence.auction_round ? ` (${property.bank_evidence.auction_round})` : ''}
+              {property.marketplace_original_price && property.marketplace_original_currency
+                ? `: ${property.marketplace_original_currency} ${exactMoney(property.marketplace_original_price, language)}` : ''}
+            </span>}
+            {!bank && property.marketplace_original_price && (
               <span style={pill(theme)}>
                 {property.marketplace_original_currency ===
                 'USD'
@@ -332,12 +350,14 @@ export default function PropertyCard({
             )}
 
             {property.property_area && (
-              <span style={pill(theme)}>
-                {property.property_area}
-              </span>
-            )}
+                <span style={pill(theme)}>
+                  {bank ? `${language === 'es' ? 'Área de terreno' : 'Land Area'}: ${exactMoney(String(property.property_area),language)} m²` : property.property_area}
+                </span>
+              )}
 
-            {transactionType === 'rent' &&
+            {bank && property.construction_area && <span style={pill(theme)}>{language === 'es' ? 'Área de construcción' : 'Construction Area'}: {exactMoney(String(property.construction_area),language)} m²</span>}
+
+            {!bank && transactionType === 'rent' &&
               property.construction_area && (
                 <span style={pill(theme)}>
                   {property.construction_area}{' '}

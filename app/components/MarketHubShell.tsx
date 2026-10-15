@@ -2,6 +2,8 @@
 import {useSiteTheme} from '@/app/components/theme/ThemeProvider'
 
 import {
+  useEffect,
+  useRef,
   useState,
   type ReactNode
 } from 'react'
@@ -37,6 +39,7 @@ type MarketHubWorkspace =
   | 'commercial'
   | 'notifications'
   | 'settings'
+  | 'remates'
 
 
 type MarketHubShellProps = {
@@ -63,6 +66,8 @@ type MarketHubShellProps = {
 
   settings:
     ReactNode
+
+  remates?: ReactNode
 }
 
 
@@ -74,7 +79,8 @@ export default function MarketHubShell({
   intelligence,
   commercial,
   notifications,
-  settings
+  settings,
+  remates
 }: MarketHubShellProps) {
 
   const [
@@ -88,6 +94,11 @@ export default function MarketHubShell({
     )
 
 
+  useEffect(()=>{
+    const select=()=>{const w=new URLSearchParams(window.location.search).get('workspace');if(w==='settings'||w==='remates'||w==='commercial')setActiveWorkspace(w)}
+    select();window.addEventListener('popstate',select);return()=>window.removeEventListener('popstate',select)
+  },[])
+
   const [
     mobileNavigationOpen,
     setMobileNavigationOpen
@@ -95,6 +106,60 @@ export default function MarketHubShell({
     useState(
       false
     )
+
+  const navigationRail = useRef<HTMLElement>(null)
+
+  const [mobileViewport, setMobileViewport] = useState(false)
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 900px)')
+    const update = () => setMobileViewport(query.matches)
+    update()
+    query.addEventListener('change', update)
+    return () => query.removeEventListener('change', update)
+  }, [])
+  const modalNavigationOpen = mobileNavigationOpen && mobileViewport
+
+  useEffect(() => {
+    if (!modalNavigationOpen) return
+    const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    const rail = navigationRail.current
+    if (!rail) return
+    const controls = () => Array.from(rail.querySelectorAll<HTMLElement>('button:not([disabled]), a[href]'))
+    // Move focus before isolating the opener's branch. Never hide the dialog's ancestors.
+    controls()[0]?.focus()
+    const isolated = new Map<HTMLElement, boolean>()
+    let branch: HTMLElement = rail
+    while (branch.parentElement) {
+      for (const sibling of Array.from(branch.parentElement.children)) {
+        if (!(sibling instanceof HTMLElement) || sibling === branch || sibling.dataset.marketHubBackdrop !== undefined) continue
+        isolated.set(sibling, sibling.inert)
+        sibling.inert = true
+      }
+      branch = branch.parentElement
+      if (branch === document.body) break
+    }
+    const onKey = (event: KeyboardEvent) => {
+      if (!window.matchMedia('(max-width: 900px)').matches) return
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        setMobileNavigationOpen(false)
+      } else if (event.key === 'Tab') {
+        const items = controls()
+        const first = items[0], last = items[items.length - 1]
+        if (event.shiftKey && (document.activeElement === first || !rail.contains(document.activeElement))) {
+          event.preventDefault(); last?.focus()
+        } else if (!event.shiftKey && (document.activeElement === last || !rail.contains(document.activeElement))) {
+          event.preventDefault(); first?.focus()
+        }
+      }
+    }
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      for (const [element, previouslyInert] of isolated) element.inert = previouslyInert
+      if (opener?.isConnected) opener.focus()
+    }
+  }, [modalNavigationOpen])
 
   const [
       mobileMenuFloating,
@@ -330,6 +395,7 @@ export default function MarketHubShell({
         Bell
     },
 
+    {id:'remates',label:language==='es'?'Remates':'Bank Properties',icon:Building2},
     {
       id:
         'settings',
@@ -393,6 +459,7 @@ export default function MarketHubShell({
           labels.notificationsDescription
       },
 
+      remates:{title:language==='es'?'Remates':'Bank Properties',description:language==='es'?'Inventario bancario guardado y acceso institucional.':'Saved bank inventory and institutional access.'},
       settings: {
         title:
           labels.settingsTitle,
@@ -426,6 +493,7 @@ export default function MarketHubShell({
       workspace
     )
 
+    const url=new URL(window.location.href);if((workspace==='settings'||workspace==='remates'||workspace==='commercial'))url.searchParams.set('workspace',workspace);else url.searchParams.delete('workspace');window.history.replaceState(null,'',url.pathname+url.search)
     setMobileNavigationOpen(
       false
     )
@@ -446,6 +514,9 @@ export default function MarketHubShell({
     switch (
       activeWorkspace
     ) {
+      case 'remates':
+        return remates
+
       case 'listings':
         return listings
 
@@ -492,6 +563,7 @@ export default function MarketHubShell({
         className={`marketHubTheme marketHubTheme-${theme}`}
       >
         <TopBar
+            mobileFit
             theme={theme}
             onThemeToggle={() =>
               setTheme(current =>
@@ -512,7 +584,9 @@ export default function MarketHubShell({
               onClick={() =>
                 setMobileNavigationOpen(true)
               }
-              aria-label="Open MarketHub navigation"
+              aria-controls="marketHubNavigationRail"
+              aria-expanded={mobileNavigationOpen}
+              aria-label={language === 'es' ? 'Abrir navegación de MarketHub' : 'Open MarketHub navigation'}
             >
               <Menu
                 size={21}
@@ -524,6 +598,11 @@ export default function MarketHubShell({
         <div className="marketHubShell">
 
         <aside
+          id="marketHubNavigationRail"
+          ref={navigationRail}
+          role={modalNavigationOpen ? 'dialog' : undefined}
+          aria-modal={modalNavigationOpen ? true : undefined}
+          aria-label={modalNavigationOpen ? (language === 'es' ? 'Navegación de MarketHub' : 'MarketHub navigation') : undefined}
           className={
             mobileNavigationOpen
               ? 'marketHubRail marketHubRailOpen'
@@ -549,7 +628,7 @@ export default function MarketHubShell({
                   false
                 )
               }
-              aria-label="Close navigation"
+              aria-label={language === 'es' ? 'Cerrar navegación' : 'Close navigation'}
             >
               <X
                 size={20}
@@ -629,12 +708,15 @@ export default function MarketHubShell({
           <button
             type="button"
             className="marketHubRailBackdrop"
+            data-market-hub-backdrop=""
+            aria-hidden="true"
+            tabIndex={-1}
             onClick={() =>
               setMobileNavigationOpen(
                 false
               )
             }
-            aria-label="Close navigation"
+            aria-label={language === 'es' ? 'Cerrar navegación' : 'Close navigation'}
           />
         )}
 
@@ -650,7 +732,9 @@ export default function MarketHubShell({
                 onClick={() =>
                   setMobileNavigationOpen(true)
                 }
-                aria-label="Open MarketHub navigation"
+                aria-controls="marketHubNavigationRail"
+                aria-expanded={mobileNavigationOpen}
+                aria-label={language === 'es' ? 'Abrir navegación de MarketHub' : 'Open MarketHub navigation'}
               >
                 <Menu
                   size={21}
@@ -843,9 +927,9 @@ export default function MarketHubShell({
 
         .marketHubRail {
           position: sticky;
-          top: 0;
+          top: var(--question-ticker-height, 0px);
           align-self: start;
-          height: 100vh;
+          height: calc(100vh - var(--question-ticker-height, 0px));
           display: flex;
           flex-direction: column;
           padding: 28px 16px 18px;
@@ -1145,7 +1229,7 @@ export default function MarketHubShell({
 
           .marketHubFloatingMenu {
             position: fixed;
-            top: 1rem;
+            top: calc(var(--question-ticker-height, 0px) + 1rem);
             left: 2rem;
               right: auto;
             z-index: 10000;
@@ -1172,19 +1256,21 @@ export default function MarketHubShell({
 
           .marketHubRail {
             position: fixed;
-            top: 0;
+            top: var(--question-ticker-height, 0px);
             left: 0;
             width: min(290px, 86vw);
-            height: 100dvh;
+            height: calc(100dvh - var(--question-ticker-height, 0px));
 
             z-index: 10002;
 
+            visibility: hidden;
             transform: translateX(-105%);
             box-shadow: 24px 0 60px rgba(0, 0, 0, .45);
             transition: transform 180ms ease;
           }
 
           .marketHubRailOpen {
+            visibility: visible;
             transform: translateX(0);
           }
 

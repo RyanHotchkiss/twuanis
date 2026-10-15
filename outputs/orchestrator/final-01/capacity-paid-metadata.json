@@ -1,0 +1,11 @@
+{
+  "id": "47317a78-0a44-4ddc-af2e-ffdeb1be9fed",
+  "term": {
+    "term": "e312f9f5-534c-4647-ab6b-108f1d308613",
+    "order": "fd432f12-5888-419f-9d34-27f84f8e5a6a",
+    "ack": "a1e372e2-312c-4dab-aaab-71940865af7f",
+    "package": "pkg-pricing-position-relationships",
+    "bank": true,
+    "account": "47317a78-0a44-4ddc-af2e-ffdeb1be9fed"
+  }
+}

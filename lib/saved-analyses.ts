@@ -39,6 +39,16 @@ export async function saveAnalysis({
   const user =
   await requireCurrentUser()
 
+  // The database remains authoritative for every direct REST/RPC read and write.
+  // Unknown legacy identities must not acquire a guessed capability.
+  const access = await supabase.rpc('can_access_saved_analysis', {
+    p_engine: engineType,
+    p_filters: filters
+  })
+  if (access.error || access.data !== true) {
+    throw new Error('Current analytical capability is required to save this analysis.')
+  }
+
   const {
     data,
     error

@@ -11,6 +11,9 @@ export async function GET() {
 
     return NextResponse.json(
       {
+        baseCurrency: analyticalContext.fx.baseCurrency,
+        quoteCurrency: analyticalContext.fx.quoteCurrency,
+
         usdToCrcRate:
           analyticalContext.fx.rate,
 

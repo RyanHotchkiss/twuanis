@@ -6,7 +6,7 @@ import {executeCrossDimensionalRequest} from './price-meter-cross-dimensional-ex
 import type {PriceMeterCrossDimensionalResult} from './price-meter-cross-dimensional-result-contract'
 
 export async function readCrossDimensionalQuestions(language:'en'|'es'){
- await authorizePriceMeterIntelligenceExecution()
+ await authorizePriceMeterIntelligenceExecution('cap-cross-dimensional-analysis')
  if(language!=='en'&&language!=='es')throw Error('Invalid language')
  return PRICE_METER_CROSS_DIMENSIONAL_QUESTIONS.map(q=>({key:q.key,owner:q.owningPhase,primary:q.primaryRelationship,secondary:q.secondaryDimension,...getPriceMeterCrossDimensionalPresentation({question:q,language})}))
 }

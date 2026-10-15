@@ -1,5 +1,6 @@
 import { supabase } from '@/lib/supabase'
 import { unstable_cache } from 'next/cache'
+import { noteStagingDictionaryLoad, observeStagingDictionaryRead } from './staging-analytical-cache-observability'
 
 export type ExplorerOption = {
   id: number
@@ -34,6 +35,7 @@ const EXPLORER_TERM_TYPES = [
 ]
 
 async function loadExplorerOptions() {
+  noteStagingDictionaryLoad()
   const { data, error } = await supabase
     .from('ontology_terms')
     .select(`
@@ -84,7 +86,7 @@ async function loadExplorerOptions() {
   return grouped
 }
 
-export const getExplorerOptions = unstable_cache(
+const cachedExplorerOptions = unstable_cache(
   loadExplorerOptions,
   ['explorer-options'],
   {
@@ -92,3 +94,7 @@ export const getExplorerOptions = unstable_cache(
     tags: ['explorer-options']
   }
 )
+
+export function getExplorerOptions() {
+  return observeStagingDictionaryRead(cachedExplorerOptions)
+}

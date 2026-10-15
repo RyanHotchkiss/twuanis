@@ -12,7 +12,7 @@ const executions = new WeakSet<object>()
 export async function commitPhase14AnalyticalExecution(marketExecution: Phase14ExecutionEnvelope, normalization: unknown): Promise<Phase14AnalyticalExecution> {
   assertPhase14ExecutionEnvelope(marketExecution)
   if (normalization !== 'land' && normalization !== 'construction') throw new Error('Explicit Phase 14 normalization required.')
-  const user = await authorizePriceMeterIntelligenceExecution()
+  const user = await authorizePriceMeterIntelligenceExecution('cap-comparative-price-m2-discovery')
   if (user !== marketExecution.authenticatedUserId) throw new Error('Phase 14 caller identity mismatch.')
   const execution: Phase14AnalyticalExecution = Object.freeze({contractVersion:1,marketExecution,normalizationBasis:normalization,
     analyticalIdentity:JSON.stringify({version:1,question:marketExecution.canonicalQuestionSerialization,normalizationBasis:normalization}),

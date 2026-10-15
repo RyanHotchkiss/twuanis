@@ -1,0 +1,10 @@
+{
+  "http": 400,
+  "response": {
+    "code": "P0001",
+    "details": null,
+    "hint": null,
+    "message": "WITNESS_CURRENT_ATTEMPT_REQUIRED"
+  },
+  "pass": true
+}

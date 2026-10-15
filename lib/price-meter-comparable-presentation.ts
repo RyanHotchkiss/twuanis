@@ -205,6 +205,15 @@ function resolveOntologyDimensionValue({
     )
 
 
+  if (dimension === 'utility' && matches.length > 0) {
+    const ordered = [...matches].sort((a, b) => a.ontologyTermId - b.ontologyTermId)
+    if (new Set(ordered.map(term => term.ontologyTermId)).size !== ordered.length) {
+      throw new Error('Duplicate canonical subject utility identity.')
+    }
+    const labels = ordered.map(bilingualCharacteristic)
+    return { en: labels.map(label => label.en).join(' + '), es: labels.map(label => label.es).join(' + ') }
+  }
+
   /*
    * Optional comparable dimensions represent one
    * deterministic subject identity.

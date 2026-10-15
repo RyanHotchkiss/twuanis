@@ -1,0 +1,140 @@
+[
+  {
+    "case": "worker-killed",
+    "exit": -9,
+    "terminatedBackends": [],
+    "execution": "37274297-be80-4f53-8129-63523f509cd8",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ]
+    ],
+    "workerLeaseUntil": "2026-10-15 15:18:02.980160+00:00"
+  },
+  {
+    "case": "retry-with-live-worker-lease",
+    "exit": 0,
+    "terminatedBackends": [],
+    "result": {
+      "state": "WORKING",
+      "execution": "37274297-be80-4f53-8129-63523f509cd8"
+    }
+  },
+  {
+    "case": "database-timeout",
+    "exit": 0,
+    "terminatedBackends": [],
+    "result": {
+      "state": "RELEASED",
+      "execution": "55abb35f-64f2-4ab6-8c9f-4abcf9fee6e7"
+    },
+    "execution": "55abb35f-64f2-4ab6-8c9f-4abcf9fee6e7",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "RESERVATION_RELEASED",
+        "1"
+      ]
+    ],
+    "workerLeaseUntil": "2026-10-15 15:18:44.620361+00:00"
+  },
+  {
+    "case": "database-connection-loss",
+    "exit": 0,
+    "terminatedBackends": [
+      [
+        757421,
+        true
+      ]
+    ],
+    "result": {
+      "error": "Execution witness finalization failed."
+    },
+    "execution": "92449da9-6d4f-4b3b-862b-ffd70c74e60f",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "RESERVATION_RELEASED",
+        "1"
+      ]
+    ],
+    "workerLeaseUntil": "2026-10-15 15:18:52.708320+00:00"
+  },
+  {
+    "case": "retry-after-worker-lease",
+    "exit": 0,
+    "terminatedBackends": [],
+    "result": {
+      "state": "COMPLETED",
+      "execution": "37274297-be80-4f53-8129-63523f509cd8"
+    },
+    "execution": "37274297-be80-4f53-8129-63523f509cd8",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "EXECUTION_CONSUMED",
+        "1"
+      ]
+    ],
+    "workerLeaseUntil": "2026-10-15 15:22:18.464713+00:00"
+  },
+  {
+    "case": "duplicate-after-completion",
+    "exit": 0,
+    "terminatedBackends": [],
+    "result": {
+      "state": "COMPLETED",
+      "execution": "37274297-be80-4f53-8129-63523f509cd8"
+    }
+  },
+  {
+    "case": "reservation-expiry-killed",
+    "exit": -9,
+    "terminatedBackends": [],
+    "execution": "0625d4d8-b45e-4be7-8ed0-539dd0d3cfda",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ]
+    ],
+    "workerLeaseUntil": "2026-10-15 15:26:06.006426+00:00"
+  },
+  {
+    "case": "expired-reservation-retry",
+    "exit": 0,
+    "terminatedBackends": [],
+    "result": {
+      "state": "RELEASED",
+      "execution": "0625d4d8-b45e-4be7-8ed0-539dd0d3cfda"
+    }
+  },
+  {
+    "case": "expired-reservation-retry",
+    "exit": 0,
+    "terminatedBackends": [],
+    "result": {
+      "state": "RELEASED",
+      "execution": "0625d4d8-b45e-4be7-8ed0-539dd0d3cfda"
+    }
+  },
+  {
+    "case": "expired-reservation-retry",
+    "exit": 0,
+    "terminatedBackends": [],
+    "result": {
+      "state": "RELEASED",
+      "execution": "0625d4d8-b45e-4be7-8ed0-539dd0d3cfda"
+    }
+  }
+]

@@ -1,0 +1,30 @@
+{
+  "productionChanged": false,
+  "baseline": {
+    "evidenceBytes": 33554432,
+    "roots": 40000,
+    "nodes": 100000,
+    "statementTimeoutSeconds": 8
+  },
+  "qualified2000": {
+    "evidenceBytes": 67108864,
+    "roots": 80000,
+    "nodes": 150000,
+    "specificFunctionTimeoutSeconds": 60
+  },
+  "failed5000": {
+    "evidenceBytes": 268435456,
+    "roots": 200000,
+    "nodes": 400000,
+    "specificFunctionTimeoutSeconds": 60
+  },
+  "unchanged": {
+    "applicationSeconds": 120,
+    "workerLeaseSeconds": 180,
+    "reservationLeaseSeconds": 600
+  },
+  "safetyGuard": {
+    "vmAvailableKiB": 716800,
+    "action": "cancel only the active local capacity DB query; no capacity PASS"
+  }
+}

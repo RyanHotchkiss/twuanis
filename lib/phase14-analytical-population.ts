@@ -57,7 +57,7 @@ export async function executePhase14AnalyticalEligibility(execution:Phase14Analy
     assertPhase14HydratedPopulationForExecution(hydration,execution.marketExecution,hydration.factPopulation)
   }catch{return freeze({state:'invalid_execution'})}
   const base:Base={contractVersion:1,execution,hydratedPopulation:hydration,hydratedInputCount:hydration.hydratedListingCount}
-  try {if(await authorizePriceMeterIntelligenceExecution()!==execution.authenticatedUserId)return freeze({state:'invalid_execution'})}
+  try {if(await authorizePriceMeterIntelligenceExecution('cap-comparative-price-m2-discovery')!==execution.authenticatedUserId)return freeze({state:'invalid_execution'})}
   catch{return freeze({...base,state:'execution_failed',reason:'authorization_unavailable'})}
   const basis=execution.normalizationBasis
   const complete=(decisions:Decision[],observations:Observation[],date:string|null,fx:PriceMeterFxIdentity|null):Phase14Analysis=>{

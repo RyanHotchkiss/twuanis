@@ -33,7 +33,7 @@ export async function acquireMarketPreferenceEvidence(request:CanonicalMarketReq
   const classifications=await positiveClassifications(ids,selected.filter(t=>numericalCategories.has(t.dimension)).map(t=>t.id))
   return {canonical,classifications}
 }
-export function evaluateMarketPreferences(request:CanonicalMarketRequest,row:Record<string,any>,evidence:Awaited<ReturnType<typeof acquireMarketPreferenceEvidence>>):AtomicPreferenceEvidence[]{
+export function evaluateMarketPreferences(request:CanonicalMarketRequest,row:Record<string,any>,evidence:{canonical:Map<string,Pick<CanonicalEvidence,'facts'|'selections'>>;classifications:Map<string,Set<string>>}):AtomicPreferenceEvidence[]{
   const facts=evidence.canonical.get(row.id)?.facts??[],selections=evidence.canonical.get(row.id)?.selections??[]
   const output:AtomicPreferenceEvidence[]=request.terms.filter(t=>t.dimension!=='property_type').map(t=>{
     let state:EvidenceState='UNKNOWN'

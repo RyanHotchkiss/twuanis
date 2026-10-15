@@ -1,0 +1,362 @@
+[
+  {
+    "scenario": "01-PRIVATE",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "02-BANK",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "03-COMBINED",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "04-PROVINCE",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "05-CANTON",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 7,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "06-DISTRICT",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 7,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "07-PROPERTY-TYPE",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "08-SEVEN",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 7,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "09-SEVENTEEN",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "10-BEDROOMS",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "11-BATHROOMS",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "12-PARKING",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "13-LAND",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "14-CONSTRUCTION",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "15-YEAR",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "16-UTILITIES",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "17-ENVIRONMENT",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "18-TERRAIN",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "19-ACCESSIBILITY",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "20-LEGAL",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "21-LISTED-SUBJECT",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "22-OWNER-DESIRED",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "23-GEOGRAPHY",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "24-MATCHING",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "25-CONFIGURATION",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "26-COMPARABLES",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "27-AB-COHORTS",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "28-CROSS-MARKET",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "29-BANK-RENT",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "30-ENTIRELY-UNDEFINED",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "ESTABLISHED-AREA-MODEL",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "LINEAR-AREA-REFERENCE",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "NATIONAL",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 7,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "POSITIVE-AREA-MODEL",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "RENT-COMBINED",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 7,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "RENT-PRIVATE",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  }
+]

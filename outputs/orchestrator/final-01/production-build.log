@@ -1,0 +1,239 @@
+
+> twuanis@0.1.0 build
+> next build --webpack
+
+▲ Next.js 16.3.4 (webpack)
+✓ Running next.config.ts took 72ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 15.0s
+  Running TypeScript ...
+  Finished TypeScript in 12.1s ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/126) ...
+  Generating static pages using 7 workers (31/126) 
+  Generating static pages using 7 workers (62/126) 
+  Generating static pages using 7 workers (94/126) 
+✓ Generating static pages using 7 workers (126/126) in 419ms
+Building ontology nodes: 677
+ontologyNodes built: 677
+first ontology node: {
+  '@type': 'DefinedTerm',
+  '@id': 'https://twuanis.com/id/ontology/root/costa-rica-geography',
+  name: 'Costa Rica Geography',
+  description: undefined,
+  termCode: '1',
+  inDefinedTermSet: { '@id': 'https://twuanis.com/id/ontology/root' }
+}
+ontologyNodes built: 677
+first ontology node: {
+  '@type': 'DefinedTerm',
+  '@id': 'https://twuanis.com/id/ontology/root/costa-rica-geography',
+  name: 'Costa Rica Geography',
+  description: undefined,
+  termCode: '1',
+  inDefinedTermSet: { '@id': 'https://twuanis.com/id/ontology/root' }
+}
+relationshipNodes built: 0
+BedroomFilterS = [Function: e]
+Building ontology nodes: 677
+ontologyNodes built: 677
+first ontology node: {
+  '@type': 'DefinedTerm',
+  '@id': 'https://twuanis.com/id/ontology/root/costa-rica-geography',
+  name: 'Costa Rica Geography',
+  description: undefined,
+  termCode: '1',
+  inDefinedTermSet: { '@id': 'https://twuanis.com/id/ontology/root' }
+}
+ontologyNodes built: 677
+first ontology node: {
+  '@type': 'DefinedTerm',
+  '@id': 'https://twuanis.com/id/ontology/root/costa-rica-geography',
+  name: 'Costa Rica Geography',
+  description: undefined,
+  termCode: '1',
+  inDefinedTermSet: { '@id': 'https://twuanis.com/id/ontology/root' }
+}
+relationshipNodes built: 0
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ƒ /
+├ ƒ /_not-found
+├ ƒ /accessibility/[accessibility]
+├ ƒ /admin
+├ ƒ /admin/remates
+├ ƒ /api/account/admin-navigation
+├ ƒ /api/account/avatar
+├ ƒ /api/account/delete
+├ ƒ /api/account/phone
+├ ƒ /api/account/profile-image
+├ ƒ /api/activity
+├ ƒ /api/addon-catalog
+├ ƒ /api/addon-placement
+├ ƒ /api/administrators
+├ ƒ /api/available-add-ons
+├ ƒ /api/campaign-media
+├ ƒ /api/campaigns
+├ ƒ /api/check-publish-token
+├ ƒ /api/commercial-state
+├ ƒ /api/commercial-timeline
+├ ƒ /api/comparable
+├ ƒ /api/create-publish-token
+├ ƒ /api/cron/account-registration-notifications
+├ ƒ /api/cron/cleanup-temporary-listing-images
+├ ƒ /api/cron/remates-alerts
+├ ƒ /api/cron/remates-retrieval
+├ ƒ /api/cron/saved-search-alerts
+├ ƒ /api/debug/bccr-fx
+├ ƒ /api/debug/saved-analysis-integrity
+├ ƒ /api/delete-listing-image
+├ ƒ /api/duplicate-listing
+├ ƒ /api/edit-canonical-listing
+├ ƒ /api/import-canonical-csv
+├ ƒ /api/listing-capabilities
+├ ƒ /api/listing-timeline
+├ ƒ /api/market-intelligence/population
+├ ƒ /api/marketplace-fx
+├ ƒ /api/marketplace-placement
+├ ƒ /api/offer-catalog
+├ ƒ /api/onvo/intent
+├ ƒ /api/onvo/webhook
+├ ƒ /api/onvo/worker
+├ ƒ /api/orchestrator/evidence/[id]
+├ ƒ /api/package-usage
+├ ƒ /api/permanently-delete-listing
+├ ƒ /api/price-meter/cross-dimensional
+├ ƒ /api/price-meter/property-difference-context
+├ ƒ /api/price-meter/property-position
+├ ƒ /api/public-listing-contact
+├ ƒ /api/public-listings
+├ ƒ /api/public-listings/by-ids
+├ ƒ /api/public-promotion-evidence
+├ ƒ /api/publish-existing-listing
+├ ƒ /api/publish-listing
+├ ƒ /api/push/delivery
+├ ƒ /api/push/state
+├ ƒ /api/push/subscribe
+├ ƒ /api/push/unsubscribe
+├ ƒ /api/rebuild-market-cache
+├ ƒ /api/remates/adapters/pdf
+├ ƒ /api/remates/media
+├ ƒ /api/renew-listing
+├ ƒ /api/reorder-listing-images
+├ ƒ /api/send-otp
+├ ƒ /api/send-whatsapp
+├ ƒ /api/staging/fx-negative-acceptance
+├ ƒ /api/staging/remates-retrieval-diagnostic
+├ ƒ /api/staging/remates-retrieval-fixture
+├ ƒ /api/test-cache
+├ ƒ /api/test-email
+├ ƒ /api/test-explorer
+├ ƒ /api/test-market
+├ ƒ /api/test-market-engine
+├ ƒ /api/test-whatsapp
+├ ƒ /api/update-listing-image
+├ ƒ /api/upload-temporary-listing-image
+├ ƒ /api/verify-otp
+├ ƒ /api/whatsapp-webhook
+├ ƒ /auth/callback
+├ ƒ /auth/reset-password
+├ ƒ /buyer-demand
+├ ƒ /canton/[canton]
+├ ƒ /commercial/[order]
+├ ƒ /district/[district]
+├ ƒ /en
+├ ƒ /en/bank-properties
+├ ƒ /en/bank-properties/[id]
+├ ƒ /en/buy
+├ ƒ /en/buy/listing/[id]
+├ ƒ /en/compare/entities
+├ ƒ /en/compare/markets
+├ ƒ /en/compare/properties
+├ ƒ /en/favorites
+├ ƒ /en/market-asking-price-distribution
+├ ƒ /en/market-hub
+├ ƒ /en/market-intelligence
+├ ƒ /en/market-intelligence/packages
+├ ƒ /en/orchestrators
+├ ƒ /en/property-price-valuation
+├ ƒ /en/rent-lease
+├ ƒ /en/rent-lease/listing/[id]
+├ ƒ /en/rent-out-lease-out
+├ ƒ /en/rent-out-lease-out/edit/[id]
+├ ƒ /en/saved-analysis/[id]
+├ ƒ /en/sell
+├ ƒ /en/sell/edit/[id]
+├ ƒ /en/swipe
+├ ƒ /en/swipe/buy
+├ ƒ /en/swipe/rent-lease
+├ ƒ /environment/[environment]
+├ ƒ /es
+├ ƒ /es/alquilar-arrendar
+├ ƒ /es/alquilar-arrendar/anuncio/[id]
+├ ƒ /es/analisis-guardado/[id]
+├ ƒ /es/centro-de-mercado
+├ ƒ /es/coincidencia-de-mercado
+├ ƒ /es/comparacion-de-mercado
+├ ƒ /es/comparar/entidades
+├ ƒ /es/comparar/mercados
+├ ƒ /es/comparar/propiedades
+├ ƒ /es/comprar
+├ ƒ /es/comprar/anuncio/[id]
+├ ƒ /es/demanda-del-comprador
+├ ƒ /es/deslizar
+├ ƒ /es/deslizar/alquilar
+├ ƒ /es/deslizar/comprar
+├ ƒ /es/escasez-de-mercado
+├ ƒ /es/estrategia-de-precios
+├ ƒ /es/explora
+├ ƒ /es/favoritos
+├ ƒ /es/inteligencia-de-mercado
+├ ƒ /es/inteligencia-de-mercado/paquetes
+├ ƒ /es/market-asking-price-distribution
+├ ƒ /es/orquestadores
+├ ƒ /es/precio-por-metro-cuadrado
+├ ƒ /es/property-price-valuation
+├ ƒ /es/publicar-alquiler-arrendamiento
+├ ƒ /es/publicar-alquiler-arrendamiento/editar/[id]
+├ ƒ /es/remates
+├ ƒ /es/remates/[id]
+├ ƒ /es/valoracion
+├ ƒ /es/vender
+├ ƒ /es/vender/editar/[id]
+├ ƒ /explore
+├ ƒ /legal-status/[legal-status]
+├ ƒ /login
+├ ƒ /market-comparison
+├ ƒ /market-matching
+├ ƒ /market-scarcity
+├ ƒ /payments/[order]
+├ ƒ /price-per-square-meter
+├ ƒ /pricing-strategy
+├ ƒ /property-type/[property-type]
+├ ƒ /province/[province]
+├ ƒ /publish-listing/[token]
+├ ƒ /remates/adapters
+├ ƒ /remates/authority
+├ ƒ /remates/classification
+├ ƒ /remates/evidence
+├ ƒ /remates/financial
+├ ƒ /remates/identity
+├ ƒ /remates/ingestion
+├ ƒ /remates/media
+├ ƒ /remates/publication
+├ ○ /robots.txt
+├ ○ /sitemap.xml
+├ ƒ /soporte/ayuda
+├ ƒ /support/help
+├ ƒ /terrain/[terrain]
+├ ƒ /utility/[utility]
+├ ƒ /valuation
+└ ƒ /whatsapp-webhook
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

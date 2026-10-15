@@ -19,9 +19,9 @@ import { useId, useState } from 'react'
 import { compositionQuestion } from './market-composition/contract'
 import { question } from './market-summary/contract'
 import styles from './market-summary/workspace.module.css'
-export default function IntelligenceHubNavigator({tabs,activeTab,basePath,query,language}:{tabs:readonly {id:string;label:string;disabled?:boolean}[];activeTab:string;basePath:string;query:string;language:'en'|'es'}) {
+export default function IntelligenceHubNavigator({tabs,activeTab,basePath,query,language,presentation}:{presentation?:{label:string;mobileLabel:string;questions:Readonly<Record<string,string>>;hrefForTab:(id:string)=>string;onSelect:(id:string)=>void;locked?:boolean};tabs:readonly {id:string;label:string;disabled?:boolean}[];activeTab:string;basePath:string;query:string;language:'en'|'es'}) {
  const [expanded,setExpanded]=useState(true),id=useId()
- return <nav className={styles.navigator} aria-label={language==='es'?'Motores de inteligencia':'Intelligence engines'}>
+ return <nav className={styles.navigator} aria-label={presentation?.label??(language==='es'?'Motores de inteligencia':'Intelligence engines')}>
     
     <button
         type="button"
@@ -33,9 +33,9 @@ export default function IntelligenceHubNavigator({tabs,activeTab,basePath,query,
         }
         >
         <span>
-            {language === 'es'
+            {presentation?.mobileLabel??(language === 'es'
             ? 'Motores'
-            : 'Engines'}
+            : 'Engines')}
             {' · '}
             {
             activeTab === 'explorer'
@@ -62,8 +62,8 @@ export default function IntelligenceHubNavigator({tabs,activeTab,basePath,query,
     
     <div id={id} className={styles.navItems} data-expanded={expanded}>{tabs.map(tab=>{
   const label=tab.id==='explorer'?(language==='es'?'Resumen del mercado':'Market Summary'):tab.label
-  return tab.disabled?<span key={tab.id} aria-disabled="true">{label}</span>:<Link key={tab.id} prefetch={false} href={hubEngineUrl(basePath,query,tab.id)} aria-current={activeTab===tab.id?'page':undefined}>
-   {label}{activeTab===tab.id&&(tab.id==='weighted-price'||tab.id==='asking-area-ratio'||tab.id==='explorer'||tab.id==='composition'||tab.id==='asking-price'||tab.id==='matching'||tab.id==='comparison'||tab.id==='scarcity'||tab.id==='price-meter'||tab.id==='geography'||tab.id==='size'||tab.id==='construction-land'||tab.id==='cohort-comparison'||tab.id==='cross-dimensional'||tab.id==='comparables'||tab.id==='position'||tab.id==='discovery')&&<small className={styles.navQuestion}>{tab.id==='weighted-price'?weightedQuestion[language]:tab.id==='asking-area-ratio'?ratioQuestion[language]:tab.id==='comparables'?comparablesQuestion[language]:tab.id==='position'?positionHubQuestion[language]:tab.id==='discovery'?discoveryQuestion[language]:tab.id==='cross-dimensional'?crossQuestion[language]:tab.id==='cohort-comparison'?cohortQuestion[language]:tab.id==='construction-land'?constructionLandQuestion[language]:tab.id==='size'?sizeQuestion[language]:tab.id==='geography'?geographicQuestion[language]:tab.id==='price-meter'?distributionQuestion[language]:tab.id==='scarcity'?configurationQuestion[language]:tab.id==='comparison'?comparisonQuestion[language]:tab.id==='matching'?matchingQuestion[language]:tab.id==='asking-price'?askingQuestion[language]:(tab.id==='composition'?compositionQuestion:question)[language]}</small>}
+  return tab.disabled?<span key={tab.id} aria-disabled="true">{label}</span>:<Link key={tab.id} prefetch={false} href={presentation?.hrefForTab(tab.id)??hubEngineUrl(basePath,query,tab.id)} aria-disabled={presentation?.locked||undefined} onClick={presentation?e=>{e.preventDefault();if(!presentation.locked)presentation.onSelect(tab.id)}:undefined} aria-current={activeTab===tab.id?'page':undefined}>
+   {label}{activeTab===tab.id&&presentation&&<small className={styles.navQuestion}>{presentation.questions[tab.id]}</small>}{activeTab===tab.id&&!presentation&&(tab.id==='weighted-price'||tab.id==='asking-area-ratio'||tab.id==='explorer'||tab.id==='composition'||tab.id==='asking-price'||tab.id==='matching'||tab.id==='comparison'||tab.id==='scarcity'||tab.id==='price-meter'||tab.id==='geography'||tab.id==='size'||tab.id==='construction-land'||tab.id==='cohort-comparison'||tab.id==='cross-dimensional'||tab.id==='comparables'||tab.id==='position'||tab.id==='discovery')&&<small className={styles.navQuestion}>{tab.id==='weighted-price'?weightedQuestion[language]:tab.id==='asking-area-ratio'?ratioQuestion[language]:tab.id==='comparables'?comparablesQuestion[language]:tab.id==='position'?positionHubQuestion[language]:tab.id==='discovery'?discoveryQuestion[language]:tab.id==='cross-dimensional'?crossQuestion[language]:tab.id==='cohort-comparison'?cohortQuestion[language]:tab.id==='construction-land'?constructionLandQuestion[language]:tab.id==='size'?sizeQuestion[language]:tab.id==='geography'?geographicQuestion[language]:tab.id==='price-meter'?distributionQuestion[language]:tab.id==='scarcity'?configurationQuestion[language]:tab.id==='comparison'?comparisonQuestion[language]:tab.id==='matching'?matchingQuestion[language]:tab.id==='asking-price'?askingQuestion[language]:(tab.id==='composition'?compositionQuestion:question)[language]}</small>}
   </Link>
  })}</div></nav>
 }

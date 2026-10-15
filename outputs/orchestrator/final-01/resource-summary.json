@@ -1,0 +1,1276 @@
+[
+  {
+    "run": "capacity-500",
+    "state": {
+      "state": "RELEASED",
+      "execution": "74ec7610-5ca0-4fe5-82d0-3db0a2cb480b"
+    },
+    "wallSeconds": 16.934975667000003,
+    "appCpuSeconds": 2.751012,
+    "appPeakRssMiB": 455.734375,
+    "databasePeakSummedRssMiB": 706.3828125,
+    "databasePeakSummedPssMiB": 632.5361328125,
+    "databaseSampledCpuSeconds": 10.21,
+    "databaseConnectionsPeak": 3,
+    "databaseActivePeak": 1,
+    "httpCalls": 280,
+    "uploadBytes": 18182089,
+    "downloadBytes": 5993135,
+    "finalization": [
+      {
+        "path": "/rest/v1/rpc/orchestrator_witness_finalize",
+        "status": 500,
+        "ms": 8523.04375,
+        "requestBytes": 18146235,
+        "responseBytes": 100
+      }
+    ],
+    "backendProcesses": {
+      "751433": {
+        "firstTicks": 0,
+        "lastTicks": 0,
+        "rssPeakKiB": 23640,
+        "pssPeakKiB": 2368,
+        "first_read_bytes": 0,
+        "last_read_bytes": 0,
+        "first_write_bytes": 0,
+        "last_write_bytes": 0,
+        "sampledCpuSeconds": 0.0
+      },
+      "751971": {
+        "firstTicks": 36,
+        "lastTicks": 1057,
+        "rssPeakKiB": 699696,
+        "pssPeakKiB": 645367,
+        "first_read_bytes": 0,
+        "last_read_bytes": 0,
+        "first_write_bytes": 1323008,
+        "last_write_bytes": 119685120,
+        "sampledCpuSeconds": 10.21
+      }
+    },
+    "databaseStats": {
+      "resourceGuard": null,
+      "database": "twuanis_orch_final_01_500",
+      "scope": "local backend proc RSS/PSS/CPU and pg_stat_database deltas; shared server non-JF work excluded from connection samples but may affect host",
+      "exit": 0,
+      "elapsed": 17.374561999999997,
+      "before": {
+        "xact_commit": 97,
+        "xact_rollback": 0,
+        "blks_read": 1314,
+        "blks_hit": 29488,
+        "tup_returned": 172617,
+        "tup_fetched": 27815,
+        "tup_inserted": 48,
+        "tup_updated": 13,
+        "tup_deleted": 21,
+        "temp_bytes": 0,
+        "deadlocks": 0
+      },
+      "after": {
+        "xact_commit": 2343,
+        "xact_rollback": 1,
+        "blks_read": 2387,
+        "blks_hit": 1779741,
+        "tup_returned": 16785562,
+        "tup_fetched": 2113068,
+        "tup_inserted": 165,
+        "tup_updated": 19,
+        "tup_deleted": 21,
+        "temp_bytes": 72292489,
+        "deadlocks": 0
+      },
+      "delta": {
+        "xact_commit": 2246,
+        "xact_rollback": 1,
+        "blks_read": 1073,
+        "blks_hit": 1750253,
+        "tup_returned": 16612945,
+        "tup_fetched": 2085253,
+        "tup_inserted": 117,
+        "tup_updated": 6,
+        "tup_deleted": 0,
+        "temp_bytes": 72292489,
+        "deadlocks": 0
+      },
+      "databaseBytes": 364115635
+    },
+    "samplingCaveat": "0.75s interval plus Docker instrumentation; sampled CPU excludes work before first/after last sample; sum RSS double-counts shared pages; PSS apportions them; PostgreSQL temp_bytes excludes temp-relation size; not provider billing"
+  },
+  {
+    "run": "capacity-2000-qualified",
+    "state": {
+      "state": "RELEASED",
+      "execution": "0f6bc00a-4bf5-4993-8953-602b1a4749a4"
+    },
+    "wallSeconds": 24.455203459,
+    "appCpuSeconds": 8.512465,
+    "appPeakRssMiB": 876.0625,
+    "databasePeakSummedRssMiB": 2177.33984375,
+    "databasePeakSummedPssMiB": null,
+    "databaseSampledCpuSeconds": 11.38,
+    "databaseConnectionsPeak": 3,
+    "databaseActivePeak": 1,
+    "httpCalls": 585,
+    "uploadBytes": 55397365,
+    "downloadBytes": 20981899,
+    "finalization": [
+      {
+        "path": "/rest/v1/rpc/orchestrator_witness_finalize",
+        "status": 500,
+        "ms": 9389.497750000002,
+        "requestBytes": 55218231,
+        "responseBytes": 100
+      }
+    ],
+    "backendProcesses": {
+      "683845": {
+        "firstTicks": 0,
+        "lastTicks": 0,
+        "rssPeakKiB": 24748,
+        "pssPeakKiB": 0,
+        "first_read_bytes": 0,
+        "last_read_bytes": 0,
+        "first_write_bytes": 0,
+        "last_write_bytes": 0,
+        "sampledCpuSeconds": 0.0
+      },
+      "687257": {
+        "firstTicks": 23,
+        "lastTicks": 1161,
+        "rssPeakKiB": 2204848,
+        "pssPeakKiB": 0,
+        "first_read_bytes": 0,
+        "last_read_bytes": 0,
+        "first_write_bytes": 0,
+        "last_write_bytes": 0,
+        "sampledCpuSeconds": 11.38
+      }
+    },
+    "databaseStats": {
+      "database": "twuanis_orch_final_01_2000",
+      "scope": "local backend proc RSS/PSS/CPU and pg_stat_database deltas; shared server non-JF work excluded from connection samples but may affect host",
+      "exit": 0,
+      "elapsed": 24.843996334,
+      "before": {
+        "xact_commit": 5244,
+        "xact_rollback": 3,
+        "blks_read": 2518,
+        "blks_hit": 3552118,
+        "tup_returned": 32744909,
+        "tup_fetched": 3710422,
+        "tup_inserted": 80,
+        "tup_updated": 20,
+        "tup_deleted": 31,
+        "temp_bytes": 123089382,
+        "deadlocks": 0
+      },
+      "after": {
+        "xact_commit": 7805,
+        "xact_rollback": 4,
+        "blks_read": 2562,
+        "blks_hit": 5285115,
+        "tup_returned": 48876672,
+        "tup_fetched": 5524595,
+        "tup_inserted": 191,
+        "tup_updated": 26,
+        "tup_deleted": 31,
+        "temp_bytes": 382271645,
+        "deadlocks": 0
+      },
+      "delta": {
+        "xact_commit": 2561,
+        "xact_rollback": 1,
+        "blks_read": 44,
+        "blks_hit": 1732997,
+        "tup_returned": 16131763,
+        "tup_fetched": 1814173,
+        "tup_inserted": 111,
+        "tup_updated": 6,
+        "tup_deleted": 0,
+        "temp_bytes": 259182263,
+        "deadlocks": 0
+      },
+      "databaseBytes": 305444531
+    },
+    "samplingCaveat": "0.75s interval plus Docker instrumentation; sampled CPU excludes work before first/after last sample; sum RSS double-counts shared pages; PSS apportions them; PostgreSQL temp_bytes excludes temp-relation size; not provider billing"
+  },
+  {
+    "run": "capacity-2000-indexed",
+    "state": {
+      "state": "RELEASED",
+      "execution": "80e0776c-3c29-4938-873c-902dbd0093a4"
+    },
+    "wallSeconds": 18.127347667,
+    "appCpuSeconds": 8.330213,
+    "appPeakRssMiB": 886.0,
+    "databasePeakSummedRssMiB": 994.68359375,
+    "databasePeakSummedPssMiB": null,
+    "databaseSampledCpuSeconds": 4.88,
+    "databaseConnectionsPeak": 3,
+    "databaseActivePeak": 1,
+    "httpCalls": 585,
+    "uploadBytes": 55397373,
+    "downloadBytes": 20981738,
+    "finalization": [
+      {
+        "path": "/rest/v1/rpc/orchestrator_witness_finalize",
+        "status": 400,
+        "ms": 2959.508334,
+        "requestBytes": 55218239,
+        "responseBytes": 78
+      }
+    ],
+    "backendProcesses": {
+      "683845": {
+        "firstTicks": 0,
+        "lastTicks": 0,
+        "rssPeakKiB": 24748,
+        "pssPeakKiB": 0,
+        "first_read_bytes": 0,
+        "last_read_bytes": 0,
+        "first_write_bytes": 0,
+        "last_write_bytes": 0,
+        "sampledCpuSeconds": 0.0
+      },
+      "685650": {
+        "firstTicks": 10,
+        "lastTicks": 10,
+        "rssPeakKiB": 53560,
+        "pssPeakKiB": 0,
+        "first_read_bytes": 0,
+        "last_read_bytes": 0,
+        "first_write_bytes": 0,
+        "last_write_bytes": 0,
+        "sampledCpuSeconds": 0.0
+      },
+      "685667": {
+        "firstTicks": 20,
+        "lastTicks": 508,
+        "rssPeakKiB": 993808,
+        "pssPeakKiB": 0,
+        "first_read_bytes": 0,
+        "last_read_bytes": 0,
+        "first_write_bytes": 0,
+        "last_write_bytes": 0,
+        "sampledCpuSeconds": 4.88
+      }
+    },
+    "databaseStats": {
+      "database": "twuanis_orch_final_01_2000",
+      "scope": "local backend proc RSS/PSS/CPU and pg_stat_database deltas; shared server non-JF work excluded from connection samples but may affect host",
+      "exit": 0,
+      "elapsed": 18.693122209,
+      "before": {
+        "xact_commit": 2675,
+        "xact_rollback": 2,
+        "blks_read": 2514,
+        "blks_hit": 1766061,
+        "tup_returned": 16308318,
+        "tup_fetched": 1843657,
+        "tup_inserted": 59,
+        "tup_updated": 14,
+        "tup_deleted": 21,
+        "temp_bytes": 61544689,
+        "deadlocks": 0
+      },
+      "after": {
+        "xact_commit": 5233,
+        "xact_rollback": 3,
+        "blks_read": 2517,
+        "blks_hit": 3523515,
+        "tup_returned": 32587679,
+        "tup_fetched": 3683577,
+        "tup_inserted": 68,
+        "tup_updated": 15,
+        "tup_deleted": 21,
+        "temp_bytes": 123089382,
+        "deadlocks": 0
+      },
+      "delta": {
+        "xact_commit": 2558,
+        "xact_rollback": 1,
+        "blks_read": 3,
+        "blks_hit": 1757454,
+        "tup_returned": 16279361,
+        "tup_fetched": 1839920,
+        "tup_inserted": 9,
+        "tup_updated": 1,
+        "tup_deleted": 0,
+        "temp_bytes": 61544693,
+        "deadlocks": 0
+      },
+      "databaseBytes": 305395379
+    },
+    "samplingCaveat": "0.75s interval plus Docker instrumentation; sampled CPU excludes work before first/after last sample; sum RSS double-counts shared pages; PSS apportions them; PostgreSQL temp_bytes excludes temp-relation size; not provider billing"
+  },
+  {
+    "run": "capacity-2000-60s",
+    "state": {
+      "state": "COMPLETED",
+      "execution": "b70db3a2-f4d5-45fa-8fda-226267f2dc76"
+    },
+    "wallSeconds": 40.710586625000005,
+    "appCpuSeconds": 9.890601,
+    "appPeakRssMiB": 938.1875,
+    "databasePeakSummedRssMiB": 2148.67578125,
+    "databasePeakSummedPssMiB": null,
+    "databaseSampledCpuSeconds": 24.51,
+    "databaseConnectionsPeak": 2,
+    "databaseActivePeak": 1,
+    "httpCalls": 589,
+    "uploadBytes": 110615483,
+    "downloadBytes": 77768810,
+    "finalization": [
+      {
+        "path": "/rest/v1/rpc/orchestrator_witness_finalize",
+        "status": 200,
+        "ms": 16950.531291,
+        "requestBytes": 55218241,
+        "responseBytes": 139
+      },
+      {
+        "path": "/rest/v1/rpc/orchestrator_execution_commit",
+        "status": 200,
+        "ms": 7729.494958000003,
+        "requestBytes": 55218288,
+        "responseBytes": 162
+      },
+      {
+        "path": "/rest/v1/rpc/read_completed_execution_report",
+        "status": 200,
+        "ms": 1355.123249999997,
+        "requestBytes": 51,
+        "responseBytes": 56783535
+      }
+    ],
+    "backendProcesses": {
+      "688906": {
+        "firstTicks": 0,
+        "lastTicks": 0,
+        "rssPeakKiB": 24580,
+        "pssPeakKiB": 0,
+        "first_read_bytes": 0,
+        "last_read_bytes": 0,
+        "first_write_bytes": 0,
+        "last_write_bytes": 0,
+        "sampledCpuSeconds": 0.0
+      },
+      "690643": {
+        "firstTicks": 15,
+        "lastTicks": 2466,
+        "rssPeakKiB": 2175664,
+        "pssPeakKiB": 0,
+        "first_read_bytes": 0,
+        "last_read_bytes": 0,
+        "first_write_bytes": 0,
+        "last_write_bytes": 0,
+        "sampledCpuSeconds": 24.51
+      }
+    },
+    "databaseStats": {
+      "database": "twuanis_orch_final_01_2000",
+      "scope": "local backend proc RSS/PSS/CPU and pg_stat_database deltas; shared server non-JF work excluded from connection samples but may affect host",
+      "exit": 0,
+      "elapsed": 42.41783025,
+      "before": {
+        "xact_commit": 10403,
+        "xact_rollback": 6,
+        "blks_read": 2563,
+        "blks_hit": 7073088,
+        "tup_returned": 65324018,
+        "tup_fetched": 7392580,
+        "tup_inserted": 306,
+        "tup_updated": 35,
+        "tup_deleted": 31,
+        "temp_bytes": 641453912,
+        "deadlocks": 0
+      },
+      "after": {
+        "xact_commit": 13018,
+        "xact_rollback": 6,
+        "blks_read": 2592,
+        "blks_hit": 10078465,
+        "tup_returned": 94511725,
+        "tup_fetched": 10831653,
+        "tup_inserted": 20030,
+        "tup_updated": 50,
+        "tup_deleted": 252,
+        "temp_bytes": 1136369576,
+        "deadlocks": 0
+      },
+      "delta": {
+        "xact_commit": 2615,
+        "xact_rollback": 0,
+        "blks_read": 29,
+        "blks_hit": 3005377,
+        "tup_returned": 29187707,
+        "tup_fetched": 3439073,
+        "tup_inserted": 19724,
+        "tup_updated": 15,
+        "tup_deleted": 221,
+        "temp_bytes": 494915664,
+        "deadlocks": 0
+      },
+      "databaseBytes": 345929395
+    },
+    "samplingCaveat": "0.75s interval plus Docker instrumentation; sampled CPU excludes work before first/after last sample; sum RSS double-counts shared pages; PSS apportions them; PostgreSQL temp_bytes excludes temp-relation size; not provider billing"
+  },
+  {
+    "run": "capacity-5000-indexed",
+    "state": {
+      "state": "RELEASED",
+      "execution": "518c419c-01ab-4ca4-82cc-e5ef1b9ede36"
+    },
+    "wallSeconds": 53.132257124999995,
+    "appCpuSeconds": 22.316589,
+    "appPeakRssMiB": 1571.9375,
+    "databasePeakSummedRssMiB": 3500.25,
+    "databasePeakSummedPssMiB": 3408.609375,
+    "databaseSampledCpuSeconds": 23.09,
+    "databaseConnectionsPeak": 3,
+    "databaseActivePeak": 1,
+    "httpCalls": 1195,
+    "uploadBytes": 129834156,
+    "downloadBytes": 50952711,
+    "finalization": [
+      {
+        "path": "/rest/v1/rpc/orchestrator_witness_finalize",
+        "status": 500,
+        "ms": 23060.729167,
+        "requestBytes": 129368462,
+        "responseBytes": 95
+      }
+    ],
+    "backendProcesses": {
+      "692639": {
+        "firstTicks": 0,
+        "lastTicks": 0,
+        "rssPeakKiB": 23512,
+        "pssPeakKiB": 2317,
+        "first_read_bytes": 0,
+        "last_read_bytes": 0,
+        "first_write_bytes": 4096,
+        "last_write_bytes": 4096,
+        "sampledCpuSeconds": 0.0
+      },
+      "692835": {
+        "firstTicks": 27,
+        "lastTicks": 2336,
+        "rssPeakKiB": 3560780,
+        "pssPeakKiB": 3488165,
+        "first_read_bytes": 413696,
+        "last_read_bytes": 2469888,
+        "first_write_bytes": 139264,
+        "last_write_bytes": 145199104,
+        "sampledCpuSeconds": 23.09
+      }
+    },
+    "databaseStats": {
+      "resourceGuard": {
+        "at": 49.315746,
+        "availableKiB": 605736,
+        "cancelled": [
+          [
+            692835,
+            true
+          ]
+        ],
+        "reason": "Protect shared local database from host OOM; capacity NOT PASS"
+      },
+      "database": "twuanis_orch_final_01_5000",
+      "scope": "local backend proc RSS/PSS/CPU and pg_stat_database deltas; shared server non-JF work excluded from connection samples but may affect host",
+      "exit": 0,
+      "elapsed": 55.339502499999995,
+      "before": {
+        "xact_commit": 119,
+        "xact_rollback": 0,
+        "blks_read": 1313,
+        "blks_hit": 35118,
+        "tup_returned": 185191,
+        "tup_fetched": 29989,
+        "tup_inserted": 58,
+        "tup_updated": 21,
+        "tup_deleted": 31,
+        "temp_bytes": 0,
+        "deadlocks": 0
+      },
+      "after": {
+        "xact_commit": 3322,
+        "xact_rollback": 1,
+        "blks_read": 1864,
+        "blks_hit": 2585565,
+        "tup_returned": 21399886,
+        "tup_fetched": 2117384,
+        "tup_inserted": 67,
+        "tup_updated": 22,
+        "tup_deleted": 31,
+        "temp_bytes": 144165941,
+        "deadlocks": 0
+      },
+      "delta": {
+        "xact_commit": 3203,
+        "xact_rollback": 1,
+        "blks_read": 551,
+        "blks_hit": 2550447,
+        "tup_returned": 21214695,
+        "tup_fetched": 2087395,
+        "tup_inserted": 9,
+        "tup_updated": 1,
+        "tup_deleted": 0,
+        "temp_bytes": 144165941,
+        "deadlocks": 0
+      },
+      "databaseBytes": 394770099
+    },
+    "samplingCaveat": "0.75s interval plus Docker instrumentation; sampled CPU excludes work before first/after last sample; sum RSS double-counts shared pages; PSS apportions them; PostgreSQL temp_bytes excludes temp-relation size; not provider billing"
+  },
+  {
+    "run": "capacity-1000",
+    "state": {
+      "state": "RELEASED",
+      "execution": "e9e56cd6-abb4-4404-892f-0d5a0230be50"
+    },
+    "wallSeconds": 20.051765292,
+    "appCpuSeconds": 4.638811,
+    "appPeakRssMiB": 584.015625,
+    "databasePeakSummedRssMiB": 1182.33203125,
+    "databasePeakSummedPssMiB": 1093.736328125,
+    "databaseSampledCpuSeconds": 11.45,
+    "databaseConnectionsPeak": 3,
+    "databaseActivePeak": 1,
+    "httpCalls": 381,
+    "uploadBytes": 30588242,
+    "downloadBytes": 10993955,
+    "finalization": [
+      {
+        "path": "/rest/v1/rpc/orchestrator_witness_finalize",
+        "status": 500,
+        "ms": 8979.880540999999,
+        "requestBytes": 30504628,
+        "responseBytes": 100
+      }
+    ],
+    "backendProcesses": {
+      "754360": {
+        "firstTicks": 0,
+        "lastTicks": 0,
+        "rssPeakKiB": 24848,
+        "pssPeakKiB": 2689,
+        "first_read_bytes": 8192,
+        "last_read_bytes": 8192,
+        "first_write_bytes": 4096,
+        "last_write_bytes": 4096,
+        "sampledCpuSeconds": 0.0
+      },
+      "754384": {
+        "firstTicks": 26,
+        "lastTicks": 1171,
+        "rssPeakKiB": 1185860,
+        "pssPeakKiB": 1117458,
+        "first_read_bytes": 475136,
+        "last_read_bytes": 1138688,
+        "first_write_bytes": 1323008,
+        "last_write_bytes": 196300800,
+        "sampledCpuSeconds": 11.45
+      }
+    },
+    "databaseStats": {
+      "resourceGuard": null,
+      "database": "twuanis_orch_final_01_1000",
+      "scope": "local backend proc RSS/PSS/CPU and pg_stat_database deltas; shared server non-JF work excluded from connection samples but may affect host",
+      "exit": 0,
+      "elapsed": 21.091355874999998,
+      "before": {
+        "xact_commit": 97,
+        "xact_rollback": 0,
+        "blks_read": 1306,
+        "blks_hit": 29450,
+        "tup_returned": 172620,
+        "tup_fetched": 28110,
+        "tup_inserted": 48,
+        "tup_updated": 13,
+        "tup_deleted": 21,
+        "temp_bytes": 0,
+        "deadlocks": 0
+      },
+      "after": {
+        "xact_commit": 2449,
+        "xact_rollback": 1,
+        "blks_read": 2550,
+        "blks_hit": 1580944,
+        "tup_returned": 14694357,
+        "tup_fetched": 1781696,
+        "tup_inserted": 165,
+        "tup_updated": 19,
+        "tup_deleted": 21,
+        "temp_bytes": 136768306,
+        "deadlocks": 0
+      },
+      "delta": {
+        "xact_commit": 2352,
+        "xact_rollback": 1,
+        "blks_read": 1244,
+        "blks_hit": 1551494,
+        "tup_returned": 14521737,
+        "tup_fetched": 1753586,
+        "tup_inserted": 117,
+        "tup_updated": 6,
+        "tup_deleted": 0,
+        "temp_bytes": 136768306,
+        "deadlocks": 0
+      },
+      "databaseBytes": 376903347
+    },
+    "samplingCaveat": "0.75s interval plus Docker instrumentation; sampled CPU excludes work before first/after last sample; sum RSS double-counts shared pages; PSS apportions them; PostgreSQL temp_bytes excludes temp-relation size; not provider billing"
+  },
+  {
+    "run": "capacity-500-60s",
+    "state": {
+      "state": "COMPLETED",
+      "execution": "7b8b52d2-475b-473a-80e9-df5941a0ac0c"
+    },
+    "wallSeconds": 19.777767,
+    "appCpuSeconds": 3.095537,
+    "appPeakRssMiB": 441.421875,
+    "databasePeakSummedRssMiB": 732.33203125,
+    "databasePeakSummedPssMiB": 657.55078125,
+    "databaseSampledCpuSeconds": 12.66,
+    "databaseConnectionsPeak": 3,
+    "databaseActivePeak": 1,
+    "httpCalls": 284,
+    "uploadBytes": 36328191,
+    "downloadBytes": 24644434,
+    "finalization": [
+      {
+        "path": "/rest/v1/rpc/orchestrator_witness_finalize",
+        "status": 200,
+        "ms": 7212.003417,
+        "requestBytes": 18146235,
+        "responseBytes": 139
+      },
+      {
+        "path": "/rest/v1/rpc/orchestrator_execution_commit",
+        "status": 200,
+        "ms": 3726.9400000000023,
+        "requestBytes": 18146282,
+        "responseBytes": 162
+      },
+      {
+        "path": "/rest/v1/rpc/read_completed_execution_report",
+        "status": 200,
+        "ms": 419.8575839999976,
+        "requestBytes": 51,
+        "responseBytes": 18647923
+      }
+    ],
+    "backendProcesses": {
+      "758866": {
+        "firstTicks": 1,
+        "lastTicks": 1,
+        "rssPeakKiB": 23640,
+        "pssPeakKiB": 2946,
+        "first_read_bytes": 0,
+        "last_read_bytes": 0,
+        "first_write_bytes": 0,
+        "last_write_bytes": 0,
+        "sampledCpuSeconds": 0.0
+      },
+      "758896": {
+        "firstTicks": 25,
+        "lastTicks": 1291,
+        "rssPeakKiB": 726268,
+        "pssPeakKiB": 670620,
+        "first_read_bytes": 11231232,
+        "last_read_bytes": 12238848,
+        "first_write_bytes": 1572864,
+        "last_write_bytes": 322383872,
+        "sampledCpuSeconds": 12.66
+      }
+    },
+    "databaseStats": {
+      "resourceGuard": null,
+      "database": "twuanis_orch_final_01_500",
+      "scope": "local backend proc RSS/PSS/CPU and pg_stat_database deltas; shared server non-JF work excluded from connection samples but may affect host",
+      "exit": 0,
+      "elapsed": 20.804898583,
+      "before": {
+        "xact_commit": 2446,
+        "xact_rollback": 1,
+        "blks_read": 2680,
+        "blks_hit": 1805378,
+        "tup_returned": 16960272,
+        "tup_fetched": 2138987,
+        "tup_inserted": 167,
+        "tup_updated": 22,
+        "tup_deleted": 21,
+        "temp_bytes": 72292489,
+        "deadlocks": 0
+      },
+      "after": {
+        "xact_commit": 4728,
+        "xact_rollback": 1,
+        "blks_read": 3408,
+        "blks_hit": 4501750,
+        "tup_returned": 43612150,
+        "tup_fetched": 5457530,
+        "tup_inserted": 7244,
+        "tup_updated": 37,
+        "tup_deleted": 249,
+        "temp_bytes": 218727623,
+        "deadlocks": 0
+      },
+      "delta": {
+        "xact_commit": 2282,
+        "xact_rollback": 0,
+        "blks_read": 728,
+        "blks_hit": 2696372,
+        "tup_returned": 26651878,
+        "tup_fetched": 3318543,
+        "tup_inserted": 7077,
+        "tup_updated": 15,
+        "tup_deleted": 228,
+        "temp_bytes": 146435134,
+        "deadlocks": 0
+      },
+      "databaseBytes": 378345139
+    },
+    "samplingCaveat": "0.75s interval plus Docker instrumentation; sampled CPU excludes work before first/after last sample; sum RSS double-counts shared pages; PSS apportions them; PostgreSQL temp_bytes excludes temp-relation size; not provider billing"
+  },
+  {
+    "run": "capacity-1000-60s",
+    "state": {
+      "state": "COMPLETED",
+      "execution": "933d868d-c8bc-4494-8df6-9741c6d6e47a"
+    },
+    "wallSeconds": 28.120274209,
+    "appCpuSeconds": 5.503515,
+    "appPeakRssMiB": 639.953125,
+    "databasePeakSummedRssMiB": 1220.4453125,
+    "databasePeakSummedPssMiB": 1129.0400390625,
+    "databaseSampledCpuSeconds": 18.01,
+    "databaseConnectionsPeak": 3,
+    "databaseActivePeak": 1,
+    "httpCalls": 385,
+    "uploadBytes": 61092743,
+    "downloadBytes": 42358144,
+    "finalization": [
+      {
+        "path": "/rest/v1/rpc/orchestrator_witness_finalize",
+        "status": 200,
+        "ms": 11351.096084,
+        "requestBytes": 30504631,
+        "responseBytes": 139
+      },
+      {
+        "path": "/rest/v1/rpc/orchestrator_execution_commit",
+        "status": 200,
+        "ms": 4835.548624999999,
+        "requestBytes": 30504678,
+        "responseBytes": 162
+      },
+      {
+        "path": "/rest/v1/rpc/read_completed_execution_report",
+        "status": 200,
+        "ms": 825.859292000001,
+        "requestBytes": 51,
+        "responseBytes": 31360952
+      }
+    ],
+    "backendProcesses": {
+      "760625": {
+        "firstTicks": 0,
+        "lastTicks": 0,
+        "rssPeakKiB": 24820,
+        "pssPeakKiB": 3105,
+        "first_read_bytes": 0,
+        "last_read_bytes": 0,
+        "first_write_bytes": 0,
+        "last_write_bytes": 0,
+        "sampledCpuSeconds": 0.0
+      },
+      "760649": {
+        "firstTicks": 24,
+        "lastTicks": 1825,
+        "rssPeakKiB": 1224916,
+        "pssPeakKiB": 1153291,
+        "first_read_bytes": 0,
+        "last_read_bytes": 237568,
+        "first_write_bytes": 49152,
+        "last_write_bytes": 466157568,
+        "sampledCpuSeconds": 18.01
+      }
+    },
+    "databaseStats": {
+      "resourceGuard": null,
+      "database": "twuanis_orch_final_01_1000",
+      "scope": "local backend proc RSS/PSS/CPU and pg_stat_database deltas; shared server non-JF work excluded from connection samples but may affect host",
+      "exit": 0,
+      "elapsed": 29.446635666,
+      "before": {
+        "xact_commit": 2551,
+        "xact_rollback": 1,
+        "blks_read": 2550,
+        "blks_hit": 1606880,
+        "tup_returned": 14869098,
+        "tup_fetched": 1807876,
+        "tup_inserted": 167,
+        "tup_updated": 22,
+        "tup_deleted": 21,
+        "temp_bytes": 136768306,
+        "deadlocks": 0
+      },
+      "after": {
+        "xact_commit": 4948,
+        "xact_rollback": 1,
+        "blks_read": 2598,
+        "blks_hit": 4395959,
+        "tup_returned": 42527775,
+        "tup_fetched": 5168072,
+        "tup_inserted": 11544,
+        "tup_updated": 37,
+        "tup_deleted": 249,
+        "temp_bytes": 419395721,
+        "deadlocks": 0
+      },
+      "delta": {
+        "xact_commit": 2397,
+        "xact_rollback": 0,
+        "blks_read": 48,
+        "blks_hit": 2789079,
+        "tup_returned": 27658677,
+        "tup_fetched": 3360196,
+        "tup_inserted": 11377,
+        "tup_updated": 15,
+        "tup_deleted": 228,
+        "temp_bytes": 282627415,
+        "deadlocks": 0
+      },
+      "databaseBytes": 399980211
+    },
+    "samplingCaveat": "0.75s interval plus Docker instrumentation; sampled CPU excludes work before first/after last sample; sum RSS double-counts shared pages; PSS apportions them; PostgreSQL temp_bytes excludes temp-relation size; not provider billing"
+  },
+  {
+    "run": "capacity-2000-qualified-reloaded",
+    "state": {
+      "state": "RELEASED",
+      "execution": "78c37a03-82aa-4443-8e70-3e9a1034db94"
+    },
+    "wallSeconds": 23.748439833,
+    "appCpuSeconds": 8.05814,
+    "appPeakRssMiB": 970.390625,
+    "databasePeakSummedRssMiB": 1932.9140625,
+    "databasePeakSummedPssMiB": null,
+    "databaseSampledCpuSeconds": 11.34,
+    "databaseConnectionsPeak": 3,
+    "databaseActivePeak": 1,
+    "httpCalls": 585,
+    "uploadBytes": 55397379,
+    "downloadBytes": 20981898,
+    "finalization": [
+      {
+        "path": "/rest/v1/rpc/orchestrator_witness_finalize",
+        "status": 500,
+        "ms": 9540.961708,
+        "requestBytes": 55218245,
+        "responseBytes": 100
+      }
+    ],
+    "backendProcesses": {
+      "688906": {
+        "firstTicks": 0,
+        "lastTicks": 0,
+        "rssPeakKiB": 24580,
+        "pssPeakKiB": 0,
+        "first_read_bytes": 0,
+        "last_read_bytes": 0,
+        "first_write_bytes": 0,
+        "last_write_bytes": 0,
+        "sampledCpuSeconds": 0.0
+      },
+      "688949": {
+        "firstTicks": 19,
+        "lastTicks": 1153,
+        "rssPeakKiB": 1954724,
+        "pssPeakKiB": 0,
+        "first_read_bytes": 0,
+        "last_read_bytes": 0,
+        "first_write_bytes": 0,
+        "last_write_bytes": 0,
+        "sampledCpuSeconds": 11.34
+      }
+    },
+    "databaseStats": {
+      "database": "twuanis_orch_final_01_2000",
+      "scope": "local backend proc RSS/PSS/CPU and pg_stat_database deltas; shared server non-JF work excluded from connection samples but may affect host",
+      "exit": 0,
+      "elapsed": 24.311294833999998,
+      "before": {
+        "xact_commit": 7825,
+        "xact_rollback": 4,
+        "blks_read": 2562,
+        "blks_hit": 5312312,
+        "tup_returned": 49034223,
+        "tup_fetched": 5551332,
+        "tup_inserted": 193,
+        "tup_updated": 26,
+        "tup_deleted": 31,
+        "temp_bytes": 382271645,
+        "deadlocks": 0
+      },
+      "after": {
+        "xact_commit": 10383,
+        "xact_rollback": 5,
+        "blks_read": 2563,
+        "blks_hit": 7045052,
+        "tup_returned": 65161836,
+        "tup_fetched": 7365495,
+        "tup_inserted": 304,
+        "tup_updated": 32,
+        "tup_deleted": 31,
+        "temp_bytes": 641453912,
+        "deadlocks": 0
+      },
+      "delta": {
+        "xact_commit": 2558,
+        "xact_rollback": 1,
+        "blks_read": 1,
+        "blks_hit": 1732740,
+        "tup_returned": 16127613,
+        "tup_fetched": 1814163,
+        "tup_inserted": 111,
+        "tup_updated": 6,
+        "tup_deleted": 0,
+        "temp_bytes": 259182267,
+        "deadlocks": 0
+      },
+      "databaseBytes": 305485491
+    },
+    "samplingCaveat": "0.75s interval plus Docker instrumentation; sampled CPU excludes work before first/after last sample; sum RSS double-counts shared pages; PSS apportions them; PostgreSQL temp_bytes excludes temp-relation size; not provider billing"
+  },
+  {
+    "run": "capacity-2000-baseline",
+    "state": {
+      "state": "RELEASED",
+      "execution": "a3738f00-a6a9-40c3-8c67-413c23c09f3c"
+    },
+    "wallSeconds": 26.876095457999998,
+    "appCpuSeconds": 8.705397,
+    "appPeakRssMiB": 869.125,
+    "databasePeakSummedRssMiB": 1042.40234375,
+    "databasePeakSummedPssMiB": null,
+    "databaseSampledCpuSeconds": 9.69,
+    "databaseConnectionsPeak": 3,
+    "databaseActivePeak": 1,
+    "httpCalls": 585,
+    "uploadBytes": 55397372,
+    "downloadBytes": 20981877,
+    "finalization": [
+      {
+        "path": "/rest/v1/rpc/orchestrator_witness_finalize",
+        "status": 400,
+        "ms": 11751.596958000002,
+        "requestBytes": 55218238,
+        "responseBytes": 78
+      }
+    ],
+    "backendProcesses": {
+      "683845": {
+        "firstTicks": 0,
+        "lastTicks": 0,
+        "rssPeakKiB": 24748,
+        "pssPeakKiB": 0,
+        "first_read_bytes": 0,
+        "last_read_bytes": 0,
+        "first_write_bytes": 0,
+        "last_write_bytes": 0,
+        "sampledCpuSeconds": 0.0
+      },
+      "683899": {
+        "firstTicks": 19,
+        "lastTicks": 988,
+        "rssPeakKiB": 1042672,
+        "pssPeakKiB": 0,
+        "first_read_bytes": 0,
+        "last_read_bytes": 0,
+        "first_write_bytes": 0,
+        "last_write_bytes": 0,
+        "sampledCpuSeconds": 9.69
+      }
+    },
+    "databaseStats": {
+      "database": "twuanis_orch_final_01_2000",
+      "scope": "local backend proc RSS/PSS/CPU and pg_stat_database deltas; shared server non-JF work excluded from connection samples but may affect host",
+      "exit": 0,
+      "elapsed": 27.364162832999998,
+      "before": {
+        "xact_commit": 100,
+        "xact_rollback": 0,
+        "blks_read": 1312,
+        "blks_hit": 32228,
+        "tup_returned": 167802,
+        "tup_fetched": 28824,
+        "tup_inserted": 44,
+        "tup_updated": 12,
+        "tup_deleted": 17,
+        "temp_bytes": 0,
+        "deadlocks": 0
+      },
+      "after": {
+        "xact_commit": 2662,
+        "xact_rollback": 1,
+        "blks_read": 2513,
+        "blks_hit": 1762136,
+        "tup_returned": 16294291,
+        "tup_fetched": 1842297,
+        "tup_inserted": 53,
+        "tup_updated": 13,
+        "tup_deleted": 17,
+        "temp_bytes": 61544689,
+        "deadlocks": 0
+      },
+      "delta": {
+        "xact_commit": 2562,
+        "xact_rollback": 1,
+        "blks_read": 1201,
+        "blks_hit": 1729908,
+        "tup_returned": 16126489,
+        "tup_fetched": 1813473,
+        "tup_inserted": 9,
+        "tup_updated": 1,
+        "tup_deleted": 0,
+        "temp_bytes": 61544689,
+        "deadlocks": 0
+      },
+      "databaseBytes": 305395379
+    },
+    "samplingCaveat": "0.75s interval plus Docker instrumentation; sampled CPU excludes work before first/after last sample; sum RSS double-counts shared pages; PSS apportions them; PostgreSQL temp_bytes excludes temp-relation size; not provider billing"
+  },
+  {
+    "run": "capacity-2000-paid",
+    "state": {
+      "state": "COMPLETED",
+      "execution": "e6fd609c-636b-4fda-856d-92b009c2a4ca"
+    },
+    "wallSeconds": 49.448142833000006,
+    "appCpuSeconds": 10.81195,
+    "appPeakRssMiB": 814.421875,
+    "databasePeakSummedRssMiB": 1976.48828125,
+    "databasePeakSummedPssMiB": 1899.556640625,
+    "databaseSampledCpuSeconds": 32.15,
+    "databaseConnectionsPeak": 2,
+    "databaseActivePeak": 1,
+    "httpCalls": 653,
+    "uploadBytes": 110622458,
+    "downloadBytes": 77766768,
+    "finalization": [
+      {
+        "path": "/rest/v1/rpc/orchestrator_witness_finalize",
+        "status": 200,
+        "ms": 22004.107333999997,
+        "requestBytes": 55219485,
+        "responseBytes": 139
+      },
+      {
+        "path": "/rest/v1/rpc/orchestrator_execution_commit",
+        "status": 200,
+        "ms": 7407.225333999995,
+        "requestBytes": 55219532,
+        "responseBytes": 161
+      },
+      {
+        "path": "/rest/v1/rpc/read_completed_execution_report",
+        "status": 200,
+        "ms": 1435.291667000005,
+        "requestBytes": 51,
+        "responseBytes": 56784815
+      }
+    ],
+    "backendProcesses": {
+      "769080": {
+        "firstTicks": 0,
+        "lastTicks": 3215,
+        "rssPeakKiB": 2000164,
+        "pssPeakKiB": 1942664,
+        "first_read_bytes": 987136,
+        "last_read_bytes": 30814208,
+        "first_write_bytes": 118784,
+        "last_write_bytes": 800894976,
+        "sampledCpuSeconds": 32.15
+      },
+      "769061": {
+        "firstTicks": 0,
+        "lastTicks": 0,
+        "rssPeakKiB": 23760,
+        "pssPeakKiB": 2484,
+        "first_read_bytes": 139264,
+        "last_read_bytes": 139264,
+        "first_write_bytes": 0,
+        "last_write_bytes": 0,
+        "sampledCpuSeconds": 0.0
+      }
+    },
+    "databaseStats": {
+      "resourceGuard": null,
+      "database": "twuanis_orch_final_01_2000",
+      "scope": "local backend proc RSS/PSS/CPU and pg_stat_database deltas; shared server non-JF work excluded from connection samples but may affect host",
+      "exit": 0,
+      "elapsed": 50.380712083999995,
+      "before": {
+        "xact_commit": 13215,
+        "xact_rollback": 7,
+        "blks_read": 4545,
+        "blks_hit": 10136279,
+        "tup_returned": 94806640,
+        "tup_fetched": 10867365,
+        "tup_inserted": 20050,
+        "tup_updated": 57,
+        "tup_deleted": 252,
+        "temp_bytes": 1136369576,
+        "deadlocks": 0
+      },
+      "after": {
+        "xact_commit": 15905,
+        "xact_rollback": 7,
+        "blks_read": 7337,
+        "blks_hit": 13286253,
+        "tup_returned": 125492150,
+        "tup_fetched": 14347533,
+        "tup_inserted": 39799,
+        "tup_updated": 72,
+        "tup_deleted": 473,
+        "temp_bytes": 1631734502,
+        "deadlocks": 0
+      },
+      "delta": {
+        "xact_commit": 2690,
+        "xact_rollback": 0,
+        "blks_read": 2792,
+        "blks_hit": 3149974,
+        "tup_returned": 30685510,
+        "tup_fetched": 3480168,
+        "tup_inserted": 19749,
+        "tup_updated": 15,
+        "tup_deleted": 221,
+        "temp_bytes": 495364926,
+        "deadlocks": 0
+      },
+      "databaseBytes": 386176691
+    },
+    "samplingCaveat": "0.75s interval plus Docker instrumentation; sampled CPU excludes work before first/after last sample; sum RSS double-counts shared pages; PSS apportions them; PostgreSQL temp_bytes excludes temp-relation size; not provider billing"
+  },
+  {
+    "run": "capacity-128",
+    "state": {
+      "state": "COMPLETED",
+      "execution": "faf84705-a132-4c85-819b-a691b26a3335"
+    },
+    "wallSeconds": 26.976665291999996,
+    "appCpuSeconds": 1.534065,
+    "appPeakRssMiB": 210.421875,
+    "databasePeakSummedRssMiB": 315.35546875,
+    "databasePeakSummedPssMiB": 241.24609375,
+    "databaseSampledCpuSeconds": 21.97,
+    "databaseConnectionsPeak": 2,
+    "databaseActivePeak": 1,
+    "httpCalls": 236,
+    "uploadBytes": 11138277,
+    "downloadBytes": 7371425,
+    "finalization": [
+      {
+        "path": "/rest/v1/rpc/orchestrator_witness_finalize",
+        "status": 200,
+        "ms": 7454.498333000001,
+        "requestBytes": 5561438,
+        "responseBytes": 139
+      },
+      {
+        "path": "/rest/v1/rpc/orchestrator_execution_commit",
+        "status": 200,
+        "ms": 5460.872958,
+        "requestBytes": 5561485,
+        "responseBytes": 162
+      },
+      {
+        "path": "/rest/v1/rpc/read_completed_execution_report",
+        "status": 200,
+        "ms": 106.04887500000041,
+        "requestBytes": 51,
+        "responseBytes": 5716317
+      }
+    ],
+    "backendProcesses": {
+      "749464": {
+        "firstTicks": 0,
+        "lastTicks": 0,
+        "rssPeakKiB": 23988,
+        "pssPeakKiB": 2459,
+        "first_read_bytes": 0,
+        "last_read_bytes": 0,
+        "first_write_bytes": 4096,
+        "last_write_bytes": 4096,
+        "sampledCpuSeconds": 0.0
+      },
+      "749492": {
+        "firstTicks": 22,
+        "lastTicks": 2219,
+        "rssPeakKiB": 298936,
+        "pssPeakKiB": 244667,
+        "first_read_bytes": 0,
+        "last_read_bytes": 8192,
+        "first_write_bytes": 57344,
+        "last_write_bytes": 84152320,
+        "sampledCpuSeconds": 21.97
+      }
+    },
+    "databaseStats": {
+      "resourceGuard": null,
+      "database": "twuanis_orch_final_01_128",
+      "scope": "local backend proc RSS/PSS/CPU and pg_stat_database deltas; shared server non-JF work excluded from connection samples but may affect host",
+      "exit": 0,
+      "elapsed": 28.207546125,
+      "before": {
+        "xact_commit": 4233,
+        "xact_rollback": 0,
+        "blks_read": 12214,
+        "blks_hit": 974918,
+        "tup_returned": 2222485,
+        "tup_fetched": 375137,
+        "tup_inserted": 476143,
+        "tup_updated": 4014,
+        "tup_deleted": 406,
+        "temp_bytes": 0,
+        "deadlocks": 0
+      },
+      "after": {
+        "xact_commit": 6421,
+        "xact_rollback": 0,
+        "blks_read": 12701,
+        "blks_hit": 62784658,
+        "tup_returned": 109772308,
+        "tup_fetched": 72745300,
+        "tup_inserted": 478540,
+        "tup_updated": 4029,
+        "tup_deleted": 633,
+        "temp_bytes": 36590468,
+        "deadlocks": 0
+      },
+      "delta": {
+        "xact_commit": 2188,
+        "xact_rollback": 0,
+        "blks_read": 487,
+        "blks_hit": 61809740,
+        "tup_returned": 107549823,
+        "tup_fetched": 72370163,
+        "tup_inserted": 2397,
+        "tup_updated": 15,
+        "tup_deleted": 227,
+        "temp_bytes": 36590468,
+        "deadlocks": 0
+      },
+      "databaseBytes": 346568371
+    },
+    "samplingCaveat": "0.75s interval plus Docker instrumentation; sampled CPU excludes work before first/after last sample; sum RSS double-counts shared pages; PSS apportions them; PostgreSQL temp_bytes excludes temp-relation size; not provider billing"
+  }
+]

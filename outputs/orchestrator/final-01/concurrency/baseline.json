@@ -1,0 +1,63 @@
+{
+  "elapsed": 30.127893375000003,
+  "delta": {
+    "temp_bytes": 0,
+    "temp_files": 0,
+    "deadlocks": 0
+  },
+  "runs": [
+    {
+      "result": {
+        "state": "COMPLETED",
+        "execution": "018cbf14-9469-4a99-8252-cade44ddacb9"
+      },
+      "wallMs": 29528.818832999998,
+      "cpu": {
+        "user": 1042382,
+        "system": 160348
+      },
+      "peakRss": 132202496,
+      "queries": 287,
+      "responseBytes": 2440773,
+      "timings": [
+        {
+          "path": "/rest/v1/rpc/orchestrator_witness_finalize",
+          "status": 200,
+          "ms": 4667.689374999998,
+          "requestBytes": 1806868,
+          "responseBytes": 139
+        },
+        {
+          "path": "/rest/v1/rpc/orchestrator_execution_commit",
+          "status": 200,
+          "ms": 6699.173957999999,
+          "requestBytes": 1806915,
+          "responseBytes": 161
+        }
+      ]
+    },
+    {
+      "result": {
+        "state": "RELEASED",
+        "execution": "005e08f8-25af-488b-8803-112005c7f7d9"
+      },
+      "wallMs": 29366.820167,
+      "cpu": {
+        "user": 919790,
+        "system": 143096
+      },
+      "peakRss": 137183232,
+      "queries": 283,
+      "responseBytes": 579258,
+      "timings": [
+        {
+          "path": "/rest/v1/rpc/orchestrator_witness_finalize",
+          "status": 500,
+          "ms": 8096.084333999999,
+          "requestBytes": 1806879,
+          "responseBytes": 100
+        }
+      ]
+    }
+  ]
+}

@@ -1,3 +1,11 @@
+/**
+ * TEMPORARY LEGACY PRESENTATION COMPATIBILITY.
+ * This historical catalog is NOT the canonical Commercial & Administrative
+ * System product, price, membership, entitlement, or checkout authority.
+ * Approved Step 1 contract: outputs/commercial-administrative/STEP-1.md.
+ * Retain existing pages until their later database-backed projection cutover;
+ * do not import these values into new commercial decisions or authorization.
+ */
 import {
   Compass,
   BadgeDollarSign,

@@ -1,0 +1,9 @@
+twuanis_orch_final_01_128 exact current source/contract baseline, data fixture only from twuanis_phase53je_128
+capacity-128 exit 0 seconds 28.207749334000003
+size 128 done
+twuanis_orch_final_01_500 exact current source/contract baseline, data fixture only from twuanis_phase53je_500
+capacity-500 exit 0 seconds 17.375151791
+size 500 done
+twuanis_orch_final_01_1000 exact current source/contract baseline, data fixture only from twuanis_phase53je_1000
+capacity-1000 exit 0 seconds 21.091605459
+size 1000 done

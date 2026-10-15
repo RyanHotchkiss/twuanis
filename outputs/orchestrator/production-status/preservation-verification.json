@@ -1,0 +1,17 @@
+{
+  "stagedFiles": 564,
+  "allWithinExplicitManifest": true,
+  "productionSourceBaseline": 1005,
+  "reviewedOverlayFiles": 88,
+  "noIndexOrApplicationRepairsAfterBlocker": true,
+  "existingWhitespacePreserved": true,
+  "migration107Unchanged": true,
+  "publicNavigationSourcesUnchanged": [
+    "TopBar",
+    "homepage",
+    "MarketHubIntelligence",
+    "footer"
+  ],
+  "fullCandidateBuild": "NOT RUN after essential migration blocker",
+  "productionChanges": "NONE"
+}

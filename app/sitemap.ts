@@ -1,3 +1,4 @@
+import { isStagingApplication } from '@/lib/staging-identity'
 import type { MetadataRoute } from 'next'
 
 import {
@@ -11,6 +12,7 @@ import {
 const SITE_URL = 'https://twuanis.com'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  if (isStagingApplication()) return []
   const staticRoutes = [
     '',
     '/en',

@@ -90,7 +90,7 @@ export async function executePriceMeterComparableConfiguration(
    */
 
   const userId =
-    await authorizePriceMeterIntelligenceExecution()
+    await authorizePriceMeterIntelligenceExecution('cap-user-defined-comparable-cohort')
 
 
   /*
@@ -180,7 +180,7 @@ export async function executePriceMeterComparableAnalysis(
    */
 
   const userId =
-    await authorizePriceMeterIntelligenceExecution()
+    await authorizePriceMeterIntelligenceExecution('cap-user-defined-comparable-cohort')
 
 
   /*

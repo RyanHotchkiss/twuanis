@@ -1,5 +1,8 @@
 'use client'
 
+import { useMarketplaceFx } from '@/app/hooks/useMarketplaceFx'
+import { priceOptions as createPriceOptions } from '@/lib/marketplace-price-ranges'
+
 type PriceFilterRLESProps = {
   selectedmonthly_price: string
   setSelectedmonthly_price: (value: string) => void
@@ -24,13 +27,8 @@ export default function PriceFilterRLES({
   setShowDistrictOptions
 }: PriceFilterRLESProps) {
 
-  const priceOptions = [
-    { label:'₡0 - ₡250K', usd:'$0 - $500/mes' },
-    { label:'₡250K - ₡500K', usd:'$500 - $1K/mes' },
-    { label:'₡500K - ₡1M', usd:'$1K - $2K/mes' },
-    { label:'₡1M - ₡2.5M', usd:'$2K - $5K/mes' },
-    { label:'₡2.5M+', usd:'$5K+/mes' }
-  ]
+  const fx = useMarketplaceFx()
+  const priceOptions = createPriceOptions('rent', 'es', fx?.usdToCrcRate ?? null)
 
   return (
     <div>
@@ -42,7 +40,7 @@ export default function PriceFilterRLES({
         <div style={pillWrap}>
           {priceOptions.map((price) => (
             <button
-              key={price.label}
+              key={price.display}
               onClick={() => {
                 setSelectedmonthly_price(price.label)
                 setShowProvinceOptions(false)
@@ -57,11 +55,11 @@ export default function PriceFilterRLES({
               }
             >
               <span style={priceColones}>
-                {price.label}
+                {price.display}
               </span>
 
               <span style={priceDollars}>
-                {price.usd}
+                {price.crc}
               </span>
             </button>
           ))}
@@ -80,14 +78,14 @@ export default function PriceFilterRLES({
               }}
             >
               <div style={priceColones}>
-                {selectedmonthly_price}
+                {priceOptions.find(p => p.label === selectedmonthly_price)?.display ?? selectedmonthly_price}
               </div>
 
               <div style={priceDollars}>
                 {
                   priceOptions.find(
                     p => p.label === selectedmonthly_price
-                  )?.usd
+                  )?.crc
                 }
               </div>
             </div>

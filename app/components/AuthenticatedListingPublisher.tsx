@@ -13,6 +13,7 @@ import type {
 
 import { supabase } from '@/lib/supabase'
 
+import {CommercialCatalog} from './CustomerCommercial'
 import EmailAuthModal from '@/app/components/EmailAuthModal'
 
 type AuthenticatedListingPublisherProps = {
@@ -20,6 +21,7 @@ type AuthenticatedListingPublisherProps = {
 }
 
 type PublishResponse = {
+  prepared?: boolean
   success: boolean
   redirectTo?: string
   error?: string
@@ -32,6 +34,8 @@ export default function AuthenticatedListingPublisher({
   token
 }: AuthenticatedListingPublisherProps) {
   const router = useRouter()
+  const [stage,setStage]=useState<'prepare'|'choice'|'publish'>('prepare')
+  const language=typeof window!=='undefined'&&new URLSearchParams(window.location.search).get('lang')==='es'?'es':'en'
   const [attempt, setAttempt] = useState(0)
   const [draftId, setDraftId] = useState<string | null>(null)
 
@@ -102,7 +106,7 @@ export default function AuthenticatedListingPublisher({
 
   useEffect(() => {
     if (
-      checkingAuth ||
+      stage==='choice' || checkingAuth ||
       !user ||
       publishing || errorMessage
     ) {
@@ -145,7 +149,7 @@ export default function AuthenticatedListingPublisher({
                   `Bearer ${session.access_token}`
               },
               body: JSON.stringify({
-                token
+                token, phase:stage
               })
             }
           )
@@ -168,6 +172,8 @@ export default function AuthenticatedListingPublisher({
         if (cancelled) {
           return
         }
+
+        if(data.prepared){setStage('choice');setPublishing(false);return}
 
         if (!data.redirectTo) {
           throw new Error(
@@ -205,23 +211,25 @@ export default function AuthenticatedListingPublisher({
     }
   }, [
     checkingAuth,
+    stage,
     attempt,
     router,
     token,
     user
   ])
 
+  if(stage==='choice'&&draftId)return <section><CommercialCatalog language={language} listing={draftId}/><button onClick={()=>{setStage('publish');setErrorMessage('');setPublishing(false)}}>{language==='es'?'Continuar a la publicación — sin comprar o pagar':'Continue to publication — no purchase or payment required'}</button></section>
+
   if (checkingAuth) {
     return (
       <main style={page}>
         <div style={card}>
           <h1 style={heading}>
-            Verifying your account
+            {language==='es'?'Verificando su cuenta':'Verifying your account'}
           </h1>
 
           <p style={message}>
-            Please wait while we check your
-            secure sign-in.
+            {language==='es'?'Espere mientras verificamos su inicio de sesión.':'Please wait while we verify your secure sign-in.'}
           </p>
         </div>
       </main>
@@ -232,7 +240,7 @@ export default function AuthenticatedListingPublisher({
     return (
       <EmailAuthModal
         redirectTo={
-          `/publish-listing/${token}`
+          `/publish-listing/${token}?lang=${language}`
         }
       />
     )
@@ -243,7 +251,7 @@ export default function AuthenticatedListingPublisher({
       <main style={page}>
         <div style={card}>
           <h1 style={heading}>
-            Publishing Error
+            {language==='es'?'Error de publicación':'Publishing error'}
           </h1>
 
           <p style={errorText}>
@@ -260,7 +268,7 @@ export default function AuthenticatedListingPublisher({
             }}
             style={retryButton}
           >
-            Try Again
+            {language==='es'?'Reintentar':'Try again'}
           </button>
         </div>
       </main>
@@ -271,13 +279,11 @@ export default function AuthenticatedListingPublisher({
     <main style={page}>
       <div style={card}>
         <h1 style={heading}>
-          Publishing Your Listing
+          {language==='es'?'Preparando su anuncio':'Preparing your listing'}
         </h1>
 
         <p style={message}>
-          Your WhatsApp number and email
-          account are verified. Your listing
-          is now being published.
+          {language==='es'?'Estamos preparando su anuncio con su identidad verificada.':'We are preparing your listing with your verified identity.'}
         </p>
       </div>
     </main>

@@ -1,5 +1,5 @@
 import 'server-only';
-import type { SupabaseClient } from '@supabase/supabase-js';
+import type { SupabaseClient } from '@/lib/staging-supabase-client';
 import { validateGeographicRequest } from './dta-request';
 import { DtaResolutionError } from './dta-request';
 import { geographicLookupCodes, resolveGeographicRows, type ResolvedGeographicRequest } from './dta-identity';

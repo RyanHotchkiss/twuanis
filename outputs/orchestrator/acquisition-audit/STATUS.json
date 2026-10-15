@@ -1,0 +1,23 @@
+{
+  "ORCH-ACQ-01": "PARTIAL",
+  "Customer-to-database trace": "COMPLETE in source and authenticated actual Server Action; mounted browser click not tested",
+  "Canonical selector audit": "21/21 contracts inspected; runtime coverage explicitly bounded",
+  "Database predicate pushdown": "PARTIAL",
+  "Province restriction before acquisition": "PRIVATE PASS; BANK FAIL; COMBINED PARTIAL",
+  "Canton restriction before acquisition": "PRIVATE PASS; BANK FAIL; COMBINED PARTIAL",
+  "District restriction before acquisition": "PRIVATE PASS; BANK FAIL; COMBINED PARTIAL",
+  "Property-type restriction before acquisition": "PRIVATE PASS; BANK FAIL; COMBINED PARTIAL",
+  "Engine dependency matrices": "17/17 and 7/7",
+  "Canonical exact-membership checks": "352 PASS",
+  "Application modifications": "NONE",
+  "Database implementation modifications": "NONE; isolated fixtures only",
+  "Production modifications/deployments": "NONE",
+  "Prior Phase 5.3J-F": "PRESERVED; independent scope",
+  "Remaining blockers": [
+    "Exact ACQ-01/02 all-types request unsupported; exact ACQ-05 general 200\u2013500 range unsupported.",
+    "No alternative reader/cache implemented: mathematical/witness equivalence and realized savings remain future acceptance work.",
+    "Complete nested-function rows-examined total and causal per-finding memory/runtime savings not measured.",
+    "Production deployed acquisition version, production plans and hosted concurrency not inspected; conclusions apply to fingerprinted candidate.",
+    "Working tree differs from reviewed candidate; no source merge or rollout authorized."
+  ]
+}

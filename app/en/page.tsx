@@ -1,83 +1,16 @@
-import HomePageClient from './HomePageClient'
-import {
-  supabaseAdmin
-} from '@/lib/supabase-admin'
-import { buildHomePageSchema }
-from '@/lib/schema/buildHomePageSchema'
-import {
-  getPublicListings
-} from '@/lib/public-listings-server'
-import {
-  resolveMarketplacePlacement
-} from '@/lib/promotion-placement'
-
+import {loadAddonHomepage} from '@/lib/addon-homepage-server'
+import {supabaseAdmin} from '@/lib/supabase-admin'
+import {buildHomePageSchema} from '@/lib/schema/buildHomePageSchema'
+import HomeMarketplace from '@/app/components/home-marketplace/HomeMarketplace'
 export default async function HomePage() {
-
-  const { data: ontologyTerms }
-  = await supabaseAdmin
-      .from('ontology_terms')
-      .select('*')
-
-const { data: ontologyRelationships }
-  = await supabaseAdmin
-      .from('ontology_relationships')
-      .select('*')
-
-const [
-  saleListings,
-  rentListings
-] = await Promise.all([
-  getPublicListings('sale'),
-  getPublicListings('rent')
-])
-
-const saleCount =
-  saleListings.length
-
-const rentCount =
-  rentListings.length
-    
-  const homepagePlacement =
-    await resolveMarketplacePlacement({
-      supabase:
-        supabaseAdmin,
-
-      listings:
-        saleListings,
-
-      surface:
-        'homepage'
-    })
-
-  const homePageSchema =
-      buildHomePageSchema({
-        lang: 'en',
-        ontologyTerms:
-          ontologyTerms || [],
-        ontologyRelationships:
-          ontologyRelationships || []
-      })
-
-          return (
-            <HomePageClient
-              ontologyTerms={
-                ontologyTerms || []
-              }
-              ontologyRelationships={
-                ontologyRelationships || []
-              }
-              listings={
-                homepagePlacement.listings
-              }
-              saleCount={
-                saleCount
-              }
-              rentCount={
-                rentCount
-              }
-              homePageSchema={
-                homePageSchema
-              }
-            />
-          )
+  const [terms, relationships, addonHomepage] = await Promise.all([
+    supabaseAdmin.from('ontology_terms').select('*'),
+    supabaseAdmin.from('ontology_relationships').select('*'),
+    loadAddonHomepage()
+  ])
+  const ontologyTerms = terms.data || []
+  const ontologyRelationships = relationships.data || []
+  return <HomeMarketplace language="en" addonHomepage={addonHomepage}
+    ontologyTerms={ontologyTerms} ontologyRelationships={ontologyRelationships}
+    homePageSchema={buildHomePageSchema({lang:'en',ontologyTerms,ontologyRelationships})} />
 }

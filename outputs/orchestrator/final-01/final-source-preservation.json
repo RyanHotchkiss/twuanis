@@ -1,0 +1,10 @@
+{
+  "head": "406e87f6875adaad1eab8749a33ed699c3ef830d",
+  "sourceFilesCompared": 1123,
+  "differences": [],
+  "buildSupportCompared": 420,
+  "supportDifferences": [],
+  "existingMigrationsUnchanged": true,
+  "productionConfigSha256": "adcdd70a65ce6011ab79b40dbfa2125513b9a7b11882aba2aef17054c0686828",
+  "cronSchedules": 5
+}

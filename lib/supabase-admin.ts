@@ -2,7 +2,7 @@ import 'server-only'
 
 import {
   createClient
-} from '@supabase/supabase-js'
+} from '@/lib/staging-supabase-client'
 
 const supabaseUrl =
   process.env.NEXT_PUBLIC_SUPABASE_URL

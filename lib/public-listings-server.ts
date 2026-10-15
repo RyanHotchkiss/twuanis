@@ -65,6 +65,17 @@ export type PublicListingTransaction =
   | 'sale'
   | 'rent'
 
+export async function getPublicListingCounts() {
+  const counts = await Promise.all((['sale', 'rent'] as const).map(async transaction => {
+    const {count, error} = await supabaseAdmin.from('listings')
+      .select('id', {count: 'exact', head: true})
+      .eq('listing_status', 'active').eq('transaction_type', transaction)
+    if (error || count === null) return null
+    return count
+  }))
+  return {sale: counts[0], rent: counts[1]}
+}
+
 export async function getPublicListings(
   transactionType?: PublicListingTransaction
 ) {

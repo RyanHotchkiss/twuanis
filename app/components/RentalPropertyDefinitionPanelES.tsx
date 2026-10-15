@@ -1,5 +1,7 @@
 'use client'
 
+import { monetaryPreview } from '@/lib/monetary-preview'
+
 import {
   generatedTitleCard,
   generatedTitleLabel,
@@ -11,7 +13,6 @@ import {
 import {
   generateListingTitle,
   generateListingDescription,
-  formatColones,
   formatWhatsAppNumber
 } from '@/app/utils/listing-utils'
 
@@ -52,7 +53,7 @@ export default function RentalPropertyDefinitionPanel({
 
         <h2 style={generatedTitleValue}>
           {
-            generateListingTitle(propertyData)
+            generateListingTitle(propertyData, 'es')
             || 'Comienza a Definir la Propiedad'
           }
         </h2>
@@ -67,7 +68,7 @@ export default function RentalPropertyDefinitionPanel({
 
         <p style={generatedDescriptionValue}>
           {
-            generateListingDescription(propertyData)
+            generateListingDescription(propertyData, 'es')
             || 'La descripción de la propiedad se generará automáticamente.'
           }
         </p>
@@ -192,27 +193,7 @@ export default function RentalPropertyDefinitionPanel({
 
         <DefinitionCard
           label="Precio Mensual"
-          value={
-            propertyData.monthly_price
-            ? (
-              <>
-                {formatColones(
-                  propertyData.monthly_price
-                )}
-
-                {' · '}
-
-                {usdToCrcRate !== null
-                  ? `$${Math.round(
-                      Number(
-                        propertyData.monthly_price
-                      ) / usdToCrcRate
-                    ).toLocaleString()} USD`
-                  : 'USD conversion unavailable'}
-              </>
-            )
-            : 'Aún No Definido'
-          }
+          value={monetaryPreview(propertyData.monthly_price, propertyData.currency, 'major', usdToCrcRate, 'es')}
         />
 
                 <DefinitionCard

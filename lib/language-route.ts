@@ -8,6 +8,9 @@ type RoutePair = {
 }
 
 const exactRoutePairs: RoutePair[] = [
+  {en: '/en/orchestrator-status', es: '/es/estado-orquestadores'},
+  {en: '/en/orchestrators', es: '/es/orquestadores'},
+  {en:'/en/bank-properties',es:'/es/remates'},
   {
     en: '/price-per-square-meter',
     es: '/es/precio-por-metro-cuadrado'
@@ -86,6 +89,7 @@ type DynamicRoutePair = {
 }
 
 const dynamicRoutePairs: DynamicRoutePair[] = [
+  {en:/^\/en\/bank-properties\/([^/]+)$/,es:/^\/es\/remates\/([^/]+)$/,toEnglish:m=>`/en/bank-properties/${m[1]}`,toSpanish:m=>`/es/remates/${m[1]}`},
   {
     en: /^\/en\/buy\/listing\/([^/]+)$/,
     es: /^\/es\/comprar\/anuncio\/([^/]+)$/,

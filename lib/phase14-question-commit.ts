@@ -1,4 +1,5 @@
 import 'server-only'
+import {canonicalPackageEnforcement} from './package-capability-authorization'
 import { randomUUID } from 'node:crypto'
 import { authorizePriceMeterIntelligenceExecution } from './price-meter-authorization'
 import { supabaseAdmin } from './supabase-admin'
@@ -9,14 +10,14 @@ export type Phase14ExecutionEnvelope = Readonly<{
   question:Phase14Question
   canonicalQuestionSerialization:string
   authenticatedUserId:string
-  entitlement:'price-m2-intelligence'
+  entitlement:'price-m2-intelligence'|'cap-comparative-price-m2-discovery'
   executionId:string
 }>
 const envelopes=new WeakSet<object>()
 // Server-internal function, not a Server Action. No client-supplied dependencies or authority.
 export async function commitPhase14Question(input:unknown):Promise<Phase14ExecutionEnvelope> {
   const prepared=preparePhase14Question(input)
-  const authenticatedUserId=await authorizePriceMeterIntelligenceExecution()
+  const authenticatedUserId=await authorizePriceMeterIntelligenceExecution('cap-comparative-price-m2-discovery')
   const g=prepared.question.geography
   const resolved=await resolveDtaGeography({[g.level]:g.officialCode},async()=>supabaseAdmin)
   const ids=[...phase14ReferenceTerms(prepared).keys()],rows:Record<string,unknown>[]=[]
@@ -31,7 +32,7 @@ export async function commitPhase14Question(input:unknown):Promise<Phase14Execut
     rows.push(...data)
   }
   const question=establishPhase14Question(prepared,resolved,rows)
-  const envelope=Object.freeze({question,canonicalQuestionSerialization:serializePhase14Question(question),authenticatedUserId,entitlement:'price-m2-intelligence' as const,executionId:randomUUID()})
+  const envelope=Object.freeze({question,canonicalQuestionSerialization:serializePhase14Question(question),authenticatedUserId,entitlement:canonicalPackageEnforcement()?'cap-comparative-price-m2-discovery' as const:'price-m2-intelligence' as const,executionId:randomUUID()})
   envelopes.add(envelope);return envelope
 }
 export function assertPhase14ExecutionEnvelope(value:Phase14ExecutionEnvelope):void {

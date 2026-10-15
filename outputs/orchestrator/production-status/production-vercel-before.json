@@ -1,0 +1,195 @@
+{
+  "projectId": "prj_XTn9YvpEiY9uyq5eHauJ9MNWhnxk",
+  "projectName": "twuanis-0",
+  "teamId": "team_f211q3SVS7VlZ1GFG5LhelVl",
+  "productionBranch": "main",
+  "productionDeploymentId": "dpl_CeACdgNgQgyTGWWYN4ftS7cfX2w6",
+  "readyState": "READY",
+  "target": "production",
+  "url": "twuanis-0-36kobf9gd-ryans-projects-71456f46.vercel.app",
+  "crons": [
+    {
+      "path": "/api/cron/saved-search-alerts",
+      "schedule": "0 12 * * *"
+    },
+    {
+      "path": "/api/cron/cleanup-temporary-listing-images",
+      "schedule": "30 12 * * *"
+    },
+    {
+      "path": "/api/cron/account-registration-notifications",
+      "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/cron/remates-retrieval",
+      "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/cron/remates-alerts",
+      "schedule": "*/5 * * * *"
+    }
+  ],
+  "environmentNames": [
+    {
+      "key": "TWUANIS_REMATES_RETRIEVAL",
+      "target": [
+        "production"
+      ],
+      "type": "plain"
+    },
+    {
+      "key": "TWUANIS_REMATES_ALERTS_SCHEDULING",
+      "target": [
+        "production"
+      ],
+      "type": "plain"
+    },
+    {
+      "key": "NEXT_PUBLIC_SITE_URL",
+      "target": [
+        "production"
+      ],
+      "type": "plain"
+    },
+    {
+      "key": "TWUANIS_PACKAGE_ENFORCEMENT",
+      "target": [
+        "production"
+      ],
+      "type": "plain"
+    },
+    {
+      "key": "NEXT_PUBLIC_TWUANIS_ENVIRONMENT",
+      "target": [
+        "production"
+      ],
+      "type": "plain"
+    },
+    {
+      "key": "TWUANIS_ENVIRONMENT",
+      "target": [
+        "production"
+      ],
+      "type": "plain"
+    },
+    {
+      "key": "EMAIL_FROM",
+      "target": [
+        "production"
+      ],
+      "type": "sensitive"
+    },
+    {
+      "key": "RESEND_API_KEY",
+      "target": [
+        "production"
+      ],
+      "type": "sensitive"
+    },
+    {
+      "key": "TWUANIS_CAMPAIGNS",
+      "target": [
+        "production"
+      ],
+      "type": "encrypted"
+    },
+    {
+      "key": "TWUANIS_OFFER_PRESENTATION",
+      "target": [
+        "production"
+      ],
+      "type": "encrypted"
+    },
+    {
+      "key": "TWUANIS_ADDON_PLACEMENT",
+      "target": [
+        "production"
+      ],
+      "type": "encrypted"
+    },
+    {
+      "key": "TWUANIS_ADDON_CATALOG",
+      "target": [
+        "production"
+      ],
+      "type": "encrypted"
+    },
+    {
+      "key": "CRON_SECRET",
+      "target": [
+        "production"
+      ],
+      "type": "sensitive"
+    },
+    {
+      "key": "CRON_SECRET",
+      "target": [
+        "preview"
+      ],
+      "type": "sensitive"
+    },
+    {
+      "key": "BCCR_API_TOKEN",
+      "target": [
+        "production"
+      ],
+      "type": "sensitive"
+    },
+    {
+      "key": "BCCR_API_TOKEN",
+      "target": [
+        "preview"
+      ],
+      "type": "sensitive"
+    },
+    {
+      "key": "SUPABASE_SERVICE_ROLE_KEY",
+      "target": [
+        "preview",
+        "production"
+      ],
+      "type": "sensitive"
+    },
+    {
+      "key": "TWILIO_WHATSAPP_NUMBER",
+      "target": [
+        "production",
+        "preview"
+      ],
+      "type": "sensitive"
+    },
+    {
+      "key": "TWILIO_AUTH_TOKEN",
+      "target": [
+        "preview",
+        "production"
+      ],
+      "type": "sensitive"
+    },
+    {
+      "key": "TWILIO_ACCOUNT_SID",
+      "target": [
+        "preview",
+        "production"
+      ],
+      "type": "sensitive"
+    },
+    {
+      "key": "NEXT_PUBLIC_SUPABASE_URL",
+      "target": [
+        "production",
+        "preview"
+      ],
+      "type": "sensitive"
+    },
+    {
+      "key": "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+      "target": [
+        "production",
+        "preview"
+      ],
+      "type": "sensitive"
+    }
+  ],
+  "recovery": "Existing Vercel Instant Rollback retained. No deployment performed by ORCH-DEPLOY-01."
+}

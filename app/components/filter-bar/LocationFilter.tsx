@@ -1,6 +1,8 @@
 'use client'
+import type {ReactNode} from 'react'
 
 type LocationFilterProps = {
+  headingControl?: ReactNode
   provinces: Record<string, string[]>
   districts: Record<string, string[]>
 
@@ -29,6 +31,7 @@ type LocationFilterProps = {
 }
 
         export default function LocationFilter({
+          headingControl,
           provinces,
           districts,
 
@@ -58,6 +61,8 @@ return (
 
             <>
 
+              {!showLocationOptions && headingControl && <h3 style={{...filterHeading,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+LOCATION{headingControl}</h3>}
               {!showLocationOptions && selecteddistrict && (
 
                 <div
@@ -144,8 +149,9 @@ return (
 
               <div>
 
-                <h3 style={filterHeading}>
+                <h3 style={{...filterHeading,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
                   LOCATION
+                  {headingControl}
                 </h3>
 
                 {/* province LEVEL */}

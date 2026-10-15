@@ -1,0 +1,63 @@
+[
+  {
+    "case": "history-expiry authority after expiry",
+    "http": 403,
+    "pass": true
+  },
+  {
+    "case": "L1 exact post-expiration committed report",
+    "http": 200,
+    "sameBody": true,
+    "pass": true
+  },
+  {
+    "case": "cross-account historical delivery denied",
+    "http": 403,
+    "pass": true
+  },
+  {
+    "case": "history-expiry accounting",
+    "events": [
+      [
+        "ALLOCATION_ISSUED",
+        "10"
+      ],
+      [
+        "EXECUTION_CONSUMED",
+        "1"
+      ],
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ]
+    ],
+    "pass": true
+  },
+  {
+    "case": "during-execution-expiry authority after expiry",
+    "http": 403,
+    "pass": true
+  },
+  {
+    "case": "during-execution-expiry accounting",
+    "events": [
+      [
+        "ALLOCATION_EXPIRED",
+        "10"
+      ],
+      [
+        "ALLOCATION_ISSUED",
+        "10"
+      ],
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "RESERVATION_RELEASED",
+        "1"
+      ]
+    ],
+    "pass": true
+  }
+]

@@ -1,0 +1,43 @@
+{
+  "baseline": {
+    "backendMemoryKiB": {
+      "672980": 2436,
+      "673133": 9131,
+      "673274": 140334,
+      "673273": 152437
+    },
+    "cpuSampledSeconds": {
+      "672980": 0.0,
+      "673133": 0.0,
+      "673274": 11.37,
+      "673273": 15.75
+    },
+    "waitSamples": {
+      "Client:ClientRead": 130,
+      "Lock:advisory": 74,
+      "None:None": 90,
+      "IO:DataFileExtend": 1
+    },
+    "maxBlockers": 1,
+    "note": "Sampled backend memory uses PSS where readable, otherwise RSS; CPU deltas exclude work before first sample."
+  },
+  "corrected-verified": {
+    "backendMemoryKiB": {
+      "672980": 2345,
+      "676948": 157931,
+      "676949": 156904
+    },
+    "cpuSampledSeconds": {
+      "672980": 0.0,
+      "676948": 5.77,
+      "676949": 5.7
+    },
+    "waitSamples": {
+      "Client:ClientRead": 77,
+      "None:None": 38,
+      "Lock:advisory": 20
+    },
+    "maxBlockers": 1,
+    "note": "Sampled backend memory uses PSS where readable, otherwise RSS; CPU deltas exclude work before first sample."
+  }
+}

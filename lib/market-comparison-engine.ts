@@ -1,4 +1,5 @@
 import 'server-only'
+import {authorizePreviouslyPublicCapability} from './package-capability-authorization'
 import { resolveCanonicalMarketRequest,canonicalMarketFilterBoundary } from './canonical-market-request'
 import { readMarketNumericalSurvivors } from './canonical-market-acquisition'
 import { canonicalMarketPrevalence } from './canonical-market-prevalence'
@@ -205,12 +206,49 @@ const listings =
     usdToCrcRate
   )
 
+  const prevalence=await canonicalMarketPrevalence(listings.map(row=>row.id),['property_type','environment','terrain','utility','accessibility','legal_status'])
+  return calculateMarketComparisonSide(listings,filters,usdToCrcRate,language,prevalence)
+}
+
+export async function getMarketComparison(
+  leftFilters: SideFilters,
+  rightFilters: SideFilters,
+  language: Language = 'en'
+) {
+ await authorizePreviouslyPublicCapability('cap-market-comparison')
+
+  const analyticalContext =
+    await resolveMarketAnalyticalContext()
+
+  const left =
+    await analyzeMarket(
+      leftFilters,
+      'a',
+      analyticalContext,
+      language
+    )
+
+  const right =
+    await analyzeMarket(
+      rightFilters,
+      'b',
+      analyticalContext,
+      language
+    )
+
+  return {
+    language,
+    left,
+    right
+  }
+}
+export function calculateMarketComparisonSide(listings:any[],filters:SideFilters,usdToCrcRate:number,language:Language,prevalence:Awaited<ReturnType<typeof canonicalMarketPrevalence>>,resolveAmount:typeof resolveListingAmountCrc=resolveListingAmountCrc){
   const salePrices =
     listings
       .filter((listing: any) => listing.transaction_type !== 'rent')
       .map(
             (listing: any) =>
-              resolveListingAmountCrc(
+              resolveAmount(
                 listing,
                 usdToCrcRate
               )
@@ -222,7 +260,7 @@ const listings =
       .filter((listing: any) => listing.transaction_type === 'rent')
       .map(
             (listing: any) =>
-              resolveListingAmountCrc(
+              resolveAmount(
                 listing,       
                 usdToCrcRate
               )
@@ -257,7 +295,7 @@ const listings =
   const averageConstructionArea =
     average(constructionAreas)
 
-  const prevalence=await canonicalMarketPrevalence(listings.map(row=>row.id),['property_type','environment','terrain','utility','accessibility','legal_status'])
+
   const leading=(dimension:string)=>{const value=prevalence.dimensions.find(d=>d.dimension===dimension)?.terms[0];return value?value.label[language]:null}
   return {
     filters,
@@ -343,36 +381,5 @@ const listings =
 
     topLegalStatus:
       leading('legal_status')
-  }
-}
-
-export async function getMarketComparison(
-  leftFilters: SideFilters,
-  rightFilters: SideFilters,
-  language: Language = 'en'
-) {
-  const analyticalContext =
-    await resolveMarketAnalyticalContext()
-
-  const left =
-    await analyzeMarket(
-      leftFilters,
-      'a',
-      analyticalContext,
-      language
-    )
-
-  const right =
-    await analyzeMarket(
-      rightFilters,
-      'b',
-      analyticalContext,
-      language
-    )
-
-  return {
-    language,
-    left,
-    right
   }
 }

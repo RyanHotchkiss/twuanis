@@ -1,0 +1,46 @@
+{
+  "execution": "0625d4d8-b45e-4be7-8ed0-539dd0d3cfda",
+  "naturalExpiry": "2026-10-15 15:33:06.003847+00:00",
+  "state": "RESERVED",
+  "reports": 0,
+  "events": [
+    [
+      "EXECUTION_RESERVED",
+      "1",
+      {
+        "authority": {
+          "kind": "PACKAGE",
+          "endsAt": "2026-10-15T18:40:15.585914+00:00",
+          "termId": "9787982f-ec1b-4671-8d21-f0fbd08904a0",
+          "version": 1,
+          "startsAt": "2026-09-15T18:40:15.585914+00:00",
+          "accountId": "da841325-9a1c-4f94-8bfd-26e0893aaf58",
+          "packageId": "pkg-pricing-position-relationships",
+          "population": "COMBINED",
+          "capabilities": [
+            "cap-market-summary",
+            "cap-market-composition",
+            "cap-market-asking-price-distribution",
+            "cap-property-matching",
+            "cap-market-comparison",
+            "cap-property-configuration-frequency",
+            "cap-price-m2-distribution",
+            "cap-geographic-price-m2-comparison",
+            "cap-size-price-m2",
+            "cap-construction-land-price-m2",
+            "cap-user-defined-cohort-price-m2-comparison",
+            "cap-cross-dimensional-analysis",
+            "cap-comparative-price-m2-discovery",
+            "cap-property-price-m2-position",
+            "cap-user-defined-comparable-cohort",
+            "cap-asking-area-coefficient-ratio",
+            "cap-weighted-price-m2"
+          ],
+          "orchestrator": "orchestrator-markets-current-valuation-of-property",
+          "configurationId": "05600000-0000-4000-8000-000000000003"
+        }
+      }
+    ]
+  ],
+  "pass": false
+}

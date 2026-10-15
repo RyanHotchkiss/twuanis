@@ -1,0 +1,31 @@
+[
+  {
+    "migration": "103_execution_credit_ledger.sql",
+    "sha256": "c08e48017ccfb1ef449c9f5313da331e8fd90a685ffeac5e03dcec13df3d2761",
+    "seconds": 0.076630417,
+    "status": "PASS"
+  },
+  {
+    "migration": "104_execution_credit_commercial_integration.sql",
+    "sha256": "9935ffc2771070a538fd2cae912763dd58b66f9d03e9aad208fa56e4ab3f0494",
+    "seconds": 0.018271334,
+    "status": "PASS"
+  },
+  {
+    "migration": "105_orchestrator_execution.sql",
+    "sha256": "fccd74b16daedcc72da876144fd18ae8b5be3b40564eef38de57a81515b1c52f",
+    "seconds": 0.008392208999999984,
+    "status": "PASS"
+  },
+  {
+    "migration": "106_bank_analytical_attribute_projection.sql",
+    "sha256": "75e5fb9ac14380321c16e32f5938e4c77dff024c63fdebf1bc2be48a6f9bb6e8",
+    "seconds": 0.0027666670000000004,
+    "status": "PASS"
+  },
+  {
+    "migration": "107_orchestrator_immutable_evidence_v2.sql",
+    "status": "FAIL",
+    "error": "syntax error at or near \"COMMIT\"\nLINE 511: COMMIT;\n          ^\n"
+  }
+]

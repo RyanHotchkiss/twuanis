@@ -1,0 +1,6958 @@
+[
+  {
+    "engine": "summary",
+    "population": "combined",
+    "check": "executed",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "summary",
+    "population": "combined",
+    "check": "methodology",
+    "expected": "existing-engine-methodologies-population-adapter-v1",
+    "actual": "existing-engine-methodologies-population-adapter-v1",
+    "pass": true
+  },
+  {
+    "engine": "summary",
+    "population": "combined",
+    "check": "PRIVATE population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "summary",
+    "population": "combined/PRIVATE",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "summary",
+    "population": "combined/PRIVATE",
+    "check": "eligible N",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "summary",
+    "population": "combined/PRIVATE",
+    "check": "sale N",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "summary",
+    "population": "combined/PRIVATE",
+    "check": "rent N",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "summary",
+    "population": "combined",
+    "check": "BANK population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "summary",
+    "population": "combined/BANK",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "summary",
+    "population": "combined/BANK",
+    "check": "eligible N",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "summary",
+    "population": "combined/BANK",
+    "check": "sale N",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "summary",
+    "population": "combined/BANK",
+    "check": "rent N",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined",
+    "check": "executed",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined",
+    "check": "methodology",
+    "expected": "existing-engine-methodologies-population-adapter-v1",
+    "actual": "existing-engine-methodologies-population-adapter-v1",
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined",
+    "check": "PRIVATE population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "denominator",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "province known",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "province missing",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "province/11",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "canton known",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "canton missing",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "canton/37",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "district known",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "district missing",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "district/737",
+    "expected": 32,
+    "actual": 32,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "district/738",
+    "expected": 31,
+    "actual": 31,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "property_type known",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "property_type missing",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "property_type/1116",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "bedrooms known",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "bedrooms missing",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "bedrooms/1124",
+    "expected": 32,
+    "actual": 32,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "bedrooms/1125",
+    "expected": 31,
+    "actual": 31,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "bathrooms known",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "bathrooms missing",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "bathrooms/1128",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "parking known",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "parking missing",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "parking/1134",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "year_built known",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "year_built missing",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "year_built/1141",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "utility known",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "utility missing",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "utility/1156",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "environment known",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "environment missing",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "environment/1165",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "terrain known",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "terrain missing",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "terrain/1177",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "accessibility known",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "accessibility missing",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "legal_status known",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "legal_status missing",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/PRIVATE",
+    "check": "legal_status/1189",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined",
+    "check": "BANK population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "denominator",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "province known",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "province missing",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "province/11",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "canton known",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "canton missing",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "canton/37",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "district known",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "district missing",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "district/737",
+    "expected": 32,
+    "actual": 32,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "district/738",
+    "expected": 31,
+    "actual": 31,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "property_type known",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "property_type missing",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "property_type/1116",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "bedrooms known",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "bedrooms missing",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "bedrooms/1124",
+    "expected": 32,
+    "actual": 32,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "bedrooms/1125",
+    "expected": 31,
+    "actual": 31,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "bathrooms known",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "bathrooms missing",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "bathrooms/1128",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "parking known",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "parking missing",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "parking/1134",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "year_built known",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "year_built missing",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "year_built/1141",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "utility known",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "utility missing",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "utility/1156",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "environment known",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "environment missing",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "environment/1165",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "terrain known",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "terrain missing",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "terrain/1177",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "accessibility known",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "accessibility missing",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "legal_status known",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "legal_status missing",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "composition",
+    "population": "combined/BANK",
+    "check": "legal_status/1189",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "market-asking-price-distribution",
+    "population": "combined",
+    "check": "executed",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "market-asking-price-distribution",
+    "population": "combined",
+    "check": "methodology",
+    "expected": "existing-engine-methodologies-population-adapter-v1",
+    "actual": "existing-engine-methodologies-population-adapter-v1",
+    "pass": true
+  },
+  {
+    "engine": "market-asking-price-distribution",
+    "population": "combined",
+    "check": "PRIVATE population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "market-asking-price-distribution",
+    "population": "combined/PRIVATE",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "market-asking-price-distribution",
+    "population": "combined/PRIVATE",
+    "check": "asking.sampleSize",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "market-asking-price-distribution",
+    "population": "combined/PRIVATE",
+    "check": "asking.minimum",
+    "expected": 45975.0,
+    "actual": 45975,
+    "pass": true
+  },
+  {
+    "engine": "market-asking-price-distribution",
+    "population": "combined/PRIVATE",
+    "check": "asking.p10",
+    "expected": 230025.0,
+    "actual": 230025,
+    "pass": true
+  },
+  {
+    "engine": "market-asking-price-distribution",
+    "population": "combined/PRIVATE",
+    "check": "asking.p25",
+    "expected": 366000.0,
+    "actual": 366000,
+    "pass": true
+  },
+  {
+    "engine": "market-asking-price-distribution",
+    "population": "combined/PRIVATE",
+    "check": "asking.median",
+    "expected": 526025.0,
+    "actual": 526025,
+    "pass": true
+  },
+  {
+    "engine": "market-asking-price-distribution",
+    "population": "combined/PRIVATE",
+    "check": "asking.average",
+    "expected": 528222.619047619,
+    "actual": 528222.619047619,
+    "pass": true
+  },
+  {
+    "engine": "market-asking-price-distribution",
+    "population": "combined/PRIVATE",
+    "check": "asking.p75",
+    "expected": 696000.0,
+    "actual": 696000,
+    "pass": true
+  },
+  {
+    "engine": "market-asking-price-distribution",
+    "population": "combined/PRIVATE",
+    "check": "asking.p90",
+    "expected": 822025.0,
+    "actual": 822025,
+    "pass": true
+  },
+  {
+    "engine": "market-asking-price-distribution",
+    "population": "combined/PRIVATE",
+    "check": "asking.maximum",
+    "expected": 966025.0,
+    "actual": 966025,
+    "pass": true
+  },
+  {
+    "engine": "market-asking-price-distribution",
+    "population": "combined/PRIVATE",
+    "check": "asking.iqr",
+    "expected": 330000.0,
+    "actual": 330000,
+    "pass": true
+  },
+  {
+    "engine": "market-asking-price-distribution",
+    "population": "combined",
+    "check": "BANK population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "market-asking-price-distribution",
+    "population": "combined/BANK",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "market-asking-price-distribution",
+    "population": "combined/BANK",
+    "check": "asking.sampleSize",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "market-asking-price-distribution",
+    "population": "combined/BANK",
+    "check": "asking.minimum",
+    "expected": 36780.0,
+    "actual": 36780,
+    "pass": true
+  },
+  {
+    "engine": "market-asking-price-distribution",
+    "population": "combined/BANK",
+    "check": "asking.p10",
+    "expected": 184020.0,
+    "actual": 184020,
+    "pass": true
+  },
+  {
+    "engine": "market-asking-price-distribution",
+    "population": "combined/BANK",
+    "check": "asking.p25",
+    "expected": 292800.0,
+    "actual": 292800,
+    "pass": true
+  },
+  {
+    "engine": "market-asking-price-distribution",
+    "population": "combined/BANK",
+    "check": "asking.median",
+    "expected": 420820.0,
+    "actual": 420820,
+    "pass": true
+  },
+  {
+    "engine": "market-asking-price-distribution",
+    "population": "combined/BANK",
+    "check": "asking.average",
+    "expected": 422578.09523809527,
+    "actual": 422578.09523809527,
+    "pass": true
+  },
+  {
+    "engine": "market-asking-price-distribution",
+    "population": "combined/BANK",
+    "check": "asking.p75",
+    "expected": 556800.0,
+    "actual": 556800,
+    "pass": true
+  },
+  {
+    "engine": "market-asking-price-distribution",
+    "population": "combined/BANK",
+    "check": "asking.p90",
+    "expected": 657620.0,
+    "actual": 657620,
+    "pass": true
+  },
+  {
+    "engine": "market-asking-price-distribution",
+    "population": "combined/BANK",
+    "check": "asking.maximum",
+    "expected": 772820.0,
+    "actual": 772820,
+    "pass": true
+  },
+  {
+    "engine": "market-asking-price-distribution",
+    "population": "combined/BANK",
+    "check": "asking.iqr",
+    "expected": 264000.0,
+    "actual": 264000,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined",
+    "check": "executed",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined",
+    "check": "methodology",
+    "expected": "existing-engine-methodologies-population-adapter-v1",
+    "actual": "existing-engine-methodologies-population-adapter-v1",
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined",
+    "check": "PRIVATE population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "cap",
+    "expected": 12,
+    "actual": 12,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "exact canonical tie order",
+    "expected": [
+      "PRIVATE:0038931f-9025-4118-8034-3e2cf9c29c92",
+      "PRIVATE:04c82c47-0657-4b0f-b666-bcfbb33596bc",
+      "PRIVATE:05307bbe-d49a-4b4c-a16a-a4ded61b45f6",
+      "PRIVATE:0574f73e-dc5f-4ed2-9dfc-3c48b8f28b8c",
+      "PRIVATE:05dd6fd2-58df-424d-b85e-48f5d967ad7e",
+      "PRIVATE:06d37f7a-c557-444a-aaf6-a532f06ada21",
+      "PRIVATE:0879f2e2-5e0e-474c-b2c6-690b92913a40",
+      "PRIVATE:0b43e67d-6c50-4254-8198-10fc4876e169",
+      "PRIVATE:151b9089-67f4-419f-ae4d-009872bf4594",
+      "PRIVATE:2332dad8-f7d7-4259-9acd-b04a13dc507f",
+      "PRIVATE:25698936-d060-49d3-b9f0-839f846756a2",
+      "PRIVATE:25abb59e-a506-4e9c-860a-31f76093436c"
+    ],
+    "actual": [
+      "PRIVATE:0038931f-9025-4118-8034-3e2cf9c29c92",
+      "PRIVATE:04c82c47-0657-4b0f-b666-bcfbb33596bc",
+      "PRIVATE:05307bbe-d49a-4b4c-a16a-a4ded61b45f6",
+      "PRIVATE:0574f73e-dc5f-4ed2-9dfc-3c48b8f28b8c",
+      "PRIVATE:05dd6fd2-58df-424d-b85e-48f5d967ad7e",
+      "PRIVATE:06d37f7a-c557-444a-aaf6-a532f06ada21",
+      "PRIVATE:0879f2e2-5e0e-474c-b2c6-690b92913a40",
+      "PRIVATE:0b43e67d-6c50-4254-8198-10fc4876e169",
+      "PRIVATE:151b9089-67f4-419f-ae4d-009872bf4594",
+      "PRIVATE:2332dad8-f7d7-4259-9acd-b04a13dc507f",
+      "PRIVATE:25698936-d060-49d3-b9f0-839f846756a2",
+      "PRIVATE:25abb59e-a506-4e9c-860a-31f76093436c"
+    ],
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "score PRIVATE:0038931f-9025-4118-8034-3e2cf9c29c92",
+    "expected": 100,
+    "actual": 100,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "identity PRIVATE:0038931f-9025-4118-8034-3e2cf9c29c92",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "single semantic match",
+    "expected": 1,
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "score PRIVATE:04c82c47-0657-4b0f-b666-bcfbb33596bc",
+    "expected": 100,
+    "actual": 100,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "identity PRIVATE:04c82c47-0657-4b0f-b666-bcfbb33596bc",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "single semantic match",
+    "expected": 1,
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "score PRIVATE:05307bbe-d49a-4b4c-a16a-a4ded61b45f6",
+    "expected": 100,
+    "actual": 100,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "identity PRIVATE:05307bbe-d49a-4b4c-a16a-a4ded61b45f6",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "single semantic match",
+    "expected": 1,
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "score PRIVATE:0574f73e-dc5f-4ed2-9dfc-3c48b8f28b8c",
+    "expected": 100,
+    "actual": 100,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "identity PRIVATE:0574f73e-dc5f-4ed2-9dfc-3c48b8f28b8c",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "single semantic match",
+    "expected": 1,
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "score PRIVATE:05dd6fd2-58df-424d-b85e-48f5d967ad7e",
+    "expected": 100,
+    "actual": 100,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "identity PRIVATE:05dd6fd2-58df-424d-b85e-48f5d967ad7e",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "single semantic match",
+    "expected": 1,
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "score PRIVATE:06d37f7a-c557-444a-aaf6-a532f06ada21",
+    "expected": 100,
+    "actual": 100,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "identity PRIVATE:06d37f7a-c557-444a-aaf6-a532f06ada21",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "single semantic match",
+    "expected": 1,
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "score PRIVATE:0879f2e2-5e0e-474c-b2c6-690b92913a40",
+    "expected": 100,
+    "actual": 100,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "identity PRIVATE:0879f2e2-5e0e-474c-b2c6-690b92913a40",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "single semantic match",
+    "expected": 1,
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "score PRIVATE:0b43e67d-6c50-4254-8198-10fc4876e169",
+    "expected": 100,
+    "actual": 100,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "identity PRIVATE:0b43e67d-6c50-4254-8198-10fc4876e169",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "single semantic match",
+    "expected": 1,
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "score PRIVATE:151b9089-67f4-419f-ae4d-009872bf4594",
+    "expected": 100,
+    "actual": 100,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "identity PRIVATE:151b9089-67f4-419f-ae4d-009872bf4594",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "single semantic match",
+    "expected": 1,
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "score PRIVATE:2332dad8-f7d7-4259-9acd-b04a13dc507f",
+    "expected": 100,
+    "actual": 100,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "identity PRIVATE:2332dad8-f7d7-4259-9acd-b04a13dc507f",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "single semantic match",
+    "expected": 1,
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "score PRIVATE:25698936-d060-49d3-b9f0-839f846756a2",
+    "expected": 100,
+    "actual": 100,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "identity PRIVATE:25698936-d060-49d3-b9f0-839f846756a2",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "single semantic match",
+    "expected": 1,
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "score PRIVATE:25abb59e-a506-4e9c-860a-31f76093436c",
+    "expected": 100,
+    "actual": 100,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "identity PRIVATE:25abb59e-a506-4e9c-860a-31f76093436c",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/PRIVATE",
+    "check": "single semantic match",
+    "expected": 1,
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined",
+    "check": "BANK population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "cap",
+    "expected": 12,
+    "actual": 12,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "exact canonical tie order",
+    "expected": [
+      "BANK:0425acd9-4809-4fa2-9912-dfe23dde390e",
+      "BANK:05e66464-5ec3-4363-8e8c-59f9a59465ba",
+      "BANK:08c2510f-c41c-435f-83d0-9a8b775ce499",
+      "BANK:0bcc8f09-ac3c-45f2-9f5c-b6ef99dc2b6e",
+      "BANK:0cd88a04-4f22-4569-aaa3-bce80fd78174",
+      "BANK:120fa0dc-3785-44a9-8a8f-c12f3fbc7071",
+      "BANK:17035483-2fb0-42c7-a6f9-50b31bddb8bd",
+      "BANK:1ed17413-14ff-4883-a558-4d5ba53d4c99",
+      "BANK:206635f7-82ea-4c83-b55b-f42210b9102f",
+      "BANK:2318f8d0-d08d-484a-b003-d60a1c5c1fbe",
+      "BANK:2ea03502-f71d-4154-9a5c-0246766db751",
+      "BANK:300bebeb-5f45-4e99-9e56-d43f33a54ea0"
+    ],
+    "actual": [
+      "BANK:0425acd9-4809-4fa2-9912-dfe23dde390e",
+      "BANK:05e66464-5ec3-4363-8e8c-59f9a59465ba",
+      "BANK:08c2510f-c41c-435f-83d0-9a8b775ce499",
+      "BANK:0bcc8f09-ac3c-45f2-9f5c-b6ef99dc2b6e",
+      "BANK:0cd88a04-4f22-4569-aaa3-bce80fd78174",
+      "BANK:120fa0dc-3785-44a9-8a8f-c12f3fbc7071",
+      "BANK:17035483-2fb0-42c7-a6f9-50b31bddb8bd",
+      "BANK:1ed17413-14ff-4883-a558-4d5ba53d4c99",
+      "BANK:206635f7-82ea-4c83-b55b-f42210b9102f",
+      "BANK:2318f8d0-d08d-484a-b003-d60a1c5c1fbe",
+      "BANK:2ea03502-f71d-4154-9a5c-0246766db751",
+      "BANK:300bebeb-5f45-4e99-9e56-d43f33a54ea0"
+    ],
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "score BANK:0425acd9-4809-4fa2-9912-dfe23dde390e",
+    "expected": 100,
+    "actual": 100,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "identity BANK:0425acd9-4809-4fa2-9912-dfe23dde390e",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "single semantic match",
+    "expected": 1,
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "score BANK:05e66464-5ec3-4363-8e8c-59f9a59465ba",
+    "expected": 100,
+    "actual": 100,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "identity BANK:05e66464-5ec3-4363-8e8c-59f9a59465ba",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "single semantic match",
+    "expected": 1,
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "score BANK:08c2510f-c41c-435f-83d0-9a8b775ce499",
+    "expected": 100,
+    "actual": 100,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "identity BANK:08c2510f-c41c-435f-83d0-9a8b775ce499",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "single semantic match",
+    "expected": 1,
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "score BANK:0bcc8f09-ac3c-45f2-9f5c-b6ef99dc2b6e",
+    "expected": 100,
+    "actual": 100,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "identity BANK:0bcc8f09-ac3c-45f2-9f5c-b6ef99dc2b6e",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "single semantic match",
+    "expected": 1,
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "score BANK:0cd88a04-4f22-4569-aaa3-bce80fd78174",
+    "expected": 100,
+    "actual": 100,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "identity BANK:0cd88a04-4f22-4569-aaa3-bce80fd78174",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "single semantic match",
+    "expected": 1,
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "score BANK:120fa0dc-3785-44a9-8a8f-c12f3fbc7071",
+    "expected": 100,
+    "actual": 100,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "identity BANK:120fa0dc-3785-44a9-8a8f-c12f3fbc7071",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "single semantic match",
+    "expected": 1,
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "score BANK:17035483-2fb0-42c7-a6f9-50b31bddb8bd",
+    "expected": 100,
+    "actual": 100,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "identity BANK:17035483-2fb0-42c7-a6f9-50b31bddb8bd",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "single semantic match",
+    "expected": 1,
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "score BANK:1ed17413-14ff-4883-a558-4d5ba53d4c99",
+    "expected": 100,
+    "actual": 100,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "identity BANK:1ed17413-14ff-4883-a558-4d5ba53d4c99",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "single semantic match",
+    "expected": 1,
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "score BANK:206635f7-82ea-4c83-b55b-f42210b9102f",
+    "expected": 100,
+    "actual": 100,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "identity BANK:206635f7-82ea-4c83-b55b-f42210b9102f",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "single semantic match",
+    "expected": 1,
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "score BANK:2318f8d0-d08d-484a-b003-d60a1c5c1fbe",
+    "expected": 100,
+    "actual": 100,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "identity BANK:2318f8d0-d08d-484a-b003-d60a1c5c1fbe",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "single semantic match",
+    "expected": 1,
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "score BANK:2ea03502-f71d-4154-9a5c-0246766db751",
+    "expected": 100,
+    "actual": 100,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "identity BANK:2ea03502-f71d-4154-9a5c-0246766db751",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "single semantic match",
+    "expected": 1,
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "score BANK:300bebeb-5f45-4e99-9e56-d43f33a54ea0",
+    "expected": 100,
+    "actual": 100,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "identity BANK:300bebeb-5f45-4e99-9e56-d43f33a54ea0",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "matching",
+    "population": "combined/BANK",
+    "check": "single semantic match",
+    "expected": 1,
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "engine": "comparison",
+    "population": "combined",
+    "check": "executed",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "comparison",
+    "population": "combined",
+    "check": "methodology",
+    "expected": "existing-engine-methodologies-population-adapter-v1",
+    "actual": "existing-engine-methodologies-population-adapter-v1",
+    "pass": true
+  },
+  {
+    "engine": "comparison",
+    "population": "combined",
+    "check": "PRIVATE population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "comparison",
+    "population": "combined/PRIVATE",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "comparison",
+    "population": "combined/PRIVATE",
+    "check": "asking mean",
+    "expected": 528222.619047619,
+    "actual": 528222.619047619,
+    "pass": true
+  },
+  {
+    "engine": "comparison",
+    "population": "combined/PRIVATE",
+    "check": "asking median",
+    "expected": 526025.0,
+    "actual": 526025,
+    "pass": true
+  },
+  {
+    "engine": "comparison",
+    "population": "combined/PRIVATE",
+    "check": "land mean",
+    "expected": 1477.7777777777778,
+    "actual": 1477.7777777777778,
+    "pass": true
+  },
+  {
+    "engine": "comparison",
+    "population": "combined/PRIVATE",
+    "check": "construction mean",
+    "expected": 556.6666666666666,
+    "actual": 556.6666666666666,
+    "pass": true
+  },
+  {
+    "engine": "comparison",
+    "population": "combined/PRIVATE",
+    "check": "requires two populations",
+    "expected": "SUBSTANTIVE",
+    "actual": "SUBSTANTIVE",
+    "pass": true
+  },
+  {
+    "engine": "comparison",
+    "population": "combined",
+    "check": "BANK population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "comparison",
+    "population": "combined/BANK",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "comparison",
+    "population": "combined/BANK",
+    "check": "asking mean",
+    "expected": 422578.09523809527,
+    "actual": 422578.09523809527,
+    "pass": true
+  },
+  {
+    "engine": "comparison",
+    "population": "combined/BANK",
+    "check": "asking median",
+    "expected": 420820.0,
+    "actual": 420820,
+    "pass": true
+  },
+  {
+    "engine": "comparison",
+    "population": "combined/BANK",
+    "check": "land mean",
+    "expected": 1477.7777777777778,
+    "actual": 1477.7777777777778,
+    "pass": true
+  },
+  {
+    "engine": "comparison",
+    "population": "combined/BANK",
+    "check": "construction mean",
+    "expected": 556.6666666666666,
+    "actual": 556.6666666666666,
+    "pass": true
+  },
+  {
+    "engine": "comparison",
+    "population": "combined/BANK",
+    "check": "requires two populations",
+    "expected": "SUBSTANTIVE",
+    "actual": "SUBSTANTIVE",
+    "pass": true
+  },
+  {
+    "engine": "configuration",
+    "population": "combined",
+    "check": "executed",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "configuration",
+    "population": "combined",
+    "check": "methodology",
+    "expected": "existing-engine-methodologies-population-adapter-v1",
+    "actual": "existing-engine-methodologies-population-adapter-v1",
+    "pass": true
+  },
+  {
+    "engine": "configuration",
+    "population": "combined",
+    "check": "PRIVATE population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "configuration",
+    "population": "combined/PRIVATE",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "configuration",
+    "population": "combined/PRIVATE",
+    "check": "market N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "configuration",
+    "population": "combined/PRIVATE",
+    "check": "match N",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "configuration",
+    "population": "combined/PRIVATE",
+    "check": "percentage",
+    "expected": 98.4375,
+    "actual": 98.4375,
+    "pass": true
+  },
+  {
+    "engine": "configuration",
+    "population": "combined",
+    "check": "BANK population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "configuration",
+    "population": "combined/BANK",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "configuration",
+    "population": "combined/BANK",
+    "check": "market N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "configuration",
+    "population": "combined/BANK",
+    "check": "match N",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "configuration",
+    "population": "combined/BANK",
+    "check": "percentage",
+    "expected": 98.4375,
+    "actual": 98.4375,
+    "pass": true
+  },
+  {
+    "engine": "distribution",
+    "population": "combined",
+    "check": "executed",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "distribution",
+    "population": "combined",
+    "check": "methodology",
+    "expected": "existing-engine-methodologies-population-adapter-v1",
+    "actual": "existing-engine-methodologies-population-adapter-v1",
+    "pass": true
+  },
+  {
+    "engine": "distribution",
+    "population": "combined",
+    "check": "PRIVATE population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "distribution",
+    "population": "combined/PRIVATE",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "distribution",
+    "population": "combined/PRIVATE",
+    "check": "ppm2.sampleSize",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "distribution",
+    "population": "combined/PRIVATE",
+    "check": "ppm2.minimum",
+    "expected": 208.97413793103448,
+    "actual": 208.97413793103448,
+    "pass": true
+  },
+  {
+    "engine": "distribution",
+    "population": "combined/PRIVATE",
+    "check": "ppm2.p10",
+    "expected": 230.59924137931034,
+    "actual": 230.59924137931034,
+    "pass": true
+  },
+  {
+    "engine": "distribution",
+    "population": "combined/PRIVATE",
+    "check": "ppm2.p25",
+    "expected": 276.7179310344828,
+    "actual": 276.7179310344828,
+    "pass": true
+  },
+  {
+    "engine": "distribution",
+    "population": "combined/PRIVATE",
+    "check": "ppm2.median",
+    "expected": 358.4423076923077,
+    "actual": 358.4423076923077,
+    "pass": true
+  },
+  {
+    "engine": "distribution",
+    "population": "combined/PRIVATE",
+    "check": "ppm2.average",
+    "expected": 667.7487511813843,
+    "actual": 667.7487511813841,
+    "pass": true
+  },
+  {
+    "engine": "distribution",
+    "population": "combined/PRIVATE",
+    "check": "ppm2.p75",
+    "expected": 520.0,
+    "actual": 520,
+    "pass": true
+  },
+  {
+    "engine": "distribution",
+    "population": "combined/PRIVATE",
+    "check": "ppm2.p90",
+    "expected": 1085.61,
+    "actual": 1085.6100000000001,
+    "pass": true
+  },
+  {
+    "engine": "distribution",
+    "population": "combined/PRIVATE",
+    "check": "ppm2.maximum",
+    "expected": 4660.25,
+    "actual": 4660.25,
+    "pass": true
+  },
+  {
+    "engine": "distribution",
+    "population": "combined/PRIVATE",
+    "check": "ppm2.iqr",
+    "expected": 243.28206896551723,
+    "actual": 243.28206896551723,
+    "pass": true
+  },
+  {
+    "engine": "distribution",
+    "population": "combined",
+    "check": "BANK population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "distribution",
+    "population": "combined/BANK",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "distribution",
+    "population": "combined/BANK",
+    "check": "ppm2.sampleSize",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "distribution",
+    "population": "combined/BANK",
+    "check": "ppm2.minimum",
+    "expected": 167.1793103448276,
+    "actual": 167.1793103448276,
+    "pass": true
+  },
+  {
+    "engine": "distribution",
+    "population": "combined/BANK",
+    "check": "ppm2.p10",
+    "expected": 184.47939310344827,
+    "actual": 184.47939310344827,
+    "pass": true
+  },
+  {
+    "engine": "distribution",
+    "population": "combined/BANK",
+    "check": "ppm2.p25",
+    "expected": 221.3743448275862,
+    "actual": 221.37434482758619,
+    "pass": true
+  },
+  {
+    "engine": "distribution",
+    "population": "combined/BANK",
+    "check": "ppm2.median",
+    "expected": 286.75384615384615,
+    "actual": 286.75384615384615,
+    "pass": true
+  },
+  {
+    "engine": "distribution",
+    "population": "combined/BANK",
+    "check": "ppm2.average",
+    "expected": 534.1990009451074,
+    "actual": 534.1990009451073,
+    "pass": true
+  },
+  {
+    "engine": "distribution",
+    "population": "combined/BANK",
+    "check": "ppm2.p75",
+    "expected": 416.0,
+    "actual": 416,
+    "pass": true
+  },
+  {
+    "engine": "distribution",
+    "population": "combined/BANK",
+    "check": "ppm2.p90",
+    "expected": 868.488,
+    "actual": 868.488,
+    "pass": true
+  },
+  {
+    "engine": "distribution",
+    "population": "combined/BANK",
+    "check": "ppm2.maximum",
+    "expected": 3728.2,
+    "actual": 3728.2,
+    "pass": true
+  },
+  {
+    "engine": "distribution",
+    "population": "combined/BANK",
+    "check": "ppm2.iqr",
+    "expected": 194.6256551724138,
+    "actual": 194.62565517241381,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined",
+    "check": "executed",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined",
+    "check": "methodology",
+    "expected": "existing-engine-methodologies-population-adapter-v1",
+    "actual": "existing-engine-methodologies-population-adapter-v1",
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined",
+    "check": "PRIVATE population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/PRIVATE",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/PRIVATE",
+    "check": "737.sampleSize",
+    "expected": 32,
+    "actual": 32,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/PRIVATE",
+    "check": "737.minimum",
+    "expected": 220.01923076923077,
+    "actual": 220.01923076923077,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/PRIVATE",
+    "check": "737.p10",
+    "expected": 269.07948717948716,
+    "actual": 269.07948717948716,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/PRIVATE",
+    "check": "737.p25",
+    "expected": 369.5111111111111,
+    "actual": 369.51111111111106,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/PRIVATE",
+    "check": "737.median",
+    "expected": 520.0,
+    "actual": 520,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/PRIVATE",
+    "check": "737.average",
+    "expected": 1018.9401709401709,
+    "actual": 1018.9401709401709,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/PRIVATE",
+    "check": "737.p75",
+    "expected": 994.1,
+    "actual": 994.0999999999999,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/PRIVATE",
+    "check": "737.p90",
+    "expected": 2799.8,
+    "actual": 2799.800000000001,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/PRIVATE",
+    "check": "737.maximum",
+    "expected": 4660.25,
+    "actual": 4660.25,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/PRIVATE",
+    "check": "737.iqr",
+    "expected": 624.588888888889,
+    "actual": 624.5888888888888,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/PRIVATE",
+    "check": "geography delta",
+    "expected": 161.55769230769232,
+    "actual": 161.55769230769232,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/PRIVATE",
+    "check": "738.sampleSize",
+    "expected": 31,
+    "actual": 31,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/PRIVATE",
+    "check": "738.minimum",
+    "expected": 208.97413793103448,
+    "actual": 208.97413793103448,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/PRIVATE",
+    "check": "738.p10",
+    "expected": 215.27941176470588,
+    "actual": 215.27941176470588,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/PRIVATE",
+    "check": "738.p25",
+    "expected": 250.47819472616632,
+    "actual": 250.47819472616632,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/PRIVATE",
+    "check": "738.median",
+    "expected": 298.0833333333333,
+    "actual": 298.0833333333333,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/PRIVATE",
+    "check": "738.average",
+    "expected": 305.22857594650765,
+    "actual": 305.2285759465077,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/PRIVATE",
+    "check": "738.p75",
+    "expected": 354.80809523809523,
+    "actual": 354.80809523809523,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/PRIVATE",
+    "check": "738.p90",
+    "expected": 391.77941176470586,
+    "actual": 391.77941176470586,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/PRIVATE",
+    "check": "738.maximum",
+    "expected": 462.36764705882354,
+    "actual": 462.36764705882354,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/PRIVATE",
+    "check": "738.iqr",
+    "expected": 104.32990051192891,
+    "actual": 104.32990051192891,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/PRIVATE",
+    "check": "geography delta",
+    "expected": -60.358974358974365,
+    "actual": -60.358974358974365,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined",
+    "check": "BANK population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/BANK",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/BANK",
+    "check": "737.sampleSize",
+    "expected": 32,
+    "actual": 32,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/BANK",
+    "check": "737.minimum",
+    "expected": 176.01538461538462,
+    "actual": 176.01538461538462,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/BANK",
+    "check": "737.p10",
+    "expected": 215.26358974358973,
+    "actual": 215.26358974358976,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/BANK",
+    "check": "737.p25",
+    "expected": 295.6088888888889,
+    "actual": 295.6088888888889,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/BANK",
+    "check": "737.median",
+    "expected": 416.0,
+    "actual": 416,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/BANK",
+    "check": "737.average",
+    "expected": 815.1521367521367,
+    "actual": 815.1521367521368,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/BANK",
+    "check": "737.p75",
+    "expected": 795.28,
+    "actual": 795.28,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/BANK",
+    "check": "737.p90",
+    "expected": 2239.84,
+    "actual": 2239.840000000001,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/BANK",
+    "check": "737.maximum",
+    "expected": 3728.2,
+    "actual": 3728.2,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/BANK",
+    "check": "737.iqr",
+    "expected": 499.6711111111111,
+    "actual": 499.6711111111111,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/BANK",
+    "check": "geography delta",
+    "expected": 129.24615384615385,
+    "actual": 129.24615384615385,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/BANK",
+    "check": "738.sampleSize",
+    "expected": 31,
+    "actual": 31,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/BANK",
+    "check": "738.minimum",
+    "expected": 167.1793103448276,
+    "actual": 167.1793103448276,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/BANK",
+    "check": "738.p10",
+    "expected": 172.2235294117647,
+    "actual": 172.2235294117647,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/BANK",
+    "check": "738.p25",
+    "expected": 200.38255578093307,
+    "actual": 200.38255578093305,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/BANK",
+    "check": "738.median",
+    "expected": 238.46666666666667,
+    "actual": 238.46666666666667,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/BANK",
+    "check": "738.average",
+    "expected": 244.1828607572061,
+    "actual": 244.18286075720613,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/BANK",
+    "check": "738.p75",
+    "expected": 283.8464761904762,
+    "actual": 283.8464761904762,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/BANK",
+    "check": "738.p90",
+    "expected": 313.4235294117647,
+    "actual": 313.4235294117647,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/BANK",
+    "check": "738.maximum",
+    "expected": 369.8941176470588,
+    "actual": 369.8941176470588,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/BANK",
+    "check": "738.iqr",
+    "expected": 83.46392040954314,
+    "actual": 83.46392040954316,
+    "pass": true
+  },
+  {
+    "engine": "geography",
+    "population": "combined/BANK",
+    "check": "geography delta",
+    "expected": -48.287179487179486,
+    "actual": -48.287179487179486,
+    "pass": true
+  },
+  {
+    "engine": "size",
+    "population": "combined",
+    "check": "executed",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "size",
+    "population": "combined",
+    "check": "methodology",
+    "expected": "existing-engine-methodologies-population-adapter-v1",
+    "actual": "existing-engine-methodologies-population-adapter-v1",
+    "pass": true
+  },
+  {
+    "engine": "size",
+    "population": "combined",
+    "check": "PRIVATE population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "size",
+    "population": "combined/PRIVATE",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "size",
+    "population": "combined/PRIVATE",
+    "check": "represented",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "size",
+    "population": "combined/PRIVATE",
+    "check": "rank correlation",
+    "expected": -1,
+    "actual": -1,
+    "pass": true
+  },
+  {
+    "engine": "size",
+    "population": "combined/PRIVATE",
+    "check": "regression withheld",
+    "expected": null,
+    "actual": null,
+    "pass": true
+  },
+  {
+    "engine": "size",
+    "population": "combined/PRIVATE",
+    "check": "100-500m2 N",
+    "expected": 8,
+    "actual": 8,
+    "pass": true
+  },
+  {
+    "engine": "size",
+    "population": "combined/PRIVATE",
+    "check": "100-500m2 median",
+    "expected": 2560.0,
+    "actual": 2560,
+    "pass": true
+  },
+  {
+    "engine": "size",
+    "population": "combined/PRIVATE",
+    "check": "500-1000m2 N",
+    "expected": 16,
+    "actual": 16,
+    "pass": true
+  },
+  {
+    "engine": "size",
+    "population": "combined/PRIVATE",
+    "check": "500-1000m2 median",
+    "expected": 528.8888888888889,
+    "actual": 528.8888888888889,
+    "pass": true
+  },
+  {
+    "engine": "size",
+    "population": "combined/PRIVATE",
+    "check": "1000-5000m2 N",
+    "expected": 39,
+    "actual": 39,
+    "pass": true
+  },
+  {
+    "engine": "size",
+    "population": "combined/PRIVATE",
+    "check": "1000-5000m2 median",
+    "expected": 312.3269230769231,
+    "actual": 312.3269230769231,
+    "pass": true
+  },
+  {
+    "engine": "size",
+    "population": "combined",
+    "check": "BANK population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "size",
+    "population": "combined/BANK",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "size",
+    "population": "combined/BANK",
+    "check": "represented",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "size",
+    "population": "combined/BANK",
+    "check": "rank correlation",
+    "expected": -1,
+    "actual": -1,
+    "pass": true
+  },
+  {
+    "engine": "size",
+    "population": "combined/BANK",
+    "check": "regression withheld",
+    "expected": null,
+    "actual": null,
+    "pass": true
+  },
+  {
+    "engine": "size",
+    "population": "combined/BANK",
+    "check": "100-500m2 N",
+    "expected": 8,
+    "actual": 8,
+    "pass": true
+  },
+  {
+    "engine": "size",
+    "population": "combined/BANK",
+    "check": "100-500m2 median",
+    "expected": 2048.0,
+    "actual": 2048,
+    "pass": true
+  },
+  {
+    "engine": "size",
+    "population": "combined/BANK",
+    "check": "500-1000m2 N",
+    "expected": 16,
+    "actual": 16,
+    "pass": true
+  },
+  {
+    "engine": "size",
+    "population": "combined/BANK",
+    "check": "500-1000m2 median",
+    "expected": 423.1111111111111,
+    "actual": 423.1111111111111,
+    "pass": true
+  },
+  {
+    "engine": "size",
+    "population": "combined/BANK",
+    "check": "1000-5000m2 N",
+    "expected": 39,
+    "actual": 39,
+    "pass": true
+  },
+  {
+    "engine": "size",
+    "population": "combined/BANK",
+    "check": "1000-5000m2 median",
+    "expected": 249.86153846153846,
+    "actual": 249.86153846153846,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined",
+    "check": "executed",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined",
+    "check": "methodology",
+    "expected": "existing-engine-methodologies-population-adapter-v1",
+    "actual": "existing-engine-methodologies-population-adapter-v1",
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined",
+    "check": "PRIVATE population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/PRIVATE",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/PRIVATE",
+    "check": "gt_0_lt_0_25 N",
+    "expected": 21,
+    "actual": 21,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/PRIVATE",
+    "check": "gt_0_lt_0_25 ratio",
+    "expected": 0.11176470588235295,
+    "actual": 0.11176470588235295,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/PRIVATE",
+    "check": "gt_0_lt_0_25 ppm2",
+    "expected": 250.60294117647058,
+    "actual": 250.60294117647058,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/PRIVATE",
+    "check": "gte_0_25_lt_0_50 N",
+    "expected": 18,
+    "actual": 18,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/PRIVATE",
+    "check": "gte_0_25_lt_0_50 ratio",
+    "expected": 0.37633053221288515,
+    "actual": 0.37633053221288515,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/PRIVATE",
+    "check": "gte_0_25_lt_0_50 ppm2",
+    "expected": 355.84103641456585,
+    "actual": 355.8410364145658,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/PRIVATE",
+    "check": "gte_0_50_lt_1_00 N",
+    "expected": 11,
+    "actual": 11,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/PRIVATE",
+    "check": "gte_0_50_lt_1_00 ratio",
+    "expected": 0.68,
+    "actual": 0.68,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/PRIVATE",
+    "check": "gte_0_50_lt_1_00 ppm2",
+    "expected": 492.05,
+    "actual": 492.05,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/PRIVATE",
+    "check": "gte_1_00_lt_2_00 N",
+    "expected": 6,
+    "actual": 6,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/PRIVATE",
+    "check": "gte_1_00_lt_2_00 ratio",
+    "expected": 1.43,
+    "actual": 1.4300000000000002,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/PRIVATE",
+    "check": "gte_1_00_lt_2_00 ppm2",
+    "expected": 792.0,
+    "actual": 792,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/PRIVATE",
+    "check": "gte_2_00 N",
+    "expected": 7,
+    "actual": 7,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/PRIVATE",
+    "check": "gte_2_00 ratio",
+    "expected": 6.4,
+    "actual": 6.4,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/PRIVATE",
+    "check": "gte_2_00 ppm2",
+    "expected": 2859.75,
+    "actual": 2859.75,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined",
+    "check": "BANK population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/BANK",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/BANK",
+    "check": "gt_0_lt_0_25 N",
+    "expected": 21,
+    "actual": 21,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/BANK",
+    "check": "gt_0_lt_0_25 ratio",
+    "expected": 0.11176470588235295,
+    "actual": 0.11176470588235295,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/BANK",
+    "check": "gt_0_lt_0_25 ppm2",
+    "expected": 200.48235294117646,
+    "actual": 200.48235294117646,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/BANK",
+    "check": "gte_0_25_lt_0_50 N",
+    "expected": 18,
+    "actual": 18,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/BANK",
+    "check": "gte_0_25_lt_0_50 ratio",
+    "expected": 0.37633053221288515,
+    "actual": 0.37633053221288515,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/BANK",
+    "check": "gte_0_25_lt_0_50 ppm2",
+    "expected": 284.67282913165263,
+    "actual": 284.67282913165263,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/BANK",
+    "check": "gte_0_50_lt_1_00 N",
+    "expected": 11,
+    "actual": 11,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/BANK",
+    "check": "gte_0_50_lt_1_00 ratio",
+    "expected": 0.68,
+    "actual": 0.68,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/BANK",
+    "check": "gte_0_50_lt_1_00 ppm2",
+    "expected": 393.64,
+    "actual": 393.64,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/BANK",
+    "check": "gte_1_00_lt_2_00 N",
+    "expected": 6,
+    "actual": 6,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/BANK",
+    "check": "gte_1_00_lt_2_00 ratio",
+    "expected": 1.43,
+    "actual": 1.4300000000000002,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/BANK",
+    "check": "gte_1_00_lt_2_00 ppm2",
+    "expected": 633.6,
+    "actual": 633.5999999999999,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/BANK",
+    "check": "gte_2_00 N",
+    "expected": 7,
+    "actual": 7,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/BANK",
+    "check": "gte_2_00 ratio",
+    "expected": 6.4,
+    "actual": 6.4,
+    "pass": true
+  },
+  {
+    "engine": "construction-land",
+    "population": "combined/BANK",
+    "check": "gte_2_00 ppm2",
+    "expected": 2287.8,
+    "actual": 2287.8,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "executed",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "methodology",
+    "expected": "existing-engine-methodologies-population-adapter-v1",
+    "actual": "existing-engine-methodologies-population-adapter-v1",
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "PRIVATE population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/PRIVATE",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/PRIVATE",
+    "check": "A.sampleSize",
+    "expected": 39,
+    "actual": 39,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/PRIVATE",
+    "check": "A.minimum",
+    "expected": 208.97413793103448,
+    "actual": 208.97413793103448,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/PRIVATE",
+    "check": "A.p10",
+    "expected": 219.0712669683258,
+    "actual": 219.0712669683258,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/PRIVATE",
+    "check": "A.p25",
+    "expected": 254.4964705882353,
+    "actual": 254.4964705882353,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/PRIVATE",
+    "check": "A.median",
+    "expected": 312.3269230769231,
+    "actual": 312.3269230769231,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/PRIVATE",
+    "check": "A.average",
+    "expected": 320.88188581152383,
+    "actual": 320.8818858115239,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/PRIVATE",
+    "check": "A.p75",
+    "expected": 368.42615384615385,
+    "actual": 368.42615384615385,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/PRIVATE",
+    "check": "A.p90",
+    "expected": 431.7852941176471,
+    "actual": 431.78529411764714,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/PRIVATE",
+    "check": "A.maximum",
+    "expected": 543.0576923076923,
+    "actual": 543.0576923076923,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/PRIVATE",
+    "check": "A.iqr",
+    "expected": 113.92968325791855,
+    "actual": 113.92968325791855,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/PRIVATE",
+    "check": "B.sampleSize",
+    "expected": 39,
+    "actual": 39,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/PRIVATE",
+    "check": "B.minimum",
+    "expected": 208.97413793103448,
+    "actual": 208.97413793103448,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/PRIVATE",
+    "check": "B.p10",
+    "expected": 219.0712669683258,
+    "actual": 219.0712669683258,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/PRIVATE",
+    "check": "B.p25",
+    "expected": 254.4964705882353,
+    "actual": 254.4964705882353,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/PRIVATE",
+    "check": "B.median",
+    "expected": 312.3269230769231,
+    "actual": 312.3269230769231,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/PRIVATE",
+    "check": "B.average",
+    "expected": 320.88188581152383,
+    "actual": 320.8818858115239,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/PRIVATE",
+    "check": "B.p75",
+    "expected": 368.42615384615385,
+    "actual": 368.42615384615385,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/PRIVATE",
+    "check": "B.p90",
+    "expected": 431.7852941176471,
+    "actual": 431.78529411764714,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/PRIVATE",
+    "check": "B.maximum",
+    "expected": 543.0576923076923,
+    "actual": 543.0576923076923,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/PRIVATE",
+    "check": "B.iqr",
+    "expected": 113.92968325791855,
+    "actual": 113.92968325791855,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/PRIVATE",
+    "check": "within-population identical cohort delta",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "BANK population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/BANK",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/BANK",
+    "check": "A.sampleSize",
+    "expected": 39,
+    "actual": 39,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/BANK",
+    "check": "A.minimum",
+    "expected": 167.1793103448276,
+    "actual": 167.1793103448276,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/BANK",
+    "check": "A.p10",
+    "expected": 175.25701357466065,
+    "actual": 175.25701357466062,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/BANK",
+    "check": "A.p25",
+    "expected": 203.59717647058824,
+    "actual": 203.59717647058824,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/BANK",
+    "check": "A.median",
+    "expected": 249.86153846153846,
+    "actual": 249.86153846153846,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/BANK",
+    "check": "A.average",
+    "expected": 256.70550864921904,
+    "actual": 256.70550864921904,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/BANK",
+    "check": "A.p75",
+    "expected": 294.7409230769231,
+    "actual": 294.7409230769231,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/BANK",
+    "check": "A.p90",
+    "expected": 345.42823529411766,
+    "actual": 345.4282352941177,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/BANK",
+    "check": "A.maximum",
+    "expected": 434.44615384615383,
+    "actual": 434.44615384615383,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/BANK",
+    "check": "A.iqr",
+    "expected": 91.14374660633484,
+    "actual": 91.14374660633484,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/BANK",
+    "check": "B.sampleSize",
+    "expected": 39,
+    "actual": 39,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/BANK",
+    "check": "B.minimum",
+    "expected": 167.1793103448276,
+    "actual": 167.1793103448276,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/BANK",
+    "check": "B.p10",
+    "expected": 175.25701357466065,
+    "actual": 175.25701357466062,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/BANK",
+    "check": "B.p25",
+    "expected": 203.59717647058824,
+    "actual": 203.59717647058824,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/BANK",
+    "check": "B.median",
+    "expected": 249.86153846153846,
+    "actual": 249.86153846153846,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/BANK",
+    "check": "B.average",
+    "expected": 256.70550864921904,
+    "actual": 256.70550864921904,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/BANK",
+    "check": "B.p75",
+    "expected": 294.7409230769231,
+    "actual": 294.7409230769231,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/BANK",
+    "check": "B.p90",
+    "expected": 345.42823529411766,
+    "actual": 345.4282352941177,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/BANK",
+    "check": "B.maximum",
+    "expected": 434.44615384615383,
+    "actual": 434.44615384615383,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/BANK",
+    "check": "B.iqr",
+    "expected": 91.14374660633484,
+    "actual": 91.14374660633484,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined/BANK",
+    "check": "within-population identical cohort delta",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "cross-market present",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "PRIVATE cross cohort.sampleSize",
+    "expected": 39,
+    "actual": 39,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "PRIVATE cross cohort.minimum",
+    "expected": 208.97413793103448,
+    "actual": 208.97413793103448,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "PRIVATE cross cohort.p10",
+    "expected": 219.0712669683258,
+    "actual": 219.0712669683258,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "PRIVATE cross cohort.p25",
+    "expected": 254.4964705882353,
+    "actual": 254.4964705882353,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "PRIVATE cross cohort.median",
+    "expected": 312.3269230769231,
+    "actual": 312.3269230769231,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "PRIVATE cross cohort.average",
+    "expected": 320.88188581152383,
+    "actual": 320.8818858115239,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "PRIVATE cross cohort.p75",
+    "expected": 368.42615384615385,
+    "actual": 368.42615384615385,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "PRIVATE cross cohort.p90",
+    "expected": 431.7852941176471,
+    "actual": 431.78529411764714,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "PRIVATE cross cohort.maximum",
+    "expected": 543.0576923076923,
+    "actual": 543.0576923076923,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "PRIVATE cross cohort.iqr",
+    "expected": 113.92968325791855,
+    "actual": 113.92968325791855,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "BANK cross cohort.sampleSize",
+    "expected": 39,
+    "actual": 39,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "BANK cross cohort.minimum",
+    "expected": 167.1793103448276,
+    "actual": 167.1793103448276,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "BANK cross cohort.p10",
+    "expected": 175.25701357466065,
+    "actual": 175.25701357466062,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "BANK cross cohort.p25",
+    "expected": 203.59717647058824,
+    "actual": 203.59717647058824,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "BANK cross cohort.median",
+    "expected": 249.86153846153846,
+    "actual": 249.86153846153846,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "BANK cross cohort.average",
+    "expected": 256.70550864921904,
+    "actual": 256.70550864921904,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "BANK cross cohort.p75",
+    "expected": 294.7409230769231,
+    "actual": 294.7409230769231,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "BANK cross cohort.p90",
+    "expected": 345.42823529411766,
+    "actual": 345.4282352941177,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "BANK cross cohort.maximum",
+    "expected": 434.44615384615383,
+    "actual": 434.44615384615383,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "BANK cross cohort.iqr",
+    "expected": 91.14374660633484,
+    "actual": 91.14374660633484,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "independent cross-market median difference",
+    "expected": 62.465384615384636,
+    "actual": 62.465384615384636,
+    "pass": true
+  },
+  {
+    "engine": "cohort-comparison",
+    "population": "combined",
+    "check": "independent cross-market percentage",
+    "expected": 25.00000000000001,
+    "actual": 25.00000000000001,
+    "pass": true
+  },
+  {
+    "engine": "cross-dimensional",
+    "population": "combined",
+    "check": "executed",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "cross-dimensional",
+    "population": "combined",
+    "check": "methodology",
+    "expected": "existing-engine-methodologies-population-adapter-v1",
+    "actual": "existing-engine-methodologies-population-adapter-v1",
+    "pass": true
+  },
+  {
+    "engine": "cross-dimensional",
+    "population": "combined",
+    "check": "PRIVATE population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "cross-dimensional",
+    "population": "combined/PRIVATE",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "cross-dimensional",
+    "population": "combined/PRIVATE",
+    "check": "input N",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "cross-dimensional",
+    "population": "combined/PRIVATE",
+    "check": "100-500m2 N",
+    "expected": 8,
+    "actual": 8,
+    "pass": true
+  },
+  {
+    "engine": "cross-dimensional",
+    "population": "combined/PRIVATE",
+    "check": "100-500m2 median",
+    "expected": 2560.0,
+    "actual": 2560,
+    "pass": true
+  },
+  {
+    "engine": "cross-dimensional",
+    "population": "combined/PRIVATE",
+    "check": "500-1000m2 N",
+    "expected": 16,
+    "actual": 16,
+    "pass": true
+  },
+  {
+    "engine": "cross-dimensional",
+    "population": "combined/PRIVATE",
+    "check": "500-1000m2 median",
+    "expected": 528.8888888888889,
+    "actual": 528.8888888888889,
+    "pass": true
+  },
+  {
+    "engine": "cross-dimensional",
+    "population": "combined/PRIVATE",
+    "check": "1000-5000m2 N",
+    "expected": 39,
+    "actual": 39,
+    "pass": true
+  },
+  {
+    "engine": "cross-dimensional",
+    "population": "combined/PRIVATE",
+    "check": "1000-5000m2 median",
+    "expected": 312.3269230769231,
+    "actual": 312.3269230769231,
+    "pass": true
+  },
+  {
+    "engine": "cross-dimensional",
+    "population": "combined",
+    "check": "BANK population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "cross-dimensional",
+    "population": "combined/BANK",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "cross-dimensional",
+    "population": "combined/BANK",
+    "check": "input N",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "cross-dimensional",
+    "population": "combined/BANK",
+    "check": "100-500m2 N",
+    "expected": 8,
+    "actual": 8,
+    "pass": true
+  },
+  {
+    "engine": "cross-dimensional",
+    "population": "combined/BANK",
+    "check": "100-500m2 median",
+    "expected": 2048.0,
+    "actual": 2048,
+    "pass": true
+  },
+  {
+    "engine": "cross-dimensional",
+    "population": "combined/BANK",
+    "check": "500-1000m2 N",
+    "expected": 16,
+    "actual": 16,
+    "pass": true
+  },
+  {
+    "engine": "cross-dimensional",
+    "population": "combined/BANK",
+    "check": "500-1000m2 median",
+    "expected": 423.1111111111111,
+    "actual": 423.1111111111111,
+    "pass": true
+  },
+  {
+    "engine": "cross-dimensional",
+    "population": "combined/BANK",
+    "check": "1000-5000m2 N",
+    "expected": 39,
+    "actual": 39,
+    "pass": true
+  },
+  {
+    "engine": "cross-dimensional",
+    "population": "combined/BANK",
+    "check": "1000-5000m2 median",
+    "expected": 249.86153846153846,
+    "actual": 249.86153846153846,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined",
+    "check": "executed",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined",
+    "check": "methodology",
+    "expected": "existing-engine-methodologies-population-adapter-v1",
+    "actual": "existing-engine-methodologies-population-adapter-v1",
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined",
+    "check": "PRIVATE population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "distribution.sampleSize",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "distribution.minimum",
+    "expected": 208.97413793103448,
+    "actual": 208.97413793103448,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "distribution.p10",
+    "expected": 230.59924137931034,
+    "actual": 230.59924137931034,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "distribution.p25",
+    "expected": 276.7179310344828,
+    "actual": 276.7179310344828,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "distribution.median",
+    "expected": 358.4423076923077,
+    "actual": 358.4423076923077,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "distribution.average",
+    "expected": 667.7487511813843,
+    "actual": 667.7487511813841,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "distribution.p75",
+    "expected": 520.0,
+    "actual": 520,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "distribution.p90",
+    "expected": 1085.61,
+    "actual": 1085.6100000000001,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "distribution.maximum",
+    "expected": 4660.25,
+    "actual": 4660.25,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "distribution.iqr",
+    "expected": 243.28206896551723,
+    "actual": 243.28206896551723,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "complete membership",
+    "expected": [
+      "PRIVATE:0038931f-9025-4118-8034-3e2cf9c29c92",
+      "PRIVATE:04c82c47-0657-4b0f-b666-bcfbb33596bc",
+      "PRIVATE:05307bbe-d49a-4b4c-a16a-a4ded61b45f6",
+      "PRIVATE:0574f73e-dc5f-4ed2-9dfc-3c48b8f28b8c",
+      "PRIVATE:05dd6fd2-58df-424d-b85e-48f5d967ad7e",
+      "PRIVATE:06d37f7a-c557-444a-aaf6-a532f06ada21",
+      "PRIVATE:0879f2e2-5e0e-474c-b2c6-690b92913a40",
+      "PRIVATE:0b43e67d-6c50-4254-8198-10fc4876e169",
+      "PRIVATE:151b9089-67f4-419f-ae4d-009872bf4594",
+      "PRIVATE:2332dad8-f7d7-4259-9acd-b04a13dc507f",
+      "PRIVATE:25698936-d060-49d3-b9f0-839f846756a2",
+      "PRIVATE:25abb59e-a506-4e9c-860a-31f76093436c",
+      "PRIVATE:28c57c3b-0ca6-4abe-a36d-87188d11c2cc",
+      "PRIVATE:30ec6bf3-08b5-4f38-bede-d0704de5914d",
+      "PRIVATE:40da3db3-420b-4b78-8465-fe59cd515fbc",
+      "PRIVATE:45a355dd-9709-468f-b2c3-7dac9c903dda",
+      "PRIVATE:46953958-3c29-4794-b673-da2ceb4506a3",
+      "PRIVATE:50b4c7a3-1dfb-43e2-a10c-87209c828152",
+      "PRIVATE:55afca83-2cbd-4193-882e-6b68e90db19e",
+      "PRIVATE:5ed391d0-ae56-4ed5-8ca5-c3a62a86a00f",
+      "PRIVATE:63c8983e-73e5-4b4f-a481-698131f73587",
+      "PRIVATE:63dadde3-67b0-4c5c-ad45-5b054b481933",
+      "PRIVATE:64cd2496-5e6b-4123-9bd0-9f56967f4ab1",
+      "PRIVATE:699fe5eb-3c5a-4bd0-9653-39b7d31d29b7",
+      "PRIVATE:6c3885d0-682e-409b-b4a2-81504d5a190a",
+      "PRIVATE:72197ae1-bbfb-4864-953c-08327410b03b",
+      "PRIVATE:72666e31-39c3-4813-aa74-bab20f425233",
+      "PRIVATE:77e8dbb5-cdd3-47c7-bea4-15becb35b150",
+      "PRIVATE:7c5b8713-39f3-430c-a2b0-f4c1d538dd88",
+      "PRIVATE:7c7c0852-ad14-4ba4-9a00-091b8ee1f68d",
+      "PRIVATE:80eb6736-bb61-4dc8-9fe6-ea7ab12e3198",
+      "PRIVATE:83b497bd-bc37-47b5-97df-1c049a6dd925",
+      "PRIVATE:877ef20b-9225-47b8-82b5-5e6865736cd7",
+      "PRIVATE:8844fe4c-b31f-4f2e-9252-e6374e02ee87",
+      "PRIVATE:89cc4c66-c73f-4968-8e6c-9977e715d129",
+      "PRIVATE:8c26aa11-f779-4c6c-a822-145f30a2e151",
+      "PRIVATE:95180635-7d5c-4e1a-a744-e5ce7ecbf0f6",
+      "PRIVATE:9ced898a-b28d-4804-abc5-ee88eea55f92",
+      "PRIVATE:9f83787b-c308-4c72-9938-30a4ac26ae0c",
+      "PRIVATE:a5d6323f-6c67-49ff-8805-6d50e3546f7c",
+      "PRIVATE:a8a46771-dd74-4179-b150-3524dc56f64e",
+      "PRIVATE:aac962fb-5740-40b2-9624-834c70aa2934",
+      "PRIVATE:ab96322d-c4e7-4e70-9dfd-92587e4a2f59",
+      "PRIVATE:b5ac409b-443f-490e-b283-6dc9c97d2d2b",
+      "PRIVATE:b8ea4ab2-3515-4399-aad2-16dae8732ea5",
+      "PRIVATE:c87742b9-5f04-4ea1-a3b4-f972ecfd0b59",
+      "PRIVATE:cae7f5c5-53e4-4833-a157-0001bed2a4e9",
+      "PRIVATE:cb376861-cea1-4d1d-928b-a0f69d138a1f",
+      "PRIVATE:cc234ef2-bf98-4c9e-96d9-b58a24e76df1",
+      "PRIVATE:cc46e3c6-f406-4d12-8efe-0adcf0cdce59",
+      "PRIVATE:cf197b7c-07ca-4f30-9e0f-416f7223da82",
+      "PRIVATE:d3e79e46-73ec-4c4d-905f-266abe089236",
+      "PRIVATE:d5568257-f9d5-49ee-bfeb-842cdb28a2d3",
+      "PRIVATE:e1750960-73c7-4e15-aa1d-abc50246f58a",
+      "PRIVATE:e21645ab-23a8-4da3-b6f7-f6007f43a836",
+      "PRIVATE:e5b4e14b-36d8-4905-810f-ccab282892d2",
+      "PRIVATE:f1cc7f2c-6bf5-4a4e-9531-221d43de0a4b",
+      "PRIVATE:f2f52d8d-7ba3-4845-b6aa-3f8fc7cdba39",
+      "PRIVATE:f4211b3c-35d0-4a07-b472-1551931c8006",
+      "PRIVATE:f522c17c-7ead-44fd-9082-970baccf57da",
+      "PRIVATE:f608d428-a707-4381-b59e-9021a779c344",
+      "PRIVATE:fc707176-e634-4e67-83c5-d09c13aa6fca",
+      "PRIVATE:fd87ac85-b2d6-4ab3-b0a4-034041ed56fc"
+    ],
+    "actual": [
+      "PRIVATE:0038931f-9025-4118-8034-3e2cf9c29c92",
+      "PRIVATE:04c82c47-0657-4b0f-b666-bcfbb33596bc",
+      "PRIVATE:05307bbe-d49a-4b4c-a16a-a4ded61b45f6",
+      "PRIVATE:0574f73e-dc5f-4ed2-9dfc-3c48b8f28b8c",
+      "PRIVATE:05dd6fd2-58df-424d-b85e-48f5d967ad7e",
+      "PRIVATE:06d37f7a-c557-444a-aaf6-a532f06ada21",
+      "PRIVATE:0879f2e2-5e0e-474c-b2c6-690b92913a40",
+      "PRIVATE:0b43e67d-6c50-4254-8198-10fc4876e169",
+      "PRIVATE:151b9089-67f4-419f-ae4d-009872bf4594",
+      "PRIVATE:2332dad8-f7d7-4259-9acd-b04a13dc507f",
+      "PRIVATE:25698936-d060-49d3-b9f0-839f846756a2",
+      "PRIVATE:25abb59e-a506-4e9c-860a-31f76093436c",
+      "PRIVATE:28c57c3b-0ca6-4abe-a36d-87188d11c2cc",
+      "PRIVATE:30ec6bf3-08b5-4f38-bede-d0704de5914d",
+      "PRIVATE:40da3db3-420b-4b78-8465-fe59cd515fbc",
+      "PRIVATE:45a355dd-9709-468f-b2c3-7dac9c903dda",
+      "PRIVATE:46953958-3c29-4794-b673-da2ceb4506a3",
+      "PRIVATE:50b4c7a3-1dfb-43e2-a10c-87209c828152",
+      "PRIVATE:55afca83-2cbd-4193-882e-6b68e90db19e",
+      "PRIVATE:5ed391d0-ae56-4ed5-8ca5-c3a62a86a00f",
+      "PRIVATE:63c8983e-73e5-4b4f-a481-698131f73587",
+      "PRIVATE:63dadde3-67b0-4c5c-ad45-5b054b481933",
+      "PRIVATE:64cd2496-5e6b-4123-9bd0-9f56967f4ab1",
+      "PRIVATE:699fe5eb-3c5a-4bd0-9653-39b7d31d29b7",
+      "PRIVATE:6c3885d0-682e-409b-b4a2-81504d5a190a",
+      "PRIVATE:72197ae1-bbfb-4864-953c-08327410b03b",
+      "PRIVATE:72666e31-39c3-4813-aa74-bab20f425233",
+      "PRIVATE:77e8dbb5-cdd3-47c7-bea4-15becb35b150",
+      "PRIVATE:7c5b8713-39f3-430c-a2b0-f4c1d538dd88",
+      "PRIVATE:7c7c0852-ad14-4ba4-9a00-091b8ee1f68d",
+      "PRIVATE:80eb6736-bb61-4dc8-9fe6-ea7ab12e3198",
+      "PRIVATE:83b497bd-bc37-47b5-97df-1c049a6dd925",
+      "PRIVATE:877ef20b-9225-47b8-82b5-5e6865736cd7",
+      "PRIVATE:8844fe4c-b31f-4f2e-9252-e6374e02ee87",
+      "PRIVATE:89cc4c66-c73f-4968-8e6c-9977e715d129",
+      "PRIVATE:8c26aa11-f779-4c6c-a822-145f30a2e151",
+      "PRIVATE:95180635-7d5c-4e1a-a744-e5ce7ecbf0f6",
+      "PRIVATE:9ced898a-b28d-4804-abc5-ee88eea55f92",
+      "PRIVATE:9f83787b-c308-4c72-9938-30a4ac26ae0c",
+      "PRIVATE:a5d6323f-6c67-49ff-8805-6d50e3546f7c",
+      "PRIVATE:a8a46771-dd74-4179-b150-3524dc56f64e",
+      "PRIVATE:aac962fb-5740-40b2-9624-834c70aa2934",
+      "PRIVATE:ab96322d-c4e7-4e70-9dfd-92587e4a2f59",
+      "PRIVATE:b5ac409b-443f-490e-b283-6dc9c97d2d2b",
+      "PRIVATE:b8ea4ab2-3515-4399-aad2-16dae8732ea5",
+      "PRIVATE:c87742b9-5f04-4ea1-a3b4-f972ecfd0b59",
+      "PRIVATE:cae7f5c5-53e4-4833-a157-0001bed2a4e9",
+      "PRIVATE:cb376861-cea1-4d1d-928b-a0f69d138a1f",
+      "PRIVATE:cc234ef2-bf98-4c9e-96d9-b58a24e76df1",
+      "PRIVATE:cc46e3c6-f406-4d12-8efe-0adcf0cdce59",
+      "PRIVATE:cf197b7c-07ca-4f30-9e0f-416f7223da82",
+      "PRIVATE:d3e79e46-73ec-4c4d-905f-266abe089236",
+      "PRIVATE:d5568257-f9d5-49ee-bfeb-842cdb28a2d3",
+      "PRIVATE:e1750960-73c7-4e15-aa1d-abc50246f58a",
+      "PRIVATE:e21645ab-23a8-4da3-b6f7-f6007f43a836",
+      "PRIVATE:e5b4e14b-36d8-4905-810f-ccab282892d2",
+      "PRIVATE:f1cc7f2c-6bf5-4a4e-9531-221d43de0a4b",
+      "PRIVATE:f2f52d8d-7ba3-4845-b6aa-3f8fc7cdba39",
+      "PRIVATE:f4211b3c-35d0-4a07-b472-1551931c8006",
+      "PRIVATE:f522c17c-7ead-44fd-9082-970baccf57da",
+      "PRIVATE:f608d428-a707-4381-b59e-9021a779c344",
+      "PRIVATE:fc707176-e634-4e67-83c5-d09c13aa6fca",
+      "PRIVATE:fd87ac85-b2d6-4ab3-b0a4-034041ed56fc"
+    ],
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:0038931f-9025-4118-8034-3e2cf9c29c92 midrank",
+    "expected": 50.0,
+    "actual": 50,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:0038931f-9025-4118-8034-3e2cf9c29c92 median delta",
+    "expected": 0.0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:04c82c47-0657-4b0f-b666-bcfbb33596bc midrank",
+    "expected": 16.666666666666668,
+    "actual": 16.666666666666668,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:04c82c47-0657-4b0f-b666-bcfbb33596bc median delta",
+    "expected": -107.8393665158371,
+    "actual": -107.8393665158371,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:05307bbe-d49a-4b4c-a16a-a4ded61b45f6 midrank",
+    "expected": 61.111111111111114,
+    "actual": 61.111111111111114,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:05307bbe-d49a-4b4c-a16a-a4ded61b45f6 median delta",
+    "expected": 53.92673992673991,
+    "actual": 53.92673992673991,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:0574f73e-dc5f-4ed2-9dfc-3c48b8f28b8c midrank",
+    "expected": 78.57142857142857,
+    "actual": 78.57142857142857,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:0574f73e-dc5f-4ed2-9dfc-3c48b8f28b8c median delta",
+    "expected": 253.50769230769237,
+    "actual": 253.50769230769237,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:05dd6fd2-58df-424d-b85e-48f5d967ad7e midrank",
+    "expected": 94.44444444444444,
+    "actual": 94.44444444444444,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:05dd6fd2-58df-424d-b85e-48f5d967ad7e median delta",
+    "expected": 2501.3076923076924,
+    "actual": 2501.3076923076924,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:06d37f7a-c557-444a-aaf6-a532f06ada21 midrank",
+    "expected": 40.476190476190474,
+    "actual": 40.476190476190474,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:06d37f7a-c557-444a-aaf6-a532f06ada21 median delta",
+    "expected": -31.763736263736234,
+    "actual": -31.763736263736234,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:0879f2e2-5e0e-474c-b2c6-690b92913a40 midrank",
+    "expected": 5.555555555555555,
+    "actual": 5.555555555555555,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:0879f2e2-5e0e-474c-b2c6-690b92913a40 median delta",
+    "expected": -143.1628959276018,
+    "actual": -143.1628959276018,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:0b43e67d-6c50-4254-8198-10fc4876e169 midrank",
+    "expected": 29.365079365079364,
+    "actual": 29.365079365079364,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:0b43e67d-6c50-4254-8198-10fc4876e169 median delta",
+    "expected": -66.70954907161803,
+    "actual": -66.70954907161803,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:151b9089-67f4-419f-ae4d-009872bf4594 midrank",
+    "expected": 81.74603174603175,
+    "actual": 81.74603174603175,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:151b9089-67f4-419f-ae4d-009872bf4594 median delta",
+    "expected": 337.1410256410257,
+    "actual": 337.1410256410257,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:2332dad8-f7d7-4259-9acd-b04a13dc507f midrank",
+    "expected": 96.03174603174604,
+    "actual": 96.03174603174604,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:2332dad8-f7d7-4259-9acd-b04a13dc507f median delta",
+    "expected": 3101.8076923076924,
+    "actual": 3101.8076923076924,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:25698936-d060-49d3-b9f0-839f846756a2 midrank",
+    "expected": 46.82539682539682,
+    "actual": 46.82539682539682,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:25698936-d060-49d3-b9f0-839f846756a2 median delta",
+    "expected": -3.2161172161171976,
+    "actual": -3.2161172161171976,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:25abb59e-a506-4e9c-860a-31f76093436c midrank",
+    "expected": 15.079365079365079,
+    "actual": 15.079365079365079,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:25abb59e-a506-4e9c-860a-31f76093436c median delta",
+    "expected": -108.08885941644562,
+    "actual": -108.08885941644562,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:28c57c3b-0ca6-4abe-a36d-87188d11c2cc midrank",
+    "expected": 7.142857142857143,
+    "actual": 7.142857142857143,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:28c57c3b-0ca6-4abe-a36d-87188d11c2cc median delta",
+    "expected": -138.4230769230769,
+    "actual": -138.4230769230769,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:30ec6bf3-08b5-4f38-bede-d0704de5914d midrank",
+    "expected": 23.015873015873016,
+    "actual": 23.015873015873016,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:30ec6bf3-08b5-4f38-bede-d0704de5914d median delta",
+    "expected": -88.9065934065934,
+    "actual": -88.9065934065934,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:40da3db3-420b-4b78-8465-fe59cd515fbc midrank",
+    "expected": 57.93650793650794,
+    "actual": 57.93650793650794,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:40da3db3-420b-4b78-8465-fe59cd515fbc median delta",
+    "expected": 33.337104072398176,
+    "actual": 33.337104072398176,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:45a355dd-9709-468f-b2c3-7dac9c903dda midrank",
+    "expected": 62.698412698412696,
+    "actual": 62.698412698412696,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:45a355dd-9709-468f-b2c3-7dac9c903dda median delta",
+    "expected": 68.60180995475116,
+    "actual": 68.60180995475116,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:46953958-3c29-4794-b673-da2ceb4506a3 midrank",
+    "expected": 37.301587301587304,
+    "actual": 37.301587301587304,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:46953958-3c29-4794-b673-da2ceb4506a3 median delta",
+    "expected": -46.0371352785146,
+    "actual": -46.0371352785146,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:50b4c7a3-1dfb-43e2-a10c-87209c828152 midrank",
+    "expected": 92.85714285714286,
+    "actual": 92.85714285714286,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:50b4c7a3-1dfb-43e2-a10c-87209c828152 median delta",
+    "expected": 1901.8076923076924,
+    "actual": 1901.8076923076924,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:55afca83-2cbd-4193-882e-6b68e90db19e midrank",
+    "expected": 69.04761904761905,
+    "actual": 69.04761904761905,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:55afca83-2cbd-4193-882e-6b68e90db19e median delta",
+    "expected": 103.92533936651586,
+    "actual": 103.92533936651586,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:5ed391d0-ae56-4ed5-8ca5-c3a62a86a00f midrank",
+    "expected": 56.34920634920635,
+    "actual": 56.34920634920635,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:5ed391d0-ae56-4ed5-8ca5-c3a62a86a00f median delta",
+    "expected": 25.379120879120876,
+    "actual": 25.379120879120876,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:63c8983e-73e5-4b4f-a481-698131f73587 midrank",
+    "expected": 26.19047619047619,
+    "actual": 26.19047619047619,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:63c8983e-73e5-4b4f-a481-698131f73587 median delta",
+    "expected": -76.03230769230765,
+    "actual": -76.03230769230765,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:63dadde3-67b0-4c5c-ad45-5b054b481933 midrank",
+    "expected": 99.2063492063492,
+    "actual": 99.2063492063492,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:63dadde3-67b0-4c5c-ad45-5b054b481933 median delta",
+    "expected": 4301.807692307692,
+    "actual": 4301.807692307692,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:64cd2496-5e6b-4123-9bd0-9f56967f4ab1 midrank",
+    "expected": 27.77777777777778,
+    "actual": 27.77777777777778,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:64cd2496-5e6b-4123-9bd0-9f56967f4ab1 median delta",
+    "expected": -72.57466063348414,
+    "actual": -72.57466063348414,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:699fe5eb-3c5a-4bd0-9653-39b7d31d29b7 midrank",
+    "expected": 53.17460317460318,
+    "actual": 53.17460317460318,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:699fe5eb-3c5a-4bd0-9653-39b7d31d29b7 median delta",
+    "expected": 13.50769230769231,
+    "actual": 13.50769230769231,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:6c3885d0-682e-409b-b4a2-81504d5a190a midrank",
+    "expected": 75.39682539682539,
+    "actual": 75.39682539682539,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:6c3885d0-682e-409b-b4a2-81504d5a190a median delta",
+    "expected": 184.61538461538458,
+    "actual": 184.61538461538458,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:72197ae1-bbfb-4864-953c-08327410b03b midrank",
+    "expected": 45.23809523809524,
+    "actual": 45.23809523809524,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:72197ae1-bbfb-4864-953c-08327410b03b median delta",
+    "expected": -4.052307692307693,
+    "actual": -4.052307692307693,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:72666e31-39c3-4813-aa74-bab20f425233 midrank",
+    "expected": 21.428571428571427,
+    "actual": 21.428571428571427,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:72666e31-39c3-4813-aa74-bab20f425233 median delta",
+    "expected": -92.30769230769232,
+    "actual": -92.30769230769232,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:77e8dbb5-cdd3-47c7-bea4-15becb35b150 midrank",
+    "expected": 65.87301587301587,
+    "actual": 65.87301587301587,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:77e8dbb5-cdd3-47c7-bea4-15becb35b150 median delta",
+    "expected": 92.30769230769232,
+    "actual": 92.30769230769232,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:7c5b8713-39f3-430c-a2b0-f4c1d538dd88 midrank",
+    "expected": 80.15873015873017,
+    "actual": 80.15873015873017,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:7c5b8713-39f3-430c-a2b0-f4c1d538dd88 median delta",
+    "expected": 270.4188034188034,
+    "actual": 270.4188034188034,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:7c7c0852-ad14-4ba4-9a00-091b8ee1f68d midrank",
+    "expected": 11.904761904761905,
+    "actual": 11.904761904761905,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:7c7c0852-ad14-4ba4-9a00-091b8ee1f68d median delta",
+    "expected": -124.03230769230768,
+    "actual": -124.03230769230768,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:80eb6736-bb61-4dc8-9fe6-ea7ab12e3198 midrank",
+    "expected": 38.888888888888886,
+    "actual": 38.888888888888886,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:80eb6736-bb61-4dc8-9fe6-ea7ab12e3198 median delta",
+    "expected": -37.25113122171945,
+    "actual": -37.25113122171945,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:83b497bd-bc37-47b5-97df-1c049a6dd925 midrank",
+    "expected": 89.68253968253968,
+    "actual": 89.68253968253968,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:83b497bd-bc37-47b5-97df-1c049a6dd925 median delta",
+    "expected": 733.5076923076924,
+    "actual": 733.5076923076924,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:877ef20b-9225-47b8-82b5-5e6865736cd7 midrank",
+    "expected": 83.33333333333333,
+    "actual": 83.33333333333333,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:877ef20b-9225-47b8-82b5-5e6865736cd7 median delta",
+    "expected": 373.6076923076923,
+    "actual": 373.6076923076923,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:8844fe4c-b31f-4f2e-9252-e6374e02ee87 midrank",
+    "expected": 32.53968253968254,
+    "actual": 32.53968253968254,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:8844fe4c-b31f-4f2e-9252-e6374e02ee87 median delta",
+    "expected": -60.358974358974365,
+    "actual": -60.358974358974365,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:89cc4c66-c73f-4968-8e6c-9977e715d129 midrank",
+    "expected": 64.28571428571429,
+    "actual": 64.28571428571429,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:89cc4c66-c73f-4968-8e6c-9977e715d129 median delta",
+    "expected": 70.474358974359,
+    "actual": 70.474358974359,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:8c26aa11-f779-4c6c-a822-145f30a2e151 midrank",
+    "expected": 42.06349206349206,
+    "actual": 42.06349206349206,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:8c26aa11-f779-4c6c-a822-145f30a2e151 median delta",
+    "expected": -28.032307692307654,
+    "actual": -28.032307692307654,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:95180635-7d5c-4e1a-a744-e5ce7ecbf0f6 midrank",
+    "expected": 59.523809523809526,
+    "actual": 59.523809523809526,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:95180635-7d5c-4e1a-a744-e5ce7ecbf0f6 median delta",
+    "expected": 46.19230769230768,
+    "actual": 46.19230769230768,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:9ced898a-b28d-4804-abc5-ee88eea55f92 midrank",
+    "expected": 91.26984126984127,
+    "actual": 91.26984126984127,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:9ced898a-b28d-4804-abc5-ee88eea55f92 median delta",
+    "expected": 1301.3076923076924,
+    "actual": 1301.3076923076924,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:9f83787b-c308-4c72-9938-30a4ac26ae0c midrank",
+    "expected": 3.9682539682539684,
+    "actual": 3.9682539682539684,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:9f83787b-c308-4c72-9938-30a4ac26ae0c median delta",
+    "expected": -146.04945054945054,
+    "actual": -146.04945054945054,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:a5d6323f-6c67-49ff-8805-6d50e3546f7c midrank",
+    "expected": 54.76190476190476,
+    "actual": 54.76190476190476,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:a5d6323f-6c67-49ff-8805-6d50e3546f7c median delta",
+    "expected": 19.967692307692346,
+    "actual": 19.967692307692346,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:a8a46771-dd74-4179-b150-3524dc56f64e midrank",
+    "expected": 18.253968253968253,
+    "actual": 18.253968253968253,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:a8a46771-dd74-4179-b150-3524dc56f64e median delta",
+    "expected": -106.39230769230767,
+    "actual": -106.39230769230767,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:aac962fb-5740-40b2-9624-834c70aa2934 midrank",
+    "expected": 51.58730158730159,
+    "actual": 51.58730158730159,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:aac962fb-5740-40b2-9624-834c70aa2934 median delta",
+    "expected": 3.752136752136778,
+    "actual": 3.752136752136778,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:ab96322d-c4e7-4e70-9dfd-92587e4a2f59 midrank",
+    "expected": 13.492063492063492,
+    "actual": 13.492063492063492,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:ab96322d-c4e7-4e70-9dfd-92587e4a2f59 median delta",
+    "expected": -117.50183150183148,
+    "actual": -117.50183150183148,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:b5ac409b-443f-490e-b283-6dc9c97d2d2b midrank",
+    "expected": 73.80952380952381,
+    "actual": 73.80952380952381,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:b5ac409b-443f-490e-b283-6dc9c97d2d2b median delta",
+    "expected": 138.5,
+    "actual": 138.5,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:b8ea4ab2-3515-4399-aad2-16dae8732ea5 midrank",
+    "expected": 34.12698412698413,
+    "actual": 34.12698412698413,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:b8ea4ab2-3515-4399-aad2-16dae8732ea5 median delta",
+    "expected": -52.05230769230769,
+    "actual": -52.05230769230769,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:c87742b9-5f04-4ea1-a3b4-f972ecfd0b59 midrank",
+    "expected": 43.65079365079365,
+    "actual": 43.65079365079365,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:c87742b9-5f04-4ea1-a3b4-f972ecfd0b59 median delta",
+    "expected": -25.330238726790412,
+    "actual": -25.330238726790412,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:cae7f5c5-53e4-4833-a157-0001bed2a4e9 midrank",
+    "expected": 67.46031746031746,
+    "actual": 67.46031746031746,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:cae7f5c5-53e4-4833-a157-0001bed2a4e9 median delta",
+    "expected": 101.30769230769232,
+    "actual": 101.30769230769232,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:cb376861-cea1-4d1d-928b-a0f69d138a1f midrank",
+    "expected": 72.22222222222223,
+    "actual": 72.22222222222223,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:cb376861-cea1-4d1d-928b-a0f69d138a1f median delta",
+    "expected": 137.0854700854701,
+    "actual": 137.0854700854701,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:cc234ef2-bf98-4c9e-96d9-b58a24e76df1 midrank",
+    "expected": 76.98412698412699,
+    "actual": 76.98412698412699,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:cc234ef2-bf98-4c9e-96d9-b58a24e76df1 median delta",
+    "expected": 203.80769230769232,
+    "actual": 203.80769230769232,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:cc46e3c6-f406-4d12-8efe-0adcf0cdce59 midrank",
+    "expected": 0.7936507936507936,
+    "actual": 0.7936507936507936,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:cc46e3c6-f406-4d12-8efe-0adcf0cdce59 median delta",
+    "expected": -149.4681697612732,
+    "actual": -149.4681697612732,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:cf197b7c-07ca-4f30-9e0f-416f7223da82 midrank",
+    "expected": 88.0952380952381,
+    "actual": 88.0952380952381,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:cf197b7c-07ca-4f30-9e0f-416f7223da82 median delta",
+    "expected": 701.8076923076924,
+    "actual": 701.8076923076924,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:d3e79e46-73ec-4c4d-905f-266abe089236 midrank",
+    "expected": 8.73015873015873,
+    "actual": 8.73015873015873,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:d3e79e46-73ec-4c4d-905f-266abe089236 median delta",
+    "expected": -129.58119658119656,
+    "actual": -129.58119658119656,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:d5568257-f9d5-49ee-bfeb-842cdb28a2d3 midrank",
+    "expected": 86.5079365079365,
+    "actual": 86.5079365079365,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:d5568257-f9d5-49ee-bfeb-842cdb28a2d3 median delta",
+    "expected": 613.6076923076923,
+    "actual": 613.6076923076923,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:e1750960-73c7-4e15-aa1d-abc50246f58a midrank",
+    "expected": 19.841269841269842,
+    "actual": 19.841269841269842,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:e1750960-73c7-4e15-aa1d-abc50246f58a median delta",
+    "expected": -100.05230769230769,
+    "actual": -100.05230769230769,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:e21645ab-23a8-4da3-b6f7-f6007f43a836 midrank",
+    "expected": 24.603174603174605,
+    "actual": 24.603174603174605,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:e21645ab-23a8-4da3-b6f7-f6007f43a836 median delta",
+    "expected": -87.41644562334216,
+    "actual": -87.41644562334216,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:e5b4e14b-36d8-4905-810f-ccab282892d2 midrank",
+    "expected": 48.41269841269841,
+    "actual": 48.41269841269841,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:e5b4e14b-36d8-4905-810f-ccab282892d2 median delta",
+    "expected": -1.9864253393665194,
+    "actual": -1.9864253393665194,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:f1cc7f2c-6bf5-4a4e-9531-221d43de0a4b midrank",
+    "expected": 30.952380952380953,
+    "actual": 30.952380952380953,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:f1cc7f2c-6bf5-4a4e-9531-221d43de0a4b median delta",
+    "expected": -62.858974358974365,
+    "actual": -62.858974358974365,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:f2f52d8d-7ba3-4845-b6aa-3f8fc7cdba39 midrank",
+    "expected": 10.317460317460318,
+    "actual": 10.317460317460318,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:f2f52d8d-7ba3-4845-b6aa-3f8fc7cdba39 median delta",
+    "expected": -128.79575596816974,
+    "actual": -128.79575596816974,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:f4211b3c-35d0-4a07-b472-1551931c8006 midrank",
+    "expected": 70.63492063492063,
+    "actual": 70.63492063492063,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:f4211b3c-35d0-4a07-b472-1551931c8006 median delta",
+    "expected": 133.60769230769233,
+    "actual": 133.60769230769233,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:f522c17c-7ead-44fd-9082-970baccf57da midrank",
+    "expected": 2.380952380952381,
+    "actual": 2.380952380952381,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:f522c17c-7ead-44fd-9082-970baccf57da median delta",
+    "expected": -148.0523076923077,
+    "actual": -148.0523076923077,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:f608d428-a707-4381-b59e-9021a779c344 midrank",
+    "expected": 97.61904761904762,
+    "actual": 97.61904761904762,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:f608d428-a707-4381-b59e-9021a779c344 median delta",
+    "expected": 3701.3076923076924,
+    "actual": 3701.3076923076924,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:fc707176-e634-4e67-83c5-d09c13aa6fca midrank",
+    "expected": 35.714285714285715,
+    "actual": 35.714285714285715,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:fc707176-e634-4e67-83c5-d09c13aa6fca median delta",
+    "expected": -46.115384615384585,
+    "actual": -46.115384615384585,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:fd87ac85-b2d6-4ab3-b0a4-034041ed56fc midrank",
+    "expected": 84.92063492063492,
+    "actual": 84.92063492063492,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/PRIVATE",
+    "check": "PRIVATE:fd87ac85-b2d6-4ab3-b0a4-034041ed56fc median delta",
+    "expected": 493.50769230769237,
+    "actual": 493.50769230769237,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined",
+    "check": "BANK population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "distribution.sampleSize",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "distribution.minimum",
+    "expected": 167.1793103448276,
+    "actual": 167.1793103448276,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "distribution.p10",
+    "expected": 184.47939310344827,
+    "actual": 184.47939310344827,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "distribution.p25",
+    "expected": 221.3743448275862,
+    "actual": 221.37434482758619,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "distribution.median",
+    "expected": 286.75384615384615,
+    "actual": 286.75384615384615,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "distribution.average",
+    "expected": 534.1990009451074,
+    "actual": 534.1990009451073,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "distribution.p75",
+    "expected": 416.0,
+    "actual": 416,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "distribution.p90",
+    "expected": 868.488,
+    "actual": 868.488,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "distribution.maximum",
+    "expected": 3728.2,
+    "actual": 3728.2,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "distribution.iqr",
+    "expected": 194.6256551724138,
+    "actual": 194.62565517241381,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "complete membership",
+    "expected": [
+      "BANK:0425acd9-4809-4fa2-9912-dfe23dde390e",
+      "BANK:05e66464-5ec3-4363-8e8c-59f9a59465ba",
+      "BANK:08c2510f-c41c-435f-83d0-9a8b775ce499",
+      "BANK:0bcc8f09-ac3c-45f2-9f5c-b6ef99dc2b6e",
+      "BANK:0cd88a04-4f22-4569-aaa3-bce80fd78174",
+      "BANK:120fa0dc-3785-44a9-8a8f-c12f3fbc7071",
+      "BANK:17035483-2fb0-42c7-a6f9-50b31bddb8bd",
+      "BANK:1ed17413-14ff-4883-a558-4d5ba53d4c99",
+      "BANK:206635f7-82ea-4c83-b55b-f42210b9102f",
+      "BANK:2318f8d0-d08d-484a-b003-d60a1c5c1fbe",
+      "BANK:2ea03502-f71d-4154-9a5c-0246766db751",
+      "BANK:300bebeb-5f45-4e99-9e56-d43f33a54ea0",
+      "BANK:313ae600-1676-47e2-b318-ca0bb9343f64",
+      "BANK:3370234e-89bf-4562-9787-da4071a37933",
+      "BANK:38b874b3-f456-4ebe-8ef3-09b3282be91b",
+      "BANK:3d3dd84f-13a9-4ee5-ab7a-0d87323e64d2",
+      "BANK:3f52f29a-c56d-410d-bf69-7376053ecf58",
+      "BANK:4041c83d-2c60-4624-b0d5-9722225b8792",
+      "BANK:48de35b2-96da-40ae-bec3-17e7bad030f5",
+      "BANK:48e09862-949e-49dc-b2f3-5af01f929f00",
+      "BANK:4c8d5a05-032d-4743-8beb-fcdb656bca50",
+      "BANK:5193f720-af1b-4f08-aa61-ac66415dbab2",
+      "BANK:51f98abb-d723-448c-8b03-7a2a5fccc7db",
+      "BANK:5630a560-f7b1-447c-813b-1ca0186e6962",
+      "BANK:56ab66cd-0a9b-4076-b549-ac5a8c0180b5",
+      "BANK:5939fd78-93d3-43ff-b380-dfe8ff2dc4ad",
+      "BANK:5d19a125-df82-4caf-bdfc-67fc6056a7ff",
+      "BANK:607e3e45-27ec-46f3-9d13-9a0a910f8e45",
+      "BANK:64b6e299-653f-46c4-b7eb-d34cece226f2",
+      "BANK:69e516ed-61d5-437c-95d0-2d4d5340df1d",
+      "BANK:6bcc49a7-20df-439f-afd0-35c7148da5be",
+      "BANK:73bdbbf1-f597-4e4a-957c-908bb11e4eb1",
+      "BANK:787d48eb-3d99-40c7-85eb-6aa4c11e87a0",
+      "BANK:79c1fb90-9b5e-4dcb-b428-b99049eb58ae",
+      "BANK:7b72b701-af05-45f1-a363-fc930ee12bc6",
+      "BANK:7b87472f-7508-45f9-83e8-e406747633ce",
+      "BANK:7f1f7f0b-5425-4700-99c6-44e14921e71e",
+      "BANK:7f9e58cd-6574-496f-a72d-62c1ba4213e7",
+      "BANK:827e6f5d-a766-4bb0-82a4-82f9fa5fff3b",
+      "BANK:86700481-8f06-4164-b4cd-9bed8b7e0c23",
+      "BANK:8a388530-fbd7-4245-9f63-df1023fa713d",
+      "BANK:97cc6764-1e42-4a77-99df-b8ffe94705c1",
+      "BANK:9926f4a0-57f4-4667-ad6d-b7a7acda0812",
+      "BANK:9c3ab3f0-0719-4a83-8704-82cfcc3e1c94",
+      "BANK:a0588a0d-0ffe-48da-9e2b-d01cbf4b6e56",
+      "BANK:abfea177-32b9-4736-b3b3-a1e19532a949",
+      "BANK:bca3f0fd-c8c8-4df7-85f2-376397d69f1d",
+      "BANK:c16891b8-7d95-47c6-bd1a-cd34abce83ca",
+      "BANK:c1c15e0c-2c26-415f-a7cc-d2a5b03afcfe",
+      "BANK:c3793e05-4d0d-40cc-acc4-1af3b1788cf3",
+      "BANK:c45c38ee-0309-445e-8a0c-751ddd19d1da",
+      "BANK:c5221502-d0eb-442b-9c78-8e9ca5ef0def",
+      "BANK:ca871283-0560-4e0b-b978-3c0f92f95a20",
+      "BANK:cd8ca66d-223e-46e9-82cb-a5d95c7ae723",
+      "BANK:ce5b9e0e-d0f5-45c3-befa-67938b4853d8",
+      "BANK:d3c18e9e-931d-42bd-81d8-e018cff054ca",
+      "BANK:e48263f0-0aac-4e35-b483-6c185453934c",
+      "BANK:e914070f-3a43-4287-a6b6-482d539f2812",
+      "BANK:ec76f592-b96d-4e19-8e83-eeeaed8515a7",
+      "BANK:ef54b813-ebb4-4d13-ac2a-ad478e1a058d",
+      "BANK:f6922650-39ec-402f-8b2e-6555132e3452",
+      "BANK:fd7f881e-1e71-4cfd-abcb-6afba24ade5a",
+      "BANK:fd89302a-5a0f-4bc1-a2c8-aa76d9c60aa6"
+    ],
+    "actual": [
+      "BANK:0425acd9-4809-4fa2-9912-dfe23dde390e",
+      "BANK:05e66464-5ec3-4363-8e8c-59f9a59465ba",
+      "BANK:08c2510f-c41c-435f-83d0-9a8b775ce499",
+      "BANK:0bcc8f09-ac3c-45f2-9f5c-b6ef99dc2b6e",
+      "BANK:0cd88a04-4f22-4569-aaa3-bce80fd78174",
+      "BANK:120fa0dc-3785-44a9-8a8f-c12f3fbc7071",
+      "BANK:17035483-2fb0-42c7-a6f9-50b31bddb8bd",
+      "BANK:1ed17413-14ff-4883-a558-4d5ba53d4c99",
+      "BANK:206635f7-82ea-4c83-b55b-f42210b9102f",
+      "BANK:2318f8d0-d08d-484a-b003-d60a1c5c1fbe",
+      "BANK:2ea03502-f71d-4154-9a5c-0246766db751",
+      "BANK:300bebeb-5f45-4e99-9e56-d43f33a54ea0",
+      "BANK:313ae600-1676-47e2-b318-ca0bb9343f64",
+      "BANK:3370234e-89bf-4562-9787-da4071a37933",
+      "BANK:38b874b3-f456-4ebe-8ef3-09b3282be91b",
+      "BANK:3d3dd84f-13a9-4ee5-ab7a-0d87323e64d2",
+      "BANK:3f52f29a-c56d-410d-bf69-7376053ecf58",
+      "BANK:4041c83d-2c60-4624-b0d5-9722225b8792",
+      "BANK:48de35b2-96da-40ae-bec3-17e7bad030f5",
+      "BANK:48e09862-949e-49dc-b2f3-5af01f929f00",
+      "BANK:4c8d5a05-032d-4743-8beb-fcdb656bca50",
+      "BANK:5193f720-af1b-4f08-aa61-ac66415dbab2",
+      "BANK:51f98abb-d723-448c-8b03-7a2a5fccc7db",
+      "BANK:5630a560-f7b1-447c-813b-1ca0186e6962",
+      "BANK:56ab66cd-0a9b-4076-b549-ac5a8c0180b5",
+      "BANK:5939fd78-93d3-43ff-b380-dfe8ff2dc4ad",
+      "BANK:5d19a125-df82-4caf-bdfc-67fc6056a7ff",
+      "BANK:607e3e45-27ec-46f3-9d13-9a0a910f8e45",
+      "BANK:64b6e299-653f-46c4-b7eb-d34cece226f2",
+      "BANK:69e516ed-61d5-437c-95d0-2d4d5340df1d",
+      "BANK:6bcc49a7-20df-439f-afd0-35c7148da5be",
+      "BANK:73bdbbf1-f597-4e4a-957c-908bb11e4eb1",
+      "BANK:787d48eb-3d99-40c7-85eb-6aa4c11e87a0",
+      "BANK:79c1fb90-9b5e-4dcb-b428-b99049eb58ae",
+      "BANK:7b72b701-af05-45f1-a363-fc930ee12bc6",
+      "BANK:7b87472f-7508-45f9-83e8-e406747633ce",
+      "BANK:7f1f7f0b-5425-4700-99c6-44e14921e71e",
+      "BANK:7f9e58cd-6574-496f-a72d-62c1ba4213e7",
+      "BANK:827e6f5d-a766-4bb0-82a4-82f9fa5fff3b",
+      "BANK:86700481-8f06-4164-b4cd-9bed8b7e0c23",
+      "BANK:8a388530-fbd7-4245-9f63-df1023fa713d",
+      "BANK:97cc6764-1e42-4a77-99df-b8ffe94705c1",
+      "BANK:9926f4a0-57f4-4667-ad6d-b7a7acda0812",
+      "BANK:9c3ab3f0-0719-4a83-8704-82cfcc3e1c94",
+      "BANK:a0588a0d-0ffe-48da-9e2b-d01cbf4b6e56",
+      "BANK:abfea177-32b9-4736-b3b3-a1e19532a949",
+      "BANK:bca3f0fd-c8c8-4df7-85f2-376397d69f1d",
+      "BANK:c16891b8-7d95-47c6-bd1a-cd34abce83ca",
+      "BANK:c1c15e0c-2c26-415f-a7cc-d2a5b03afcfe",
+      "BANK:c3793e05-4d0d-40cc-acc4-1af3b1788cf3",
+      "BANK:c45c38ee-0309-445e-8a0c-751ddd19d1da",
+      "BANK:c5221502-d0eb-442b-9c78-8e9ca5ef0def",
+      "BANK:ca871283-0560-4e0b-b978-3c0f92f95a20",
+      "BANK:cd8ca66d-223e-46e9-82cb-a5d95c7ae723",
+      "BANK:ce5b9e0e-d0f5-45c3-befa-67938b4853d8",
+      "BANK:d3c18e9e-931d-42bd-81d8-e018cff054ca",
+      "BANK:e48263f0-0aac-4e35-b483-6c185453934c",
+      "BANK:e914070f-3a43-4287-a6b6-482d539f2812",
+      "BANK:ec76f592-b96d-4e19-8e83-eeeaed8515a7",
+      "BANK:ef54b813-ebb4-4d13-ac2a-ad478e1a058d",
+      "BANK:f6922650-39ec-402f-8b2e-6555132e3452",
+      "BANK:fd7f881e-1e71-4cfd-abcb-6afba24ade5a",
+      "BANK:fd89302a-5a0f-4bc1-a2c8-aa76d9c60aa6"
+    ],
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:0425acd9-4809-4fa2-9912-dfe23dde390e midrank",
+    "expected": 75.39682539682539,
+    "actual": 75.39682539682539,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:0425acd9-4809-4fa2-9912-dfe23dde390e median delta",
+    "expected": 147.69230769230768,
+    "actual": 147.69230769230768,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:05e66464-5ec3-4363-8e8c-59f9a59465ba midrank",
+    "expected": 84.92063492063492,
+    "actual": 84.92063492063492,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:05e66464-5ec3-4363-8e8c-59f9a59465ba median delta",
+    "expected": 394.8061538461538,
+    "actual": 394.8061538461538,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:08c2510f-c41c-435f-83d0-9a8b775ce499 midrank",
+    "expected": 7.142857142857143,
+    "actual": 7.142857142857143,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:08c2510f-c41c-435f-83d0-9a8b775ce499 median delta",
+    "expected": -110.73846153846154,
+    "actual": -110.73846153846154,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:0bcc8f09-ac3c-45f2-9f5c-b6ef99dc2b6e midrank",
+    "expected": 2.380952380952381,
+    "actual": 2.380952380952381,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:0bcc8f09-ac3c-45f2-9f5c-b6ef99dc2b6e median delta",
+    "expected": -118.44184615384614,
+    "actual": -118.44184615384614,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:0cd88a04-4f22-4569-aaa3-bce80fd78174 midrank",
+    "expected": 97.61904761904762,
+    "actual": 97.61904761904762,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:0cd88a04-4f22-4569-aaa3-bce80fd78174 median delta",
+    "expected": 2961.046153846154,
+    "actual": 2961.046153846154,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:120fa0dc-3785-44a9-8a8f-c12f3fbc7071 midrank",
+    "expected": 78.57142857142857,
+    "actual": 78.57142857142857,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:120fa0dc-3785-44a9-8a8f-c12f3fbc7071 median delta",
+    "expected": 202.80615384615385,
+    "actual": 202.80615384615385,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:17035483-2fb0-42c7-a6f9-50b31bddb8bd midrank",
+    "expected": 99.2063492063492,
+    "actual": 99.2063492063492,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:17035483-2fb0-42c7-a6f9-50b31bddb8bd median delta",
+    "expected": 3441.4461538461537,
+    "actual": 3441.4461538461537,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:1ed17413-14ff-4883-a558-4d5ba53d4c99 midrank",
+    "expected": 13.492063492063492,
+    "actual": 13.492063492063492,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:1ed17413-14ff-4883-a558-4d5ba53d4c99 median delta",
+    "expected": -94.00146520146521,
+    "actual": -94.00146520146521,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:206635f7-82ea-4c83-b55b-f42210b9102f midrank",
+    "expected": 29.365079365079364,
+    "actual": 29.365079365079364,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:206635f7-82ea-4c83-b55b-f42210b9102f median delta",
+    "expected": -53.36763925729443,
+    "actual": -53.36763925729443,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:2318f8d0-d08d-484a-b003-d60a1c5c1fbe midrank",
+    "expected": 40.476190476190474,
+    "actual": 40.476190476190474,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:2318f8d0-d08d-484a-b003-d60a1c5c1fbe median delta",
+    "expected": -25.410989010989,
+    "actual": -25.410989010989,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:2ea03502-f71d-4154-9a5c-0246766db751 midrank",
+    "expected": 94.44444444444444,
+    "actual": 94.44444444444444,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:2ea03502-f71d-4154-9a5c-0246766db751 median delta",
+    "expected": 2001.046153846154,
+    "actual": 2001.046153846154,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:300bebeb-5f45-4e99-9e56-d43f33a54ea0 midrank",
+    "expected": 10.317460317460318,
+    "actual": 10.317460317460318,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:300bebeb-5f45-4e99-9e56-d43f33a54ea0 median delta",
+    "expected": -103.03660477453582,
+    "actual": -103.03660477453582,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:313ae600-1676-47e2-b318-ca0bb9343f64 midrank",
+    "expected": 89.68253968253968,
+    "actual": 89.68253968253968,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:313ae600-1676-47e2-b318-ca0bb9343f64 median delta",
+    "expected": 586.8061538461538,
+    "actual": 586.8061538461538,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:3370234e-89bf-4562-9787-da4071a37933 midrank",
+    "expected": 70.63492063492063,
+    "actual": 70.63492063492063,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:3370234e-89bf-4562-9787-da4071a37933 median delta",
+    "expected": 106.88615384615383,
+    "actual": 106.88615384615383,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:38b874b3-f456-4ebe-8ef3-09b3282be91b midrank",
+    "expected": 5.555555555555555,
+    "actual": 5.555555555555555,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:38b874b3-f456-4ebe-8ef3-09b3282be91b median delta",
+    "expected": -114.53031674208145,
+    "actual": -114.53031674208145,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:3d3dd84f-13a9-4ee5-ab7a-0d87323e64d2 midrank",
+    "expected": 61.111111111111114,
+    "actual": 61.111111111111114,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:3d3dd84f-13a9-4ee5-ab7a-0d87323e64d2 median delta",
+    "expected": 43.14139194139193,
+    "actual": 43.14139194139193,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:3f52f29a-c56d-410d-bf69-7376053ecf58 midrank",
+    "expected": 15.079365079365079,
+    "actual": 15.079365079365079,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:3f52f29a-c56d-410d-bf69-7376053ecf58 median delta",
+    "expected": -86.47108753315649,
+    "actual": -86.47108753315649,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:4041c83d-2c60-4624-b0d5-9722225b8792 midrank",
+    "expected": 21.428571428571427,
+    "actual": 21.428571428571427,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:4041c83d-2c60-4624-b0d5-9722225b8792 median delta",
+    "expected": -73.84615384615384,
+    "actual": -73.84615384615384,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:48de35b2-96da-40ae-bec3-17e7bad030f5 midrank",
+    "expected": 35.714285714285715,
+    "actual": 35.714285714285715,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:48de35b2-96da-40ae-bec3-17e7bad030f5 median delta",
+    "expected": -36.892307692307696,
+    "actual": -36.892307692307696,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:48e09862-949e-49dc-b2f3-5af01f929f00 midrank",
+    "expected": 51.58730158730159,
+    "actual": 51.58730158730159,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:48e09862-949e-49dc-b2f3-5af01f929f00 median delta",
+    "expected": 3.001709401709377,
+    "actual": 3.001709401709377,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:4c8d5a05-032d-4743-8beb-fcdb656bca50 midrank",
+    "expected": 37.301587301587304,
+    "actual": 37.301587301587304,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:4c8d5a05-032d-4743-8beb-fcdb656bca50 median delta",
+    "expected": -36.82970822281166,
+    "actual": -36.82970822281166,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:5193f720-af1b-4f08-aa61-ac66415dbab2 midrank",
+    "expected": 19.841269841269842,
+    "actual": 19.841269841269842,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:5193f720-af1b-4f08-aa61-ac66415dbab2 median delta",
+    "expected": -80.04184615384617,
+    "actual": -80.04184615384617,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:51f98abb-d723-448c-8b03-7a2a5fccc7db midrank",
+    "expected": 48.41269841269841,
+    "actual": 48.41269841269841,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:51f98abb-d723-448c-8b03-7a2a5fccc7db median delta",
+    "expected": -1.5891402714931928,
+    "actual": -1.5891402714931928,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:5630a560-f7b1-447c-813b-1ca0186e6962 midrank",
+    "expected": 64.28571428571429,
+    "actual": 64.28571428571429,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:5630a560-f7b1-447c-813b-1ca0186e6962 median delta",
+    "expected": 56.37948717948717,
+    "actual": 56.37948717948717,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:56ab66cd-0a9b-4076-b549-ac5a8c0180b5 midrank",
+    "expected": 32.53968253968254,
+    "actual": 32.53968253968254,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:56ab66cd-0a9b-4076-b549-ac5a8c0180b5 median delta",
+    "expected": -48.287179487179486,
+    "actual": -48.287179487179486,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:5939fd78-93d3-43ff-b380-dfe8ff2dc4ad midrank",
+    "expected": 73.80952380952381,
+    "actual": 73.80952380952381,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:5939fd78-93d3-43ff-b380-dfe8ff2dc4ad median delta",
+    "expected": 110.80000000000001,
+    "actual": 110.80000000000001,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:5d19a125-df82-4caf-bdfc-67fc6056a7ff midrank",
+    "expected": 26.19047619047619,
+    "actual": 26.19047619047619,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:5d19a125-df82-4caf-bdfc-67fc6056a7ff median delta",
+    "expected": -60.82584615384616,
+    "actual": -60.82584615384616,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:607e3e45-27ec-46f3-9d13-9a0a910f8e45 midrank",
+    "expected": 30.952380952380953,
+    "actual": 30.952380952380953,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:607e3e45-27ec-46f3-9d13-9a0a910f8e45 median delta",
+    "expected": -50.287179487179486,
+    "actual": -50.287179487179486,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:64b6e299-653f-46c4-b7eb-d34cece226f2 midrank",
+    "expected": 83.33333333333333,
+    "actual": 83.33333333333333,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:64b6e299-653f-46c4-b7eb-d34cece226f2 median delta",
+    "expected": 298.88615384615383,
+    "actual": 298.88615384615383,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:69e516ed-61d5-437c-95d0-2d4d5340df1d midrank",
+    "expected": 69.04761904761905,
+    "actual": 69.04761904761905,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:69e516ed-61d5-437c-95d0-2d4d5340df1d median delta",
+    "expected": 83.14027149321265,
+    "actual": 83.14027149321265,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:6bcc49a7-20df-439f-afd0-35c7148da5be midrank",
+    "expected": 18.253968253968253,
+    "actual": 18.253968253968253,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:6bcc49a7-20df-439f-afd0-35c7148da5be median delta",
+    "expected": -85.11384615384617,
+    "actual": -85.11384615384617,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:73bdbbf1-f597-4e4a-957c-908bb11e4eb1 midrank",
+    "expected": 23.015873015873016,
+    "actual": 23.015873015873016,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:73bdbbf1-f597-4e4a-957c-908bb11e4eb1 median delta",
+    "expected": -71.12527472527472,
+    "actual": -71.12527472527472,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:787d48eb-3d99-40c7-85eb-6aa4c11e87a0 midrank",
+    "expected": 72.22222222222223,
+    "actual": 72.22222222222223,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:787d48eb-3d99-40c7-85eb-6aa4c11e87a0 median delta",
+    "expected": 109.66837606837606,
+    "actual": 109.66837606837606,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:79c1fb90-9b5e-4dcb-b428-b99049eb58ae midrank",
+    "expected": 43.65079365079365,
+    "actual": 43.65079365079365,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:79c1fb90-9b5e-4dcb-b428-b99049eb58ae median delta",
+    "expected": -20.264190981432364,
+    "actual": -20.264190981432364,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:7b72b701-af05-45f1-a363-fc930ee12bc6 midrank",
+    "expected": 65.87301587301587,
+    "actual": 65.87301587301587,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:7b72b701-af05-45f1-a363-fc930ee12bc6 median delta",
+    "expected": 73.84615384615387,
+    "actual": 73.84615384615387,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:7b87472f-7508-45f9-83e8-e406747633ce midrank",
+    "expected": 57.93650793650794,
+    "actual": 57.93650793650794,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:7b87472f-7508-45f9-83e8-e406747633ce median delta",
+    "expected": 26.669683257918564,
+    "actual": 26.669683257918564,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:7f1f7f0b-5425-4700-99c6-44e14921e71e midrank",
+    "expected": 62.698412698412696,
+    "actual": 62.698412698412696,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:7f1f7f0b-5425-4700-99c6-44e14921e71e median delta",
+    "expected": 54.881447963800895,
+    "actual": 54.881447963800895,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:7f9e58cd-6574-496f-a72d-62c1ba4213e7 midrank",
+    "expected": 16.666666666666668,
+    "actual": 16.666666666666668,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:7f9e58cd-6574-496f-a72d-62c1ba4213e7 median delta",
+    "expected": -86.2714932126697,
+    "actual": -86.2714932126697,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:827e6f5d-a766-4bb0-82a4-82f9fa5fff3b midrank",
+    "expected": 0.7936507936507936,
+    "actual": 0.7936507936507936,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:827e6f5d-a766-4bb0-82a4-82f9fa5fff3b median delta",
+    "expected": -119.57453580901856,
+    "actual": -119.57453580901856,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:86700481-8f06-4164-b4cd-9bed8b7e0c23 midrank",
+    "expected": 34.12698412698413,
+    "actual": 34.12698412698413,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:86700481-8f06-4164-b4cd-9bed8b7e0c23 median delta",
+    "expected": -41.64184615384616,
+    "actual": -41.64184615384616,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:8a388530-fbd7-4245-9f63-df1023fa713d midrank",
+    "expected": 46.82539682539682,
+    "actual": 46.82539682539682,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:8a388530-fbd7-4245-9f63-df1023fa713d median delta",
+    "expected": -2.572893772893792,
+    "actual": -2.572893772893792,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:97cc6764-1e42-4a77-99df-b8ffe94705c1 midrank",
+    "expected": 53.17460317460318,
+    "actual": 53.17460317460318,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:97cc6764-1e42-4a77-99df-b8ffe94705c1 median delta",
+    "expected": 10.806153846153848,
+    "actual": 10.806153846153848,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:9926f4a0-57f4-4667-ad6d-b7a7acda0812 midrank",
+    "expected": 38.888888888888886,
+    "actual": 38.888888888888886,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:9926f4a0-57f4-4667-ad6d-b7a7acda0812 median delta",
+    "expected": -29.80090497737558,
+    "actual": -29.80090497737558,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:9c3ab3f0-0719-4a83-8704-82cfcc3e1c94 midrank",
+    "expected": 56.34920634920635,
+    "actual": 56.34920634920635,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:9c3ab3f0-0719-4a83-8704-82cfcc3e1c94 median delta",
+    "expected": 20.303296703296724,
+    "actual": 20.303296703296724,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:a0588a0d-0ffe-48da-9e2b-d01cbf4b6e56 midrank",
+    "expected": 24.603174603174605,
+    "actual": 24.603174603174605,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:a0588a0d-0ffe-48da-9e2b-d01cbf4b6e56 median delta",
+    "expected": -69.93315649867375,
+    "actual": -69.93315649867375,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:abfea177-32b9-4736-b3b3-a1e19532a949 midrank",
+    "expected": 96.03174603174604,
+    "actual": 96.03174603174604,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:abfea177-32b9-4736-b3b3-a1e19532a949 median delta",
+    "expected": 2481.4461538461537,
+    "actual": 2481.4461538461537,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:bca3f0fd-c8c8-4df7-85f2-376397d69f1d midrank",
+    "expected": 86.5079365079365,
+    "actual": 86.5079365079365,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:bca3f0fd-c8c8-4df7-85f2-376397d69f1d median delta",
+    "expected": 490.88615384615383,
+    "actual": 490.88615384615383,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:c16891b8-7d95-47c6-bd1a-cd34abce83ca midrank",
+    "expected": 67.46031746031746,
+    "actual": 67.46031746031746,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:c16891b8-7d95-47c6-bd1a-cd34abce83ca median delta",
+    "expected": 81.04615384615386,
+    "actual": 81.04615384615386,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:c1c15e0c-2c26-415f-a7cc-d2a5b03afcfe midrank",
+    "expected": 50.0,
+    "actual": 50,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:c1c15e0c-2c26-415f-a7cc-d2a5b03afcfe median delta",
+    "expected": 0.0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:c3793e05-4d0d-40cc-acc4-1af3b1788cf3 midrank",
+    "expected": 92.85714285714286,
+    "actual": 92.85714285714286,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:c3793e05-4d0d-40cc-acc4-1af3b1788cf3 median delta",
+    "expected": 1521.446153846154,
+    "actual": 1521.446153846154,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:c45c38ee-0309-445e-8a0c-751ddd19d1da midrank",
+    "expected": 27.77777777777778,
+    "actual": 27.77777777777778,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:c45c38ee-0309-445e-8a0c-751ddd19d1da median delta",
+    "expected": -58.05972850678734,
+    "actual": -58.05972850678734,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:c5221502-d0eb-442b-9c78-8e9ca5ef0def midrank",
+    "expected": 11.904761904761905,
+    "actual": 11.904761904761905,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:c5221502-d0eb-442b-9c78-8e9ca5ef0def median delta",
+    "expected": -99.22584615384616,
+    "actual": -99.22584615384616,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:ca871283-0560-4e0b-b978-3c0f92f95a20 midrank",
+    "expected": 3.9682539682539684,
+    "actual": 3.9682539682539684,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:ca871283-0560-4e0b-b978-3c0f92f95a20 median delta",
+    "expected": -116.83956043956044,
+    "actual": -116.83956043956044,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:cd8ca66d-223e-46e9-82cb-a5d95c7ae723 midrank",
+    "expected": 88.0952380952381,
+    "actual": 88.0952380952381,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:cd8ca66d-223e-46e9-82cb-a5d95c7ae723 median delta",
+    "expected": 561.446153846154,
+    "actual": 561.446153846154,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:ce5b9e0e-d0f5-45c3-befa-67938b4853d8 midrank",
+    "expected": 54.76190476190476,
+    "actual": 54.76190476190476,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:ce5b9e0e-d0f5-45c3-befa-67938b4853d8 median delta",
+    "expected": 15.974153846153854,
+    "actual": 15.974153846153854,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:d3c18e9e-931d-42bd-81d8-e018cff054ca midrank",
+    "expected": 59.523809523809526,
+    "actual": 59.523809523809526,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:d3c18e9e-931d-42bd-81d8-e018cff054ca median delta",
+    "expected": 36.95384615384614,
+    "actual": 36.95384615384614,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:e48263f0-0aac-4e35-b483-6c185453934c midrank",
+    "expected": 81.74603174603175,
+    "actual": 81.74603174603175,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:e48263f0-0aac-4e35-b483-6c185453934c median delta",
+    "expected": 269.71282051282054,
+    "actual": 269.71282051282054,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:e914070f-3a43-4287-a6b6-482d539f2812 midrank",
+    "expected": 91.26984126984127,
+    "actual": 91.26984126984127,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:e914070f-3a43-4287-a6b6-482d539f2812 median delta",
+    "expected": 1041.0461538461539,
+    "actual": 1041.0461538461539,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:ec76f592-b96d-4e19-8e83-eeeaed8515a7 midrank",
+    "expected": 42.06349206349206,
+    "actual": 42.06349206349206,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:ec76f592-b96d-4e19-8e83-eeeaed8515a7 median delta",
+    "expected": -22.42584615384618,
+    "actual": -22.42584615384618,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:ef54b813-ebb4-4d13-ac2a-ad478e1a058d midrank",
+    "expected": 8.73015873015873,
+    "actual": 8.73015873015873,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:ef54b813-ebb4-4d13-ac2a-ad478e1a058d median delta",
+    "expected": -103.66495726495725,
+    "actual": -103.66495726495725,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:f6922650-39ec-402f-8b2e-6555132e3452 midrank",
+    "expected": 76.98412698412699,
+    "actual": 76.98412698412699,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:f6922650-39ec-402f-8b2e-6555132e3452 median delta",
+    "expected": 163.04615384615386,
+    "actual": 163.04615384615386,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:fd7f881e-1e71-4cfd-abcb-6afba24ade5a midrank",
+    "expected": 45.23809523809524,
+    "actual": 45.23809523809524,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:fd7f881e-1e71-4cfd-abcb-6afba24ade5a median delta",
+    "expected": -3.2418461538461543,
+    "actual": -3.2418461538461543,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:fd89302a-5a0f-4bc1-a2c8-aa76d9c60aa6 midrank",
+    "expected": 80.15873015873017,
+    "actual": 80.15873015873017,
+    "pass": true
+  },
+  {
+    "engine": "discovery",
+    "population": "combined/BANK",
+    "check": "BANK:fd89302a-5a0f-4bc1-a2c8-aa76d9c60aa6 median delta",
+    "expected": 216.33504273504275,
+    "actual": 216.33504273504275,
+    "pass": true
+  },
+  {
+    "engine": "position",
+    "population": "combined",
+    "check": "executed",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "position",
+    "population": "combined",
+    "check": "methodology",
+    "expected": "existing-engine-methodologies-population-adapter-v1",
+    "actual": "existing-engine-methodologies-population-adapter-v1",
+    "pass": true
+  },
+  {
+    "engine": "position",
+    "population": "combined",
+    "check": "PRIVATE population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "position",
+    "population": "combined/PRIVATE",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "position",
+    "population": "combined/PRIVATE",
+    "check": "belowCount",
+    "expected": 4,
+    "actual": 4,
+    "pass": true
+  },
+  {
+    "engine": "position",
+    "population": "combined/PRIVATE",
+    "check": "equalCount",
+    "expected": 1,
+    "actual": 1,
+    "pass": true
+  },
+  {
+    "engine": "position",
+    "population": "combined/PRIVATE",
+    "check": "aboveCount",
+    "expected": 58,
+    "actual": 58,
+    "pass": true
+  },
+  {
+    "engine": "position",
+    "population": "combined/PRIVATE",
+    "check": "position",
+    "expected": 7.142857142857143,
+    "actual": 7.142857142857143,
+    "pass": true
+  },
+  {
+    "engine": "position",
+    "population": "combined/PRIVATE",
+    "check": "subject population",
+    "expected": "SUBJECT_INCLUDED",
+    "actual": "SUBJECT_INCLUDED",
+    "pass": true
+  },
+  {
+    "engine": "position",
+    "population": "combined",
+    "check": "BANK population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "position",
+    "population": "combined/BANK",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "position",
+    "population": "combined/BANK",
+    "check": "belowCount",
+    "expected": 16,
+    "actual": 16,
+    "pass": true
+  },
+  {
+    "engine": "position",
+    "population": "combined/BANK",
+    "check": "equalCount",
+    "expected": 0,
+    "actual": 0,
+    "pass": true
+  },
+  {
+    "engine": "position",
+    "population": "combined/BANK",
+    "check": "aboveCount",
+    "expected": 47,
+    "actual": 47,
+    "pass": true
+  },
+  {
+    "engine": "position",
+    "population": "combined/BANK",
+    "check": "position",
+    "expected": 25.396825396825395,
+    "actual": 25.396825396825395,
+    "pass": true
+  },
+  {
+    "engine": "position",
+    "population": "combined/BANK",
+    "check": "subject population",
+    "expected": "SUBJECT_EXTERNAL",
+    "actual": "SUBJECT_EXTERNAL",
+    "pass": true
+  },
+  {
+    "engine": "comparables",
+    "population": "combined",
+    "check": "executed",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "comparables",
+    "population": "combined",
+    "check": "methodology",
+    "expected": "existing-engine-methodologies-population-adapter-v1",
+    "actual": "existing-engine-methodologies-population-adapter-v1",
+    "pass": true
+  },
+  {
+    "engine": "comparables",
+    "population": "combined",
+    "check": "PRIVATE population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "comparables",
+    "population": "combined/PRIVATE",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "comparables",
+    "population": "combined/PRIVATE",
+    "check": "qualified exclusion and cohort N",
+    "expected": 4,
+    "actual": 4,
+    "pass": true
+  },
+  {
+    "engine": "comparables",
+    "population": "combined/PRIVATE",
+    "check": "comparable.minimum",
+    "expected": 208.97413793103448,
+    "actual": 208.97413793103448,
+    "pass": true
+  },
+  {
+    "engine": "comparables",
+    "population": "combined/PRIVATE",
+    "check": "comparable.p10",
+    "expected": 209.39889655172414,
+    "actual": 209.39889655172414,
+    "pass": true
+  },
+  {
+    "engine": "comparables",
+    "population": "combined/PRIVATE",
+    "check": "comparable.p25",
+    "expected": 210.03603448275862,
+    "actual": 210.03603448275862,
+    "pass": true
+  },
+  {
+    "engine": "comparables",
+    "population": "combined/PRIVATE",
+    "check": "comparable.median",
+    "expected": 211.39142857142858,
+    "actual": 211.39142857142855,
+    "pass": true
+  },
+  {
+    "engine": "comparables",
+    "population": "combined/PRIVATE",
+    "check": "comparable.p75",
+    "expected": 213.11449579831933,
+    "actual": 213.11449579831933,
+    "pass": true
+  },
+  {
+    "engine": "comparables",
+    "population": "combined/PRIVATE",
+    "check": "comparable.p90",
+    "expected": 214.41344537815127,
+    "actual": 214.41344537815127,
+    "pass": true
+  },
+  {
+    "engine": "comparables",
+    "population": "combined/PRIVATE",
+    "check": "comparable.maximum",
+    "expected": 215.27941176470588,
+    "actual": 215.27941176470588,
+    "pass": true
+  },
+  {
+    "engine": "comparables",
+    "population": "combined/PRIVATE",
+    "check": "comparable.iqr",
+    "expected": 3.078461315560702,
+    "actual": 3.078461315560702,
+    "pass": true
+  },
+  {
+    "engine": "comparables",
+    "population": "combined",
+    "check": "BANK population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "comparables",
+    "population": "combined/BANK",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "comparables",
+    "population": "combined/BANK",
+    "check": "qualified exclusion and cohort N",
+    "expected": 5,
+    "actual": 5,
+    "pass": true
+  },
+  {
+    "engine": "comparables",
+    "population": "combined/BANK",
+    "check": "comparable.minimum",
+    "expected": 167.1793103448276,
+    "actual": 167.1793103448276,
+    "pass": true
+  },
+  {
+    "engine": "comparables",
+    "population": "combined/BANK",
+    "check": "comparable.p10",
+    "expected": 167.63238620689654,
+    "actual": 167.63238620689657,
+    "pass": true
+  },
+  {
+    "engine": "comparables",
+    "population": "combined/BANK",
+    "check": "comparable.p25",
+    "expected": 168.312,
+    "actual": 168.312,
+    "pass": true
+  },
+  {
+    "engine": "comparables",
+    "population": "combined/BANK",
+    "check": "comparable.median",
+    "expected": 169.9142857142857,
+    "actual": 169.9142857142857,
+    "pass": true
+  },
+  {
+    "engine": "comparables",
+    "population": "combined/BANK",
+    "check": "comparable.p75",
+    "expected": 172.2235294117647,
+    "actual": 172.2235294117647,
+    "pass": true
+  },
+  {
+    "engine": "comparables",
+    "population": "combined/BANK",
+    "check": "comparable.p90",
+    "expected": 174.49864253393665,
+    "actual": 174.49864253393667,
+    "pass": true
+  },
+  {
+    "engine": "comparables",
+    "population": "combined/BANK",
+    "check": "comparable.maximum",
+    "expected": 176.01538461538462,
+    "actual": 176.01538461538462,
+    "pass": true
+  },
+  {
+    "engine": "comparables",
+    "population": "combined/BANK",
+    "check": "comparable.iqr",
+    "expected": 3.9115294117646897,
+    "actual": 3.9115294117646897,
+    "pass": true
+  },
+  {
+    "engine": "asking-area-ratio",
+    "population": "combined",
+    "check": "executed",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "asking-area-ratio",
+    "population": "combined",
+    "check": "methodology",
+    "expected": "existing-engine-methodologies-population-adapter-v1",
+    "actual": "existing-engine-methodologies-population-adapter-v1",
+    "pass": true
+  },
+  {
+    "engine": "asking-area-ratio",
+    "population": "combined",
+    "check": "PRIVATE population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "asking-area-ratio",
+    "population": "combined/PRIVATE",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "asking-area-ratio",
+    "population": "combined/PRIVATE",
+    "check": "state",
+    "expected": "established",
+    "actual": "established",
+    "pass": true
+  },
+  {
+    "engine": "asking-area-ratio",
+    "population": "combined/PRIVATE",
+    "check": "N",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "asking-area-ratio",
+    "population": "combined/PRIVATE",
+    "check": "ratio",
+    "expected": 2.0000023809438776,
+    "actual": 2.000002380943877,
+    "pass": true
+  },
+  {
+    "engine": "asking-area-ratio",
+    "population": "combined/PRIVATE",
+    "check": "intercept",
+    "expected": 9998.280952380952,
+    "actual": 9998.280952380912,
+    "pass": true
+  },
+  {
+    "engine": "asking-area-ratio",
+    "population": "combined/PRIVATE",
+    "check": "propertyArea",
+    "expected": 200.00071428571428,
+    "actual": 200.00071428571437,
+    "pass": true
+  },
+  {
+    "engine": "asking-area-ratio",
+    "population": "combined/PRIVATE",
+    "check": "constructionArea",
+    "expected": 400.00190476190477,
+    "actual": 400.0019047619048,
+    "pass": true
+  },
+  {
+    "engine": "asking-area-ratio",
+    "population": "combined/PRIVATE",
+    "check": "HC3 Fieller lower",
+    "expected": 1.9998814323789988,
+    "actual": 1.9998814323835121,
+    "pass": true
+  },
+  {
+    "engine": "asking-area-ratio",
+    "population": "combined/PRIVATE",
+    "check": "HC3 Fieller upper",
+    "expected": 2.00012333470863,
+    "actual": 2.0001233347041145,
+    "pass": true
+  },
+  {
+    "engine": "asking-area-ratio",
+    "population": "combined",
+    "check": "BANK population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "asking-area-ratio",
+    "population": "combined/BANK",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "asking-area-ratio",
+    "population": "combined/BANK",
+    "check": "state",
+    "expected": "established",
+    "actual": "established",
+    "pass": true
+  },
+  {
+    "engine": "asking-area-ratio",
+    "population": "combined/BANK",
+    "check": "N",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "asking-area-ratio",
+    "population": "combined/BANK",
+    "check": "ratio",
+    "expected": 2.0000023809438776,
+    "actual": 2.000002380943877,
+    "pass": true
+  },
+  {
+    "engine": "asking-area-ratio",
+    "population": "combined/BANK",
+    "check": "intercept",
+    "expected": 7998.624761904762,
+    "actual": 7998.62476190491,
+    "pass": true
+  },
+  {
+    "engine": "asking-area-ratio",
+    "population": "combined/BANK",
+    "check": "propertyArea",
+    "expected": 160.00057142857142,
+    "actual": 160.00057142857142,
+    "pass": true
+  },
+  {
+    "engine": "asking-area-ratio",
+    "population": "combined/BANK",
+    "check": "constructionArea",
+    "expected": 320.0015238095238,
+    "actual": 320.00152380952375,
+    "pass": true
+  },
+  {
+    "engine": "asking-area-ratio",
+    "population": "combined/BANK",
+    "check": "HC3 Fieller lower",
+    "expected": 1.9998814323788205,
+    "actual": 1.9998814323835121,
+    "pass": true
+  },
+  {
+    "engine": "asking-area-ratio",
+    "population": "combined/BANK",
+    "check": "HC3 Fieller upper",
+    "expected": 2.0001233347088077,
+    "actual": 2.000123334704115,
+    "pass": true
+  },
+  {
+    "engine": "weighted-price",
+    "population": "combined",
+    "check": "executed",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "weighted-price",
+    "population": "combined",
+    "check": "methodology",
+    "expected": "existing-engine-methodologies-population-adapter-v1",
+    "actual": "existing-engine-methodologies-population-adapter-v1",
+    "pass": true
+  },
+  {
+    "engine": "weighted-price",
+    "population": "combined",
+    "check": "PRIVATE population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "weighted-price",
+    "population": "combined/PRIVATE",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "weighted-price",
+    "population": "combined/PRIVATE",
+    "check": "state",
+    "expected": "subject_position",
+    "actual": "subject_position",
+    "pass": true
+  },
+  {
+    "engine": "weighted-price",
+    "population": "combined/PRIVATE",
+    "check": "subject-excluded N",
+    "expected": 62,
+    "actual": 62,
+    "pass": true
+  },
+  {
+    "engine": "weighted-price",
+    "population": "combined/PRIVATE",
+    "check": "ratio",
+    "expected": 2.0000108714729987,
+    "actual": 2.000010871472998,
+    "pass": true
+  },
+  {
+    "engine": "weighted-price",
+    "population": "combined/PRIVATE",
+    "check": "intercept",
+    "expected": 9996.590116801437,
+    "actual": 9996.5901168017,
+    "pass": true
+  },
+  {
+    "engine": "weighted-price",
+    "population": "combined/PRIVATE",
+    "check": "propertyArea",
+    "expected": 200.0008355795148,
+    "actual": 200.0008355795149,
+    "pass": true
+  },
+  {
+    "engine": "weighted-price",
+    "population": "combined/PRIVATE",
+    "check": "constructionArea",
+    "expected": 400.0038454627134,
+    "actual": 400.00384546271334,
+    "pass": true
+  },
+  {
+    "engine": "weighted-price",
+    "population": "combined/PRIVATE",
+    "check": "HC3 Fieller lower",
+    "expected": 1.9998885761750045,
+    "actual": 1.9998885761806202,
+    "pass": true
+  },
+  {
+    "engine": "weighted-price",
+    "population": "combined/PRIVATE",
+    "check": "HC3 Fieller upper",
+    "expected": 2.0001331719651465,
+    "actual": 2.000133171959528,
+    "pass": true
+  },
+  {
+    "engine": "weighted-price",
+    "population": "combined/PRIVATE",
+    "check": "weighted median",
+    "expected": 203.80325568823153,
+    "actual": 203.80325568823156,
+    "pass": true
+  },
+  {
+    "engine": "weighted-price",
+    "population": "combined/PRIVATE",
+    "check": "weighted subject",
+    "expected": 207.2644274414601,
+    "actual": 207.2644274414601,
+    "pass": true
+  },
+  {
+    "engine": "weighted-price",
+    "population": "combined",
+    "check": "BANK population isolation",
+    "expected": true,
+    "actual": true,
+    "pass": true
+  },
+  {
+    "engine": "weighted-price",
+    "population": "combined/BANK",
+    "check": "acquisition N",
+    "expected": 64,
+    "actual": 64,
+    "pass": true
+  },
+  {
+    "engine": "weighted-price",
+    "population": "combined/BANK",
+    "check": "state",
+    "expected": "subject_position",
+    "actual": "subject_position",
+    "pass": true
+  },
+  {
+    "engine": "weighted-price",
+    "population": "combined/BANK",
+    "check": "subject-excluded N",
+    "expected": 63,
+    "actual": 63,
+    "pass": true
+  },
+  {
+    "engine": "weighted-price",
+    "population": "combined/BANK",
+    "check": "ratio",
+    "expected": 2.0000023809438776,
+    "actual": 2.000002380943877,
+    "pass": true
+  },
+  {
+    "engine": "weighted-price",
+    "population": "combined/BANK",
+    "check": "intercept",
+    "expected": 7998.624761904762,
+    "actual": 7998.62476190491,
+    "pass": true
+  },
+  {
+    "engine": "weighted-price",
+    "population": "combined/BANK",
+    "check": "propertyArea",
+    "expected": 160.00057142857142,
+    "actual": 160.00057142857142,
+    "pass": true
+  },
+  {
+    "engine": "weighted-price",
+    "population": "combined/BANK",
+    "check": "constructionArea",
+    "expected": 320.0015238095238,
+    "actual": 320.00152380952375,
+    "pass": true
+  },
+  {
+    "engine": "weighted-price",
+    "population": "combined/BANK",
+    "check": "HC3 Fieller lower",
+    "expected": 1.9998814323788205,
+    "actual": 1.9998814323835121,
+    "pass": true
+  },
+  {
+    "engine": "weighted-price",
+    "population": "combined/BANK",
+    "check": "HC3 Fieller upper",
+    "expected": 2.0001233347088077,
+    "actual": 2.000123334704115,
+    "pass": true
+  },
+  {
+    "engine": "weighted-price",
+    "population": "combined/BANK",
+    "check": "weighted median",
+    "expected": 163.09301723542137,
+    "actual": 163.0930172354214,
+    "pass": true
+  },
+  {
+    "engine": "weighted-price",
+    "population": "combined/BANK",
+    "check": "weighted subject",
+    "expected": 207.2644784497075,
+    "actual": 207.26447844970752,
+    "pass": true
+  }
+]

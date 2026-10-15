@@ -1,5 +1,8 @@
 'use client'
 
+import { useMarketplaceFx } from '@/app/hooks/useMarketplaceFx'
+import { priceOptions as createPriceOptions } from '@/lib/marketplace-price-ranges'
+
 type PriceFilterProps = {
   selectedmonthly_price: string
   setSelectedmonthly_price: (value: string) => void
@@ -24,13 +27,8 @@ export default function PriceFilterRL({
   setShowDistrictOptions
 }: PriceFilterProps) {
 
-  const priceOptions = [
-    { label: '$0 - $500/mo', crc: '₡0 - ₡250K' },
-    { label: '$500 - $1K/mo', crc: '₡250K - ₡500K' },
-    { label: '$1K - $2K/mo', crc: '₡500K - ₡1M' },
-    { label: '$2K - $5K/mo', crc: '₡1M - ₡2.5M' },
-    { label: '$5K+/mo', crc: '₡2.5M+' }
-  ]
+  const fx = useMarketplaceFx()
+  const priceOptions = createPriceOptions('rent', 'en', fx?.usdToCrcRate ?? null)
 
   return (
     <div>

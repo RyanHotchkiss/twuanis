@@ -1,27 +1,25 @@
-import { supabase } from '@/lib/supabase'
-import {
-  requireCurrentUser
-} from '@/lib/auth/current-user'
+import 'server-only'
+import { createServerSupabaseClient } from '@/lib/supabase-server'
 
-export async function loadAnalysis(
-  id: string
-) {
-  const user =
-    await requireCurrentUser()
+// Reject malformed database identities before making an authenticated query.
+const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
-  const {
-    data,
-    error
-  } = await supabase
+export async function loadAnalysis(id: string) {
+  if (!uuid.test(id)) return null
+
+  const supabase = await createServerSupabaseClient()
+  const { data: auth, error: authError } = await supabase.auth.getUser()
+  if (authError || !auth.user) return null
+
+  // Ownership and current capability remain enforced by canonical database RLS.
+  const { data, error } = await supabase
     .from('saved_analyses')
     .select('*')
     .eq('id', id)
-    .eq('user_id', user.id)
-    .single()
+    .eq('user_id', auth.user.id)
+    .maybeSingle()
 
-  if (error) {
-    throw error
-  }
-
+  // Database failures must not expose query details or private evidence.
+  if (error) throw new Error('Saved analysis could not be loaded.')
   return data
 }

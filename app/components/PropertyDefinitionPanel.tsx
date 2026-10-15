@@ -1,5 +1,7 @@
 'use client'
 
+import { monetaryPreview } from '@/lib/monetary-preview'
+
 import {
   generatedTitleCard,
   generatedTitleLabel,
@@ -11,7 +13,6 @@ import {
 import {
   generateListingTitle,
   generateListingDescription,
-  formatColones,
   formatWhatsAppNumber
 } from '@/app/utils/listing-utils'
 
@@ -19,12 +20,14 @@ import DefinitionCard from '@/app/components/DefinitionCard'
 
 type PropertyDefinitionPanelProps = {
   propertyData: any
+  saleAmountUnit?: 'major' | 'crc_millions'
   usdToCrcRate: number | null
 }
 
 export default function PropertyDefinitionPanel({
   propertyData,
-  usdToCrcRate
+  usdToCrcRate,
+  saleAmountUnit = 'crc_millions'
 }: PropertyDefinitionPanelProps) {
 
   const show_residential_fields =
@@ -190,29 +193,7 @@ export default function PropertyDefinitionPanel({
 
         <DefinitionCard
           label="Price"
-          value={
-            propertyData.priceMillions > 0
-            ? (
-              <>
-                {formatColones(
-                  propertyData.priceMillions
-                )}
-
-                {' · '}
-
-                {usdToCrcRate !== null
-                ? `$${Math.round(
-                    (
-                      Number(
-                        propertyData.priceMillions
-                      ) * 1_000_000
-                    ) / usdToCrcRate
-                  ).toLocaleString()} USD`
-                : 'USD conversion unavailable'}
-              </>
-            )
-            : 'Not Yet Defined'
-          }
+          value={monetaryPreview(propertyData.priceMillions, propertyData.currency, saleAmountUnit, usdToCrcRate, 'en')}
         />
 
         <DefinitionCard

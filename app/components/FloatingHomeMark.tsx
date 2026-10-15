@@ -1,8 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { usePathname, useSearchParams } from 'next/navigation'
+import { Suspense, useEffect, useState } from 'react'
 import { useSiteTheme } from './theme/ThemeProvider'
 
 import {useHomepageEntrance} from './HomepageEntrance'
@@ -17,9 +17,9 @@ export default function FloatingHomeMark() {
 
   return stage === 'complete'
     ? (
-      <VisibleHomeMark
-        delayEntrance={!isHomepage}
-      />
+      <Suspense fallback={null}>
+        <VisibleHomeMark delayEntrance={!isHomepage} />
+      </Suspense>
     )
     : null
 }
@@ -30,6 +30,7 @@ function VisibleHomeMark({
       delayEntrance: boolean
     }) {
   const pathname = usePathname()
+  const searchParams = useSearchParams()
   const { theme } = useSiteTheme()
       
   const [showLabel, setShowLabel] = useState(true)
@@ -53,7 +54,9 @@ function VisibleHomeMark({
 
   const isSpanish =
     pathname === '/es' ||
-    pathname.startsWith('/es/')
+    pathname.startsWith('/es/') ||
+    ((pathname === '/remates' || pathname.startsWith('/remates/')) &&
+      searchParams.get('lang') === 'es')
 
   const homeHref = isSpanish ? '/es' : '/en'
 
@@ -84,6 +87,8 @@ function VisibleHomeMark({
       }
 
   return (
+    <div className="homepage-floating-controls" data-homepage={isHomepage}>
+    {isHomepage && <button type="button" className="homepage-scroll-top" aria-label={isSpanish ? 'Volver arriba' : 'Scroll to top'} onClick={()=>window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'})}>↑</button>}
     <Link
       href={homeHref}
       className="floating-home-mark"
@@ -109,5 +114,7 @@ function VisibleHomeMark({
         {isSpanish ? 'Inicio' : 'Home'}
       </span>
     </Link>
+    {isHomepage && <div id="homepage-mobile-admin-slot"/>}
+    </div>
   )
 }

@@ -1,0 +1,30 @@
+{
+  "checked": 391,
+  "changed": [
+    {
+      "signature": "twuanis_canonical_private.evidence_v2_validate(jsonb,uuid,uuid,uuid)",
+      "bodyChanged": true,
+      "ownerChanged": false,
+      "aclChanged": false,
+      "beforeHash": "f39ae0349f66aae17fa365e0aa6299f27746a5c7d1a67d097520976159198da7",
+      "afterHash": "452080a6f455f86e29078f455b715a04e3dfce37e9393fb1dad82ec91fc492a6"
+    },
+    {
+      "signature": "twuanis_remates_private.classification_minimum_valid(uuid)",
+      "bodyChanged": true,
+      "ownerChanged": false,
+      "aclChanged": false,
+      "beforeHash": "7b19ca996fbdb2088d930468c1292ea04962fb614545d5ebf4967099654f0f44",
+      "afterHash": "2a5e5c3990e2ecb0c52e6b5602e58f5f8798205f10ca99ace5ad91eb225ef8fa"
+    },
+    {
+      "signature": "orchestrator_execution_claim(jsonb,uuid,uuid,text,text,jsonb,uuid)",
+      "bodyChanged": true,
+      "ownerChanged": false,
+      "aclChanged": false,
+      "beforeHash": "7141531f2462c865dccab8c5dfb5008462eb3ac9660fdc6e95bb179cca646ab0",
+      "afterHash": "280dc6194099ca0c470df5c3dc4b98a74ee2ebc252cd23e168be6dcc8ba03be4"
+    }
+  ],
+  "allOtherDefinitionsOwnersPermissionsUnchanged": true
+}

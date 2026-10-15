@@ -5,7 +5,7 @@ import {
 
 import {
   createClient
-} from '@supabase/supabase-js'
+} from '@/lib/staging-supabase-client'
 
 type ActivityRequestBody = {
   eventCategory?: string

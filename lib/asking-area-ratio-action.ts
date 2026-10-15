@@ -5,7 +5,7 @@ import { acquireAreaRatio, acquireAreaRatioOptions } from './asking-area-ratio-d
 import { analyzeAreaRatio, RATIO_METHOD } from './asking-area-ratio-math';
 export async function executeAskingAreaRatio(input: unknown): Promise<RatioResponse> {
     try {
-        await authorizePriceMeterIntelligenceExecution();
+        await authorizePriceMeterIntelligenceExecution('cap-asking-area-coefficient-ratio');
         let question;
         try {
             question = parseRatioQuestion(input);
@@ -26,6 +26,6 @@ export async function executeAskingAreaRatio(input: unknown): Promise<RatioRespo
     }
 }
 export async function loadAreaRatioOptions() {
-    await authorizePriceMeterIntelligenceExecution();
+    await authorizePriceMeterIntelligenceExecution('cap-asking-area-coefficient-ratio');
     return acquireAreaRatioOptions();
 }

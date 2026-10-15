@@ -1,4 +1,6 @@
 'use client'
+import '@/app/components/swipe-mobile.css'
+import {loadSwipeAddonPlacement} from '@/app/components/marketplace/swipe-addon-placement'
 
 import { useEffect, useMemo, useState } from 'react'
 import { supabase } from '@/lib/supabase'
@@ -69,9 +71,7 @@ export default function SwipePage() {
                   })
                 )
 
-              setProperties(
-                normalizedListings
-              )
+              setProperties(await loadSwipeAddonPlacement(normalizedListings,'swipe-buy'))
             } catch (error) {
               console.error(
                 'Unable to load sale listings',
@@ -549,7 +549,7 @@ if (!currentProperty) {
 
   return (
 
-    <main style={{
+    <main className="swipe-mobile-page" style={{
       background: '#000',
       minHeight: '100vh',
       overflow: 'hidden',
@@ -636,7 +636,7 @@ return (
       />
     )}
 
-    <main style={{
+    <main className="swipe-mobile-page" style={{
     background: '#000',
     minHeight: '100vh',
     overflow: 'hidden',
@@ -677,10 +677,11 @@ return (
 
       {/* ACTIVE CARD */}
       <div
+        className="swipe-active-card"
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
-        onPointerCancel={handlePointerUp}
+        onPointerCancel={isMobile ? () => {setIsDragging(false);setDragX(0)} : handlePointerUp}
         style={{
           position: 'relative',
           marginTop: '8rem',
@@ -739,7 +740,7 @@ return (
         )}
 
         {/* IMAGE */}
-        <div style={{
+        <div className="swipe-property-image" style={{
           height: '340px',
           background: '#111'
         }}>
@@ -774,11 +775,12 @@ return (
         </div>
 
         {/* CONTENT */}
-        <div style={{
+        <div className="swipe-property-content" style={{
           padding: '1.75rem'
         }}>
 
-          <h1 style={{
+          {currentProperty.addonFeatured&&<span style={{display:'inline-block',background:'#ff3b00',color:'#fff',padding:'4px 10px',borderRadius:8}}>Featured</span>}
+<h1 style={{
             fontSize: '1.2rem',
             marginBottom: '.75rem'
           }}>

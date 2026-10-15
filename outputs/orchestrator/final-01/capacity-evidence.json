@@ -1,0 +1,2874 @@
+[
+  {
+    "run": "capacity-128",
+    "requestedObservations": 128,
+    "execution": "faf84705-a132-4c85-819b-a691b26a3335",
+    "result": {
+      "state": "COMPLETED",
+      "execution": "faf84705-a132-4c85-819b-a691b26a3335"
+    },
+    "exactAcquired": {
+      "PRIVATE": 64,
+      "BANK": 64
+    },
+    "roots": 2979,
+    "nodes": 11793,
+    "graphLogicalBytesUtf8": 5211126,
+    "transcriptLogicalBytesUtf8": 5560955,
+    "network": {
+      "httpCalls": 236,
+      "databaseHTTPCalls": 99,
+      "uploadedBytes": 11138277,
+      "downloadedBytes": 7371425
+    },
+    "wallSeconds": 26.976665291999996,
+    "appPeakRSSMiB": 210.421875,
+    "workerCPUSeconds": 1.534065,
+    "perEngine": [
+      {
+        "id": "summary",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 242.5744169999998,
+        "PRIVATE": 64,
+        "BANK": 64
+      },
+      {
+        "id": "composition",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 267.9431249999998,
+        "PRIVATE": 64,
+        "BANK": 64
+      },
+      {
+        "id": "market-asking-price-distribution",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 210.3755000000001,
+        "PRIVATE": 64,
+        "BANK": 64
+      },
+      {
+        "id": "matching",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 150.67895800000042,
+        "PRIVATE": 64,
+        "BANK": 64
+      },
+      {
+        "id": "comparison",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 161.86870799999997,
+        "PRIVATE": 64,
+        "BANK": 64
+      },
+      {
+        "id": "configuration",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 170.6767919999993,
+        "PRIVATE": 64,
+        "BANK": 64
+      },
+      {
+        "id": "distribution",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 194.29091700000026,
+        "PRIVATE": 64,
+        "BANK": 64
+      },
+      {
+        "id": "geography",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 161.6774170000008,
+        "PRIVATE": 64,
+        "BANK": 64
+      },
+      {
+        "id": "size",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 168.88687500000015,
+        "PRIVATE": 64,
+        "BANK": 64
+      },
+      {
+        "id": "construction-land",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 160.07916699999987,
+        "PRIVATE": 64,
+        "BANK": 64
+      },
+      {
+        "id": "cohort-comparison",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 216.32745799999975,
+        "PRIVATE": 64,
+        "BANK": 64
+      },
+      {
+        "id": "cross-dimensional",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 153.80729200000042,
+        "PRIVATE": 64,
+        "BANK": 64
+      },
+      {
+        "id": "discovery",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 158.34287499999937,
+        "PRIVATE": 64,
+        "BANK": 64
+      },
+      {
+        "id": "position",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 164.31975000000057,
+        "PRIVATE": 64,
+        "BANK": 64
+      },
+      {
+        "id": "comparables",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 164.93895900000098,
+        "PRIVATE": 64,
+        "BANK": 64
+      },
+      {
+        "id": "asking-area-ratio",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 153.41362499999923,
+        "PRIVATE": 64,
+        "BANK": 64
+      },
+      {
+        "id": "weighted-price",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 161.71766599999864,
+        "PRIVATE": 64,
+        "BANK": 64
+      }
+    ],
+    "cohortMemberships": [
+      {
+        "engine": "summary",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "summary",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "composition",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "composition",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "market-asking-price-distribution",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "market-asking-price-distribution",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "matching",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 64,
+        "eligibleN": 64
+      },
+      {
+        "engine": "matching",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 64,
+        "eligibleN": 64
+      },
+      {
+        "engine": "comparison",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "comparison",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "configuration",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 64,
+        "eligibleN": 64
+      },
+      {
+        "engine": "configuration",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 64,
+        "eligibleN": 64
+      },
+      {
+        "engine": "distribution",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "distribution",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "geography",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "geography",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "size",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "size",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "construction-land",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "construction-land",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "cohort-comparison",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "cohort-comparison",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "cross-dimensional",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "cross-dimensional",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "discovery",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "discovery",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "position",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "position",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "comparables",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "comparables",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "asking-area-ratio",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "asking-area-ratio",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "weighted-price",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      },
+      {
+        "engine": "weighted-price",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 64,
+        "eligibleN": 63
+      }
+    ],
+    "stages": {
+      "witness_finalize": [
+        {
+          "path": "/rest/v1/rpc/orchestrator_witness_finalize",
+          "status": 200,
+          "ms": 7454.498333000001,
+          "requestBytes": 5561438,
+          "responseBytes": 139
+        }
+      ],
+      "execution_commit": [
+        {
+          "path": "/rest/v1/rpc/orchestrator_execution_commit",
+          "status": 200,
+          "ms": 5460.872958,
+          "requestBytes": 5561485,
+          "responseBytes": 162
+        }
+      ]
+    },
+    "caveats": [
+      "Per-engine duration includes engine-specific acquisition/authorization/evidence capture; capture-exclusive CPU is not separately measured.",
+      "HTTP request totals are exact at the instrumentation boundary, not all internal SQL statements.",
+      "No provider invoice or hosted qualification."
+    ],
+    "storedWitness": {
+      "toastColumnBytes": 4127870,
+      "logicalPostgresTextBytes": 5341183
+    },
+    "storedReport": {
+      "toastColumnBytes": 83984,
+      "logicalPostgresTextBytes": 375111
+    },
+    "accountingEvents": [
+      [
+        "EXECUTION_RESERVED",
+        "0"
+      ],
+      [
+        "OWNER_COMPLETED",
+        "0"
+      ]
+    ]
+  },
+  {
+    "run": "capacity-500-60s",
+    "requestedObservations": 500,
+    "execution": "7b8b52d2-475b-473a-80e9-df5941a0ac0c",
+    "result": {
+      "state": "COMPLETED",
+      "execution": "7b8b52d2-475b-473a-80e9-df5941a0ac0c"
+    },
+    "exactAcquired": {
+      "PRIVATE": 256,
+      "BANK": 244
+    },
+    "roots": 10791,
+    "nodes": 37301,
+    "graphLogicalBytesUtf8": 17093254,
+    "transcriptLogicalBytesUtf8": 18145747,
+    "network": {
+      "httpCalls": 284,
+      "databaseHTTPCalls": 143,
+      "uploadedBytes": 36328191,
+      "downloadedBytes": 24644434
+    },
+    "wallSeconds": 19.777767,
+    "appPeakRSSMiB": 441.421875,
+    "workerCPUSeconds": 3.095537,
+    "perEngine": [
+      {
+        "id": "summary",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 294.819125,
+        "PRIVATE": 256,
+        "BANK": 244
+      },
+      {
+        "id": "composition",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 234.43712499999992,
+        "PRIVATE": 256,
+        "BANK": 244
+      },
+      {
+        "id": "market-asking-price-distribution",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 244.540125,
+        "PRIVATE": 256,
+        "BANK": 244
+      },
+      {
+        "id": "matching",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 318.1790000000001,
+        "PRIVATE": 256,
+        "BANK": 244
+      },
+      {
+        "id": "comparison",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 232.6438330000001,
+        "PRIVATE": 256,
+        "BANK": 244
+      },
+      {
+        "id": "configuration",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 203.62845799999968,
+        "PRIVATE": 256,
+        "BANK": 244
+      },
+      {
+        "id": "distribution",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 286.2447920000004,
+        "PRIVATE": 256,
+        "BANK": 244
+      },
+      {
+        "id": "geography",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 202.6658749999997,
+        "PRIVATE": 256,
+        "BANK": 244
+      },
+      {
+        "id": "size",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 182.8426669999999,
+        "PRIVATE": 256,
+        "BANK": 244
+      },
+      {
+        "id": "construction-land",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 181.89679100000012,
+        "PRIVATE": 256,
+        "BANK": 244
+      },
+      {
+        "id": "cohort-comparison",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 266.36533299999974,
+        "PRIVATE": 256,
+        "BANK": 244
+      },
+      {
+        "id": "cross-dimensional",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 185.80479099999957,
+        "PRIVATE": 256,
+        "BANK": 244
+      },
+      {
+        "id": "discovery",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 272.8483749999996,
+        "PRIVATE": 256,
+        "BANK": 244
+      },
+      {
+        "id": "position",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 213.14079200000015,
+        "PRIVATE": 256,
+        "BANK": 244
+      },
+      {
+        "id": "comparables",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 183.85504200000014,
+        "PRIVATE": 256,
+        "BANK": 244
+      },
+      {
+        "id": "asking-area-ratio",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 198.52095800000006,
+        "PRIVATE": 256,
+        "BANK": 244
+      },
+      {
+        "id": "weighted-price",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 191.11012500000015,
+        "PRIVATE": 256,
+        "BANK": 244
+      }
+    ],
+    "cohortMemberships": [
+      {
+        "engine": "summary",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 256,
+        "eligibleN": 253
+      },
+      {
+        "engine": "summary",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "composition",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 256,
+        "eligibleN": 253
+      },
+      {
+        "engine": "composition",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "market-asking-price-distribution",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 256,
+        "eligibleN": 253
+      },
+      {
+        "engine": "market-asking-price-distribution",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "matching",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 256,
+        "eligibleN": 256
+      },
+      {
+        "engine": "matching",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 244
+      },
+      {
+        "engine": "comparison",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 256,
+        "eligibleN": 253
+      },
+      {
+        "engine": "comparison",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "configuration",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 256,
+        "eligibleN": 256
+      },
+      {
+        "engine": "configuration",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 244
+      },
+      {
+        "engine": "distribution",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 256,
+        "eligibleN": 253
+      },
+      {
+        "engine": "distribution",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "geography",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 256,
+        "eligibleN": 253
+      },
+      {
+        "engine": "geography",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "size",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 256,
+        "eligibleN": 253
+      },
+      {
+        "engine": "size",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "construction-land",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 256,
+        "eligibleN": 253
+      },
+      {
+        "engine": "construction-land",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "cohort-comparison",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 256,
+        "eligibleN": 253
+      },
+      {
+        "engine": "cohort-comparison",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "cross-dimensional",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 256,
+        "eligibleN": 253
+      },
+      {
+        "engine": "cross-dimensional",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "discovery",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 256,
+        "eligibleN": 253
+      },
+      {
+        "engine": "discovery",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "position",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 256,
+        "eligibleN": 253
+      },
+      {
+        "engine": "position",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "comparables",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 256,
+        "eligibleN": 253
+      },
+      {
+        "engine": "comparables",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "asking-area-ratio",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 256,
+        "eligibleN": 253
+      },
+      {
+        "engine": "asking-area-ratio",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "weighted-price",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 256,
+        "eligibleN": 253
+      },
+      {
+        "engine": "weighted-price",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      }
+    ],
+    "stages": {
+      "witness_finalize": [
+        {
+          "path": "/rest/v1/rpc/orchestrator_witness_finalize",
+          "status": 200,
+          "ms": 7212.003417,
+          "requestBytes": 18146235,
+          "responseBytes": 139
+        }
+      ],
+      "execution_commit": [
+        {
+          "path": "/rest/v1/rpc/orchestrator_execution_commit",
+          "status": 200,
+          "ms": 3726.9400000000023,
+          "requestBytes": 18146282,
+          "responseBytes": 162
+        }
+      ]
+    },
+    "caveats": [
+      "Per-engine duration includes engine-specific acquisition/authorization/evidence capture; capture-exclusive CPU is not separately measured.",
+      "HTTP request totals are exact at the instrumentation boundary, not all internal SQL statements.",
+      "No provider invoice or hosted qualification."
+    ],
+    "storedWitness": {
+      "toastColumnBytes": 13233236,
+      "logicalPostgresTextBytes": 17520230
+    },
+    "storedReport": {
+      "toastColumnBytes": 202598,
+      "logicalPostgresTextBytes": 1127670
+    },
+    "accountingEvents": [
+      [
+        "EXECUTION_RESERVED",
+        "0"
+      ],
+      [
+        "OWNER_COMPLETED",
+        "0"
+      ]
+    ]
+  },
+  {
+    "run": "capacity-1000-60s",
+    "requestedObservations": 1000,
+    "execution": "933d868d-c8bc-4494-8df6-9741c6d6e47a",
+    "result": {
+      "state": "COMPLETED",
+      "execution": "933d868d-c8bc-4494-8df6-9741c6d6e47a"
+    },
+    "exactAcquired": {
+      "PRIVATE": 756,
+      "BANK": 244
+    },
+    "roots": 20291,
+    "nodes": 63784,
+    "graphLogicalBytesUtf8": 28648100,
+    "transcriptLogicalBytesUtf8": 30504143,
+    "network": {
+      "httpCalls": 385,
+      "databaseHTTPCalls": 244,
+      "uploadedBytes": 61092743,
+      "downloadedBytes": 42358144
+    },
+    "wallSeconds": 28.120274209,
+    "appPeakRSSMiB": 639.953125,
+    "workerCPUSeconds": 5.503515,
+    "perEngine": [
+      {
+        "id": "summary",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 428.03579200000013,
+        "PRIVATE": 756,
+        "BANK": 244
+      },
+      {
+        "id": "composition",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 368.90750000000025,
+        "PRIVATE": 756,
+        "BANK": 244
+      },
+      {
+        "id": "market-asking-price-distribution",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 533.3152909999999,
+        "PRIVATE": 756,
+        "BANK": 244
+      },
+      {
+        "id": "matching",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 295.6319160000003,
+        "PRIVATE": 756,
+        "BANK": 244
+      },
+      {
+        "id": "comparison",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 283.06162499999937,
+        "PRIVATE": 756,
+        "BANK": 244
+      },
+      {
+        "id": "configuration",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 240.16141600000083,
+        "PRIVATE": 756,
+        "BANK": 244
+      },
+      {
+        "id": "distribution",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 349.4501250000003,
+        "PRIVATE": 756,
+        "BANK": 244
+      },
+      {
+        "id": "geography",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 269.58541700000023,
+        "PRIVATE": 756,
+        "BANK": 244
+      },
+      {
+        "id": "size",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 266.8596670000006,
+        "PRIVATE": 756,
+        "BANK": 244
+      },
+      {
+        "id": "construction-land",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 263.72716599999967,
+        "PRIVATE": 756,
+        "BANK": 244
+      },
+      {
+        "id": "cohort-comparison",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 472.0451659999999,
+        "PRIVATE": 756,
+        "BANK": 244
+      },
+      {
+        "id": "cross-dimensional",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 245.7977090000004,
+        "PRIVATE": 756,
+        "BANK": 244
+      },
+      {
+        "id": "discovery",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 261.18025000000034,
+        "PRIVATE": 756,
+        "BANK": 244
+      },
+      {
+        "id": "position",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 243.16229199999998,
+        "PRIVATE": 756,
+        "BANK": 244
+      },
+      {
+        "id": "comparables",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 260.9544999999998,
+        "PRIVATE": 756,
+        "BANK": 244
+      },
+      {
+        "id": "asking-area-ratio",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 375.3763339999996,
+        "PRIVATE": 756,
+        "BANK": 244
+      },
+      {
+        "id": "weighted-price",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 369.13837500000045,
+        "PRIVATE": 756,
+        "BANK": 244
+      }
+    ],
+    "cohortMemberships": [
+      {
+        "engine": "summary",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 756,
+        "eligibleN": 746
+      },
+      {
+        "engine": "summary",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "composition",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 756,
+        "eligibleN": 746
+      },
+      {
+        "engine": "composition",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "market-asking-price-distribution",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 756,
+        "eligibleN": 746
+      },
+      {
+        "engine": "market-asking-price-distribution",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "matching",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 756,
+        "eligibleN": 756
+      },
+      {
+        "engine": "matching",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 244
+      },
+      {
+        "engine": "comparison",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 756,
+        "eligibleN": 746
+      },
+      {
+        "engine": "comparison",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "configuration",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 756,
+        "eligibleN": 756
+      },
+      {
+        "engine": "configuration",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 244
+      },
+      {
+        "engine": "distribution",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 756,
+        "eligibleN": 746
+      },
+      {
+        "engine": "distribution",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "geography",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 756,
+        "eligibleN": 746
+      },
+      {
+        "engine": "geography",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "size",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 756,
+        "eligibleN": 746
+      },
+      {
+        "engine": "size",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "construction-land",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 756,
+        "eligibleN": 746
+      },
+      {
+        "engine": "construction-land",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "cohort-comparison",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 756,
+        "eligibleN": 746
+      },
+      {
+        "engine": "cohort-comparison",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "cross-dimensional",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 756,
+        "eligibleN": 746
+      },
+      {
+        "engine": "cross-dimensional",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "discovery",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 756,
+        "eligibleN": 746
+      },
+      {
+        "engine": "discovery",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "position",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 756,
+        "eligibleN": 746
+      },
+      {
+        "engine": "position",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "comparables",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 756,
+        "eligibleN": 746
+      },
+      {
+        "engine": "comparables",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "asking-area-ratio",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 756,
+        "eligibleN": 746
+      },
+      {
+        "engine": "asking-area-ratio",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "weighted-price",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 756,
+        "eligibleN": 746
+      },
+      {
+        "engine": "weighted-price",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      }
+    ],
+    "stages": {
+      "witness_finalize": [
+        {
+          "path": "/rest/v1/rpc/orchestrator_witness_finalize",
+          "status": 200,
+          "ms": 11351.096084,
+          "requestBytes": 30504631,
+          "responseBytes": 139
+        }
+      ],
+      "execution_commit": [
+        {
+          "path": "/rest/v1/rpc/orchestrator_execution_commit",
+          "status": 200,
+          "ms": 4835.548624999999,
+          "requestBytes": 30504678,
+          "responseBytes": 162
+        }
+      ]
+    },
+    "caveats": [
+      "Per-engine duration includes engine-specific acquisition/authorization/evidence capture; capture-exclusive CPU is not separately measured.",
+      "HTTP request totals are exact at the instrumentation boundary, not all internal SQL statements.",
+      "No provider invoice or hosted qualification."
+    ],
+    "storedWitness": {
+      "toastColumnBytes": 21615903,
+      "logicalPostgresTextBytes": 29364071
+    },
+    "storedReport": {
+      "toastColumnBytes": 302385,
+      "logicalPostgresTextBytes": 1996858
+    },
+    "accountingEvents": [
+      [
+        "EXECUTION_RESERVED",
+        "0"
+      ],
+      [
+        "OWNER_COMPLETED",
+        "0"
+      ]
+    ]
+  },
+  {
+    "run": "capacity-2000-60s",
+    "requestedObservations": 2000,
+    "execution": "b70db3a2-f4d5-45fa-8fda-226267f2dc76",
+    "result": {
+      "state": "COMPLETED",
+      "execution": "b70db3a2-f4d5-45fa-8fda-226267f2dc76"
+    },
+    "exactAcquired": {
+      "PRIVATE": 1756,
+      "BANK": 244
+    },
+    "roots": 39291,
+    "nodes": 116747,
+    "graphLogicalBytesUtf8": 51756375,
+    "transcriptLogicalBytesUtf8": 55217759,
+    "network": {
+      "httpCalls": 589,
+      "databaseHTTPCalls": 448,
+      "uploadedBytes": 110615483,
+      "downloadedBytes": 77768810
+    },
+    "wallSeconds": 40.710586625000005,
+    "appPeakRSSMiB": 938.1875,
+    "workerCPUSeconds": 9.890601,
+    "perEngine": [
+      {
+        "id": "summary",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 671.3128340000003,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "composition",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 599.6534590000001,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "market-asking-price-distribution",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 458.20479200000045,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "matching",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 428.5722080000005,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "comparison",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 404.66491700000006,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "configuration",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 444.98633399999926,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "distribution",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 479.6567500000001,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "geography",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 365.353333,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "size",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 350.1069580000003,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "construction-land",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 369.6820830000006,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "cohort-comparison",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 738.5040000000008,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "cross-dimensional",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 485.1832909999994,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "discovery",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 415.7081249999992,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "position",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 458.0637910000005,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "comparables",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 439.52970900000037,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "asking-area-ratio",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 395.22249999999985,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "weighted-price",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 379.3051669999986,
+        "PRIVATE": 1756,
+        "BANK": 244
+      }
+    ],
+    "cohortMemberships": [
+      {
+        "engine": "summary",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "summary",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "composition",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "composition",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "market-asking-price-distribution",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "market-asking-price-distribution",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "matching",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1756
+      },
+      {
+        "engine": "matching",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 244
+      },
+      {
+        "engine": "comparison",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "comparison",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "configuration",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1756
+      },
+      {
+        "engine": "configuration",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 244
+      },
+      {
+        "engine": "distribution",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "distribution",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "geography",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "geography",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "size",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "size",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "construction-land",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "construction-land",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "cohort-comparison",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "cohort-comparison",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "cross-dimensional",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "cross-dimensional",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "discovery",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "discovery",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "position",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "position",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "comparables",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "comparables",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "asking-area-ratio",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "asking-area-ratio",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "weighted-price",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "weighted-price",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      }
+    ],
+    "stages": {
+      "witness_finalize": [
+        {
+          "path": "/rest/v1/rpc/orchestrator_witness_finalize",
+          "status": 200,
+          "ms": 16950.531291,
+          "requestBytes": 55218241,
+          "responseBytes": 139
+        }
+      ],
+      "execution_commit": [
+        {
+          "path": "/rest/v1/rpc/orchestrator_execution_commit",
+          "status": 200,
+          "ms": 7729.494958000003,
+          "requestBytes": 55218288,
+          "responseBytes": 162
+        }
+      ]
+    },
+    "caveats": [
+      "Per-engine duration includes engine-specific acquisition/authorization/evidence capture; capture-exclusive CPU is not separately measured.",
+      "HTTP request totals are exact at the instrumentation boundary, not all internal SQL statements.",
+      "No provider invoice or hosted qualification."
+    ],
+    "storedWitness": {
+      "toastColumnBytes": 37894234,
+      "logicalPostgresTextBytes": 53050261
+    },
+    "storedReport": {
+      "toastColumnBytes": 500407,
+      "logicalPostgresTextBytes": 3733251
+    },
+    "accountingEvents": [
+      [
+        "EXECUTION_RESERVED",
+        "0"
+      ],
+      [
+        "OWNER_COMPLETED",
+        "0"
+      ]
+    ]
+  },
+  {
+    "run": "capacity-2000-paid",
+    "requestedObservations": 2000,
+    "execution": "e6fd609c-636b-4fda-856d-92b009c2a4ca",
+    "result": {
+      "state": "COMPLETED",
+      "execution": "e6fd609c-636b-4fda-856d-92b009c2a4ca"
+    },
+    "exactAcquired": {
+      "PRIVATE": 1756,
+      "BANK": 244
+    },
+    "roots": 39291,
+    "nodes": 116753,
+    "graphLogicalBytesUtf8": 51757402,
+    "transcriptLogicalBytesUtf8": 55219003,
+    "network": {
+      "httpCalls": 653,
+      "databaseHTTPCalls": 512,
+      "uploadedBytes": 110622458,
+      "downloadedBytes": 77766768
+    },
+    "wallSeconds": 49.448142833000006,
+    "appPeakRSSMiB": 814.421875,
+    "workerCPUSeconds": 10.81195,
+    "perEngine": [
+      {
+        "id": "summary",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 873.77025,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "composition",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 764.9305839999997,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "market-asking-price-distribution",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 804.8960829999996,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "matching",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 548.9566670000004,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "comparison",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 477.5665420000005,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "configuration",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 555.8201250000002,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "distribution",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 623.7889169999999,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "geography",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 477.718167,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "size",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 471.5896670000002,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "construction-land",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 517.2337090000001,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "cohort-comparison",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 995.355207999999,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "cross-dimensional",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 691.8521249999994,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "discovery",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 561.1307090000009,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "position",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 483.9897920000003,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "comparables",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 523.7490829999988,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "asking-area-ratio",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 505.61654199999975,
+        "PRIVATE": 1756,
+        "BANK": 244
+      },
+      {
+        "id": "weighted-price",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 528.2914999999994,
+        "PRIVATE": 1756,
+        "BANK": 244
+      }
+    ],
+    "cohortMemberships": [
+      {
+        "engine": "summary",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "summary",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "composition",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "composition",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "market-asking-price-distribution",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "market-asking-price-distribution",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "matching",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1756
+      },
+      {
+        "engine": "matching",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 244
+      },
+      {
+        "engine": "comparison",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "comparison",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "configuration",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1756
+      },
+      {
+        "engine": "configuration",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 244
+      },
+      {
+        "engine": "distribution",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "distribution",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "geography",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "geography",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "size",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "size",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "construction-land",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "construction-land",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "cohort-comparison",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "cohort-comparison",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "cross-dimensional",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "cross-dimensional",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "discovery",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "discovery",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "position",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "position",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "comparables",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "comparables",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "asking-area-ratio",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "asking-area-ratio",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "weighted-price",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 1756,
+        "eligibleN": 1730
+      },
+      {
+        "engine": "weighted-price",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      }
+    ],
+    "stages": {
+      "witness_finalize": [
+        {
+          "path": "/rest/v1/rpc/orchestrator_witness_finalize",
+          "status": 200,
+          "ms": 22004.107333999997,
+          "requestBytes": 55219485,
+          "responseBytes": 139
+        }
+      ],
+      "execution_commit": [
+        {
+          "path": "/rest/v1/rpc/orchestrator_execution_commit",
+          "status": 200,
+          "ms": 7407.225333999995,
+          "requestBytes": 55219532,
+          "responseBytes": 161
+        }
+      ]
+    },
+    "caveats": [
+      "Per-engine duration includes engine-specific acquisition/authorization/evidence capture; capture-exclusive CPU is not separately measured.",
+      "HTTP request totals are exact at the instrumentation boundary, not all internal SQL statements.",
+      "No provider invoice or hosted qualification."
+    ],
+    "storedWitness": {
+      "toastColumnBytes": 37932924,
+      "logicalPostgresTextBytes": 53051314
+    },
+    "storedReport": {
+      "toastColumnBytes": 500528,
+      "logicalPostgresTextBytes": 3733478
+    },
+    "accountingEvents": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "EXECUTION_CONSUMED",
+        "1"
+      ]
+    ]
+  },
+  {
+    "run": "capacity-5000-indexed",
+    "requestedObservations": 5000,
+    "execution": "518c419c-01ab-4ca4-82cc-e5ef1b9ede36",
+    "result": {
+      "state": "RELEASED",
+      "execution": "518c419c-01ab-4ca4-82cc-e5ef1b9ede36"
+    },
+    "exactAcquired": {
+      "PRIVATE": 4756,
+      "BANK": 244
+    },
+    "roots": 96291,
+    "nodes": 275655,
+    "graphLogicalBytesUtf8": 121089270,
+    "transcriptLogicalBytesUtf8": 129367978,
+    "network": {
+      "httpCalls": 1195,
+      "databaseHTTPCalls": 1056,
+      "uploadedBytes": 129834156,
+      "downloadedBytes": 50952711
+    },
+    "wallSeconds": 53.132257124999995,
+    "appPeakRSSMiB": 1571.9375,
+    "workerCPUSeconds": 22.316589,
+    "perEngine": [
+      {
+        "id": "summary",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 1527.1869580000002,
+        "PRIVATE": 4756,
+        "BANK": 244
+      },
+      {
+        "id": "composition",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 1591.9420419999997,
+        "PRIVATE": 4756,
+        "BANK": 244
+      },
+      {
+        "id": "market-asking-price-distribution",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 873.7650419999991,
+        "PRIVATE": 4756,
+        "BANK": 244
+      },
+      {
+        "id": "matching",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 1046.3510000000006,
+        "PRIVATE": 4756,
+        "BANK": 244
+      },
+      {
+        "id": "comparison",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 946.7498749999995,
+        "PRIVATE": 4756,
+        "BANK": 244
+      },
+      {
+        "id": "configuration",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 731.3409169999995,
+        "PRIVATE": 4756,
+        "BANK": 244
+      },
+      {
+        "id": "distribution",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 1104.1641249999993,
+        "PRIVATE": 4756,
+        "BANK": 244
+      },
+      {
+        "id": "geography",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 944.547208,
+        "PRIVATE": 4756,
+        "BANK": 244
+      },
+      {
+        "id": "size",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 1342.5660000000007,
+        "PRIVATE": 4756,
+        "BANK": 244
+      },
+      {
+        "id": "construction-land",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 768.8321669999987,
+        "PRIVATE": 4756,
+        "BANK": 244
+      },
+      {
+        "id": "cohort-comparison",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 1897.6961249999986,
+        "PRIVATE": 4756,
+        "BANK": 244
+      },
+      {
+        "id": "cross-dimensional",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 1017.4495419999985,
+        "PRIVATE": 4756,
+        "BANK": 244
+      },
+      {
+        "id": "discovery",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 795.262666999999,
+        "PRIVATE": 4756,
+        "BANK": 244
+      },
+      {
+        "id": "position",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 776.7980000000025,
+        "PRIVATE": 4756,
+        "BANK": 244
+      },
+      {
+        "id": "comparables",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 1091.4169999999976,
+        "PRIVATE": 4756,
+        "BANK": 244
+      },
+      {
+        "id": "asking-area-ratio",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 1681.5645000000004,
+        "PRIVATE": 4756,
+        "BANK": 244
+      },
+      {
+        "id": "weighted-price",
+        "state": "SUBSTANTIVE",
+        "executed": true,
+        "durationMs": 774.7684579999986,
+        "PRIVATE": 4756,
+        "BANK": 244
+      }
+    ],
+    "cohortMemberships": [
+      {
+        "engine": "summary",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 4756,
+        "eligibleN": 4683
+      },
+      {
+        "engine": "summary",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "composition",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 4756,
+        "eligibleN": 4683
+      },
+      {
+        "engine": "composition",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "market-asking-price-distribution",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 4756,
+        "eligibleN": 4683
+      },
+      {
+        "engine": "market-asking-price-distribution",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "matching",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 4756,
+        "eligibleN": 4756
+      },
+      {
+        "engine": "matching",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 244
+      },
+      {
+        "engine": "comparison",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 4756,
+        "eligibleN": 4683
+      },
+      {
+        "engine": "comparison",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "configuration",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 4756,
+        "eligibleN": 4756
+      },
+      {
+        "engine": "configuration",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 244
+      },
+      {
+        "engine": "distribution",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 4756,
+        "eligibleN": 4683
+      },
+      {
+        "engine": "distribution",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "geography",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 4756,
+        "eligibleN": 4683
+      },
+      {
+        "engine": "geography",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "size",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 4756,
+        "eligibleN": 4683
+      },
+      {
+        "engine": "size",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "construction-land",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 4756,
+        "eligibleN": 4683
+      },
+      {
+        "engine": "construction-land",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "cohort-comparison",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 4756,
+        "eligibleN": 4683
+      },
+      {
+        "engine": "cohort-comparison",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "cross-dimensional",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 4756,
+        "eligibleN": 4683
+      },
+      {
+        "engine": "cross-dimensional",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "discovery",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 4756,
+        "eligibleN": 4683
+      },
+      {
+        "engine": "discovery",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "position",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 4756,
+        "eligibleN": 4683
+      },
+      {
+        "engine": "position",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "comparables",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 4756,
+        "eligibleN": 4683
+      },
+      {
+        "engine": "comparables",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "asking-area-ratio",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 4756,
+        "eligibleN": 4683
+      },
+      {
+        "engine": "asking-area-ratio",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      },
+      {
+        "engine": "weighted-price",
+        "populations": [
+          "PRIVATE"
+        ],
+        "rawN": 4756,
+        "eligibleN": 4683
+      },
+      {
+        "engine": "weighted-price",
+        "populations": [
+          "BANK"
+        ],
+        "rawN": 244,
+        "eligibleN": 242
+      }
+    ],
+    "stages": {
+      "witness_finalize": [
+        {
+          "path": "/rest/v1/rpc/orchestrator_witness_finalize",
+          "status": 500,
+          "ms": 23060.729167,
+          "requestBytes": 129368462,
+          "responseBytes": 95
+        }
+      ],
+      "execution_commit": []
+    },
+    "caveats": [
+      "Per-engine duration includes engine-specific acquisition/authorization/evidence capture; capture-exclusive CPU is not separately measured.",
+      "HTTP request totals are exact at the instrumentation boundary, not all internal SQL statements.",
+      "No provider invoice or hosted qualification."
+    ],
+    "storedWitness": null,
+    "storedReport": null,
+    "accountingEvents": [
+      [
+        "EXECUTION_RESERVED",
+        "0"
+      ],
+      [
+        "RESERVATION_RELEASED",
+        "0"
+      ]
+    ]
+  }
+]

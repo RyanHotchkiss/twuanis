@@ -1,0 +1,22 @@
+[
+  {
+    "mode": "baseline",
+    "ms": 2989.450833,
+    "hash": "6f3557a917209474dc1114838e58be27e02b0c1417097cf3972a0eaf4ba748ef"
+  },
+  {
+    "mode": "baseline",
+    "ms": 2977.1657090000003,
+    "hash": "6f3557a917209474dc1114838e58be27e02b0c1417097cf3972a0eaf4ba748ef"
+  },
+  {
+    "mode": "cached-plan",
+    "ms": 341.34245799999974,
+    "hash": "6f3557a917209474dc1114838e58be27e02b0c1417097cf3972a0eaf4ba748ef"
+  },
+  {
+    "mode": "cached-plan",
+    "ms": 291.88970800000027,
+    "hash": "6f3557a917209474dc1114838e58be27e02b0c1417097cf3972a0eaf4ba748ef"
+  }
+]

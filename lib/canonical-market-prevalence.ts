@@ -1,4 +1,6 @@
 import 'server-only'
+import {orchestratorMemo} from './orchestrator-execution-context'
+import {recordAnalyticalEvidence} from './orchestrator-evidence-v2'
 import { supabaseAdmin } from './supabase-admin'
 import { validateOntologyTermId } from './geography/dta-identity'
 export const COMPOSITION_DIMENSIONS=['province','canton','district','property_type','bedrooms','bathrooms','parking','year_built','utility','environment','terrain','accessibility','legal_status'] as const
@@ -10,8 +12,10 @@ async function complete(query:(a:number,b:number)=>any){const rows:any[]=[];let 
 }
 export async function canonicalMarketPrevalence(listingIds:string[],dimensions:readonly string[]=COMPOSITION_DIMENSIONS){
  const ids=[...new Set(listingIds)];if(ids.length!==listingIds.length||dimensions.some(d=>!(COMPOSITION_DIMENSIONS as readonly string[]).includes(d))||new Set(dimensions).size!==dimensions.length)throw Error('Invalid composition identity.')
- const counts=new Map<string,{dimension:string;ids:Set<string>}>(),represented=new Map(dimensions.map(d=>[d,new Set<string>()]))
  if(!dimensions.length)return {n:ids.length,dimensions:[]}
+ const raw=await orchestratorMemo('private-prevalence-raw',JSON.stringify([ids,dimensions]),async()=>{
+ const counts=new Map<string,{dimension:string;ids:Set<string>}>(),represented=new Map(dimensions.map(d=>[d,new Set<string>()]))
+
  for(let a=0;a<ids.length;a+=25){const batch=ids.slice(a,a+25),seen=new Set<string>()
  const rows=await complete((from,to)=>supabaseAdmin.from('listings_ontology_terms')
    .select('listing_id,ontology_term_id::text,ontology_terms!inner(id::text,term_type,level)',{count:'exact'})
@@ -34,6 +38,12 @@ export async function canonicalMarketPrevalence(listingIds:string[],dimensions:r
  labels.set(r.id,{en:r.term_name_en||r.term_name||'',es:r.term_name_es||r.term_name||''})}
  if(batch.some(id=>!labels.has(id)))throw Error('Missing composition label identity.')
  }
+ return {ids,dimensions,counts,represented,labels}
+ });const input=recordAnalyticalEvidence('private-prevalence-input',raw)
+ return projectCanonicalPrevalence(input.ids,input.dimensions,input.counts,input.represented,input.labels)
+}
+
+export function projectCanonicalPrevalence(ids:readonly string[],dimensions:readonly string[],counts:Map<string,{dimension:string;ids:Set<string>}>,represented:Map<string,Set<string>>,labels:Map<string,{en:string;es:string}>){
  return {n:ids.length,dimensions:dimensions.map(d=>({dimension:d,denominatorN:ids.length,representedN:represented.get(d)!.size,
    unrepresentedN:ids.length-represented.get(d)!.size,terms:[...counts].filter(([,v])=>v.dimension===d)
    .map(([id,v])=>({termId:id,count:v.ids.size,percentage:ids.length?v.ids.size/ids.length*100:null,label:labels.get(id)!}))

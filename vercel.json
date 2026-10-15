@@ -8,6 +8,18 @@
     {
       "path": "/api/cron/cleanup-temporary-listing-images",
       "schedule": "30 12 * * *"
+    },
+    {
+      "path": "/api/cron/account-registration-notifications",
+      "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/cron/remates-retrieval",
+      "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/cron/remates-alerts",
+      "schedule": "*/5 * * * *"
     }
   ]
 }

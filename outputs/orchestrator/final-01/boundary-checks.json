@@ -1,0 +1,172 @@
+[
+  {
+    "case": "canonical-owner-scoped",
+    "http": 200,
+    "expectedHttp": 200,
+    "pass": true,
+    "error": null
+  },
+  {
+    "case": "unchanged-global-revision",
+    "before": "cdf1bc338e96d98b0705550b266dc166",
+    "after": "cdf1bc338e96d98b0705550b266dc166",
+    "pass": true
+  },
+  {
+    "case": "unauthorized-private",
+    "http": 403,
+    "expectedHttp": 403,
+    "pass": true,
+    "error": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    }
+  },
+  {
+    "case": "unauthorized-none",
+    "http": 403,
+    "expectedHttp": 403,
+    "pass": true,
+    "error": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    }
+  },
+  {
+    "case": "unauthorized-expired",
+    "http": 403,
+    "expectedHttp": 403,
+    "pass": true,
+    "error": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    }
+  },
+  {
+    "case": "unauthorized-admin",
+    "http": 403,
+    "expectedHttp": 403,
+    "pass": true,
+    "error": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "Current Package and same-term population authority required"
+    }
+  },
+  {
+    "case": "authenticated-cannot-call-service-reader",
+    "http": 403,
+    "expectedHttp": 403,
+    "pass": true,
+    "error": {
+      "code": "42501",
+      "details": null,
+      "hint": null,
+      "message": "permission denied for function read_orchestrator_bank_evidence"
+    }
+  },
+  {
+    "case": "wrong-ancestry",
+    "http": 400,
+    "expectedHttp": 400,
+    "pass": true,
+    "error": {
+      "code": "P0001",
+      "details": null,
+      "hint": null,
+      "message": "Canonical geography mismatch"
+    }
+  },
+  {
+    "case": "missing-parent",
+    "http": 400,
+    "expectedHttp": 400,
+    "pass": true,
+    "error": {
+      "code": "P0001",
+      "details": null,
+      "hint": null,
+      "message": "Canonical geographic ancestry required"
+    }
+  },
+  {
+    "case": "wrong-type",
+    "http": 400,
+    "expectedHttp": 400,
+    "pass": true,
+    "error": {
+      "code": "P0001",
+      "details": null,
+      "hint": null,
+      "message": "Canonical property type required"
+    }
+  },
+  {
+    "case": "unsupported-transaction",
+    "http": 400,
+    "expectedHttp": 400,
+    "pass": true,
+    "error": {
+      "code": "P0001",
+      "details": null,
+      "hint": null,
+      "message": "Canonical scope required"
+    }
+  },
+  {
+    "case": "bank-rent-no-raw-sale",
+    "http": 200,
+    "expectedHttp": 200,
+    "pass": true,
+    "error": null
+  },
+  {
+    "case": "bank-rent-zero-items",
+    "items": 0,
+    "scopeExclusions": 126,
+    "pass": true
+  },
+  {
+    "case": "anon/orchestrator_bank_scope_page(null,null)",
+    "denied": true,
+    "pass": true,
+    "error": "permission denied for schema twuanis_canonical_private"
+  },
+  {
+    "case": "anon/evidence_v2_bank_scope(null)",
+    "denied": true,
+    "pass": true,
+    "error": "permission denied for schema twuanis_canonical_private"
+  },
+  {
+    "case": "authenticated/orchestrator_bank_scope_page(null,null)",
+    "denied": true,
+    "pass": true,
+    "error": "permission denied for schema twuanis_canonical_private"
+  },
+  {
+    "case": "authenticated/evidence_v2_bank_scope(null)",
+    "denied": true,
+    "pass": true,
+    "error": "permission denied for schema twuanis_canonical_private"
+  },
+  {
+    "case": "service_role/orchestrator_bank_scope_page(null,null)",
+    "denied": true,
+    "pass": true,
+    "error": "permission denied for schema twuanis_canonical_private"
+  },
+  {
+    "case": "service_role/evidence_v2_bank_scope(null)",
+    "denied": true,
+    "pass": true,
+    "error": "permission denied for schema twuanis_canonical_private"
+  }
+]

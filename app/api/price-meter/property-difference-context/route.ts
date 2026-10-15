@@ -10,7 +10,7 @@ function failure(error:unknown){
  if(error instanceof DifferenceRequestError)return reply({state:'invalid_request',reason:'invalid_context_request'},400)
  return reply({state:'execution_unavailable',reason:'context_request_unavailable'},503)
 }
-export async function GET(){try{await authorizePriceMeterIntelligenceExecution();return reply(await contextOptions())}catch(error){return failure(error)}}
+export async function GET(){try{await authorizePriceMeterIntelligenceExecution('cap-property-price-m2-position');return reply(await contextOptions())}catch(error){return failure(error)}}
 export async function POST(request:Request){
  try {
   // JSON decoding does no acquisition; the coordinator authorizes before validation/planning.

@@ -1,4 +1,5 @@
 import 'server-only'
+import {evidenceCaptureActive,recordAnalyticalEvidence} from './orchestrator-evidence-v2'
 import {validateOntologyTermId} from './geography/dta-identity'
 import { supabaseAdmin } from './supabase-admin'
 
@@ -36,7 +37,7 @@ function query(b:CanonicalMarketBoundary,fields:readonly MarketScalarField[],hea
   // Each embedded inner relationship is an EXISTS-style filter of the parent
   // listings result. Empty embeds avoid transporting membership/presentation rows.
   const joins=b.membershipGroups.map((_,i)=>`m${i}:listings_ontology_terms!inner()`)
-  let q:any=client.from('listings').select([...fields,...joins].join(','),{count:'exact',head})
+  let q:any=client.from('listings').select([...fields,...(!head&&evidenceCaptureActive()?['evidence_current_price:current_price::text','evidence_monthly_price:monthly_price::text','evidence_property_area:property_area::text','evidence_construction_area:construction_area::text']:[]),...joins].join(','),{count:'exact',head})
     .eq('canonical_domain_version',1).eq('listing_status','active')
   q=b.transaction?q.eq('transaction_type',b.transaction):q.in('transaction_type',['sale','rent'])
   b.membershipGroups.forEach((group,i)=>{q=q.in(`m${i}.ontology_term_id`,[...group])})
@@ -64,6 +65,7 @@ export async function readCanonicalMarketScalars(
     for(const row of data){
       if(!row||typeof row.id!=='string'||!uuid.test(row.id)||seen.has(row.id)||row.id<=last)fail()
       // Never pass embedded objects or unrequested fields through the authority.
+      recordAnalyticalEvidence('private-scalar-source',{boundary:b,source:row})
       const scalar:Record<string,any>={}
       for(const field of selected){if(!Object.hasOwn(row,field))fail();scalar[field]=row[field]}
       seen.add(row.id);last=row.id;rows.push(scalar)

@@ -2,20 +2,27 @@
 import {useSiteTheme} from './theme/ThemeProvider'
 
 import Link from 'next/link'
+import {createPortal} from 'react-dom'
+import {useHomepageEntrance} from './HomepageEntrance'
+import {supabase} from '@/lib/supabase'
+import {useAdminNavigation} from '@/lib/account-identity/admin-navigation-client'
+import {useNavigationAvatar} from '@/lib/account-identity/navigation-avatar-client'
 
 import {
+  Shield,
+  Landmark,
   CircleUser,
   Search,
   Megaphone,
   Compass,
-  ArrowLeftRight,
   Heart,
-  Package,
+  Gift,
   Menu
 } from 'lucide-react'
 
 import {
   Suspense,
+  Fragment,
   useEffect,
   useState,
   type ReactNode
@@ -30,7 +37,13 @@ import {
   getAlternateLanguageUrl
 } from '@/lib/language-route'
 
+import './mobile-page-fit.css'
+
 type TopBarProps = {
+  onLabelsChange?: (visible:boolean) => void
+  labelsReady?: boolean
+  mobileFit?: boolean
+  intelligence?: boolean
   onFilterClick?: () => void
   theme?: 'dark' | 'light'
   onThemeToggle?: () => void
@@ -45,12 +58,24 @@ const UTILITY_ORANGE = '#ff3b00'
 
 
 function TopBarContent({
+  intelligence = false,
+  mobileFit = false,
   onFilterClick,
   theme: _legacyTheme,
   onThemeToggle: _legacyToggle,
-  onCollapsedChange
+  onCollapsedChange,
+  onLabelsChange,
+  labelsReady = true
 }: TopBarProps) {
   const {theme,setTheme}=useSiteTheme()
+  const avatar=useNavigationAvatar()
+  const adminVisible=useAdminNavigation()
+  const [authenticated,setAuthenticated]=useState(false)
+  useEffect(()=>{
+    const {data:{subscription}}=supabase.auth.onAuthStateChange((_event,session)=>setAuthenticated(Boolean(session?.user)))
+    return()=>subscription.unsubscribe()
+  },[])
+  const [failedAvatar,setFailedAvatar]=useState<string|null>(null)
   const onThemeToggle=()=>setTheme(t=>t==='dark'?'light':'dark')
 
   const pathname =
@@ -61,7 +86,7 @@ function TopBarContent({
   pathname === '/es'
 
   const lightTopBarBackground =
-  isHomepage
+  intelligence ? WHITE : isHomepage
     ? 'rgba(255, 255, 255, .92)'
     : 'rgba(248, 243, 229, .94)'
 
@@ -110,6 +135,12 @@ const isSpanish =
 
   const [isMobile, setIsMobile] =
     useState(false)
+  const entrance = useHomepageEntrance()
+  const [adminSlot,setAdminSlot] = useState<HTMLElement|null>(null)
+  const relocateAdmin = isHomepage && isMobile
+  useEffect(() => {
+    setAdminSlot(relocateAdmin ? document.getElementById('homepage-mobile-admin-slot') : null)
+  }, [relocateAdmin, entrance])
 
   useEffect(() => {
     const mediaQuery =
@@ -139,15 +170,19 @@ const isSpanish =
 
   useEffect(() => {
 
+      setShowLabels(true)
+      onLabelsChange?.(true)
+      if (!labelsReady) return
       const timer =
         window.setTimeout(() => {
           setShowLabels(false)
+          onLabelsChange?.(false)
         }, 5000)
 
       return () =>
         window.clearTimeout(timer)
 
-    }, [])
+    }, [onLabelsChange, labelsReady])
 
 
   useEffect(() => {
@@ -305,14 +340,28 @@ const isSpanish =
   }
 
 
+  function navigationLabel(item:string, desktop:string, mobile:string) {
+    const visible = labelVisible(item)
+    return <>
+      <span className="topbar-desktop-label" style={labelStyle(visible)}>{desktop}</span>
+      <span className="topbar-mobile-label" style={labelStyle(visible,true)}>{mobile.split('\n').map((word,index)=><Fragment key={index}>{index>0 && <br/>}{word}</Fragment>)}</span>
+    </>
+  }
+
+  const adminControl = adminVisible&&<Link href="/admin" aria-label={isSpanish?'Administración':'Administration'} title={isSpanish?'Administración':'Administration'} style={itemStyle()}>
+          <Shield size={50} strokeWidth={0.8} color={GOLD}/>
+          <span style={labelStyle(labelVisible('admin'),isMobile)}>{isSpanish?'Admin.':'Admin'}</span>
+        </Link>
+  const floatingAdmin = relocateAdmin && adminSlot && adminControl ? createPortal(adminControl,adminSlot) : null
+
   if (collapsed) {
 
   return (
-    <div
-      style={floatingHamburgerShell(
+    <>{floatingAdmin}<div
+      style={{...floatingHamburgerShell(
   theme,
   lightTopBarBackground
-)}
+), border: '2px solid var(--border)'}}
     >
         <button
           type="button"
@@ -337,7 +386,7 @@ const isSpanish =
             }
           />
         </button>
-      </div>
+      </div></>
     )
 
   }
@@ -345,8 +394,10 @@ const isSpanish =
 
   return (
 
-    <div
-      style={
+    <>{floatingAdmin}<div
+      className="twuanis-mobile-topbar"
+      data-floating={manuallyExpanded}
+      style={{...(
         manuallyExpanded
           ? floatingTopBarShell(
             theme,
@@ -357,10 +408,10 @@ const isSpanish =
             isMobile,
             lightTopBarBackground
           )
-      }
+      ), border: '2px solid var(--border)'}}
     >
 
-      <nav style={navContainer}>
+      <nav className="twuanis-top-navigation" data-labels-visible={showLabels} style={navContainer}>
 
         {/* MARKETHUB */}
         <Link
@@ -377,6 +428,9 @@ const isSpanish =
             setHoveredItem(null)
           }
         >
+          {avatar && avatar!==failedAvatar ? <img src={avatar} alt="" width={50} height={50} onError={()=>setFailedAvatar(avatar)}
+            style={{width:50,height:'auto',aspectRatio:'1 / 1',maxWidth:'100%',objectFit:'cover',borderRadius:'50%',boxSizing:'border-box',border:`0.65px solid ${theme==='dark'?WHITE:'#000000'}`,flexShrink:0}}
+          /> : (
           <CircleUser
             size={50}
             strokeWidth={0.65}
@@ -386,20 +440,13 @@ const isSpanish =
                   : '#000000'
               }
           />
+          )}
 
-          <span
-            style={labelStyle(
-              labelVisible('hub'),
-              isMobile
-            )}
-          >
-            {isMobile
-              ? 'Hub'
-              : 'Market\nHub'}
-          </span>
+          {navigationLabel('hub','Market\nHub','Market\nHub')}
         </Link>
 
 
+        {!relocateAdmin && adminControl}
         {/* INTELLIGENCE HUB */}
         <Link
           href={
@@ -425,18 +472,7 @@ const isSpanish =
               }
           />
 
-          <span
-            style={labelStyle(
-              labelVisible(
-                'intelligence'
-              ),
-              isMobile
-            )}
-          >
-            {isMobile
-              ? 'IQ'
-              : 'Intelligence\nHub'}
-          </span>
+          {navigationLabel('intelligence','Intelligence\nHub','Intel\nHub')}
         </Link>
 
 
@@ -461,26 +497,14 @@ const isSpanish =
             color={GOLD}
           />
 
-          <span
-            style={labelStyle(
-              labelVisible('buy'),
-              isMobile
-            )}
-          >
-            {isSpanish
-            ? (
-                isMobile
-                  ? 'Compra'
-                  : 'Comprar\nAlquilar\nArrendar'
-              )
-            : (
-                isMobile
-                  ? 'Buy'
-                  : 'Buy\nRent\nLease'
-              )}
-          </span>
+          {navigationLabel('buy',isSpanish?'Comprar\nAlquilar\nArrendar':'Buy\nRent\nLease',isSpanish?'Compra':'Buy\nRent')}
         </Link>
 
+
+        <Link href={isSpanish?'/es/remates':'/en/bank-properties'} aria-label={isSpanish?'Remates':'Bank Properties'} style={itemStyle()} onMouseEnter={()=>setHoveredItem('banks')} onMouseLeave={()=>setHoveredItem(null)}>
+          <Landmark size={40} strokeWidth={0.65} color={GOLD}/>
+          {navigationLabel('banks',isSpanish?'Remates':'Bank\nProperties',isSpanish?'Remates':'Bank')}
+        </Link>
 
         {/* SELL */}
         <Link
@@ -503,63 +527,12 @@ const isSpanish =
             color={GOLD}
           />
 
-          <span
-            style={labelStyle(
-              labelVisible('sell'),
-              isMobile
-            )}
-          >
-            {isSpanish
-            ? (
-                isMobile
-                  ? 'Vende'
-                  : 'Vender\nAlquilar\nArrendar'
-              )
-            : (
-                isMobile
-                  ? 'Sell'
-                  : 'Sell\nRent-Out\nLease-Out'
-              )}
-          </span>
-        </Link>
-
-
-        {/* SWIPE */}
-        <Link
-          href={
-            isSpanish
-              ? '/es/deslizar'
-              : '/en/swipe'
-          }
-          style={itemStyle()}
-          onMouseEnter={() =>
-            setHoveredItem('swipe')
-          }
-          onMouseLeave={() =>
-            setHoveredItem(null)
-          }
-        >
-          <ArrowLeftRight
-            size={30}
-            strokeWidth={0.65}
-            color={UTILITY_ORANGE}
-          />
-
-          <span
-            style={labelStyle(
-              labelVisible('swipe'),
-              isMobile
-            )}
-          >
-            {isSpanish
-            ? 'Deslizar'
-            : 'Swipe'}
-          </span>
+          {navigationLabel('sell',isSpanish?'Vender\nAlquilar\nArrendar':'Sell\nRent-Out\nLease-Out',isSpanish?'Vende':'Sell\nRent')}
         </Link>
 
 
         {/* FAVORITES */}
-        <Link
+        {authenticated&&<Link
           href={
             isSpanish
               ? '/es/favoritos'
@@ -579,25 +552,8 @@ const isSpanish =
             color={UTILITY_ORANGE}
           />
 
-          <span
-            style={labelStyle(
-              labelVisible('favorites'),
-              isMobile
-            )}
-          >
-            {isSpanish
-          ? (
-              isMobile
-                ? 'Favs'
-                : 'Favoritos'
-            )
-          : (
-              isMobile
-                ? 'Favs'
-                : 'Favorites'
-            )}
-          </span>
-        </Link>
+          {navigationLabel('favorites',isSpanish?'Favoritos':'Favorites','Favs')}
+        </Link>}
 
 
         {/* PACKAGES */}
@@ -615,30 +571,13 @@ const isSpanish =
             setHoveredItem(null)
           }
         >
-          <Package
+          <Gift
             size={30}
             strokeWidth={0.65}
             color={UTILITY_ORANGE}
           />
 
-          <span
-            style={labelStyle(
-              labelVisible('packages'),
-              isMobile
-            )}
-          >
-            {isSpanish
-            ? (
-                isMobile
-                  ? 'Paq.'
-                  : 'Paquetes'
-              )
-            : (
-                isMobile
-                  ? 'Packs'
-                  : 'Packages'
-              )}
-          </span>
+          {navigationLabel('packages',isSpanish?'Paquetes':'Packages',isSpanish?'Paq.':'Packs')}
         </Link>
 
 
@@ -653,7 +592,7 @@ const isSpanish =
             setHoveredItem(null)
           }
         >
-          <span
+          <span className="topbar-language-icon"
             style={{
               color:
                 theme === 'dark'
@@ -671,7 +610,7 @@ const isSpanish =
           </span>
 
           {!isMobile && (
-            <span
+            <span className="topbar-desktop-label"
               style={labelStyle(
                 labelVisible('language')
               )}
@@ -709,7 +648,7 @@ const isSpanish =
               ...itemStyle(),
             }}
           >
-            <span
+            <span className="topbar-theme-icon"
               style={{
                 width: 42,
                 height: 42,
@@ -749,7 +688,7 @@ const isSpanish =
             </span>
 
             {!isMobile && (
-              <span
+              <span className="topbar-desktop-label"
                 style={labelStyle(
                   labelVisible('appearance')
                 )}
@@ -763,7 +702,7 @@ const isSpanish =
 
             </nav>
 
-    </div>
+    </div></>
 
   )
 
@@ -792,8 +731,8 @@ const stickyShell = (
     'sticky' as const,
 
   top: isMobile
-    ? '1.5rem'
-    : '1rem',
+    ? 'calc(var(--question-ticker-height, 0px) + 1.5rem)'
+    : 'calc(var(--question-ticker-height, 0px) + 1rem)',
 
   zIndex: 3000,
 
@@ -870,7 +809,7 @@ const floatingHamburgerShell = (
     'fixed' as const,
 
   top:
-    '1rem',
+    'calc(var(--question-ticker-height, 0px) + 1rem)',
 
   left:
     '50%',
@@ -923,7 +862,7 @@ const floatingTopBarShell = (
     'fixed' as const,
 
   top:
-    '1rem',
+    'calc(var(--question-ticker-height, 0px) + 1rem)',
 
   left:
     '50%',

@@ -2,7 +2,7 @@ import 'server-only'
 
 import {
   createServerClient
-} from '@supabase/ssr'
+} from '@/lib/staging-supabase-ssr'
 
 import {
   cookies

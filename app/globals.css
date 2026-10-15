@@ -147,7 +147,7 @@ body:has([data-theme-control="true"]) .site-theme-fallback{display:none}
 
 .floating-home-mark {
   position: fixed;
-  right: 24px;
+  right: var(--floating-mark-right);
   bottom: 24px;
   left: auto;
   top: auto;
@@ -165,8 +165,8 @@ body:has([data-theme-control="true"]) .site-theme-fallback{display:none}
 
 .floating-home-logo {
   position: relative;
-  width: 48px;
-  height: 48px;
+  width: var(--floating-mark-size);
+  height: var(--floating-mark-size);
 
   display: flex;
   align-items: center;
@@ -265,7 +265,7 @@ html[style*="color-scheme: light"] .floating-home-logo-light {
 
   @media (max-width: 760px) {
   .floating-home-mark {
-    right: 12px;
+    right: var(--floating-mark-right);
     bottom: 12px;
     left: auto;
     top: auto;
@@ -273,8 +273,8 @@ html[style*="color-scheme: light"] .floating-home-logo-light {
 
 
   .floating-home-logo {
-    width: 42px;
-    height: 42px;
+    width: var(--floating-mark-size);
+    height: var(--floating-mark-size);
   }
 }
 
@@ -291,3 +291,19 @@ html[style*="color-scheme: light"] .floating-home-logo-light {
 @media (prefers-reduced-motion: reduce) {
   .homepage-identity, .floating-home-label, .floating-home-logo { transition: none; }
 }
+
+:root{--floating-mark-right:24px;--floating-mark-size:48px;--scroll-top-size:40px}
+.homepage-scroll-top{position:fixed;right:calc(var(--floating-mark-right) + (var(--floating-mark-size) - var(--scroll-top-size))/2);bottom:96px;z-index:10000;width:var(--scroll-top-size);height:var(--scroll-top-size);border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--foreground);font-size:24px;cursor:pointer}.homepage-scroll-top:focus-visible{outline:3px solid #ff3b00;outline-offset:3px}@media(max-width:760px){:root{--floating-mark-right:12px;--floating-mark-size:42px}.homepage-scroll-top{bottom:78px}}
+
+/* Homepage-only responsive placement; desktop controls retain their existing rules. */
+.homepage-floating-controls{display:contents}
+@media(max-width:768px){
+ .homepage-floating-controls[data-homepage=true]{position:fixed;right:12px;bottom:12px;z-index:10000;display:grid;grid-auto-rows:64px;align-items:center;justify-items:center;gap:12px}
+ .homepage-floating-controls[data-homepage=true] .homepage-scroll-top{position:static;transform:none;margin:0}
+ .homepage-floating-controls[data-homepage=true] .floating-home-mark{position:relative;right:auto;bottom:auto;margin:0}
+ .homepage-floating-controls[data-homepage=true] .floating-home-label{position:absolute;top:100%;white-space:nowrap}
+ #homepage-mobile-admin-slot a{position:relative}
+ #homepage-mobile-admin-slot a>span{position:absolute;top:100%;white-space:nowrap;margin-top:0!important}
+ #homepage-mobile-admin-slot:empty{display:none}
+}
+

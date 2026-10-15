@@ -1,116 +1,40 @@
-'use client'
-
-import {
-  useEffect,
-  useState
-} from 'react'
-
+ 'use client'
+import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-
-import { supabase } from '@/lib/supabase'
-
-export default function AuthCallbackPage() {
-  const router = useRouter()
-
-  const [message, setMessage] =
-    useState(
-      'Completing your secure sign-in...'
-    )
-
-  useEffect(() => {
-  let mounted = true
-
-  async function completeAuthentication() {
-    const params =
-      new URLSearchParams(
-        window.location.search
-      )
-
-    const next =
-      params.get('next') ||
-      '/en/market-hub'
-
-    const {
-      data: { session },
-      error
-    } = await supabase.auth.getSession()
-
-    if (!mounted) {
-      return
+import { authReturnContext, validateAuthEntry, type AuthLocale } from '@/lib/auth/account-access'
+import { confirmSignup } from '@/lib/auth/confirm-signup'
+import { settingsPath } from '@/lib/auth/return-context'
+import { accountCopy } from '@/lib/auth/account-copy'
+export default function AuthCallbackPage(){
+ const signupAttempt=useRef<Promise<Awaited<ReturnType<typeof confirmSignup>>>|null>(null)
+ const router=useRouter();const [locale,setLocale]=useState<AuthLocale>('en');const [failed,setFailed]=useState(false)
+ useEffect(()=>{
+  let active=true;const {locale,next}=authReturnContext(window.location.search);setLocale(locale)
+  const timer=window.setTimeout(()=>{if(active){active=false;setFailed(true)}},10000)
+  const params=new URLSearchParams(window.location.search),hash=params.get('token_hash')
+  async function complete(){
+   if(hash){
+    // POST Server Action avoids consuming email links during passive GET prefetch.
+    if(params.get('type')!=='email'||params.has('error'))throw Error('auth_link')
+    signupAttempt.current??=confirmSignup(hash)
+    const result=await signupAttempt.current
+    if(!result.ok)throw Error('auth_link')
+    if(active){active=false;window.clearTimeout(timer)
+     const destination=settingsPath(locale)
+     window.location.replace(result.authenticated?destination:'/login?lang='+locale+'&next='+encodeURIComponent(destination))
     }
-
-    if (error) {
-      console.error(error)
-
-      setMessage(
-        'We could not complete your sign-in.'
-      )
-
-      return
-    }
-
-    if (session) {
-      router.replace(next)
-      router.refresh()
-      return
-    }
-
-    const {
-      data: { subscription }
-    } =
-      supabase.auth.onAuthStateChange(
-        event => {
-          if (
-            event === 'SIGNED_IN' ||
-            event === 'INITIAL_SESSION'
-          ) {
-            router.replace(next)
-            router.refresh()
-          }
-        }
-      )
-
-    window.setTimeout(() => {
-      if (mounted) {
-        setMessage(
-          'The sign-in link may have expired. Please request another link.'
-        )
-      }
-    }, 8000)
-
-    return () => {
-      subscription.unsubscribe()
-    }
+   }else{
+    // Retain existing PKCE/implicit flows for recovery and secure email change.
+    if(!params.has('code')&&!new URLSearchParams(window.location.hash.slice(1)).has('access_token'))throw Error('auth_link')
+    await validateAuthEntry(window.location.search,window.location.hash)
+    if(active){active=false;window.clearTimeout(timer);router.replace(next);router.refresh()}
+   }
   }
-
-  let unsubscribe:
-    | (() => void)
-    | undefined
-
-  completeAuthentication().then(
-    cleanup => {
-      unsubscribe = cleanup
-    }
-  )
-
-  return () => {
-    mounted = false
-    unsubscribe?.()
-  }
-}, [router])
-    return (
-    <main style={main}>
-      <div style={card}>
-        <h1 style={heading}>
-          MarketHub
-        </h1>
-
-        <p style={messageStyle}>
-          {message}
-        </p>
-      </div>
-    </main>
-  )
+  complete().catch(()=>{if(active){active=false;window.clearTimeout(timer);setFailed(true)}})
+  return()=>{active=false;window.clearTimeout(timer)}
+ },[router])
+ const t=accountCopy(locale)
+ return <main style={main}><div style={card}><h1 style={heading}>MarketHub</h1><p role={failed?'alert':'status'} style={messageStyle}>{failed?t.badLink:t.callback}</p>{failed&&<a href={'/login?lang='+locale+'&next='+encodeURIComponent(settingsPath(locale))}>{locale==='es'?'Iniciar sesión':'Sign in'}</a>}</div></main>
 }
 
 const main = {

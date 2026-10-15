@@ -1,0 +1,19 @@
+@media(max-width:768px){
+.mobile-page-fit,.intelligence-packages-surface{padding-left:.5rem!important;padding-right:.5rem!important;box-sizing:border-box;min-width:0}
+.mobile-page-fit h1{overflow-wrap:anywhere}
+}
+
+/* One mobile layout for every existing TopBar instance. */
+.topbar-mobile-label{display:none}
+@media(max-width:768px){
+ .twuanis-mobile-topbar{width:calc(100vw - 10px)!important;max-width:calc(100vw - 10px)!important;margin-left:calc(50% - 50vw + 5px)!important;margin-right:calc(50% - 50vw + 5px)!important;box-sizing:border-box;padding-left:2px!important;padding-right:2px!important}
+ .twuanis-mobile-topbar[data-floating=true]{left:5px!important;transform:none!important;margin-left:0!important;margin-right:0!important}
+ .twuanis-top-navigation{width:100%;gap:0!important;flex-wrap:nowrap!important;overflow-x:hidden!important;align-items:flex-start!important}
+ .twuanis-top-navigation>a,.twuanis-top-navigation>button{flex:1 1 0;min-width:0;max-width:100%;height:auto;min-height:0;padding:2px 0!important;align-items:center;box-sizing:border-box}
+ .twuanis-top-navigation>a>svg,.twuanis-top-navigation>a>img,.twuanis-top-navigation .topbar-theme-icon,.twuanis-top-navigation .topbar-language-icon{width:28px!important;height:28px!important;flex-shrink:0;box-sizing:border-box}
+ .twuanis-top-navigation>a>img{object-fit:cover}
+ .twuanis-top-navigation .topbar-language-icon{display:flex;align-items:center;justify-content:center}
+ .twuanis-top-navigation .topbar-desktop-label{display:none!important}
+ .twuanis-top-navigation .topbar-mobile-label,.twuanis-top-navigation>a[href="/admin"]>span{display:block;max-width:100%;font-size:clamp(7px,2vw,9px)!important;white-space:nowrap!important;overflow-wrap:normal;flex-shrink:0}
+ .twuanis-top-navigation[data-labels-visible=false] .topbar-mobile-label,.twuanis-top-navigation[data-labels-visible=false]>a[href="/admin"]>span{margin-top:0!important}
+}

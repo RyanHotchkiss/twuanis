@@ -41,6 +41,8 @@ export type PriceMeterComparableActiveDimension = {
   characteristic:
     PriceMeterCharacteristicIdentity | null
 
+  characteristics?: PriceMeterCharacteristicIdentity[]
+
   constructionLandCohortKey:
     string | null
 }

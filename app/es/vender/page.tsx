@@ -277,7 +277,7 @@ const usdToCrcRate =
                     /* THEN YOUR RETURN */
                     return (
 
-                    <main style={{
+                    <main className="mobile-page-fit" style={{
                         background: 'var(--background)',
                         minHeight: '100vh',
                         color: '#D4AF37',
@@ -303,7 +303,7 @@ const usdToCrcRate =
                     flexWrap: 'wrap'
                     }}>
 
-                                        <TopBar
+                                        <TopBar mobileFit
                                             onFilterClick={() =>
                                                 setShowMobileFilters(true)
                                             }
@@ -315,7 +315,7 @@ const usdToCrcRate =
                         fontSize: '4rem',
                         marginBottom: '.5rem'
                         }}>
-                        Define Tu Propiedad
+                        Venda Su Propiedad
                         </h1>
 
                         <p style={{
@@ -447,13 +447,11 @@ const usdToCrcRate =
 
                                                 title:
                                                     generateListingTitle(
-                                                    normalizedRow
-                                                    ),
+                                                    normalizedRow, 'es'),
 
                                                 description:
                                                     generateListingDescription(
-                                                    normalizedRow
-                                                    )
+                                                    normalizedRow, 'es')
                                                 }
                                             })
 
@@ -893,7 +891,7 @@ const usdToCrcRate =
                             phone:
                             propertyData.whatsapp,
 
-                            propertyData
+                            propertyData: {...propertyData, title: generateListingTitle(propertyData, 'es'), description: generateListingDescription(propertyData, 'es')}
                         })
 
                         alert(

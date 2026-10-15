@@ -130,24 +130,7 @@ export function analyzePhase14Population(envelope: Phase14ExecutionEnvelope, pop
       n: population.finalAnalyticalN, state: population.finalAnalyticalN ? 'established' : 'empty', statistics
     }
     validateDistribution(distribution, population)
-    // Group exact numerical values. Sort unique keys once; never scan N values per observation.
-    const groups = new Map<number, number>()
-    for (const value of values) groups.set(value, (groups.get(value) ?? 0) + 1)
-    const evidence = new Map<number, ComparativeMetrics>()
-    let below = 0
-    for (const value of [...groups.keys()].sort((a,b) => a-b)) {
-      const equal = groups.get(value)!
-      const counts = calculatePopulationMidrank(below, equal, distribution.n-below-equal, distribution.n)
-      const difference = calculatePropertyPositionDifference(value, statistics.median)
-      const interval = classifyPropertyPositionInterval(value, statistics)
-      evidence.set(value, {
-        participation:'population_member', state:'established', pricePerM2:value, ...counts,
-        percentileMethod:'midrank', differenceFromMedian:difference.difference,
-        percentDifferenceFromMedian:difference.percentDifference, percentageReference:'selected_population_median',
-        interval, strictTail:calculatePropertyPositionTail(value, statistics, interval)
-      })
-      below += equal
-    }
+    const evidence=calculateDiscoveryComparativeMetrics(values,statistics)
     const comparisons = population.observations.map(observation => ({
       listingId:observation.observation.listingId!, observation, distribution,
       evidence:evidence.get(observation.observation.pricePerM2)!
@@ -170,4 +153,33 @@ export function assertPhase14DiscoveryForPopulation(result: Phase14DiscoveryResu
   if (result.state !== 'complete' || owners.get(result) !== population || result.population !== population) {
     throw new Error('Invalid Phase 14 comparative evidence provenance.')
   }
+}
+
+// No Private execution envelope is fabricated for Bank populations. The owning
+// engine exposes its existing numerical core for separately authorized acquisition.
+export function calculateDiscoveryComparativeMetrics(values:readonly number[],statistics:NumericalDistribution){
+  // Group exact numerical values. Sort unique keys once; never scan N values per observation.
+  const groups = new Map<number, number>()
+  for (const value of values) groups.set(value, (groups.get(value) ?? 0) + 1)
+  const evidence = new Map<number, ComparativeMetrics>()
+  let below = 0
+  for (const value of [...groups.keys()].sort((a,b) => a-b)) {
+    const equal = groups.get(value)!
+    const counts = calculatePopulationMidrank(below, equal, values.length-below-equal, values.length)
+    const difference = calculatePropertyPositionDifference(value, statistics.median)
+    const interval = classifyPropertyPositionInterval(value, statistics)
+    evidence.set(value, {
+    participation:'population_member', state:'established', pricePerM2:value, ...counts,
+    percentileMethod:'midrank', differenceFromMedian:difference.difference,
+    percentDifferenceFromMedian:difference.percentDifference, percentageReference:'selected_population_median',
+    interval, strictTail:calculatePropertyPositionTail(value, statistics, interval)
+    })
+    below += equal
+  }
+  return evidence
+}
+export function calculateDiscoveryPopulation(values:readonly number[]){
+ if(values.some(v=>!Number.isFinite(v)||v<=0))throw Error('Invalid discovery observations.')
+ const statistics=buildNumericalDistribution([...values])
+ return {statistics,evidence:calculateDiscoveryComparativeMetrics(values,statistics)}
 }

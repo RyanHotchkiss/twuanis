@@ -1,0 +1,49 @@
+{
+  "PHASE 5.3J-F": "PARTIAL",
+  "Resource-limit authorities identified": "12/14 resolved; production worker memory and CPU allocation unverified. Several provider-controlled rows have unresolved project settings, explicitly listed.",
+  "Twuanis-controlled limits": [
+    "32MiB envelope/validator/report/reader ceiling",
+    "40000 evidence roots",
+    "100000 evidence nodes",
+    "120s application/capture budget",
+    "180s worker lease,600s reservation,2 active claims/account,3 attempts",
+    "1MiB compact presentation,65536-character evidence chunks"
+  ],
+  "Provider-configurable limits": [
+    "PostgreSQL role/function statement_timeout within managed API ceiling",
+    "Database work_mem/shared_buffers/temp_file_limit and pools subject to privileges/compute",
+    "Vercel duration/memory within plan",
+    "Database compute/disk/IOPS and paid egress capacity"
+  ],
+  "Provider hard limits": [
+    "Documented Supabase client/Dashboard60s request path ceiling; direct/session alternative exists",
+    "Vercel plan/runtime duration and memory maxima; deployed mode unverified",
+    "Vercel4.5MB nonstreamed function payload; not outgoing RPC traffic",
+    "PostgreSQL1GB field size; not reached in a completed experiment"
+  ],
+  "Unverified provider restrictions": [
+    "Vercel actual plan/Fluid/memory/CPU/route duration",
+    "Managed Supabase incoming request-byte ceiling",
+    "Production timeout overrides,pool settings,used disk/IOPS/throughput,egress allowance/spend cap"
+  ],
+  "2,000 observations": "COMPLETE",
+  "5,000 observations": "BLOCKED",
+  "10,000 observations": "NOT RUN",
+  "25,000 observations": "NOT RUN",
+  "Complete eligible population preserved": "PASS (2000 and5000 acquired sets; larger targets unexecuted)",
+  "Mathematical preservation": "PASS (23998 independent checks;5000 computed outputs uncommitted)",
+  "Evidence integrity": "PASS (all3 completed reports canonically validated;5000 failed closed)",
+  "Historical reproducibility": "PASS (2000 exact authorized retrieval,17 archived engine replays,4 negative archive checks)",
+  "Exactly-once accounting": "PASS (paid2000 one unit;no duplicate;post-expiry retrieval retained)",
+  "Failed-execution zero-charge behavior": "PASS (5000 released,no witness/report/consumption;paid-failure predecessor evidence reused)",
+  "Synchronous architecture feasibility": "PARTIAL",
+  "Durable architecture feasibility": "DESIGN ESTABLISHED (not implemented or benchmarked)",
+  "Required provider upgrade": "YES (NANO inadequate for measured workload; upgrade sufficiency beyond2000 unknown)",
+  "Infrastructure cost": "ESTIMATED from measured resource use and published rates",
+  "Recommended architecture": "D",
+  "Additional implementation required": "No implementation performed. Current-path production qualification requires approved resource/timeout changes and hosted capacity/concurrency acceptance. Durable option requires bounded JSONB evidence admission/validation, fenced checkpoints/renewal,asynchronous status,and atomic finalization through existing ledger.",
+  "Production readiness": "NOT READY",
+  "Production modifications": 0,
+  "Production deployments": 0,
+  "Owner decision required": "Do not release a25000-observation promise. Provision a dedicated isolated qualification environment (at least8GB database,known4GB worker) for one gated5k\u219210k\u219225k acceptance sequence,or defer large-population release. Approve durable design only as a separate implementation decision; evidence does not prove it mandatory."
+}

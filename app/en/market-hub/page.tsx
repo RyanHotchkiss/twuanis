@@ -1,3 +1,4 @@
+import MarketHubRemates from '@/app/components/remates/MarketHubRemates'
 import MarketHubAuthGate
   from '@/app/components/MarketHubAuthGate'
 
@@ -351,6 +352,7 @@ const resolvedIntelligence =
           }
 
 
+          remates={<MarketHubRemates language="en"/>}
           settings={
             <MarketHubSettings
               language="en"

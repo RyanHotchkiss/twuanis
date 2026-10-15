@@ -1,0 +1,3230 @@
+[
+  {
+    "scenario": "16-UTILITIES",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "16-UTILITIES",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "16-UTILITIES",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "16-UTILITIES",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "16-UTILITIES",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "16-UTILITIES",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "16-UTILITIES",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "16-UTILITIES",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "16-UTILITIES",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "16-UTILITIES",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "16-UTILITIES",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "16-UTILITIES",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "16-UTILITIES",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "16-UTILITIES",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "16-UTILITIES",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "16-UTILITIES",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "16-UTILITIES",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "29-BANK-RENT",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "29-BANK-RENT",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "29-BANK-RENT",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "29-BANK-RENT",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "29-BANK-RENT",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "29-BANK-RENT",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "29-BANK-RENT",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "29-BANK-RENT",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "29-BANK-RENT",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "29-BANK-RENT",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "29-BANK-RENT",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "29-BANK-RENT",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "29-BANK-RENT",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "29-BANK-RENT",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "29-BANK-RENT",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "29-BANK-RENT",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "29-BANK-RENT",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "25-CONFIGURATION",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "25-CONFIGURATION",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "25-CONFIGURATION",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "25-CONFIGURATION",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "25-CONFIGURATION",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "25-CONFIGURATION",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "25-CONFIGURATION",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "25-CONFIGURATION",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "25-CONFIGURATION",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "25-CONFIGURATION",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "25-CONFIGURATION",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "25-CONFIGURATION",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "25-CONFIGURATION",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "25-CONFIGURATION",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "25-CONFIGURATION",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "25-CONFIGURATION",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "25-CONFIGURATION",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "22-OWNER-DESIRED",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "22-OWNER-DESIRED",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "22-OWNER-DESIRED",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "22-OWNER-DESIRED",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "22-OWNER-DESIRED",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "22-OWNER-DESIRED",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "22-OWNER-DESIRED",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "22-OWNER-DESIRED",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "22-OWNER-DESIRED",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "22-OWNER-DESIRED",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "22-OWNER-DESIRED",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "22-OWNER-DESIRED",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "22-OWNER-DESIRED",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "22-OWNER-DESIRED",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "22-OWNER-DESIRED",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "22-OWNER-DESIRED",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "22-OWNER-DESIRED",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "24-MATCHING",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "24-MATCHING",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "24-MATCHING",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "24-MATCHING",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "24-MATCHING",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "24-MATCHING",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "24-MATCHING",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "24-MATCHING",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "24-MATCHING",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "24-MATCHING",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "24-MATCHING",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "24-MATCHING",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "24-MATCHING",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "24-MATCHING",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "24-MATCHING",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "24-MATCHING",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "24-MATCHING",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "02-BANK",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "02-BANK",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "02-BANK",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "02-BANK",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "02-BANK",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "02-BANK",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "02-BANK",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "02-BANK",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "02-BANK",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "02-BANK",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "02-BANK",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "02-BANK",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "02-BANK",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "02-BANK",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "02-BANK",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "02-BANK",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "02-BANK",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "03-COMBINED",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "03-COMBINED",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "03-COMBINED",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "03-COMBINED",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "03-COMBINED",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "03-COMBINED",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "03-COMBINED",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "03-COMBINED",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "03-COMBINED",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "03-COMBINED",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "03-COMBINED",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "03-COMBINED",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "03-COMBINED",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "03-COMBINED",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "03-COMBINED",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "03-COMBINED",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "03-COMBINED",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "30-ENTIRELY-UNDEFINED",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "30-ENTIRELY-UNDEFINED",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "30-ENTIRELY-UNDEFINED",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "30-ENTIRELY-UNDEFINED",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "30-ENTIRELY-UNDEFINED",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "30-ENTIRELY-UNDEFINED",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "30-ENTIRELY-UNDEFINED",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "30-ENTIRELY-UNDEFINED",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "30-ENTIRELY-UNDEFINED",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "30-ENTIRELY-UNDEFINED",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "30-ENTIRELY-UNDEFINED",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "30-ENTIRELY-UNDEFINED",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "30-ENTIRELY-UNDEFINED",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "30-ENTIRELY-UNDEFINED",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "30-ENTIRELY-UNDEFINED",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "30-ENTIRELY-UNDEFINED",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "30-ENTIRELY-UNDEFINED",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "13-LAND",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "13-LAND",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "13-LAND",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "13-LAND",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "13-LAND",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "13-LAND",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "13-LAND",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "13-LAND",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "13-LAND",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "13-LAND",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "13-LAND",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "13-LAND",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "13-LAND",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "13-LAND",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "13-LAND",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "13-LAND",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "13-LAND",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "19-ACCESSIBILITY",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "19-ACCESSIBILITY",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "19-ACCESSIBILITY",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "19-ACCESSIBILITY",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "19-ACCESSIBILITY",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "19-ACCESSIBILITY",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "19-ACCESSIBILITY",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "19-ACCESSIBILITY",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "19-ACCESSIBILITY",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "19-ACCESSIBILITY",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "19-ACCESSIBILITY",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "19-ACCESSIBILITY",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "19-ACCESSIBILITY",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "19-ACCESSIBILITY",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "19-ACCESSIBILITY",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "19-ACCESSIBILITY",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "19-ACCESSIBILITY",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "05-CANTON",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "05-CANTON",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "05-CANTON",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "05-CANTON",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "05-CANTON",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "05-CANTON",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "05-CANTON",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "17-ENVIRONMENT",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "17-ENVIRONMENT",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "17-ENVIRONMENT",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "17-ENVIRONMENT",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "17-ENVIRONMENT",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "17-ENVIRONMENT",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "17-ENVIRONMENT",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "17-ENVIRONMENT",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "17-ENVIRONMENT",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "17-ENVIRONMENT",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "17-ENVIRONMENT",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "17-ENVIRONMENT",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "17-ENVIRONMENT",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "17-ENVIRONMENT",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "17-ENVIRONMENT",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "17-ENVIRONMENT",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "17-ENVIRONMENT",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "08-SEVEN",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "08-SEVEN",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "08-SEVEN",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "08-SEVEN",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "08-SEVEN",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "08-SEVEN",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "08-SEVEN",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "11-BATHROOMS",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "11-BATHROOMS",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "11-BATHROOMS",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "11-BATHROOMS",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "11-BATHROOMS",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "11-BATHROOMS",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "11-BATHROOMS",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "11-BATHROOMS",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "11-BATHROOMS",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "11-BATHROOMS",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "11-BATHROOMS",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "11-BATHROOMS",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "11-BATHROOMS",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "11-BATHROOMS",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "11-BATHROOMS",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "11-BATHROOMS",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "11-BATHROOMS",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "09-SEVENTEEN",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "09-SEVENTEEN",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "09-SEVENTEEN",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "09-SEVENTEEN",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "09-SEVENTEEN",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "09-SEVENTEEN",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "09-SEVENTEEN",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "09-SEVENTEEN",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "09-SEVENTEEN",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "09-SEVENTEEN",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "09-SEVENTEEN",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "09-SEVENTEEN",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "09-SEVENTEEN",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "09-SEVENTEEN",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "09-SEVENTEEN",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "09-SEVENTEEN",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "09-SEVENTEEN",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "07-PROPERTY-TYPE",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "07-PROPERTY-TYPE",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "07-PROPERTY-TYPE",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "07-PROPERTY-TYPE",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "07-PROPERTY-TYPE",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "07-PROPERTY-TYPE",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "07-PROPERTY-TYPE",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "07-PROPERTY-TYPE",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "07-PROPERTY-TYPE",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "07-PROPERTY-TYPE",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "07-PROPERTY-TYPE",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "07-PROPERTY-TYPE",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "07-PROPERTY-TYPE",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "07-PROPERTY-TYPE",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "07-PROPERTY-TYPE",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "07-PROPERTY-TYPE",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "07-PROPERTY-TYPE",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "26-COMPARABLES",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "26-COMPARABLES",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "26-COMPARABLES",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "26-COMPARABLES",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "26-COMPARABLES",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "26-COMPARABLES",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "26-COMPARABLES",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "26-COMPARABLES",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "26-COMPARABLES",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "26-COMPARABLES",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "26-COMPARABLES",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "26-COMPARABLES",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "26-COMPARABLES",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "26-COMPARABLES",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "26-COMPARABLES",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "26-COMPARABLES",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "26-COMPARABLES",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "10-BEDROOMS",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "10-BEDROOMS",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "10-BEDROOMS",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "10-BEDROOMS",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "10-BEDROOMS",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "10-BEDROOMS",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "10-BEDROOMS",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "10-BEDROOMS",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "10-BEDROOMS",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "10-BEDROOMS",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "10-BEDROOMS",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "10-BEDROOMS",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "10-BEDROOMS",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "10-BEDROOMS",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "10-BEDROOMS",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "10-BEDROOMS",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "10-BEDROOMS",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "23-GEOGRAPHY",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "23-GEOGRAPHY",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "23-GEOGRAPHY",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "23-GEOGRAPHY",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "23-GEOGRAPHY",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "23-GEOGRAPHY",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "23-GEOGRAPHY",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "23-GEOGRAPHY",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "23-GEOGRAPHY",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "23-GEOGRAPHY",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "23-GEOGRAPHY",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "23-GEOGRAPHY",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "23-GEOGRAPHY",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "23-GEOGRAPHY",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "23-GEOGRAPHY",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "23-GEOGRAPHY",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "23-GEOGRAPHY",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "18-TERRAIN",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "18-TERRAIN",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "18-TERRAIN",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "18-TERRAIN",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "18-TERRAIN",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "18-TERRAIN",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "18-TERRAIN",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "18-TERRAIN",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "18-TERRAIN",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "18-TERRAIN",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "18-TERRAIN",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "18-TERRAIN",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "18-TERRAIN",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "18-TERRAIN",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "18-TERRAIN",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "18-TERRAIN",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "18-TERRAIN",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "14-CONSTRUCTION",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "14-CONSTRUCTION",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "14-CONSTRUCTION",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "14-CONSTRUCTION",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "14-CONSTRUCTION",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "14-CONSTRUCTION",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "14-CONSTRUCTION",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "14-CONSTRUCTION",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "14-CONSTRUCTION",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "14-CONSTRUCTION",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "14-CONSTRUCTION",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "14-CONSTRUCTION",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "14-CONSTRUCTION",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "14-CONSTRUCTION",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "14-CONSTRUCTION",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "14-CONSTRUCTION",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "14-CONSTRUCTION",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "28-CROSS-MARKET",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "28-CROSS-MARKET",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "28-CROSS-MARKET",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "28-CROSS-MARKET",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "28-CROSS-MARKET",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "28-CROSS-MARKET",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "28-CROSS-MARKET",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "28-CROSS-MARKET",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "28-CROSS-MARKET",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "28-CROSS-MARKET",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "28-CROSS-MARKET",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "28-CROSS-MARKET",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "28-CROSS-MARKET",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "28-CROSS-MARKET",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "28-CROSS-MARKET",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "28-CROSS-MARKET",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "28-CROSS-MARKET",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "01-PRIVATE",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "01-PRIVATE",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "01-PRIVATE",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "01-PRIVATE",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "01-PRIVATE",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "01-PRIVATE",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "01-PRIVATE",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "01-PRIVATE",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "01-PRIVATE",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "01-PRIVATE",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "01-PRIVATE",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "01-PRIVATE",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "01-PRIVATE",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "01-PRIVATE",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "01-PRIVATE",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "01-PRIVATE",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "01-PRIVATE",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "POSITIVE-AREA-MODEL",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "POSITIVE-AREA-MODEL",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "POSITIVE-AREA-MODEL",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "POSITIVE-AREA-MODEL",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "POSITIVE-AREA-MODEL",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "POSITIVE-AREA-MODEL",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "POSITIVE-AREA-MODEL",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "POSITIVE-AREA-MODEL",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "POSITIVE-AREA-MODEL",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "POSITIVE-AREA-MODEL",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "POSITIVE-AREA-MODEL",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "POSITIVE-AREA-MODEL",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "POSITIVE-AREA-MODEL",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "POSITIVE-AREA-MODEL",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "POSITIVE-AREA-MODEL",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "POSITIVE-AREA-MODEL",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "POSITIVE-AREA-MODEL",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "12-PARKING",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "12-PARKING",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "12-PARKING",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "12-PARKING",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "12-PARKING",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "12-PARKING",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "12-PARKING",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "12-PARKING",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "12-PARKING",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "12-PARKING",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "12-PARKING",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "12-PARKING",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "12-PARKING",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "12-PARKING",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "12-PARKING",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "12-PARKING",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "12-PARKING",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "NATIONAL",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "NATIONAL",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "NATIONAL",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "NATIONAL",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "NATIONAL",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "NATIONAL",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "NATIONAL",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "15-YEAR",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "15-YEAR",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "15-YEAR",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "15-YEAR",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "15-YEAR",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "15-YEAR",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "15-YEAR",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "15-YEAR",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "15-YEAR",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "15-YEAR",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "15-YEAR",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "15-YEAR",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "15-YEAR",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "15-YEAR",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "15-YEAR",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "15-YEAR",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "15-YEAR",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "06-DISTRICT",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "06-DISTRICT",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "06-DISTRICT",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "06-DISTRICT",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "06-DISTRICT",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "06-DISTRICT",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "06-DISTRICT",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "ESTABLISHED-AREA-MODEL",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "ESTABLISHED-AREA-MODEL",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "ESTABLISHED-AREA-MODEL",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "ESTABLISHED-AREA-MODEL",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "ESTABLISHED-AREA-MODEL",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "ESTABLISHED-AREA-MODEL",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "ESTABLISHED-AREA-MODEL",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "ESTABLISHED-AREA-MODEL",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "ESTABLISHED-AREA-MODEL",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "ESTABLISHED-AREA-MODEL",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "ESTABLISHED-AREA-MODEL",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "ESTABLISHED-AREA-MODEL",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "ESTABLISHED-AREA-MODEL",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "ESTABLISHED-AREA-MODEL",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "ESTABLISHED-AREA-MODEL",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "ESTABLISHED-AREA-MODEL",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "ESTABLISHED-AREA-MODEL",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "LINEAR-AREA-REFERENCE",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "LINEAR-AREA-REFERENCE",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "LINEAR-AREA-REFERENCE",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "LINEAR-AREA-REFERENCE",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "LINEAR-AREA-REFERENCE",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "LINEAR-AREA-REFERENCE",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "LINEAR-AREA-REFERENCE",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "LINEAR-AREA-REFERENCE",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "LINEAR-AREA-REFERENCE",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "LINEAR-AREA-REFERENCE",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "LINEAR-AREA-REFERENCE",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "LINEAR-AREA-REFERENCE",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "LINEAR-AREA-REFERENCE",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "LINEAR-AREA-REFERENCE",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "LINEAR-AREA-REFERENCE",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "LINEAR-AREA-REFERENCE",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "LINEAR-AREA-REFERENCE",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "20-LEGAL",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "20-LEGAL",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "20-LEGAL",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "20-LEGAL",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "20-LEGAL",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "20-LEGAL",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "20-LEGAL",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "20-LEGAL",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "20-LEGAL",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "20-LEGAL",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "20-LEGAL",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "20-LEGAL",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "20-LEGAL",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "20-LEGAL",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "20-LEGAL",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "20-LEGAL",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "20-LEGAL",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "27-AB-COHORTS",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "27-AB-COHORTS",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "27-AB-COHORTS",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "27-AB-COHORTS",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "27-AB-COHORTS",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "27-AB-COHORTS",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "27-AB-COHORTS",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "27-AB-COHORTS",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "27-AB-COHORTS",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "27-AB-COHORTS",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "27-AB-COHORTS",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "27-AB-COHORTS",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "27-AB-COHORTS",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "27-AB-COHORTS",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "27-AB-COHORTS",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "27-AB-COHORTS",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "27-AB-COHORTS",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "21-LISTED-SUBJECT",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "21-LISTED-SUBJECT",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "21-LISTED-SUBJECT",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "21-LISTED-SUBJECT",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "21-LISTED-SUBJECT",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "21-LISTED-SUBJECT",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "21-LISTED-SUBJECT",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "21-LISTED-SUBJECT",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "21-LISTED-SUBJECT",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "21-LISTED-SUBJECT",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "21-LISTED-SUBJECT",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "21-LISTED-SUBJECT",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "21-LISTED-SUBJECT",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "21-LISTED-SUBJECT",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "21-LISTED-SUBJECT",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "21-LISTED-SUBJECT",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "21-LISTED-SUBJECT",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": false
+  },
+  {
+    "scenario": "04-PROVINCE",
+    "engine": "summary",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "04-PROVINCE",
+    "engine": "composition",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "04-PROVINCE",
+    "engine": "market-asking-price-distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "04-PROVINCE",
+    "engine": "matching",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "04-PROVINCE",
+    "engine": "comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "04-PROVINCE",
+    "engine": "configuration",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "04-PROVINCE",
+    "engine": "distribution",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "04-PROVINCE",
+    "engine": "geography",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "04-PROVINCE",
+    "engine": "size",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "04-PROVINCE",
+    "engine": "construction-land",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "04-PROVINCE",
+    "engine": "cohort-comparison",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "04-PROVINCE",
+    "engine": "cross-dimensional",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "04-PROVINCE",
+    "engine": "discovery",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "04-PROVINCE",
+    "engine": "position",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "04-PROVINCE",
+    "engine": "comparables",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "04-PROVINCE",
+    "engine": "asking-area-ratio",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  },
+  {
+    "scenario": "04-PROVINCE",
+    "engine": "weighted-price",
+    "sameMathAndState": true,
+    "sameCacheIdentity": true
+  }
+]

@@ -1,6 +1,7 @@
 'use client'
 
 import {
+  Fragment,
   ReactNode,
   useEffect,
   useState
@@ -11,6 +12,9 @@ import type {
 } from '@supabase/supabase-js'
 
 import { supabase } from '@/lib/supabase'
+import { usePathname } from 'next/navigation'
+import { authLocale, safeAuthNext } from '@/lib/auth/account-access'
+import { accountCopy } from '@/lib/auth/account-copy'
 
 import EmailAuthModal from '@/app/components/EmailAuthModal'
 
@@ -21,6 +25,8 @@ type MarketHubAuthGateProps = {
 export default function MarketHubAuthGate({
   children
 }: MarketHubAuthGateProps) {
+  const pathname=usePathname()
+  const locale=authLocale(pathname)
   const [user, setUser] =
     useState<User | null>(null)
 
@@ -43,7 +49,7 @@ export default function MarketHubAuthGate({
       setLoading(false)
     }
 
-    loadSession()
+    loadSession().catch(()=>{if(mounted){setUser(null);setLoading(false)}})
 
     const {
       data: { subscription }
@@ -64,7 +70,7 @@ export default function MarketHubAuthGate({
   if (loading) {
     return (
       <main style={loadingPage}>
-        Loading MarketHub...
+        {accountCopy(locale).loading}
       </main>
     )
   }
@@ -72,11 +78,11 @@ export default function MarketHubAuthGate({
   if (!user) {
     return (
       <EmailAuthModal
-        redirectTo="/en/market-hub"
+        redirectTo={safeAuthNext(pathname+(typeof window==='undefined'?'':window.location.search),locale)}
       />
     )
   }
-    return <>{children}</>
+    return <Fragment key={user.id}>{children}</Fragment>
 }
 
 const loadingPage = {

@@ -1,4 +1,5 @@
 import 'server-only'
+import {authorizePreviouslyPublicCapability} from './package-capability-authorization'
 import { resolveCanonicalMarketRequest } from './canonical-market-request'
 import { countCanonicalMarket } from './canonical-market-population'
 import { countMarketNumericalSurvivors } from './canonical-market-acquisition'
@@ -6,6 +7,8 @@ import { countMarketNumericalSurvivors } from './canonical-market-acquisition'
 // Historical route name retained; the surviving product is Configuration Frequency.
 // No Rare Configuration Discovery, powerset, weighting, or scarcity score executes.
 export async function getMarketScarcity(filters:Record<string,string|undefined>,language:'en'|'es'='en'){
+ await authorizePreviouslyPublicCapability('cap-property-configuration-frequency')
+
   const request=await resolveCanonicalMarketRequest(filters,language)
   const marketSize=await countCanonicalMarket(request.base)
   const configuration=request.terms.filter(t=>t.dimension!=='property_type')
@@ -14,6 +17,11 @@ export async function getMarketScarcity(filters:Record<string,string|undefined>,
   const hasConfiguration=configuration.length>0||!!request.year||!!request.road||!!request.propertyArea||!!request.constructionArea
   const matchingCount=marketSize===0?0:hasConfiguration?await countMarketNumericalSurvivors(request,numerator):marketSize
   if(matchingCount>marketSize)throw Error('Configuration population changed during acquisition.')
+  return calculateConfigurationFrequency(filters,language,marketSize,matchingCount,hasConfiguration,configuration)
+}
+
+export function calculateConfigurationFrequency(filters:Record<string,string|undefined>,language:'en'|'es',marketSize:number,matchingCount:number,hasConfiguration:boolean,configuration:{dimension:string;label:string;id:string}[]){
+ if(!Number.isSafeInteger(marketSize)||!Number.isSafeInteger(matchingCount)||matchingCount<0||matchingCount>marketSize)throw Error('Invalid configuration population.')
   const percentage=marketSize?matchingCount/marketSize*100:null
   const attributes=[...configuration.map(t=>({category:t.dimension,value:t.label,termId:t.id})),
     ...(['year_built','distance_to_paved_road_range','property_area','construction_area'] as const)

@@ -7,7 +7,7 @@ import type {PositionHubResponse} from './position-hub-contract'
 
 export async function executePositionHub(input:unknown):Promise<PositionHubResponse>{
  try{
-  await authorizePriceMeterIntelligenceExecution()
+  await authorizePriceMeterIntelligenceExecution('cap-property-price-m2-position')
   let request:PositionRequest
   try{request=parsePositionRequest(input) as PositionRequest}catch{return{result:{state:'reference_definition_invalid',reason:'invalid_request'},fx:null}}
   const {result}=await executePropertyPositionWithWorkingEvidence(request,true)

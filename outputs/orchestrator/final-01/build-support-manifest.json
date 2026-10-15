@@ -1,0 +1,1682 @@
+[
+  {
+    "path": "data/property-data.ts",
+    "sha256": "0932a6d0dd109c15772b1c4c78dd4bac46408b60c6118c06d19b7b2842c015ce"
+  },
+  {
+    "path": "data/orchestrator-examples/seventeen-es.json",
+    "sha256": "a4ce5a92239fee11d12fb6406eadc0f6e0383c00962b193a363bde40ea7e41cf"
+  },
+  {
+    "path": "data/orchestrator-examples/seven-es.json",
+    "sha256": "79fa31f8ec8afb13f0405083520e6ab0aca7f34f6050c94ec80f518e835bcd17"
+  },
+  {
+    "path": "data/orchestrator-examples/seventeen-en.json",
+    "sha256": "e2e90e97475e58578d14480db4cfa9b0de2ecabc159b6b8d10acafe33b8d2fec"
+  },
+  {
+    "path": "data/orchestrator-examples/seven-en.json",
+    "sha256": "4944800298d34a1be411c50b35c0b43629f0481bdd6b9a87407af1b51aa57e77"
+  },
+  {
+    "path": "data/remates/banco-popular-reviewed-areas.json",
+    "sha256": "dc64b58416f97dbcdfd79b591e49f941cb805a98fc1f8d40e1f39528607656d0"
+  },
+  {
+    "path": "scripts/audit-listing-geography.ts",
+    "sha256": "9b2ad4c8bcd92ac77f2b761de51b57cd83d792c7dbd9fff46f3c9b59c161b798"
+  },
+  {
+    "path": "scripts/audit-price-meter-sale-geography.ts",
+    "sha256": "d93879d5098d72188577d52be67c8be1db39993a6ed4da1d9e2c457dede38600"
+  },
+  {
+    "path": "scripts/assign-ontology-to-existing-listings.ts",
+    "sha256": "fecfa85605ecf07d73e4048da70dd373a858cb03020ce7bc142aab11419ed455"
+  },
+  {
+    "path": "scripts/test-ontology.ts",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "scripts/staging/assert-application-environment.cjs",
+    "sha256": "73681d484cd87cec6c855185fbf42ef8c62a816626fc43fba6787ce8b9203146"
+  },
+  {
+    "path": "scripts/staging/verify-target.py",
+    "sha256": "9ba1fe7dde010fed92770c8c3796f8da01a41d15229754b633e9ccf1e8f26059"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step5-catalog.cjs",
+    "sha256": "d89340cff1e21242d056b86b6946c877ce32ac49b067b58f3c6ffeada5ada22f"
+  },
+  {
+    "path": "scripts/verification/remates-r11-db-cases.py",
+    "sha256": "2f35da89a9c8869d0570bb488cf9fdc4612d7b141d08f924ba39184eab9132c2"
+  },
+  {
+    "path": "scripts/verification/price-meter-geography-browser.cjs",
+    "sha256": "0fa1f3936dc58dce1f32c35307a92763e8d76edde4b4242a22f9d7c0f156ca68"
+  },
+  {
+    "path": "scripts/verification/canonical-readers.cjs",
+    "sha256": "f5b81e7d9c247cdc4182a419c75aa5256201dcfd3063240c31c5fd0a0cc0c1c7"
+  },
+  {
+    "path": "scripts/verification/remates-shot2-pdf-route.cjs",
+    "sha256": "c8784350f2dec5c15d1d604e4d38a45251a171f3a5f19851f11340dc1453f8f9"
+  },
+  {
+    "path": "scripts/verification/phase18-step2.cjs",
+    "sha256": "7cbdc9a3556351d1fe7bb95a62b32620bece53232886cdda5ec8269482ce5fbb"
+  },
+  {
+    "path": "scripts/verification/account-identity-phase-e-app.cjs",
+    "sha256": "6ddb0edd0380ddbb323c7d0abf667595fefcffc00fc8add9b59005ee90818a37"
+  },
+  {
+    "path": "scripts/verification/continuous-package-component.cjs",
+    "sha256": "7b9db8b8730f04959267b1ce1e02652327f7ffb2491eb491de6be2f35109e1c1"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step6-paid.cjs",
+    "sha256": "432f4e30df098d6df563fd312f293b5ce07b21c7b80aa33dc54c234ecb6b963b"
+  },
+  {
+    "path": "scripts/verification/remates-r16-boundaries.py",
+    "sha256": "51d703189d8689c55207e95baeb49436dfaba4a805d5d7d944800cb458226bd5"
+  },
+  {
+    "path": "scripts/verification/public-promotion-evidence.ts",
+    "sha256": "fa5ae6049ac1b8cfdc9daf0150d1badea25d6aef8548a7c5799ac1e9ab4ce071"
+  },
+  {
+    "path": "scripts/verification/remates-r12-db.py",
+    "sha256": "2ca987ed7f36eb10e90be8d094393ea769c1486b2abcdcbec122577a30d37ef2"
+  },
+  {
+    "path": "scripts/verification/customer-duplicate-ui.cjs",
+    "sha256": "39172e5c5bc655f574e6b7a99ca0d5796df339ee4e5870940abc64e2e9e53565"
+  },
+  {
+    "path": "scripts/verification/remates-r10-adapter-regression.cjs",
+    "sha256": "7fffef2261fa20a5159ad3f71b4582c4edfac20e0cda71c17db2e3d206f803c5"
+  },
+  {
+    "path": "scripts/verification/remates-r14-server.cjs",
+    "sha256": "af81606f41d07b13fcb6e568b329576e8c0b888f368c892a14f74947e9eb7021"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-auth.cjs",
+    "sha256": "2e71eb7193d0e74088719fc0916e0dc81dc746d37af89735449c4206d682bfbc"
+  },
+  {
+    "path": "scripts/verification/account-identity-phase-f-settings.cjs",
+    "sha256": "420732f663f0e3897a5025f7dc2245b067fbbe521c5a7bc98d2938e4e81a16b2"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step7-boundary.cjs",
+    "sha256": "aebce29fa0992b24b07a08884959b74186ac02054b4521f87f4f91fb3c656a44"
+  },
+  {
+    "path": "scripts/verification/integrated-onvo-commercial.cjs",
+    "sha256": "c20f58a3a75a45d737a8cde811a9693695f61ab23ada1922be3a0a1f0a1de96b"
+  },
+  {
+    "path": "scripts/verification/comparable-cohort.ts",
+    "sha256": "0b91c49035472c5ce558057fd4de3d107f65c2d3ea3a721144a6a4e998d89fad"
+  },
+  {
+    "path": "scripts/verification/commercial-capacity-application.cjs",
+    "sha256": "0e4b04a2c03ddfcb2ac108c6f69e6273fcdad1b6344282b70d969fea4011c32a"
+  },
+  {
+    "path": "scripts/verification/remates-r08-server.cjs",
+    "sha256": "15c8933dbadc11052e81a3a7dc4b59f952dac36127dd31d0e0ae2ea1b3452bef"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step11-publisher-component.cjs",
+    "sha256": "ed1d5bd6e03ba25149658579e1a54c252129e02ed503cd763bd82cc72349949f"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step8-component.cjs",
+    "sha256": "de8b8910dfde2bf9ae54db2218655fa7b2fecd452053eedfb1081d2e57c63a77"
+  },
+  {
+    "path": "scripts/verification/canonical-market-prevalence.cjs",
+    "sha256": "ecd104fa68648ffa8b7005f5c08f1116270cc0769141be4d0b45278dd022193f"
+  },
+  {
+    "path": "scripts/verification/market-comparison-canonical.cjs",
+    "sha256": "c817de006c447e92eaefa29d2825a68ee62c534a7b212c4a966c305fd6cab46a"
+  },
+  {
+    "path": "scripts/verification/market-asking-price-distribution.cjs",
+    "sha256": "ceaa67e714f641f7a999adb0f799cc6afb7377c150f4fe03f14cb593f9cbec17"
+  },
+  {
+    "path": "scripts/verification/price-meter-construction-land-browser.cjs",
+    "sha256": "36cb211fa5669498162a12fe51ba04ca121d391b3d27e0c4d9d78c1f90b1fbc9"
+  },
+  {
+    "path": "scripts/verification/s9-ordinary-acquisition.cjs",
+    "sha256": "d029a3d3765c941f32f274dc7429aaebc8b7c9c840554c7a2fcd68808d0d71a6"
+  },
+  {
+    "path": "scripts/verification/import-operator-authority.sql",
+    "sha256": "5735fbfc6d89cad8d730f4624c4fad01f53983bdd6124bac2e29b6afbe9b05a8"
+  },
+  {
+    "path": "scripts/verification/customer-publication-callers.cjs",
+    "sha256": "70fb7f706fecb1cc075e402ae469309efe2a73d20bc44167b9e1c9439b90be89"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step10-payments.cjs",
+    "sha256": "b33de88b85f0cd38ea71ea90b0b305c50084bea4f505a3d0bb9f2fee6441de54"
+  },
+  {
+    "path": "scripts/verification/remates-r06-component.cjs",
+    "sha256": "d5042f4e18e770a852fdb1c7dbefa2e6b2725836460329306cc7dfdac9003342"
+  },
+  {
+    "path": "scripts/verification/market-matching-presentation.cjs",
+    "sha256": "f8e6e7c05988b0159043e5b13d0bdb463d6affc6b9e0d1860c1ef780c27f6785"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step8.cjs",
+    "sha256": "01d0689c10fea456a96115a8c4f19489a1327cd53ad5798dfbdace35c7b5e91d"
+  },
+  {
+    "path": "scripts/verification/remates-r09-db.py",
+    "sha256": "d85d5442519b5f85798d55ec58bfd3691b02dfdc0b785dbf92d127656b163b7b"
+  },
+  {
+    "path": "scripts/verification/remates-r11-component.cjs",
+    "sha256": "40e9231c1bc04e7b0557b6781eeefb46b3210b9bc9a1b3c7a05d5fa94e7e7241"
+  },
+  {
+    "path": "scripts/verification/csv-ingestion.cjs",
+    "sha256": "6968250693b9f4419cefd7abed8140e541e305951deb957a1431723ea996323a"
+  },
+  {
+    "path": "scripts/verification/commercial-capacity-concurrency.py",
+    "sha256": "fa31ac6a1408cbdc9eff8c6438862b829b93f0d5f14d883c317a66b4a86fd14c"
+  },
+  {
+    "path": "scripts/verification/customer-duplicate-media.cjs",
+    "sha256": "ec60ac5302ad9e517960f86d7419f1a085dd9029f6f22769f9436a08d2b46514"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step5-bulk.cjs",
+    "sha256": "6c621c90d4d8a2f41806d129c52914d12bd21b9d6adf811171ba2e10bd88bf50"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step5-listing-regression.cjs",
+    "sha256": "5818305ca119f560fcda1a65bed0ab30c72be34dacbbe2cd50e9193a3419e6d1"
+  },
+  {
+    "path": "scripts/verification/account-identity-phase-f-db.cjs",
+    "sha256": "e0851ad3fb8c24bf1be3ec4af09c403800c8d823476f2ae17862621a691fdb29"
+  },
+  {
+    "path": "scripts/verification/retired-listing-writers.cjs",
+    "sha256": "6ca455fd7e42a50567b275390128a7b74b5c7e97044206eb0d7e57ca822aedcc"
+  },
+  {
+    "path": "scripts/verification/remates-r10-db.py",
+    "sha256": "24fe6a93dc57bc931027d7512f466a333fec7c8c22fd2f2ee06306ed0403fcf4"
+  },
+  {
+    "path": "scripts/verification/remates-independent-ui.cjs",
+    "sha256": "d21d99e5b2b5a980308836dee00d316712c52f3d55073590d22a18ea071e02f1"
+  },
+  {
+    "path": "scripts/verification/remates-r05-server.cjs",
+    "sha256": "6707dca343fd51343523ce00b1319b8e69219eaa61c96a0687c4c136d86f8fa0"
+  },
+  {
+    "path": "scripts/verification/canonical-market-acquisition.cjs",
+    "sha256": "2441f559929dafecb140882e99e66672bc928bf683e0a215db3c84808c24fd61"
+  },
+  {
+    "path": "scripts/verification/saved-analysis-authorization.cjs",
+    "sha256": "a1adf57a53cc8ffbe1875df35ce49222a815ad155cccdc92610419212d675cec"
+  },
+  {
+    "path": "scripts/verification/home-theme-browser.cjs",
+    "sha256": "6503fae0940186c0edc0ccf1805ffa2ab81a28b801e663e3efc427d82da4c580"
+  },
+  {
+    "path": "scripts/verification/remates-r02-component.cjs",
+    "sha256": "4a0942d4040556a63d2b295f29528d5ef3863f1bf84c19d0f2d4dd01409b1e3b"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step9.cjs",
+    "sha256": "f5d188fb9283f094709cffaf2e05de45058739f6d2f9698552d1978e85daeaf1"
+  },
+  {
+    "path": "scripts/verification/s10-source-ingestion.cjs",
+    "sha256": "43058ac59e2c3485550ac3a675686498003f4627c4364702170bde32bc55e308"
+  },
+  {
+    "path": "scripts/verification/remates-shot2-http.cjs",
+    "sha256": "b28b3eca5aa815a1fc5fd03db04c601f5719dbe1a25ce8d7e80ab9c73242bb7b"
+  },
+  {
+    "path": "scripts/verification/customer-edit-integration.cjs",
+    "sha256": "1504bed19d5b36dae5c0914d382b97ace8985e040f0fd358dbfc39c70a6a3686"
+  },
+  {
+    "path": "scripts/verification/remates-institutional-shot1-components.cjs",
+    "sha256": "9196ab2edc79445b6744f9f4539f7cbf749d54a22243c88cb90ba3a7fd75a55d"
+  },
+  {
+    "path": "scripts/verification/customer-measurement-clear.sql",
+    "sha256": "6d12699df2bd123d1b99f1965bddf44ca7e87be46df9d500630651e27da8368b"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step6-ui.cjs",
+    "sha256": "0d12b8df1184de5777ec4c0220053111132e42d50ea0bd5dd66a522520d22291"
+  },
+  {
+    "path": "scripts/verification/remates-r12-component.cjs",
+    "sha256": "719163751488401a2549cdb2ff994925b7c811d98bcf18bc78a264fa63b7b43e"
+  },
+  {
+    "path": "scripts/verification/customer-measurement-clear.cjs",
+    "sha256": "4858a80ec2c26ebfe5573c5402c1ef567866cd09f87f64e415713b4624fcf566"
+  },
+  {
+    "path": "scripts/verification/remates-r14-db.py",
+    "sha256": "b92cb79b915ec267d41a5110418025419b1f0ce76661b4b79d18ece8171d8253"
+  },
+  {
+    "path": "scripts/verification/remates-r05-component.cjs",
+    "sha256": "e21279a5945d0b2ff1cfb219ce3dfa33da64f4953869cf32c094ba2ffd854643"
+  },
+  {
+    "path": "scripts/verification/remates-r14-delegation.cjs",
+    "sha256": "e6036dfdc384d7cc27c45f6e6397d47f543bf9ef920c6d6ecbc1af042e1e1b78"
+  },
+  {
+    "path": "scripts/verification/engine17-browser.cjs",
+    "sha256": "58822a19141e5edb68dd3aba1ab486ba8b89039bc8451a372b5edd2468ba9559"
+  },
+  {
+    "path": "scripts/verification/canonical-reader-lifecycle-apply.cjs",
+    "sha256": "0ea16928c2c10f0052589ead7750fb4f7a68981d0189a3da6539d9756765e4a9"
+  },
+  {
+    "path": "scripts/verification/publisher-coordination.sql",
+    "sha256": "c45ca8f62369bf2e3d524e9d4e691003be753efd38ad4549a02644572347c513"
+  },
+  {
+    "path": "scripts/verification/canonical-market-population.cjs",
+    "sha256": "a29b4bc7babc5d4f6aeb20bbc56320d6d620193d695b33700d836b8680f9012b"
+  },
+  {
+    "path": "scripts/verification/promotion-intelligence.ts",
+    "sha256": "b1ca36bae036b201ae0b0f5ab89c9dd1f4ee0ce016a1bf294d013b68d3b447d6"
+  },
+  {
+    "path": "scripts/verification/market-matching-canonical.cjs",
+    "sha256": "1acf35e753f042b5a2ae1acba9d0e74a93f9f1fbb64ebf0ef0033b56d84aa220"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step10-component.cjs",
+    "sha256": "f1dba5d5ede40910c0dcb737cebc16bda6d536b9d9f7b450e7dd75c8df0e1bc9"
+  },
+  {
+    "path": "scripts/verification/account-identity-phase-b.cjs",
+    "sha256": "75c173e957e53719744818af604f3dcacfe51afb6cebf2f63dddf646406df89d"
+  },
+  {
+    "path": "scripts/verification/market-asking-price-distribution-ui.cjs",
+    "sha256": "a4fdd3fabced9add44cbb1e7620574101ea07adf7a025d12f388ec9a8b8e7a81"
+  },
+  {
+    "path": "scripts/verification/source-observation-propagation.cjs",
+    "sha256": "a1804d4618b74c3cbb8cdeb1e5eb5460c35f305b81ab8fe47a8e8b1409cf667f"
+  },
+  {
+    "path": "scripts/verification/s9-ordinary-engine-probe.cjs",
+    "sha256": "3828eb81a0cd51fce9b4aebc6ed86c764a8f57c78647b19caec1ff55d583e33f"
+  },
+  {
+    "path": "scripts/verification/s9-phase12a-integration.cjs",
+    "sha256": "7285b67b8d7cad4521d678c480a5ef01838ee5b299ced34673b6921902333433"
+  },
+  {
+    "path": "scripts/verification/remates-shot2-build-data.cjs",
+    "sha256": "6f057f14887d4e885db0921faefb501745d65f63e5e5bfbb607c6675ff30528c"
+  },
+  {
+    "path": "scripts/verification/asking-price-hub-browser.cjs",
+    "sha256": "0b58d9ee5929148437aeff35ab762b9fa0add3990e0dc76d2f8175ae3db82d32"
+  },
+  {
+    "path": "scripts/verification/ordinary-upload-operation.cjs",
+    "sha256": "74fab1550b352fec20b4074dee7c454952bf683c5ef1ff27ef19e7e9719bb70a"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step6-boundary.cjs",
+    "sha256": "a276236d3b237e1a49474e4267935b421386d1223276a5bea4243c51d4e5bec4"
+  },
+  {
+    "path": "scripts/verification/property-price-valuation.cjs",
+    "sha256": "dbb6439b1eda60b9055957bc129993ad932b61100402123bccbbca2ef4a97daa"
+  },
+  {
+    "path": "scripts/verification/account-identity-phase-g-settings.cjs",
+    "sha256": "23e490775113d8fc4276fc7a1c7b2e38fc08dd69e2e7751130b600a67898ccaf"
+  },
+  {
+    "path": "scripts/verification/account-identity-phase-d-db.cjs",
+    "sha256": "343f880a05ae1c79383b1f8d3618b71897d4b297ff7aa561e7fbc72a7cd6d33f"
+  },
+  {
+    "path": "scripts/verification/price-meter-size.cjs",
+    "sha256": "21263adf0863d472ea241fd98d0aea6689018a735a6bf2e4138b59a15654aa7c"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step11-payments-component.cjs",
+    "sha256": "b4c12682eb8e17adb198449ca41560e22d720e638addb7c5f707fb51c9852192"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step6-application.cjs",
+    "sha256": "0489839d70e042dbf049c4fc2bb4c3f6c5e8bfcfa747a5c474f16cbb58442a51"
+  },
+  {
+    "path": "scripts/verification/customer-publication-entitlement.sql",
+    "sha256": "63854c8b1cd8ebe28c7c2e340c24423de603511970ec05e2bbf46d997ec12742"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step5-preflight.cjs",
+    "sha256": "df7870e2f1bd91467ef06d8da1eb7f4b373008ec64e9bec1dc743fc4fe5edef8"
+  },
+  {
+    "path": "scripts/verification/canonical-foundation-concurrency.py",
+    "sha256": "10f6b873b08cc564f62beb1b4c622361daae950e8738d16e40ffb5fef547112b"
+  },
+  {
+    "path": "scripts/verification/remates-r11-server.cjs",
+    "sha256": "36c8d976abe69862201325f447758b3ef88ebf9a7ca0c7ac8346db48800cf30a"
+  },
+  {
+    "path": "scripts/verification/account-identity-phase-e-visual.cjs",
+    "sha256": "f1e46884f7c727e7256de40c15f6ec0c968efcf157f17ddf350132f61f0e18ea"
+  },
+  {
+    "path": "scripts/verification/s9-media-lifecycle.cjs",
+    "sha256": "29e74a86d1455351ca4331d91fd00046033778b0070611103e8946895bddc6fc"
+  },
+  {
+    "path": "scripts/verification/engine15-scope.cjs",
+    "sha256": "ed00c397c6ea63d67aa1a4e4b6b7f1a8d792fdf522964679920c20e4ee944c38"
+  },
+  {
+    "path": "scripts/verification/account-identity-phase-d-app.cjs",
+    "sha256": "fee8a9847be698f097a9091fe60d9f776a3aa69ac9a3cf3ca643bf35971767c4"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step9-application.cjs",
+    "sha256": "9592ccf4131d261777ab8a85ee3f4e19019689201695efc810e986786379306d"
+  },
+  {
+    "path": "scripts/verification/engine15-canonical-utilities.cjs",
+    "sha256": "30dc2f5a57d98a3a51bc7e5bf1c3269bd31cc3c52ab35e825ca6dd0a1ec5f53f"
+  },
+  {
+    "path": "scripts/verification/market-composition-browser.cjs",
+    "sha256": "73182dcfdd6e08ba46da0daab06b6debc91b46d0b77783efce1cbcb506923506"
+  },
+  {
+    "path": "scripts/verification/remates-r14-db-cases.py",
+    "sha256": "bcbb17d38644837777d8bdb56d06f5fef6b187bae71c40354d54fcdc83c86f99"
+  },
+  {
+    "path": "scripts/verification/account-twilio-removal-db.cjs",
+    "sha256": "3dc79681eade20d06e41dfbf553a2e11820a3b7ceaec1b45caf396d6501d8eaf"
+  },
+  {
+    "path": "scripts/verification/hub-active-question.cjs",
+    "sha256": "632d666eea9b45792bf51a7167575ce5aa01c8445d9ed66f35a3d7e06ef92de3"
+  },
+  {
+    "path": "scripts/verification/account-identity-phase-a.cjs",
+    "sha256": "190de7070d5364661a2f017f24399838fe201bcc6e1e53c4bb7d442b4a656a52"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step3-media.cjs",
+    "sha256": "c341fbabaa950f39e1b5e75a2b3ccd1f35678f2abf507d917fef4ba8aa637e76"
+  },
+  {
+    "path": "scripts/verification/remates-retrieval-diagnostic-security.cjs",
+    "sha256": "ebcfaa58590139c7fcb495aaae01bc3ab45ed5f22586252b3b8dc57b771324ca"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step4-context.cjs",
+    "sha256": "201eceee063b2278ac6b364fec4275743d3751362e433b43814a68ab8f21d6cb"
+  },
+  {
+    "path": "scripts/verification/commercial-resolver.ts",
+    "sha256": "dcb20480fccda903a466cb87b3cabc673109dee5147311635352eb750827f902"
+  },
+  {
+    "path": "scripts/verification/price-meter-distribution-ui.cjs",
+    "sha256": "4960914588afb966da5d73972bb1e31c5122219dc9da68eaac161fd364c7c79e"
+  },
+  {
+    "path": "scripts/verification/remates-r16-db.py",
+    "sha256": "d2b5b59c28799fe73e15009252e5fe44c7ede2a41c5c2f24d797c8a32d808535"
+  },
+  {
+    "path": "scripts/verification/property-matching-browser.cjs",
+    "sha256": "d8fc272cbfd26359b92df2846c99de4bcc5aa6d51d159c0e9bc1753ed2f464ed"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step6-catalog-repair.cjs",
+    "sha256": "0eb22809ed28e91b9d292049839633a046309b07d07807d2efc715b9da0552e9"
+  },
+  {
+    "path": "scripts/verification/pre14-ppm2-confidence-retirement.cjs",
+    "sha256": "e727e2619bf9a14986a9c024b3ac9bf76d22e6d6eadd0e77cf7516bd43aaa97a"
+  },
+  {
+    "path": "scripts/verification/csv-normalizer-provenance.cjs",
+    "sha256": "edc5cfc8fe97ce6be1e4deffafad3fc3b36270cfbdfcb74dc27f219ac8465f25"
+  },
+  {
+    "path": "scripts/verification/remates-retrieval-db.py",
+    "sha256": "4dfe68e2c585644b1f4916dd02975ba17ab0a120b50c3c5f43131cf43ef5cba4"
+  },
+  {
+    "path": "scripts/verification/phase14-step1.cjs",
+    "sha256": "127861c5ff0ab0bd840defc800ddabf7516d4161398fc3dad7088de96274c2c3"
+  },
+  {
+    "path": "scripts/verification/remates-r08-db.py",
+    "sha256": "30f5714e823637bc7b046fc24738034dd04d2f5493189ba16f0d19a38843cd16"
+  },
+  {
+    "path": "scripts/verification/engine15-selected.cjs",
+    "sha256": "c9421e5e821d2e61e2c65e25fe22c32c2b214896de7d480b5124baad4e10c9cd"
+  },
+  {
+    "path": "scripts/verification/provider-disposable-authority.ts",
+    "sha256": "8772bb2484f4cca912a25daf73b502ea36c4ec15b8418645c46d7dc22e1ef7ae"
+  },
+  {
+    "path": "scripts/verification/canonical-creation-authority.sql",
+    "sha256": "f9a358b3b71fda10efc8c0a6227c4548bc1a38a4e1f64c5fe8e77bf28deaef88"
+  },
+  {
+    "path": "scripts/verification/price-meter-size-browser.cjs",
+    "sha256": "a01b281001cf93f37014f37de990cc8b089b789d9fc991221d6de0647ee9b2a5"
+  },
+  {
+    "path": "scripts/verification/customer-duplicate.sql",
+    "sha256": "7bb4b3d6ea8684d0b4838f5d9ce583fc55688e3983250076b2e6d3413d11a9be"
+  },
+  {
+    "path": "scripts/verification/commercial-disposable-authority.ts",
+    "sha256": "fcb928af105f84505fe4ead08e09a9f1da593cef64417651e7c2ae26ef4e92bf"
+  },
+  {
+    "path": "scripts/verification/ordinary-upload.sql",
+    "sha256": "6580fad6985a89d95639e1dd607e648d10782587207bd6a6365f191ce326aef3"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step7-application.cjs",
+    "sha256": "e08276fb9a45415f059266208194fef58318d249e834c1bcb8c2032bb9f906bc"
+  },
+  {
+    "path": "scripts/verification/remates-r11-db.py",
+    "sha256": "f93f86d684c51cffd670028376ab677d5c5649592e7dd7059a8b25259a5138c9"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step8-application.cjs",
+    "sha256": "cc4b5c1e42fcd940efbd19d21a8c98b03d1ed64e37aae58d382898bfb538cd45"
+  },
+  {
+    "path": "scripts/verification/csv-evidence-concurrency.py",
+    "sha256": "9092bc5aa8b8bb2c94defd70a1bf857041e1150cf576cb5b0b2167d2a37ecbd6"
+  },
+  {
+    "path": "scripts/verification/customer-measurement-clear-concurrency.py",
+    "sha256": "6c70accba10d582ec50ea88fbc4980e3fce65a86aa555078eeeedb4e2ed1cacb"
+  },
+  {
+    "path": "scripts/verification/s9-commercial-integration.cjs",
+    "sha256": "964ea8be023b79e12ef70377ec41b037c12a86feded8401ac9e009606a0b80eb"
+  },
+  {
+    "path": "scripts/verification/buy-market-tabs-browser.cjs",
+    "sha256": "f858b7372397a16fa1ccd42bdd8a95cb0655cf867e5da93e41d4080b5f65e49e"
+  },
+  {
+    "path": "scripts/verification/pre14-phase11-boundary.cjs",
+    "sha256": "b64458dd2d729d47e4192f62d0771443fb456e3b81cedee6bd6ab69c789b8bdd"
+  },
+  {
+    "path": "scripts/verification/price-meter-geography.cjs",
+    "sha256": "b1f8ce499aebf5ad83ca07e36631a2da22984b50534068ae7bbfd55848b07cbf"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step12-copy.cjs",
+    "sha256": "efe42401ae29ffed60ad5146a4c4ae212a8756703644c835a35c7a5549611c26"
+  },
+  {
+    "path": "scripts/verification/remates-r07-server.cjs",
+    "sha256": "6abc45838d4c426852711e3d8f51eec1a047bb519499d8806a7b4060c522c921"
+  },
+  {
+    "path": "scripts/verification/remates-r13-db.py",
+    "sha256": "56a98629e40c583b411167391d2b1a98d1d377498b09ab2428751ed9eedb09ee"
+  },
+  {
+    "path": "scripts/verification/price-meter-cross-dimensional-scope.cjs",
+    "sha256": "5d4d885e4a0f383b3e886f0e52665739ae703a3351af63b38ae55020827d4df8"
+  },
+  {
+    "path": "scripts/verification/phase14-step2.cjs",
+    "sha256": "f1e27f7ea2f0a9b071b0380d6710d9d4e29f4b4c1f8b88ce43c3486197997df3"
+  },
+  {
+    "path": "scripts/verification/ontology.ts",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "scripts/verification/account-identity-phase-f-app.cjs",
+    "sha256": "826c4d35d9c79cfc44da9de64300f173feeddc1a2aea9849673985f0456c8f3c"
+  },
+  {
+    "path": "scripts/verification/market-comparison-presentation.cjs",
+    "sha256": "a837d9d5b80b98cb0d9cd24d9bd0ad0445b37a17bd16f0e52b14d106f0ef543e"
+  },
+  {
+    "path": "scripts/verification/publisher-coordination-concurrency.py",
+    "sha256": "009ba894feda950c4b5d06db298a652ad298851d56975eee59d29f524b52c0db"
+  },
+  {
+    "path": "scripts/verification/s9-capacity-classification.cjs",
+    "sha256": "494ea0b0a2a79d26d1bc1491b74708a52e5d4c3cb4ee0e5e895d9dd02abbe80f"
+  },
+  {
+    "path": "scripts/verification/banco-popular-batch.ts",
+    "sha256": "8c5d0ff27d1021fbee1a0a41c8c2f92a1f1fdc7930df7c25391630a6df305b41"
+  },
+  {
+    "path": "scripts/verification/phase14-step3.cjs",
+    "sha256": "a82dc324b9386260066f93a1b968887e182312d693ddf6d9abfcffc2ca2dcc79"
+  },
+  {
+    "path": "scripts/verification/source-property-type.cjs",
+    "sha256": "46124ff6cbafe175100eb01f8a5b1bb0a4b09b737b305b7c587a16f753c93621"
+  },
+  {
+    "path": "scripts/verification/price-meter-geography-boundary.cjs",
+    "sha256": "3c205ed2eb1ffb3bd500ebc9729941be93423931974ad5e0eaa52953dd7d8450"
+  },
+  {
+    "path": "scripts/verification/remates-r14-alerts.cjs",
+    "sha256": "98b8177a0baa768a4eea2b95c2c8f79e7ff8bec34cc11a53f6ed3a84b5dc703a"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step12-single-catalog.cjs",
+    "sha256": "1f2c9d3e5a67ed297bcc40119f81a0ba8c138173d88e770eb9548e3b0dee475b"
+  },
+  {
+    "path": "scripts/verification/remates-independent-local.py",
+    "sha256": "e7847f9fe57b0ef8b8e5d27e29144d3be1358dfadd9a0ee4160b2252246b1743"
+  },
+  {
+    "path": "scripts/verification/home-theme-settings.cjs",
+    "sha256": "13de989dc16748caafb34dfce216ce37d8e4effdd718c16209c5e1ef5b19b0cf"
+  },
+  {
+    "path": "scripts/verification/remates-r08-component.cjs",
+    "sha256": "2c0d0e3838f9493cf06f49bb5e082644e129f87eb0b5cf147719139c81249112"
+  },
+  {
+    "path": "scripts/verification/canonical-writer-permanent-delete.cjs",
+    "sha256": "50f02b7080b392231e6ff39e1cc1b4bf0bb62f73a49ee34ab9d6179a9a9507f0"
+  },
+  {
+    "path": "scripts/verification/csv-source-references.sql",
+    "sha256": "ff2f2cc57d3628cf2b1f32aa234a1f2f1000da677d29a65c0c996a40c5258f21"
+  },
+  {
+    "path": "scripts/verification/remates-d15-fixture-baselines.cjs",
+    "sha256": "a94dc1e792f37fc925fccfddcb59aa3deb1fff0aeaf4eb02f44206c222a951e5"
+  },
+  {
+    "path": "scripts/verification/phase14-step7.cjs",
+    "sha256": "c33546b226227f6ee01bdbe7a4c9ff0a8228854bd343cc7ec6bc68835153f427"
+  },
+  {
+    "path": "scripts/verification/customer-edit-concurrency.py",
+    "sha256": "870654671453dc65ac31f65caef85adc9f17d6ad4123a1e4ac4d0bce28684ddf"
+  },
+  {
+    "path": "scripts/verification/market-configuration-frequency.cjs",
+    "sha256": "e379efb5a488b41d61dc4bcfb5ea93307f50e0b6ed4fdce1ecb39c70a85a8054"
+  },
+  {
+    "path": "scripts/verification/remates-r02-server.cjs",
+    "sha256": "d7c4febd746492612cbd7c6ca450cbd5162ad2ea87eae8e1f5e9e5986dc29639"
+  },
+  {
+    "path": "scripts/verification/staging-fx-negative-acceptance.cjs",
+    "sha256": "d839d1d654d9c41511ca0976706f65137079752cc3c1a26726345b4f6c5d9f3b"
+  },
+  {
+    "path": "scripts/verification/price-meter-distribution-browser.cjs",
+    "sha256": "3dd2be3581ae86c6470455b9f9b345535a11ca6fb74a831b58286a9c3d2496d7"
+  },
+  {
+    "path": "scripts/verification/phase14-step6.cjs",
+    "sha256": "6588a30897cd23e1f78bd8abf334904cff7e36f00f939d94462db012f0eded9b"
+  },
+  {
+    "path": "scripts/verification/s9-phase12.cjs",
+    "sha256": "4fb694b93f07458a964c1fb07cb17fd10470fa04a016458b1a331dde4cd9a224"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step11-commerce.cjs",
+    "sha256": "4f0a881992b6ea4f3b88aa1785ce7bdc666946a25b0894b61cb71675ce62c1ef"
+  },
+  {
+    "path": "scripts/verification/marketplace-fx-browser.cjs",
+    "sha256": "09b084d47fe44d70f885b174f3175c46a6c3493a6da062701eadb303dbe01897"
+  },
+  {
+    "path": "scripts/verification/s9-csv-integration.cjs",
+    "sha256": "9908831872fb56a62c4865e0190ecbdccf03b4b51c2419a7d0200e43978df9f0"
+  },
+  {
+    "path": "scripts/verification/customer-edit-classification.sql",
+    "sha256": "9e5e1788f68d3dfbe0c069212a33b75e9ed7afba41befca28d72738df8f22dfb"
+  },
+  {
+    "path": "scripts/verification/s9-media-integration.cjs",
+    "sha256": "75ef75e1cb068ea2df6c3224100cfbb44b9187adcd570b593947f4eaccdb1f94"
+  },
+  {
+    "path": "scripts/verification/market-matching-explanation.cjs",
+    "sha256": "1ecfd7adc9e84c57074600125c465853fae12a33f993eb598983a2e1fb144541"
+  },
+  {
+    "path": "scripts/verification/pre14-phase12-difference-context.cjs",
+    "sha256": "d2c08f0f8a3d2c7d067fb8565551b64ed8651fd35a1dd3fd3c3065f9ccbba0fd"
+  },
+  {
+    "path": "scripts/verification/provider-disposable-schema.sql",
+    "sha256": "e8970279808c617ee1a64c9ee0e6f102083f32cd20a15cb0c84ab88e602de639"
+  },
+  {
+    "path": "scripts/verification/remates-r15-db.py",
+    "sha256": "070a16437b76b82b2082657c5a51199fbc00bd2f8c7673a67fe6bc39f05508ca"
+  },
+  {
+    "path": "scripts/verification/phase14-step4.cjs",
+    "sha256": "224b0c2d0548d1628521a5e616641bb61b35163533f124eedaa6d4aaa176c538"
+  },
+  {
+    "path": "scripts/verification/property-price-valuation-ui.cjs",
+    "sha256": "1f10af4e94e3fd9cc5d1f6c1ca96962f85399e7f479f74529d7e6cd886144428"
+  },
+  {
+    "path": "scripts/verification/intelligence-hub-execution.cjs",
+    "sha256": "030858e17471d9ab4bcdb9a8355e716efbd6492d30ba1b66daea1d09556b8590"
+  },
+  {
+    "path": "scripts/verification/canonical-listing-write.sql",
+    "sha256": "9cd39f63e0f82d05cefb558d0954fe2ce77430766f751215baf92c5883d0a274"
+  },
+  {
+    "path": "scripts/verification/retired-ontology-writer.cjs",
+    "sha256": "3ab3c4a75d791899f0a1ac88a8346571dc514b7b2080cbe41ee33521798f2fca"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step5-placement.cjs",
+    "sha256": "7b89a8ee5bfc40e9ceee2403c2a77f62f7454055d6e71cac6d4177d38b5d1e3a"
+  },
+  {
+    "path": "scripts/verification/account-identity-phase-g-visual.cjs",
+    "sha256": "29f289ab835b6a45c380c5b949aecf6a5abb26ca4689af91035237820920f1f2"
+  },
+  {
+    "path": "scripts/verification/remates-r13-server.cjs",
+    "sha256": "a7254937500bae6ede116fe97f7d5e585dd58fb0ae94a9eaacb7bf60313df8f9"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step5-homepage.cjs",
+    "sha256": "359fda8604546d932f86e455e817c05b2bc137b92091e230720dceb7f9464f8f"
+  },
+  {
+    "path": "scripts/verification/remates-d15-guard-cache.cjs",
+    "sha256": "709260d4ac238ad4972deb71f744cb32d75c0ca8e8a8a2d12fb8a486e4719e9e"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step6-concurrency.cjs",
+    "sha256": "296f621f1fb70946462e3796805873e1539f91125ad3be5519a7bc0c86d19326"
+  },
+  {
+    "path": "scripts/verification/phase14-step5.cjs",
+    "sha256": "e48c16f9ddbde5f61c3eeaed472dbde2a74633e26f2046ab4fb695b1bc1db58c"
+  },
+  {
+    "path": "scripts/verification/remates-r01-admin-create.cjs",
+    "sha256": "b05dbfbbed9ae8a400fd41f8b053067b3a7e9985df64bdb17e3a311cbbb8b62d"
+  },
+  {
+    "path": "scripts/verification/s9-phase11.cjs",
+    "sha256": "6ed9578c8961954994837873f16070a67b2304026ede5785720226f554e0c88b"
+  },
+  {
+    "path": "scripts/verification/s9-canonical-chain-continuation.cjs",
+    "sha256": "88f66da360bd9c941c9a630a14b882353f77e962f88b5e085666e892f2c10072"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step5-final-gaps.cjs",
+    "sha256": "07167012bdffc5a241bf40ba51566f18142ced1d0771b169e0c73b338731064a"
+  },
+  {
+    "path": "scripts/verification/remates-r12-db-cases.py",
+    "sha256": "d5e58005e2abfe033f04852f415c232bffe7c76e9b930efab394a54976eb1e5d"
+  },
+  {
+    "path": "scripts/verification/configuration-frequency-query-shape.cjs",
+    "sha256": "872c1e1e276dc4c33b8b799db4cefe899448736d6fb8b8830c0d39a17f08cfe6"
+  },
+  {
+    "path": "scripts/verification/home-theme-hydration.cjs",
+    "sha256": "08dd6ece934f3cb5ed4509ac834832158f306c1a5c26bedeac934f9530e01580"
+  },
+  {
+    "path": "scripts/verification/remates-institutional-shot1-security.py",
+    "sha256": "b4763aecb93732600492e0319775b03053169107236bd9bb8d70ba150f1ff966"
+  },
+  {
+    "path": "scripts/verification/buy-market-tabs-contracts.cjs",
+    "sha256": "58edc8f4b9a8d3201436b6ef8ec03aa734e50fbb034680c96db4d96fab1e2a8e"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step12-zero-capacity.cjs",
+    "sha256": "c513e65863cc5b8663160d68215c2521f60fee9edb2a5c3ffc8a0b92757d9457"
+  },
+  {
+    "path": "scripts/verification/remates-pdf.cjs",
+    "sha256": "30a9640722b82b5af95dd29dbb77b5e9e2769186ec42befb4827c33c14addc8f"
+  },
+  {
+    "path": "scripts/verification/market-summary-contract.cjs",
+    "sha256": "e6dd5d55a7a14816c95d9d3621f323a09682fdac800d3f9fcc8057b033fdff3f"
+  },
+  {
+    "path": "scripts/verification/image-detach.sql",
+    "sha256": "748cbd1d20adb15ac3ad5bd4271b3557f340eddd19a7ba521a08cce7a1eb7ae9"
+  },
+  {
+    "path": "scripts/verification/image-detach.cjs",
+    "sha256": "031dc25d4cd6b0ddc590f21feae68471c72193a2f223e6aa10058da1bf8e2ea6"
+  },
+  {
+    "path": "scripts/verification/commercial-canonical-step1.cjs",
+    "sha256": "696de312397d490c55578a1cd4ffc95580bbd17a876e4ac5578ed4ae279c36e3"
+  },
+  {
+    "path": "scripts/verification/account-identity-phase-g-db.cjs",
+    "sha256": "b765315faa2af7709086d1da23b0806444e019e6d1cdef02f2c09269a9eeaad3"
+  },
+  {
+    "path": "scripts/verification/canonical-creation-concurrency.py",
+    "sha256": "905c882dcaf5ccff7593ce9a18631564b3c2323971496cfe803595f9c917c23f"
+  },
+  {
+    "path": "scripts/verification/engine16-resources.cjs",
+    "sha256": "a0324f3e9bcb1cf533dc4155ae8a62b1d4bcf172d70b9cd2be5129a924b6cec9"
+  },
+  {
+    "path": "scripts/verification/phase14-step8.cjs",
+    "sha256": "1a5abe6f51ab9c8882e33f8ee99516b7a0d905d969b4bdeb966c8a984c292cec"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step6-paid-gap.cjs",
+    "sha256": "f28ec7da02bc54eee9c916fb1b97b6fa62bfcb91f4bbf88c62e7371db1b777f7"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step12-intake-component.cjs",
+    "sha256": "0311e258bcf9499fabafa664ea6f7dd5dac34d3b3b0ab09249d9ebfc2a405bc8"
+  },
+  {
+    "path": "scripts/verification/aggregate-promotion-intelligence.ts",
+    "sha256": "ea72cda585af3300f6468748eec986549811bc0d8cebeda2f3075f8592b8586a"
+  },
+  {
+    "path": "scripts/verification/remates-r05-browser-fixture.cjs",
+    "sha256": "1987496e9e8815de49d30136d14b1df0ef3f7316c62a66f95732041c0e94a616"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step5-admin-actions.cjs",
+    "sha256": "bb18f10bacd7d4334ac8b6fb1b321fca0b9be87b41b93681ec1ffc2ed6dfac41"
+  },
+  {
+    "path": "scripts/verification/activation-engine.ts",
+    "sha256": "b2ee3354e19ef492e64160af656c3d39fd2af8e17cd052389e076cff834b9876"
+  },
+  {
+    "path": "scripts/verification/phase14-step9.cjs",
+    "sha256": "6b1fa3c39f44dbb3a332a748b6c3de295406c0c99aca329b21425d42cf349992"
+  },
+  {
+    "path": "scripts/verification/remates-r04-browser-fixture.cjs",
+    "sha256": "6dc282571a58047bebdd40d4bb0caec0b613043226b5d7fa51bc3d0b9084cceb"
+  },
+  {
+    "path": "scripts/verification/customer-lifecycle.sql",
+    "sha256": "2e6cc086042268eb624f6e3918195f39eb9a97c534afddd976201fa708810e5b"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step5-ui.cjs",
+    "sha256": "a29ae1dd26bff0c7b6476a72a22faffd8a251c3fa4b568845e1877ca0fe6449a"
+  },
+  {
+    "path": "scripts/verification/customer-lifecycle.cjs",
+    "sha256": "d60fe93e99b0d9c0c6ed7d1a068b204ea1bc0da219f77668e68560e8bd46dfe9"
+  },
+  {
+    "path": "scripts/verification/remates-r09-component.cjs",
+    "sha256": "91e2438f5d71ab11fc9325a13f33317bf975f5477e2f822d4039a39652626941"
+  },
+  {
+    "path": "scripts/verification/package-purchasing-component.cjs",
+    "sha256": "633bb2ed43f53be05787912e1bc2e10b47c4fbf2d1fee22bc19e5166ccc88a31"
+  },
+  {
+    "path": "scripts/verification/activation-disposable-runner.cjs",
+    "sha256": "2d173404076f380b438b2dac6927171bed88b51884d5faf4f9475b31b50db3c4"
+  },
+  {
+    "path": "scripts/verification/timeline-disposable-authority.ts",
+    "sha256": "9b8a70cf04f2d81b591edee5ade966e0c00f47af0e5a431775fbcdf69621ec3c"
+  },
+  {
+    "path": "scripts/verification/engine17-acquisition.cjs",
+    "sha256": "4e36bfdf66822432a6f9afd577238edac7e34374ac845e077f1700fbc5e1df65"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step6-order-window.cjs",
+    "sha256": "bdf8f94fa0e83669ef59e1c19b8dc6ef080f6f1151d065d9721cfd6e07b140a6"
+  },
+  {
+    "path": "scripts/verification/remates-r07-browser-fixture.cjs",
+    "sha256": "30c313df7263d18fb1ea2500cffd49f9b07625d39b3bc436f0b67305fd116312"
+  },
+  {
+    "path": "scripts/verification/canonical-market-request.cjs",
+    "sha256": "4d907c6e7fa2f8d5800370c73601b799a9e81b1a60e1b5e128ce67f33ff12ab1"
+  },
+  {
+    "path": "scripts/verification/market-year-built-constraint.cjs",
+    "sha256": "aa2a1aa25f6b766bacaf3a2e42ef43e9f9324eaa05542e7f31115294f228d93c"
+  },
+  {
+    "path": "scripts/verification/remates-r10-server.cjs",
+    "sha256": "d75aa45259997ff386dca8a2766c21ba3d8befba50acd762b324304d34661b3b"
+  },
+  {
+    "path": "scripts/verification/account-identity-phase-d-visual.cjs",
+    "sha256": "8bc837375625e8bc65f22cef9fae4fbebd8ff1e1039480456e3688f11d6f8738"
+  },
+  {
+    "path": "scripts/verification/remates-alerts-scheduling.cjs",
+    "sha256": "72accf3ca9f2e64f0d9a319de81c6b26d962e17ff69bfbcfaf846b7345c557c8"
+  },
+  {
+    "path": "scripts/verification/promotion-history.ts",
+    "sha256": "0976167caa37ffa7aa53e46b3e058e2641ef88d383147ce00819b1e86c61d7bd"
+  },
+  {
+    "path": "scripts/verification/canonical-reader-downstream.cjs",
+    "sha256": "476b012dbdcf7cd696d27b65cf53c4f671d37ae23c34d9f9daf99b82bf6514bf"
+  },
+  {
+    "path": "scripts/verification/remates-r06-browser-fixture.cjs",
+    "sha256": "4bba7e8a4c2a09eb41b796ae0e179ecfa0db5213fe51a20f4900e872a3aa988b"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step11-route-service.cjs",
+    "sha256": "4dba2577a519e476c7a1f7017fb2a71276c3d69331886177a3ae74612152a1ac"
+  },
+  {
+    "path": "scripts/verification/remates-r14-hub.cjs",
+    "sha256": "8b25c9ec60bd0929192ff2deb9fcb7d41db9ab2b3491212e13bbcfd14b935164"
+  },
+  {
+    "path": "scripts/verification/remates-binding-reconciliation-local-fixture.py",
+    "sha256": "2e1e75b0dfd1617df4a6fcecb3ba2c2182ab1eb28584106eb31d82a05e753410"
+  },
+  {
+    "path": "scripts/verification/remates-r12-isolation.py",
+    "sha256": "5039ef7e00c73e7c0bccac31b0401d338fd7e3965c0bca6702319d0b252aab1f"
+  },
+  {
+    "path": "scripts/verification/remates-r02-db.py",
+    "sha256": "430e79a1c327141401850519621b9c0fba6ca123b0d2085fbe0800826d220c23"
+  },
+  {
+    "path": "scripts/verification/engine16-browser.cjs",
+    "sha256": "f33bc6e08c5dc63d50617d51fad155eaead20b1fa3b22946ded32b62ae716596"
+  },
+  {
+    "path": "scripts/verification/engine15-completeness.cjs",
+    "sha256": "66d1d97d8ad7ad17075dbfe5c90ff70f0cc50ed0ade1e75fa8d1a01458de95f0"
+  },
+  {
+    "path": "scripts/verification/commercial-provider.ts",
+    "sha256": "32478d8dd2dcff7b1f9be23a4a79b95bdf7046037dbadf49f04afd13e6290953"
+  },
+  {
+    "path": "scripts/verification/ordinary-image-attachment.cjs",
+    "sha256": "8cb718f1321dc1e6490a22abaadd1b795fdb776308730718f906d7f2ff588a8b"
+  },
+  {
+    "path": "scripts/verification/remates-retrieval-diagnostic.cjs",
+    "sha256": "ddd0fa34b11ec3aa54c062713729125d672b8f22f985da1884afdc3a7698ecac"
+  },
+  {
+    "path": "scripts/verification/engine16-math.cjs",
+    "sha256": "480313e133cbac788862f0e4af719b90b93868436de6ea877e6c40b69bad2947"
+  },
+  {
+    "path": "scripts/verification/remates-r06-db.py",
+    "sha256": "a85fbd4c03caa895527a9264b1373174d88732ea7590b2c09b694106268a5c8b"
+  },
+  {
+    "path": "scripts/verification/engine17-math.cjs",
+    "sha256": "ae31350dd5de199d173a6aeab5ebdfd4fbeae3ab020cdf60bb17d74cc882dd65"
+  },
+  {
+    "path": "scripts/verification/canonical-market-preferences.cjs",
+    "sha256": "8b2b09095cb8af9838fe1d20a10042ad9e440c22bd762b1113c086b37a7caca2"
+  },
+  {
+    "path": "scripts/verification/remates-r16-pdf-route.cjs",
+    "sha256": "43feb48607616da5e9ec50ff51621789f32443f11255141c5a9866697a8140da"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step4-admin-actions.cjs",
+    "sha256": "85af14e51fca3d8a11cb1e6a7af575d5e02a6850ac8e6ed46e9d25e3d8c5df51"
+  },
+  {
+    "path": "scripts/verification/remates-r09-server.cjs",
+    "sha256": "e73b397f50735574e6bdd6431225d8e82f608beff6be5e1f5d739ac4373fe7db"
+  },
+  {
+    "path": "scripts/verification/pre14-phase12-production-integration.cjs",
+    "sha256": "80973a00356fdef0574eb5e1204fa88062b8a93782a26341041487cb7ea57ff0"
+  },
+  {
+    "path": "scripts/verification/csv-initial-publication.sql",
+    "sha256": "44d2e5af1d346f030b0709f830c9a17cdc96a49b1a7d30b1ab21ede3bb683d7d"
+  },
+  {
+    "path": "scripts/verification/abandoned-token-cleanup.sql",
+    "sha256": "1ccfb603a5a2b38c2e7687fd4288cae72215ea3b1838179cfda4dd9156061182"
+  },
+  {
+    "path": "scripts/verification/price-meter-cohort-browser.cjs",
+    "sha256": "93be2b21b97fa1446d6af76e8add9003cb9e0bfb2bd3fcc74c119fe18f9d6204"
+  },
+  {
+    "path": "scripts/verification/sinpe-notification-template.cjs",
+    "sha256": "40735909bd94cd6d789d7632d6aff857f97b447995a09028ac307c0475407b86"
+  },
+  {
+    "path": "scripts/verification/price-meter-position-browser.cjs",
+    "sha256": "fa11bbb628a2cd9030d59bc0ae29dce71dd13d87a38e2c0d5ee7ab484db3b4b4"
+  },
+  {
+    "path": "scripts/verification/s10-csv-adapter.cjs",
+    "sha256": "b9a16fdc2237ab993bacaa961b3aa3e389f3e9bff1050bb671f0531e9df37ce6"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step10-application.cjs",
+    "sha256": "3bb527abc986c641f44ca1d18f58bf45a66014232f9ac9ac4a3e8fabe851c033"
+  },
+  {
+    "path": "scripts/verification/s9-ppm2-authorization.cjs",
+    "sha256": "009869916b2bba29d23bfb896c8de341fdc62da571a095b9c6cdc452f93e8da5"
+  },
+  {
+    "path": "scripts/verification/account-identity-phase-c-app.cjs",
+    "sha256": "4f208321ebbf4873e55e17c41e5ab20015ffbf81fad101ad01794c61c4abff63"
+  },
+  {
+    "path": "scripts/verification/commercial-timeline.ts",
+    "sha256": "272aa357dde4fe8644b6ade793c3bf0d7ad4920802d6c786cab4033cd66a7c56"
+  },
+  {
+    "path": "scripts/verification/market-summary-browser.cjs",
+    "sha256": "f5b101aac7321d5202ee8747c4a6308ca0987ff40f55492649e33fdbbf77f915"
+  },
+  {
+    "path": "scripts/verification/canonical-reader-boundary.sql",
+    "sha256": "f40bb1615b0245e8eaf7901aed41da5de633cacb71e2d94b8b2ab56d28f9e583"
+  },
+  {
+    "path": "scripts/verification/customer-duplicate-concurrency.py",
+    "sha256": "f51cf9942ad21abb6ac7cf137760d9f5cb436724b9a2a69d6b8069b43db1f23e"
+  },
+  {
+    "path": "scripts/verification/account-identity-phase-e-db.cjs",
+    "sha256": "654c84ec1dd047a7fb046c62271d347fdfab827a5a4b09e34dfe0580b42cb45c"
+  },
+  {
+    "path": "scripts/verification/s9-phase12a-year-probe.cjs",
+    "sha256": "e83cab2b957a0b619a85dd93eadb1d387da5539d6e4066d6a238fb140ae9e147"
+  },
+  {
+    "path": "scripts/verification/purchase-engine.ts",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "scripts/verification/banco-popular-readiness.ts",
+    "sha256": "ff5a1099173c25fb117abaa2b0634dd4b56ac884b9b3fa51fe78843dbe771df0"
+  },
+  {
+    "path": "scripts/verification/remates-r04-db.py",
+    "sha256": "9d0f8af45bafe4a0d8a3d564b97cf8104ebb1dfb8c5f96ff9efee20a5ec81a38"
+  },
+  {
+    "path": "scripts/verification/remates-retrieval-worker.cjs",
+    "sha256": "50f8bb88e0095c019b50c6019f76ae05e8adfcbb701c94466c341e768e91132e"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step7-ui.cjs",
+    "sha256": "73f1e94c950d39153acdceaaf67d4e19609fc90820ac2dd69b1f84ed6a6c25ec"
+  },
+  {
+    "path": "scripts/verification/price-meter-cross-dimensional-browser.cjs",
+    "sha256": "f60bc0b1565b420d29cc031f3ab1b5b34c08d41070c91922ca6656a1d52bbd8a"
+  },
+  {
+    "path": "scripts/verification/remates-r10-db-cases.py",
+    "sha256": "c40731d22c5d3d78dd60265dddc51272705c9cf70cffd9eb2e5fa7e53cf03855"
+  },
+  {
+    "path": "scripts/verification/activation-disposable-schema.sql",
+    "sha256": "00acde53ea58e13c7ac7eb57cf08d501fe5e41f6df970365bc49f7485e0f5dad"
+  },
+  {
+    "path": "scripts/verification/remates-r03-browser-fixture.cjs",
+    "sha256": "caddaf188f7b4b945e765576d528d4a004f4697b2b0eaad7987b3ae5a33cc05b"
+  },
+  {
+    "path": "scripts/verification/price-meter-discovery-scope.cjs",
+    "sha256": "43eb93cfdbdb618de44f50269e475cf315124383e7a42debf8fc73f454b3df2b"
+  },
+  {
+    "path": "scripts/verification/market-comparison-browser.cjs",
+    "sha256": "c0ece48d50bb9b18ff4326064b82309ef062596989c52d6958a62aac1d3da7f8"
+  },
+  {
+    "path": "scripts/verification/remates-r04-server.cjs",
+    "sha256": "3bad3be7bf923fb06ec543f500fc1ff7a9f0dcd55be1387dcb81fdad89164905"
+  },
+  {
+    "path": "scripts/verification/canonical-market-apply.cjs",
+    "sha256": "47bef76ea72719dfe0fe8437af6965478848348fa351391c753b6aa9258efe2e"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step4-capabilities.cjs",
+    "sha256": "38a9d767054300fed0243718e49a6ab3a4cfd415258e62ac2e4c474600666530"
+  },
+  {
+    "path": "scripts/verification/s9-phase12a-membership.cjs",
+    "sha256": "5651abaf4c26376e0ce1b26b615bf9a7c1c633fcc1ad2ed9f3cb49da8a318694"
+  },
+  {
+    "path": "scripts/verification/price-meter-cohort-pagination.cjs",
+    "sha256": "3364cb7a70dee77944a458095734935c225184e97bf23399d3d4ba0043dfcd8c"
+  },
+  {
+    "path": "scripts/verification/customer-road-distance.cjs",
+    "sha256": "a1b783cecd7eb9413a797ac3bee011ac7d59db97cc9863c5279b9c617a40d620"
+  },
+  {
+    "path": "scripts/verification/canonical-reader-public.cjs",
+    "sha256": "56507d16cf647763699701b555a7682e3a887d92754233c3528ead331aa87065"
+  },
+  {
+    "path": "scripts/verification/remates-r03-server.cjs",
+    "sha256": "f0b2190c89dc309d4a5e121289b5953a3c0b73ae04a5b818e0775c2e74f204b6"
+  },
+  {
+    "path": "scripts/verification/phase14-step10.cjs",
+    "sha256": "85dbd4cab88540e14704c2fe42ca49c9bc30d86a567ea5dad09f840a948a8e13"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step2.cjs",
+    "sha256": "b3a1dc3bc94f6ea06c45e6004789bfda408c7f1ee4b5044d5fd53c7f05be67c5"
+  },
+  {
+    "path": "scripts/verification/activation-disposable-authority.ts",
+    "sha256": "b0a3de28ac3f5d19b82cd3905ddfdc6becd25bc8ad2cdf84fe42c60faa61d9c0"
+  },
+  {
+    "path": "scripts/verification/s9-comparison-population.cjs",
+    "sha256": "e7f5348e8bd35736e666293ce5df0601c8f664ed99532deaafa8fcde220a7baa"
+  },
+  {
+    "path": "scripts/verification/canonical-market-boundaries.cjs",
+    "sha256": "927a4d6e8df85813f793880c28e57c035cfbf454798d785c159a6938f775b4b1"
+  },
+  {
+    "path": "scripts/verification/canonical-reader-import-graph.cjs",
+    "sha256": "5a20cfd902705b90906d441a23d5c410ae1ecbc8f3c619ff4bc5cb39f7e17f81"
+  },
+  {
+    "path": "scripts/verification/marketplace-fx-repair.cjs",
+    "sha256": "6e56a53effafd3e7156588357cccf4306c0fc1fb7e39a2b6c777bc387b986efd"
+  },
+  {
+    "path": "scripts/verification/image-detach-concurrency.py",
+    "sha256": "8cfed8e1e43735cfb8b94b010e7ea3341d1e7a5e5548524945488e5cbc0f085f"
+  },
+  {
+    "path": "scripts/verification/remates-r13-db-cases.py",
+    "sha256": "03f88875d24ee760db4444e6e4bb1118b9c36f568cbd5118e32d2e7ba27353bd"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step11-component.cjs",
+    "sha256": "5c0362dd73ca7f7abbd8a9f3a1a9ab81d2fc5b9b5d34dda46338fa04cc711a32"
+  },
+  {
+    "path": "scripts/verification/onvo-sinpe-adapter.cjs",
+    "sha256": "28e3d578eea6ec09c9f3a6e599919201578deea12883eeab0723a34c68e9d770"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step11-access.cjs",
+    "sha256": "b167ae3897c6e0ec27c4073cc2b062bdceff29fe2c387232195c7675bf3a7418"
+  },
+  {
+    "path": "scripts/verification/remates-r03-db.py",
+    "sha256": "c13c59d605829c907ded337812582dcc46b792d77e404b170c63617454dd1d11"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step11-application.cjs",
+    "sha256": "079e4764b4bf69743c22f88eaca7a1ade82d4470b289ac56d45e1185a53164da"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step3.cjs",
+    "sha256": "8bfcd819c284a1df3d835ae3535ae0c7e497fc9eca68fb96ced4338f32633772"
+  },
+  {
+    "path": "scripts/verification/phase14-step11.cjs",
+    "sha256": "bba741545ed098935bc0f5760bfaf65accc3109fe524802e1437f494fbb039d8"
+  },
+  {
+    "path": "scripts/verification/remates-binding-reconciliation-component.cjs",
+    "sha256": "6aa46ec5065855d9bf8a29bc97ec6b17d74eb12c705950cf00bd186398b32a2c"
+  },
+  {
+    "path": "scripts/verification/remates-r04-component.cjs",
+    "sha256": "e85e5690d68d1e6bf0a19c2d8ff456bb0be703746c0b410c70571d2ad98fbbf8"
+  },
+  {
+    "path": "scripts/verification/remates-r13-component.cjs",
+    "sha256": "029ef23e338454800c90405479a1e2d94ee600b3a7acba2f42618bd2b9908b21"
+  },
+  {
+    "path": "scripts/verification/remates-r15-engines.cjs",
+    "sha256": "c958960ced40184b1668e5bc7b3e36bd32e909e06c598c5a094ab080b701d915"
+  },
+  {
+    "path": "scripts/verification/price-meter-construction-land.cjs",
+    "sha256": "bd54419c30386783caa50449e5cb13eb73e6a176f6e3e41f78463a0d4feef6d5"
+  },
+  {
+    "path": "scripts/verification/ordinary-upload-concurrency.py",
+    "sha256": "747906a61041cb0b96f4ed979a73dacf3fab221a1c7b40d61d7f2ed0a7b2a0cf"
+  },
+  {
+    "path": "scripts/verification/s9-canonical-chain.cjs",
+    "sha256": "31e32588c15f54bfdb64cc369f2e061e7f6824bc0ae61f98ee725796e3bc0aaf"
+  },
+  {
+    "path": "scripts/verification/phase14-step13.cjs",
+    "sha256": "bc8e6ef9e6fdac061fc73c372b1877df48ee0efd62e8498b2425710d72b857b0"
+  },
+  {
+    "path": "scripts/verification/remates-r01-db.py",
+    "sha256": "d1fc0e16ffa2e1bb7908e8f57940037557867a63b63c31fb01c08adf4c3a8009"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step3-ui.cjs",
+    "sha256": "404ace1cc0e640cebc9ee8ee99ddda4a8e328c52df2f1696fe2f401c060a814e"
+  },
+  {
+    "path": "scripts/verification/promotion-performance.ts",
+    "sha256": "3d6086077afc7ea8702baeeccde761d49a6c5c46b3405bdb06b70cf826f45219"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step6-resolution.cjs",
+    "sha256": "302f4f15e2f1ca6d3bc75aa84a1b3e4689433285278c709a773fab9961128d03"
+  },
+  {
+    "path": "scripts/verification/commercial-capacity-coordination.sql",
+    "sha256": "78bfdc1539bce57d6f4664807cf9ff97240449327804e7e534ded11f3d4f6c60"
+  },
+  {
+    "path": "scripts/verification/listing-lifecycle.ts",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step5-concurrency.cjs",
+    "sha256": "b8160275127cfce076f95fcda737e7d353060ae5d3f0274ac4016e9aa591d0c7"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step11-browser-fixture.cjs",
+    "sha256": "a546fb4314e76d81e288fea93e9d9cf27b3aeaacafdea3b685e2a7d837eee98a"
+  },
+  {
+    "path": "scripts/verification/ordinary-upload-fixture.sql",
+    "sha256": "fd04181c0199b76dd9c18feb10514819407c6fde4b380b2c8aeb3dc191490d63"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step5-presentation.cjs",
+    "sha256": "2826016995da381d22f519d2e49bca209f6a8c38dc146b9e80acf3729afaf275"
+  },
+  {
+    "path": "scripts/verification/s9-token-integration.cjs",
+    "sha256": "ff05bfb10dc3a70dccfa31f3e07e51a21e34352a22d6de718ecc03d56125db2e"
+  },
+  {
+    "path": "scripts/verification/promotion-placement.ts",
+    "sha256": "71c36564067f89d271ac232a88441d47f7aebf27ad2bdc6c7befdb6d5ae0e709"
+  },
+  {
+    "path": "scripts/verification/remates-r14-browser-fixture.cjs",
+    "sha256": "33ea74dcaf6ae9eaf23e312de85d50c3edda161354e614994c4022c356c1ebeb"
+  },
+  {
+    "path": "scripts/verification/account-identity-phase-f-visual.cjs",
+    "sha256": "c648a1db5afd587cde822ceae19bef7ed17ba182ea33638a2360a33c500d713a"
+  },
+  {
+    "path": "scripts/verification/price-meter-cohort.cjs",
+    "sha256": "368c74fd45f51c6204c6f2cc2e391895570fd05e7b285f7c5a44fe68fb1f1637"
+  },
+  {
+    "path": "scripts/verification/phase14-step12.cjs",
+    "sha256": "8c5d6104b84d1d523b5365e56b53fc06370751fbf90c428691fe9d77115dcba1"
+  },
+  {
+    "path": "scripts/verification/remates-r12-server.cjs",
+    "sha256": "85c6e4502cd6dec93c41289578d532a6b66551123ee2bf2594bfc855757ae643"
+  },
+  {
+    "path": "scripts/verification/remates-retrieval-transport.cjs",
+    "sha256": "366efd921d15be1b59d0898fc5181e89d5a28da3f65ce2831e591139d2156784"
+  },
+  {
+    "path": "scripts/verification/canonical-domain-concurrency.py",
+    "sha256": "781f98daebce7a29298166956bf69ae9343709265a98715e8e4441496358878b"
+  },
+  {
+    "path": "scripts/verification/canonical-foundation.sql",
+    "sha256": "077423ceb6846e347f81e4638a991a7f96e088e20d87c0824489bf9fff052038"
+  },
+  {
+    "path": "scripts/verification/s9-browser-result.cjs",
+    "sha256": "c787fc9f0fd5699b3d3e6941de3a06f4fca159d08bb6fd17fa725854e068c615"
+  },
+  {
+    "path": "scripts/verification/configuration-frequency-browser.cjs",
+    "sha256": "1694eed57a680e884bc7bd560335c153e07b1c0dd949e814015898f702771762"
+  },
+  {
+    "path": "scripts/verification/remates-institutional-shot1-local.py",
+    "sha256": "4c6935fabd429b53168bf6ec6f0ab02f2380f5d48265f4f05af5522bd102b979"
+  },
+  {
+    "path": "scripts/verification/public-evidence-disposable-authority.ts",
+    "sha256": "a4507d5c19d47776bd9372ea5f2dd7c7d077e8b50578aaec124c4663979bc249"
+  },
+  {
+    "path": "scripts/verification/remates-r12-browser-fixture.cjs",
+    "sha256": "41ec491d156831881c6c8b27327207e7e5c83c222ef7624ccfa94567a9cb267c"
+  },
+  {
+    "path": "scripts/verification/continuous-package-entitlements.cjs",
+    "sha256": "c100f6309e9d34fa4ca9b3c58c4b44b5f56586a8af91e0db7d5a122024cdc6ae"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step6-seeds.cjs",
+    "sha256": "03e319ac3679bf08bb0bd80a25e5d1c2645148cb82fec8c471375f8292b8370d"
+  },
+  {
+    "path": "scripts/verification/engine15-browser.cjs",
+    "sha256": "6ac26aa229a286fe66c15861a4a7c9ff8b21b9de41bb8cba6a6e017d5ec30925"
+  },
+  {
+    "path": "scripts/verification/price-meter-selected.cjs",
+    "sha256": "5469b1f4b941585e4033cad427d598580b6a5de480ea5a077f8d53f360b5fda2"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step11-copy.cjs",
+    "sha256": "6846a1ba2b6909f59c701b54e5df675f131343018e83c6bf099caac51eb28827"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step4.cjs",
+    "sha256": "5fdb2985f8637f801d82d79dc1c9e443ba31d75d4785b58031d91f4b267b304c"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step9-component.cjs",
+    "sha256": "8ab744bb7141793b36c0e503684c7569172847d206c5b3ff72cbb34effb2da89"
+  },
+  {
+    "path": "scripts/verification/remates-retrieval-native-tls.cjs",
+    "sha256": "fbb431c9f639f222204333d72c92215e144a8aec94a551fc36ba9059ceb89d73"
+  },
+  {
+    "path": "scripts/verification/remates-r09-adapters.cjs",
+    "sha256": "a30de268edd2af6729372bf652bf10ef613a42e83a3399ca26aa42ecc096e8d4"
+  },
+  {
+    "path": "scripts/verification/canonical-reader-closed-regression.py",
+    "sha256": "aa76d7bb5229c92c8415b9ec03ee4c34451bef0074fffa77a3d6c7545ed597f2"
+  },
+  {
+    "path": "scripts/verification/account-identity-phase-c-visual.cjs",
+    "sha256": "08c5769a802743e8665bb97a56045eac678c6287a48a7ecb8fd98361c4035999"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step5-isolation.cjs",
+    "sha256": "8a675dc2778a86ea3ce80f131c8562c339e138c72677a6fcb717cda017b3c259"
+  },
+  {
+    "path": "scripts/verification/remates-r13-browser-fixture.cjs",
+    "sha256": "7b1b4a5f89cef26a6dbfe33102d831dce27d8d2b18ed7f095f188effdae08a26"
+  },
+  {
+    "path": "scripts/verification/engine16-acquisition.cjs",
+    "sha256": "85caf0152db7dfc80318bed8ebf42cba7fa74e4a3b4b3d5fd02a60b783b9ae45"
+  },
+  {
+    "path": "scripts/verification/remates-r16-shot3-local.py",
+    "sha256": "238d1974173cfbf446bf2eca7760b5e91fbdef9426e64b1a9d8e29ea24d9355c"
+  },
+  {
+    "path": "scripts/verification/pre14-phase12-phase12a-reconciliation.cjs",
+    "sha256": "82fb5a5cee3eb1e25d1df53b9bde23d8bd0c7d67396bc470794a2bdf7e87b760"
+  },
+  {
+    "path": "scripts/verification/s9-comparison-gate.cjs",
+    "sha256": "cd6e314d95e862be17189ae67fc858cb493664757217914f4d6790c7ea5c6d3b"
+  },
+  {
+    "path": "scripts/verification/s8-legacy-retirement.cjs",
+    "sha256": "51e94395426d58c374bfe0690d1cfe37c3338bfd5a8306998e65f05296fb1c9f"
+  },
+  {
+    "path": "scripts/verification/account-identity-phase-c-db.cjs",
+    "sha256": "8f67ba785682c21418f5747abb284f3103693d46b33c0ad7b140319667193ead"
+  },
+  {
+    "path": "scripts/verification/remates-r05-db.py",
+    "sha256": "282b1e911bab9476d875d445fd14543c3f78845eaee3257c3b6de9147dc083eb"
+  },
+  {
+    "path": "scripts/verification/remates-independent-server.cjs",
+    "sha256": "e2293071f9f5014c7d771d6b024a215b8726f2309d268b4929585ad344d4e373"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step12-legacy-intake.cjs",
+    "sha256": "ab04591cb13caf5ce7b43bf8cd109fbecfe01cc3b586b491e13cafaefcc8874d"
+  },
+  {
+    "path": "scripts/verification/remates-binding-reconciliation-local-db.py",
+    "sha256": "08f1283d4a8c0c577e77ac8223fc780bdd8dc54e7daaa9d5852f32a9ca04c8d7"
+  },
+  {
+    "path": "scripts/verification/remates-r16-db-cases.py",
+    "sha256": "cb5414c21ac5717ad95232b47a85682df23bcbe4ff8e55d1126520c12b788a2c"
+  },
+  {
+    "path": "scripts/verification/remates-r09-browser-fixture.cjs",
+    "sha256": "c6f14830762be56493e0d4dca227b5edca7f58a82712a824cc27bd09446871f3"
+  },
+  {
+    "path": "scripts/verification/csv-evidence.sql",
+    "sha256": "3353fd6a614547b27527f9856df127a60f6267c792bed716570a4feccca0c0b2"
+  },
+  {
+    "path": "scripts/verification/remates-r07-db.py",
+    "sha256": "235e955b116daac430a1f6376d857cdb54667dde7c157315f910c607a882917c"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step7.cjs",
+    "sha256": "63bb332b8a961dfba25b3b780d0df684320ecde26b2f42a3890f997ff95c8ba0"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step10.cjs",
+    "sha256": "fc860ce9c322af0b0e40af9724b64745f63aef9e3ceb4d0ead2b15b9ae34cf49"
+  },
+  {
+    "path": "scripts/verification/phase14-step15.cjs",
+    "sha256": "a49786bc232ece3f483a95b5a718ced0c56d6c3676a002de5c16678ae3930f23"
+  },
+  {
+    "path": "scripts/verification/canonical-domain-machinery.sql",
+    "sha256": "c50d7e4d205a642dc2852012f1bc18c146bdbe39e55200aea8b1b24e4e87455f"
+  },
+  {
+    "path": "scripts/verification/media-caller-containment.cjs",
+    "sha256": "0e29eac5a4f443a5f76b187c2a19d624eb23685589ae8e35374ef0e86a0cd701"
+  },
+  {
+    "path": "scripts/verification/remates-r03-component.cjs",
+    "sha256": "1b2296a698ad7ce2aed5f22e2355d70a7e3a40e677d0cd6974f1138142729ff1"
+  },
+  {
+    "path": "scripts/verification/staging-application-isolation.cjs",
+    "sha256": "2f07d3e1fe5bc0f161620ea44b35e2e5340751462755f82c836b4294d4e0327a"
+  },
+  {
+    "path": "scripts/verification/commercial-disposable-runner.cjs",
+    "sha256": "dc91210ff8cf7f39c8f595b1a9e1e9e24fefe6f32f6b19fa2d74e1c087b645e9"
+  },
+  {
+    "path": "scripts/verification/remates-r10-browser-fixture.cjs",
+    "sha256": "9296a184aa9262ce1c82d0fd57019e548dfe091909687f6b889c2c3149dd9cb9"
+  },
+  {
+    "path": "scripts/verification/remates-r14-component.cjs",
+    "sha256": "8a02908bfa9ddf9051fb9c0733da72a6a9fe47f44233bf4978c8f938156a9cdf"
+  },
+  {
+    "path": "scripts/verification/remates-r06-server.cjs",
+    "sha256": "845e4aa45f04e2bbeea399a40f3396b64d010cd61437d9dc95d33524672d3fac"
+  },
+  {
+    "path": "scripts/verification/price-meter-position-scope.cjs",
+    "sha256": "c295f03c23bdc0d1425d9ba2e368583a7554589491565af532658d0caded7676"
+  },
+  {
+    "path": "scripts/verification/account-twilio-removal-app.cjs",
+    "sha256": "e0cf22c31f4ded0fd8fb73638226e5da86b13a0d1ee9f5a0c1e5d2bf02cd4ea3"
+  },
+  {
+    "path": "scripts/verification/remates-r16-shot3-filters.cjs",
+    "sha256": "856c54a68fade1eccbbafb8bb26a01c38d95817e8b853e079c7ebc17e3c1805f"
+  },
+  {
+    "path": "scripts/verification/remates-r08-browser-fixture.cjs",
+    "sha256": "96ac72950e409ce610f05e08dc27e2c0ddab352051a93058b845e945d0860a78"
+  },
+  {
+    "path": "scripts/verification/approval-engine.ts",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "scripts/verification/price-meter-discovery-browser.cjs",
+    "sha256": "842f84fa691e65b9ee7a9f85571ff11f07872142eb227548b394ebdf5260a91d"
+  },
+  {
+    "path": "scripts/verification/phase14-step14.cjs",
+    "sha256": "b551a2d152a5998cccead01bf157a480bfd49cf0ce01136ec6fef987e5f917f4"
+  },
+  {
+    "path": "scripts/verification/commercial-administrative-step6.cjs",
+    "sha256": "8102e19ecc5abf7ed201a4162c6ca2d937b3a886a7b42e106c4677596afae52a"
+  },
+  {
+    "path": "scripts/verification/remates-r10-component.cjs",
+    "sha256": "91aab4e302de888690b51be87f97953df5d2392e91423483bac93268032decad"
+  },
+  {
+    "path": "scripts/verification/csv-ingestion.pre-evidence-gate.cjs",
+    "sha256": "bfcbb063b369ac0d52d88a30238999ea6a8c16aaa4ec39ae71817faa56840ced"
+  },
+  {
+    "path": "scripts/verification/remates-r11-browser-fixture.cjs",
+    "sha256": "16a3c5ea6d806c7222102448bd4e0228a0c589ae8ef043a452139cdfca7aaeb4"
+  },
+  {
+    "path": "scripts/verification/remates-r14-controls.cjs",
+    "sha256": "66a649c5518033dbe361c4eb75e8265a3338cbe49b213d6f4eb8ab8bbe1ec3fa"
+  },
+  {
+    "path": "scripts/verification/remates-r07-component.cjs",
+    "sha256": "0d8d67f8a02ba63f832e644e7d845f59950379d50ae25ece863d61bc1d2a356b"
+  },
+  {
+    "path": "scripts/verification/fixtures/engine15-loader-before-completeness.txt",
+    "sha256": "4d3946fa818748cec94e1676bb4ab56051bf6d1b0518166fd9d802dd1c1dd94a"
+  },
+  {
+    "path": "scripts/verification/fixtures/buy-private-card-markup.json",
+    "sha256": "a2cbea33b9f08cf6b6fb424c4001a99f7274bb46094d14c8ea31d131e8f1c7e4"
+  },
+  {
+    "path": "scripts/verification/fixtures/pre14-b1-position-server.baseline.txt",
+    "sha256": "d269c59dbd3523dfd487e2ed562cf5349655541572aaa02227a3e49572615bd8"
+  },
+  {
+    "path": "scripts/verification/fixtures/remates-isolation.json",
+    "sha256": "aa7a2ef35380e0feeea1f9cb25350568cb2ecc4092f0d19c2ab7f2765b87cae6"
+  },
+  {
+    "path": "scripts/verification/fixtures/remates-r09/samples.json",
+    "sha256": "605d52bc6f1186a816cb71bf53a8e669ab5bff348fecfcdcd3c1419b61700102"
+  },
+  {
+    "path": "scripts/maintenance/profile-image-cleanup.cjs",
+    "sha256": "c508dad051d505e533fafb0d1f5ea1982b4875a8da729f67856b0a96b8e3505d"
+  },
+  {
+    "path": "scripts/remates/banco-popular-batch.ts",
+    "sha256": "4284943916f6cb397c5d512aad5afd418f913feab661487bd6e6f9464a372a22"
+  },
+  {
+    "path": "scripts/remates/run-source.ts",
+    "sha256": "b5a13fd61b71f5dcc27b72772ae60921325ef7931a01a1e35cd97b63bba5aec6"
+  },
+  {
+    "path": "scripts/scrapers/san-jose-sale.csv",
+    "sha256": "f4f91b8a7a162acd58658839cc41ab247a772957440a1fac7245a233e2ab650b"
+  },
+  {
+    "path": "scripts/scrapers/test-whatsapp-click.js",
+    "sha256": "4dd35ec6c6cd3c12aa15259f5379ecf59723915ec2aecc01b20d91759ffb11e2"
+  },
+  {
+    "path": "scripts/scrapers/cartago-sale.csv",
+    "sha256": "6edecef41001aab7f08d7088e3cbbb9746e81c8d3ce134da8fe2ffcbc0142952"
+  },
+  {
+    "path": "scripts/scrapers/encuentra24-sale-scraper.js",
+    "sha256": "798b02ba46c1312367cadd1dbe116d0ae39be8fb1c29ef52e435bd2e5ca6ad6e"
+  },
+  {
+    "path": "scripts/scrapers/guanacaste-sale.csv",
+    "sha256": "cf4094577befdcea183542e0f621affe942a2b114875013f162ad8a2c7403cb7"
+  },
+  {
+    "path": "scripts/scrapers/san-jose-rent.csv",
+    "sha256": "26785f364aec73f85c76b1c4030a40536c4e0ed41802f9e657347a725b61a796"
+  },
+  {
+    "path": "scripts/scrapers/puntarenas-sale.csv",
+    "sha256": "cd1d4eebc3d1603eef90b2e8a53ab9f2ad6941727f3d57a9b5de2d8ffaeb8687"
+  },
+  {
+    "path": "scripts/scrapers/banco-popular-scraper.ts",
+    "sha256": "76e2a5256ba1bebc25aba780bb372923cf6423d325fd87760e15ef0148cb576b"
+  },
+  {
+    "path": "scripts/scrapers/encuentra24-rent-scraper.js",
+    "sha256": "d409ee84344b49644fc6828432ffd1965259d61854dde2b2c46b933c1e3b1a7e"
+  },
+  {
+    "path": "scripts/scrapers/merge-whatsapp-into-raw.js",
+    "sha256": "799b2d83edb844a4e24dc7a032a51d84f7c309d01a2f645cf4793b1087541dfe"
+  },
+  {
+    "path": "scripts/scrapers/encuentra24-property-type.js",
+    "sha256": "c1510d34b60e8eb6d9b5935a06626e43fd46434589c63632bb309e8e0aed697f"
+  },
+  {
+    "path": "scripts/scrapers/encuentra24-whatsapp-decoder.js",
+    "sha256": "140176bb67ffe1974fb782ebe77a69740de2cb2eb3731f23364feac4ed7d7f8d"
+  },
+  {
+    "path": "scripts/scrapers/heredia-sale.csv",
+    "sha256": "54d444dddc570cf7f04d9f867a765d7f8466ea0743de7394db3d545b21085a59"
+  },
+  {
+    "path": "scripts/scrapers/alajuela-rent.csv",
+    "sha256": "0ddfb8e361fa416c2287fe7471623c1a6236f5251ece7f8804325bb3a43dd1b0"
+  },
+  {
+    "path": "scripts/scrapers/schema.json",
+    "sha256": "a3ea56b65e543aad74c023436e3c287914d4d8f04b30d80d250ea61bacca3164"
+  },
+  {
+    "path": "scripts/scrapers/node-rent.csv",
+    "sha256": "79db876b3f295c33b06979798eba64fbc9890b36de9e7e6b5c92f53950ccf857"
+  },
+  {
+    "path": "scripts/scrapers/encuentra24-whatsapp-scraper.js",
+    "sha256": "d83f148e95d02177b77e69ce27e5849663d18ac426259c7723308c20f6d27790"
+  },
+  {
+    "path": "scripts/scrapers/detail-page.html",
+    "sha256": "16c76f416def3a81bdb631f41d41492dea2c29b310e225bc4df69f921c98194f"
+  },
+  {
+    "path": "scripts/scrapers/limon-sale.csv",
+    "sha256": "dcf514d27f7d689f77bcfb11702f2020f14914cd185479a057007ab6f9f856e0"
+  },
+  {
+    "path": "scripts/scrapers/alajuela-sale.csv",
+    "sha256": "ae96b66b69108590fd128400c0eaf3d811d05fa205bd78121b78e616ed62d916"
+  },
+  {
+    "path": "scripts/scrapers/normalizers/encuentra24-sale-normalizer.js",
+    "sha256": "b17f1568c5f65f6c0bdf13c5c98d07001116e9f8f7979ee58d2ec7148507c544"
+  },
+  {
+    "path": "scripts/scrapers/normalizers/encuentra24-rent-normalizer.js",
+    "sha256": "fe2cbf09644b0ed34ae229ceba850fa5a7c57184b34ee3ac21c3ab9d20bb7940"
+  },
+  {
+    "path": "scripts/scrapers/quality/isObservationValid.js",
+    "sha256": "112185e41210977fee2c93fcdf4a44fa2323d49af957c2328eae3482372dee4e"
+  }
+]

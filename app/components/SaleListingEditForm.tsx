@@ -1870,11 +1870,13 @@ export default function SaleListingEditForm({
             <aside style={previewPanel}>
               {language === 'es' ? (
                 <PropertyDefinitionPanelES
+                  saleAmountUnit={listing.canonical_domain_version === 1 ? 'major' : 'crc_millions'}
                   propertyData={propertyData}
                   usdToCrcRate={usdToCrcRate}
                 />
               ) : (
                 <PropertyDefinitionPanel
+                  saleAmountUnit={listing.canonical_domain_version === 1 ? 'major' : 'crc_millions'}
                   propertyData={propertyData}
                   usdToCrcRate={usdToCrcRate}
                 />

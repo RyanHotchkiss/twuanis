@@ -49,13 +49,13 @@ if (typeof params.__ppm2trace === 'string') {
 
 
   return (
-    <main style={main}>
-      <TopBar />
+    <main className="mobile-page-fit" style={main}>
+      <TopBar mobileFit />
 
 
       <section style={hero}>
         <h1 style={heading}>
-          Market Intelligence
+          Market Intelligence Hub
         </h1>
 
 

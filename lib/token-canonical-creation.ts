@@ -22,7 +22,7 @@ export async function tokenCreationInput(db: SupabaseClient, data: Record<string
   return {transaction:data.transaction_type,...domains,content}
 }
 
-export async function completeTokenCreation(admin:SupabaseClient,customer:SupabaseClient,ownerId:string,token:string) {
+export async function completeTokenCreation(admin:SupabaseClient,customer:SupabaseClient,ownerId:string,token:string,prepareOnly=false) {
   const {data:prior,error:priorError}=await admin.rpc('get_token_canonical_operation',{p_token:token,p_owner:ownerId})
   if(priorError)throw new Error(priorError.message)
   let plan=prior
@@ -61,6 +61,7 @@ export async function completeTokenCreation(admin:SupabaseClient,customer:Supaba
       return incomplete('incomplete','Your draft was created, but media completion is incomplete. Retry this token to finish the same draft.')
     }
   }
+  if(prepareOnly)return {success:true,listingId,mediaStatus:'complete' as const,prepared:true}
   // Server-owned publication request and result are recorded atomically with the existing lifecycle call.
   try {
     const published=await customer.rpc('publish_token_canonical_listing',{p_token:token})

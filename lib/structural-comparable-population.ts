@@ -63,6 +63,7 @@ export type StructuralComparableSubject = {
 export type PriceMeterComparableActiveDimension = {
   dimension: PriceMeterComparableDimension
   characteristic: PriceMeterCharacteristicIdentity | null
+  characteristics?: PriceMeterCharacteristicIdentity[]
   constructionLandCohortKey: string | null
 }
 function getSubjectCharacteristic({
@@ -207,6 +208,22 @@ export function resolveStructuralComparableDimensions({
       }
 
 
+      // Utilities are canonical multi-value memberships. A selected utility
+      // dimension requires every evidenced subject utility, not an arbitrary first.
+      if (dimension === 'utility') {
+        const characteristics = subject.characteristics
+          .filter(term => term.termType === 'utility')
+          .sort((a, b) => a.ontologyTermId - b.ontologyTermId)
+        if (characteristics.length === 0) {
+          throw new Error('Phase 12A cannot activate utility because the subject has no canonical value for that dimension.')
+        }
+        if (new Set(characteristics.map(term => term.ontologyTermId)).size !== characteristics.length) {
+          throw new Error('Duplicate canonical subject utility identity.')
+        }
+        return { dimension, characteristic: characteristics.length === 1 ? characteristics[0] : null,
+          characteristics, constructionLandCohortKey: null }
+      }
+
       const characteristic =
         getSubjectCharacteristic({
           subject,
@@ -243,6 +260,10 @@ export function matchesStructuralComparableDimension(
   if (selected.dimension === 'construction_land') {
     if (selected.constructionLandCohortKey === null || constructionToLandRatio === null) return false
     return resolvePriceMeterConstructionLandCohort(constructionToLandRatio)?.key === selected.constructionLandCohortKey
+  }
+  if (selected.dimension === 'utility' && selected.characteristics) {
+    return selected.characteristics.length > 0 &&
+      selected.characteristics.every(term => memberships?.has(term.ontologyTermId) ?? false)
   }
   const term = selected.characteristic?.ontologyTermId
   return term !== undefined && (memberships?.has(term) ?? false)

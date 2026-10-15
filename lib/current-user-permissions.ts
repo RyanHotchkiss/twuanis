@@ -1,6 +1,6 @@
 import 'server-only'
 
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@/lib/staging-supabase-client'
 import type { UserPermissionContext } from './permissions'
 
 function createAuthenticatedSupabaseClient(

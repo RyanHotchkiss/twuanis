@@ -89,6 +89,8 @@ import type {
  */
 
 
+// Utility characteristics come from bounded listings_ontology_terms → ontology_terms
+// memberships below (term_type=utility), never a denormalized listing column.
 const LISTING_SELECT = `
   id,
   canonical_domain_version,
@@ -106,7 +108,6 @@ const LISTING_SELECT = `
   parking,
   year_built_range,
   terrain,
-  utilities,
   environment,
   accessibility,
   legal_status,
@@ -164,9 +165,6 @@ type PriceMeterComparableRawListing = {
     string | null
 
   terrain?:
-    string[] | null
-
-  utilities?:
     string[] | null
 
   environment?:

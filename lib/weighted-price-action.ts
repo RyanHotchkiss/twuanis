@@ -7,7 +7,7 @@ import {analyzeWeightedPrice} from './weighted-price-math'
 import {RATIO_METHOD} from './asking-area-ratio-math'
 export async function executeWeightedPrice(input:unknown):Promise<WeightedResponse>{
  try{
-  const userId=await authorizePriceMeterIntelligenceExecution()
+  const userId=await authorizePriceMeterIntelligenceExecution('cap-weighted-price-m2')
   let question;try{question=parseWeightedQuestion(input)}catch{return{error:'invalid_question'}}
   const subject=await establishWeightedSubject(question,userId)
   const population=await acquireAreaRatio(question.cohort,{excludedListingId:subject.listingId,subjectNeedsUsd:subject.money?.currency==='USD'})
@@ -23,4 +23,4 @@ export async function executeWeightedPrice(input:unknown):Promise<WeightedRespon
   return{error:'execution_unavailable'}
  }
 }
-export async function loadWeightedPriceOptions(){await authorizePriceMeterIntelligenceExecution();return acquireAreaRatioOptions()}
+export async function loadWeightedPriceOptions(){await authorizePriceMeterIntelligenceExecution('cap-weighted-price-m2');return acquireAreaRatioOptions()}

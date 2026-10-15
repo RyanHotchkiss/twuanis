@@ -1,0 +1,482 @@
+[
+  {
+    "case": "runs/final-private-same-account/0",
+    "database": "twuanis_orch_final_01",
+    "execution": "45a6e2ac-7294-4e64-80b4-f313dd2cd60a",
+    "authority": "PACKAGE",
+    "state": "COMPLETED",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "EXECUTION_CONSUMED",
+        "1"
+      ]
+    ],
+    "reports": 1,
+    "witnesses": 1,
+    "pass": true
+  },
+  {
+    "case": "runs/final-private-same-account/1",
+    "database": "twuanis_orch_final_01",
+    "execution": "1d849f3d-601a-43c6-8495-5a2c14a9c41f",
+    "authority": "PACKAGE",
+    "state": "COMPLETED",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "EXECUTION_CONSUMED",
+        "1"
+      ]
+    ],
+    "reports": 1,
+    "witnesses": 1,
+    "pass": true
+  },
+  {
+    "case": "runs/final-expiry-preservation/0",
+    "database": "twuanis_orch_final_01",
+    "execution": "5c1675b3-dda9-4de4-8297-28aac1d1ba09",
+    "authority": "PACKAGE",
+    "state": "COMPLETED",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "EXECUTION_CONSUMED",
+        "1"
+      ]
+    ],
+    "reports": 1,
+    "witnesses": 1,
+    "pass": true
+  },
+  {
+    "case": "runs/final-expiry-preservation/1",
+    "database": "twuanis_orch_final_01",
+    "execution": "a7f1d4ae-46c0-46b2-80bb-bb1806427941",
+    "authority": "PACKAGE",
+    "state": "COMPLETED",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "EXECUTION_CONSUMED",
+        "1"
+      ]
+    ],
+    "reports": 1,
+    "witnesses": 1,
+    "pass": true
+  },
+  {
+    "case": "runs/final-combined-multiple-accounts/0",
+    "database": "twuanis_orch_final_01",
+    "execution": "dd5ac11c-fb65-4515-83fd-6498eadcf10b",
+    "authority": "PACKAGE",
+    "state": "COMPLETED",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "EXECUTION_CONSUMED",
+        "1"
+      ]
+    ],
+    "reports": 1,
+    "witnesses": 1,
+    "pass": true
+  },
+  {
+    "case": "runs/final-combined-multiple-accounts/1",
+    "database": "twuanis_orch_final_01",
+    "execution": "27b1f3d4-d852-4b23-88ba-a00b504f92c6",
+    "authority": "PACKAGE",
+    "state": "COMPLETED",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "EXECUTION_CONSUMED",
+        "1"
+      ]
+    ],
+    "reports": 1,
+    "witnesses": 1,
+    "pass": true
+  },
+  {
+    "case": "runs/final-bank-same-account/0",
+    "database": "twuanis_orch_final_01",
+    "execution": "dcc8795c-444d-4127-8212-b060d3e74ed8",
+    "authority": "PACKAGE",
+    "state": "COMPLETED",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "EXECUTION_CONSUMED",
+        "1"
+      ]
+    ],
+    "reports": 1,
+    "witnesses": 1,
+    "pass": true
+  },
+  {
+    "case": "runs/final-bank-same-account/1",
+    "database": "twuanis_orch_final_01",
+    "execution": "720b34c0-a453-4264-8324-b4b8a5dc3d5b",
+    "authority": "PACKAGE",
+    "state": "COMPLETED",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "EXECUTION_CONSUMED",
+        "1"
+      ]
+    ],
+    "reports": 1,
+    "witnesses": 1,
+    "pass": true
+  },
+  {
+    "case": "runs/baseline/0",
+    "database": "twuanis_orch_final_01",
+    "execution": "018cbf14-9469-4a99-8252-cade44ddacb9",
+    "authority": "PACKAGE",
+    "state": "COMPLETED",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "EXECUTION_CONSUMED",
+        "1"
+      ]
+    ],
+    "reports": 1,
+    "witnesses": 1,
+    "pass": true
+  },
+  {
+    "case": "runs/baseline/1",
+    "database": "twuanis_orch_final_01",
+    "execution": "005e08f8-25af-488b-8803-112005c7f7d9",
+    "authority": "PACKAGE",
+    "state": "RELEASED",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "RESERVATION_RELEASED",
+        "1"
+      ]
+    ],
+    "reports": 0,
+    "witnesses": 0,
+    "pass": true
+  },
+  {
+    "case": "runs/corrected-verified/0",
+    "database": "twuanis_orch_final_01",
+    "execution": "8d8d0431-b925-4764-8755-336cab4d9f3e",
+    "authority": "PACKAGE",
+    "state": "COMPLETED",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "EXECUTION_CONSUMED",
+        "1"
+      ]
+    ],
+    "reports": 1,
+    "witnesses": 1,
+    "pass": true
+  },
+  {
+    "case": "runs/corrected-verified/1",
+    "database": "twuanis_orch_final_01",
+    "execution": "6a915be8-baa1-4dbf-8c59-0ef864b9a7c7",
+    "authority": "PACKAGE",
+    "state": "COMPLETED",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "EXECUTION_CONSUMED",
+        "1"
+      ]
+    ],
+    "reports": 1,
+    "witnesses": 1,
+    "pass": true
+  },
+  {
+    "case": "runs/corrected/0",
+    "database": "twuanis_orch_final_01",
+    "execution": "dfcf9d50-6d5b-4c05-8a78-c24febf2a13c",
+    "authority": "PACKAGE",
+    "state": "COMPLETED",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "EXECUTION_CONSUMED",
+        "1"
+      ]
+    ],
+    "reports": 1,
+    "witnesses": 1,
+    "pass": true
+  },
+  {
+    "case": "runs/corrected/1",
+    "database": "twuanis_orch_final_01",
+    "execution": "35330809-6eeb-49f0-8ba5-769a971fcef5",
+    "authority": "PACKAGE",
+    "state": "RELEASED",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "RESERVATION_RELEASED",
+        "1"
+      ]
+    ],
+    "reports": 0,
+    "witnesses": 0,
+    "pass": true
+  },
+  {
+    "case": "faults/during-execution-expiry",
+    "database": "twuanis_orch_final_01",
+    "execution": "cd8f4707-e1bf-4616-82d8-aea304127f10",
+    "authority": "PACKAGE",
+    "state": "RELEASED",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "RESERVATION_RELEASED",
+        "1"
+      ]
+    ],
+    "reports": 0,
+    "witnesses": 0,
+    "pass": true
+  },
+  {
+    "case": "faults/duplicate-after-completion",
+    "database": "twuanis_orch_final_01",
+    "execution": "37274297-be80-4f53-8129-63523f509cd8",
+    "authority": "PACKAGE",
+    "state": "COMPLETED",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "EXECUTION_CONSUMED",
+        "1"
+      ]
+    ],
+    "reports": 1,
+    "witnesses": 1,
+    "pass": true
+  },
+  {
+    "case": "faults/database-connection-loss",
+    "database": "twuanis_orch_final_01",
+    "execution": "92449da9-6d4f-4b3b-862b-ffd70c74e60f",
+    "authority": "PACKAGE",
+    "state": "RELEASED",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "RESERVATION_RELEASED",
+        "1"
+      ]
+    ],
+    "reports": 0,
+    "witnesses": 0,
+    "pass": true
+  },
+  {
+    "case": "faults/retry-with-live-worker-lease",
+    "database": "twuanis_orch_final_01",
+    "execution": "37274297-be80-4f53-8129-63523f509cd8",
+    "authority": "PACKAGE",
+    "state": "COMPLETED",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "EXECUTION_CONSUMED",
+        "1"
+      ]
+    ],
+    "reports": 1,
+    "witnesses": 1,
+    "pass": true
+  },
+  {
+    "case": "faults/retry-after-worker-lease",
+    "database": "twuanis_orch_final_01",
+    "execution": "37274297-be80-4f53-8129-63523f509cd8",
+    "authority": "PACKAGE",
+    "state": "COMPLETED",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "EXECUTION_CONSUMED",
+        "1"
+      ]
+    ],
+    "reports": 1,
+    "witnesses": 1,
+    "pass": true
+  },
+  {
+    "case": "faults/expired-reservation-retry",
+    "database": "twuanis_orch_final_01",
+    "execution": "0625d4d8-b45e-4be7-8ed0-539dd0d3cfda",
+    "authority": "PACKAGE",
+    "state": "RELEASED",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "RESERVATION_RELEASED",
+        "1"
+      ]
+    ],
+    "reports": 0,
+    "witnesses": 0,
+    "pass": true
+  },
+  {
+    "case": "faults/history-expiry",
+    "database": "twuanis_orch_final_01",
+    "execution": "b55f9026-d5d8-4ca6-8ef0-f05742e59965",
+    "authority": "PACKAGE",
+    "state": "COMPLETED",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "EXECUTION_CONSUMED",
+        "1"
+      ]
+    ],
+    "reports": 1,
+    "witnesses": 1,
+    "pass": true
+  },
+  {
+    "case": "faults/database-timeout",
+    "database": "twuanis_orch_final_01",
+    "execution": "55abb35f-64f2-4ab6-8c9f-4abcf9fee6e7",
+    "authority": "PACKAGE",
+    "state": "RELEASED",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "RESERVATION_RELEASED",
+        "1"
+      ]
+    ],
+    "reports": 0,
+    "witnesses": 0,
+    "pass": true
+  },
+  {
+    "case": "runs/capacity-2000-60s",
+    "database": "twuanis_orch_final_01_2000",
+    "execution": "b70db3a2-f4d5-45fa-8fda-226267f2dc76",
+    "authority": "OWNER_UNMETERED",
+    "state": "COMPLETED",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "0"
+      ],
+      [
+        "OWNER_COMPLETED",
+        "0"
+      ]
+    ],
+    "reports": 1,
+    "witnesses": 1,
+    "pass": true
+  },
+  {
+    "case": "runs/capacity-5000-indexed",
+    "database": "twuanis_orch_final_01_5000",
+    "execution": "518c419c-01ab-4ca4-82cc-e5ef1b9ede36",
+    "authority": "OWNER_UNMETERED",
+    "state": "RELEASED",
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "0"
+      ],
+      [
+        "RESERVATION_RELEASED",
+        "0"
+      ]
+    ],
+    "reports": 0,
+    "witnesses": 0,
+    "pass": true
+  }
+]

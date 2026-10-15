@@ -1,0 +1,82 @@
+[
+  {
+    "case": "baseline",
+    "execution": "018cbf14-9469-4a99-8252-cade44ddacb9",
+    "result": {
+      "state": "COMPLETED",
+      "execution": "018cbf14-9469-4a99-8252-cade44ddacb9"
+    },
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "EXECUTION_CONSUMED",
+        "1"
+      ]
+    ],
+    "reports": 1,
+    "witnesses": 1
+  },
+  {
+    "case": "baseline",
+    "execution": "005e08f8-25af-488b-8803-112005c7f7d9",
+    "result": {
+      "state": "RELEASED",
+      "execution": "005e08f8-25af-488b-8803-112005c7f7d9"
+    },
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "RESERVATION_RELEASED",
+        "1"
+      ]
+    ],
+    "reports": 0,
+    "witnesses": 0
+  },
+  {
+    "case": "corrected-verified",
+    "execution": "8d8d0431-b925-4764-8755-336cab4d9f3e",
+    "result": {
+      "state": "COMPLETED",
+      "execution": "8d8d0431-b925-4764-8755-336cab4d9f3e"
+    },
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "EXECUTION_CONSUMED",
+        "1"
+      ]
+    ],
+    "reports": 1,
+    "witnesses": 1
+  },
+  {
+    "case": "corrected-verified",
+    "execution": "6a915be8-baa1-4dbf-8c59-0ef864b9a7c7",
+    "result": {
+      "state": "COMPLETED",
+      "execution": "6a915be8-baa1-4dbf-8c59-0ef864b9a7c7"
+    },
+    "events": [
+      [
+        "EXECUTION_RESERVED",
+        "1"
+      ],
+      [
+        "EXECUTION_CONSUMED",
+        "1"
+      ]
+    ],
+    "reports": 1,
+    "witnesses": 1
+  }
+]

@@ -1,0 +1,3 @@
+// Browser-safe catalog projection; never an entitlement or mutable catalog authority.
+export type PackageProjection={id:string;name_en:string;name_es:string|null;question_en:string;question_es:string|null;state:'draft'|'active'|'inactive'|'archived';trialEligible:boolean;revision:string;configurationId:string;version:string;termQuantity:number;termUnit:'month';capabilities:string[];standardPrices:Partial<Record<'USD'|'CRC',string>>;acquisitionAvailable:false;acquisitionState:'fulfillment_not_activated'}
+export type PackageCatalog={packages:PackageProjection[];capabilities:{id:string;en:string;es:string}[]}

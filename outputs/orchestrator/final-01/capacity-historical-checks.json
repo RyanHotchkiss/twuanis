@@ -1,0 +1,52 @@
+[
+  {
+    "scenario": "1000",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "128",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "2000",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "2000-paid",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  },
+  {
+    "scenario": "500",
+    "phase": "after",
+    "release": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+    "losslessRoundtrip": true,
+    "allNodeHashes": true,
+    "engines": 17,
+    "exactOfflineReplay": true,
+    "networkCalls": 0
+  }
+]

@@ -1,5 +1,8 @@
 'use client'
 
+import { useMarketplaceFx } from '@/app/hooks/useMarketplaceFx'
+import { priceOptions as createPriceOptions } from '@/lib/marketplace-price-ranges'
+
 type PriceFilterProps = {
   selectedprice_range: string
   setSelectedprice_range: (value: string) => void
@@ -28,13 +31,8 @@ export default function PriceFilter({
   setShowDistrictOptions
 }: PriceFilterProps) {
 
-  const priceOptions = [
-      { label: '₡0 - ₡25M', usd: '$0 - $50K' },
-      { label: '₡25M - ₡75M', usd: '$50K - $150K' },
-      { label: '₡75M - ₡150M', usd: '$150K - $300K' },
-      { label: '₡150M - ₡250M', usd: '$300K - $500K' },
-      { label: '₡250M+', usd: '$500K+' }
-    ]
+  const fx = useMarketplaceFx()
+  const priceOptions = createPriceOptions('buy', 'es', fx?.usdToCrcRate ?? null)
 
   return (
 

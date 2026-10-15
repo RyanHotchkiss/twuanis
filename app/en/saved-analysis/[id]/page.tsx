@@ -1,6 +1,6 @@
 import { loadAnalysis } from '@/lib/load-analysis'
 
-import { redirect } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 
 import {
   recordRecentActivity
@@ -15,6 +15,8 @@ export default async function SavedAnalysisPage({
 
   const analysis =
     await loadAnalysis(id)
+
+  if (!analysis) notFound()
 
   const query = new URLSearchParams()
 

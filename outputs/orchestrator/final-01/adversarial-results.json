@@ -1,0 +1,209 @@
+[
+  {
+    "case": "valid",
+    "expected": "ACCEPTED",
+    "actual": "ACCEPTED",
+    "error": null,
+    "pass": true
+  },
+  {
+    "case": "missing-all-scope-evidence",
+    "expected": "REJECTED",
+    "actual": "REJECTED",
+    "error": {
+      "code": "P0001",
+      "message": "BANK_SCOPE_PHASE_REQUIRED"
+    },
+    "pass": true
+  },
+  {
+    "case": "missing-freshness-scope-evidence",
+    "expected": "REJECTED",
+    "actual": "REJECTED",
+    "error": {
+      "code": "P0001",
+      "message": "BANK_SCOPE_PHASE_REQUIRED"
+    },
+    "pass": true
+  },
+  {
+    "case": "wrong-global-revision",
+    "expected": "REJECTED",
+    "actual": "REJECTED",
+    "error": {
+      "code": "P0001",
+      "message": "BANK_SCOPE_ATTESTATION_MISMATCH"
+    },
+    "pass": true
+  },
+  {
+    "case": "missing-exclusion-evidence",
+    "expected": "REJECTED",
+    "actual": "REJECTED",
+    "error": {
+      "code": "P0001",
+      "message": "BANK_SCOPE_ATTESTATION_MISMATCH"
+    },
+    "pass": true
+  },
+  {
+    "case": "wrong-scope",
+    "expected": "REJECTED",
+    "actual": "REJECTED",
+    "error": {
+      "code": "P0001",
+      "message": "BANK_SCOPE_ATTESTATION_MISMATCH"
+    },
+    "pass": true
+  },
+  {
+    "case": "cross-account-evidence",
+    "expected": "REJECTED",
+    "actual": "REJECTED",
+    "error": {
+      "code": "P0001",
+      "message": "BANK_SCOPE_ATTESTATION_MISMATCH"
+    },
+    "pass": true
+  },
+  {
+    "case": "altered-raw-evidence",
+    "expected": "REJECTED",
+    "actual": "REJECTED",
+    "error": {
+      "code": "P0001",
+      "message": "BANK_SCOPE_RAW_MISMATCH"
+    },
+    "pass": true
+  },
+  {
+    "case": "missing-raw-membership",
+    "expected": "REJECTED",
+    "actual": "REJECTED",
+    "error": {
+      "code": "P0001",
+      "message": "BANK_SCOPE_COMPLETE_MEMBERSHIP_REQUIRED"
+    },
+    "pass": true
+  },
+  {
+    "case": "content-hash-tamper",
+    "expected": "REJECTED",
+    "actual": "REJECTED",
+    "error": {
+      "code": "P0001",
+      "message": "Evidence content hash mismatch"
+    },
+    "pass": true
+  },
+  {
+    "case": "missing-node",
+    "expected": "REJECTED",
+    "actual": "REJECTED",
+    "error": {
+      "code": "P0001",
+      "message": "Incomplete evidence root"
+    },
+    "pass": true
+  },
+  {
+    "case": "missing-referenced-node",
+    "expected": "REJECTED",
+    "actual": "REJECTED",
+    "error": {
+      "code": "P0001",
+      "message": "Incomplete evidence reference"
+    },
+    "pass": true
+  },
+  {
+    "case": "invalid-scalar-numeric",
+    "expected": "REJECTED",
+    "actual": "REJECTED",
+    "error": {
+      "code": "P0001",
+      "message": "Invalid scalar evidence"
+    },
+    "pass": true
+  },
+  {
+    "case": "binary64-identity-mismatch",
+    "expected": "REJECTED",
+    "actual": "REJECTED",
+    "error": {
+      "code": "P0001",
+      "message": "Invalid numerical evidence"
+    },
+    "pass": true
+  },
+  {
+    "case": "unsupported-node-kind",
+    "expected": "REJECTED",
+    "actual": "REJECTED",
+    "error": {
+      "code": "P0001",
+      "message": "Unsupported evidence tag"
+    },
+    "pass": true
+  },
+  {
+    "case": "duplicate-object-key",
+    "expected": "REJECTED",
+    "actual": "REJECTED",
+    "error": {
+      "code": "P0001",
+      "message": "Duplicate evidence key"
+    },
+    "pass": true
+  },
+  {
+    "case": "invalid-root-reference",
+    "expected": "REJECTED",
+    "actual": "REJECTED",
+    "error": {
+      "code": "P0001",
+      "message": "Incomplete evidence root"
+    },
+    "pass": true
+  },
+  {
+    "case": "duplicate-engine-output",
+    "expected": "REJECTED",
+    "actual": "REJECTED",
+    "error": {
+      "code": "P0001",
+      "message": "Unique engine evidence required"
+    },
+    "pass": true
+  },
+  {
+    "case": "missing-resolved-input",
+    "expected": "REJECTED",
+    "actual": "REJECTED",
+    "error": {
+      "code": "P0001",
+      "message": "Complete engine inputs required"
+    },
+    "pass": true
+  },
+  {
+    "case": "engine-output-body-tamper",
+    "expected": "REJECTED",
+    "actual": "REJECTED",
+    "error": {
+      "code": "P0001",
+      "message": "Engine output binding mismatch"
+    },
+    "pass": true
+  },
+  {
+    "case": "request-scope-body-tamper",
+    "expected": "REJECTED",
+    "actual": "REJECTED",
+    "error": {
+      "code": "P0001",
+      "message": "Engine input request binding mismatch"
+    },
+    "pass": true
+  }
+]

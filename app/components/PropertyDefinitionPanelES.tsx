@@ -1,5 +1,7 @@
 'use client'
 
+import { monetaryPreview } from '@/lib/monetary-preview'
+
 import {
   generatedTitleCard,
   generatedTitleLabel,
@@ -11,7 +13,6 @@ import {
 import {
   generateListingTitle,
   generateListingDescription,
-  formatColones,
   formatWhatsAppNumber
 } from '@/app/utils/listing-utils'
 
@@ -19,12 +20,14 @@ import DefinitionCard from '@/app/components/DefinitionCard'
 
 type PropertyDefinitionPanelProps = {
   propertyData: any
+  saleAmountUnit?: 'major' | 'crc_millions'
   usdToCrcRate: number | null
 }
 
 export default function PropertyDefinitionPanelES({
   propertyData,
-  usdToCrcRate
+  usdToCrcRate,
+  saleAmountUnit = 'crc_millions'
 }: PropertyDefinitionPanelProps) {
 
   const show_residential_fields =
@@ -52,7 +55,7 @@ export default function PropertyDefinitionPanelES({
 
         <h2 style={generatedTitleValue}>
           {
-            generateListingTitle(propertyData)
+            generateListingTitle(propertyData, 'es')
             || 'Comience a Definir la Propiedad'
           }
         </h2>
@@ -67,7 +70,7 @@ export default function PropertyDefinitionPanelES({
 
         <p style={generatedDescriptionValue}>
           {
-            generateListingDescription(propertyData)
+            generateListingDescription(propertyData, 'es')
             || 'La descripción de la propiedad se generará automáticamente.'
           }
         </p>
@@ -200,29 +203,7 @@ export default function PropertyDefinitionPanelES({
 
         <DefinitionCard
           label="Precio"
-          value={
-            propertyData.priceMillions > 0
-            ? (
-              <>
-                {formatColones(
-                  propertyData.priceMillions
-                )}
-
-                {' · '}
-
-                {usdToCrcRate !== null
-                  ? `$${Math.round(
-                      (
-                        Number(
-                          propertyData.priceMillions
-                        ) * 1_000_000
-                      ) / usdToCrcRate
-                    ).toLocaleString()} USD`
-                  : 'Conversión a USD no disponible'}
-              </>
-            )
-            : 'Aún No Definido'
-          }
+          value={monetaryPreview(propertyData.priceMillions, propertyData.currency, saleAmountUnit, usdToCrcRate, 'es')}
         />
 
                 <DefinitionCard

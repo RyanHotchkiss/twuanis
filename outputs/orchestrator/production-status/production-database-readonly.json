@@ -1,0 +1,27 @@
+{
+  "source": "Actual read-only Supabase SQL Editor, canonical main PRODUCTION project",
+  "project": "szhpqemhjyvvqgjgsmsw",
+  "role": "postgres",
+  "postgresPublicCreate": true,
+  "orchestratorFunctionCount": 0,
+  "migration103Table": null,
+  "migration104Command": null,
+  "migration105ClaimsTable": null,
+  "migration107Validator": null,
+  "methodologyRegistry": null,
+  "supabaseMigrationHistoryTable": null,
+  "classificationPredecessorSha256": "7b19ca996fbdb2088d930468c1292ea04962fb614545d5ebf4967099654f0f44",
+  "predecessorHashes": {
+    "current_account_has_population_capability": "621d0321f251b4d244ccfb357656181b",
+    "bank_analytical_grant_terms": "b3ff2393080ecd30021a18179f5cb088",
+    "read_customer_commercial": "3ca08ee3c2f210b3b1142888691860e7",
+    "customer_order_projection": "39a4a78b37f9db1fe49bc8880dfec4c7",
+    "customer_product_copy": "d41cc5ec078b34f999a20913fc33bcad",
+    "resolve_offer_price": "9fae65c27724f5450dc562d25c10d1bf",
+    "onvo_service_command": "d9ba951cc96c5ab3b73d427acecae5b1",
+    "retry_sinpe_fulfillment": "3ae438de8a3ed2fdcd8d7722b0d213a3",
+    "read_canonical_bank_analytical_evidence": "e858c094eea88e61f903baf10a8a2138"
+  },
+  "requiredProductionMigrationsInstalled": [],
+  "installationState": "103\u2013112 not installed; no orchestrator functions or release registry exist, canonical Bank/classification remain predecessor versions. No schema_migrations history authority exists; determination uses actual objects and hashes."
+}

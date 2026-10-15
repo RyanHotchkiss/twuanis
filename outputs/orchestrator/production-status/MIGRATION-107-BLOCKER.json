@@ -1,0 +1,16 @@
+{
+  "status": "BLOCKED",
+  "artifact": "supabase/migrations/107_orchestrator_immutable_evidence_v2.sql",
+  "sha256": "726bbf52ef0d15b8606eb2aa2da36f84c630063f0fdd0271464abd79fd1b657f",
+  "functionEndLine": 509,
+  "rejectedStatementLine": 511,
+  "actual": "END$function$",
+  "requiredSyntax": "END$function$;",
+  "sqlstate": "42601",
+  "error": "syntax error at or near \"COMMIT\"",
+  "localDatabase": "twuanis_orch_deploy_01",
+  "productionChanged": false,
+  "downstreamMigrations": "108\u2013112 not attempted; dependency 107 cannot install",
+  "repairPerformed": false,
+  "minimumCorrection": "Owner review of a separately identified syntax-only migration 107 artifact; preserve complete function bodies, ACLs, limits and reviewed downstream hashes, then rerun exact-chain rehearsal before production."
+}

@@ -49,13 +49,13 @@ export default async function MarketIntelligencePage({
 
 
   return (
-    <main style={main}>
-      <TopBar />
+    <main className="mobile-page-fit" style={main}>
+      <TopBar mobileFit />
 
 
       <section style={hero}>
         <h1 style={heading}>
-          Inteligencia de Mercado
+          Centro de Inteligencia de Mercado
         </h1>
 
 

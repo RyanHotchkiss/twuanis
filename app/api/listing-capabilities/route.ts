@@ -4,7 +4,7 @@ import {
 
 import {
   createClient
-} from '@supabase/supabase-js'
+} from '@/lib/staging-supabase-client'
 
 import {
   supabaseAdmin

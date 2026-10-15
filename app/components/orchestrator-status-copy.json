@@ -1,0 +1,301 @@
+{
+  "date": "2026-10-15",
+  "sections": [
+    {
+      "id": "A",
+      "en": {
+        "title": "Executive conclusion",
+        "paragraphs": [
+          "The Owner has authorized deployment of the existing unfinished orchestrator. Deployment is separate from production qualification. The current implementation is synchronous; unrestricted large-population capacity is not established.",
+          "All seventeen mathematical implementations are preserved. ORCH-FINAL-01 records 29,133 successful independent numerical and membership checks, 647 exact historical engine replays across 41 reports, and successful small paid concurrent executions. These are isolated local results, not fresh production acceptance.",
+          "5,000 observations remain BLOCKED: validation was cancelled by a local memory safety guard before a report or witness committed. 10,000 and 25,000 were not run after that failure. No success at these sizes is claimed."
+        ]
+      },
+      "es": {
+        "title": "Conclusión ejecutiva",
+        "paragraphs": [
+          "El Propietario autorizó desplegar el orquestador existente, todavía incompleto. Desplegarlo no equivale a validar su capacidad en producción. La implementación actual es síncrona; no se ha establecido una capacidad sin restricciones para poblaciones grandes.",
+          "Se conservan las diecisiete implementaciones matemáticas. ORCH-FINAL-01 registra 29.133 comprobaciones numéricas y de pertenencia independientes satisfactorias, 647 reproducciones históricas exactas de motores en 41 informes y ejecuciones simultáneas pequeñas con contabilización de pago correcta. Son resultados locales aislados, no una nueva aceptación en producción.",
+          "5.000 observaciones siguen BLOQUEADAS: una protección local de memoria canceló la validación antes de guardar el informe o el testigo de ejecución. Después de ese fallo no se ejecutaron 10.000 ni 25.000 observaciones. No se afirma que estos tamaños funcionen."
+        ]
+      }
+    },
+    {
+      "id": "B",
+      "en": {
+        "title": "Product architecture",
+        "paragraphs": [
+          "The seven-engine Market Comparison Orchestrator uses the existing Matching & Market Comparison Package. The seventeen-engine Market’s Current Valuation of Property configuration uses the existing Pricing, Position & Relationships Package. Canonical Package configurations define the capabilities; a token balance does not independently authorize an engine or population.",
+          "Both configurations answer the already approved questions using current advertised-market evidence. They are not transaction-price appraisals or forecasts. PRIVATE, BANK and COMBINED are distinct, source-qualified populations. Undefined results retain their reasons rather than inventing values. Existing questions, selectors, sidebar, examples and EN/ES presentation are unchanged."
+        ]
+      },
+      "es": {
+        "title": "Arquitectura del producto",
+        "paragraphs": [
+          "El Orquestador de comparación de mercados, de siete motores, utiliza el Paquete existente de coincidencias y comparación de mercados. La configuración de diecisiete motores, Valoración actual de la propiedad según el mercado, utiliza el Paquete existente de precios, posición y relaciones. Las configuraciones canónicas de los Paquetes determinan las capacidades; disponer de tokens no autoriza por sí solo un motor o una población.",
+          "Ambas configuraciones responden las preguntas ya aprobadas con evidencia actual de precios anunciados. No constituyen avalúos basados en transacciones ni pronósticos. PRIVATE, BANK y COMBINED son poblaciones distintas cuya autorización depende de la fuente. Los resultados indefinidos conservan sus motivos sin inventar valores. Se mantienen las preguntas, selectores, barra lateral, ejemplos y presentación EN/ES existentes."
+        ]
+      }
+    },
+    {
+      "id": "C",
+      "en": {
+        "title": "Canonical population acquisition",
+        "paragraphs": [
+          "Private acquisition reuses the established canonical listing reader. Province, canton, district, transaction and property-type restrictions are applied before transfer. Private raw evidence is shared within one execution phase; the required freshness acquisition remains separate. There is no cross-account or cross-request raw-evidence cache.",
+          "ORCH-ACQ-02 moves Bank geographic, property-type and transaction restrictions into the canonical database reader. It preserves ontology identities, geographic ancestry, source visibility, source revisions, classifications, exclusion evidence, area evidence and exact property identities. Bank and Private observations remain source-qualified when combined.",
+          "Each engine still establishes its own eligible cohort, reference population and comparables. Shared acquisition does not force every engine to use the same population. Canonical and Owner-Desired subjects remain distinct; missing evidence is not manufactured. Earlier acquisition-audit findings are superseded only where the acquisition-correction evidence demonstrates the correction."
+        ]
+      },
+      "es": {
+        "title": "Adquisición canónica de poblaciones",
+        "paragraphs": [
+          "La adquisición privada reutiliza el lector canónico existente. Las restricciones de provincia, cantón, distrito, transacción y tipo de propiedad se aplican antes de transferir los datos. La evidencia privada original se comparte dentro de una misma fase de ejecución; la comprobación de vigencia continúa siendo una adquisición separada. No existe una caché de evidencia original compartida entre cuentas o solicitudes.",
+          "ORCH-ACQ-02 traslada las restricciones bancarias de geografía, tipo de propiedad y transacción al lector canónico de la base de datos. Conserva identidades ontológicas, jerarquía geográfica, visibilidad y revisiones de fuentes, clasificaciones, motivos de exclusión, evidencia de áreas e identidades exactas. Al combinarse, las observaciones bancarias y privadas mantienen su identificación de origen.",
+          "Cada motor sigue estableciendo su cohorte elegible, población de referencia y comparables. Compartir la adquisición no impone una población idéntica a todos los motores. Los sujetos canónicos y los definidos por el Propietario permanecen diferenciados; no se inventan datos faltantes. Los hallazgos de la auditoría anterior solo se consideran corregidos donde existe evidencia de la corrección de adquisición."
+        ]
+      }
+    },
+    {
+      "id": "D",
+      "en": {
+        "title": "Mathematical verification",
+        "paragraphs": [
+          "ORCH-FINAL-01: 29,133/29,133 independent numerical and membership checks; all 17 engines and the seven-engine configuration are represented. The oracle uses independent rational arithmetic and canonical membership, separately from archived replay. Existing mathematical output comparison is 538/538 equal after excluding duration and the identified cache digest.",
+          "The 446 changed cache digests bind an updated Bank source revision already present in the cloned fixture; mathematical content did not change. Archived replay independently reproduces entire original outputs, including their original cache identities. The existing 37-scenario matrix retained its expected outcomes; two additional Rent scenarios completed. Large tests were COMBINED Sale, not exhaustive large-scale coverage of every mode."
+        ]
+      },
+      "es": {
+        "title": "Verificación matemática",
+        "paragraphs": [
+          "ORCH-FINAL-01: 29.133/29.133 comprobaciones independientes numéricas y de pertenencia; están representados los 17 motores y la configuración de siete motores. El verificador utiliza aritmética racional independiente y pertenencia canónica, por separado de la reproducción archivada. La comparación matemática existente coincide en 538/538 resultados al excluir la duración y el identificador de caché expresamente identificado.",
+          "Los 446 identificadores de caché distintos incorporan una revisión bancaria actualizada que ya estaba presente en los datos clonados; el contenido matemático no cambió. La reproducción archivada reconstruye independientemente las salidas originales completas, incluidas sus identidades originales de caché. Los 37 escenarios existentes mantuvieron sus resultados esperados y se completaron dos escenarios adicionales de alquiler. Las pruebas grandes fueron COMBINED de venta, no una cobertura exhaustiva de todos los modos a gran escala."
+        ]
+      }
+    },
+    {
+      "id": "E",
+      "en": {
+        "title": "Immutable evidence and historical reproduction",
+        "paragraphs": [
+          "Immutable invocation inputs retain the values actually consumed by each engine, their ordering, shared references, canonical normalization and binary64 precision, with original decimal strings retained. Database validation binds the evidence, account, request, population, attempt and approved methodology release before completion.",
+          "647 exact archived engine replays across 41 reports cover all seventeen engines with zero network access during replay. Lossless compression roundtrips and evidence-node hashes were verified. The historical archive remains server-only; protected capabilities, customer evidence and mathematical source code are not included in this public report.",
+          "Methodology release: b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b. Protected archive SHA-256: 9aed567cf7dd7f32e68af625242bee8626f1e77b40d9e7a98adcc875540b3f26. A matching immutable release registration is a required deployment dependency, in addition to migrations."
+        ]
+      },
+      "es": {
+        "title": "Evidencia inmutable y reproducción histórica",
+        "paragraphs": [
+          "Las entradas inmutables conservan los valores realmente utilizados por cada motor, su orden, referencias compartidas, normalización canónica y precisión binary64, además de los textos decimales originales. La validación en la base de datos vincula evidencia, cuenta, solicitud, población, intento y versión metodológica aprobada antes de completar la ejecución.",
+          "647 reproducciones exactas de motores archivados en 41 informes cubren los diecisiete motores sin acceso a la red durante la reproducción. Se verificaron la compresión reversible sin pérdida y los hashes de los nodos. El archivo histórico permanece exclusivo del servidor; este informe público no incluye capacidades protegidas, evidencia de clientes ni código fuente matemático.",
+          "Versión metodológica: b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b. SHA-256 del archivo protegido: 9aed567cf7dd7f32e68af625242bee8626f1e77b40d9e7a98adcc875540b3f26. Registrar exactamente esta versión inmutable es una dependencia de despliegue adicional a las migraciones."
+        ]
+      }
+    },
+    {
+      "id": "F",
+      "en": {
+        "title": "Commercial authority and accounting",
+        "paragraphs": [
+          "Existing customer sessions, Package capability authority, same-term Bank upgrade authority and population authorization remain the gates. Tokens represent execution capacity, not additional analytical permission. Existing included, purchased and administrative allocations remain distinct. Owner-unmetered execution is identified separately and is not proof of paid accounting.",
+          "Completion atomically binds one report and one witness to one consumption. Local tests cover paid timeout, terminated database backend, worker termination, retry after lease expiry, duplicate submission and superseded-worker rejection. Failures released reservations without charging; successful paid retries consumed once. Natural Package expiry denied completion without a charge, while the original customer retained access to an already completed report after expiry; another account was denied.",
+          "Migration 112 corrects expired-reservation replay through the existing maintenance helper under the existing lock. The natural ten-minute expiry test records exactly one release, no report and no charge; duplicate replay adds no event. No payment, refund or customer charge is fabricated for production testing. ONVO/SINPE compatibility must be verified against exact predecessors; preserving payment behavior does not mean that migration 104 leaves every payment-related function text unchanged."
+        ]
+      },
+      "es": {
+        "title": "Autoridad comercial y contabilización",
+        "paragraphs": [
+          "Las sesiones de clientes, las capacidades de Paquetes, la mejora bancaria del mismo período y la autorización de población siguen controlando el acceso. Los tokens representan capacidad de ejecución, no permisos analíticos adicionales. Se mantienen separadas las asignaciones incluidas, compradas y administrativas. Las ejecuciones sin cargo del Propietario se identifican aparte y no prueban la contabilización de clientes de pago.",
+          "La finalización vincula atómicamente un informe y un testigo a un único consumo. Las pruebas locales cubren tiempo de espera agotado, terminación de conexión de base de datos, interrupción del proceso, reintento tras vencimiento del arrendamiento, duplicados y rechazo de procesos sustituidos. Los fallos liberaron reservas sin cargo; los reintentos pagados satisfactorios consumieron una sola vez. El vencimiento natural del Paquete impidió completar sin cobrar; el cliente original conservó acceso a un informe ya completado después del vencimiento y otra cuenta fue rechazada.",
+          "La migración 112 corrige la repetición de reservas vencidas mediante el mantenimiento y bloqueo existentes. La prueba de vencimiento natural a diez minutos registra exactamente una liberación, ningún informe y ningún cargo; repetirla no añade eventos. No se fabrican pagos, reembolsos ni cargos de clientes para pruebas en producción. La compatibilidad ONVO/SINPE exige verificar los predecesores exactos; preservar su comportamiento no implica que la migración 104 deje intacto el texto de toda función relacionada con pagos."
+        ]
+      }
+    },
+    {
+      "id": "G",
+      "en": {
+        "title": "Measured performance",
+        "paragraphs": [
+          "Bank scoped acquisition transfers 13 observations per acquisition/freshness phase rather than 126 nationwide. Shared Private acquisition transfers 18 rows in each of two phases (36 total), rather than 108 redundant transfers. Required freshness evidence is preserved.",
+          "The unchanged classification predicate produced 475 query plans and 2,190.43 ms of planning before migration 110, versus 6 plans and 28.19 ms afterward, for 752 calls. All 330 classification results and the complete scope response hash matched. Controlled scope-read time decreased from 2.658 s to 0.330 s.",
+          "Migration 111 reuses the existing indexed transaction-local evidence graph and releases redundant JSONB variables. It does not implement segmented validation. The original small paid concurrency pair had one timeout; corrected pairs completed at the original eight-second timeout with exactly-once accounting. Two simultaneous scoped executions do not establish global concurrency or concurrent large-report capacity. Differing cache warmth and background load prevent treating the capacity timings as a scaling curve."
+        ]
+      },
+      "es": {
+        "title": "Rendimiento medido",
+        "paragraphs": [
+          "La adquisición bancaria restringida transfiere 13 observaciones por fase de adquisición o vigencia, en lugar de 126 nacionales. La adquisición privada compartida transfiere 18 filas en cada una de dos fases, 36 en total, en lugar de 108 transferencias redundantes. Se conserva la evidencia de vigencia obligatoria.",
+          "El predicado de clasificación sin cambios generó 475 planes y 2.190,43 ms de planificación antes de la migración 110, frente a 6 planes y 28,19 ms después, para 752 llamadas. Coincidieron las 330 clasificaciones y el hash completo de la respuesta. La lectura controlada del ámbito pasó de 2,658 s a 0,330 s.",
+          "La migración 111 reutiliza el grafo de evidencia indexado dentro de la transacción y libera variables JSONB redundantes. No implementa validación segmentada. El par original de ejecuciones pagadas pequeñas tuvo un agotamiento del tiempo; los pares corregidos se completaron con el límite original de ocho segundos y contabilización única. Dos ejecuciones simultáneas restringidas no establecen concurrencia global ni capacidad para informes grandes simultáneos. Las diferencias de caché y carga impiden interpretar los tiempos como una curva de escalabilidad."
+        ]
+      }
+    },
+    {
+      "id": "H",
+      "en": {
+        "title": "Capacity acceptance record",
+        "paragraphs": [
+          "128 observations (64 PRIVATE + 64 BANK): COMPLETE locally at baseline limits; 26.98 s, worker peak RSS 210.4 MiB, sampled database PSS 241.2 MiB.",
+          "500 (256 + 244): COMPLETE locally in a separate 60-second-timeout test after the original eight-second timeout failed; 19.78 s, worker RSS 441.4 MiB, database PSS 657.6 MiB. 1,000 (756 + 244): COMPLETE with the same temporary timeout; 28.12 s, worker RSS 640.0 MiB, database PSS 1,129.0 MiB.",
+          "2,000 (1,756 + 244): COMPLETE with temporary 64 MiB evidence and 60-second timeout limits; 40.71 s, worker RSS 938.2 MiB, database RSS 2,148.7 MiB (PSS unavailable in that run). The separate paid run completed in 49.45 s with worker RSS 814.4 MiB, database PSS 1,899.6 MiB and one token consumed.",
+          "5,000 (4,756 + 244): BLOCKED. All observations were acquired, but validation did not complete. The graph held 96,291 roots, 275,655 nodes and 121,089,270 UTF-8 bytes; graph plus envelope was 129,367,978 bytes. At 53.13 s, the local guard cancelled the query when VM available memory fell below 700 MiB. Worker RSS peaked at 1,571.9 MiB and database PSS at 3,408.6 MiB. No report, witness or charge committed. This was a safety cancellation, not a claim of a natural PostgreSQL OOM kill.",
+          "10,000: NOT RUN / NOT VERIFIED. 25,000: NOT RUN / NOT VERIFIED. No truncation, downsampling or approximate mathematics was substituted. These controlled synthetic local populations are not production inventory or production-capacity guarantees. Temporary test limits are excluded from deployment."
+        ]
+      },
+      "es": {
+        "title": "Resultados de capacidad",
+        "paragraphs": [
+          "128 observaciones, 64 PRIVATE y 64 BANK: COMPLETADAS localmente con los límites originales; 26,98 s, RSS máximo del proceso 210,4 MiB y PSS muestreado de base de datos 241,2 MiB.",
+          "500, 256 privadas y 244 bancarias: COMPLETADAS en una prueba separada con límite temporal de 60 segundos, después de fallar con ocho segundos; 19,78 s, RSS del proceso 441,4 MiB y PSS de base de datos 657,6 MiB. 1.000, 756 y 244: COMPLETADAS con el mismo límite temporal; 28,12 s, RSS 640,0 MiB y PSS 1.129,0 MiB.",
+          "2.000, 1.756 y 244: COMPLETADAS con límites temporales de evidencia de 64 MiB y 60 segundos; 40,71 s, RSS del proceso 938,2 MiB y RSS de base de datos 2.148,7 MiB, sin PSS disponible en esa ejecución. La prueba pagada separada completó en 49,45 s con RSS del proceso 814,4 MiB, PSS de base de datos 1.899,6 MiB y un token consumido.",
+          "5.000, 4.756 y 244: BLOQUEADAS. Se adquirieron todas las observaciones, pero no terminó la validación. El grafo contenía 96.291 raíces, 275.655 nodos y 121.089.270 bytes UTF-8; junto con su envoltura sumaba 129.367.978 bytes. A los 53,13 s, la protección local canceló la consulta al caer la memoria disponible de la máquina virtual por debajo de 700 MiB. El RSS del proceso alcanzó 1.571,9 MiB y el PSS de base de datos 3.408,6 MiB. No se guardó informe, testigo ni cargo. Fue una cancelación de seguridad, no una afirmación de terminación natural por falta de memoria de PostgreSQL.",
+          "10.000: NO EJECUTADAS / NO VERIFICADAS. 25.000: NO EJECUTADAS / NO VERIFICADAS. No se sustituyeron truncamientos, submuestreos ni matemáticas aproximadas. Estas poblaciones sintéticas locales no son inventario de producción ni garantizan capacidad de producción. Los límites temporales de prueba quedan excluidos del despliegue."
+        ]
+      }
+    },
+    {
+      "id": "I",
+      "en": {
+        "title": "Infrastructure and limits",
+        "paragraphs": [
+          "The Owner confirmed Supabase Pro with NANO compute, up to 0.5 GB memory, shared CPU, 2 GB provisioned disk and autoscaling to 8 GB. This is the confirmed configuration from the capacity investigation, not a fresh measurement of current available memory. The local Docker VM had 8 CPUs and approximately 7.75 GiB shared memory on a 16 GiB host.",
+          "NANO cannot accommodate the observed approximately 1.9 GiB database PSS of the paid 2,000 run. A 2 GB tier offers essentially no headroom for that observation; 4 GB is not proven sufficient for 5,000, which exceeded 3.3 GiB before completion. Exact production Vercel function memory, CPU and duration remain unverified until provider inspection. No minimum hosted tier is qualified for 5,000–25,000.",
+          "The reviewed release preserves the 32 MiB evidence ceiling, 40,000 roots, 100,000 nodes, existing eight-second function timeout, 120-second execution budget, 180-second worker lease and 600-second reservation. Existing two-active-claims-per-account and three-attempt limits remain. Per-account limits are not a global resource bound. Database storage measurements exclude indexes, WAL and other overhead; no provider bill or price guarantee is inferred."
+        ]
+      },
+      "es": {
+        "title": "Infraestructura y límites",
+        "paragraphs": [
+          "El Propietario confirmó Supabase Pro con cómputo NANO, hasta 0,5 GB de memoria, CPU compartida, 2 GB de disco y expansión automática hasta 8 GB. Es la configuración confirmada durante la investigación de capacidad, no una medición nueva de memoria actualmente disponible. La máquina virtual local de Docker tenía 8 CPU y aproximadamente 7,75 GiB compartidos en un equipo de 16 GiB.",
+          "NANO no puede alojar el PSS de base de datos observado de aproximadamente 1,9 GiB en la prueba pagada de 2.000. Una configuración de 2 GB carecería prácticamente de margen; tampoco se ha demostrado que 4 GB basten para 5.000, que superaron 3,3 GiB antes de completar. La memoria, CPU y duración exactas de las funciones de Vercel en producción siguen sin verificarse hasta inspeccionar el proveedor. No existe una configuración mínima validada para 5.000–25.000.",
+          "La versión revisada conserva el límite de evidencia de 32 MiB, 40.000 raíces, 100.000 nodos, ocho segundos de función, 120 segundos de ejecución, arrendamiento de proceso de 180 segundos y reserva de 600 segundos. Se mantienen dos solicitudes activas por cuenta y tres intentos. Los límites por cuenta no limitan globalmente los recursos. Las mediciones de almacenamiento excluyen índices, WAL y otros gastos; no permiten inferir una factura ni una garantía de precio."
+        ]
+      }
+    },
+    {
+      "id": "J",
+      "en": {
+        "title": "Production deployment",
+        "paragraphs": [
+          "Production installation and deployment are authorized subject to verified dependencies. The release receipt below distinguishes prepared, installed, deployed and production-verified states. An intended route is not proof that it is live.",
+          "Required migration artifacts are 103 execution-credit ledger; 104 purchased-credit integration; 105 execution claims; 106 Bank attribute projection; 107 immutable evidence and methodology witness; 108 validation lookup indexes; 109 canonical scoped acquisition; 110 classification query-plan reuse; 111 indexed graph traversal; and 112 expired-reservation replay. Exact hashes are retained in the private repository release packet. Existing installed contracts must be checked before any installation.",
+          "Existing production environment variables, five cron schedules, listing data, Packages, Bank discovery and payment-provider configuration are outside the change scope. No temporary qualification limits, compute upgrades, new middleware or new authorization system are included."
+        ]
+      },
+      "es": {
+        "title": "Despliegue en producción",
+        "paragraphs": [
+          "La instalación y el despliegue están autorizados únicamente con dependencias verificadas. El registro de versión distingue preparación, instalación, despliegue y verificación de producción. Una ruta prevista no demuestra que esté disponible.",
+          "Los artefactos requeridos son: 103, registro de créditos; 104, integración de créditos comprados; 105, control de ejecuciones; 106, proyección de atributos bancarios; 107, evidencia inmutable y testigo metodológico; 108, índices de validación; 109, adquisición canónica restringida; 110, reutilización de planes de clasificación; 111, recorrido indexado; y 112, repetición de reservas vencidas. Los hashes exactos se conservan en el paquete privado del repositorio. Antes de instalar se deben comprobar los contratos ya presentes.",
+          "Las variables de entorno de producción, cinco tareas programadas, datos de anuncios, Paquetes, descubrimiento bancario y configuración de pagos quedan fuera del cambio. No se incluyen límites experimentales, mejoras de cómputo, middleware ni sistemas de autorización nuevos."
+        ]
+      }
+    },
+    {
+      "id": "K",
+      "en": {
+        "title": "Security and authorization",
+        "paragraphs": [
+          "Canonical authentication, account isolation, Package capability and same-term Bank authority are preserved. Local authority coverage is 48/48 cases plus 19/19 source/security boundary checks. Evidence attacks produced the expected results in 21/21 cases, including altered hashes, binary64 mismatch, missing/duplicate roots, scope tampering and cross-account evidence.",
+          "Protected mathematical archives execute on the server; private tables and trusted witness endpoints remain restricted. Historical report ownership remains enforced after commercial expiry. Local evidence does not establish an independent penetration audit or full hosted security acceptance. Production checks must use real existing authority without inventing payments, grants or capture capabilities."
+        ]
+      },
+      "es": {
+        "title": "Seguridad y autorización",
+        "paragraphs": [
+          "Se conservan autenticación canónica, aislamiento de cuentas, capacidades de Paquetes y autoridad bancaria del mismo período. La cobertura local es de 48/48 casos de autorización y 19/19 comprobaciones de límites de fuente y seguridad. Los 21/21 ataques a evidencia tuvieron el resultado esperado, incluidos hashes alterados, diferencias binary64, raíces faltantes o duplicadas, manipulación del ámbito y evidencia de otra cuenta.",
+          "Los archivos matemáticos protegidos se ejecutan en el servidor; las tablas privadas y los extremos de testigos de confianza permanecen restringidos. La propiedad de informes históricos sigue vigente después del vencimiento comercial. La evidencia local no constituye una auditoría de penetración independiente ni aceptación completa de seguridad alojada. Las pruebas de producción deben utilizar autoridad real existente, sin inventar pagos, concesiones ni capacidades de captura."
+        ]
+      }
+    },
+    {
+      "id": "L",
+      "en": {
+        "title": "Search-engine and navigation exclusion",
+        "paragraphs": [
+          "The two orchestrator routes and two status routes use route-specific noindex, nofollow metadata. The existing robots authority disallows exactly /en/orchestrators, /es/orquestadores, /en/orchestrator-status and /es/estado-orquestadores while preserving unrelated rules. The existing sitemap excludes all four; public navigation receives no new entry.",
+          "Robots exclusion prevents compliant crawlers from fetching the noindex directive. These measures reduce intentional crawling and discovery; they do not guarantee that an externally discovered URL can never appear in search results. Direct URLs remain accessible; there is no new Owner-only login or security gate."
+        ]
+      },
+      "es": {
+        "title": "Exclusión de buscadores y navegación",
+        "paragraphs": [
+          "Las dos rutas de orquestadores y las dos de estado utilizan metadatos noindex, nofollow propios de cada ruta. La autoridad robots existente excluye exactamente /en/orchestrators, /es/orquestadores, /en/orchestrator-status y /es/estado-orquestadores, preservando las demás reglas. El sitemap existente excluye las cuatro rutas y no se añade ninguna entrada a la navegación pública.",
+          "La exclusión en robots impide que un rastreador respetuoso lea la directiva noindex. Estas medidas reducen el rastreo y descubrimiento intencionales; no garantizan que una URL descubierta externamente nunca aparezca en buscadores. Las URL directas siguen accesibles; no se añade acceso exclusivo del Propietario ni otra barrera de seguridad."
+        ]
+      }
+    },
+    {
+      "id": "M",
+      "en": {
+        "title": "Remaining technical requirements",
+        "paragraphs": [
+          "Reliable 5,000-, 10,000- and 25,000-observation execution requires actual complete-population acceptance on known infrastructure with measured memory, duration, recovery, concurrency and storage. The current synchronous path has no qualified global concurrency bound, durable execution lifecycle or segmented evidence validation.",
+          "A larger isolated database might establish a higher monolithic boundary, but existing evidence does not prove a sufficient provider tier. Bounded evidence processing or durable execution are possible future work, not features delivered here; moving the same monolithic validation into a worker alone does not solve database memory. No such architecture, optimization or resource-setting change is authorized in this deployment task."
+        ]
+      },
+      "es": {
+        "title": "Requisitos técnicos pendientes",
+        "paragraphs": [
+          "La ejecución fiable de 5.000, 10.000 y 25.000 observaciones requiere aceptación completa con infraestructura conocida y mediciones de memoria, duración, recuperación, concurrencia y almacenamiento. La ruta síncrona actual no tiene un límite global de concurrencia validado, ciclo de ejecución durable ni validación segmentada de evidencia.",
+          "Una base aislada mayor podría establecer un límite monolítico superior, pero la evidencia no demuestra una configuración suficiente del proveedor. El procesamiento acotado de evidencia o la ejecución durable son trabajo futuro posible, no funciones entregadas aquí; trasladar la misma validación monolítica a otro proceso no resuelve por sí solo la memoria de base de datos. Este despliegue no autoriza esa arquitectura, optimización ni cambios de recursos."
+        ]
+      }
+    },
+    {
+      "id": "N",
+      "en": {
+        "title": "Knowledge Architecture reuse",
+        "paragraphs": [
+          "The existing KNOWLEDGE-ARCHITECTURE-REUSE-MATRIX in outputs/orchestrator/acquisition-correction identifies reusable canonical ontology, geographic ancestry, source-qualified population reads, scoped Bank acquisition, shared Private acquisition, immutable evidence and historical release bindings.",
+          "Reuse must preserve authority and exact canonical identities. Analytical raw evidence is not automatically a public SEO dataset. The separately planned Knowledge Architecture, semantic SEO and measurement project is not implemented or activated by this release."
+        ]
+      },
+      "es": {
+        "title": "Reutilización para la Arquitectura del Conocimiento",
+        "paragraphs": [
+          "La matriz existente KNOWLEDGE-ARCHITECTURE-REUSE-MATRIX, en outputs/orchestrator/acquisition-correction, identifica ontología canónica, jerarquía geográfica, lecturas de población por fuente, adquisición bancaria restringida, adquisición privada compartida, evidencia inmutable y vínculos históricos reutilizables.",
+          "La reutilización debe conservar autoridad e identidades canónicas exactas. La evidencia analítica original no se convierte automáticamente en datos públicos para SEO. Esta versión no implementa ni activa el proyecto separado de Arquitectura del Conocimiento, SEO semántico y medición."
+        ]
+      }
+    },
+    {
+      "id": "O",
+      "en": {
+        "title": "Preservation and resumption",
+        "paragraphs": [
+          "The pre-release working-tree baseline is Git 406e87f6875adaad1eab8749a33ed699c3ef830d plus the exact 1,123-file ORCH-ACQ-02 manifest and 420 unchanged build-support files recorded by ORCH-FINAL-01. All 1,123 source hashes matched at deployment preparation. The prior 44-file reconciliation remains intact; unrelated uncommitted work must remain untouched.",
+          "Authoritative evidence is retained under outputs/orchestrator/phase53je, phase53jf, acquisition-audit, acquisition-correction and final-01. The final packet includes source and migration hashes, authority and accounting matrices, numerical and historical checks, capacity records, resource measurements, experiment notes and build receipts. Earlier investigation outcomes must not override later fingerprinted corrections.",
+          "Resume only from the release commit and its exact migration/release manifests. Verify the deployed database and application before further work; do not install experimental timeout/ceiling fixtures. Keep original evidence, archived methodologies and failed-run receipts. Do not restart optimization or the next project without separate Owner instruction."
+        ]
+      },
+      "es": {
+        "title": "Preservación y reanudación",
+        "paragraphs": [
+          "La base anterior al despliegue es Git 406e87f6875adaad1eab8749a33ed699c3ef830d más el manifiesto exacto de 1.123 archivos ORCH-ACQ-02 y 420 archivos de apoyo sin cambios registrados en ORCH-FINAL-01. Los 1.123 hashes coincidieron al preparar el despliegue. Se conserva la conciliación previa de 44 archivos y deben preservarse los cambios locales ajenos.",
+          "La evidencia autoritativa se conserva en outputs/orchestrator/phase53je, phase53jf, acquisition-audit, acquisition-correction y final-01. El paquete final contiene hashes de código y migraciones, matrices de autorización y contabilización, verificaciones numéricas e históricas, capacidad, mediciones de recursos, notas experimentales y registros de compilación. Los resultados antiguos no deben sustituir correcciones posteriores identificadas por hash.",
+          "La reanudación debe partir del commit de versión y de sus manifiestos exactos de migraciones y metodología. Verifique aplicación y base desplegadas antes de continuar; no instale límites experimentales de tiempo o evidencia. Conserve evidencia original, metodologías archivadas y registros de fallos. No reinicie optimizaciones ni el siguiente proyecto sin instrucción separada del Propietario."
+        ]
+      }
+    },
+    {
+      "id": "P",
+      "en": {
+        "title": "Acceptance boundaries",
+        "paragraphs": [
+          "IMPLEMENTED: existing 7/17 orchestrators, canonical acquisition, immutable evidence, protected historical replay, Package/population authority and credit accounting. LOCALLY VERIFIED: recorded ORCH-FINAL numerical, integrity, authority, accounting, build and bounded concurrency evidence.",
+          "PRODUCTION DEPLOYED and PRODUCTION VERIFIED require actual installation/deployment receipts and live acceptance. They are not inferred from local success. This page’s release receipt records the current deployment step; unresolved items remain explicit.",
+          "NOT VERIFIED: unrestricted hosted capacity, exact hosted worker allocation, complete large-population mode coverage, 10,000 and 25,000 observations. BLOCKED: completed 5,000-observation validation. Production capacity qualification: NOT ESTABLISHED. Owner authorization to deploy accepts these limitations; it does not convert them into PASS results."
+        ]
+      },
+      "es": {
+        "title": "Límites de aceptación",
+        "paragraphs": [
+          "IMPLEMENTADO: orquestadores de 7/17 motores, adquisición canónica, evidencia inmutable, reproducción histórica protegida, autoridad de Paquetes y poblaciones y registro de créditos. VERIFICADO LOCALMENTE: evidencia registrada de ORCH-FINAL sobre números, integridad, autoridad, contabilización, compilación y concurrencia limitada.",
+          "DESPLEGADO y VERIFICADO EN PRODUCCIÓN requieren registros reales de instalación, despliegue y aceptación en vivo. No se deducen del éxito local. El registro de esta página indica la etapa actual y mantiene explícitos los puntos sin resolver.",
+          "NO VERIFICADO: capacidad alojada sin restricciones, recursos exactos del proceso alojado, cobertura completa de modos con poblaciones grandes, 10.000 y 25.000 observaciones. BLOQUEADO: validación completa de 5.000. Capacidad de producción: NO ESTABLECIDA. La autorización del Propietario acepta estas limitaciones, sin convertirlas en resultados satisfactorios."
+        ]
+      }
+    }
+  ]
+}

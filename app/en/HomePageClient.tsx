@@ -1,4 +1,6 @@
 'use client'
+import AddonHomepageCarousel from '@/app/components/marketplace/AddonHomepageCarousel'
+import type {AddonHomepageItem} from '@/lib/addon-homepage-contract'
 import {HomepageIdentity} from '@/app/components/HomepageEntrance'
 import {useSiteTheme} from '@/app/components/theme/ThemeProvider'
 
@@ -51,6 +53,7 @@ import {
 } from '@/lib/marketplace-area-ranges'
 
 function HomePageContent({
+      addonHomepage=[],
       ontologyTerms,
       ontologyRelationships,
       listings,
@@ -58,6 +61,7 @@ function HomePageContent({
       rentCount,
       homePageSchema
     }: {
+      addonHomepage?: AddonHomepageItem[]
       ontologyTerms: any[]
       ontologyRelationships: any[]
       listings: any[]
@@ -405,7 +409,7 @@ useEffect(() => {
             }}
           >
             {/* HOMEPAGE HERO IMAGE */}
-            <div
+            {addonHomepage.length>0?<AddonHomepageCarousel items={addonHomepage} language='en'/>:(<div
               aria-hidden="true"
               style={{
                 position: 'absolute',
@@ -423,7 +427,7 @@ useEffect(() => {
                 backgroundRepeat: 'no-repeat',
                 pointerEvents: 'none',
               }}
-            />
+            />)}
 
             {/* HERO DARKENING LAYER */}
             <div
@@ -1898,7 +1902,8 @@ const sellButton = {
 }
 
         type HomePageClientProps = {
-            ontologyTerms: any[]
+            addonHomepage?: AddonHomepageItem[]
+      ontologyTerms: any[]
             ontologyRelationships: any[]
             listings: any[]
             saleCount: number

@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic'
 const reply = (body: unknown, status = 200) => Response.json(body,{status,headers:{'Cache-Control':'private, no-store'}})
 async function handle(request: Request, configuration: boolean) {
   try {
-    await authorizePriceMeterIntelligenceExecution()
+    await authorizePriceMeterIntelligenceExecution('cap-property-price-m2-position')
     let parsed
     try {
       if (configuration) {

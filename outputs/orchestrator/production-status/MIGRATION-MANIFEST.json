@@ -1,0 +1,52 @@
+[
+  {
+    "path": "supabase/migrations/103_execution_credit_ledger.sql",
+    "sha256": "c08e48017ccfb1ef449c9f5313da331e8fd90a685ffeac5e03dcec13df3d2761",
+    "productionInstalled": false
+  },
+  {
+    "path": "supabase/migrations/104_execution_credit_commercial_integration.sql",
+    "sha256": "9935ffc2771070a538fd2cae912763dd58b66f9d03e9aad208fa56e4ab3f0494",
+    "productionInstalled": false
+  },
+  {
+    "path": "supabase/migrations/105_orchestrator_execution.sql",
+    "sha256": "fccd74b16daedcc72da876144fd18ae8b5be3b40564eef38de57a81515b1c52f",
+    "productionInstalled": false
+  },
+  {
+    "path": "supabase/migrations/106_bank_analytical_attribute_projection.sql",
+    "sha256": "75e5fb9ac14380321c16e32f5938e4c77dff024c63fdebf1bc2be48a6f9bb6e8",
+    "productionInstalled": false
+  },
+  {
+    "path": "supabase/migrations/107_orchestrator_immutable_evidence_v2.sql",
+    "sha256": "726bbf52ef0d15b8606eb2aa2da36f84c630063f0fdd0271464abd79fd1b657f",
+    "productionInstalled": false
+  },
+  {
+    "path": "supabase/migrations/108_orchestrator_validation_lookup_indexes.sql",
+    "sha256": "6795ead34703417777dbd1da04f65412e381697490d5f05ebe88704bd8a664dd",
+    "productionInstalled": false
+  },
+  {
+    "path": "supabase/migrations/109_orchestrator_scoped_population_acquisition.sql",
+    "sha256": "ac68bf3a5d337fdc5056236b4af6ac82d26e0dc627a68b5203a7980a8bb4c65b",
+    "productionInstalled": false
+  },
+  {
+    "path": "supabase/migrations/110_orchestrator_classification_plan_cache.sql",
+    "sha256": "adbcf0c6af6e2c34ecb9bc4a589cb3904ccc82ca07b1f26eb8f9e17a1cf3e7e7",
+    "productionInstalled": false
+  },
+  {
+    "path": "supabase/migrations/111_orchestrator_indexed_graph_traversal.sql",
+    "sha256": "bbb9f215f4c6b47c0576ebb9af1482b4b4cda85b541f3cf88502d552fa269e9a",
+    "productionInstalled": false
+  },
+  {
+    "path": "supabase/migrations/112_orchestrator_expired_reservation_replay.sql",
+    "sha256": "e6f753654eb998f01b433fdcea9552a9387f3c4c0c398b53352ff7c69ad792c2",
+    "productionInstalled": false
+  }
+]

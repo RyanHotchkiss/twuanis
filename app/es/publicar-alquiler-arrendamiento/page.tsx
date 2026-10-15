@@ -267,7 +267,7 @@ export default function SellPage() {
                     
             return (
                 <MarketHubAuthGate>
-                    <main style={{
+                    <main className="mobile-page-fit" style={{
                         background: 'var(--background)',
                         minHeight: '100vh',
                         color: '#D4AF37',
@@ -293,7 +293,7 @@ export default function SellPage() {
                     flexWrap: 'wrap'
                     }}>
 
-                                        <TopBar
+                                        <TopBar mobileFit
                                             onFilterClick={() =>
                                                 setShowMobileFilters(true)
                                             }
@@ -305,7 +305,7 @@ export default function SellPage() {
                         fontSize: '4rem',
                         marginBottom: '.5rem'
                         }}>
-                        Define Tu Propiedad
+                        Alquile o Arriende Su Propiedad
                         </h1>
 
                         <p style={{
@@ -437,13 +437,11 @@ export default function SellPage() {
 
                                                 title:
                                                     generateListingTitle(
-                                                    normalizedRow
-                                                    ),
+                                                    normalizedRow, 'es'),
 
                                                 description:
                                                     generateListingDescription(
-                                                    normalizedRow
-                                                    )
+                                                    normalizedRow, 'es')
                                                 }
                                             })
 
@@ -971,7 +969,7 @@ formattedData
                             phone:
                             propertyData.whatsapp,
 
-                            propertyData
+                            propertyData: {...propertyData, title: generateListingTitle(propertyData, 'es'), description: generateListingDescription(propertyData, 'es')}
                         })
 
                         alert(

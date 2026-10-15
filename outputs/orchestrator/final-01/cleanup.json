@@ -1,0 +1,41 @@
+{
+  "containers": [
+    {
+      "name": "twuanis_orch_final_01_auth",
+      "removed": true
+    },
+    {
+      "name": "twuanis_orch_final_01_rest",
+      "removed": true
+    },
+    {
+      "name": "twuanis_orch_final_capacity_auth",
+      "removed": true
+    },
+    {
+      "name": "twuanis_orch_final_capacity_rest",
+      "removed": true
+    }
+  ],
+  "gateways": [
+    {
+      "pid": 97407,
+      "command": "node /private/tmp/twuanis-orch-final-01/gateway.cjs",
+      "terminated": true
+    },
+    {
+      "pid": 98031,
+      "command": "node /private/tmp/twuanis-orch-final-01/gateway-capacity.cjs",
+      "terminated": true
+    }
+  ],
+  "retainedDatabases": [
+    "twuanis_orch_final_01",
+    "twuanis_orch_final_01_128",
+    "twuanis_orch_final_01_500",
+    "twuanis_orch_final_01_1000",
+    "twuanis_orch_final_01_2000",
+    "twuanis_orch_final_01_5000"
+  ],
+  "sharedPostgresUntouched": true
+}
