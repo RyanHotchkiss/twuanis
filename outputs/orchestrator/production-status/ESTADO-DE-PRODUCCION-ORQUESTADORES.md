@@ -138,3 +138,7 @@ Las páginas bilingües, sus 16 secciones y la exclusión de buscadores están p
 Consulte GIT-PRESERVATION-RECEIPT.json para el commit local de preservación; el envío a main queda bloqueado para evitar un despliegue automático sin contratos. Ninguna migración se instaló en producción. No existe identificador de despliegue nuevo. Las rutas en vivo, selectores, metadatos y diseños siguen SIN VERIFICAR para esta versión. Capacidad de producción NO ESTABLECIDA; 5.000 BLOQUEADAS; 10.000 y 25.000 SIN VERIFICAR.
 
 Reanudación mínima: revisar por separado el terminador faltante de 107, conservar cuerpos, permisos y límites, repetir la cadena exacta y el registro metodológico aislados y solo entonces compilar, enviar a main e instalar y desplegar. Este defecto no requiere optimización ni cambios matemáticos o arquitectónicos.
+
+### Registro de conservación en Git
+
+La implementación y las pruebas se conservaron en el commit local `f641ea56bafa974e8882ec130a638a7d3543c41d`, rama `codex/orch-deploy-01-preservation`, dentro de un árbol de trabajo del repositorio existente. El seguimiento registra únicamente este comprobante y la referencia Git de las páginas de estado. No se realizó ningún envío remoto: la rama de producción es `main` y publicar una aplicación sin los contratos requeridos infringiría la regla de detenerse ante dependencias faltantes. El trabajo local ajeno y el historial Git permanecen intactos. Véase `GIT-PRESERVATION-RECEIPT.json`.

@@ -1971,7 +1971,7 @@
     },
     {
       "path": "app/components/orchestrator-status-release.json",
-      "sha256": "cdde55aaf7454a75bdc2b3e3ecbb5764cec3910a2234865896a7ad470e054c32",
+      "sha256": "d4ddb2051f74c460eaea34613536d4147557704c1e738242000b0fd42d8d5ebc",
       "origin": "reviewed-orchestrator/status"
     },
     {
@@ -5524,5 +5524,7 @@
       "sha256": "adcdd70a65ce6011ab79b40dbfa2125513b9a7b11882aba2aef17054c0686828",
       "origin": "verified-current-production"
     }
-  ]
+  ],
+  "implementationPreservationCommit": "f641ea56bafa974e8882ec130a638a7d3543c41d",
+  "receiptFollowup": "Git metadata and final preservation receipt only; implementation unchanged."
 }

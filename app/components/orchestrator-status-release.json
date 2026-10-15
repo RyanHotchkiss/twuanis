@@ -1,7 +1,7 @@
 {
   "state": "BLOCKED — no production installation or deployment",
   "stateEs": "BLOQUEADO — sin instalación ni despliegue en producción",
-  "gitRevision": "Preservation commit pending; reviewed baseline 406e87f6875adaad1eab8749a33ed699c3ef830d",
+  "gitRevision": "f641ea56bafa974e8882ec130a638a7d3543c41d",
   "deploymentId": null,
   "databaseState": "Required orchestrator contracts 103–112 are absent. No production migrations installed by this task.",
   "databaseStateEs": "Los contratos requeridos 103–112 están ausentes. Esta tarea no instaló migraciones en producción.",

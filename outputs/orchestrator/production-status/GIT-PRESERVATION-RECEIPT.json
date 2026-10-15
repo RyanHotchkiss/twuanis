@@ -1,0 +1,22 @@
+{
+  "recordedAt": "2026-10-15T17:26:00.909753+00:00",
+  "status": "LOCAL PRESERVATION COMPLETE; PRODUCTION RELEASE BLOCKED",
+  "implementationCommit": "f641ea56bafa974e8882ec130a638a7d3543c41d",
+  "parentCommit": "4eccdb902097e2c3008003acaf90ca2ff2f6e50a",
+  "branch": "codex/orch-deploy-01-preservation",
+  "repository": "https://github.com/RyanHotchkiss/twuanis.git",
+  "worktree": "/private/tmp/twuanis-orch-deploy-01/release",
+  "implementationCommitFilesChanged": 566,
+  "scopeExplanation": "The Git parent predates the verified live baseline. The preservation commit contains the already-live 1005-file baseline, 88 reviewed orchestrator/status/migration overlays, and selected evidence. It is not 566 new application changes. RELEASE-SCOPE.json identifies exact candidate sources.",
+  "followupScope": "This receipt, report references, and status-page Git metadata only. No migration, mathematics, authorization, accounting, limits, or UI behavior corrections.",
+  "pushCompleted": false,
+  "pushReason": "The established production branch is main; push is stopped to avoid automatic release while required database contracts are missing.",
+  "productionMigrationsInstalled": [],
+  "productionDeploymentId": null,
+  "existingProductionDeploymentId": "dpl_CeACdgNgQgyTGWWYN4ftS7cfX2w6",
+  "productionChanges": [],
+  "blocker": "Exact migration 107 lacks the semicolon after END$function$ at line 509; PostgreSQL SQLSTATE 42601 at COMMIT line 511.",
+  "unrelatedWorkingTreePreserved": true,
+  "historyRewritten": false,
+  "remainingChecks": "Exact migration-chain rehearsal after separately reviewed syntax correction, complete candidate build, then authorized installation/deployment and actual hosted acceptance."
+}

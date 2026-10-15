@@ -168,3 +168,7 @@ The bilingual status pages are prepared locally with 16 corresponding sections. 
 Minimum resumption: separately review the missing statement terminator in migration 107, preserve its complete function bodies and reviewed contracts, then rerun migrations 103–112 and methodology registration against the exact predecessor. Only after successful dependency rehearsal should the preserved candidate be built, pushed to main, installed and deployed. No optimization, resource changes, mathematics changes or architecture expansion is needed to address this specific syntax blocker. The protected archive must remain server-only.
 
 Intended routes (NOT claims of deployed availability): `/en/orchestrators`, `/es/orquestadores`, `/en/orchestrator-status`, `/es/estado-orquestadores`.
+
+### Git preservation receipt
+
+Implementation and evidence preserved in local commit `f641ea56bafa974e8882ec130a638a7d3543c41d` on `codex/orch-deploy-01-preservation`, in a worktree of the existing repository. The follow-up records this receipt and the status-page Git reference only. No push was performed: the established production branch is `main`, and releasing an application with missing contracts would violate the dependency stop rule. Unrelated working-tree work and Git history remain intact. See `GIT-PRESERVATION-RECEIPT.json`.
