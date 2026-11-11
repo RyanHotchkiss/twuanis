@@ -2,6 +2,7 @@
 .packages-workspace .packages-panel{background:var(--analysis-evidence-surface);border:1px solid var(--border);border-radius:12px;backdrop-filter:blur(6px);padding:clamp(.5rem,1.5vw,1.25rem);min-width:0}
 .packages-workspace .customer-commercial{background:transparent;padding:clamp(.5rem,1vw,1rem)}
 .packages-workspace .intelligence-packages-heading{margin:.5rem 0 1.5rem;font-weight:500}
+.packages-workspace .intelligence-packages-infographic{max-width:1222px;margin:2em auto;text-align:center}.packages-workspace .intelligence-packages-infographic img{display:block;width:100%;height:auto}
 .packages-workspace .commercial-grid{align-items:stretch;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
 .packages-workspace .package-title{font-size:clamp(1.35rem,1.8vw,1.8rem)}
 .packages-workspace .package-description{font-size:1rem;line-height:1.55;margin:1rem 0 .5rem;color:var(--muted)}
