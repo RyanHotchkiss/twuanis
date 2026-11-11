@@ -176,7 +176,7 @@
 .navigator a.packageTab:hover,.navigator a.packageTab[aria-current=page]{border-color:var(--hub-package-color);outline:none}
 .navigator a.packageTab:focus-visible{border-color:var(--hub-package-color);outline:2px solid var(--hub-package-color);outline-offset:2px}
 .packageTab[data-package-number="1"],.packageColor[data-package-number="1"]{--hub-package-color:#0066cc}
-.packageTab[data-package-number="2"],.packageColor[data-package-number="2"]{--hub-package-color:#cc0000}
+.packageTab[data-package-number="2"],.packageColor[data-package-number="2"]{--hub-package-color:var(--professional-package-accent)}
 .packageTab[data-package-number="3"],.packageColor[data-package-number="3"]{--hub-package-color:#c7a44b}
 .accessBoundary{position:relative;min-width:0}
 .accessContent{min-width:0}
@@ -198,7 +198,7 @@ span.packageColor{color:var(--hub-package-color,var(--foreground))}
 
 /* Navigator border alpha only; shared Package and access-overlay colors stay opaque. */
 .packageTab[data-package-number="1"]{--hub-package-border:rgb(0 102 204 / .75)}
-.packageTab[data-package-number="2"]{--hub-package-border:rgb(204 0 0 / .75)}
+.packageTab[data-package-number="2"]{--hub-package-border:color-mix(in srgb,var(--professional-package-accent) 75%,transparent)}
 .packageTab[data-package-number="3"]{--hub-package-border:rgb(199 164 75 / .75)}
 
 /* Match the amount size while avoiding the display font’s oversized colón glyph. */

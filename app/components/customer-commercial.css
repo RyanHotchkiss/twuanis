@@ -17,7 +17,7 @@
 .customer-commercial .intelligence-packages-heading{font-size:clamp(2rem,4vw,3rem);line-height:1.2;color:#ff3b00;margin:2.5rem 0 1.5rem}
 .intelligence-package .package-number{color:var(--package-accent)}
 .intelligence-package[data-package-number="1"]{--package-accent:#0066cc}
-.intelligence-package[data-package-number="2"]{--package-accent:#cc0000}
+.intelligence-package[data-package-number="2"]{--package-accent:var(--professional-package-accent)}
 .intelligence-package[data-package-number="3"]{--package-accent:#c7a44b}
 .commercial-grid .intelligence-package:is(:hover,:focus,:focus-within){background:var(--surface-raised);border-color:var(--package-accent);border-width:1px;padding:clamp(1.25rem,2vw,2rem)}
 .customer-commercial .intelligence-package:focus-visible{outline:2px solid var(--package-accent);outline-offset:3px}

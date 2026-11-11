@@ -11,6 +11,7 @@
  cursor:pointer;transition:border-color 140ms ease,box-shadow 140ms ease,background-color 140ms ease;
 }
 .commercial-action[data-commercial-theme=red]{--metal-hover:#861b30;--metal-edge:#9c5461;--metal-ramp:linear-gradient(165deg,#64192b 0%,#96344a 28%,#741d32 52%,#8b2b41 76%,#591625 100%)}
+.commercial-action[data-commercial-theme=professional]{--metal-hover:color-mix(in srgb,var(--professional-package-accent) 78%,#101114);--metal-edge:var(--professional-package-accent);--metal-ramp:linear-gradient(165deg,color-mix(in srgb,var(--professional-package-accent) 55%,#101114) 0%,var(--professional-package-accent) 28%,color-mix(in srgb,var(--professional-package-accent) 72%,#101114) 52%,var(--professional-package-accent) 76%,color-mix(in srgb,var(--professional-package-accent) 50%,#101114) 100%)}
 .commercial-action[data-commercial-theme=blue]{--metal-hover:#174b7e;--metal-edge:#6089ac;--metal-ramp:linear-gradient(165deg,#143655 0%,#28628d 28%,#16466e 52%,#21567f 76%,#102f50 100%)}
 .commercial-action[data-commercial-theme=gold]{--metal-ink:#211600;--metal-hover:#674600;--metal-edge:#ad8a3f;--metal-ramp:linear-gradient(165deg,#c39c44 0%,#f4df98 27%,#c49b3c 52%,#e8cc7c 76%,#bb9130 100%)}
 .customer-commercial .commercial-action,.purchase-review .commercial-action{border-radius:12px;text-decoration:none;padding:.85rem 1.2rem;min-height:48px;margin:.2rem 0}
