@@ -57,7 +57,7 @@ if (typeof params.__ppm2trace === 'string') {
 
       <section style={hero}>
         <h1 style={heading}>
-          Market Intelligence Hub
+          Algorithms
         </h1>
 
 

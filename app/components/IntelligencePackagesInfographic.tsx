@@ -23,7 +23,7 @@ const tiers=[
 const information=[
   {Icon:CalendarDays,en:'Access Options',es:'Opciones de acceso',copy:{en:'Monthly access or 24-hour access.',es:'Acceso mensual o acceso por 24 horas.'}},
   {Icon:Landmark,en:'Bank Properties & Foreclosures',es:'Propiedades bancarias y remates',copy:{en:'Optional monthly access to eligible bank properties and foreclosures.',es:'Acceso mensual opcional a propiedades bancarias y remates elegibles.'}},
-  {Icon:Layers3,en:'Progressive Capabilities',es:'Capacidades progresivas',copy:{en:'Each package includes all capabilities from the prior tier, plus additional analytical engines.',es:'Cada paquete incluye todas las capacidades del nivel anterior, además de motores analíticos adicionales.'}},
+  {Icon:Layers3,en:'Progressive Capabilities',es:'Capacidades progresivas',copy:{en:'Each package includes all capabilities from the prior tier, plus additional algorithms.',es:'Cada paquete incluye todas las capacidades del nivel anterior, además de algoritmos adicionales.'}},
   {Icon:BarChart3,en:'Evidence-Based Analysis',es:'Análisis basado en evidencia',copy:{en:"Measure, compare, and explore Costa Rica's real estate market with transparent, data-driven tools.",es:'Mida, compare y explore el mercado inmobiliario de Costa Rica con herramientas transparentes y basadas en datos.'}}
 ] as const
 
@@ -34,15 +34,15 @@ export default function IntelligencePackagesInfographic({language}:{language:Lan
   return <section className="intelligence-packages-native" data-theme={theme} aria-labelledby="intelligence-packages-native-title">
     <header className="intelligence-packages-native-header">
       <div className="intelligence-packages-brand"><span/><strong>TWUANIS</strong><span/></div>
-      <h2 id="intelligence-packages-native-title">{text('Real Estate Intelligence Packages','Paquetes de Inteligencia Inmobiliaria')}</h2>
-      <p>{text("Explore Costa Rica's real estate market through 3 packages and 17 analytical engines.",'Explore el mercado inmobiliario de Costa Rica a través de 3 paquetes y 17 motores analíticos.')}</p>
+      <h2 id="intelligence-packages-native-title">{text('Algorithm Packages','Paquetes de Algoritmos')}</h2>
+      <p>{text("Explore Costa Rica's real estate market through 3 packages and 17 algorithms.",'Explora el mercado inmobiliario de Costa Rica a través de 3 paquetes y 17 algoritmos.')}</p>
     </header>
 
     <div className="intelligence-packages-tier-grid">
       {tiers.map(tier=><article key={tier.id} className="intelligence-packages-tier" data-tier={tier.key}>
         <h3>{es?tier.es:tier.en}</h3>
         <strong>{tier.count}</strong>
-        <span>{text('Analytical Engines','Motores Analíticos')}</span>
+        <span>{text('Algorithms','Algoritmos')}</span>
         <p>{es?tier.description.es:tier.description.en}</p>
       </article>)}
     </div>

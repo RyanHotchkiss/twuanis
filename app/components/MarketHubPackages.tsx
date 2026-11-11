@@ -987,7 +987,7 @@ export default function MarketHubPackages({
             'Premium Packages',
 
             premiumPackagesDescription:
-            'Advanced intelligence packages for professional market analysis and strategic decision-making.',
+            'Advanced algorithm packages for professional market analysis and strategic decision-making.',
 
             upgrade:
             'Upgrade',

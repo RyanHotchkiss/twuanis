@@ -92,16 +92,16 @@
     "kind": "paragraph",
     "emphasis": "bold",
     "id": 11,
-    "en": "3 Analytical Algorithms | Current Costa Rican Real-Estate Market",
-    "es": "3 algoritmos analíticos | Mercado inmobiliario actual de Costa Rica"
+    "en": "3 Algorithms | Current Costa Rican Real-Estate Market",
+    "es": "3 Algoritmos | Mercado inmobiliario actual de Costa Rica"
   },
   {
     "part": "overlay",
     "kind": "paragraph",
     "emphasis": "none",
     "id": 12,
-    "en": "The Entertainment Package provides three analytical algorithms for examining the geographic distribution, composition, and asking prices of properties in Costa Rica.",
-    "es": "El Paquete de Entretenimiento ofrece tres algoritmos analíticos para examinar la distribución geográfica, la composición y los precios de oferta de propiedades en Costa Rica."
+    "en": "The Entertainment Package provides three algorithms for examining the geographic distribution, composition, and asking prices of properties in Costa Rica.",
+    "es": "El Paquete de Entretenimiento ofrece tres algoritmos para examinar la distribución geográfica, la composición y los precios de oferta de propiedades en Costa Rica."
   },
   {
     "part": "overlay",
@@ -1220,16 +1220,16 @@
     "kind": "subheading",
     "emphasis": "bold",
     "id": 152,
-    "en": "Intelligence Hub",
-    "es": "Centro de Inteligencia"
+    "en": "Algorithms",
+    "es": "Algoritmos"
   },
   {
     "part": "overlay",
     "kind": "paragraph",
     "emphasis": "none",
     "id": 153,
-    "en": "All three Entertainment Package algorithms are available through the existing Intelligence Hub, subject to active Package entitlement and supported market/population authorization.",
-    "es": "Los tres algoritmos del Paquete de Entretenimiento están disponibles en el Centro de Inteligencia existente, sujetos a un derecho activo del Paquete y a la autorización de mercado/población admitida."
+    "en": "All three Entertainment Package algorithms are available through Algorithms, subject to active Package entitlement and supported market/population authorization.",
+    "es": "Los tres algoritmos del Paquete de Entretenimiento están disponibles en Algoritmos, sujetos a un derecho activo del Paquete y a la autorización de mercado/población admitida."
   },
   {
     "part": "overlay",
@@ -1284,8 +1284,8 @@
     "kind": "paragraph",
     "emphasis": "none",
     "id": 159,
-    "en": "Market Composition and Market Summary remain available in the Intelligence Hub rather than being presented as direct subject-property valuation algorithms.",
-    "es": "La Composición del Mercado y el Resumen del Mercado siguen disponibles en el Centro de Inteligencia; no se presentan como algoritmos de valoración directa de una propiedad concreta."
+    "en": "Market Composition and Market Summary remain available in Algorithms rather than being presented as direct subject-property valuation algorithms.",
+    "es": "La Composición del Mercado y el Resumen del Mercado siguen disponibles en Algoritmos; no se presentan como algoritmos de valoración directa de una propiedad concreta."
   },
   {
     "part": "overlay",
@@ -1364,8 +1364,8 @@
     "kind": "paragraph",
     "emphasis": "none",
     "id": 168,
-    "en": "Static example graphs are demonstrations only. They do not contain protected market results and do not execute analytical algorithms.",
-    "es": "Los gráficos estáticos de ejemplo son únicamente demostraciones. No contienen resultados protegidos del mercado ni ejecutan algoritmos analíticos."
+    "en": "Static example graphs are demonstrations only. They do not contain protected market results and do not execute algorithms.",
+    "es": "Los gráficos estáticos de ejemplo son únicamente demostraciones. No contienen resultados protegidos del mercado ni ejecutan algoritmos."
   },
   {
     "part": "overlay",

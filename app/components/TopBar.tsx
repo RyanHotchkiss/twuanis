@@ -560,7 +560,7 @@ const languageUrls={
           />
           )}
 
-          {navigationLabel('hub',isSpanish?'Centro del\nMercado':'Market\nHub',isSpanish?'Mdo.':'Mkt.')}
+          {navigationLabel('hub',isSpanish?'Espacio de\nTrabajo':'Workspace',isSpanish?'Esp.':'Work.')}
         </Link>
 
 
@@ -589,7 +589,7 @@ const languageUrls={
               }
           />
 
-          {navigationLabel('intelligence',isSpanish?'Centro de\nInteligencia':'Intelligence\nHub',isSpanish?'Intel.':'Int.')}
+          {navigationLabel('intelligence',isSpanish?'Algoritmos':'Algorithms',isSpanish?'Alg.':'Alg.')}
         </Link>
       </nav>
       </div>

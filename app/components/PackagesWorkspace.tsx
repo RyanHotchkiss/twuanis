@@ -11,7 +11,7 @@ export default function PackagesWorkspace({language,intelligence,addOns,founding
   const [active,setActive]=useState(selected)
   useEffect(()=>{setActive(selected)},[selected])
   const es=language==='es'
-  const tabs=[{id:'packages',label:es?'Paquetes de inteligencia':'Intelligence Packages'},{id:'addons',label:es?'Complementos para anuncios':'Listing Add Ons'},{id:'founder',label:es?'Membresía de fundador':'Founding Membership'}]
+  const tabs=[{id:'packages',label:es?'Paquetes de Algoritmos':'Algorithm Packages'},{id:'addons',label:es?'Complementos para anuncios':'Listing Add Ons'},{id:'founder',label:es?'Membresía de fundador':'Founding Membership'}]
   const base=es?'/es/inteligencia-de-mercado/paquetes':'/en/market-intelligence/packages'
   return <div className={`packages-workspace ${hub.hub}`}>
     <aside className={hub.sidebarRegion}>

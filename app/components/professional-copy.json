@@ -100,16 +100,16 @@
     "part": "overlay",
     "kind": "paragraph",
     "emphasis": "bold",
-    "en": "7 Analytical Algorithms | Current Costa Rican Real-Estate Market",
-    "es": "7 algoritmos analíticos | Mercado inmobiliario actual de Costa Rica"
+    "en": "7 Algorithms | Current Costa Rican Real-Estate Market",
+    "es": "7 Algoritmos | Mercado inmobiliario actual de Costa Rica"
   },
   {
     "id": 13,
     "part": "overlay",
     "kind": "paragraph",
     "emphasis": "none",
-    "en": "The Professional Package includes all three Entertainment Package algorithms and four additional analytical algorithms designed to examine property matching, geographic Price / m² differences, market comparisons, and the position of eligible listings within their defined Price / m² populations.",
-    "es": "El Paquete Profesional incluye los tres algoritmos del Paquete de Entretenimiento y cuatro algoritmos analíticos adicionales diseñados para examinar coincidencias de propiedades, diferencias geográficas de Precio / m², comparaciones de mercados y la posición de anuncios elegibles dentro de sus poblaciones definidas de Precio / m²."
+    "en": "The Professional Package includes all three Entertainment Package algorithms and four additional algorithms designed to examine property matching, geographic Price / m² differences, market comparisons, and the position of eligible listings within their defined Price / m² populations.",
+    "es": "El Paquete Profesional incluye los tres algoritmos del Paquete de Entretenimiento y cuatro algoritmos adicionales diseñados para examinar coincidencias de propiedades, diferencias geográficas de Precio / m², comparaciones de mercados y la posición de anuncios elegibles dentro de sus poblaciones definidas de Precio / m²."
   },
   {
     "id": 14,
@@ -1732,16 +1732,16 @@
     "part": "overlay",
     "kind": "subheading",
     "emphasis": "bold",
-    "en": "Intelligence Hub",
-    "es": "Centro de Inteligencia"
+    "en": "Algorithms",
+    "es": "Algoritmos"
   },
   {
     "id": 214,
     "part": "overlay",
     "kind": "paragraph",
     "emphasis": "none",
-    "en": "All seven Professional Package algorithms are available through their supported Intelligence Hub interfaces, subject to active entitlement and population authorization.",
-    "es": "Los siete algoritmos del Paquete Profesional están disponibles en sus interfaces admitidas del Centro de Inteligencia, sujetos a un derecho activo y a la autorización de población."
+    "en": "All seven Professional Package algorithms are available through their supported Algorithms interfaces, subject to active entitlement and population authorization.",
+    "es": "Los siete algoritmos del Paquete Profesional están disponibles mediante las interfaces admitidas de Algoritmos, sujetos a un derecho activo y a la autorización de población."
   },
   {
     "id": 215,
@@ -1804,8 +1804,8 @@
     "part": "overlay",
     "kind": "paragraph",
     "emphasis": "none",
-    "en": "The broader Market Comparison and Geographic Price / m² Comparison workflows remain in the Intelligence Hub because they require market-level questions rather than direct subject-property evaluation.",
-    "es": "Los flujos más amplios de Comparación de Mercados y Comparación Geográfica de Precio / m² permanecen en el Centro de Inteligencia porque requieren preguntas a nivel de mercado, no una evaluación directa de la propiedad examinada."
+    "en": "The broader Market Comparison and Geographic Price / m² Comparison workflows remain in Algorithms because they require market-level questions rather than direct subject-property evaluation.",
+    "es": "Los flujos más amplios de Comparación de Mercados y Comparación Geográfica de Precio / m² permanecen en Algoritmos porque requieren preguntas a nivel de mercado, no una evaluación directa de la propiedad examinada."
   },
   {
     "id": 222,

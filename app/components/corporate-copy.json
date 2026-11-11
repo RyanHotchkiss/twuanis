@@ -72,11 +72,11 @@
   {
     "part": "intro",
     "kind": "paragraph",
-    "text": "The Corporate Package provides access to all 17 Twuanis analytical algorithms, including advanced Price / m² distributions, property positioning, cross-dimensional relationships, construction-to-property-area analysis, weighted pricing measures, and user-defined comparable cohorts.",
+    "text": "The Corporate Package provides access to all 17 Twuanis algorithms, including advanced Price / m² distributions, property positioning, cross-dimensional relationships, construction-to-property-area analysis, weighted pricing measures, and user-defined comparable cohorts.",
     "emphasis": "none",
     "id": "corporate-7",
-    "en": "The Corporate Package provides access to all 17 Twuanis analytical algorithms, including advanced Price / m² distributions, property positioning, cross-dimensional relationships, construction-to-property-area analysis, weighted pricing measures, and user-defined comparable cohorts.",
-    "es": "El Paquete Corporativo brinda acceso a los 17 algoritmos analíticos de Twuanis, incluidas distribuciones avanzadas de precio / m², posicionamiento de propiedades, relaciones entre dimensiones, análisis de las áreas de construcción y del terreno, medidas de precio ponderado y cohortes comparables definidas por el usuario.",
+    "en": "The Corporate Package provides access to all 17 Twuanis algorithms, including advanced Price / m² distributions, property positioning, cross-dimensional relationships, construction-to-property-area analysis, weighted pricing measures, and user-defined comparable cohorts.",
+    "es": "El Paquete Corporativo brinda acceso a los 17 algoritmos de Twuanis, incluidas distribuciones avanzadas de precio / m², posicionamiento de propiedades, relaciones entre dimensiones, análisis de las áreas de construcción y del terreno, medidas de precio ponderado y cohortes comparables definidas por el usuario.",
     "proposedChange": false
   },
   {
@@ -142,21 +142,21 @@
   {
     "part": "overlay",
     "kind": "paragraph",
-    "text": "17 Analytical Algorithms | Advanced Costa Rican Real-Estate Market Intelligence",
+    "text": "17 Algorithms | Advanced Costa Rican Real-Estate Market Intelligence",
     "emphasis": "bold",
     "id": "corporate-14",
-    "en": "17 Analytical Algorithms | Advanced Costa Rican Real-Estate Market Intelligence",
-    "es": "17 algoritmos analíticos | Inteligencia avanzada del mercado inmobiliario de Costa Rica",
+    "en": "17 Algorithms | Advanced Costa Rican Real-Estate Market Intelligence",
+    "es": "17 Algoritmos | Inteligencia avanzada del mercado inmobiliario de Costa Rica",
     "proposedChange": false
   },
   {
     "part": "overlay",
     "kind": "paragraph",
-    "text": "The Corporate Package includes all three Entertainment algorithms, all four additional Professional algorithms, and ten advanced analytical algorithms.",
+    "text": "The Corporate Package includes all three Entertainment algorithms, all four additional Professional algorithms, and ten advanced algorithms.",
     "emphasis": "none",
     "id": "corporate-15",
-    "en": "The Corporate Package includes all three Entertainment algorithms, all four additional Professional algorithms, and ten advanced analytical algorithms.",
-    "es": "El Paquete Corporativo incluye los tres algoritmos de Entretenimiento, los cuatro algoritmos adicionales de Profesional y diez algoritmos analíticos avanzados.",
+    "en": "The Corporate Package includes all three Entertainment algorithms, all four additional Professional algorithms, and ten advanced algorithms.",
+    "es": "El Paquete Corporativo incluye los tres algoritmos de Entretenimiento, los cuatro algoritmos adicionales de Profesional y diez algoritmos avanzados.",
     "proposedChange": false
   },
   {
@@ -3391,8 +3391,8 @@
     "part": "overlay",
     "kind": "subheading",
     "emphasis": "none",
-    "en": "Intelligence Hub",
-    "es": "Centro de Inteligencia",
+    "en": "Algorithms",
+    "es": "Algoritmos",
     "proposedChange": true
   },
   {
@@ -3400,8 +3400,8 @@
     "part": "overlay",
     "kind": "paragraph",
     "emphasis": "none",
-    "en": "All seventeen included algorithms remain available through their existing supported Intelligence Hub workflows, subject to current capability, population and account authorization. The customer supplies the required analytical question and explicitly requests execution.",
-    "es": "Los diecisiete algoritmos incluidos permanecen disponibles mediante sus flujos admitidos existentes del Centro de Inteligencia, sujetos a la autorización vigente de capacidad, población y cuenta. El cliente aporta la pregunta analítica requerida y solicita explícitamente la ejecución.",
+    "en": "All seventeen included algorithms remain available through their supported Algorithms workflows, subject to current capability, population and account authorization. The customer supplies the required analytical question and explicitly requests execution.",
+    "es": "Los diecisiete algoritmos incluidos permanecen disponibles mediante los flujos admitidos de Algoritmos, sujetos a la autorización vigente de capacidad, población y cuenta. El cliente aporta la pregunta analítica requerida y solicita explícitamente la ejecución.",
     "proposedChange": true
   },
   {

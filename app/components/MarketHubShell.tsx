@@ -176,7 +176,7 @@ export default function MarketHubShell({
     language === 'es'
       ? {
           marketHub:
-            'Centro del Mercado',
+            'Espacio de Trabajo',
 
           workspace:
             'Centro de Operaciones',
@@ -249,7 +249,7 @@ export default function MarketHubShell({
         }
       : {
           marketHub:
-            'MarketHub',
+            'Workspace',
 
           workspace:
             'Operations Center',
@@ -595,7 +595,7 @@ export default function MarketHubShell({
               }
               aria-controls="marketHubNavigationRail"
               aria-expanded={mobileNavigationOpen}
-              aria-label={language === 'es' ? 'Abrir navegación del Centro del Mercado' : 'Open MarketHub navigation'}
+              aria-label={language === 'es' ? 'Abrir navegación del Espacio de Trabajo' : 'Open Workspace navigation'}
             >
               <Menu
                 size={21}
@@ -611,7 +611,7 @@ export default function MarketHubShell({
           ref={navigationRail}
           role={modalNavigationOpen ? 'dialog' : undefined}
           aria-modal={modalNavigationOpen ? true : undefined}
-          aria-label={modalNavigationOpen ? (language === 'es' ? 'Navegación del Centro del Mercado' : 'MarketHub navigation') : undefined}
+          aria-label={modalNavigationOpen ? (language === 'es' ? 'Navegación del Espacio de Trabajo' : 'Workspace navigation') : undefined}
           className={
             mobileNavigationOpen
               ? 'marketHubRail marketHubRailOpen'
@@ -744,7 +744,7 @@ export default function MarketHubShell({
                 }
                 aria-controls="marketHubNavigationRail"
                 aria-expanded={mobileNavigationOpen}
-                aria-label={language === 'es' ? 'Abrir navegación del Centro del Mercado' : 'Open MarketHub navigation'}
+                aria-label={language === 'es' ? 'Abrir navegación del Espacio de Trabajo' : 'Open Workspace navigation'}
               >
                 <Menu
                   size={21}

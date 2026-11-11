@@ -15,12 +15,12 @@ export const MARKET_HUB_WELCOME_STEPS: OnboardingStep[] = [
   {
     id: 'welcome',
     title: {
-      en: 'Welcome to MarketHub',
-      es: 'Bienvenido al Centro del Mercado'
+      en: 'Welcome to Workspace',
+      es: 'Bienvenido al Espacio de Trabajo'
     },
     description: {
-      en: 'Learn how MarketHub helps you manage every part of your real estate journey.',
-      es: 'Descubre cómo el Centro del Mercado te ayuda a administrar cada parte de tu experiencia inmobiliaria.'
+      en: 'Learn how Workspace helps you manage every part of your real estate journey.',
+      es: 'Descubre cómo el Espacio de Trabajo te ayuda a administrar cada parte de tu experiencia inmobiliaria.'
     },
     completed: false
   },
@@ -45,8 +45,8 @@ export const MARKET_HUB_WELCOME_STEPS: OnboardingStep[] = [
       es: 'Comenzar'
     },
     description: {
-      en: 'Complete your first action to personalize MarketHub.',
-      es: 'Completa tu primera acción para personalizar el Centro del Mercado.'
+      en: 'Complete your first action to personalize Workspace.',
+      es: 'Completa tu primera acción para personalizar el Espacio de Trabajo.'
     },
     completed: false
   }

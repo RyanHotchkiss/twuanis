@@ -57,7 +57,7 @@ export default async function MarketIntelligencePage({
 
       <section style={hero}>
         <h1 style={heading}>
-          Centro de Inteligencia
+          Algoritmos
         </h1>
 
 

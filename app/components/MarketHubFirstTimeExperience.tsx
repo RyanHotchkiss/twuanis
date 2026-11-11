@@ -114,14 +114,14 @@ export default function MarketHubFirstTimeExperience({
           phaseTwo: 'Fase 2',
           stepOne: 'Paso 1',
           heading: userName
-            ? `Bienvenido al Centro del Mercado, ${userName}`
-            : 'Bienvenido al Centro del Mercado',
+            ? `Bienvenido al Espacio de Trabajo, ${userName}`
+            : 'Bienvenido al Espacio de Trabajo',
           purpose:
             'Este es el lugar donde Twuanis recuerda sus propiedades, búsquedas, publicaciones e inteligencia de mercado.',
           welcome: 'Bienvenida',
           quickOverview: 'Resumen Rápido',
           quickOverviewDescription:
-            'El Centro del Mercado organiza toda su actividad inmobiliaria en un solo lugar.',
+            'El Espacio de Trabajo organiza toda su actividad inmobiliaria en un solo lugar.',
           listings: 'Administre sus publicaciones',
           favorites:
             'Recuerde propiedades y búsquedas importantes',
@@ -135,7 +135,7 @@ export default function MarketHubFirstTimeExperience({
           firstActions: 'Primeras Acciones',
           checklist: 'Lista de Primeros Pasos',
           checklistDescription:
-            'Complete estas primeras acciones para comenzar a construir su Centro del Mercado.',
+            'Complete estas primeras acciones para comenzar a construir su Espacio de Trabajo.',
           saveFirstProperty: 'Guardar Primera Propiedad',
           saveFirstPropertyDescription:
             'Guarde una propiedad que quiera recordar o comparar.',
@@ -152,20 +152,20 @@ export default function MarketHubFirstTimeExperience({
           stepTwo: 'Paso 2',
           explore: 'Explorar',
           exploreDescription:
-            'Descubra las herramientas principales disponibles dentro del Centro del Mercado.',
+            'Descubra las herramientas principales disponibles dentro del Espacio de Trabajo.',
           open: 'Explorar',
           phaseThree: 'Fase 3',
           progressStep: 'Paso 1',
           progress: 'Progreso',
           progressDescription:
-            'Vea cuánto ha avanzado en sus primeros pasos dentro del Centro del Mercado.',
+            'Vea cuánto ha avanzado en sus primeros pasos dentro del Espacio de Trabajo.',
           completion: 'Finalización',
           completedCount: 'Completado',
           remainingCount: 'Restante',
           dismissStep: 'Paso 2',
           dismiss: 'Ocultar',
           dismissDescription:
-            'Continúe explorando el Centro del Mercado o elimine esta guía de bienvenida.',
+            'Continúe explorando el Espacio de Trabajo o elimine esta guía de bienvenida.',
           continueExploring:
             'Continuar Explorando',
           hideWelcome:
@@ -176,14 +176,14 @@ export default function MarketHubFirstTimeExperience({
           phaseTwo: 'Phase 2',
           stepOne: 'Step 1',
           heading: userName
-            ? `Welcome to MarketHub, ${userName}`
-            : 'Welcome to MarketHub',
+            ? `Welcome to Workspace, ${userName}`
+            : 'Welcome to Workspace',
           purpose:
             'This is where Twuanis remembers your properties, searches, listings, and market intelligence.',
           welcome: 'Welcome',
           quickOverview: 'Quick Overview',
           quickOverviewDescription:
-            'MarketHub organizes all your real estate activity in one place.',
+            'Workspace organizes all your real estate activity in one place.',
           listings: 'Manage your property listings',
           favorites:
             'Remember important properties and searches',
@@ -197,7 +197,7 @@ export default function MarketHubFirstTimeExperience({
           firstActions: 'First Actions',
           checklist: 'Getting Started Checklist',
           checklistDescription:
-            'Complete these first actions to begin building your MarketHub.',
+            'Complete these first actions to begin building your Workspace.',
           saveFirstProperty: 'Save First Property',
           saveFirstPropertyDescription:
             'Save a property you want to remember or compare.',
@@ -214,20 +214,20 @@ export default function MarketHubFirstTimeExperience({
           stepTwo: 'Step 2',
           explore: 'Explore',
           exploreDescription:
-            'Discover the primary tools available throughout MarketHub.',
+            'Discover the primary tools available throughout Workspace.',
           open: 'Explore',
           phaseThree: 'Phase 3',
           progressStep: 'Step 1',
           progress: 'Progress',
           progressDescription:
-            'See how far you have progressed through your first MarketHub milestones.',
+            'See how far you have progressed through your first Workspace milestones.',
           completion: 'Completion',
           completedCount: 'Completed',
           remainingCount: 'Remaining',
           dismissStep: 'Step 2',
           dismiss: 'Dismiss',
           dismissDescription:
-            'Continue exploring MarketHub or remove this welcome guide.',
+            'Continue exploring Workspace or remove this welcome guide.',
           continueExploring:
             'Continue Exploring',
           hideWelcome:

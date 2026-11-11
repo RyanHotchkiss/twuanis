@@ -34,7 +34,7 @@ export default function AuthCallbackPage(){
   return()=>{active=false;window.clearTimeout(timer)}
  },[router])
  const t=accountCopy(locale)
- return <main style={main}><div style={card}><h1 style={heading}>{locale==='es'?'Centro del Mercado':'MarketHub'}</h1><p role={failed?'alert':'status'} style={messageStyle}>{failed?t.badLink:t.callback}</p>{failed&&<a href={'/login?lang='+locale+'&next='+encodeURIComponent(settingsPath(locale))}>{locale==='es'?'Iniciar sesión':'Sign in'}</a>}</div></main>
+ return <main style={main}><div style={card}><h1 style={heading}>{locale==='es'?'Espacio de Trabajo':'Workspace'}</h1><p role={failed?'alert':'status'} style={messageStyle}>{failed?t.badLink:t.callback}</p>{failed&&<a href={'/login?lang='+locale+'&next='+encodeURIComponent(settingsPath(locale))}>{locale==='es'?'Iniciar sesión':'Sign in'}</a>}</div></main>
 }
 
 const main = {
