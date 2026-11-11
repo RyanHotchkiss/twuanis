@@ -1,0 +1,11 @@
+.aside{
+  min-width:0;
+  width:100%;
+  align-self:start;
+  position:sticky;
+  top:1rem;
+}
+
+@media (max-width:48rem){
+  .aside{position:relative;top:auto}
+}

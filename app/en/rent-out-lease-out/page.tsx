@@ -1,5 +1,5 @@
 'use client'
-import ListingIntelligencePanel from '@/app/components/ListingIntelligencePanel'
+import ListingIntelligenceAside from '@/app/components/ListingIntelligenceAside'
 
 import { useEffect, useState } from 'react'
 
@@ -46,7 +46,6 @@ import ImagePreviewGridS from '@/app/components/ImagePreviewGridS'
 import ImageUploaderS from '@/app/components/ImageUploaderS'
 import WhatsAppInputS from '@/app/components/WhatsAppInputS'
 import CsvStagingModal from '@/app/components/CsvStagingModal'
-import RentalPropertyDefinitionPanel from '@/app/components/RentalPropertyDefinitionPanel'
 import PropertyTypeFilter from '@/app/components/filter-bar/PropertyTypeFilter'
 import TopBar from '@/app/components/TopBar'
 import MarketHubAuthGate from '@/app/components/MarketHubAuthGate'
@@ -981,33 +980,7 @@ formattedData
 
                 {/* RIGHT SIDE */}
 
-                <div
-                style={{
-                    background: 'var(--surface)',
-                    border: '.0625rem solid #222',
-                    borderRadius: '1.5rem',
-                    padding: '2rem',
-
-                    position: isMobile
-                    ? 'relative'
-                    : 'sticky',
-
-                    top: isMobile
-                    ? '0'
-                    : '1rem',
-
-                    height: 'fit-content',
-
-                    width: '100%'
-                }}
-                >
-
-                <RentalPropertyDefinitionPanel
-                propertyData={propertyData}
-                usdToCrcRate={usdToCrcRate}
-                />
-
-                </div>
+                <ListingIntelligenceAside context={{kind:"draft",transaction:"rent",draft:propertyData}} language="en" />
 
                 </div>
 
@@ -1028,7 +1001,6 @@ formattedData
 
                 )}
 
-                   <ListingIntelligencePanel context={{kind:"draft",transaction:"rent",draft:propertyData}} language={'en'} />
 </main>
                 </MarketHubAuthGate>
             )

@@ -1,5 +1,5 @@
 'use client'
-import ListingIntelligencePanel from '@/app/components/ListingIntelligencePanel'
+import ListingIntelligenceAside from '@/app/components/ListingIntelligenceAside'
 
 import { useEffect, useState } from 'react'
 
@@ -62,7 +62,6 @@ import WhatsAppInputS from '@/app/components/WhatsAppInputS'
 
 
 import CsvStagingModal from '@/app/components/CsvStagingModal'
-import PropertyDefinitionPanel from '@/app/components/PropertyDefinitionPanel'
 import PropertyTypeFilterS from '@/app/components/filter-bar/PropertyTypeFilterS'
 import TopBar from '@/app/components/TopBar'
 import CreateListingButtonSXL from '@/app/components/CreateListingButtonSXL'
@@ -973,33 +972,7 @@ console.log('BedroomFilterS', BedroomFilterS)
 
                 {/* RIGHT SIDE */}
 
-                <div
-                style={{
-                    background: 'var(--surface)',
-                    border: '.0625rem solid #222',
-                    borderRadius: '1.5rem',
-                    padding: '2rem',
-
-                    position: isMobile
-                    ? 'relative'
-                    : 'sticky',
-
-                    top: isMobile
-                    ? '0'
-                    : '1rem',
-
-                    height: 'fit-content',
-
-                    width: '100%'
-                }}
-                >
-
-                <PropertyDefinitionPanel
-                propertyData={propertyData}
-                usdToCrcRate={usdToCrcRate}
-                />
-
-                </div>
+                <ListingIntelligenceAside context={{kind:"draft",transaction:"sale",draft:propertyData}} language="en" />
 
                 </div>
 
@@ -1019,7 +992,6 @@ console.log('BedroomFilterS', BedroomFilterS)
 
                 )}
 
-                <ListingIntelligencePanel context={{kind:"draft",transaction:"sale",draft:propertyData}} language={'en'} />
 </main>
 
                 )
