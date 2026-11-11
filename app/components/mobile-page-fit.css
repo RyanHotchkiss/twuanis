@@ -102,3 +102,40 @@
  .twuanis-top-navigation .topbar-mobile-label{display:block!important;max-width:var(--topbar-mobile-icon)!important;margin-top:.25em!important;font-size:clamp(.38em,1.7vw,.62em)!important;line-height:1!important;text-align:center!important;white-space:nowrap!important;overflow:visible!important}
 }
 @media(min-width:25.0625em) and (max-width:768px){.twuanis-topbar-row{--topbar-mobile-pair-gap:1.72em}}
+
+/* Each existing topbar destination owns its visual shell.  The surrounding
+   category wrappers remain only as layout structure, so label state and the
+   shared navigation behavior continue to belong to their original controls. */
+.twuanis-topbar-row{gap:clamp(.35em,1.2vw,1em)!important}
+.twuanis-topbar-row>.twuanis-topbar-sell-container,
+.twuanis-topbar-row>.twuanis-mobile-topbar,
+.twuanis-topbar-row .twuanis-mobile-topbar>.twuanis-topbar-navigation-group,
+.twuanis-topbar-row .twuanis-top-navigation{display:contents!important}
+.twuanis-topbar-row .twuanis-top-navigation>a,
+.twuanis-topbar-row .twuanis-top-navigation>button{
+ display:flex!important;
+ flex:0 0 clamp(4.25em,8vw,5.5em)!important;
+ inline-size:clamp(4.25em,8vw,5.5em)!important;
+ min-block-size:7.25em!important;
+ box-sizing:border-box!important;
+ align-items:center!important;
+ justify-content:center!important;
+ padding:.65em!important;
+ background:var(--surface)!important;
+ border:.12em solid var(--border)!important;
+ border-radius:1em!important;
+ box-shadow:var(--topbar-mobile-shadow,0 .5em 1.875em rgba(0,0,0,.18))!important;
+ backdrop-filter:blur(.875em)!important;
+ -webkit-backdrop-filter:blur(.875em)!important;
+}
+
+@media(max-width:768px){
+ .twuanis-topbar-row{gap:clamp(.1em,.7vw,.3em)!important}
+ .twuanis-topbar-row .twuanis-top-navigation>a,
+ .twuanis-topbar-row .twuanis-top-navigation>button{
+  flex:0 1 calc(var(--topbar-mobile-icon) + .75em)!important;
+  inline-size:calc(var(--topbar-mobile-icon) + .75em)!important;
+  min-block-size:calc(var(--topbar-mobile-icon) + 2.9em)!important;
+  padding:.22em!important;
+ }
+}
