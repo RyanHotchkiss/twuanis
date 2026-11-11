@@ -16,7 +16,6 @@ import {
   Megaphone,
   Compass,
   BookOpen,
-  Heart,
   Box,
   Menu,
 } from 'lucide-react'
@@ -561,7 +560,7 @@ const languageUrls={
           />
           )}
 
-          {navigationLabel('hub',isSpanish?'Centro del\nMercado':'Market\nHub',isSpanish?'Centro del\nMercado':'Market\nHub')}
+          {navigationLabel('hub',isSpanish?'Centro del\nMercado':'Market\nHub',isSpanish?'Mdo.':'Mkt.')}
         </Link>
 
 
@@ -590,7 +589,7 @@ const languageUrls={
               }
           />
 
-          {navigationLabel('intelligence',isSpanish?'Centro de\nInteligencia':'Intelligence\nHub',isSpanish?'Centro de\nInteligencia':'Intel\nHub')}
+          {navigationLabel('intelligence',isSpanish?'Centro de\nInteligencia':'Intelligence\nHub',isSpanish?'Intel.':'Int.')}
         </Link>
       </nav>
       </div>
@@ -619,7 +618,7 @@ const languageUrls={
             color={GOLD}
           />
 
-          {navigationLabel('buy',isSpanish?'Comprar\nAlquilar\nArrendar':'Buy\nRent\nLease',isSpanish?'Compra':'Buy\nRent')}
+          {navigationLabel('buy',isSpanish?'Comprar\nAlquilar\nArrendar':'Buy\nRent\nLease',isSpanish?'Comp.':'Buy')}
         </Link>
 
 
@@ -628,29 +627,6 @@ const languageUrls={
           {navigationLabel('banks',isSpanish?'Remates':'Bank\nProperties',isSpanish?'Remates':'Bank')}
         </Link>
 
-        {/* FAVORITES */}
-        {authenticated&&<Link data-tour-id="N06"
-          href={
-            isSpanish
-              ? '/es/favoritos'
-              : '/en/favorites'
-          }
-          style={itemStyle()}
-          onMouseEnter={() =>
-            setHoveredItem('favorites')
-          }
-          onMouseLeave={() =>
-            setHoveredItem(null)
-          }
-        >
-          <Heart
-            size={TOPBAR_ICON_SIZE}
-            strokeWidth={0.65}
-            color={UTILITY_ORANGE}
-          />
-
-          {navigationLabel('favorites',isSpanish?'Favoritos':'Favorites','Favs')}
-        </Link>}
       </nav>
       </div>
 
@@ -678,7 +654,7 @@ const languageUrls={
             color={UTILITY_ORANGE}
           />
 
-          {navigationLabel('packages',isSpanish?'Paquetes':'Packages',isSpanish?'Paq.':'Packs')}
+          {navigationLabel('packages',isSpanish?'Paquetes':'Packages',isSpanish?'Paq.':'Pks.')}
         </Link>
 
 
@@ -692,7 +668,7 @@ const languageUrls={
           onMouseLeave={() => setHoveredItem(null)}
         >
           <BookOpen size={TOPBAR_ICON_SIZE} strokeWidth={0.65} color={UTILITY_ORANGE}/>
-          {navigationLabel('knowledge',isSpanish ? 'CONOCIMIENTO' : 'KNOWLEDGE',isSpanish ? 'CONOCI\nMIENTO' : 'KNOWL\nEDGE')}
+          {navigationLabel('knowledge',isSpanish ? 'CONOCIMIENTO' : 'KNOWLEDGE',isSpanish ? 'Saber' : 'Know')}
         </Link>
 
       </nav>
@@ -700,7 +676,7 @@ const languageUrls={
 
       <div className="twuanis-topbar-navigation-group" style={navigationGroupStyle}>
       <nav className="twuanis-top-navigation" data-labels-visible={showLabels} style={{...navContainer,width:'auto',overflowX:'visible'}}>
-        <PreferencesMenu authenticated={authenticated} languageUrls={languageUrls} language={isSpanish?'es':'en'} iconSize={TOPBAR_ICON_SIZE} buttonStyle={itemStyle()} showLabel={!isMobile} labelStyle={labelStyle(labelVisible('appearance'))} onMouseEnter={()=>setHoveredItem('appearance')} onMouseLeave={()=>setHoveredItem(null)}/>
+        <PreferencesMenu authenticated={authenticated} languageUrls={languageUrls} language={isSpanish?'es':'en'} iconSize={TOPBAR_ICON_SIZE} buttonStyle={itemStyle()} showLabel mobileLabel={isSpanish?'Pref.':'Pref.'} labelStyle={labelStyle(labelVisible('appearance'))} mobileLabelStyle={labelStyle(labelVisible('appearance'),true)} onMouseEnter={()=>setHoveredItem('appearance')} onMouseLeave={()=>setHoveredItem(null)}/>
 
       </nav>
       </div>

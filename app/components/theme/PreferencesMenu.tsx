@@ -5,7 +5,7 @@ import {supabase} from '@/lib/supabase'
 import {Settings} from 'lucide-react'
 import {useSiteTheme} from './ThemeProvider'
 import type {SiteFont,SiteTheme,SiteBackground} from './theme-contract'
-export default function PreferencesMenu({authenticated=false,languageUrls,language,iconSize,buttonStyle,labelStyle,showLabel,onMouseEnter,onMouseLeave}:{authenticated?:boolean;languageUrls:{en:string;es:string};language:'en'|'es';iconSize:number;buttonStyle:CSSProperties;labelStyle:CSSProperties;showLabel:boolean;onMouseEnter:()=>void;onMouseLeave:()=>void}){
+export default function PreferencesMenu({authenticated=false,languageUrls,language,iconSize,buttonStyle,labelStyle,mobileLabelStyle,mobileLabel,showLabel,onMouseEnter,onMouseLeave}:{authenticated?:boolean;languageUrls:{en:string;es:string};language:'en'|'es';iconSize:number;buttonStyle:CSSProperties;labelStyle:CSSProperties;mobileLabelStyle:CSSProperties;mobileLabel:string;showLabel:boolean;onMouseEnter:()=>void;onMouseLeave:()=>void}){
  const {theme,setTheme,font,setFont,background,setBackground}=useSiteTheme(),es=language==='es',title=es?'Preferencias':'Preferences',id=useId()
  const [open,setOpen]=useState(false),[position,setPosition]=useState({top:0,left:0,maxHeight:400})
  const [signingOut,setSigningOut]=useState(false),[signoutError,setSignoutError]=useState('')
@@ -32,7 +32,7 @@ export default function PreferencesMenu({authenticated=false,languageUrls,langua
  },[open])
  return <><button data-tour-id="N10" ref={trigger} type="button" data-theme-control="true" aria-label={title} title={title} aria-haspopup="dialog" aria-expanded={open} aria-controls={open?id:undefined} onClick={()=>setOpen(value=>!value)} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} style={buttonStyle}>
   <span className="topbar-theme-icon preferences-gear" aria-hidden="true"><Settings size={iconSize} strokeWidth={1.2}/></span>
-  {showLabel&&<span className="topbar-desktop-label" style={labelStyle}>{title}</span>}
+  {showLabel&&<><span className="topbar-desktop-label" style={labelStyle}>{title}</span><span className="topbar-mobile-label" style={mobileLabelStyle}>{mobileLabel}</span></>}
  </button>{open&&createPortal(<div ref={panel} id={id} className="site-preferences" role="dialog" aria-label={title} style={position}>
   <h2>{title}</h2>
   <fieldset className="preferences-language"><legend>{es?'Idioma':'Language'}</legend>{([{value:'en',label:'English'},{value:'es',label:'Español'}] as const).map(choice=><label key={choice.value}><input type="radio" name={id+'-language'} value={choice.value} checked={language===choice.value} onChange={()=>{if(language!==choice.value)window.location.assign(languageUrls[choice.value])}}/><span>{choice.label}</span></label>)}</fieldset>
