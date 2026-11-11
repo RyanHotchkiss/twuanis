@@ -7,10 +7,12 @@ import {createPortal} from 'react-dom'
 import {exampleRelease,loadExample,type PublicExample} from './registry'
 import styles from './examples.module.css'
 const ExampleReport=lazy(()=>import('./ExampleReport'))
-export default function ExampleViewer({engine,engineName,language,textLink=false,compactLabel=false}:{engine:string;engineName:string;language:'en'|'es';textLink?:boolean;compactLabel?:boolean}){
+export default function ExampleViewer({engine,engineName,language,textLink=false,compactLabel=false,onOpenChange}:{engine:string;engineName:string;language:'en'|'es';textLink?:boolean;compactLabel?:boolean;onOpenChange?:(open:boolean)=>void}){
  const [ready,setReady]=useState(false),[open,setOpen]=useState(false),[artifact,setArtifact]=useState<PublicExample|null>(null),[failed,setFailed]=useState(false)
- const trigger=useRef<HTMLButtonElement>(null),dialog=useRef<HTMLDialogElement>(null),id=useId(),es=language==='es'
+ const trigger=useRef<HTMLButtonElement>(null),dialog=useRef<HTMLDialogElement>(null),onOpenChangeRef=useRef(onOpenChange),id=useId(),es=language==='es'
  useEffect(()=>setReady(true),[])
+ useEffect(()=>{onOpenChangeRef.current=onOpenChange},[onOpenChange])
+ useEffect(()=>{if(!open)return;onOpenChangeRef.current?.(true);return()=>onOpenChangeRef.current?.(false)},[open])
  useEffect(()=>{
   if(!open)return
   const controller=new AbortController(),previous=document.body.style.overflow
