@@ -1,0 +1,317 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "revision",
+    "sequence",
+    "previousDigest",
+    "authorityDigest",
+    "representationManifestDigest",
+    "entries",
+    "attestations"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "revision": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "previousDigest": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "authorityDigest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "representationManifestDigest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 17,
+      "maxItems": 17,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "namespace",
+          "canonicalKey",
+          "jurisdiction",
+          "publicId",
+          "aliases",
+          "state",
+          "sourceRevision",
+          "representationRevision",
+          "reviewEvidence",
+          "ownerDecision",
+          "issuance",
+          "retirement"
+        ],
+        "properties": {
+          "namespace": {
+            "const": "existing-population-engine-registry"
+          },
+          "canonicalKey": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "jurisdiction": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "publicId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uri",
+                "pattern": "^https://",
+                "maxLength": 4096
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "publicId",
+                "targetId"
+              ],
+              "properties": {
+                "publicId": {
+                  "type": "string",
+                  "format": "uri",
+                  "pattern": "^https://",
+                  "maxLength": 4096
+                },
+                "targetId": {
+                  "type": "string",
+                  "format": "uri",
+                  "pattern": "^https://",
+                  "maxLength": 4096
+                }
+              }
+            }
+          },
+          "state": {
+            "enum": [
+              "PROPOSED",
+              "APPROVED",
+              "ISSUED",
+              "RETIRED"
+            ]
+          },
+          "sourceRevision": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "representationRevision": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "reviewEvidence": {
+            "anyOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "reference",
+                  "sha256"
+                ],
+                "properties": {
+                  "reference": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4096
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "ownerDecision": {
+            "anyOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "reference",
+                  "sha256"
+                ],
+                "properties": {
+                  "reference": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4096
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "issuance": {
+            "anyOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "firstPublishedAt",
+                  "evidence"
+                ],
+                "properties": {
+                  "firstPublishedAt": {
+                    "type": "string",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                    "format": "date-time"
+                  },
+                  "evidence": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "reference",
+                      "sha256"
+                    ],
+                    "properties": {
+                      "reference": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 4096
+                      },
+                      "sha256": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9]{64}$"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "retirement": {
+            "anyOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "retiredAt",
+                  "reasonReference"
+                ],
+                "properties": {
+                  "retiredAt": {
+                    "type": "string",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+                    "format": "date-time"
+                  },
+                  "reasonReference": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "reference",
+                      "sha256"
+                    ],
+                    "properties": {
+                      "reference": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 4096
+                      },
+                      "sha256": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9]{64}$"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "attestations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "keyId",
+          "scope",
+          "signature"
+        ],
+        "properties": {
+          "keyId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "scope": {
+            "enum": [
+              "review",
+              "issue",
+              "retire"
+            ]
+          },
+          "signature": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        }
+      }
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Twuanis server-only engine publisher manifest (non-publishing)",
+  "description": "Structural validation plus mandatory validation.ts semantic/history/source/auth controls. Schema success alone is not approval."
+}

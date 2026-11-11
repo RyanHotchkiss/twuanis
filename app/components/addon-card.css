@@ -1,0 +1,34 @@
+.customer-commercial .addon-card{--addon-accent:#ff6b35;display:flex;flex-direction:column;gap:1rem;border:1px solid var(--border);border-top:3px solid var(--addon-accent);padding:clamp(1rem,1.5vw,1.5rem);background:var(--surface);border-radius:12px}
+.customer-commercial .addon-card:focus-within,.customer-commercial .addon-card:hover{border-color:var(--addon-accent)}
+.customer-commercial .addon-card h3{font-size:clamp(1.4rem,2vw,1.8rem);font-weight:600;line-height:1.3;margin:0;color:var(--foreground)}
+.customer-commercial .addon-card p{margin:0;line-height:1.65}
+.customer-commercial .addon-group{margin:2rem 0 1rem;font-size:1.15rem;font-weight:500;color:var(--foreground)}
+.customer-commercial .addon-duration{color:var(--muted);font-size:.9rem}
+.customer-commercial .addon-pricing{border:1px solid var(--addon-accent);border-radius:10px;padding:1rem;display:grid;gap:.65rem;background:var(--background);min-width:0}
+.customer-commercial .addon-standard{font-size:.9rem;color:var(--muted)}
+.customer-commercial .addon-current{font-size:clamp(1.65rem,2.4vw,2.2rem);font-weight:600;line-height:1.25;overflow-wrap:anywhere}
+.customer-commercial .addon-price-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.customer-commercial .addon-deadline{font-size:.8rem;color:var(--muted)}
+.customer-commercial .addon-action{margin-top:auto;border:1px solid var(--addon-accent);border-radius:8px;padding:.75rem;min-height:44px;text-align:center;color:var(--foreground);text-decoration:none;background:var(--background)}
+.customer-commercial .addon-action:hover{background:var(--surface-raised)}
+.customer-commercial .addon-tiers{width:100%;font-size:.9rem;border-collapse:collapse;table-layout:fixed}
+.customer-commercial .addon-tiers th,.customer-commercial .addon-tiers td{text-align:left;padding:.6rem .25rem;border-bottom:1px solid var(--border);overflow-wrap:anywhere;vertical-align:top}
+.customer-commercial .addon-tiers th{font-size:.75rem;color:var(--muted);font-weight:400}
+.customer-commercial .addon-tier-price{font-size:1.2rem;font-weight:600;display:block}
+.customer-commercial .addon-card[data-accent=emerald]{--addon-accent:#30b87b}
+.customer-commercial .addon-card[data-accent=teal]{--addon-accent:#29b9a5}
+.customer-commercial .addon-card[data-accent=orange]{--addon-accent:#ff6b35}
+.customer-commercial .addon-card[data-accent=yellow]{--addon-accent:#f2cf45}
+.customer-commercial .addon-card[data-accent=coral]{--addon-accent:#f07891}
+.customer-commercial .addon-card[data-accent=lime]{--addon-accent:#a5c94e}
+.customer-commercial .addon-card[data-accent=cyan]{--addon-accent:#45b8e0}
+
+.customer-commercial .addon-card .addon-current>div+div{font-size:.65em;font-weight:400;color:var(--muted)}
+.customer-commercial .addon-card{min-width:0}.customer-commercial .addon-card .addon-action{font:inherit;cursor:pointer}
+@media(max-width:760px){.customer-commercial .addon-card{padding:1rem}.customer-commercial .addon-current{font-size:1.9rem}}
+
+.customer-commercial>h2,.listing-addon-workspace>h2{font-size:clamp(1.65rem,2.5vw,2.25rem);font-weight:500;margin:1.25rem 0}.customer-commercial .addon-card h3{font-size:clamp(1.25rem,1.7vw,1.65rem)}.customer-commercial .addon-current{font-size:clamp(1.9rem,2.6vw,2.5rem)}.customer-commercial .addon-card>p{font-size:1rem}.customer-commercial .addon-card .addon-duration,.customer-commercial .addon-card>p:last-child{font-size:.85rem;color:var(--muted)}.customer-commercial .addon-standard,.customer-commercial .addon-deadline{font-size:.8rem}.listing-addon-workspace>p{line-height:1.6}.listing-addon-workspace>label{display:block;margin:1rem 0}.listing-addon-workspace select{max-width:100%}.addon-active-count{font-weight:500}
+.listing-addon-workspace>label{box-sizing:border-box;width:100%;max-width:100%;min-width:0}.listing-addon-workspace>label select{box-sizing:border-box;width:100%;min-width:0;max-width:100%}
+body:has(.customer-commercial>nav[aria-label]) .marketHubWorkspaceTitle{font-size:clamp(2rem,3vw,2.75rem);line-height:1.2}
+
+.customer-commercial .commercial-currency-pair{border:1px solid var(--package-accent,var(--border));border-radius:10px;padding:1rem;display:grid;gap:.5rem}.customer-commercial .commercial-currency-pair .package-secondary-price{font-size:1rem;font-weight:400;color:var(--muted)}.customer-commercial .addon-current>div+div{font-size:.65em;font-weight:400;color:var(--muted)}

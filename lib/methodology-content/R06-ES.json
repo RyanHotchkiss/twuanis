@@ -1,0 +1,127 @@
+{
+  "kind": "UNPUBLISHED_PUBLIC_PROJECTION_CANDIDATE",
+  "engineId": "configuration",
+  "name": "Frecuencia de configuración de propiedades",
+  "locale": "es",
+  "explanationRevision": "KA02-2026-10-15-R1/R06",
+  "historicalReleaseReference": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+  "publicationState": "WITHHELD_PENDING_KA02_OWNER_REVIEW",
+  "inputs": [
+    {
+      "name": "canonicalScope",
+      "meaning": "Capacidad/población autenticada existente, transacción, geografía/tipo canónico y selección explícita del cliente; se mantienen identidades distintas por origen.",
+      "unit": "canonical IDs and scope / IDs y ámbito canónicos",
+      "evidenceKind": "scope",
+      "required": true,
+      "missingBehavior": "Deny/unavailable; never widen scope / denegar/no disponible; nunca ampliar ámbito"
+    },
+    {
+      "name": "canonicalEvidence",
+      "meaning": "Observaciones actuales elegibles privadas o bancarias mediante lectores/procedencia canónicos existentes; para bancos se requiere venta directa/ciclo de vida/transacción original, no tasación.",
+      "unit": "source-qualified records / registros con origen",
+      "evidenceKind": "identity",
+      "required": true,
+      "missingBehavior": "Missing/inconsistent acquisition is unavailable or excluded with explicit reason; not a successful empty market / adquisición ausente/incoherente no disponible o exclusión explícita; no mercado vacío exitoso"
+    },
+    {
+      "name": "canonicalCharacteristics",
+      "meaning": "Pertenencias canónicas positivas y evidencia tipada; se conservan distinciones exacto/intervalo/desconocido.",
+      "unit": "canonical IDs / IDs canónicos",
+      "evidenceKind": "category",
+      "required": false,
+      "missingBehavior": "Unknown never becomes false or an invented selected value / desconocido nunca se convierte en falso ni valor seleccionado inventado"
+    }
+  ],
+  "calculationStages": [
+    {
+      "id": "acquire",
+      "meaning": "Adquirir solo evidencia canónica actualmente autorizada; rechazar entradas incompletas, incoherentes o fuera de ámbito.",
+      "formulaRefs": []
+    },
+    {
+      "id": "calculate",
+      "meaning": "Aplicar la secuencia existente de elegibilidad, normalización y fórmulas del motor; conservar cada estado no establecido.",
+      "formulaRefs": [
+        "joint-frequency"
+      ]
+    },
+    {
+      "id": "deliver",
+      "meaning": "Devolver evidencia vinculada a origen/versión mediante controles existentes; consultar metodología nunca ejecuta el motor ni cobra ejecución.",
+      "formulaRefs": []
+    }
+  ],
+  "question": "¿Qué proporción del mercado base seleccionado demuestra positivamente todas las condiciones de esta configuración?",
+  "applications": [
+    "Vendedores y compradores pueden medir la frecuencia observada de una combinación precisa sin convertir evidencia desconocida en coincidencia."
+  ],
+  "formulas": [
+    {
+      "id": "joint-frequency",
+      "equation": "share=100×N_all_confirmed/N_base",
+      "variables": [
+        {
+          "symbol": "N_all_confirmed",
+          "meaning": "Anuncios que coinciden con todas las preferencias seleccionadas",
+          "unit": "count"
+        },
+        {
+          "symbol": "N_base",
+          "meaning": "Anuncios elegibles del mercado base antes de la intersección de configuración",
+          "unit": "count"
+        }
+      ],
+      "statisticalMethod": "Descriptive / descriptivo",
+      "denominator": "N_base>0",
+      "normalization": "Canonical source identity / identidad canónica de origen",
+      "precisionAndRounding": "IEEE754 binary64; analytical values not display-rounded / valores analíticos sin redondeo de presentación. Share display toFixed(2) / porcentaje presentado con2 decimales."
+    }
+  ],
+  "population": {
+    "definition": "Mercado actual observable de anuncios/oferta elegibles dentro del ámbito explícito con origen, no transacciones históricas. Resultados privados y bancarios separados; solo las ramas existentes que exponen crossMarket admiten cálculo entre mercados.",
+    "eligibility": [
+      "Mercado actual observable de anuncios/oferta elegibles dentro del ámbito explícito con origen, no transacciones históricas. Resultados privados y bancarios separados; solo las ramas existentes que exponen crossMarket admiten cálculo entre mercados.",
+      "Salvo matching/configuration, los grupos de preferencias seleccionados del adaptador deben coincidir positivamente (algún valor del grupo y todos los grupos). Matching ordena evidencia; configuration cuenta la conjunción completa respecto a la base.",
+      "Venta y alquiler mensual nunca se mezclan. La reducción bancaria canónica requiere DIRECT_SALE, transacción de venta original exacta, ciclo PUBLISHED, vigencia/procedencia válidas y geografía/tipo coherentes; no se inventa alquiler bancario.",
+      "Enteros seguros no negativos con0≤coincidentes≤mercado; mercado0 produce porcentaje null."
+    ],
+    "exclusions": [
+      "La evidencia requerida ausente, contradictoria, inválida, no confirmada o desactualizada no se convierte en cero, valor supuesto ni población ampliada silenciosamente.",
+      "Sin área exacta desde categoría/intervalo; construcción no sustituye huella; importes de oferta no son transacciones realizadas; identidades monetarias/fecha BCCR explícitas."
+    ]
+  },
+  "outputs": [
+    {
+      "name": "marketSize/matchingCount/percentage/scarcityShare",
+      "meaning": "Conteo base, conteo de conjunción y proporción",
+      "unit": "count; percent",
+      "interpretation": "Todas las condiciones deben ser MATCH. scarcityShare se presenta con dos decimales; no es una valoración ni una prima por escasez."
+    },
+    {
+      "name": "selectedCombination/attributes/combinations",
+      "meaning": "Conjunción explícita seleccionada y explicación descriptiva",
+      "unit": "canonical labels; empty list",
+      "interpretation": "Sin selección, matchingCount=marketSize; combinations se devuelve vacío, no como combinaciones recomendadas descubiertas."
+    }
+  ],
+  "resultStates": {
+    "empty": "Una población seleccionada vacía establecida tiene conteo cero y resúmenes numéricos indefinidos; conservar los estados específicos siguientes.",
+    "zero": "Conteos cero y diferencias/IQR cero válidos pueden tener sentido; precio de oferta o área de normalización cero/negativos no son observaciones positivas elegibles.",
+    "invalid": "Entrada inválida, identidad contradictoria, evidencia canónica duplicada o ámbito mezclado sigue la rama existente de error/exclusión; sin resultado exitoso inventado.",
+    "unavailable": "Autoridad, derechos actuales, instantánea coherente, tipo de cambio o sujeto requeridos ausentes son no disponibles/denegados bajo controles existentes; nunca sustituto vacío exitoso.",
+    "undefined": "mercado0→EMPTY_BASE_MARKET; de lo contrario ESTABLISHED. Cero coincidencias reales en un mercado no vacío da0%; desconocido no establece pertenencia a la conjunción."
+  },
+  "supportedInterpretation": "Vendedores y compradores pueden medir la frecuencia observada de una combinación precisa sin convertir evidencia desconocida en coincidencia.",
+  "unsupportedInterpretations": [
+    "¿Cuál fue el precio realizado, apreciación histórica, rendimiento causal, pronóstico o resultado garantizado de inversión? Este motor del mercado actual de oferta no los establece.",
+    "La frecuencia conjunta no es la multiplicación independiente de frecuencias marginales, una medida de demanda ni un efecto sobre el precio."
+  ],
+  "packageMembership": [
+    {
+      "packageId": "pkg-pricing-position-relationships",
+      "capabilityId": "cap-property-configuration-frequency",
+      "availability": "Configured at original observation; purchased rights and production execution verified separately / configurado en observación original; derechos comprados y ejecución de producción se verifican por separado"
+    }
+  ],
+  "evidenceState": "DOCUMENTED; MATHEMATICALLY_VERIFIED_FOR_PINNED_CONTRACTS; BILINGUAL_TECHNICAL_REVIEWED; SCHEMA_VALIDATED; DISCLOSURE_ALLOWLIST_CHECKED; OWNER_NOT_ACCEPTED"
+}

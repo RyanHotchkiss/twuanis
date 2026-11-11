@@ -1,0 +1,183 @@
+import type { CanonicalEvidence } from '@/lib/canonical-listing-reader'
+
+import { supabase } from '@/lib/supabase'
+
+import {
+  getPublicListingsByIds
+} from '@/lib/public-listings-server'
+
+import { createListingId } from '@/lib/createListingId'
+
+import {
+  resolveListingImages
+} from '@/app/utils/resolveListingImages'
+
+import {
+  resolveMarketAnalyticalContext
+} from '@/lib/market-analytical-context'
+
+import {
+  projectPublicListingMonetaryValues
+} from '@/lib/public-listing-monetary-projection'
+
+export type EntityType =
+  | 'country'
+  | 'province'
+  | 'canton'
+  | 'district'
+  | 'property_type'
+  | 'bedrooms'
+  | 'bathrooms'
+  | 'parking'
+  | 'year_built'
+  | 'construction_area'
+  | 'property_area'
+  | 'utility'
+  | 'environment'
+  | 'accessibility'
+  | 'terrain'
+  | 'legal_status'
+
+export async function getEntity(
+  entityType: EntityType,
+  slug: string,
+  existingEvidence?: ReadonlyMap<string,CanonicalEvidence>
+) {
+  const cleanSlug = decodeURIComponent(slug)
+
+  const entityQuery = supabase.from('ontology_terms')
+    .select('*,id::text,parent_id::text').eq('term_type',entityType)
+  const geographicCode = ['province','canton','district'].includes(entityType) && /^\d+$/.test(cleanSlug)
+  const { data: entity, error: entityError } = await (geographicCode
+    ? entityQuery.eq('official_code',cleanSlug)
+    : entityQuery.or(`slug.eq.${cleanSlug},slug_en.eq.${cleanSlug},slug_es.eq.${cleanSlug}`))
+    .maybeSingle()
+
+  if (entityError) {
+        console.error(
+            'ENTITY ERROR:',
+            JSON.stringify(entityError, null, 2)
+        )
+
+        throw entityError
+        }
+
+  if (!entity) {
+
+        console.log(
+            'ENTITY NOT FOUND:',
+            entityType,
+            slug
+        )
+
+        return null
+
+        }
+
+  let parentEntity = null
+
+        if (entity?.parent_id) {
+
+        const { data } = await supabase
+            .from('ontology_terms')
+            .select('*')
+            .eq('id', entity.parent_id)
+            .maybeSingle()
+
+        parentEntity = data
+
+        }
+
+  const { data: childEntities } = await supabase
+    .from('ontology_terms')
+    .select('*')
+    .eq('parent_id', entity.id)
+    .order('term_name', { ascending: true })
+
+  const { data: listingEdges } = await supabase
+    .from('listings_ontology_terms')
+    .select('listing_id')
+    .eq('ontology_term_id', entity.id)
+
+  const listingIds =
+    listingEdges?.map((edge) => edge.listing_id) || []
+
+  let listings: any[] = []
+
+    if (
+    listingIds.length > 0
+  ) {
+    const listingData =
+      await getPublicListingsByIds(
+        listingIds, existingEvidence
+      )
+
+    const analyticalContext =
+      await resolveMarketAnalyticalContext()
+
+    const projectedListings =
+      projectPublicListingMonetaryValues(
+        listingData,
+        analyticalContext
+      )
+
+    listings =
+      projectedListings
+        .map((listing: any) => ({
+          ...listing,
+
+          id:
+            createListingId(
+              listing
+            ),
+
+          images:
+            resolveListingImages(
+              listing.images
+            )
+        }))
+        .sort(
+          (left, right) =>
+            String(right.id)
+              .localeCompare(
+                String(left.id)
+              )
+        )
+  }
+
+  let relatedEntities: any[] = []
+
+  if (listingIds.length > 0) {
+    const { data: relatedEdges } = await supabase
+      .from('listings_ontology_terms')
+      .select('ontology_term_id')
+      .in('listing_id', listingIds)
+
+    const relatedIds = Array.from(
+      new Set(
+        relatedEdges
+          ?.map((edge) => edge.ontology_term_id)
+          .filter((id) => id !== entity.id) || []
+      )
+    )
+
+    if (relatedIds.length > 0) {
+      const { data: relatedTerms } = await supabase
+        .from('ontology_terms')
+        .select('*')
+        .in('id', relatedIds)
+        .order('term_type', { ascending: true })
+
+      relatedEntities = relatedTerms || []
+    }
+  }
+
+  return {
+    entity,
+    parentEntity,
+    childEntities: childEntities || [],
+    relatedEntities,
+    listings,
+    listingCount: listings.length
+  }
+}

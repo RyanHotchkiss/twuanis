@@ -1,0 +1,220 @@
+.summary{min-width:0;max-width:1100px;color:var(--foreground);font-family:inherit}.introduction{border-bottom:1px solid var(--border);padding:0 0 24px;margin-bottom:24px}.eyebrow{color:#c7a44b;text-transform:uppercase;font-size:.75rem;letter-spacing:.12em;margin:0 0 10px}.introduction h2{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:500;margin:0 0 16px}.primaryQuestion{font-size:clamp(1.2rem,2.1vw,1.6rem);line-height:1.45;max-width:850px;margin:0 0 18px}.supporting{padding-left:20px;margin:0;color:var(--muted);line-height:1.6;font-size:.95rem}.supporting li+li{margin-top:6px}.inputs{padding:22px;background:var(--surface);border:1px solid var(--border);border-radius:12px}.inputs h3,.evidence h3,.transactions h3{font-size:1.1rem;font-weight:600;margin:0 0 14px}.fieldset{border:0;padding:0;margin:0;min-width:0}.inputGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:18px}.optional{margin:22px 0}.optional summary,.method summary{cursor:pointer;min-height:44px;display:list-item;align-content:center}.optional .inputGrid{padding-top:16px}.apply,.modify{font:inherit;min-height:44px;cursor:pointer;border-radius:8px;padding:10px 20px}.apply{background:#d4af37;color:#111;border:1px solid #d4af37;font-weight:650}.modify{border:1px solid var(--border);background:transparent;color:var(--foreground);white-space:nowrap}.apply:disabled,.modify:disabled{opacity:.55;cursor:wait}.identity{display:flex;gap:20px;align-items:center;justify-content:space-between;margin:0 0 22px;padding:18px 0;border-bottom:1px solid #333}.identity ul{display:flex;flex-wrap:wrap;gap:8px 0;list-style:none;margin:0;padding:0;font-size:.95rem;line-height:1.5;overflow-wrap:anywhere}.identity li+li:before{content:'·';padding:0 8px;color:#c7a44b}.evidence{
+  padding:28px;
+  margin:20px 0;
+  background:var(--analysis-evidence-surface);
+  border:1px solid var(--border);
+  border-radius:12px;
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+}.sectionQuestion{color:var(--muted);line-height:1.5;margin:0 0 16px}.count{display:flex;align-items:baseline;flex-wrap:wrap;gap:14px;margin:0}.count strong{font-size:clamp(3.5rem,8vw,5rem);font-weight:500;line-height:1.2;overflow-wrap:anywhere}.count span{color:var(--muted);font-size:1rem}.transactions{border-top:1px solid var(--border);padding:22px 0}.transactions dl{display:flex;gap:70px;margin:0}.transactions dt{color:var(--muted);font-size:.9rem}.transactions dd{font-size:1.8rem;margin:6px 0 0}.method{border-top:1px solid var(--border);padding:10px 0;color:var(--muted);font-size:.9rem;line-height:1.6}.error{color:var(--error-text);line-height:1.5}.summary :focus-visible{outline:2px solid #d4af37;outline-offset:4px}.srOnly{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.hub{display:grid;grid-template-columns:230px minmax(0,1fr);gap:56px;align-items:start}.workspace{min-width:0}
+
+.navigator{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  border-right:1px solid var(--border);
+  padding-right:18px
+}
+
+.navigator a,.navigator span{padding:12px;color:var(--muted);text-decoration:none;border-radius:6px;line-height:1.4;font-size:.9rem}.navigator a:hover,.navigator a:focus-visible{color:var(--foreground);background:var(--surface-raised);outline:1px solid #c7a44b}.navigator a[aria-current=page]{color:var(--accent-text);background:var(--evidence-surface);border-left:2px solid #d4af37}.navigator span{opacity:.45}.navigator small{display:block;font-size:.75rem;color:#aaa}.navQuestion{display:block}.selector{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:24px;color:#bbb}.selector select{background:var(--surface);color:var(--foreground);border:1px solid var(--border);border-radius:6px;padding:10px;font:inherit;max-width:100%;min-height:44px}@media(max-width:760px){.hub{grid-template-columns:minmax(0,1fr);gap:24px}.navigator{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:0;border-bottom:1px solid var(--border);padding:0 0 16px}.navigator a,.navigator span{padding:10px;font-size:.82rem}.inputs{padding:16px}.identity{align-items:flex-start;flex-direction:column;gap:12px}.transactions dl{gap:40px}.primaryQuestion{font-size:1.2rem}.navQuestion{display:block}.summary{width:100%}}
+.navItems{display:flex;flex-direction:column;gap:4px}
+
+.mobileNavToggle {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .navigator {
+    display: block;
+  }
+
+  .mobileNavToggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    width: 100%;
+    min-height: 44px;
+    padding: 12px 18px;
+
+    text-align: left;
+    background: var(--surface);
+    color: var(--accent-text);
+    border: 1px solid #6c5e32;
+    border-radius: 8px;
+    font: inherit;
+  }
+
+  .mobileNavToggle > span:first-child {
+    padding: 0;
+  }
+
+  .navItems {
+    display: none;
+    margin-top: 12px;
+  }
+
+  .navItems[data-expanded=true] {
+    display: grid;
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+.mobileNavCaretDown,
+.mobileNavCaretUp {
+  flex: 0 0 auto;
+  width: 12px;
+  height: 12px;
+  padding: 0 !important;
+  opacity: 1 !important;
+}
+
+.mobileNavCaretDown {
+  background-image:
+    linear-gradient(
+      45deg,
+      transparent 50%,
+      var(--ih-input-label) 50%
+    ),
+    linear-gradient(
+      135deg,
+      var(--ih-input-label) 50%,
+      transparent 50%
+    );
+  background-position:
+    left center,
+    right center;
+  background-size:
+    6px 6px;
+  background-repeat:
+    no-repeat;
+}
+
+.mobileNavCaretUp {
+  background-image:
+    linear-gradient(
+      135deg,
+      transparent 50%,
+      var(--ih-input-label) 50%
+    ),
+    linear-gradient(
+      45deg,
+      var(--ih-input-label) 50%,
+      transparent 50%
+    );
+  background-position:
+    left center,
+    right center;
+  background-size:
+    6px 6px;
+  background-repeat:
+    no-repeat;
+}
+
+.sidebarRegion{min-width:0}.hub[data-collapsed=true]{grid-template-columns:minmax(0,1fr)}.hub[data-collapsed=true] .sidebarRegion{display:none}.hub .summary{max-width:none}@media(max-width:760px){.sidebarToggle{display:none}.hub[data-collapsed=true] .sidebarRegion{display:block}.hubControls{min-width:0}.hubControls .selector{max-width:100%}}
+
+.hub{position:relative}.sidebarArrowPosition{position:absolute;left:238px;top:0;--sidebar-toggle-width:40px}.sidebarArrowPosition button:focus-visible{outline:2px solid #ff3b00;outline-offset:2px}
+
+.sidebarRegion{
+  padding-top:44px;
+  padding-bottom:500px;
+  position:sticky;
+  top:calc(var(--question-ticker-height, 0px) + 20px);
+  max-height:calc(100vh - var(--question-ticker-height, 0px) - 40px);
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  scrollbar-gutter:stable
+}
+
+.hub[data-collapsed=true] .sidebarArrowPosition{left:0}.hub[data-collapsed=true] .hubControls{padding-left:48px}
+
+@media(max-width:760px){.sidebarArrowPosition{display:none}
+.sidebarRegion{
+  padding-top:0;
+    padding-bottom:0;
+  position:static;
+  max-height:none;
+  overflow-y:visible;
+  overscroll-behavior:auto;
+  scrollbar-gutter:auto
+}
+.evidence{
+  padding:18px;
+  margin:16px 0;
+}
+.hub[data-collapsed=true] .hubControls{padding-left:0}}
+
+
+/* Shared Hub indicator; keep native select interaction and existing surfaces.
+   Important longhands override engine inline background/padding shorthands. */
+.workspace select:not([multiple]):not([size]),
+.workspace select:not([multiple])[size="1"] {
+  -webkit-appearance: none;
+  appearance: none;
+  padding-right: 2.5rem !important;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--ih-input-label) 50%),
+    linear-gradient(135deg, var(--ih-input-label) 50%, transparent 50%) !important;
+  background-position: right 18px center, right 12px center !important;
+  background-size: 6px 6px !important;
+  background-repeat: no-repeat !important;
+}
+@media (forced-colors: active) {
+  .workspace select:not([multiple]):not([size]),
+  .workspace select:not([multiple])[size="1"] {
+    -webkit-appearance: auto;
+    appearance: auto;
+    background-image: none !important;
+  }
+}
+
+/* Package palette matches customer-commercial.css exactly. */
+.navigator a.packageTab{border:.75px solid var(--hub-package-border);opacity:1}
+.navigator a.packageTab[aria-current=page]{border:.75px solid var(--hub-package-border);border-left-width:1.5px}
+.navigator a.packageTab:hover,.navigator a.packageTab[aria-current=page]{border-color:var(--hub-package-color);outline:none}
+.navigator a.packageTab:focus-visible{border-color:var(--hub-package-color);outline:2px solid var(--hub-package-color);outline-offset:2px}
+.packageTab[data-package-number="1"],.packageColor[data-package-number="1"]{--hub-package-color:#0066cc}
+.packageTab[data-package-number="2"],.packageColor[data-package-number="2"]{--hub-package-color:#cc0000}
+.packageTab[data-package-number="3"],.packageColor[data-package-number="3"]{--hub-package-color:#c7a44b}
+.accessBoundary{position:relative;min-width:0}
+.accessContent{min-width:0}
+.accessOverlay{position:absolute;top:clamp(2rem,12vh,8rem);left:50%;transform:translateX(-50%);width:min(90%,640px);padding:clamp(1rem,3vw,2rem);border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--foreground);opacity:1;z-index:2;box-sizing:border-box}
+.accessOverlay h2{font-family:inherit;font-size:clamp(1.2rem,2.2vw,1.65rem);margin:0 0 1rem}
+.accessOverlay p{font-family:inherit;line-height:1.5;margin:0}
+.navigator a.packageTab .navQuestion{color:var(--foreground);opacity:1}
+
+.accessOverlay{text-decoration:none;display:block}
+.accessOverlay:focus-visible{outline:3px solid #ff3b00;outline-offset:4px}
+.accessOverlay p+p{margin-top:1rem}
+
+.accessOverlay.packageColor{border-color:var(--hub-package-color,var(--border));color:var(--foreground)}
+span.packageColor{color:var(--hub-package-color,var(--foreground))}
+.accessLock{display:block;color:#c7a44b;opacity:1;margin:0 auto .75rem}
+.accessPrices{display:grid;gap:.25rem;margin-top:1rem}
+.accessPrices p+p{margin-top:0}
+.accessOverlay{overflow-wrap:anywhere}
+
+/* Navigator border alpha only; shared Package and access-overlay colors stay opaque. */
+.packageTab[data-package-number="1"]{--hub-package-border:rgb(0 102 204 / .75)}
+.packageTab[data-package-number="2"]{--hub-package-border:rgb(204 0 0 / .75)}
+.packageTab[data-package-number="3"]{--hub-package-border:rgb(199 164 75 / .75)}
+
+/* Match the amount size while avoiding the display font’s oversized colón glyph. */
+.colonSymbol{font-family:Arial,sans-serif;font-size:1em;font-weight:inherit;line-height:inherit;vertical-align:baseline}
+
+.accessPurchase{display:block;color:inherit;text-decoration:none;text-align:center}.accessPurchase:focus-visible{outline:3px solid #ff3b00;outline-offset:4px}
+
+/* Keep the existing card link as the whole-card target; sibling controls remain independent. */
+.accessPurchase::after{content:"";position:absolute;inset:0;border-radius:inherit}
+.accessActions{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.25rem;pointer-events:none}
+.accessActions>*{pointer-events:auto;min-width:0;max-width:100%;margin-top:0;min-height:44px;box-sizing:border-box;white-space:normal;overflow-wrap:anywhere}
+.accessPackageButton{display:flex;align-items:center;justify-content:center;margin-inline-start:auto;text-align:center;padding:.7rem 1rem;border:1px solid var(--accent-text,#c7a44b);border-radius:8px;background:light-dark(var(--foreground),var(--surface));color:#ffffff;font:inherit;text-decoration:none}
+.accessPackageButton:hover{background:light-dark(var(--muted),var(--surface-raised))}
+.accessPackageButton:focus-visible{outline:3px solid #ff3b00;outline-offset:4px}
+
+.accessOverlay[data-package-number] .accessPackageButton{border-color:var(--hub-package-color,var(--accent-text))}
+
+/* Run Algorithm only: orange needs the existing dark surface for text contrast. */
+.apply.run{color:#ff3b00;background:#131313}

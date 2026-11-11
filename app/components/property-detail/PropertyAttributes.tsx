@@ -1,0 +1,9 @@
+import {bathroomPresentation} from '@/lib/bathroom-presentation'
+import type {CSSProperties} from 'react'
+import {attributeValues} from '@/lib/property-presentation'
+type Props={listing:Record<string,unknown>;language:'en'|'es';styles:{label:CSSProperties;entityCard:CSSProperties;pillContainer:CSSProperties;pillEntity:CSSProperties}}
+export default function PropertyAttributes({listing,language,styles}:Props){
+ const es=language==='es';const location=['province','canton','district'].flatMap(k=>attributeValues(listing[k])).join(' → ')
+ const fields:[string,string,string,boolean?][]=[['location','Location','Ubicación'],['property_type','Property Type','Tipo de Propiedad'],['bedrooms','Bedrooms','Habitaciones'],['bathrooms','Bathrooms','Baños'],['parking','Parking','Estacionamiento'],['year_built_range','Year Constructed','Año de Construcción'],['construction_area','Construction Area','Área de Construcción'],['property_area','Property Area','Área de la Propiedad'],['environment','Environment','Entorno',true],['accessibility','Accessibility','Accesibilidad',true],['terrain','Terrain','Terreno',true],['utility','Utilities','Servicios',true],['legal_status','Legal Status','Estado Legal',true]]
+ return <>{fields.map(([key,en,spanish,pills])=>{const values=attributeValues(key==='location'?location:key==='bathrooms'?bathroomPresentation(listing,language):listing[key]);if(!values.length)return null;const area=key==='property_area'||key==='construction_area';return <div key={key} data-property-attribute={key}><span style={styles.label}>{es?spanish:en}</span><div style={pills?styles.pillContainer:styles.entityCard}>{values.map((v,i)=>{const display=area?`${Number.isFinite(Number(v))?Number(v).toLocaleString(es?'es-CR':'en-US'):v} m²`:v;return pills?<span key={i} style={styles.pillEntity}>{display}</span>:<span key={i}>{i>0?' · ':''}{display}</span>})}</div></div>})}</>
+}

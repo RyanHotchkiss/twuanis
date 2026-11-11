@@ -1,0 +1,3452 @@
+[
+  {
+    "part": "intro",
+    "kind": "heading",
+    "text": "Corporate Package",
+    "emphasis": "bold",
+    "id": "corporate-0",
+    "en": "Corporate Package",
+    "es": "Paquete Corporativo",
+    "proposedChange": false
+  },
+  {
+    "part": "intro",
+    "kind": "paragraph",
+    "text": "For those whose decisions carry consequences far beyond the individual transaction.",
+    "emphasis": "italic",
+    "id": "corporate-1",
+    "en": "For those whose decisions carry consequences far beyond the individual transaction.",
+    "es": "Para quienes toman decisiones cuyas consecuencias van mucho más allá de una transacción individual.",
+    "proposedChange": false
+  },
+  {
+    "part": "intro",
+    "kind": "paragraph",
+    "text": "When millions are at stake, can you defend every number behind your real-estate decisions?",
+    "emphasis": "bold",
+    "id": "corporate-2",
+    "en": "When millions are at stake, can you defend every number behind your real-estate decisions?",
+    "es": "Cuando hay millones en juego, ¿puede defender cada cifra que sustenta sus decisiones inmobiliarias?",
+    "proposedChange": false
+  },
+  {
+    "part": "intro",
+    "kind": "paragraph",
+    "text": "A flawed property acquisition can compromise an investment portfolio. A poorly supported pricing recommendation can expose an institution to substantial losses. An analytical conclusion that cannot withstand scrutiny can undermine the confidence of executives, investors, lenders, and clients.",
+    "emphasis": "none",
+    "id": "corporate-3",
+    "en": "A flawed property acquisition can compromise an investment portfolio. A poorly supported pricing recommendation can expose an institution to substantial losses. An analytical conclusion that cannot withstand scrutiny can undermine the confidence of executives, investors, lenders, and clients.",
+    "es": "Una adquisición inmobiliaria equivocada puede comprometer una cartera de inversiones. Una recomendación de precio insuficientemente fundamentada puede exponer a una institución a pérdidas considerables. Una conclusión analítica que no resista el escrutinio puede debilitar la confianza de directivos, inversionistas, prestamistas y clientes.",
+    "proposedChange": false
+  },
+  {
+    "part": "intro",
+    "kind": "paragraph",
+    "text": "At this level, intuition is not evidence. Reputation is not methodology. And professional opinion is not a substitute for verifiable facts.",
+    "emphasis": "bold",
+    "id": "corporate-4",
+    "en": "At this level, intuition is not evidence. Reputation is not methodology. And professional opinion is not a substitute for verifiable facts.",
+    "es": "A este nivel, la intuición no es evidencia. La reputación no es metodología. Y la opinión profesional no sustituye los hechos verificables.",
+    "proposedChange": false
+  },
+  {
+    "part": "intro",
+    "kind": "paragraph",
+    "text": "When your conclusions influence investment allocations, property acquisitions, portfolio exposure, or institutional strategy, you need more than a persuasive valuation or an expert's assurance.",
+    "emphasis": "none",
+    "id": "corporate-5",
+    "en": "When your conclusions influence investment allocations, property acquisitions, portfolio exposure, or institutional strategy, you need more than a persuasive valuation or an expert's assurance.",
+    "es": "Cuando sus conclusiones influyen en la asignación de inversiones, las adquisiciones inmobiliarias, la exposición de una cartera o la estrategia institucional, necesita más que una valoración persuasiva o la garantía de un experto.",
+    "proposedChange": false
+  },
+  {
+    "part": "intro",
+    "kind": "paragraph",
+    "text": "You need to know what the data actually establishes, how the analytical population was constructed, which observations qualify, what the calculations measure, and where the evidence stops supporting a conclusion.",
+    "emphasis": "none",
+    "id": "corporate-6",
+    "en": "You need to know what the data actually establishes, how the analytical population was constructed, which observations qualify, what the calculations measure, and where the evidence stops supporting a conclusion.",
+    "es": "Necesita saber qué establece realmente la información, cómo se construyó la población analítica, qué observaciones califican, qué miden los cálculos y dónde la evidencia deja de respaldar una conclusión.",
+    "proposedChange": false
+  },
+  {
+    "part": "intro",
+    "kind": "paragraph",
+    "text": "The Corporate Package provides access to all 17 Twuanis analytical algorithms, including advanced Price / m² distributions, property positioning, cross-dimensional relationships, construction-to-property-area analysis, weighted pricing measures, and user-defined comparable cohorts.",
+    "emphasis": "none",
+    "id": "corporate-7",
+    "en": "The Corporate Package provides access to all 17 Twuanis analytical algorithms, including advanced Price / m² distributions, property positioning, cross-dimensional relationships, construction-to-property-area analysis, weighted pricing measures, and user-defined comparable cohorts.",
+    "es": "El Paquete Corporativo brinda acceso a los 17 algoritmos analíticos de Twuanis, incluidas distribuciones avanzadas de precio / m², posicionamiento de propiedades, relaciones entre dimensiones, análisis de las áreas de construcción y del terreno, medidas de precio ponderado y cohortes comparables definidas por el usuario.",
+    "proposedChange": false
+  },
+  {
+    "part": "intro",
+    "kind": "paragraph",
+    "text": "Examine the evidence behind asking prices. Investigate relationships that simpler comparisons cannot reveal. Test analytical questions against explicitly defined market populations and distinguish measurable findings from unsupported assumptions.",
+    "emphasis": "none",
+    "id": "corporate-8",
+    "en": "Examine the evidence behind asking prices. Investigate relationships that simpler comparisons cannot reveal. Test analytical questions against explicitly defined market populations and distinguish measurable findings from unsupported assumptions.",
+    "es": "Examine la evidencia detrás de los precios de oferta. Investigue relaciones que las comparaciones más simples no pueden revelar. Contraste preguntas analíticas con poblaciones de mercado explícitamente definidas y distinga los hallazgos medibles de las suposiciones sin fundamento.",
+    "proposedChange": false
+  },
+  {
+    "part": "intro",
+    "kind": "paragraph",
+    "text": "Every conclusion must remain accountable to its underlying observations, mathematical methodology, and stated limitations.",
+    "emphasis": "none",
+    "id": "corporate-9",
+    "en": "Every conclusion must remain accountable to its underlying observations, mathematical methodology, and stated limitations.",
+    "es": "Toda conclusión debe poder justificarse mediante sus observaciones subyacentes, metodología matemática y limitaciones declaradas.",
+    "proposedChange": false
+  },
+  {
+    "part": "intro",
+    "kind": "paragraph",
+    "text": "Because the greater the financial exposure, the less room there is for conclusions that cannot be independently examined and defended.",
+    "emphasis": "bold",
+    "id": "corporate-10",
+    "en": "Because the greater the financial exposure, the less room there is for conclusions that cannot be independently examined and defended.",
+    "es": "Porque cuanto mayor sea la exposición financiera, menor será el margen para conclusiones que no puedan examinarse y defenderse de forma independiente.",
+    "proposedChange": false
+  },
+  {
+    "part": "intro",
+    "kind": "paragraph",
+    "text": "Your decisions carry the responsibility. Twuanis provides the empirical evidence to inform them.",
+    "emphasis": "italic",
+    "id": "corporate-11",
+    "en": "Your decisions carry the responsibility. Twuanis provides the empirical evidence to inform them.",
+    "es": "Sus decisiones conllevan la responsabilidad. Twuanis proporciona la evidencia empírica para fundamentarlas.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "heading",
+    "text": "Corporate Package",
+    "emphasis": "bold",
+    "id": "corporate-12",
+    "en": "Corporate Package",
+    "es": "Paquete Corporativo",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "heading",
+    "text": "Package Algorithms Specifics",
+    "emphasis": "bold",
+    "id": "corporate-13",
+    "en": "Package Algorithms Specifics",
+    "es": "Detalles de los algoritmos del Paquete",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "17 Analytical Algorithms | Advanced Costa Rican Real-Estate Market Intelligence",
+    "emphasis": "bold",
+    "id": "corporate-14",
+    "en": "17 Analytical Algorithms | Advanced Costa Rican Real-Estate Market Intelligence",
+    "es": "17 algoritmos analíticos | Inteligencia avanzada del mercado inmobiliario de Costa Rica",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The Corporate Package includes all three Entertainment algorithms, all four additional Professional algorithms, and ten advanced analytical algorithms.",
+    "emphasis": "none",
+    "id": "corporate-15",
+    "en": "The Corporate Package includes all three Entertainment algorithms, all four additional Professional algorithms, and ten advanced analytical algorithms.",
+    "es": "El Paquete Corporativo incluye los tres algoritmos de Entretenimiento, los cuatro algoritmos adicionales de Profesional y diez algoritmos analíticos avanzados.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "These capabilities examine Price / m² distributions, property configuration frequency, property positioning, size relationships, construction-to-land relationships, user-defined cohorts, cross-dimensional behavior, and statistically modeled asking-price relationships.",
+    "emphasis": "none",
+    "id": "corporate-16",
+    "en": "These capabilities examine Price / m² distributions, property configuration frequency, property positioning, size relationships, construction-to-land relationships, user-defined cohorts, cross-dimensional behavior, and statistically modeled asking-price relationships.",
+    "es": "Estas capacidades examinan distribuciones de precio / m², frecuencia de configuraciones de propiedades, posicionamiento de propiedades, relaciones con el tamaño, relaciones construcción/terreno, cohortes definidas por el usuario, comportamiento entre dimensiones y relaciones del precio de oferta modeladas estadísticamente.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The objective is to make analytical findings traceable to explicitly defined market populations, eligible observations, mathematical methods and stated limitations.",
+    "emphasis": "none",
+    "id": "corporate-17",
+    "en": "The objective is to make analytical findings traceable to explicitly defined market populations, eligible observations, mathematical methods and stated limitations.",
+    "es": "El objetivo es que los hallazgos analíticos puedan rastrearse hasta poblaciones de mercado explícitamente definidas, observaciones elegibles, métodos matemáticos y limitaciones declaradas.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Included from Entertainment:",
+    "emphasis": "bold",
+    "id": "corporate-18",
+    "en": "Included from Entertainment:",
+    "es": "Incluidos de Entretenimiento:",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Market Asking Price Distribution",
+    "emphasis": "none",
+    "id": "corporate-19",
+    "en": "Market Asking Price Distribution",
+    "es": "Distribución de Precios de Oferta del Mercado",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Market Composition",
+    "emphasis": "none",
+    "id": "corporate-20",
+    "en": "Market Composition",
+    "es": "Composición del Mercado",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Market Summary",
+    "emphasis": "none",
+    "id": "corporate-21",
+    "en": "Market Summary",
+    "es": "Resumen del Mercado",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Additional algorithms included from Professional:",
+    "emphasis": "bold",
+    "id": "corporate-22",
+    "en": "Additional algorithms included from Professional:",
+    "es": "Algoritmos adicionales incluidos de Profesional:",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Comparative Price / m² Discovery",
+    "emphasis": "none",
+    "id": "corporate-23",
+    "en": "Comparative Price / m² Discovery",
+    "es": "Descubrimiento comparativo de precio / m²",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Geographic Price / m² Comparison",
+    "emphasis": "none",
+    "id": "corporate-24",
+    "en": "Geographic Price / m² Comparison",
+    "es": "Comparación geográfica de precio / m²",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Market Comparison",
+    "emphasis": "none",
+    "id": "corporate-25",
+    "en": "Market Comparison",
+    "es": "Comparación de mercados",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Property Matching",
+    "emphasis": "none",
+    "id": "corporate-26",
+    "en": "Property Matching",
+    "es": "Correspondencia de propiedades",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The ten additional Corporate algorithms are detailed below.",
+    "emphasis": "none",
+    "id": "corporate-27",
+    "en": "The ten additional Corporate algorithms are detailed below.",
+    "es": "Los diez algoritmos adicionales del Paquete Corporativo se detallan a continuación.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "heading",
+    "text": "1. Construction Area-to-Property Area Asking-Price Relationship Ratio",
+    "emphasis": "bold",
+    "id": "corporate-28",
+    "en": "8. Construction Area-to-Property Area Asking-Price Relationship Ratio",
+    "es": "8. Relación entre los coeficientes del precio de oferta por m² de área de construcción y de área del terreno",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "What is the modeled asking-price relationship per square meter of Construction Area divided by the modeled asking-price relationship per square meter of Property Area?",
+    "emphasis": "bold",
+    "id": "corporate-29",
+    "en": "What is the modeled asking-price relationship per square meter of Construction Area divided by the modeled asking-price relationship per square meter of Property Area?",
+    "es": "¿Cuál es la relación modelada del precio de oferta por metro cuadrado de área de construcción dividida por la relación modelada por metro cuadrado de área del terreno?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Questions This Algorithm Answers",
+    "emphasis": "bold",
+    "id": "corporate-30",
+    "en": "Questions This Algorithm Answers",
+    "es": "Preguntas que responde este algoritmo",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "What separate asking-price associations are estimated for Construction Area and Property Area within the defined market?",
+    "emphasis": "none",
+    "id": "corporate-31",
+    "en": "What separate asking-price associations are estimated for Construction Area and Property Area within the defined market?",
+    "es": "¿Qué asociaciones separadas del precio de oferta se estiman para el área de construcción y el área del terreno dentro del mercado definido?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "What is the ratio between the two estimated area coefficients?",
+    "emphasis": "none",
+    "id": "corporate-32",
+    "en": "What is the ratio between the two estimated area coefficients?",
+    "es": "¿Cuál es la relación entre los dos coeficientes de área estimados?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Does the available evidence support a statistically established, finite coefficient ratio?",
+    "emphasis": "none",
+    "id": "corporate-33",
+    "en": "Does the available evidence support a statistically established, finite coefficient ratio?",
+    "es": "¿Respalda la evidencia disponible una relación de coeficientes finita y estadísticamente establecida?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "What uncertainty interval surrounds the estimated ratio, and is that interval bounded, disconnected or otherwise unresolved?",
+    "emphasis": "none",
+    "id": "corporate-34",
+    "en": "What uncertainty interval surrounds the estimated ratio, and is that interval bounded, disconnected or otherwise unresolved?",
+    "es": "¿Qué intervalo de incertidumbre rodea la relación estimada y es ese intervalo acotado, disjunto o no resuelto de otro modo?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Do numerical stability, covariance and observation-influence diagnostics support interpreting the modeled relationship?",
+    "emphasis": "none",
+    "id": "corporate-35",
+    "en": "Do numerical stability, covariance and observation-influence diagnostics support interpreting the modeled relationship?",
+    "es": "¿Respaldan la estabilidad numérica, la covarianza y los diagnósticos de influencia de las observaciones la interpretación de la relación modelada?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Methodology",
+    "emphasis": "bold",
+    "id": "corporate-36",
+    "en": "Methodology",
+    "es": "Metodología",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The algorithm constructs a defined population of eligible property listings with compatible asking-price, property-area and construction-area evidence.",
+    "emphasis": "none",
+    "id": "corporate-37",
+    "en": "The algorithm constructs a defined population of eligible property listings with compatible asking-price, property-area and construction-area evidence.",
+    "es": "El algoritmo construye una población definida de anuncios elegibles con evidencia compatible de precio de oferta, área del terreno y área de construcción.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The analytical question requires explicit numeric lower and upper bounds for both area dimensions.",
+    "emphasis": "none",
+    "id": "corporate-38",
+    "en": "The analytical question requires explicit numeric lower and upper bounds for both area dimensions.",
+    "es": "La pregunta analítica exige límites numéricos inferiores y superiores explícitos para ambas dimensiones de área.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Using the established ordinary least squares model, the algorithm estimates the relationship between asking price and the two area measurements.",
+    "emphasis": "none",
+    "id": "corporate-39",
+    "en": "Using the established ordinary least squares model, the algorithm estimates the relationship between asking price and the two area measurements.",
+    "es": "Mediante el modelo establecido de mínimos cuadrados ordinarios, el algoritmo estima la relación entre el precio de oferta y las dos medidas de área.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The analysis applies heteroskedasticity-consistent HC3 covariance estimation and Fieller ratio inference.",
+    "emphasis": "none",
+    "id": "corporate-40",
+    "en": "The analysis applies heteroskedasticity-consistent HC3 covariance estimation and Fieller ratio inference.",
+    "es": "El análisis aplica estimación de covarianza HC3 consistente ante heterocedasticidad e inferencia de Fieller para la relación.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The coefficient ratio is reported as established only when the algorithm's numerical, statistical, uncertainty and influence-stability requirements are satisfied.",
+    "emphasis": "none",
+    "id": "corporate-41",
+    "en": "The coefficient ratio is reported as established only when the algorithm's numerical, statistical, uncertainty and influence-stability requirements are satisfied.",
+    "es": "La relación de coeficientes se informa como establecida solo cuando se satisfacen los requisitos numéricos, estadísticos, de incertidumbre y de estabilidad ante la influencia del algoritmo.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The algorithm's nominal confidence level is 95%.",
+    "emphasis": "none",
+    "id": "corporate-42",
+    "en": "The algorithm's nominal confidence level is 95%.",
+    "es": "El nivel nominal de confianza del algoritmo es del 95%.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "A fitted model may exist without an established coefficient ratio. In that situation, valid model diagnostics remain meaningful, but the ratio must not be presented as a reliable established result.",
+    "emphasis": "none",
+    "id": "corporate-43",
+    "en": "A fitted model may exist without an established coefficient ratio. In that situation, valid model diagnostics remain meaningful, but the ratio must not be presented as a reliable established result.",
+    "es": "Puede existir un modelo ajustado sin una relación de coeficientes establecida. En ese caso, los diagnósticos válidos del modelo conservan su significado, pero la relación no debe presentarse como un resultado establecido y fiable.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Mathematical Formulas",
+    "emphasis": "bold",
+    "id": "corporate-44",
+    "en": "Mathematical Formulas",
+    "es": "Fórmulas matemáticas",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Asking-price relationship model",
+    "emphasis": "bold",
+    "id": "corporate-45",
+    "en": "Asking-price relationship model",
+    "es": "Modelo de relación del precio de oferta",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "text": "[\nP_i=\\beta_0+\\beta_L L_i+\\beta_C C_i+\\varepsilon_i\n]",
+    "emphasis": "none",
+    "id": "corporate-46",
+    "en": "Pᵢ = β₀ + βL Lᵢ + βC Cᵢ + εᵢ",
+    "es": "Pᵢ = β₀ + βL Lᵢ + βC Cᵢ + εᵢ",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Where:",
+    "emphasis": "none",
+    "id": "corporate-47",
+    "en": "Where:",
+    "es": "Donde:",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "(P_i) = eligible normalized asking price.",
+    "emphasis": "none",
+    "id": "corporate-48",
+    "en": "(P_i) = eligible normalized asking price.",
+    "es": "Pᵢ = precio de oferta normalizado elegible.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "(L_i) = property or land area in m².",
+    "emphasis": "none",
+    "id": "corporate-49",
+    "en": "(L_i) = property or land area in m².",
+    "es": "Lᵢ = área de la propiedad o del terreno en m².",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "(C_i) = construction area in m².",
+    "emphasis": "none",
+    "id": "corporate-50",
+    "en": "(C_i) = construction area in m².",
+    "es": "Cᵢ = área de construcción en m².",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "(\\beta_L) = modeled asking-price coefficient associated with property area.",
+    "emphasis": "none",
+    "id": "corporate-51",
+    "en": "(\\beta_L) = modeled asking-price coefficient associated with property area.",
+    "es": "βL = coeficiente modelado del precio de oferta asociado al área del terreno.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "(\\beta_C) = modeled asking-price coefficient associated with construction area.",
+    "emphasis": "none",
+    "id": "corporate-52",
+    "en": "(\\beta_C) = modeled asking-price coefficient associated with construction area.",
+    "es": "βC = coeficiente modelado del precio de oferta asociado al área de construcción.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "(\\varepsilon_i) = residual.",
+    "emphasis": "none",
+    "id": "corporate-53",
+    "en": "(\\varepsilon_i) = residual.",
+    "es": "εᵢ = residuo.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Ordinary least squares",
+    "emphasis": "bold",
+    "id": "corporate-54",
+    "en": "Ordinary least squares",
+    "es": "Mínimos cuadrados ordinarios",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "text": "[\n\\hat{\\boldsymbol{\\beta}}\n=(X^\\top X)^{-1}X^\\top\\mathbf{P}\n]",
+    "emphasis": "none",
+    "id": "corporate-55",
+    "en": "β̂ = (XᵀX)⁻¹XᵀP",
+    "es": "β̂ = (XᵀX)⁻¹XᵀP",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "This expression assumes a full-rank design matrix; rank-deficient cases are handled by the algorithm's establishment rules.",
+    "emphasis": "none",
+    "id": "corporate-56",
+    "en": "This expression assumes a full-rank design matrix; rank-deficient cases are handled by the algorithm's establishment rules.",
+    "es": "Esta expresión supone una matriz de diseño de rango completo; los casos de rango deficiente se tratan según las reglas de establecimiento del algoritmo.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Coefficient ratio",
+    "emphasis": "bold",
+    "id": "corporate-57",
+    "en": "Coefficient ratio",
+    "es": "Relación de coeficientes",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "text": "[\n\\hat r=\\frac{\\hat\\beta_C}{\\hat\\beta_L}\n]",
+    "emphasis": "none",
+    "id": "corporate-58",
+    "en": "r̂ = β̂C / β̂L",
+    "es": "r̂ = β̂C / β̂L",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The ratio is not established merely because two numerical coefficients can be calculated.",
+    "emphasis": "none",
+    "id": "corporate-59",
+    "en": "The ratio is not established merely because two numerical coefficients can be calculated.",
+    "es": "La relación no queda establecida por el mero hecho de poder calcular dos coeficientes numéricos.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Fieller uncertainty condition",
+    "emphasis": "bold",
+    "id": "corporate-60",
+    "en": "Fieller uncertainty condition",
+    "es": "Condición de incertidumbre de Fieller",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "For candidate ratio (r), the confidence set is determined by the inequality:",
+    "emphasis": "none",
+    "id": "corporate-61",
+    "en": "For candidate ratio (r), the confidence set is determined by the inequality:",
+    "es": "Para una relación candidata r, el conjunto de confianza se determina mediante la desigualdad:",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "text": "[\n(\\hat\\beta_C-r\\hat\\beta_L)^2\n\\leq\nt_{\\mathrm{crit}}^2\n\\left[\n\\widehat{\\mathrm{Var}}(\\hat\\beta_C)\n-2r\\widehat{\\mathrm{Cov}}(\\hat\\beta_C,\\hat\\beta_L)\n+r^2\\widehat{\\mathrm{Var}}(\\hat\\beta_L)\n\\right]\n]",
+    "emphasis": "none",
+    "id": "corporate-62",
+    "en": "(β̂C − rβ̂L)² ≤ tcrit² [Var̂(β̂C) − 2r Cov̂(β̂C,β̂L) + r² Var̂(β̂L)]",
+    "es": "(β̂C − rβ̂L)² ≤ tcrit² [Var̂(β̂C) − 2r Cov̂(β̂C,β̂L) + r² Var̂(β̂L)]",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The critical value and HC3 covariance follow the algorithm's implemented inference contract.",
+    "emphasis": "none",
+    "id": "corporate-63",
+    "en": "The critical value and HC3 covariance follow the algorithm's implemented inference contract.",
+    "es": "El valor crítico y la covarianza HC3 siguen el contrato de inferencia implementado en el algoritmo.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "How to Interpret the Results",
+    "emphasis": "bold",
+    "id": "corporate-64",
+    "en": "How to Interpret the Results",
+    "es": "Cómo interpretar los resultados",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "A positive established coefficient ratio describes the relative modeled asking-price associations of construction area and property area within the selected eligible market.",
+    "emphasis": "none",
+    "id": "corporate-65",
+    "en": "A positive established coefficient ratio describes the relative modeled asking-price associations of construction area and property area within the selected eligible market.",
+    "es": "Una relación de coeficientes positiva y establecida describe las asociaciones relativas modeladas del precio de oferta con el área de construcción y el área del terreno dentro del mercado elegible seleccionado.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "It is not a direct construction-cost estimate or an appraisal of either component.",
+    "emphasis": "none",
+    "id": "corporate-66",
+    "en": "It is not a direct construction-cost estimate or an appraisal of either component.",
+    "es": "No es una estimación directa del costo de construcción ni un avalúo de ninguno de los componentes.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "A ratio near two, for example, would describe the estimated construction-area coefficient as approximately twice the property-area coefficient, subject to the model and its uncertainty.",
+    "emphasis": "none",
+    "id": "corporate-67",
+    "en": "A ratio near two, for example, would describe the estimated construction-area coefficient as approximately twice the property-area coefficient, subject to the model and its uncertainty.",
+    "es": "Una relación cercana a dos, por ejemplo, indicaría que el coeficiente estimado del área de construcción es aproximadamente el doble del coeficiente del área del terreno, sujeto al modelo y a su incertidumbre.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The inference diagnostics are essential. An unstable denominator coefficient can make a simple numerical ratio misleading.",
+    "emphasis": "none",
+    "id": "corporate-68",
+    "en": "The inference diagnostics are essential. An unstable denominator coefficient can make a simple numerical ratio misleading.",
+    "es": "Los diagnósticos de inferencia son esenciales. Un coeficiente inestable en el denominador puede volver engañosa una simple relación numérica.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Limitations",
+    "emphasis": "bold",
+    "id": "corporate-69",
+    "en": "Limitations",
+    "es": "Limitaciones",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "The model estimates associations, not causal effects.",
+    "emphasis": "none",
+    "id": "corporate-70",
+    "en": "The model estimates associations, not causal effects.",
+    "es": "El modelo estima asociaciones, no efectos causales.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Asking prices are not completed transaction prices.",
+    "emphasis": "none",
+    "id": "corporate-71",
+    "en": "Asking prices are not completed transaction prices.",
+    "es": "Los precios de oferta no son precios de transacciones completadas.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Explicit area-range boundaries are required.",
+    "emphasis": "none",
+    "id": "corporate-72",
+    "en": "Explicit area-range boundaries are required.",
+    "es": "Se requieren límites explícitos para los rangos de área.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Eligible observations must satisfy the existing model requirements.",
+    "emphasis": "none",
+    "id": "corporate-73",
+    "en": "Eligible observations must satisfy the existing model requirements.",
+    "es": "Las observaciones elegibles deben satisfacer los requisitos existentes del modelo.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Multicollinearity and insufficient variation can prevent establishment.",
+    "emphasis": "none",
+    "id": "corporate-74",
+    "en": "Multicollinearity and insufficient variation can prevent establishment.",
+    "es": "La multicolinealidad y la variación insuficiente pueden impedir el establecimiento.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "HC3 covariance and Fieller inference do not eliminate source-data limitations.",
+    "emphasis": "none",
+    "id": "corporate-75",
+    "en": "HC3 covariance and Fieller inference do not eliminate source-data limitations.",
+    "es": "La covarianza HC3 y la inferencia de Fieller no eliminan las limitaciones de los datos de origen.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "An unbounded or unresolved confidence set must not be presented as an ordinary finite interval.",
+    "emphasis": "none",
+    "id": "corporate-76",
+    "en": "An unbounded or unresolved confidence set must not be presented as an ordinary finite interval.",
+    "es": "Un conjunto de confianza no acotado o no resuelto no debe presentarse como un intervalo finito ordinario.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "The modeled coefficients are not independent appraisals of land and improvements.",
+    "emphasis": "none",
+    "id": "corporate-77",
+    "en": "The modeled coefficients are not independent appraisals of land and improvements.",
+    "es": "Los coeficientes modelados no son avalúos independientes del terreno y las mejoras.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "heading",
+    "text": "2. Construction-to-Land → Price / m²",
+    "emphasis": "bold",
+    "id": "corporate-78",
+    "en": "9. Construction-to-Land → Price / m²",
+    "es": "9. Construcción/terreno → Precio / m²",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "How does Price / m² vary with the Construction-to-Land ratio in the defined Costa Rican real-estate market?",
+    "emphasis": "bold",
+    "id": "corporate-79",
+    "en": "How does Price / m² vary with the Construction-to-Land ratio in the defined Costa Rican real-estate market?",
+    "es": "¿Cómo varía el precio / m² con la relación construcción/terreno en el mercado inmobiliario costarricense definido?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Questions This Algorithm Answers",
+    "emphasis": "bold",
+    "id": "corporate-80",
+    "en": "Questions This Algorithm Answers",
+    "es": "Preguntas que responde este algoritmo",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "How are eligible properties distributed across the established Construction-to-Land ratio groups?",
+    "emphasis": "none",
+    "id": "corporate-81",
+    "en": "How are eligible properties distributed across the established Construction-to-Land ratio groups?",
+    "es": "¿Cómo se distribuyen las propiedades elegibles entre los grupos establecidos de la relación construcción/terreno?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "What is the median Price / m² within each populated ratio group?",
+    "emphasis": "none",
+    "id": "corporate-82",
+    "en": "What is the median Price / m² within each populated ratio group?",
+    "es": "¿Cuál es la mediana del precio / m² dentro de cada grupo de relación con observaciones?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "How do the observed Price / m² medians differ among the ratio groups?",
+    "emphasis": "none",
+    "id": "corporate-83",
+    "en": "How do the observed Price / m² medians differ among the ratio groups?",
+    "es": "¿Cómo difieren las medianas observadas del precio / m² entre los grupos de relación?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Does the evidence establish a consistent increasing or decreasing association across the populated groups?",
+    "emphasis": "none",
+    "id": "corporate-84",
+    "en": "Does the evidence establish a consistent increasing or decreasing association across the populated groups?",
+    "es": "¿Establece la evidencia una asociación creciente o decreciente consistente entre los grupos con observaciones?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Which ratio groups lack sufficient eligible observations to support interpretation?",
+    "emphasis": "none",
+    "id": "corporate-85",
+    "en": "Which ratio groups lack sufficient eligible observations to support interpretation?",
+    "es": "¿Qué grupos de relación carecen de suficientes observaciones elegibles para respaldar la interpretación?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Methodology",
+    "emphasis": "bold",
+    "id": "corporate-86",
+    "en": "Methodology",
+    "es": "Metodología",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The algorithm selects eligible improved-property observations with valid, positive construction-area and property-area evidence.",
+    "emphasis": "none",
+    "id": "corporate-87",
+    "en": "The algorithm selects eligible improved-property observations with valid, positive construction-area and property-area evidence.",
+    "es": "El algoritmo selecciona observaciones elegibles de propiedades con construcción que tienen evidencia válida y positiva de área de construcción y área del terreno.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "It calculates the Construction-to-Land ratio and assigns eligible properties to the algorithm's five canonical ratio cohorts.",
+    "emphasis": "none",
+    "id": "corporate-88",
+    "en": "It calculates the Construction-to-Land ratio and assigns eligible properties to the algorithm's five canonical ratio cohorts.",
+    "es": "Calcula la relación construcción/terreno y asigna las propiedades elegibles a las cinco cohortes canónicas de relación del algoritmo.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "For each populated cohort, the algorithm calculates the supported observation counts and median Price / m² statistics.",
+    "emphasis": "none",
+    "id": "corporate-89",
+    "en": "For each populated cohort, the algorithm calculates the supported observation counts and median Price / m² statistics.",
+    "es": "Para cada cohorte con observaciones, el algoritmo calcula los conteos de observaciones y las estadísticas de mediana del precio / m² admitidos.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "It may also evaluate rank-based association evidence across established cohort coordinates.",
+    "emphasis": "none",
+    "id": "corporate-90",
+    "en": "It may also evaluate rank-based association evidence across established cohort coordinates.",
+    "es": "También puede evaluar evidencia de asociación por rangos entre las coordenadas establecidas de las cohortes.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The analysis describes how asking-price intensity varies with the relationship between construction area and property area.",
+    "emphasis": "none",
+    "id": "corporate-91",
+    "en": "The analysis describes how asking-price intensity varies with the relationship between construction area and property area.",
+    "es": "El análisis describe cómo varía la intensidad del precio de oferta con la relación entre las áreas de construcción y del terreno.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "It does not assume that a higher construction ratio causes higher property prices.",
+    "emphasis": "none",
+    "id": "corporate-92",
+    "en": "It does not assume that a higher construction ratio causes higher property prices.",
+    "es": "No supone que una mayor relación de construcción cause precios inmobiliarios más altos.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Mathematical Formulas",
+    "emphasis": "bold",
+    "id": "corporate-93",
+    "en": "Mathematical Formulas",
+    "es": "Fórmulas matemáticas",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Construction-to-Land ratio",
+    "emphasis": "bold",
+    "id": "corporate-94",
+    "en": "Construction-to-Land ratio",
+    "es": "Relación construcción/terreno",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "text": "[\nR_i=\\frac{C_i}{L_i}\n]",
+    "emphasis": "none",
+    "id": "corporate-95",
+    "en": "Rᵢ = Cᵢ / Lᵢ",
+    "es": "Rᵢ = Cᵢ / Lᵢ",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Where (C_i) is eligible construction area and (L_i) is eligible property or land area.",
+    "emphasis": "none",
+    "id": "corporate-96",
+    "en": "Where (C_i) is eligible construction area and (L_i) is eligible property or land area.",
+    "es": "Cᵢ es el área de construcción elegible y Lᵢ es el área de la propiedad o del terreno elegible.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Cohort median Price / m²",
+    "emphasis": "bold",
+    "id": "corporate-97",
+    "en": "Cohort median Price / m²",
+    "es": "Mediana del precio / m² de la cohorte",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "text": "[\nM_k=\\operatorname{median}{PPM2_i\\in G_k}\n]",
+    "emphasis": "none",
+    "id": "corporate-98",
+    "en": "Mₖ = median{PPM2ᵢ : i ∈ Gₖ}",
+    "es": "Mₖ = median{PPM2ᵢ : i ∈ Gₖ}",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Where (G_k) is one of the established ratio cohorts.",
+    "emphasis": "none",
+    "id": "corporate-99",
+    "en": "Where (G_k) is one of the established ratio cohorts.",
+    "es": "Gₖ es una de las cohortes de relación establecidas.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Spearman rank association",
+    "emphasis": "bold",
+    "id": "corporate-100",
+    "en": "Spearman rank association",
+    "es": "Asociación de rangos de Spearman",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Where sufficient valid cohort coordinates exist:",
+    "emphasis": "none",
+    "id": "corporate-101",
+    "en": "Where sufficient valid cohort coordinates exist:",
+    "es": "Cuando existen suficientes coordenadas válidas de cohortes:",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "text": "[\n\\rho_s=\\operatorname{Corr}\n\\left(\n\\operatorname{rank}(R),\n\\operatorname{rank}(M)\n\\right)\n]",
+    "emphasis": "none",
+    "id": "corporate-102",
+    "en": "ρs = Corr(rank(Rₖ), rank(Mₖ))",
+    "es": "ρs = Corr(rank(Rₖ), rank(Mₖ))",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The algorithm's actual treatment of cohort coordinates, ties and insufficient evidence remains authoritative.",
+    "emphasis": "none",
+    "id": "corporate-103",
+    "en": "The algorithm's actual treatment of cohort coordinates, ties and insufficient evidence remains authoritative.",
+    "es": "El tratamiento real de las coordenadas de cohortes, los empates y la evidencia insuficiente implementado en el algoritmo sigue siendo la autoridad.",
+    "proposedChange": false
+  },
+  {
+    "id": "corporate-291",
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "For Construction-to-Land, Spearman uses the median exact C/L ratio and median normalized Price / m² in each populated cohort, not the raw listing pairs or cohort labels. It requires at least three populated cohorts and twelve represented observations; tied values receive average ranks and undefined correlation remains unavailable.",
+    "es": "En construcción/terreno, Spearman utiliza la mediana de la relación exacta C/L y la mediana del precio / m² normalizado de cada cohorte con observaciones, no los pares individuales de anuncios ni las etiquetas de cohortes. Requiere al menos tres cohortes con observaciones y doce observaciones representadas; los empates reciben rangos promedio y la correlación indefinida permanece no disponible.",
+    "proposedChange": true
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "How to Interpret the Results",
+    "emphasis": "bold",
+    "id": "corporate-104",
+    "en": "How to Interpret the Results",
+    "es": "Cómo interpretar los resultados",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The analysis reveals whether different Construction-to-Land ratio groups exhibit different observed median asking Price / m².",
+    "emphasis": "none",
+    "id": "corporate-105",
+    "en": "The analysis reveals whether different Construction-to-Land ratio groups exhibit different observed median asking Price / m².",
+    "es": "El análisis revela si distintos grupos de relación construcción/terreno presentan diferentes medianas observadas del precio de oferta / m².",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "An increasing sequence of medians may indicate a positive descriptive association within the selected population.",
+    "emphasis": "none",
+    "id": "corporate-106",
+    "en": "An increasing sequence of medians may indicate a positive descriptive association within the selected population.",
+    "es": "Una secuencia creciente de medianas puede indicar una asociación descriptiva positiva dentro de la población seleccionada.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "It does not establish that adding construction area would cause an equivalent change in asking price.",
+    "emphasis": "none",
+    "id": "corporate-107",
+    "en": "It does not establish that adding construction area would cause an equivalent change in asking price.",
+    "es": "No establece que agregar área de construcción causaría un cambio equivalente en el precio de oferta.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Limitations",
+    "emphasis": "bold",
+    "id": "corporate-108",
+    "en": "Limitations",
+    "es": "Limitaciones",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Improved-property eligibility is required.",
+    "emphasis": "none",
+    "id": "corporate-109",
+    "en": "Improved-property eligibility is required.",
+    "es": "Se requiere elegibilidad como propiedad con construcción.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Missing or invalid area evidence excludes observations.",
+    "emphasis": "none",
+    "id": "corporate-110",
+    "en": "Missing or invalid area evidence excludes observations.",
+    "es": "La evidencia de área ausente o inválida excluye observaciones.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Cohort statistics depend on the five existing ratio groups.",
+    "emphasis": "none",
+    "id": "corporate-111",
+    "en": "Cohort statistics depend on the five existing ratio groups.",
+    "es": "Las estadísticas de cohortes dependen de los cinco grupos de relación existentes.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Insufficient populated cohorts can leave association statistics undefined.",
+    "emphasis": "none",
+    "id": "corporate-112",
+    "en": "Insufficient populated cohorts can leave association statistics undefined.",
+    "es": "Un número insuficiente de cohortes con observaciones puede dejar indefinidas las estadísticas de asociación.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Association does not establish causation.",
+    "emphasis": "none",
+    "id": "corporate-113",
+    "en": "Association does not establish causation.",
+    "es": "La asociación no establece causalidad.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "The results do not predict the asking price of an individual property.",
+    "emphasis": "none",
+    "id": "corporate-114",
+    "en": "The results do not predict the asking price of an individual property.",
+    "es": "Los resultados no predicen el precio de oferta de una propiedad individual.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "heading",
+    "text": "3. Cross-Dimensional Analysis",
+    "emphasis": "bold",
+    "id": "corporate-115",
+    "en": "10. Cross-Dimensional Analysis",
+    "es": "10. Análisis entre dimensiones",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Does the selected Price / m² relationship persist, vary, or reverse across the selected secondary dimension?",
+    "emphasis": "bold",
+    "id": "corporate-116",
+    "en": "Does the selected Price / m² relationship persist, vary, or reverse across the selected secondary dimension?",
+    "es": "¿La relación seleccionada de precio / m² persiste, varía o se invierte a través de la dimensión secundaria seleccionada?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Questions This Algorithm Answers",
+    "emphasis": "bold",
+    "id": "corporate-117",
+    "en": "Questions This Algorithm Answers",
+    "es": "Preguntas que responde este algoritmo",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Does the selected Price / m² relationship remain consistent across the eligible secondary cohorts?",
+    "emphasis": "none",
+    "id": "corporate-118",
+    "en": "Does the selected Price / m² relationship remain consistent across the eligible secondary cohorts?",
+    "es": "¿Se mantiene consistente la relación seleccionada de precio / m² entre las cohortes secundarias elegibles?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "How does the magnitude of the relationship differ among those cohorts?",
+    "emphasis": "none",
+    "id": "corporate-119",
+    "en": "How does the magnitude of the relationship differ among those cohorts?",
+    "es": "¿Cómo difiere la magnitud de la relación entre esas cohortes?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Do any supported cohorts exhibit a relationship in the opposite direction?",
+    "emphasis": "none",
+    "id": "corporate-120",
+    "en": "Do any supported cohorts exhibit a relationship in the opposite direction?",
+    "es": "¿Alguna cohorte admitida presenta una relación en sentido opuesto?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Which cohorts provide established evidence, and which remain statistically or analytically undefined?",
+    "emphasis": "none",
+    "id": "corporate-121",
+    "en": "Which cohorts provide established evidence, and which remain statistically or analytically undefined?",
+    "es": "¿Qué cohortes proporcionan evidencia establecida y cuáles permanecen estadística o analíticamente indefinidas?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "How do observation counts, exclusions and coverage affect the interpretation of the cross-dimensional result?",
+    "emphasis": "none",
+    "id": "corporate-122",
+    "en": "How do observation counts, exclusions and coverage affect the interpretation of the cross-dimensional result?",
+    "es": "¿Cómo afectan los conteos de observaciones, las exclusiones y la cobertura a la interpretación del resultado entre dimensiones?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Methodology",
+    "emphasis": "bold",
+    "id": "corporate-123",
+    "en": "Methodology",
+    "es": "Metodología",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The algorithm requires an explicitly selected registered analytical question and its supported secondary partition.",
+    "emphasis": "none",
+    "id": "corporate-124",
+    "en": "The algorithm requires an explicitly selected registered analytical question and its supported secondary partition.",
+    "es": "El algoritmo exige una pregunta analítica registrada explícitamente seleccionada y su partición secundaria admitida.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "It constructs the authorized market population using the required canonical geography, property type, transaction and normalization rules.",
+    "emphasis": "none",
+    "id": "corporate-125",
+    "en": "It constructs the authorized market population using the required canonical geography, property type, transaction and normalization rules.",
+    "es": "Construye la población de mercado autorizada con las reglas exigidas de geografía canónica, tipo de propiedad, transacción y normalización.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The selected relationship is evaluated across the defined secondary cohorts.",
+    "emphasis": "none",
+    "id": "corporate-126",
+    "en": "The selected relationship is evaluated across the defined secondary cohorts.",
+    "es": "La relación seleccionada se evalúa a través de las cohortes secundarias definidas.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The algorithm returns cohort-specific coordinates, coverage, exclusions and any supported association or model evidence.",
+    "emphasis": "none",
+    "id": "corporate-127",
+    "en": "The algorithm returns cohort-specific coordinates, coverage, exclusions and any supported association or model evidence.",
+    "es": "El algoritmo devuelve coordenadas por cohorte, cobertura, exclusiones y cualquier evidencia admitida de asociación o modelo.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Each secondary cohort is independently classified according to its establishment conditions.",
+    "emphasis": "none",
+    "id": "corporate-128",
+    "en": "Each secondary cohort is independently classified according to its establishment conditions.",
+    "es": "Cada cohorte secundaria se clasifica de forma independiente según sus condiciones de establecimiento.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The analysis does not silently select a relationship, partition or secondary dimension for the customer.",
+    "emphasis": "none",
+    "id": "corporate-129",
+    "en": "The analysis does not silently select a relationship, partition or secondary dimension for the customer.",
+    "es": "El análisis no selecciona silenciosamente una relación, partición o dimensión secundaria por el cliente.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Mathematical Formulas",
+    "emphasis": "bold",
+    "id": "corporate-130",
+    "en": "Mathematical Formulas",
+    "es": "Fórmulas matemáticas",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "For a supported analytical question, let (G_k) denote secondary cohort (k).",
+    "emphasis": "none",
+    "id": "corporate-131",
+    "en": "For a supported analytical question, let (G_k) denote secondary cohort (k).",
+    "es": "Para una pregunta analítica admitida, Gₖ representa la cohorte secundaria k.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "A generic cohort-specific relationship may be represented as:",
+    "emphasis": "none",
+    "id": "corporate-132",
+    "en": "A generic cohort-specific relationship may be represented as:",
+    "es": "Una relación genérica específica de una cohorte puede representarse como:",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "text": "[\n\\theta_k=T(G_k;q)\n]",
+    "emphasis": "none",
+    "id": "corporate-133",
+    "en": "θₖ = T(Gₖ; q)",
+    "es": "θₖ = T(Gₖ; q)",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Where:",
+    "emphasis": "none",
+    "id": "corporate-134",
+    "en": "Where:",
+    "es": "Donde:",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "(q) = the explicitly selected registered analytical question.",
+    "emphasis": "none",
+    "id": "corporate-135",
+    "en": "(q) = the explicitly selected registered analytical question.",
+    "es": "q = pregunta analítica registrada explícitamente seleccionada.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "(T) = the existing question-specific analytical method.",
+    "emphasis": "none",
+    "id": "corporate-136",
+    "en": "(T) = the existing question-specific analytical method.",
+    "es": "T = método analítico existente específico de la pregunta.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "(\\theta_k) = the supported result for cohort (k).",
+    "emphasis": "none",
+    "id": "corporate-137",
+    "en": "(\\theta_k) = the supported result for cohort (k).",
+    "es": "θₖ = resultado admitido para la cohorte k.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Difference in established relationship magnitudes",
+    "emphasis": "bold",
+    "id": "corporate-138",
+    "en": "Difference in established relationship magnitudes",
+    "es": "Diferencia entre magnitudes de relaciones establecidas",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "text": "[\n\\Delta_{ab}=\\theta_a-\\theta_b\n]",
+    "emphasis": "none",
+    "id": "corporate-139",
+    "en": "Δab = θa − θb",
+    "es": "Δab = θa − θb",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Directional reversal, where a signed relationship is defined",
+    "emphasis": "bold",
+    "id": "corporate-140",
+    "en": "Directional reversal, where a signed relationship is defined",
+    "es": "Inversión de dirección, cuando se define una relación con signo",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "text": "[\n\\operatorname{sign}(\\theta_a)\\ne\n\\operatorname{sign}(\\theta_b)\n]",
+    "emphasis": "none",
+    "id": "corporate-141",
+    "en": "sign(θa) ≠ sign(θb)",
+    "es": "sign(θa) ≠ sign(θb)",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "These are interpretive expressions, not universal replacement formulas for the algorithm's registered question-specific methods. The actual executable question determines whether magnitude differences or directional reversals are mathematically meaningful.",
+    "emphasis": "none",
+    "id": "corporate-142",
+    "en": "These are interpretive expressions, not universal replacement formulas for the algorithm's registered question-specific methods. The actual executable question determines whether magnitude differences or directional reversals are mathematically meaningful.",
+    "es": "Son expresiones interpretativas, no fórmulas universales que sustituyan los métodos registrados del algoritmo específicos de cada pregunta. La pregunta ejecutable real determina si las diferencias de magnitud o las inversiones de dirección tienen significado matemático.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "How to Interpret the Results",
+    "emphasis": "bold",
+    "id": "corporate-143",
+    "en": "How to Interpret the Results",
+    "es": "Cómo interpretar los resultados",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "A relationship that appears positive in one cohort and negative in another may indicate meaningful heterogeneity in the observed market.",
+    "emphasis": "none",
+    "id": "corporate-144",
+    "en": "A relationship that appears positive in one cohort and negative in another may indicate meaningful heterogeneity in the observed market.",
+    "es": "Una relación que parece positiva en una cohorte y negativa en otra puede indicar heterogeneidad significativa en el mercado observado.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "However, a sign reversal must be supported by established, compatible cohort results.",
+    "emphasis": "none",
+    "id": "corporate-145",
+    "en": "However, a sign reversal must be supported by established, compatible cohort results.",
+    "es": "Sin embargo, una inversión de signo debe estar respaldada por resultados establecidos y compatibles de las cohortes.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Undefined or weakly supported results cannot be interpreted as evidence of no relationship.",
+    "emphasis": "none",
+    "id": "corporate-146",
+    "en": "Undefined or weakly supported results cannot be interpreted as evidence of no relationship.",
+    "es": "Los resultados indefinidos o débilmente respaldados no pueden interpretarse como evidencia de ausencia de relación.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Limitations",
+    "emphasis": "bold",
+    "id": "corporate-147",
+    "en": "Limitations",
+    "es": "Limitaciones",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "An explicit supported analytical question is required.",
+    "emphasis": "none",
+    "id": "corporate-148",
+    "en": "An explicit supported analytical question is required.",
+    "es": "Se requiere una pregunta analítica explícita y admitida.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "An explicit compatible secondary partition is required.",
+    "emphasis": "none",
+    "id": "corporate-149",
+    "en": "An explicit compatible secondary partition is required.",
+    "es": "Se requiere una partición secundaria explícita y compatible.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Different registered questions may use different mathematical procedures.",
+    "emphasis": "none",
+    "id": "corporate-150",
+    "en": "Different registered questions may use different mathematical procedures.",
+    "es": "Distintas preguntas registradas pueden utilizar procedimientos matemáticos diferentes.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Cohort establishment conditions must be respected individually.",
+    "emphasis": "none",
+    "id": "corporate-151",
+    "en": "Cohort establishment conditions must be respected individually.",
+    "es": "Las condiciones de establecimiento deben respetarse de forma individual para cada cohorte.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Aggregate and subgroup relationships need not agree.",
+    "emphasis": "none",
+    "id": "corporate-152",
+    "en": "Aggregate and subgroup relationships need not agree.",
+    "es": "Las relaciones agregadas y las de los subgrupos no tienen por qué coincidir.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Observed reversals do not automatically establish causal mechanisms.",
+    "emphasis": "none",
+    "id": "corporate-153",
+    "en": "Observed reversals do not automatically establish causal mechanisms.",
+    "es": "Las inversiones observadas no establecen automáticamente mecanismos causales.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "heading",
+    "text": "4. Price / m² Distribution",
+    "emphasis": "bold",
+    "id": "corporate-154",
+    "en": "11. Price / m² Distribution",
+    "es": "11. Distribución de precio / m²",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "How is Price / m² distributed across the defined Costa Rican real-estate market?",
+    "emphasis": "bold",
+    "id": "corporate-155",
+    "en": "How is Price / m² distributed across the defined Costa Rican real-estate market?",
+    "es": "¿Cómo se distribuye el precio / m² en el mercado inmobiliario costarricense definido?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Questions This Algorithm Answers",
+    "emphasis": "bold",
+    "id": "corporate-156",
+    "en": "Questions This Algorithm Answers",
+    "es": "Preguntas que responde este algoritmo",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "What are the minimum, maximum and median Price / m² observations in the eligible market?",
+    "emphasis": "none",
+    "id": "corporate-157",
+    "en": "What are the minimum, maximum and median Price / m² observations in the eligible market?",
+    "es": "¿Cuáles son las observaciones mínima, máxima y mediana de precio / m² en el mercado elegible?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "What Price / m² levels correspond to the supported distribution quantiles?",
+    "emphasis": "none",
+    "id": "corporate-158",
+    "en": "What Price / m² levels correspond to the supported distribution quantiles?",
+    "es": "¿Qué niveles de precio / m² corresponden a los cuantiles admitidos de la distribución?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "How widely are eligible Price / m² observations dispersed?",
+    "emphasis": "none",
+    "id": "corporate-159",
+    "en": "How widely are eligible Price / m² observations dispersed?",
+    "es": "¿Qué tan dispersas están las observaciones elegibles de precio / m²?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "How many listings qualify for the selected Price / m² normalization?",
+    "emphasis": "none",
+    "id": "corporate-160",
+    "en": "How many listings qualify for the selected Price / m² normalization?",
+    "es": "¿Cuántos anuncios califican para la normalización seleccionada de precio / m²?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "How does the distribution differ when a different explicitly supported market definition is selected?",
+    "emphasis": "none",
+    "id": "corporate-161",
+    "en": "How does the distribution differ when a different explicitly supported market definition is selected?",
+    "es": "¿Cómo difiere la distribución al seleccionar otra definición de mercado explícitamente admitida?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Methodology",
+    "emphasis": "bold",
+    "id": "corporate-162",
+    "en": "Methodology",
+    "es": "Metodología",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The algorithm constructs a market population using canonical geographic identity, transaction type, property type, property basis and explicit area-normalization rules.",
+    "emphasis": "none",
+    "id": "corporate-163",
+    "en": "The algorithm constructs a market population using canonical geographic identity, transaction type, property type, property basis and explicit area-normalization rules.",
+    "es": "El algoritmo construye una población de mercado mediante identidad geográfica canónica, tipo de transacción, tipo de propiedad, base de propiedad y reglas explícitas de normalización por área.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Eligible asking prices are normalized using the established monetary authority.",
+    "emphasis": "none",
+    "id": "corporate-164",
+    "en": "Eligible asking prices are normalized using the established monetary authority.",
+    "es": "Los precios de oferta elegibles se normalizan mediante la autoridad monetaria establecida.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Each qualifying observation must have valid asking-price and area evidence compatible with the selected Price / m² basis.",
+    "emphasis": "none",
+    "id": "corporate-165",
+    "en": "Each qualifying observation must have valid asking-price and area evidence compatible with the selected Price / m² basis.",
+    "es": "Cada observación que califica debe tener evidencia válida de precio de oferta y área compatible con la base seleccionada de precio / m².",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The algorithm calculates individual normalized Price / m² values and summarizes their distribution.",
+    "emphasis": "none",
+    "id": "corporate-166",
+    "en": "The algorithm calculates individual normalized Price / m² values and summarizes their distribution.",
+    "es": "El algoritmo calcula valores individuales normalizados de precio / m² y resume su distribución.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Sale and Rent remain separate.",
+    "emphasis": "none",
+    "id": "corporate-167",
+    "en": "Sale and Rent remain separate.",
+    "es": "Venta y alquiler permanecen separados.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The analysis is descriptive. It does not assign an individual property's appraisal value or automatically construct a comparable-property population.",
+    "emphasis": "none",
+    "id": "corporate-168",
+    "en": "The analysis is descriptive. It does not assign an individual property's appraisal value or automatically construct a comparable-property population.",
+    "es": "El análisis es descriptivo. No asigna el valor de avalúo de una propiedad individual ni construye automáticamente una población de propiedades comparables.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Mathematical Formulas",
+    "emphasis": "bold",
+    "id": "corporate-169",
+    "en": "Mathematical Formulas",
+    "es": "Fórmulas matemáticas",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Individual Price / m²",
+    "emphasis": "bold",
+    "id": "corporate-170",
+    "en": "Individual Price / m²",
+    "es": "Precio / m² individual",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "text": "[\nPPM2_i=\\frac{P_i}{A_i}\n]",
+    "emphasis": "none",
+    "id": "corporate-171",
+    "en": "PPM2ᵢ = Pᵢ / Aᵢ",
+    "es": "PPM2ᵢ = Pᵢ / Aᵢ",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Mean Price / m²",
+    "emphasis": "bold",
+    "id": "corporate-172",
+    "en": "Mean Price / m²",
+    "es": "Media del precio / m²",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "text": "[\n\\overline{PPM2}\n=\\frac{1}{n}\\sum_{i=1}^{n}PPM2_i\n]",
+    "emphasis": "none",
+    "id": "corporate-173",
+    "en": "mean(PPM2) = (1/n) Σᵢ₌₁ⁿ PPM2ᵢ",
+    "es": "mean(PPM2) = (1/n) Σᵢ₌₁ⁿ PPM2ᵢ",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Median",
+    "emphasis": "bold",
+    "id": "corporate-174",
+    "en": "Median",
+    "es": "Mediana",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "text": "[\nM=\\operatorname{median}(PPM2_1,\\ldots,PPM2_n)\n]",
+    "emphasis": "none",
+    "id": "corporate-175",
+    "en": "M = median(PPM2₁, …, PPM2ₙ)",
+    "es": "M = median(PPM2₁, …, PPM2ₙ)",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Interquartile range",
+    "emphasis": "bold",
+    "id": "corporate-176",
+    "en": "Interquartile range",
+    "es": "Rango intercuartílico",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "text": "[\nIQR=Q(0.75)-Q(0.25)\n]",
+    "emphasis": "none",
+    "id": "corporate-177",
+    "en": "IQR = Q(0.75) − Q(0.25)",
+    "es": "IQR = Q(0.75) − Q(0.25)",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Quantiles follow the existing canonical distribution implementation.",
+    "emphasis": "none",
+    "id": "corporate-178",
+    "en": "Quantiles follow the existing canonical distribution implementation.",
+    "es": "Los cuantiles siguen la implementación canónica existente de la distribución.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "How to Interpret the Results",
+    "emphasis": "bold",
+    "id": "corporate-179",
+    "en": "How to Interpret the Results",
+    "es": "Cómo interpretar los resultados",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The median represents the middle of the eligible Price / m² distribution.",
+    "emphasis": "none",
+    "id": "corporate-180",
+    "en": "The median represents the middle of the eligible Price / m² distribution.",
+    "es": "La mediana representa el centro de la distribución elegible de precio / m².",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The interquartile range describes dispersion within the central portion of that distribution.",
+    "emphasis": "none",
+    "id": "corporate-181",
+    "en": "The interquartile range describes dispersion within the central portion of that distribution.",
+    "es": "El rango intercuartílico describe la dispersión de la parte central de esa distribución.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "These statistics provide a normalized view of asking-price intensity that can be useful when comparing eligible properties of different sizes.",
+    "emphasis": "none",
+    "id": "corporate-182",
+    "en": "These statistics provide a normalized view of asking-price intensity that can be useful when comparing eligible properties of different sizes.",
+    "es": "Estas estadísticas ofrecen una visión normalizada de la intensidad del precio de oferta que puede resultar útil al comparar propiedades elegibles de diferentes tamaños.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Limitations",
+    "emphasis": "bold",
+    "id": "corporate-183",
+    "en": "Limitations",
+    "es": "Limitaciones",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Price / m² is sensitive to the selected area denominator.",
+    "emphasis": "none",
+    "id": "corporate-184",
+    "en": "Price / m² is sensitive to the selected area denominator.",
+    "es": "El precio / m² es sensible al denominador de área seleccionado.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Land-area and construction-area measures are not interchangeable.",
+    "emphasis": "none",
+    "id": "corporate-185",
+    "en": "Land-area and construction-area measures are not interchangeable.",
+    "es": "Las medidas de área del terreno y área de construcción no son intercambiables.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Missing or invalid price/area observations are excluded.",
+    "emphasis": "none",
+    "id": "corporate-186",
+    "en": "Missing or invalid price/area observations are excluded.",
+    "es": "Se excluyen las observaciones con precios o áreas ausentes o inválidos.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Sale and Rent are separate analytical populations.",
+    "emphasis": "none",
+    "id": "corporate-187",
+    "en": "Sale and Rent are separate analytical populations.",
+    "es": "Venta y alquiler son poblaciones analíticas separadas.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "A lower Price / m² does not automatically indicate a better investment.",
+    "emphasis": "none",
+    "id": "corporate-188",
+    "en": "A lower Price / m² does not automatically indicate a better investment.",
+    "es": "Un menor precio / m² no indica automáticamente una mejor inversión.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Quantile summaries do not establish a full histogram or density curve.",
+    "emphasis": "none",
+    "id": "corporate-189",
+    "en": "Quantile summaries do not establish a full histogram or density curve.",
+    "es": "Los resúmenes por cuantiles no establecen un histograma completo ni una curva de densidad.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "heading",
+    "text": "5. Property Configuration Frequency",
+    "emphasis": "bold",
+    "id": "corporate-190",
+    "en": "12. Property Configuration Frequency",
+    "es": "12. Frecuencia de configuración de propiedades",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "How many listings in the defined Costa Rican real-estate market positively establish the selected property configuration?",
+    "emphasis": "bold",
+    "id": "corporate-191",
+    "en": "How many listings in the defined Costa Rican real-estate market positively establish the selected property configuration?",
+    "es": "¿Cuántos anuncios del mercado inmobiliario costarricense definido establecen positivamente la configuración de propiedad seleccionada?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Questions This Algorithm Answers",
+    "emphasis": "bold",
+    "id": "corporate-192",
+    "en": "Questions This Algorithm Answers",
+    "es": "Preguntas que responde este algoritmo",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "How many eligible listings confirm the complete selected property configuration?",
+    "emphasis": "none",
+    "id": "corporate-193",
+    "en": "How many eligible listings confirm the complete selected property configuration?",
+    "es": "¿Cuántos anuncios elegibles confirman la configuración completa seleccionada?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "What percentage of the defined eligible market positively matches that configuration?",
+    "emphasis": "none",
+    "id": "corporate-194",
+    "en": "What percentage of the defined eligible market positively matches that configuration?",
+    "es": "¿Qué porcentaje del mercado elegible definido coincide positivamente con esa configuración?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "How common or uncommon is the selected combination of property characteristics?",
+    "emphasis": "none",
+    "id": "corporate-195",
+    "en": "How common or uncommon is the selected combination of property characteristics?",
+    "es": "¿Qué tan común o infrecuente es la combinación seleccionada de características de propiedad?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Which selected characteristics contribute to the defined configuration question?",
+    "emphasis": "none",
+    "id": "corporate-196",
+    "en": "Which selected characteristics contribute to the defined configuration question?",
+    "es": "¿Qué características seleccionadas contribuyen a la pregunta de configuración definida?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Does the evidence establish a genuine zero-match result or an empty reference market?",
+    "emphasis": "none",
+    "id": "corporate-197",
+    "en": "Does the evidence establish a genuine zero-match result or an empty reference market?",
+    "es": "¿Establece la evidencia un resultado real de cero coincidencias o un mercado de referencia vacío?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Methodology",
+    "emphasis": "bold",
+    "id": "corporate-198",
+    "en": "Methodology",
+    "es": "Metodología",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The algorithm constructs an eligible market population using the selected canonical geography, property type and transaction.",
+    "emphasis": "none",
+    "id": "corporate-199",
+    "en": "The algorithm constructs an eligible market population using the selected canonical geography, property type and transaction.",
+    "es": "El algoritmo construye una población de mercado elegible mediante la geografía canónica, el tipo de propiedad y la transacción seleccionados.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The analytical question specifies one or more supported, positively evidenced configuration characteristics.",
+    "emphasis": "none",
+    "id": "corporate-200",
+    "en": "The analytical question specifies one or more supported, positively evidenced configuration characteristics.",
+    "es": "La pregunta analítica especifica una o más características de configuración admitidas y positivamente evidenciadas.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The algorithm evaluates each eligible listing against the complete selected combination.",
+    "emphasis": "none",
+    "id": "corporate-201",
+    "en": "The algorithm evaluates each eligible listing against the complete selected combination.",
+    "es": "El algoritmo evalúa cada anuncio elegible frente a la combinación completa seleccionada.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "A listing contributes to the confirmed matching count only when the available evidence positively establishes the required configuration.",
+    "emphasis": "none",
+    "id": "corporate-202",
+    "en": "A listing contributes to the confirmed matching count only when the available evidence positively establishes the required configuration.",
+    "es": "Un anuncio contribuye al conteo de coincidencias confirmadas solo cuando la evidencia disponible establece positivamente la configuración requerida.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Unknown characteristics are not treated as confirmed matches.",
+    "emphasis": "none",
+    "id": "corporate-203",
+    "en": "Unknown characteristics are not treated as confirmed matches.",
+    "es": "Las características desconocidas no se consideran coincidencias confirmadas.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The algorithm reports the eligible base population, confirmed configuration count and corresponding share.",
+    "emphasis": "none",
+    "id": "corporate-204",
+    "en": "The algorithm reports the eligible base population, confirmed configuration count and corresponding share.",
+    "es": "El algoritmo informa la población base elegible, el conteo de configuraciones confirmadas y la proporción correspondiente.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Mathematical Formulas",
+    "emphasis": "bold",
+    "id": "corporate-205",
+    "en": "Mathematical Formulas",
+    "es": "Fórmulas matemáticas",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Confirmed configuration count",
+    "emphasis": "bold",
+    "id": "corporate-206",
+    "en": "Confirmed configuration count",
+    "es": "Conteo de configuraciones confirmadas",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "text": "[\nN_C=\\sum_{i=1}^{N}I_i(C)\n]",
+    "emphasis": "none",
+    "id": "corporate-207",
+    "en": "N_C = Σᵢ₌₁ᴺ Iᵢ(C)",
+    "es": "N_C = Σᵢ₌₁ᴺ Iᵢ(C)",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Where (I_i(C)=1) only when listing (i) positively establishes the complete configuration (C).",
+    "emphasis": "none",
+    "id": "corporate-208",
+    "en": "Where (I_i(C)=1) only when listing (i) positively establishes the complete configuration (C).",
+    "es": "Iᵢ(C)=1 solo cuando el anuncio i establece positivamente la configuración completa C.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Configuration share",
+    "emphasis": "bold",
+    "id": "corporate-209",
+    "en": "Configuration share",
+    "es": "Proporción de la configuración",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "text": "[\nS_C=\\frac{N_C}{N}\\times100%\n]",
+    "emphasis": "none",
+    "id": "corporate-210",
+    "en": "S_C = (N_C / N) × 100%",
+    "es": "S_C = (N_C / N) × 100%",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "For an established nonempty base population.",
+    "emphasis": "none",
+    "id": "corporate-211",
+    "en": "For an established nonempty base population.",
+    "es": "Para una población base establecida y no vacía.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "How to Interpret the Results",
+    "emphasis": "bold",
+    "id": "corporate-212",
+    "en": "How to Interpret the Results",
+    "es": "Cómo interpretar los resultados",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "A configuration represented by 5 of 100 eligible listings has a confirmed frequency of 5% within that defined population.",
+    "emphasis": "none",
+    "id": "corporate-213",
+    "en": "A configuration represented by 5 of 100 eligible listings has a confirmed frequency of 5% within that defined population.",
+    "es": "Una configuración representada por 5 de 100 anuncios elegibles tiene una frecuencia confirmada del 5% dentro de esa población definida.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "That describes the observed prevalence of the configuration, not its desirability or monetary value.",
+    "emphasis": "none",
+    "id": "corporate-214",
+    "en": "That describes the observed prevalence of the configuration, not its desirability or monetary value.",
+    "es": "Eso describe la prevalencia observada de la configuración, no su atractivo ni su valor monetario.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "A zero matching count in a nonempty eligible market is different from an empty market.",
+    "emphasis": "none",
+    "id": "corporate-215",
+    "en": "A zero matching count in a nonempty eligible market is different from an empty market.",
+    "es": "Un conteo de cero coincidencias en un mercado elegible no vacío es distinto de un mercado vacío.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Limitations",
+    "emphasis": "bold",
+    "id": "corporate-216",
+    "en": "Limitations",
+    "es": "Limitaciones",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "The configuration must use supported canonical characteristics.",
+    "emphasis": "none",
+    "id": "corporate-217",
+    "en": "The configuration must use supported canonical characteristics.",
+    "es": "La configuración debe utilizar características canónicas admitidas.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Missing evidence does not establish a match.",
+    "emphasis": "none",
+    "id": "corporate-218",
+    "en": "Missing evidence does not establish a match.",
+    "es": "La ausencia de evidencia no establece una coincidencia.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Unsupported combinations cannot be silently converted into other questions.",
+    "emphasis": "none",
+    "id": "corporate-219",
+    "en": "Unsupported combinations cannot be silently converted into other questions.",
+    "es": "Las combinaciones no admitidas no pueden convertirse silenciosamente en otras preguntas.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "An empty base population is not a zero-percent frequency.",
+    "emphasis": "none",
+    "id": "corporate-220",
+    "en": "An empty base population is not a zero-percent frequency.",
+    "es": "Una población base vacía no representa una frecuencia de cero por ciento.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Frequency does not measure buyer demand or property value.",
+    "emphasis": "none",
+    "id": "corporate-221",
+    "en": "Frequency does not measure buyer demand or property value.",
+    "es": "La frecuencia no mide la demanda de compradores ni el valor de una propiedad.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "The algorithm does not predict the market performance of uncommon configurations.",
+    "emphasis": "none",
+    "id": "corporate-222",
+    "en": "The algorithm does not predict the market performance of uncommon configurations.",
+    "es": "El algoritmo no predice el desempeño de mercado de configuraciones infrecuentes.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "heading",
+    "text": "6. Property Price / m² Position",
+    "emphasis": "bold",
+    "id": "corporate-223",
+    "en": "13. Property Price / m² Position",
+    "es": "13. Posición del precio / m² de una propiedad",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Where does this property's asking Price / m² sit within its defined reference population?",
+    "emphasis": "bold",
+    "id": "corporate-224",
+    "en": "Where does this property's asking Price / m² sit within its defined reference population?",
+    "es": "¿Dónde se sitúa el precio de oferta / m² de esta propiedad dentro de su población de referencia definida?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Questions This Algorithm Answers",
+    "emphasis": "bold",
+    "id": "corporate-225",
+    "en": "Questions This Algorithm Answers",
+    "es": "Preguntas que responde este algoritmo",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "What is the subject property's eligible asking Price / m²?",
+    "emphasis": "none",
+    "id": "corporate-226",
+    "en": "What is the subject property's eligible asking Price / m²?",
+    "es": "¿Cuál es el precio de oferta / m² elegible de la propiedad analizada?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "What proportion of eligible reference observations fall below, equal to or above the subject?",
+    "emphasis": "none",
+    "id": "corporate-227",
+    "en": "What proportion of eligible reference observations fall below, equal to or above the subject?",
+    "es": "¿Qué proporción de las observaciones de referencia elegibles se sitúan por debajo, son iguales o se sitúan por encima de la propiedad analizada?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "What is the property's established percentile or midrank position?",
+    "emphasis": "none",
+    "id": "corporate-228",
+    "en": "What is the property's established percentile or midrank position?",
+    "es": "¿Cuál es la posición percentil o de rango medio establecida de la propiedad?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "How does its asking Price / m² differ from the reference median?",
+    "emphasis": "none",
+    "id": "corporate-229",
+    "en": "How does its asking Price / m² differ from the reference median?",
+    "es": "¿Cómo difiere su precio de oferta / m² de la mediana de referencia?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "What supported interval and tail evidence describes its position within the eligible distribution?",
+    "emphasis": "none",
+    "id": "corporate-230",
+    "en": "What supported interval and tail evidence describes its position within the eligible distribution?",
+    "es": "¿Qué evidencia admitida de intervalo y colas describe su posición dentro de la distribución elegible?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Methodology",
+    "emphasis": "bold",
+    "id": "corporate-231",
+    "en": "Methodology",
+    "es": "Metodología",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The algorithm requires an active canonical subject listing with compatible asking-price, geographic, property-type, area and normalization evidence.",
+    "emphasis": "none",
+    "id": "corporate-232",
+    "en": "The algorithm requires an active canonical subject listing with compatible asking-price, geographic, property-type, area and normalization evidence.",
+    "es": "El algoritmo requiere un anuncio canónico activo de la propiedad analizada con evidencia compatible de precio de oferta, geografía, tipo de propiedad, área y normalización.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "It constructs the authorized reference population using the existing supported geographic and property-basis definitions.",
+    "emphasis": "none",
+    "id": "corporate-233",
+    "en": "It constructs the authorized reference population using the existing supported geographic and property-basis definitions.",
+    "es": "Construye la población de referencia autorizada con las definiciones admitidas existentes de geografía y base de propiedad.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The algorithm calculates the subject property's asking Price / m² and evaluates its position against the eligible reference observations.",
+    "emphasis": "none",
+    "id": "corporate-234",
+    "en": "The algorithm calculates the subject property's asking Price / m² and evaluates its position against the eligible reference observations.",
+    "es": "El algoritmo calcula el precio de oferta / m² de la propiedad y evalúa su posición frente a las observaciones de referencia elegibles.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The analysis preserves:",
+    "emphasis": "none",
+    "id": "corporate-235",
+    "en": "The analysis preserves:",
+    "es": "El análisis conserva:",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Below, equal and above counts.",
+    "emphasis": "none",
+    "id": "corporate-236",
+    "en": "Below, equal and above counts.",
+    "es": "Conteos por debajo, iguales y por encima.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Midrank position.",
+    "emphasis": "none",
+    "id": "corporate-237",
+    "en": "Midrank position.",
+    "es": "Posición de rango medio.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Reference median.",
+    "emphasis": "none",
+    "id": "corporate-238",
+    "en": "Reference median.",
+    "es": "Mediana de referencia.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Subject-to-median difference.",
+    "emphasis": "none",
+    "id": "corporate-239",
+    "en": "Subject-to-median difference.",
+    "es": "Diferencia entre la propiedad y la mediana.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Supported interval and tail evidence.",
+    "emphasis": "none",
+    "id": "corporate-240",
+    "en": "Supported interval and tail evidence.",
+    "es": "Evidencia admitida de intervalo y colas.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Construction-area or land-area normalization context.",
+    "emphasis": "none",
+    "id": "corporate-241",
+    "en": "Construction-area or land-area normalization context.",
+    "es": "Contexto de normalización por área de construcción o terreno.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Explicit unavailable states.",
+    "emphasis": "none",
+    "id": "corporate-242",
+    "en": "Explicit unavailable states.",
+    "es": "Estados explícitos de no disponibilidad.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The algorithm does not fabricate a percentile from aggregate quantiles.",
+    "emphasis": "none",
+    "id": "corporate-243",
+    "en": "The algorithm does not fabricate a percentile from aggregate quantiles.",
+    "es": "El algoritmo no fabrica un percentil a partir de cuantiles agregados.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Mathematical Formulas",
+    "emphasis": "bold",
+    "id": "corporate-244",
+    "en": "Mathematical Formulas",
+    "es": "Fórmulas matemáticas",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Subject Price / m²",
+    "emphasis": "bold",
+    "id": "corporate-245",
+    "en": "Subject Price / m²",
+    "es": "Precio / m² de la propiedad analizada",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "text": "[\nPPM2_s=\\frac{P_s}{A_s}\n]",
+    "emphasis": "none",
+    "id": "corporate-246",
+    "en": "PPM2_s = P_s / A_s",
+    "es": "PPM2_s = P_s / A_s",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Below, equal and above counts",
+    "emphasis": "bold",
+    "id": "corporate-247",
+    "en": "Below, equal and above counts",
+    "es": "Conteos por debajo, iguales y por encima",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "text": "[\nB=#{i<PPM2_s}\n]",
+    "emphasis": "none",
+    "id": "corporate-248",
+    "en": "B = #{i : PPM2ᵢ < PPM2_s}",
+    "es": "B = #{i : PPM2ᵢ < PPM2_s}",
+    "proposedChange": true
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "text": "[\nE=#{i=PPM2_s}\n]",
+    "emphasis": "none",
+    "id": "corporate-249",
+    "en": "E = #{i : PPM2ᵢ = PPM2_s}",
+    "es": "E = #{i : PPM2ᵢ = PPM2_s}",
+    "proposedChange": true
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "text": "[\nA=#{i>PPM2_s}\n]",
+    "emphasis": "none",
+    "id": "corporate-250",
+    "en": "A = #{i : PPM2ᵢ > PPM2_s}",
+    "es": "A = #{i : PPM2ᵢ > PPM2_s}",
+    "proposedChange": true
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Midrank percentile",
+    "emphasis": "bold",
+    "id": "corporate-251",
+    "en": "Midrank percentile",
+    "es": "Percentil de rango medio",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "text": "[\nR_s=\\frac{B+0.5E}{N}\\times100%\n]",
+    "emphasis": "none",
+    "id": "corporate-252",
+    "en": "R_s = ((B + 0.5E) / N) × 100%",
+    "es": "R_s = ((B + 0.5E) / N) × 100%",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Where (N) is the eligible reference count and the expression follows the algorithm's actual reference-population and tie semantics.",
+    "emphasis": "none",
+    "id": "corporate-253",
+    "en": "Where (N) is the eligible reference count and the expression follows the algorithm's actual reference-population and tie semantics.",
+    "es": "N es el conteo de referencia elegible y la expresión sigue la población de referencia y las reglas de empates reales del algoritmo.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Difference from median",
+    "emphasis": "bold",
+    "id": "corporate-254",
+    "en": "Difference from median",
+    "es": "Diferencia respecto de la mediana",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "text": "[\nD_s=PPM2_s-M\n]",
+    "emphasis": "none",
+    "id": "corporate-255",
+    "en": "D_s = PPM2_s − M",
+    "es": "D_s = PPM2_s − M",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "How to Interpret the Results",
+    "emphasis": "bold",
+    "id": "corporate-256",
+    "en": "How to Interpret the Results",
+    "es": "Cómo interpretar los resultados",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "A higher percentile indicates that the property's asking Price / m² is higher than a greater share of the eligible reference observations under the algorithm's ranking convention.",
+    "emphasis": "none",
+    "id": "corporate-257",
+    "en": "A higher percentile indicates that the property's asking Price / m² is higher than a greater share of the eligible reference observations under the algorithm's ranking convention.",
+    "es": "Un percentil más alto indica que el precio de oferta / m² de la propiedad supera una mayor proporción de las observaciones de referencia elegibles según la convención de clasificación del algoritmo.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "A lower percentile indicates the opposite.",
+    "emphasis": "none",
+    "id": "corporate-258",
+    "en": "A lower percentile indicates the opposite.",
+    "es": "Un percentil más bajo indica lo contrario.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The result establishes a relative asking-price position, not whether the property is objectively overvalued or undervalued.",
+    "emphasis": "none",
+    "id": "corporate-259",
+    "en": "The result establishes a relative asking-price position, not whether the property is objectively overvalued or undervalued.",
+    "es": "El resultado establece una posición relativa del precio de oferta, no si la propiedad está objetivamente sobrevalorada o infravalorada.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Limitations",
+    "emphasis": "bold",
+    "id": "corporate-260",
+    "en": "Limitations",
+    "es": "Limitaciones",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "An active canonical subject listing is required.",
+    "emphasis": "none",
+    "id": "corporate-261",
+    "en": "An active canonical subject listing is required.",
+    "es": "Se requiere un anuncio canónico activo de la propiedad analizada.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "The current algorithm does not accept an unpublished draft as a subject.",
+    "emphasis": "none",
+    "id": "corporate-262",
+    "en": "The current algorithm does not accept an unpublished draft as a subject.",
+    "es": "El algoritmo actual no acepta un borrador no publicado como propiedad analizada.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Missing eligible price, area, basis or geographic evidence prevents execution.",
+    "emphasis": "none",
+    "id": "corporate-263",
+    "en": "Missing eligible price, area, basis or geographic evidence prevents execution.",
+    "es": "La ausencia de evidencia elegible de precio, área, base o geografía impide la ejecución.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "The selected normalization affects the interpretation.",
+    "emphasis": "none",
+    "id": "corporate-264",
+    "en": "The selected normalization affects the interpretation.",
+    "es": "La normalización seleccionada afecta la interpretación.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Reference-population eligibility and tie handling must remain consistent.",
+    "emphasis": "none",
+    "id": "corporate-265",
+    "en": "Reference-population eligibility and tie handling must remain consistent.",
+    "es": "La elegibilidad de la población de referencia y el tratamiento de empates deben permanecer consistentes.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "A percentile is not an appraisal or statistical confidence level.",
+    "emphasis": "none",
+    "id": "corporate-266",
+    "en": "A percentile is not an appraisal or statistical confidence level.",
+    "es": "Un percentil no es un avalúo ni un nivel de confianza estadística.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "heading",
+    "text": "7. Size → Price / m²",
+    "emphasis": "bold",
+    "id": "corporate-267",
+    "en": "14. Size → Price / m²",
+    "es": "14. Tamaño → Precio / m²",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "How does Price / m² vary with size in the defined Costa Rican real-estate market?",
+    "emphasis": "bold",
+    "id": "corporate-268",
+    "en": "How does Price / m² vary with size in the defined Costa Rican real-estate market?",
+    "es": "¿Cómo varía el precio / m² con el tamaño en el mercado inmobiliario costarricense definido?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Questions This Algorithm Answers",
+    "emphasis": "bold",
+    "id": "corporate-269",
+    "en": "Questions This Algorithm Answers",
+    "es": "Preguntas que responde este algoritmo",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "What is the median Price / m² within each established property-size group?",
+    "emphasis": "none",
+    "id": "corporate-270",
+    "en": "What is the median Price / m² within each established property-size group?",
+    "es": "¿Cuál es la mediana del precio / m² dentro de cada grupo establecido de tamaño de propiedad?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "How do observed Price / m² medians change across increasing size groups?",
+    "emphasis": "none",
+    "id": "corporate-271",
+    "en": "How do observed Price / m² medians change across increasing size groups?",
+    "es": "¿Cómo cambian las medianas observadas del precio / m² entre grupos de tamaño creciente?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Does the available evidence support a positive or negative rank association between size and Price / m²?",
+    "emphasis": "none",
+    "id": "corporate-272",
+    "en": "Does the available evidence support a positive or negative rank association between size and Price / m²?",
+    "es": "¿Respalda la evidencia disponible una asociación de rangos positiva o negativa entre tamaño y precio / m²?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "Which size groups contain eligible observations?",
+    "emphasis": "none",
+    "id": "corporate-273",
+    "en": "Which size groups contain eligible observations?",
+    "es": "¿Qué grupos de tamaño contienen observaciones elegibles?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "text": "When is the relationship undefined because too few groups or insufficient variation are available?",
+    "emphasis": "none",
+    "id": "corporate-274",
+    "en": "When is the relationship undefined because too few groups or insufficient variation are available?",
+    "es": "¿Cuándo queda indefinida la relación por falta de grupos o variación suficiente?",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Methodology",
+    "emphasis": "bold",
+    "id": "corporate-275",
+    "en": "Methodology",
+    "es": "Metodología",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The algorithm constructs an eligible improved-property population using the supported canonical market and area-normalization definitions.",
+    "emphasis": "none",
+    "id": "corporate-276",
+    "en": "The algorithm constructs an eligible improved-property population using the supported canonical market and area-normalization definitions.",
+    "es": "El algoritmo construye una población elegible de propiedades con construcción mediante las definiciones canónicas admitidas de mercado y normalización por área.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "It assigns observations to the established property-size groups.",
+    "emphasis": "none",
+    "id": "corporate-277",
+    "en": "It assigns observations to the established property-size groups.",
+    "es": "Asigna las observaciones a los grupos de tamaño de propiedad establecidos.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "For each populated group, it calculates the supported Price / m² median and group coordinates.",
+    "emphasis": "none",
+    "id": "corporate-278",
+    "en": "For each populated group, it calculates the supported Price / m² median and group coordinates.",
+    "es": "Para cada grupo con observaciones calcula la mediana admitida del precio / m² y las coordenadas del grupo.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Where sufficient evidence exists, the algorithm evaluates the supported rank-based relationship.",
+    "emphasis": "none",
+    "id": "corporate-279",
+    "en": "Where sufficient evidence exists, the algorithm evaluates the supported rank-based relationship.",
+    "es": "Cuando hay evidencia suficiente, el algoritmo evalúa la relación por rangos admitida.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "The current registered path does not establish a regression model merely because grouped medians are available.",
+    "emphasis": "none",
+    "id": "corporate-280",
+    "en": "The current registered path does not establish a regression model merely because grouped medians are available.",
+    "es": "La ruta registrada actual no establece un modelo de regresión por el mero hecho de disponer de medianas agrupadas.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "Mathematical Formulas",
+    "emphasis": "bold",
+    "id": "corporate-281",
+    "en": "Mathematical Formulas",
+    "es": "Fórmulas matemáticas",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Size-group median",
+    "emphasis": "bold",
+    "id": "corporate-282",
+    "en": "Size-group median",
+    "es": "Mediana del grupo de tamaño",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "text": "[\nM_k=\\operatorname{median}{PPM2_i\\in G_k}\n]",
+    "emphasis": "none",
+    "id": "corporate-283",
+    "en": "Mₖ = median{PPM2ᵢ : i ∈ Gₖ}",
+    "es": "Mₖ = median{PPM2ᵢ : i ∈ Gₖ}",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Spearman rank association",
+    "emphasis": "bold",
+    "id": "corporate-284",
+    "en": "Spearman rank association",
+    "es": "Asociación de rangos de Spearman",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "text": "[\n\\rho_s=\n\\operatorname{Corr}\n\\left(\n\\operatorname{rank}(S_k),\n\\operatorname{rank}(M_k)\n\\right)\n]",
+    "emphasis": "none",
+    "id": "corporate-285",
+    "en": "ρs = Corr(rank(Sₖ), rank(Mₖ))",
+    "es": "ρs = Corr(rank(Sₖ), rank(Mₖ))",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Where (S_k) is the supported size-group coordinate.",
+    "emphasis": "none",
+    "id": "corporate-286",
+    "en": "Where (S_k) is the supported size-group coordinate.",
+    "es": "Sₖ es la coordenada admitida del grupo de tamaño.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "text": "How to Interpret the Results",
+    "emphasis": "bold",
+    "id": "corporate-287",
+    "en": "How to Interpret the Results",
+    "es": "Cómo interpretar los resultados",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "A negative established association indicates that larger size groups tend to exhibit lower observed median Price / m² within the analyzed population.",
+    "emphasis": "none",
+    "id": "corporate-288",
+    "en": "A negative established association indicates that larger size groups tend to exhibit lower observed median Price / m² within the analyzed population.",
+    "es": "Una asociación negativa establecida indica que los grupos de mayor tamaño tienden a presentar una mediana observada menor de precio / m² dentro de la población analizada.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "A positive association indicates the reverse.",
+    "emphasis": "none",
+    "id": "corporate-289",
+    "en": "A positive association indicates the reverse.",
+    "es": "Una asociación positiva indica lo contrario.",
+    "proposedChange": false
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "text": "Neither result establishes that increasing a property's size would cause",
+    "emphasis": "none",
+    "id": "corporate-290",
+    "en": "Neither result establishes that increasing a property's size would cause an equivalent change in its Price / m².",
+    "es": "Ninguno de los resultados establece que aumentar el tamaño de una propiedad causaría un cambio equivalente en su precio / m².",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-292",
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "none",
+    "en": "Limitations",
+    "es": "Limitaciones",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-293",
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Size-group coordinates use median exact area and median compatible Price / m². Spearman requires at least three populated groups and nonconstant ranked coordinates; ties receive average ranks. The registered coupled size-normalization path withholds regression. Grouped associations are descriptive, not causal or property-level price predictions.",
+    "es": "Las coordenadas de los grupos de tamaño utilizan la mediana del área exacta y la mediana del precio / m² compatible. Spearman requiere al menos tres grupos con observaciones y coordenadas de rangos no constantes; los empates reciben rangos promedio. La ruta registrada con acoplamiento entre tamaño y normalización retiene la regresión. Las asociaciones agrupadas son descriptivas, no causales ni predicciones del precio de propiedades individuales.",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-294",
+    "part": "overlay",
+    "kind": "heading",
+    "emphasis": "none",
+    "en": "15. User-Defined Cohort Price / m² Comparison",
+    "es": "15. Comparación de precio / m² entre cohortes definidas por el usuario",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-295",
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "How do Price / m² distributions and medians differ between two explicitly defined compatible cohorts?",
+    "es": "¿Cómo difieren las distribuciones y medianas del precio / m² entre dos cohortes compatibles explícitamente definidas?",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-296",
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "none",
+    "en": "Questions This Algorithm Answers",
+    "es": "Preguntas que responde este algoritmo",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-297",
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "What is each cohort’s eligible population and Price / m² distribution?",
+    "es": "¿Cuál es la población elegible y la distribución del precio / m² de cada cohorte?",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-298",
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "How much does Cohort A’s median differ from Cohort B’s median, in units and as a percentage of the chosen reference median?",
+    "es": "¿Cuánto difiere la mediana de la cohorte A de la mediana de la cohorte B, en unidades y como porcentaje de la mediana de referencia elegida?",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-299",
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Does each cohort independently satisfy the minimum comparison evidence?",
+    "es": "¿Satisface cada cohorte de forma independiente la evidencia mínima de comparación?",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-300",
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "none",
+    "en": "Methodology",
+    "es": "Metodología",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-301",
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The customer defines both cohorts and explicitly selects reference A or B. Both populations share one transaction type, property basis and normalization basis. Existing canonical geography and supported cohort characteristics determine membership; neither a second market nor omitted boundaries are inferred. Each distribution is calculated independently.",
+    "es": "El cliente define ambas cohortes y selecciona explícitamente la referencia A o B. Ambas poblaciones comparten un tipo de transacción, una base de propiedad y una base de normalización. La geografía canónica existente y las características de cohortes admitidas determinan la pertenencia; no se infieren un segundo mercado ni límites omitidos. Cada distribución se calcula de forma independiente.",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-302",
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "none",
+    "en": "Mathematical Formulas",
+    "es": "Fórmulas matemáticas",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-303",
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "en": "M_A = median{PPM2ᵢ : i ∈ A}; M_B = median{PPM2ᵢ : i ∈ B}",
+    "es": "M_A = median{PPM2ᵢ : i ∈ A}; M_B = median{PPM2ᵢ : i ∈ B}",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-304",
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "en": "Δ = M_A − M_B; Δ% = (Δ / M_ref) × 100%",
+    "es": "Δ = M_A − M_B; Δ% = (Δ / M_ref) × 100%",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-305",
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "M_ref is the explicitly chosen A or B median. Despite the output field name absoluteDifference, Δ is signed A−B, not |A−B|. Both cohorts require at least eight observations for median-difference evidence; a zero reference median makes the percentage undefined.",
+    "es": "M_ref es la mediana A o B explícitamente elegida. Pese al nombre del campo de salida absoluteDifference, Δ es la diferencia con signo A−B, no |A−B|. Ambas cohortes requieren al menos ocho observaciones para la evidencia de diferencia de medianas; una mediana de referencia cero deja indefinido el porcentaje.",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-306",
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "none",
+    "en": "How to Interpret the Results",
+    "es": "Cómo interpretar los resultados",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-307",
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "A positive difference means A’s median asking Price / m² exceeds B’s under the same analytical identity. The percentage changes with the selected reference; it does not identify a causal premium or discount.",
+    "es": "Una diferencia positiva significa que la mediana del precio de oferta / m² de A supera la de B bajo la misma identidad analítica. El porcentaje cambia con la referencia seleccionada; no identifica una prima ni un descuento causal.",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-308",
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "none",
+    "en": "Limitations",
+    "es": "Limitaciones",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-309",
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Unsupported cohorts, mixed Sale/Rent, incompatible area denominators and construction normalization for vacant land are rejected. Insufficient evidence withholds the comparison; empty or missing results are not fabricated. No completed-sale value, causation or investment return is established.",
+    "es": "Se rechazan las cohortes no admitidas, la mezcla de venta y alquiler, los denominadores de área incompatibles y la normalización por construcción para terrenos sin construir. La evidencia insuficiente retiene la comparación; no se fabrican resultados vacíos o ausentes. No se establecen valores de ventas completadas, causalidad ni rentabilidad de inversión.",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-310",
+    "part": "overlay",
+    "kind": "heading",
+    "emphasis": "none",
+    "en": "16. User-Defined Comparable Cohort",
+    "es": "16. Cohorte comparable definida por el usuario",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-311",
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "How does this property's asking Price / m² compare with the cohort matching its compulsory boundaries and selected canonical characteristics?",
+    "es": "¿Cómo se compara el precio de oferta / m² de esta propiedad con la cohorte que cumple sus límites obligatorios y las características canónicas seleccionadas?",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-312",
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "none",
+    "en": "Questions This Algorithm Answers",
+    "es": "Preguntas que responde este algoritmo",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-313",
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Which eligible peers remain after compulsory boundaries and the cumulative intersection of selected characteristics?",
+    "es": "¿Qué propiedades pares elegibles permanecen después de aplicar los límites obligatorios y la intersección acumulativa de las características seleccionadas?",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-314",
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Where does the subject’s asking Price / m² sit relative to those peers?",
+    "es": "¿Dónde se sitúa el precio de oferta / m² de la propiedad analizada respecto de esas propiedades pares?",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-315",
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "How do exclusions and the population trail explain an empty or narrowed cohort?",
+    "es": "¿Cómo explican las exclusiones y el registro de población una cohorte vacía o reducida?",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-316",
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "none",
+    "en": "Methodology",
+    "es": "Metodología",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-317",
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "An identifiable canonical subject supplies the supported market, property type and canonical area-range boundaries. The customer explicitly chooses the supported geography level, normalization and optional dimensions. Compatible peers satisfy the compulsory structural boundaries and every active supported dimension in deterministic order. The subject is excluded from its peer population. Missing or ambiguous subject categories cannot silently become matching inputs.",
+    "es": "Una propiedad canónica identificable aporta el mercado, tipo de propiedad y límites de rangos de área canónicos admitidos. El cliente elige explícitamente el nivel geográfico, la normalización y las dimensiones opcionales admitidos. Las propiedades pares compatibles satisfacen los límites estructurales obligatorios y todas las dimensiones admitidas activas en orden determinista. La propiedad analizada queda excluida de su población de pares. Las categorías ausentes o ambiguas de la propiedad no pueden convertirse silenciosamente en entradas de coincidencia.",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-318",
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "none",
+    "en": "Mathematical Formulas",
+    "es": "Fórmulas matemáticas",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-319",
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "en": "C = {i ∈ C_base : i ≠ subject and every selected criterion is satisfied}",
+    "es": "C = {i ∈ C_base : i ≠ subject and every selected criterion is satisfied}",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-320",
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "en": "PPM2_s = P_s / A_s; R_s = ((B + 0.5E) / N) × 100%; D_s = PPM2_s − median(C)",
+    "es": "PPM2_s = P_s / A_s; R_s = ((B + 0.5E) / N) × 100%; D_s = PPM2_s − median(C)",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-321",
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "N is the subject-excluded eligible numerical peer count. B and E count peer Price / m² observations below and equal to the subject. The existing algorithm supplies distribution, position, interval and tail evidence only for a nonempty peer population.",
+    "es": "N es el conteo numérico de pares elegibles excluyendo la propiedad analizada. B y E cuentan observaciones de precio / m² de pares inferiores e iguales a la propiedad. El algoritmo existente aporta evidencia de distribución, posición, intervalo y colas solo para una población de pares no vacía.",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-322",
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "none",
+    "en": "How to Interpret the Results",
+    "es": "Cómo interpretar los resultados",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-323",
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The result positions an asking price within the customer’s explicitly constrained peer population. A narrower cohort changes the question and evidence; it does not automatically improve appraisal accuracy.",
+    "es": "El resultado sitúa un precio de oferta dentro de la población de pares explícitamente restringida por el cliente. Una cohorte más estrecha cambia la pregunta y la evidencia; no mejora automáticamente la precisión de un avalúo.",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-324",
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "none",
+    "en": "Limitations",
+    "es": "Limitaciones",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-325",
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Zero peers is a valid result with no fabricated distribution. Unsupported or ambiguous selected dimensions remain unavailable. The published subject is not replaced by an arbitrary draft, and the peer cohort does not establish a formal valuation, causation or future sale price.",
+    "es": "Cero pares es un resultado válido sin una distribución fabricada. Las dimensiones seleccionadas no admitidas o ambiguas permanecen no disponibles. La propiedad publicada analizada no se sustituye por un borrador arbitrario y la cohorte de pares no establece una valoración formal, causalidad ni un futuro precio de venta.",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-326",
+    "part": "overlay",
+    "kind": "heading",
+    "emphasis": "none",
+    "en": "17. Weighted Price / m²",
+    "es": "17. Precio ponderado por m²",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-327",
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "What is this property's Price / m² when Property Area and Construction Area are weighted by their modeled asking-price relationships in the selected market?",
+    "es": "¿Cuál es el precio / m² de esta propiedad cuando las áreas del terreno y de construcción se ponderan por sus relaciones modeladas con el precio de oferta en el mercado seleccionado?",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-328",
+    "part": "overlay",
+    "kind": "disclaimer",
+    "emphasis": "none",
+    "en": "* Exploratory weighted Price / m² uses nominal 75% confidence. This is not 75% accuracy. Coefficients are modeled asking-price associations, not appraisals or causal effects. Weighted results require established, applicable weighting. When weighting is not established, valid fitted evidence and its limitations remain available; no weighted value is invented.",
+    "es": "* El precio ponderado / m² es exploratorio y utiliza una confianza nominal del 75%. Esto no significa una precisión del 75%. Los coeficientes son asociaciones modeladas del precio de oferta, no avalúos ni efectos causales. Los resultados ponderados requieren una ponderación establecida y aplicable. Cuando no se establece, la evidencia ajustada válida y sus limitaciones siguen disponibles; no se inventa un valor ponderado.",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-329",
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "none",
+    "en": "Questions This Algorithm Answers",
+    "es": "Preguntas que responde este algoritmo",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-330",
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Does the selected market establish an applicable construction-to-property-area coefficient ratio at nominal 75% confidence?",
+    "es": "¿Establece el mercado seleccionado una relación aplicable entre los coeficientes de área de construcción y del terreno con confianza nominal del 75%?",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-331",
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "What weighted Price / m² distribution is supported by the same eligible observations?",
+    "es": "¿Qué distribución del precio ponderado / m² respaldan las mismas observaciones elegibles?",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-332",
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "When a compatible subject asking price is supplied, where does its weighted price sit within that distribution?",
+    "es": "Cuando se aporta un precio de oferta compatible de la propiedad analizada, ¿dónde se sitúa su precio ponderado dentro de esa distribución?",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-333",
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "none",
+    "en": "Methodology",
+    "es": "Metodología",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-334",
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The existing OLS/HC3/Fieller area-ratio methodology runs with nominal coverage0.75. Explicit area bounds, eligible market identity, numerical stability, uncertainty and influence certification remain mandatory. Weighted transformation requires an established finite positive ratio and positive property-area and construction-area coefficients. The same eligible observations generate the weighting and weighted distribution. A listing subject is excluded from the reference observations; a hypothetical subject has no published identity to insert.",
+    "es": "La metodología existente de relación de áreas mediante MCO/HC3/Fieller se ejecuta con cobertura nominal de0,75. Siguen siendo obligatorios los límites explícitos de área, la identidad elegible del mercado, la estabilidad numérica, la incertidumbre y la certificación de influencia. La transformación ponderada exige una relación establecida, finita y positiva, así como coeficientes positivos de área del terreno y construcción. Las mismas observaciones elegibles generan la ponderación y la distribución ponderada. Una propiedad analizada identificada por anuncio queda excluida de las observaciones de referencia; una propiedad hipotética no tiene identidad publicada que insertar.",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-335",
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "none",
+    "en": "Mathematical Formulas",
+    "es": "Fórmulas matemáticas",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-336",
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "en": "r = β̂C / β̂L; A_weighted,i = Lᵢ + rCᵢ; Wᵢ = Pᵢ / (Lᵢ + rCᵢ)",
+    "es": "r = β̂C / β̂L; A_weighted,i = Lᵢ + rCᵢ; Wᵢ = Pᵢ / (Lᵢ + rCᵢ)",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-337",
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "en": "R_weighted,s = ((B + 0.5E) / N) × 100%; D_s = W_s − median(W)",
+    "es": "R_weighted,s = ((B + 0.5E) / N) × 100%; D_s = W_s − median(W)",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-338",
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "All applicable prices, areas and denominators must be positive and finite. B and E count weighted reference values below and equal to the subject; the existing nonzero reference median governs percentage differences. Without a subject asking price, established weighting may support a distribution-only result.",
+    "es": "Todos los precios, áreas y denominadores aplicables deben ser positivos y finitos. B y E cuentan valores ponderados de referencia inferiores e iguales a la propiedad; la mediana de referencia existente y distinta de cero rige las diferencias porcentuales. Sin un precio de oferta de la propiedad, una ponderación establecida puede respaldar un resultado de distribución únicamente.",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-339",
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "none",
+    "en": "How to Interpret the Results",
+    "es": "Cómo interpretar los resultados",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-340",
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The weighted measure expresses asking-price intensity using the selected market’s modeled relative area association. It is not an independent land or construction appraisal, construction cost, confidence score for a property’s value or prediction of a transaction price.",
+    "es": "La medida ponderada expresa la intensidad del precio de oferta mediante la asociación relativa de áreas modelada del mercado seleccionado. No es un avalúo independiente del terreno o construcción, costo de construcción, puntuación de confianza del valor de una propiedad ni predicción de un precio de transacción.",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-341",
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "none",
+    "en": "Limitations",
+    "es": "Limitaciones",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-342",
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Nominal75% coverage is not a guarantee of accuracy. Non-establishment, nonapplicable positive weights, insufficient variation, collinearity, influential observations and unresolved uncertainty prevent weighted outcomes. Existing fitted evidence is retained where valid. Unsupported subjects or missing evidence remain explicitly unavailable; no new estimation procedure is introduced.",
+    "es": "La cobertura nominal del75% no garantiza precisión. La falta de establecimiento, las ponderaciones positivas no aplicables, la variación insuficiente, la colinealidad, las observaciones influyentes y la incertidumbre no resuelta impiden resultados ponderados. La evidencia ajustada existente se conserva cuando es válida. Las propiedades no admitidas o la evidencia ausente permanecen explícitamente no disponibles; no se introduce ningún procedimiento nuevo de estimación.",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-343",
+    "part": "overlay",
+    "kind": "heading",
+    "emphasis": "none",
+    "en": "Where These Algorithms Can Be Used",
+    "es": "Dónde pueden utilizarse estos algoritmos",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-344",
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "none",
+    "en": "Intelligence Hub",
+    "es": "Centro de Inteligencia",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-345",
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "All seventeen included algorithms remain available through their existing supported Intelligence Hub workflows, subject to current capability, population and account authorization. The customer supplies the required analytical question and explicitly requests execution.",
+    "es": "Los diecisiete algoritmos incluidos permanecen disponibles mediante sus flujos admitidos existentes del Centro de Inteligencia, sujetos a la autorización vigente de capacidad, población y cuenta. El cliente aporta la pregunta analítica requerida y solicita explícitamente la ejecución.",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-346",
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "none",
+    "en": "Individual Published Property Listings / Create or Publish a Listing",
+    "es": "Anuncios de propiedades publicadas / Crear o publicar un anuncio",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-347",
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Listing-specific and pre-publication Intelligence surfaces remain planned and are not activated by this Package-card release. The draft is not inserted into published reference populations. Publishing a listing remains free and does not require purchasing Intelligence. Current algorithm-specific subject restrictions remain authoritative.",
+    "es": "Las interfaces de Inteligencia específicas de un anuncio y previas a la publicación permanecen planificadas y no se activan mediante esta versión de tarjetas de Paquetes. El borrador no se inserta en poblaciones de referencia publicadas. Publicar un anuncio sigue siendo gratuito y no requiere comprar Inteligencia. Las restricciones vigentes de cada algoritmo sobre las propiedades analizadas siguen siendo la autoridad.",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-348",
+    "part": "overlay",
+    "kind": "heading",
+    "emphasis": "none",
+    "en": "Analytical Integrity and Access",
+    "es": "Integridad analítica y acceso",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-349",
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Corporate includes seventeen existing canonical algorithms. It remains a single-user Package; no multi-user seats are included. One active coverage period authorizes supported included capabilities and populations, not unrequested execution or unrestricted data access.",
+    "es": "Corporativo incluye diecisiete algoritmos canónicos existentes. Sigue siendo un Paquete de un solo usuario; no incluye puestos para múltiples usuarios. Un período de cobertura activo autoriza las capacidades y poblaciones incluidas admitidas, no la ejecución no solicitada ni el acceso ilimitado a datos.",
+    "proposedChange": true
+  },
+  {
+    "id": "corporate-350",
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "All statistics describe current eligible listing and asking-price evidence. Missing, empty, incompatible, insufficient or undefined results must remain explicit. Static explanatory formulas execute nothing, and neither a Package purchase nor a model produces a formal appraisal, verified sale price or guaranteed investment outcome.",
+    "es": "Todas las estadísticas describen evidencia actual de anuncios y precios de oferta elegibles. Los resultados ausentes, vacíos, incompatibles, insuficientes o indefinidos deben permanecer explícitos. Las fórmulas explicativas estáticas no ejecutan nada y ni la compra de un Paquete ni un modelo producen un avalúo formal, precio de venta verificado o resultado de inversión garantizado.",
+    "proposedChange": true
+  }
+]

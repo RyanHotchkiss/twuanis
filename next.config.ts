@@ -1,0 +1,11 @@
+import type { NextConfig } from 'next'
+
+const nextConfig: NextConfig = {
+  outputFileTracingIncludes: {'/en/buy/listing/*': ['./lib/knowledge-repository/machine-publication.json'], '/es/comprar/anuncio/*': ['./lib/knowledge-repository/machine-publication.json'], '/en/rent-lease/listing/*': ['./lib/knowledge-repository/machine-publication.json'], '/es/alquilar-arrendar/anuncio/*': ['./lib/knowledge-repository/machine-publication.json'], '/en/knowledge': ['./lib/knowledge-repository/machine-publication.json'], '/es/conocimiento': ['./lib/knowledge-repository/machine-publication.json'], '/sitemap.xml': ['./lib/knowledge-repository/machine-publication.json'], '/api/knowledge': ['./lib/knowledge-repository/machine-publication.json','./lib/knowledge-public/hosting-admission.json'], '/api/knowledge/discovery': ['./lib/knowledge-repository/machine-publication.json','./lib/knowledge-public/hosting-admission.json'], '/api/mcp': ['./lib/knowledge-repository/machine-publication.json','./lib/knowledge-public/hosting-admission.json'], '/*': ['./server-archives/*.cjs','./server-archives/*.json'], '/api/staging/remates-retrieval-diagnostic': ['./lib/remates/adapters/pdf-worker.mjs','./node_modules/pdfjs-dist/legacy/build/*.mjs','./node_modules/pdfjs-dist/package.json','./node_modules/@napi-rs/canvas/**/*','./node_modules/@napi-rs/canvas-*/*'], '/api/cron/remates-retrieval': ['./lib/remates/adapters/pdf-worker.mjs','./node_modules/pdfjs-dist/legacy/build/*.mjs','./node_modules/pdfjs-dist/package.json','./node_modules/@napi-rs/canvas/**/*','./node_modules/@napi-rs/canvas-*/*'], '/api/remates/adapters/pdf': ['./lib/remates/adapters/pdf-worker.mjs','./node_modules/pdfjs-dist/legacy/build/*.mjs','./node_modules/pdfjs-dist/package.json','./node_modules/@napi-rs/canvas/**/*','./node_modules/@napi-rs/canvas-*/*']},
+  allowedDevOrigins: [
+    '192.168.31.161'
+  ],
+  async headers(){return [...(process.env.NEXT_PUBLIC_TWUANIS_ENVIRONMENT === 'staging' ? [{source:'/:path*',headers:[{key:'X-Robots-Tag',value:'noindex, nofollow, noarchive'}]}] : []),{source:'/auth/callback',headers:[{key:'Referrer-Policy',value:'no-referrer'},{key:'X-Robots-Tag',value:'noindex, nofollow'}]}]}
+}
+
+export default nextConfig

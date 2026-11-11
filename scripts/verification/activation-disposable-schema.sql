@@ -1,0 +1,6 @@
+-- Minimum extra columns used by the real purchase/approval TS engines. Disposable only.
+ALTER TABLE public.packages ADD COLUMN display_order integer DEFAULT 0;
+ALTER TABLE public.add_on_products ADD COLUMN price_crc numeric DEFAULT 500,ADD COLUMN price_usd numeric DEFAULT 1,ADD COLUMN display_order integer DEFAULT 0;
+ALTER TABLE public.purchase_requests ADD COLUMN target_type text,ADD COLUMN unit_amount numeric,ADD COLUMN amount numeric,ADD COLUMN currency text,ADD COLUMN expires_at timestamptz,ADD COLUMN approved_at timestamptz,ADD COLUMN approved_by uuid,ADD COLUMN rejected_at timestamptz,ADD COLUMN rejected_by uuid,ADD COLUMN rejection_reason text,ADD COLUMN cancelled_at timestamptz,ADD COLUMN cancelled_by uuid,ADD COLUMN cancellation_reason text,ADD COLUMN expired_at timestamptz,ADD COLUMN metadata jsonb,ADD COLUMN created_at timestamptz DEFAULT now(),ADD COLUMN updated_at timestamptz DEFAULT now();
+ALTER TABLE public.purchase_request_events ADD COLUMN created_at timestamptz DEFAULT now();
+ALTER TABLE public.listing_entitlements ADD COLUMN revoked_at timestamptz,ADD COLUMN revoked_by uuid,ADD COLUMN revocation_reason text,ADD COLUMN created_at timestamptz DEFAULT now(),ADD COLUMN updated_at timestamptz DEFAULT now();

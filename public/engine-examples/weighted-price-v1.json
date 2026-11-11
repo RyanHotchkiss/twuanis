@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 1,
+  "engineId": "weighted-price",
+  "exampleId": "weighted-heredia-exploratory-derived-75-v1",
+  "artifactVersion": "v1",
+  "executedAt": "2026-10-24T16:31:15.837Z",
+  "analyticalDate": "2026-10-24",
+  "population": "PRIVATE",
+  "input": {
+    "cohort": {
+      "transaction": "sale",
+      "geography": {
+        "level": "province",
+        "termId": "13"
+      },
+      "propertyType": "1115",
+      "propertyArea": {
+        "min": "1",
+        "max": "1000000"
+      },
+      "constructionArea": {
+        "min": "1",
+        "max": "1000000"
+      }
+    },
+    "subject": {
+      "kind": "listing",
+      "listingId": "00ded8dc-aac3-4972-b753-6c5f89dc6e49"
+    }
+  },
+  "body": {
+    "question": {
+      "cohort": {
+        "transaction": "sale",
+        "geography": {
+          "level": "province",
+          "termId": "13"
+        },
+        "propertyType": "1115",
+        "propertyArea": {
+          "min": "1",
+          "max": "1000000"
+        },
+        "constructionArea": {
+          "min": "1",
+          "max": "1000000"
+        }
+      },
+      "subject": {
+        "kind": "listing",
+        "listingId": "00ded8dc-aac3-4972-b753-6c5f89dc6e49"
+      }
+    },
+    "evidence": {
+      "state": "weighting_not_established",
+      "weighting": {
+        "state": "not_established",
+        "n": 79,
+        "reasons": [
+          "ratio_uncertainty_exceeds_policy"
+        ],
+        "regression": {
+          "coefficients": {
+            "intercept": 82945418.9862728,
+            "propertyArea": 47590.56975998842,
+            "constructionArea": 225310.25228128146
+          },
+          "covariance": [
+            [
+              991819674348048.5,
+              413412422592.4126,
+              -4036341266040.4287
+            ],
+            [
+              413412422592.4125,
+              534467424.19091237,
+              -2308649349.075916
+            ],
+            [
+              -4036341266040.4297,
+              -2308649349.0759163,
+              18155783640.51069
+            ]
+          ],
+          "criticalValue": 1.1592095029643081,
+          "ratioIdentification": {
+            "kind": "bounded",
+            "interval": {
+              "lower": 1.0107733651756816,
+              "upper": 16.866334905930056
+            }
+          }
+        },
+        "diagnostics": {
+          "df": 76,
+          "variation": {
+            "L": {
+              "min": 19.73,
+              "max": 8227,
+              "sd": 1537.8413940998419
+            },
+            "C": {
+              "min": 100,
+              "max": 2000,
+              "sd": 326.55525368009233
+            }
+          },
+          "condition": 1.7566662171649967,
+          "rho": 0.5105089085371335,
+          "vif": 1.3524833171906891,
+          "rSquared": 0.651330310122399,
+          "adjustedRSquared": 0.6421547919677253,
+          "residualScale": 94538926.56885411,
+          "maxLeverage": 0.3987349838098454,
+          "relativeInfluence": null,
+          "relativeIntervalDeviation": 2.562547553024412
+        }
+      }
+    },
+    "methodology": "weighted-price-ols-hc3-fieller-75-v2 / preserved-fit-offline-derivation-v1",
+    "analyticalDate": "2026-10-24",
+    "fx": {
+      "rate": 456.32,
+      "effectiveDate": "2026-10-24",
+      "source": "BCCR",
+      "resolutionMode": "exact"
+    },
+    "excluded": 0,
+    "participation": "subject_excluded",
+    "subjectAreas": {
+      "propertyArea": 151,
+      "constructionArea": 160
+    },
+    "subjectMoney": {
+      "amount": 89900000,
+      "currency": "CRC",
+      "normalizedAmount": 89900000
+    },
+    "marketLabel": {
+      "en": "Heredia",
+      "es": "Heredia"
+    },
+    "propertyTypeLabel": {
+      "en": "House",
+      "es": "Casa"
+    },
+    "nominalConfidence": 0.75,
+    "derivedConfidence": {
+      "originalMethodology": "weighted-price-v1 / asking-area-ratio-ols-hc3-fieller-v1",
+      "originalConfidence": 0.95,
+      "calculatedAt": "2026-10-24",
+      "sourceResultSHA256": "9f7b83f4b047c90b9beb8d2ce737bd65aaaff6afcf0987f92eb1c483cecc9e63",
+      "sourceOfflineSHA256": "2a567cfd4037e7075ff26cd81065529265acf3966fb2981e22761d061fd13c0c"
+    }
+  },
+  "provenance": {
+    "originalExecution": {
+      "startedAt": "2026-10-24T16:31:12.820Z",
+      "endedAt": "2026-10-24T16:31:15.837Z",
+      "inputSHA256": "ab3f3c458b9a4c4659c7a305f419d3c91e34a2b48492943be380ae16e4d5f346",
+      "resultSHA256": "9f7b83f4b047c90b9beb8d2ce737bd65aaaff6afcf0987f92eb1c483cecc9e63",
+      "executionCount": 1,
+      "source": "Unchanged normal measuredWeighted customer action; production canonical evidence"
+    },
+    "originalConfidence": 0.95,
+    "originalMethodology": "weighted-price-v1 / asking-area-ratio-ols-hc3-fieller-v1",
+    "originalEvidenceBundleSHA256": "73de56095872524baedc0cc2351e269e546dc6493d071846c8882a4518abc4f6",
+    "derivedCalculation": {
+      "kind": "offline_from_preserved_regression_no_new_execution",
+      "date": "2026-10-24",
+      "confidence": 0.75,
+      "alpha": 0.25,
+      "upperTail": 0.125,
+      "cdfTarget": 0.875,
+      "residualDf": 76,
+      "sourceOfflineSHA256": "2a567cfd4037e7075ff26cd81065529265acf3966fb2981e22761d061fd13c0c"
+    }
+  },
+  "disclosures": {
+    "en": [
+      "Exploratory fitted evidence — Weighted result not established.",
+      "The real execution used nominal 95% confidence. The nominal 75% interval is a separate offline derivation from its preserved coefficients and HC3 covariance; no new engine execution occurred.",
+      "n=79, subject excluded. The bounded interval fails the unchanged 25% relative-precision policy. Influence certification and weighting positivity were not reached. No weighted distribution, price or subject percentile is established.",
+      "75% confidence is not 75% accuracy. Observed asking-price associations are descriptive, not valuation or causal effects."
+    ],
+    "es": [
+      "Evidencia exploratoria del ajuste — resultado ponderado no establecido.",
+      "La ejecución real utilizó confianza nominal del 95%. El intervalo nominal del 75% es una derivación independiente sin conexión de sus coeficientes y covarianza HC3 conservados; no hubo nueva ejecución del motor.",
+      "n=79, propiedad excluida. El intervalo acotado no cumple la política intacta del 25% de precisión relativa. No se alcanzaron la certificación de influencia ni la positividad de la ponderación. No se establecen distribución, precio ni percentil ponderados.",
+      "El 75% de confianza no es un 75% de exactitud. Las asociaciones de precios de oferta observados son descriptivas; no son valoración ni efectos causales."
+    ]
+  }
+}

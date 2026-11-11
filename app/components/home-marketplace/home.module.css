@@ -1,0 +1,26 @@
+.home{position:relative;isolation:isolate;background-color:var(--background);background-image:var(--market-hub-background-image);background-size:cover;background-position:center center;background-repeat:no-repeat;background-attachment:fixed;color:var(--foreground);min-height:100vh}.content{width:min(94vw,1600px);margin:0 auto;position:relative;box-sizing:border-box}.banner{position:sticky;top:0;z-index:12000;overflow:hidden;border-bottom:1px solid var(--border);font-size:.85rem;padding:9px 0;color:var(--muted);background:var(--surface)}.marquee{display:flex;width:max-content;animation:questions 200s linear infinite}.questions{display:flex;gap:3rem;padding-right:3rem;flex-shrink:0}.questions span{white-space:nowrap}.banner:hover .marquee,.banner:focus-within .marquee{animation-play-state:paused}.transactions{--workspace-border-width:1px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:20px 0}.transactions button{background:var(--surface);border:var(--workspace-border-width) solid var(--border);color:var(--foreground);padding:12px 20px;border-radius:999px;cursor:pointer;font-weight:400}.transactions button[aria-pressed=true]{box-shadow:none;text-decoration:underline;text-decoration-color:var(--border);text-decoration-thickness:var(--workspace-border-width);text-underline-offset:.2em}.transactions button{background:var(--market-button-bg);color:var(--market-button-text);border-color:var(--border)}.transactions button:focus-visible{outline:3px solid #c7a44b;outline-offset:3px}.homepagePlacement{position:relative;isolation:isolate;overflow:hidden;min-height:220px;border-radius:28px;margin:20px}.homepagePlacement section{position:relative}@keyframes questions{to{transform:translateX(-50%)}}@media(prefers-reduced-motion:reduce){.marquee{animation:none;width:auto}.questions{flex-wrap:wrap;gap:12px;padding:0 12px}.questions span{white-space:normal}.questions[aria-hidden=true]{display:none}}@media(max-width:768px){.content{width:100%}}
+
+/* Fade only the image’s final tenth; the page background below supplies its theme color. */
+.backdrop{position:absolute;inset:0 0 auto;height:100svh;z-index:-1;pointer-events:none;background-size:cover;background-position:center center;background-repeat:no-repeat;mask-image:linear-gradient(to bottom,#000 0%,#000 90%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 90%,transparent 100%)}
+
+.home{--market-button-bg:#000;--market-button-text:#fff}.home[data-arrow-theme=light]{--market-button-bg:#fff;--market-button-text:#000}
+.marketplaceActions > a,.marketplaceActions > button:nth-of-type(2){background:var(--market-button-bg)!important;color:var(--market-button-text)!important;border:1px solid var(--border)!important;font-weight:400!important}
+
+@media(max-width:768px){.sidebarLayer>div:first-child>div{top:0!important;height:100vh!important}.sidebarLayer>div:first-child>div>button{top:calc(var(--question-ticker-height,0px) + 1.25rem)!important}}
+
+/* Reserve the existing sticky navigation inset, then separate normal-flow content. */
+.home{--home-nav-inset:1rem;padding-block-start:var(--home-nav-inset)}.content{padding-block-start:1rem}@media(max-width:768px){.home{--home-nav-inset:1.5rem}}
+.filterCategories{--market-button-bg:#000;--market-button-text:#fff}.filterCategories[data-filter-theme=light]{--market-button-bg:#fff;--market-button-text:#000}
+
+.mobileFilterArrow{display:none}@media(max-width:768px){.mobileFilterArrow{display:flex;align-items:center;min-height:42px;margin-block-start:2rem}}
+
+/* Homepage-only thin borders; preserve borderless elements and focus outlines. */
+.home :is([style*="border:2px"],[style*="border:3px"],[style*="border:4px"],[style*="border: 2px"],[style*="border: 3px"],[style*="border: 4px"],[style*="border-width:2px"],[style*="border-width:3px"],[style*="border-width:4px"],[style*="border-width: 2px"],[style*="border-width: 3px"],[style*="border-width: 4px"]),.home :is([data-homepage-background-promotion],[data-homepage-background-property],[data-spotlight-promotion],[data-featured-promotion]){border-width:1px!important}
+
+/* The filter arrow is a fixed portal; its host needs no empty flow spacer. */
+@media(max-width:768px){.mobileFilterArrow{min-height:0;margin-block-start:0}.transactions{margin-top:4px}}
+
+@media(prefers-reduced-motion:reduce){.sidebarLayer>div:first-child>div{transition:none!important}}
+
+/* Only embedded page wrappers are transparent; preserve cards and the commercial hero. */
+.home [data-home-listings-boundary] > main{background:transparent!important}

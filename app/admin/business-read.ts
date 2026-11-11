@@ -1,0 +1,27 @@
+import 'server-only'
+import entertainmentCopy from '@/app/components/entertainment-copy.json'
+import {orderPresentation} from './order-status-read'
+import type {AdministrativeAuthority} from '@/lib/administrative-control'
+import type {BusinessRow,BusinessCustomer} from './business-contract'
+type DB={rpc:(name:string,args:Record<string,unknown>)=>PromiseLike<{data:any;error:any}>}
+export async function allPages(db:DB,name:string,args:Record<string,unknown>,key:string,collection?:string){const rows:any[]=[];let after:string|null=null;while(true){const r=await db.rpc(name,{...args,p_after:after});if(r.error)throw Error('Reader unavailable');const data=collection?r.data?.[collection]:r.data;if(!Array.isArray(data)||data.length>26)throw Error('Reader contract');const page=data.slice(0,25);for(const row of page){if(typeof row[key]!=='string'||after!==null&&row[key]<=after)throw Error('Reader cursor');rows.push(row)}if(data.length<=25)return rows;after=page[24][key]}}
+export async function customerProducts(db:DB,rows:any[],authority:AdministrativeAuthority){
+ if(!authority.owner)throw Error('Owner required')
+ const customers=new Map<string,BusinessCustomer>(),products=new Map<string,{en:string|null;es:string|null}>()
+ // Exact account lookup through the existing Owner-only directory, never listing contacts.
+ for(const id of [...new Set<string>(rows.map(r=>r.accountId))]){const r=await db.rpc('admin_administrators_read',{p_lookup:id,p_after:null,p_before:null});const u=r.data?.target;if(r.error||!u||u.id!==id||!Object.hasOwn(u,'name')||!Object.hasOwn(u,'phone'))throw Error('Customer projection unavailable');customers.set(id,{name:u.name||null,email:u.email||null,phone:u.phone||null,available:true})}
+ for(const [rpc,collection] of [['admin_package_read','packages'],['admin_addon_read','products']])for(const p of await allPages(db,rpc,{},'id',collection))products.set(p.id,{en:p.name_en||null,es:p.name_es||null})
+ return rows.map(r=>({...r,orderId:r.orderId??r.id,customer:{...customers.get(r.accountId)!,name:r.recoveryName||r.presentation?.receipt?.recoveryName||customers.get(r.accountId)!.name||null},product:(r.recoveryName||r.presentation?.receipt?.recoveryName)&&r.productId==='pkg-geographic-distribution-price-range'?{en:entertainmentCopy[0].en,es:entertainmentCopy[0].es}:products.get(r.productId)??{en:null,es:null}}))
+}
+export async function businessOrders(db:DB,authority:AdministrativeAuthority,filters:Record<string,string|null>){if(!authority.owner)throw Error('Owner required');const orders=await allPages(db,'admin_order_read',{p_id:null,...filters},'id');const presented=await orderPresentation(db,orders,authority);return (await customerProducts(db,presented,authority)).sort((a,b)=>b.createdAt.localeCompare(a.createdAt)||a.id.localeCompare(b.id)) as BusinessRow[]}
+export async function businessPayments(db:DB,authority:AdministrativeAuthority){
+ if(!authority.owner||!authority.permissions.includes('orders.read'))throw Error('Owner required')
+ const orders=await allPages(db,'admin_order_read',{p_id:null,p_account:null,p_kind:null,p_source:null,p_currency:null},'id'),byId=new Map(orders.map(o=>[o.id,o])),rows:any[]=[],represented=new Set<string>()
+ const receipts=await allPages(db,'admin_direct_sinpe_receipts',{},'id')
+ for(const r of receipts){const o=byId.get(r.orderId);if(!o||o.accountId!==r.accountId||o.productId!==r.product)throw Error('Receipt association');rows.push({...o,id:'receipt:'+r.id,orderId:o.id,state:r.activationTermId?'RECEIPT_ACCEPTED':'PENDING',method:'direct_sinpe',paymentAt:r.recovery?.paymentAt??r.submittedAt,recoveryName:r.recovery?.customerName,reconciliation:r.reconciliation,receiptId:r.id,evidence:{receiptId:r.id,activationTermId:r.activationTermId,duration:r.duration,bankUpgrade:r.bankUpgrade,recovery:r.recovery??null}});represented.add(o.id)}
+ // Paid Orders require the existing canonical acknowledgment; never convert pending Orders to payments.
+ for(const o of orders.filter(o=>o.state==='paid')){const r=await db.rpc('admin_order_read',{p_id:o.id,p_after:null,p_account:null,p_kind:null,p_source:null,p_currency:null});if(r.error||!r.data?.payment)throw Error('Paid acknowledgment unavailable');const a=r.data.payment;if(represented.has(o.id))continue;const source=String(a.source??'').toLowerCase(),method=source.includes('stripe')?'stripe':source.includes('onvo')?'onvo':source.includes('sinpe')?'sinpe':null;rows.push({...o,id:'ack:'+a.id,orderId:o.id,state:'PAID',method,total:a.amount,currency:a.currency,paymentAt:a.acknowledgedAt,reconciliation:method==='sinpe'?'RECONCILED':null,evidence:a});represented.add(o.id)}
+ for(const p of await allPages(db,'admin_sinpe_read',{p_id:null,p_state:null,p_order:null},'id')){const o=byId.get(p.orderId);if(!o)throw Error('Payment Order unavailable');if(p.state==='APPROVED'&&represented.has(o.id))continue;rows.push({...o,id:'attempt:'+p.id,orderId:o.id,state:p.state,method:'sinpe',total:p.expectedAmount,currency:p.currency,paymentAt:p.submittedAt,evidence:{paymentId:p.id,lateEvidence:p.lateEvidence}})}
+ const ops=await allPages(db,'admin_onvo_operations',{},'orderId');for(const p of ops){const o=byId.get(p.orderId);if(!o||represented.has(o.id)||p.intentState!=='BOUND')continue;rows.push({...o,id:'onvo:'+o.id,orderId:o.id,state:p.payment??'PENDING',method:'onvo',paymentAt:null,evidence:{providerStatus:p.providerStatus,intentState:p.intentState}})}
+ return (await customerProducts(db,rows,authority)).sort((a,b)=>(b.paymentAt??b.createdAt).localeCompare(a.paymentAt??a.createdAt)) as BusinessRow[]
+}

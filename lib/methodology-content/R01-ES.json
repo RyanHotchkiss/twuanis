@@ -1,0 +1,128 @@
+{
+  "kind": "UNPUBLISHED_PUBLIC_PROJECTION_CANDIDATE",
+  "engineId": "summary",
+  "name": "Resumen del mercado",
+  "locale": "es",
+  "explanationRevision": "KA02-2026-10-15-R1/R01",
+  "historicalReleaseReference": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+  "publicationState": "WITHHELD_PENDING_KA02_OWNER_REVIEW",
+  "inputs": [
+    {
+      "name": "canonicalScope",
+      "meaning": "Capacidad/población autenticada existente, transacción, geografía/tipo canónico y selección explícita del cliente; se mantienen identidades distintas por origen.",
+      "unit": "canonical IDs and scope / IDs y ámbito canónicos",
+      "evidenceKind": "scope",
+      "required": true,
+      "missingBehavior": "Deny/unavailable; never widen scope / denegar/no disponible; nunca ampliar ámbito"
+    },
+    {
+      "name": "canonicalEvidence",
+      "meaning": "Observaciones actuales elegibles privadas o bancarias mediante lectores/procedencia canónicos existentes; para bancos se requiere venta directa/ciclo de vida/transacción original, no tasación.",
+      "unit": "source-qualified records / registros con origen",
+      "evidenceKind": "identity",
+      "required": true,
+      "missingBehavior": "Missing/inconsistent acquisition is unavailable or excluded with explicit reason; not a successful empty market / adquisición ausente/incoherente no disponible o exclusión explícita; no mercado vacío exitoso"
+    }
+  ],
+  "calculationStages": [
+    {
+      "id": "acquire",
+      "meaning": "Adquirir solo evidencia canónica actualmente autorizada; rechazar entradas incompletas, incoherentes o fuera de ámbito.",
+      "formulaRefs": []
+    },
+    {
+      "id": "calculate",
+      "meaning": "Aplicar la secuencia existente de elegibilidad, normalización y fórmulas del motor; conservar cada estado no establecido.",
+      "formulaRefs": [
+        "count"
+      ]
+    },
+    {
+      "id": "deliver",
+      "meaning": "Devolver evidencia vinculada a origen/versión mediante controles existentes; consultar metodología nunca ejecuta el motor ni cobra ejecución.",
+      "formulaRefs": []
+    }
+  ],
+  "question": "¿Cuántos anuncios actuales elegibles pertenecen a este mercado seleccionado explícitamente?",
+  "applications": [
+    "Compradores y agentes pueden evaluar el tamaño de la oferta observable antes de interpretar cohortes numéricas más selectivas."
+  ],
+  "formulas": [
+    {
+      "id": "count",
+      "equation": "N=N_sale+N_rent",
+      "variables": [
+        {
+          "symbol": "N",
+          "meaning": "Número de observaciones elegibles distintas",
+          "unit": "count"
+        },
+        {
+          "symbol": "N_sale",
+          "meaning": "Anuncios elegibles de venta",
+          "unit": "count"
+        },
+        {
+          "symbol": "N_rent",
+          "meaning": "Anuncios elegibles de alquiler mensual",
+          "unit": "count"
+        }
+      ],
+      "statisticalMethod": "Descriptive / descriptivo",
+      "denominator": "None: integer addition / ninguna: suma entera",
+      "normalization": "Canonical source identity / identidad canónica de origen",
+      "precisionAndRounding": "IEEE754 binary64; analytical values not display-rounded / valores analíticos sin redondeo de presentación. No additional rounding or inferential precision claimed / sin redondeo adicional ni precisión inferencial afirmada."
+    }
+  ],
+  "population": {
+    "definition": "Mercado actual observable de anuncios/oferta elegibles dentro del ámbito explícito con origen, no transacciones históricas. Resultados privados y bancarios separados; solo las ramas existentes que exponen crossMarket admiten cálculo entre mercados.",
+    "eligibility": [
+      "Mercado actual observable de anuncios/oferta elegibles dentro del ámbito explícito con origen, no transacciones históricas. Resultados privados y bancarios separados; solo las ramas existentes que exponen crossMarket admiten cálculo entre mercados.",
+      "Salvo matching/configuration, los grupos de preferencias seleccionados del adaptador deben coincidir positivamente (algún valor del grupo y todos los grupos). Matching ordena evidencia; configuration cuenta la conjunción completa respecto a la base.",
+      "Venta y alquiler mensual nunca se mezclan. La reducción bancaria canónica requiere DIRECT_SALE, transacción de venta original exacta, ciclo PUBLISHED, vigencia/procedencia válidas y geografía/tipo coherentes; no se inventa alquiler bancario.",
+      "Entradas enteras seguras no negativas; cero es un conteo vacío establecido. Sin mínimo estadístico."
+    ],
+    "exclusions": [
+      "La evidencia requerida ausente, contradictoria, inválida, no confirmada o desactualizada no se convierte en cero, valor supuesto ni población ampliada silenciosamente.",
+      "Sin área exacta desde categoría/intervalo; construcción no sustituye huella; importes de oferta no son transacciones realizadas; identidades monetarias/fecha BCCR explícitas."
+    ]
+  },
+  "outputs": [
+    {
+      "name": "n/saleCount/rentCount",
+      "meaning": "Conteo del inventario y conteos separados por transacción",
+      "unit": "count",
+      "interpretation": "Los conteos describen este ámbito; el adaptador suministra una transacción a la vez."
+    }
+  ],
+  "resultStates": {
+    "empty": "Una población seleccionada vacía establecida tiene conteo cero y resúmenes numéricos indefinidos; conservar los estados específicos siguientes.",
+    "zero": "Conteos cero y diferencias/IQR cero válidos pueden tener sentido; precio de oferta o área de normalización cero/negativos no son observaciones positivas elegibles.",
+    "invalid": "Entrada inválida, identidad contradictoria, evidencia canónica duplicada o ámbito mezclado sigue la rama existente de error/exclusión; sin resultado exitoso inventado.",
+    "unavailable": "Autoridad, derechos actuales, instantánea coherente, tipo de cambio o sujeto requeridos ausentes son no disponibles/denegados bajo controles existentes; nunca sustituto vacío exitoso.",
+    "undefined": "N=0→EMPTY_POPULATION; N positivo→ESTABLISHED; conteo negativo o no entero produce error. Cada entrada debe ser un entero seguro; la suma no comprueba por separado el desbordamiento del entero seguro."
+  },
+  "supportedInterpretation": "Compradores y agentes pueden evaluar el tamaño de la oferta observable antes de interpretar cohortes numéricas más selectivas.",
+  "unsupportedInterpretations": [
+    "¿Cuál fue el precio realizado, apreciación histórica, rendimiento causal, pronóstico o resultado garantizado de inversión? Este motor del mercado actual de oferta no los establece.",
+    "El conteo del inventario no requiere área ni precio; un conteo no estima valor ni demanda."
+  ],
+  "packageMembership": [
+    {
+      "packageId": "pkg-geographic-distribution-price-range",
+      "capabilityId": "cap-market-summary",
+      "availability": "Configured at original observation; purchased rights and production execution verified separately / configurado en observación original; derechos comprados y ejecución de producción se verifican por separado"
+    },
+    {
+      "packageId": "pkg-matching-market-comparison",
+      "capabilityId": "cap-market-summary",
+      "availability": "Configured at original observation; purchased rights and production execution verified separately / configurado en observación original; derechos comprados y ejecución de producción se verifican por separado"
+    },
+    {
+      "packageId": "pkg-pricing-position-relationships",
+      "capabilityId": "cap-market-summary",
+      "availability": "Configured at original observation; purchased rights and production execution verified separately / configurado en observación original; derechos comprados y ejecución de producción se verifican por separado"
+    }
+  ],
+  "evidenceState": "DOCUMENTED; MATHEMATICALLY_VERIFIED_FOR_PINNED_CONTRACTS; BILINGUAL_TECHNICAL_REVIEWED; SCHEMA_VALIDATED; DISCLOSURE_ALLOWLIST_CHECKED; OWNER_NOT_ACCEPTED"
+}

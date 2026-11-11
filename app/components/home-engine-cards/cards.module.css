@@ -1,0 +1,73 @@
+.rows{position:relative;width:100%;padding:10px 0 18px}.rows section+section{margin-top:32px}.rows h2{text-align:center;font-size:clamp(1.1rem,2vw,1.6rem);font-weight:500;color:var(--foreground);margin:0 0 20px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:24px;align-items:stretch}.slot{display:grid;place-items:center;position:relative;min-width:0;text-decoration:none;background:transparent;color:var(--foreground);border-radius:18px}.slot:focus-visible{outline:3px solid #c7a44b;outline-offset:5px}.rest{position:absolute;width:150px;min-height:100px;padding:16px 12px;box-sizing:border-box;border:1px solid var(--border);border-radius:18px;background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;font-size:.78rem;line-height:1.3;transition:opacity .12s ease,background .25s ease}.rest svg,.identity svg{color:#C7A44B;flex-shrink:0}.expanded{width:100%;max-width:340px;align-self:stretch;box-sizing:border-box;padding:28px;border:1px solid var(--card-accent);border-radius:18px;background:var(--surface-raised);opacity:0;transform:scale(.92);transition:opacity .16s ease,transform .22s ease,background .25s ease;display:flex;flex-direction:column;gap:18px;overflow-wrap:anywhere}.identity{display:flex;gap:14px;align-items:center}.identity h3{font-size:1.2rem;line-height:1.3;font-weight:500;margin:0}.expanded p{font-size:.95rem;line-height:1.5;margin:0;color:var(--muted)}.open{margin-top:auto;font-size:.8rem;color:var(--foreground)}.slot:hover .expanded,.slot:focus .expanded{opacity:1;transform:scale(1)}.slot:hover .rest,.slot:focus .rest{opacity:0}.slot:hover{z-index:1}
+@media(hover:none),(max-width:768px){.expanded{opacity:1;transform:none;max-width:none}.rest{display:none}.grid{grid-template-columns:1fr}.expanded{padding:22px}}
+@media(prefers-reduced-motion:reduce){.expanded,.rest{transition:none;transform:none}}
+
+.rows section{scroll-margin-top:120px}.slot{scroll-margin-top:120px}
+
+/* Homepage containment and explicit open state. Existing card internals remain authoritative. */
+.paged section+section{margin-top:0}.categoryControls{display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:16px}.categoryControls button{background:transparent;border:0;color:#ff3b00;font-size:32px;cursor:pointer}.categoryControls button:focus-visible{outline:3px solid #c7a44b}.categoryViewport{overflow:hidden;transition:height .22s ease}.categoryTrack{display:flex;align-items:flex-start;transition:transform .28s ease}.category{flex:0 0 100%;min-width:0;box-sizing:border-box;padding:6px}.paged .slot[data-open=true] .expanded{opacity:1;transform:scale(1)}.paged .slot[data-open=true] .rest{opacity:0}
+@media(hover:none),(max-width:768px){.paged .slot[data-open=false] .expanded{opacity:0;transform:scale(.92)}.paged .slot[data-open=false] .rest{display:flex;opacity:1}.paged .slot[data-open=true] .rest{display:none}}
+@media(prefers-reduced-motion:reduce){.categoryTrack,.categoryViewport{transition:none}.paged .slot[data-open=false] .expanded{transform:none}}
+
+/* Mobile category arrows select a category; native scrolling stays inside its engine row. */
+@media(max-width:768px){
+ .paged .grid{display:flex;flex-wrap:nowrap;gap:24px;overflow-x:auto;overscroll-behavior-x:contain;padding:6px;scroll-padding:6px;box-sizing:border-box;align-items:flex-start}
+ .paged .slot{flex:0 0 calc((100% - 48px)/2.5);min-width:0}
+ .paged .slot[data-open=false] .rest{position:relative;width:100%}
+ .paged .slot[data-open=false] .expanded{display:none}
+ .paged .slot[data-open=true]{flex-basis:min(340px,100%);z-index:2}
+ .paged .slot[data-open=true] .expanded{width:100%}
+}
+
+/* Small, content-hugging photo contrast treatments; shared across viewport sizes. */
+.rows[data-heading-theme=dark]{--category-glass:rgba(255,255,255,.2);--category-text-edge:rgba(255,255,255,.95)}
+.rows[data-heading-theme=light]{--category-glass:rgba(0,0,0,.2);--category-text-edge:rgba(0,0,0,.95)}
+.categoryControls,.categoryTitle{background:var(--category-glass);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);border-radius:8px;text-shadow:0 0 2px var(--category-text-edge)}
+.categoryControls{width:fit-content;max-width:100%;box-sizing:border-box;margin-left:auto;margin-right:auto;padding:0 8px}
+.categoryTitle{padding:3px 8px;box-decoration-break:clone;-webkit-box-decoration-break:clone;overflow-wrap:anywhere}
+
+.intelligence .categoryControls,.intelligence .categoryTitle{background:none;backdrop-filter:none;-webkit-backdrop-filter:none;text-shadow:none}
+
+.rows:not(.intelligence)[data-heading-theme=dark] .categoryTitle{display:inline;color:#fff;background:#000;padding:3px 8px;border-radius:8px;border:1px solid var(--border);box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;text-shadow:none;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+
+.paged:not(.intelligence) .categoryControls{gap:clamp(6px,1.2vw,18px);padding:6px 12px;border-radius:12px;font-size:clamp(12px,2.3vw,16px);line-height:1.3;text-shadow:none;flex-wrap:nowrap}.paged:not(.intelligence) .categoryControls>span:first-child{min-width:0}.paged:not(.intelligence) .categoryControls>span[aria-live]{white-space:nowrap}.paged:not(.intelligence) .categoryControls button{flex-shrink:0}
+
+.paged:not(.intelligence) .categoryControls{background:#000!important;color:#fff;border:1px solid var(--border);backdrop-filter:none;-webkit-backdrop-filter:none}.paged:not(.intelligence)[data-heading-theme=light] .categoryControls{background:var(--background)!important;color:#000}
+
+.rows:not(.intelligence)[data-heading-theme=light] .categoryTitle{background:#fff;color:#000;border:1px solid var(--border);backdrop-filter:none;-webkit-backdrop-filter:none;text-shadow:none}
+
+.paged:not(.intelligence)[data-heading-theme] .categoryTitle{color:#ff3b00;font-weight:400}
+
+.paged:not(.intelligence)[data-heading-theme] .categoryTitle{border-width:2px}
+
+/* Homepage tool navigation: centered title above equal-size controls. */
+.paged:not(.intelligence) .categoryControls{--tools-nav-size:clamp(18px,3.45vw,24px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.65rem;padding:.85rem 1rem;font-size:var(--tools-nav-size);line-height:1.35;text-align:center}
+.paged:not(.intelligence) .toolsHeading{font:inherit;max-width:100%;overflow-wrap:anywhere}
+.paged:not(.intelligence) .toolsNavigation{display:flex;align-items:center;justify-content:center;gap:.8em;font:inherit;max-width:100%}
+.paged:not(.intelligence) .toolsNavigation span{font:inherit;white-space:nowrap}
+
+.paged:not(.intelligence) .categoryControls{max-width:calc(100% - 64px);margin-top:24px;margin-bottom:8px}
+.paged:not(.intelligence) .category h2{padding:26px 26px 4px}
+.paged:not(.intelligence)[data-heading-theme] .categoryTitle{display:inline-block;max-width:100%;padding:10px 14px;box-sizing:border-box}
+
+.paged:not(.intelligence) .categoryControls{padding:6px;gap:.5rem;width:max-content;max-width:calc(100% - 24px)}
+.paged:not(.intelligence) .category h2{padding:12px 12px 4px}
+.paged:not(.intelligence)[data-heading-theme] .categoryTitle{padding:3px 4px}
+
+.paged:not(.intelligence)[data-heading-theme] .categoryControls{background:transparent!important;border:0;box-shadow:none}
+.paged:not(.intelligence) .toolsNavigation{width:fit-content;padding:4px;margin:auto}
+
+.paged:not(.intelligence) .categoryControls{gap:1.25rem}
+.paged:not(.intelligence) .toolsCounter{display:inline-block;border:1px solid var(--border);border-radius:12px;padding:4px 10px;background:var(--background);color:var(--foreground)}
+.paged:not(.intelligence)[data-heading-theme=light] .toolsCounter{color:#000}
+
+/* Compact the divider-to-heading gap; keep the category height observer for expanded cards. */
+.paged:not(.intelligence){padding-top:4px}
+.paged:not(.intelligence) .categoryControls{margin-top:0}
+@media(max-width:768px){.paged:not(.intelligence){padding-bottom:4px}}
+.paged:not(.intelligence) .slot[data-open=false]:not(:hover) .expanded{opacity:0;transform:scale(.92)}
+.paged:not(.intelligence) .slot[data-open=false]:not(:hover) .rest{opacity:1}
+
+/* Homepage-only restoration; functional arrow buttons keep their existing styles. */
+.paged:not(.intelligence)[data-heading-theme] .categoryTitle{display:inline-block;max-width:100%;box-sizing:border-box;padding:3px 10px;border:1px solid var(--border);border-radius:12px;background:var(--background);box-shadow:none;text-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+.paged:not(.intelligence) .categoryControls{backdrop-filter:none;-webkit-backdrop-filter:none;text-shadow:none}

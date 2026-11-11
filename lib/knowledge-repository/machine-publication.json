@@ -1,0 +1,3420 @@
+{
+  "revision": "SEMANTIC-GRAPH-PUBLICATION-CANDIDATE-R1",
+  "state": "APPROVED",
+  "ownerApproval": {
+    "decision": "Owner COMPLETE ONTOLOGY EXPORT + SEMANTIC GRAPH S04: exact 102-term / 97-edge candidate approved; local S04 implementation only, no production deployment",
+    "evidence": "Owner direct authorization of SEMANTIC-GRAPH-PUBLICATION-CANDIDATE-R1, pending-candidate SHA-256 265ec7a61018f3a36ff91ef5153a12020f5307858483ed16394cf11f5674a9e3"
+  },
+  "records": [
+    {
+      "id": "9",
+      "reference": "term:country:costa-rica",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "91ba924e8432008dbde5b39c574a560bd84d18f8e110840875407f78e1318fe6",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "8f24c2726dc4f4d280774bfe41f7c74cd278eebb67b942795bf7bb27b24a8155",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "10",
+      "reference": "term:province:san-jose",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "874882021877771eff0b43b33dc0e08074898d2cb209161ef087924a9f0d2191",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "f5236eff6c23613085755c27b441b6abdb5d8ea0580cd4e4dd603987498690bb",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "11",
+      "reference": "term:province:alajuela",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "05ddc3b83021f051e9d333aaabead22069f8d40de29443efee12a75ce12eee3a",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "b780cc779762903834663766af20ec797876ec39777e98e49b713464d0d3fbec",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "12",
+      "reference": "term:province:cartago",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "213a4dcb9b9605b6ee88cb315c30c1205bc174a4615e8d34e35ed47c2de49558",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "4d934604162e4b5a468f857c16f1b9ef8771b699e70bf2d5a93cb69788297c3e",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "13",
+      "reference": "term:province:heredia",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "0cbecbc406f5556b13be74ebe55916189e3f5efdeadb5de73b1f198520d73f0a",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "abf450a0182ba127c72be5086e037a5312bdfd9d1f3da87ff54c720b2efd8a22",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "14",
+      "reference": "term:province:guanacaste",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "e1c6911127a137f65baa81d655ef9012af52ef6af86904bfab748d42bb7f41f7",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "ff3374f22f3c23ed3cfc7ccec463ad24941e076fe42c969858ea317e48e13b38",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "15",
+      "reference": "term:province:puntarenas",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "5151fedd3905bd714329e054f2942e623d20273ab62bb9d9f418fb5a1836333a",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "d3f1fb542f7ee5fc04f3ae991e67529d8cb535ea9331dce17f3ad11d86710e4e",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "16",
+      "reference": "term:province:limon",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "0cc7bd1cbda44232674e04210760b8b3712b2ef29a61608ef90f2e03f9cdaaa3",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "3d79a64315b7e0a02b3b9825d650ef93c2b3cae012b7cdd5a17235786294abeb",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "17",
+      "reference": "term:canton:san-jose",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "3ffb48d3f7691c46e89ea4b2beb23d822827d4f100275b2f1c50002d363a4168",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "630d3ae5cc5ad46f2e3f2a1f62e208920655321afd3cf90b33ac5f4390047f06",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "18",
+      "reference": "term:canton:escazu",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "8e706642a3158bb86fead23ba74ea39481766c895fbdbfe7467c52abb2d3f2f3",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "9d013a11c65cbd7012757c2a47e0dbad49c3c5ae0c0b4a31c4c1b180e9bd1978",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "19",
+      "reference": "term:canton:desamparados",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "bf2e89f94d05d80f58e29160ae787f16e61016aa7276c85fda3afaac05501670",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "c347f665e35a870595871508b42e719c6f9ed7b8461125d95cb263405d3a0e85",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "23",
+      "reference": "term:canton:mora",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "57c36993e04743fe196b3683204f571ec0e202195699f6e143eb8a38ffac7c2b",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "09464c6b89a530e0bbc1251f86a19ae5b6e901179638148a116bf4cfcc7a9cd3",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "24",
+      "reference": "term:canton:goicoechea",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "cb9ea8a6f1fc06e941530b7c0192bca746f4aa7a76b61bb213172660f34c17d7",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "86df4a3abf2da86c65067b44493cff833f10fb261a59046178b246ab723cbafa",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "25",
+      "reference": "term:canton:santa-ana",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "a6ddae61865929958b0c4de362f266242a16362766d6b39922d711d93c855ddf",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "e402fb8a342b49f1453b89763fa262896e8552b14f7f069b4c971b5644a36ed9",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "27",
+      "reference": "term:canton:vazquez-de-coronado",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "0d1f23faca2a84ca45478e617d8c1d82a9acb84a087856a4fcd15576451f18b5",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "e836310368660a432e17d6869e6c9363d10b014c96c70fbeebba4d28c2544d4d",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "29",
+      "reference": "term:canton:tibas",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "5049c65d23be7b1471639c96fa0414d7b48061eb70714cb863195d4025187889",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "4bcff791589b45c0676d6338acd9c10fdb7350d279423e5da82c870a30cc0c67",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "30",
+      "reference": "term:canton:moravia",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "f5d23304d15c42593d96eb825c7fa35688c871c89fedc624471774407def737d",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "ee6fa890a03b941c81e7fe8bfc5a12347908fc30f985a40613184e9d56fa484b",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "31",
+      "reference": "term:canton:montes-de-oca",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "17d0be22f31f5c0ed0adec43860f63dc5720b6f476a000163c5a10cadf27cd1c",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "6ccc825a0f56f6e911674fcd987a7a593ff4133a249b36bbf06ee88ed4deba09",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "32",
+      "reference": "term:canton:turrubares",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "459b532cfd8f797c63bc00d9166419c4ffbb062b90d7fc58dcea7882b98f9334",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "30ac94edb93ecf8c227e1146036db1c66b1e6b701ccdbe62f1894bb7212632b4",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "33",
+      "reference": "term:canton:dota",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "41b6e7356c846210dd126c83ac41970bfdeacf1cb43963732d4746be9f9e8fdd",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "b41e1c2c6568cf4ca2f5708fb2aaae9bf70ced6aee75127a2bec61692b7df605",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "34",
+      "reference": "term:canton:curridabat",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "a28ae89626b67c91ba4106ab90c46a909855ccbce70f5bb5cdf0957ad539c21a",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "a8693552a4dad0272861abee55f05be42b8368b6eb94364a4b770cfb95f790a7",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "35",
+      "reference": "term:canton:perez-zeledon",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "51f66a44dbd69b795d58eeaf84f1b5bd550eb6b812d9ac963a8a5887469154cc",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "d4b9c69628cc99c3a9265ff96ee0612976a78aca1169bbbe01b8dd8557cf5844",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "37",
+      "reference": "term:canton:alajuela",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "4131cb7e7912271cb9c1068bd3c1c420de7599457c65882203c4d52b0d298184",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "4f37b52676426d4f509e994cc938cff0ae1754d0cebbf439a47bc985b46bb932",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "38",
+      "reference": "term:canton:san-ramon",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "9746d81ab19db7f2830d3aa0cc97aef30169bf6e90db22fce8bced67a547e1b5",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "00855dcba4a7ab67485e6995c26f5cda331e2be02168b7665c676ccb2cecf4d0",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "45",
+      "reference": "term:canton:orotina",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "ee0a0353693dbec645dd8d50a867c36965d6d82376f3bfaebad508e95d9aa3b1",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "a5f341863002e1c9fdd848d6e1d5070b05849d48bb66ed76be2701726fa0f227",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "46",
+      "reference": "term:canton:san-carlos",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "3a459805dda57a19cdd277d7d3819dfa184078fa3d6d9518f3265acb46822378",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "6777958da97a56e0acbb57e141387207b53aa0a8bbf1224ccf2f56eccf71fa60",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "55",
+      "reference": "term:canton:la-union",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "ca16dd0ebd39ed8edd09aa8f188925ebb92976ed4dd8becec81a28bc2dc908cb",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "c097136ad8d9e6536cd7bf2e5718c649a1e3134309136b5d20ec62bde56f85fd",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "61",
+      "reference": "term:canton:heredia",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "ff2fa7acade485b0e94f6887b4d693ea778314338276e44e2ca19564a7628fe0",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "0e0c979670fb899c710a4e1cfcc11cba931d0a9ad289a520325777fc94486262",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "62",
+      "reference": "term:canton:barva",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "9a28a1c7d8fb95a4c809c6e30c26895803bd4acbeab39d84fb0cc1dbc04a24b8",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "ce719fe8672bce10bec61cea59b2127d6974b8133ac6d0bae3e0b66f9e53615a",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "63",
+      "reference": "term:canton:santo-domingo",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "1a1fa70bf8625c243195bc3adc0711f816cda1d9bddfd8664cbe5b622cbe7ba9",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "474831722a0bec543256534a18c8b5c829c5f8ace6b849dc0e5503f07bdc23b6",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "64",
+      "reference": "term:canton:santa-barbara",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "d02306bc0ba0f83c09b56cef093f34486c7dac0d48ff455b3357aa3aad068a4d",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "8a789c29c04e03930e88b330f5ead3f8f11803b476ffa58d23eaa76341f3dfc2",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "65",
+      "reference": "term:canton:san-rafael",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "7e35fac255d72774597be0a529df0f5fc458296f6a3ba2512cb8c15e07207813",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "5b3a3c6866dfc1a9880eb3242ee7de656edfd50f830ddeebc452e3a98c2fbdc8",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "67",
+      "reference": "term:canton:belen",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "cf018d769355a9f06459e4b77eff40f7078ad7538643fe94c8195c2050efe5a7",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "dc899bc78993fed45de319eeaea1dedf0b38f836889260f98fb51e5e39d600d0",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "69",
+      "reference": "term:canton:san-pablo",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "c6dbd132d8a5a19061ee3e20f72bb928ce29cb829dd7a33f69e26ce0cca25cdb",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "a268b6ab8bb98cdfe4119caca5f0c9cd8d9a2f3a1ffbcbaec60a4dfc0673cb61",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "71",
+      "reference": "term:canton:liberia",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "84bf8e89ba9164096cc941860438138f35ebc99e75a2ad62d8a769bde0adc9eb",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "7ad8259700382f3286b5e04e47fc1a1e2b24df7487dd0df2588cb3360aee93ee",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "72",
+      "reference": "term:canton:nicoya",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "8990bc063f1f253b581548b2fa90807a0109fcca48e5d1faee6085b0757f5df7",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "452e0f5840cd172f61898c7ae6e25519ac723bac842bb794f831e10842c25b85",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "73",
+      "reference": "term:canton:santa-cruz",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "02b7e87c826229ea4e34d7ffbcfdbadf26a5d10671f93085940b09e044b19e26",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "df4959ca07f9b8328246f542de0ad6491c42a4f11aaba571e6a43e02b4755304",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "82",
+      "reference": "term:canton:puntarenas",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "51382226e8b4c6742abb629e52bd98fa2e868c00caae8227bdab6adb362509b3",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "1e60193758ccb14debd021acb8779ab93693ec36f364779a8cdb9a059183fa10",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "83",
+      "reference": "term:canton:esparza",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "187608e43daea521d473fe5ff21556980b257f5e3278ccb4bd6971671322c178",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "649b781f17f656d8dfa6fa02f9f15a946cfd8c7045a00b1b5f34fed0663b6ed7",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "90",
+      "reference": "term:canton:parrita",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "85456019d1fc78d6618bd64bf25bf5a183b14d7bfda182d806fd0e92a26ee7a4",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "cb07df47497be89cac81ab43b6fe7974ba6a07dbc42b1779ae59684fe8a72cee",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "92",
+      "reference": "term:canton:garabito",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "761efb201f86dd0652000f3aa192641f204936ad3122080c9b4da1c6e80740a4",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "35e6979530f6813cd7f57ab88432fabd7a4ce3e48beceee4b5bd19d292de2aee",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "95",
+      "reference": "term:canton:limon",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "553a4eedbccd2646a4980f8b15a015e9b14d88dbecb3ee51e6a96d04afd27085",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "4029e49494a33e7da76cd0aa9617b81aeb3dff38288646fb7a9503ff88a34071",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "96",
+      "reference": "term:canton:pococi",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "2601ae21e9187cb74e7ccffee14042a1cfee42a32a2ab73651d183125d969541",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "2c823682c3d7801122bcf3fd580bfb75bd0baaaec73420585c1e3d69a465d055",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "614",
+      "reference": "term:district:carmen-san-jose-10101",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "dfe7b3ac00a0d7279e4202488cf4b493231e8dec98964af9ce90f9d51d9c9262",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "054f458780facd096529c04361dfdfbfe62919575fb03fc42f788774a5d98a9d",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "615",
+      "reference": "term:district:merced-san-jose-10102",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "8ec28104e846b77c395ebe107107eddc81b8034de06384e34e812d52a9a851fb",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "0c0674555d1abed5cbd7da3819a8b70c2113b84b2309e0d7599f0b1cfc13d7f0",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "617",
+      "reference": "term:district:catedral-san-jose-10104",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "a899278eaeb55ea8f0153a30205f876f987446c7aa3a4ae716a6e97dc387eb83",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "93b714b0fd2dd6c9bd26bf1ac678a444f33254937d9e68d83d762d147a855ca8",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "618",
+      "reference": "term:district:zapote-san-jose-10105",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "8d6b6c8106f571f64549296409d82a1d34abe06f7ca3b0f99b40dab79d287444",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "b5bc1dcc7e390e069e882d18ba5743d6da5ff2775303b54eb7b03059f0e4a6ad",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "619",
+      "reference": "term:district:san-francisco-de-dos-rios-san-jose-10106",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "377485a229f5fc2ab87c6fcf2ed9c0418b0de5c591ddc23b31af0651705d2ce6",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "fd268a150719d381fd0d82a139c7e3673e6b175fc7d9dd74bf1131dfeda55cba",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "620",
+      "reference": "term:district:uruca-san-jose-10107",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "f53260a3c4b2ed717594cb2ca3dbe3c584f034b1b91140ad0d6ca112901abf1d",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "06edc1fe9cc21c69b79e042d8c77c83356fe08fd8d854ac88b65501df62c9ceb",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "621",
+      "reference": "term:district:mata-redonda-san-jose-10108",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "4ccd9a813c48fab168a3498b1d5bd7922cbe7bfd19448a47657d38cd0504b619",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "d6fc4ff4a4e35886a0e0c29fe5ba4217e4a0326e915aa585429ac3175b8e49ac",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "622",
+      "reference": "term:district:pavas-san-jose-10109",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "2a38d997981b52c83b6ed85b69a89bbac1d71d38671e1b7ec5a7fff47bf62cfc",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "6211103d35ffe70c0fc57a63266e7eda39e89db6222487bd157abf1c26da8d71",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "624",
+      "reference": "term:district:san-sebastian-san-jose-10111",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "ee12656755bfb08398db83389fb43edd672e68e1786902cb41aaf5ccc27b7cf6",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "51c81c2254af1680395a09c0d795961d0810fb3a9a9029ead338be9c448450b2",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "625",
+      "reference": "term:district:escazu-escazu-10201",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "cb4519afe96f0dd7b91c974d7f03a04834250df592b7b9652aa980018dcc562f",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "baebe4e0143606a4e8df0d270518132fb253db0904f2d92db14d2ad086068185",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "626",
+      "reference": "term:district:san-antonio-escazu-10202",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "13c3df294232c2713d84b8b3e9c0b8d3b746ae5588bf600ddade685bf519ff97",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "a6df83cb32b26d3c4e8dd853c37ba140bcec4252eefdd9cabba42a1e1d2dcd68",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "627",
+      "reference": "term:district:san-rafael-escazu-10203",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "be0fbfd0e56356019432cace6a2f0a92fc05dc07de90658123ea4ad9cf1ab7fa",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "74aee91f5f3fbb1d19f7e31a5568ccbd28de04dd84e76d3b71d3f6363f18cb9a",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "660",
+      "reference": "term:district:colon-mora-10701",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "a2ca2fee224369dc5f6204105d0f3f7dec0e02b240d10e074129b19ecd6544ba",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "245832837efc8d25c88a89bb165d1caf9024098e2114bd536b3909527246df32",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "667",
+      "reference": "term:district:guadalupe-goicoechea-10801",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "464228b53b43f1f8c8e745bdc1a7f5cb219e437155f12519d85f56657694e815",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "18426e7bd5a0d85c0c075ac1fe077ef61842f9337b12ce5e2aed92dc9a771aa0",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "669",
+      "reference": "term:district:calle-blancos-goicoechea-10803",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "b7737eb8c49a7b4d500539d63188791a708879f6dc55bd9a5e6036d36fcf70ec",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "e937e3da54f16dd03fb30fe2611bc2aa499378a9db29c4c08027c97de34caa10",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "671",
+      "reference": "term:district:ipis-goicoechea-10805",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "8d1734c3befeba592fa7429759c63f1365250a989725c18daf83062647177743",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "9c0ca7f63726e4eb94584278c71ca667ad1f4e6c51feea34a79fa36a500a68d2",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "674",
+      "reference": "term:district:santa-ana-santa-ana-10901",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "e597baca3e9f9e728db9c1edcf1795b82f00d16e6c73348c855de704510be941",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "b5f221c7934924359ce1632d8ad99a0b155192b2f382d52fd71610017c47641e",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "676",
+      "reference": "term:district:pozos-santa-ana-10903",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "3cd772bea32e056d8e97ac5f24ad970d9eada1138886c46efd56a7deddf9b42d",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "3975a59af336abbfc50c4705e51e5365c8599d5be1a755dec92417ec3b2ecde4",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "678",
+      "reference": "term:district:piedades-santa-ana-10905",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "1af3782411dc3b50e7909176d4be8655355fd8910fef56198aa0f3ba414f6876",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "c527ce9a154a092181a8b750f004f6283e8cbf3be39feffb2e6cfd11eeec6c2e",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "679",
+      "reference": "term:district:brasil-santa-ana-10906",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "2812d53218e4704fc12a8e0a3ebb0c1b34da3ce15a961af50e497f8064c42ab9",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "bd9c7af1b4aa865ddc42bd1928c6271bfc7352d65c9b3e5610f44ac0a215aba4",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "685",
+      "reference": "term:district:san-isidro-vazquez-de-coronado-11101",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "cdaa346d05f354ec29db9633862554a26e42c2e8dff12f7da07e2cc885689973",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "53bc30c1028ff24cc5ddb3eda3159d456a490f4bd8f717dce91316744a3726d7",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "686",
+      "reference": "term:district:san-rafael-vazquez-de-coronado-11102",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "e23e8e5e078697d38f00c680ed5f2d635725b0ac369a92422daa831f63169afb",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "fc17afeec7c6c927d79f1b55655778fc6abbc43017d0c5fb5e06ad688440c2f3",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "689",
+      "reference": "term:district:cascajal-vazquez-de-coronado-11105",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "70e6ce73a44b584c458df256c431b5b84e6fbfd83818ddaa66ba5888e0d93b40",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "2f8a5da0e0f8b3a2121f221154328abce135dc78fbaaeed60b9db57abc910435",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "699",
+      "reference": "term:district:colima-tibas-11305",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "e1f02dbba24e6db53ef42d249b526c3569435b8008545069b58b543b15578e0f",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "3edbaddd85a8bc5dba64e0956cae3699c1fbcb4dae20c368db86bffc472c783d",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "700",
+      "reference": "term:district:san-vicente-moravia-11401",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "7862379bf747477f9c14015782f95a3b45a41a3f8da85262c472b6c5d7cba2c4",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "5b2d16e5f2502d26d928681b0af415341f2620632fe56584ab8308522e97698f",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "702",
+      "reference": "term:district:la-trinidad-moravia-11403",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "f0581c9c272b81c38a6a54c10932e7a6b25de0cea04131236e0fecb8922fc4e6",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "c0bb2e7328d21dfc1edc620eaacc0a33d6a479fbac37ce2df3915ff8a3cdd77a",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "703",
+      "reference": "term:district:san-pedro-montes-de-oca-11501",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "20d09c1545d0eb8759577b486213ecfb367191d53a14dc3c09a1ebf117357e1f",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "25c1c19beb6957e564e6359046a27d99aa5b9ee5df3a4043d3eea28e0a67c37d",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "704",
+      "reference": "term:district:sabanilla-montes-de-oca-11502",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "c4c4a5b81c3dd7810284fc14ab5adde4618592d895b0abd7a7195c9203369e20",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "d312264c97bbd07fade018ceceebfdb4f8a6a2c6c80a45d8ad641172db3b6724",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "707",
+      "reference": "term:district:san-pablo-turrubares-11601",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "b52a688cbcd7aabef7c819d386390a77ad1dd3caa039561f8213846cdd749f8c",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "5de4f3aced9f7caac5d8ecff6987904112cdf6bd23c5642b8763ab512246c7b9",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "710",
+      "reference": "term:district:san-luis-turrubares-11604",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "3a5d1215b47ef1f54ff2782119e5967e5fbaeefeffa76fd5c12a31f947e5f83d",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "9303cbe83a5bfbe191f467a5fa1228dbef8c9d35f24ed7d4e1253936241e0bf7",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "713",
+      "reference": "term:district:jardin-dota-11702",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "b55bf41584036525bd2be7949e915f9710f259d21d7d7c637a323e162ee7d6d6",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "684afd2fc27272f8dd3085613841ae43569453d3984452fb113d782f9dc83147",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "716",
+      "reference": "term:district:granadilla-curridabat-11802",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "46839cf7dffc7894deaea67bcac947f0277c20473d9a337abd047ab2584e556a",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "462a98b7fb47443b26ed96a0f956de11c544b4c01edaa739298812272c02e52e",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "717",
+      "reference": "term:district:sanchez-curridabat-11803",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "6ca2201eb8ca773adb9b25498ed91b1b39db262eae7135fcc7eed2611d6ad8fe",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "a5c301df550fddd25cf0d003bf69e6346e04a9f171ff65e85a50df023ce0fba1",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "737",
+      "reference": "term:district:alajuela-alajuela-20101",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "750c24deacb9201236ed4feeaa7e504c6b6534118f77c7f7a7c74930412644ba",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "b4a6bb99015d733fa1151904b1d53adccc4b00b31f435cbfea08efafcb4e0033",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "741",
+      "reference": "term:district:guacima-alajuela-20105",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "7d818e2cb5c2ffc5e02e332fd88b1a398b4d0ba17a4fd2aca2a6ae3a35790771",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "1d907ab8575bb28029779ac70a94fc7a552cea368d0fc604ba9cead83615bdb2",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "744",
+      "reference": "term:district:san-rafael-alajuela-20108",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "d6261261b3c6bed1bd94a99f5d303f94caa4c8e6241b75a10507a6cf63822897",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "958cfb2c75eb6fd434e5abfd5c08b3d1e4780020236b1e78defc4522dbae6a77",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "815",
+      "reference": "term:district:la-fortuna-san-carlos-21007",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "50c47cdfb9fcbc837e2e146c7a715c14a409da82026f0d6cdb43de5709438f83",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "5a63b6f67f3422dded9c4ad49183bce1e6c88ce2a61fdc28a560ce483b11bea6",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "870",
+      "reference": "term:district:tres-rios-la-union-30301",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "34282673c07fac5cacd7394fcfb5b4cf1700104e98ac50e747a90112a0a967ee",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "894325dfb07d61ed142f657972fcf48119d163251c9a0c9b7d0f08d24a3d6492",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "906",
+      "reference": "term:district:heredia-heredia-40101",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "52a0a72d811629c881dc9f9195f200a796e0c32e85d5783243470a7a13b66d27",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "1b6d7a31b3fcf5dbb02bfd2ed61a6430a07bebcc4b0bd2f93bcb15a0a28eb291",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "908",
+      "reference": "term:district:san-francisco-heredia-40103",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "76b008f8c7737ede8a251b414baca2586b0413d7803ddb34e35005f559012cb4",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "36a91a1103187cf5dcf913714cc2ccf49d7c1c9f693e9f6dfcc130785f49a69d",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "909",
+      "reference": "term:district:ulloa-heredia-40104",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "9c9c29ee1fc685a38d3e4c429297182b1eb208aa67482b988ef8cc2b0947522f",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "d477e8b5503fb7e291fd4095b8b33a6794737afefa67f1d9bd6f0ae782338068",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "915",
+      "reference": "term:district:santa-lucia-barva-40205",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "2e6763561de852ca4f019f2b170f12a1338f5bb84dd4612a5ee5238c9727dd26",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "928b978da05489898c1c7eaf6283ad25290961404b9ce8b7693f9bce0fce307d",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "941",
+      "reference": "term:district:san-antonio-belen-40701",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "94a0626f4694fc86cbbf6fcad58d012534d93ac47f40d2ec349c55e19c06638c",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "343b4fe9984b7e192d6945c424b1d6812fd62ba94013bed0d2afbe91a8e0f316",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "942",
+      "reference": "term:district:la-ribera-belen-40702",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "83c6415576a778180dbfe5256201e9f273af95379e4f5051f04c7fc92fb439b0",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "ba093bf5b2ddf9fb7b484f05fce1c75b2d2d7655d60669f1c64b1caf72848ac6",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "943",
+      "reference": "term:district:la-asuncion-belen-40703",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "3e8046c647c1315e1dfd694cba9fb1dd979c2aaf5e402fe977b559b66841b9c0",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "9d1bbfa3d869fd846ed7577db9546b6d69744219884ef0ca6a07f01acc4cc3d7",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "964",
+      "reference": "term:district:nosara-nicoya-50206",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "4c2612cdb93ac52418aff02c940ec693aa4758fe15fd9821e160115e4728a2ca",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "671883589d207d83719a2b9d731f34582e49c5cdb24ed37fa59fae590206f8ef",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "973",
+      "reference": "term:district:cabo-velas-santa-cruz-50308",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "ddb892bd0b9ea701b9e6dc3777b49c9addd163efbcedf01c3813ec1e424318f9",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "ff400aadac7ceb3dc2423de7cc8921f46a14dde3b420710d961d6cd698d9947e",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "974",
+      "reference": "term:district:tamarindo-santa-cruz-50309",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "6c9f1569e29941fb054cd0b17094edb82a553ba123eb0d8ec14e59e7f5b4071f",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "51e8ec7a6c40b8cf7436398a4c35ffd23452098e7b46593ab928da391de346e5",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "1015",
+      "reference": "term:district:puntarenas-puntarenas-60101",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "707e18328e851311e88dd13521bce994a7b1f87526d6da82a6f34cc6fadd0516",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "cd73ec2d3d48550a66147e978c6623ee23c77cbc1f511f78ad61d946417e23af",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "1016",
+      "reference": "term:district:pitahaya-puntarenas-60102",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "966b800bbcbec211ab28734530b040711349c61e4bfda87d8bdf437768e7f0ba",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "2633e916a744292f8f684dd6bf72afdea8e8a15504bab9219c45f3146f84eec8",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "1030",
+      "reference": "term:district:espiritu-santo-esparza-60201",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "40764bff498f2fc1216688b691ed416734837630f7b0ed6c41a73e349a5c832a",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "22eb7dd42536ca81a92e4471c6b507fb3f3dd413599330ed8539dab745a91058",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "1071",
+      "reference": "term:district:jaco-garabito-61101",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "ae218b462e4ba198246fdcb64d0a141ea2ce585d041d0cc442b4f7c0f496ee68",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "a9af40c863d2e6808a960c8a032381373c4ecfad919a25087abb49da1f326ed6",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "1076",
+      "reference": "term:district:limon-limon-70101",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "09a486410b2e0c54ff5c4f38dbeef083ba69bb9db0080d2c8a82910daeee58a7",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "54d929abfe4c195ec86567071e19ee83030c032d87780f1badb90be555cf8ce1",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "1080",
+      "reference": "term:district:guapiles-pococi-70201",
+      "category": "geography",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance",
+        "officialCode"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "5cedb90586c97c1ac222ce3ae65ac4fc73bc3568af2e0b22852a3fdddc6816d8",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "46be73f98af82ad71a087c2afc5bfd9b2f1838b54fe94c10316e9e76298102b0",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "1115",
+      "reference": "term:property_type:house",
+      "category": "classification",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "f66a2b2237181ccfe69b751e558bc8d90c42e1fe9e9873d6fb8cec1abccb2776",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "fe8cf53472ad5c235b46707d82bb4431336a1083768958ce2fc91979d101d096",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "1116",
+      "reference": "term:property_type:condo",
+      "category": "classification",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "4fda1dcf9fdbeac29b771e649c1c9e4bab84392f6d90c164e30e1bf8ffab9e7e",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "542295123cccf69ffcc3dcf516f526753274b46bc3dbb920c35d22a6969c969e",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "1117",
+      "reference": "term:property_type:land",
+      "category": "classification",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "c19190239c96833539bb9bc77faf69d64f523d3a77edd7f4b5ec0e8057862e41",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "d8fd4b26e95b43b2be705f9395b3a2e7fc948aa7671a4b2432452c71cf1beb96",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "1120",
+      "reference": "term:property_type:commercial-property",
+      "category": "classification",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "e9a77e651f240b60c1eb1b7f15f54ebf716aae6bc0d3baf9213a7beb22b5767f",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "670991b03c2e60d892dff8ded75db044e4dd27373fa55c832f52dedb58e09f39",
+      "status": "PUBLISHED"
+    },
+    {
+      "id": "1122",
+      "reference": "term:bedrooms:1-bedroom",
+      "category": "characteristics",
+      "fields": [
+        "canonicalId",
+        "reference",
+        "type",
+        "label",
+        "definition",
+        "parentReference",
+        "provenance"
+      ],
+      "locales": [
+        "en",
+        "es"
+      ],
+      "sourceDependencyDigest": "be737f504809db8aa95df488e4fbeb4bc14fa18ba29188bb797f3d0d1186392a",
+      "representationRevision": "KA05-2026-10-15-C2/definitions-R1",
+      "representationDigest": "cc043fc4558e479ae0343403a5dc66f8171aa8494cf90b23b7de5449f01f778c",
+      "status": "PUBLISHED"
+    }
+  ],
+  "edges": [
+    {
+      "source": "10",
+      "target": "9",
+      "predicate": "is_part_of",
+      "dependencyDigest": "b9b10d4da92b195b40c5ee5cf343443e999f760af81c2be45b03cbf79699d704",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "11",
+      "target": "9",
+      "predicate": "is_part_of",
+      "dependencyDigest": "b22c3cd9bc5d3ef434bc3c748ea7df2e2dd46641d276fd3ceebc6c33c12f613f",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "12",
+      "target": "9",
+      "predicate": "is_part_of",
+      "dependencyDigest": "58326719ec4b5103b29aefa97e2dd1082c15a816dcfb252208200db9663f12ec",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "13",
+      "target": "9",
+      "predicate": "is_part_of",
+      "dependencyDigest": "74e155e597e0ae1733ba3d98115f6fb8c32a0d41c47b360265307e750cb0afd3",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "14",
+      "target": "9",
+      "predicate": "is_part_of",
+      "dependencyDigest": "ecfa59fc7257f30b9f396074c64e4c45bb5a388d2812f2ceae71063fdace3cec",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "15",
+      "target": "9",
+      "predicate": "is_part_of",
+      "dependencyDigest": "d70a3368ba746153b072a6153a8c683841447d5e1f30fb7220ae4a5ed3bf31ca",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "16",
+      "target": "9",
+      "predicate": "is_part_of",
+      "dependencyDigest": "ae37d876c211dfc8f7ef3144fb271a3a847c4b7e0532fd6ff031772d0a1433f6",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "17",
+      "target": "10",
+      "predicate": "is_part_of",
+      "dependencyDigest": "11654abd5284b29b259b00c84a7910ddc469aa53bfb7dc115d1180ecd73473b6",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "18",
+      "target": "10",
+      "predicate": "is_part_of",
+      "dependencyDigest": "503993a68b7c4f8bcd665d4a9626ae8a8dde948de84ee53313c39dbbef773d15",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "19",
+      "target": "10",
+      "predicate": "is_part_of",
+      "dependencyDigest": "882719e4507919b0f343f1ca0ae3a10a8b0e7948f510c5ff71f2d37110b159bb",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "23",
+      "target": "10",
+      "predicate": "is_part_of",
+      "dependencyDigest": "5b1608106256d4bbc96f208ebdfecc2ed00f6e138973ead09c9e6989595aec9e",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "24",
+      "target": "10",
+      "predicate": "is_part_of",
+      "dependencyDigest": "e546d998126ae5ec7ddb3d27bf63f2c98f35871df79b2bba4ff48952be4fd0f6",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "25",
+      "target": "10",
+      "predicate": "is_part_of",
+      "dependencyDigest": "0100b33466b3c8101720a4a8a308bbf74821b52e8edf37209c8f245dce04ed29",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "27",
+      "target": "10",
+      "predicate": "is_part_of",
+      "dependencyDigest": "73f359f6d09fe0c6bc64759afa74615452b4ee9f9c31ee0401bc678366e61b72",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "29",
+      "target": "10",
+      "predicate": "is_part_of",
+      "dependencyDigest": "d24c1455633ae7139f6a62ba0beb8250d74ef88dc17388ffb3bd9ba9273fab5d",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "30",
+      "target": "10",
+      "predicate": "is_part_of",
+      "dependencyDigest": "a9cf945697bb648fd07a8f03541f4dada0fe9e1c085c434729b90fd401ee0855",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "31",
+      "target": "10",
+      "predicate": "is_part_of",
+      "dependencyDigest": "c581a410a81d95a0d9b6bf9a8848246992ea4d2ffcee202fd500addd51accfba",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "32",
+      "target": "10",
+      "predicate": "is_part_of",
+      "dependencyDigest": "39583cb6ecbc0493ba79a8f6fbeb1e2d2ad456ac6751fcb677a2e92f8a545b40",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "33",
+      "target": "10",
+      "predicate": "is_part_of",
+      "dependencyDigest": "c43ad84c08a6a9a4f5472005e4ff41a0c4ed9d4985d3c93c07b94c1bf0884550",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "34",
+      "target": "10",
+      "predicate": "is_part_of",
+      "dependencyDigest": "5e06825c9321a60bdf855b039bdaf192ee99a922b10c0e44fb34246ee100c107",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "35",
+      "target": "10",
+      "predicate": "is_part_of",
+      "dependencyDigest": "bb2e33d0775a1294d34a4f0255f3a5fc5283ee361f9e8322641e7c49525540e4",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "37",
+      "target": "11",
+      "predicate": "is_part_of",
+      "dependencyDigest": "5758ac3a999de95619b1214cbeb7fa9952e0fcb5d127d920567c24741dadd3da",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "38",
+      "target": "11",
+      "predicate": "is_part_of",
+      "dependencyDigest": "8b10f7d5c0d409dd7bd994e48982d214c62a1fcafa36cd463862a38233dcb713",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "45",
+      "target": "11",
+      "predicate": "is_part_of",
+      "dependencyDigest": "ed2800a369cca8d0cfd83804e72d8c0450b51fe4c3b2a62678ec487af6dc1641",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "46",
+      "target": "11",
+      "predicate": "is_part_of",
+      "dependencyDigest": "52e22fffbeed5114154a4ab76b0b732a92f6dda6990d3823cc805a085b166026",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "55",
+      "target": "12",
+      "predicate": "is_part_of",
+      "dependencyDigest": "bfaf3c15c3c8730652367c7b6eeaca358133a44c645797197f36cf78b0d795e2",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "61",
+      "target": "13",
+      "predicate": "is_part_of",
+      "dependencyDigest": "a066094305ebd0509e522578ef6d25b9f0cdeffdb6ec2692cc87e0752af3d3c5",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "62",
+      "target": "13",
+      "predicate": "is_part_of",
+      "dependencyDigest": "9515e7d78ece875d2c609a32130e8465cf81501ea1379c5b27b673f127e33a8f",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "63",
+      "target": "13",
+      "predicate": "is_part_of",
+      "dependencyDigest": "1b92adc9021d8985b8d4ac7e133ae7977077285a9d33dbf94ddc09c483c53c21",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "64",
+      "target": "13",
+      "predicate": "is_part_of",
+      "dependencyDigest": "f07d2bbf00fdbb4a0c2ad01236458a5b4e539224512c89774264165fe97be743",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "65",
+      "target": "13",
+      "predicate": "is_part_of",
+      "dependencyDigest": "f2f343332b7e42bece1520c4734f77d82a830b7adbe53c72c59ea1cf8a1f2b7a",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "67",
+      "target": "13",
+      "predicate": "is_part_of",
+      "dependencyDigest": "615459de288546d3599b4b4f77b74112b68866371e9a78663dc242eaa700c1b6",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "69",
+      "target": "13",
+      "predicate": "is_part_of",
+      "dependencyDigest": "fabdb0c62088867521d20f20aa8adecf9947814b8602a5e277bcda58a87a7567",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "71",
+      "target": "14",
+      "predicate": "is_part_of",
+      "dependencyDigest": "5924959909740be225c4819e2ec5bf52abffc941065d74ee10e58885586303b4",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "72",
+      "target": "14",
+      "predicate": "is_part_of",
+      "dependencyDigest": "d7d707900a0feaf763414cfae34549b7f8a4ab3f6d028b18cdee3acee6609a12",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "73",
+      "target": "14",
+      "predicate": "is_part_of",
+      "dependencyDigest": "80d8d747042556ec6e05808ae333e4a3f3c1cfc40937e4a369765f7b73c75a6f",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "82",
+      "target": "15",
+      "predicate": "is_part_of",
+      "dependencyDigest": "a77a21af5f655820d9536aa48cd268496925e1bb70fc2d4b93bde4e59ead6965",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "83",
+      "target": "15",
+      "predicate": "is_part_of",
+      "dependencyDigest": "5a521a6e676105ba1d00c54619fb4441d450443c597e729dadb055d044c8579c",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "90",
+      "target": "15",
+      "predicate": "is_part_of",
+      "dependencyDigest": "e33df2961f1c88b535b3df2f849a56c551a6e8661de6ec46d9a4e7c4b1d17e24",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "92",
+      "target": "15",
+      "predicate": "is_part_of",
+      "dependencyDigest": "b59e9b03c144dbf84af7fcec1dbe5d06f00c2b488b9a7f5cbf31bffc979322e5",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "95",
+      "target": "16",
+      "predicate": "is_part_of",
+      "dependencyDigest": "36266da138b104dbf6f1595425e5c5aa72911b85f24691c7f405aa12260e6fe7",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "96",
+      "target": "16",
+      "predicate": "is_part_of",
+      "dependencyDigest": "0bcc40dd6c4fea0a56e428c6f240d171c2ada7a1442686d513c5a6dbcc8a6211",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "614",
+      "target": "17",
+      "predicate": "is_part_of",
+      "dependencyDigest": "2dbdabda14db1c3068cd1ba4e47b41b98a92ddc88bef61f4710955aa50be9bbc",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "615",
+      "target": "17",
+      "predicate": "is_part_of",
+      "dependencyDigest": "7b225285e05fb3dd2394df452c1c4d7d0cdb0546212083eafe82ab674294f7f1",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "617",
+      "target": "17",
+      "predicate": "is_part_of",
+      "dependencyDigest": "dfba5a8132515bab984583b465d62ac4cabe2b344477b71e5b461d3bec0afe90",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "618",
+      "target": "17",
+      "predicate": "is_part_of",
+      "dependencyDigest": "c50c7fb109be8ad93f21e4fb83ca0ce2ca587a9bcc1cdd0c2c23af30f7b565fd",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "619",
+      "target": "17",
+      "predicate": "is_part_of",
+      "dependencyDigest": "fa2b59b50a8eeda2817bca2ebbd740686745cdb102926796de5e2c7f8ad62c72",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "620",
+      "target": "17",
+      "predicate": "is_part_of",
+      "dependencyDigest": "44559b38462a4bebc70f0af9f7301c18b9294971bd1581117ce8bb5892026591",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "621",
+      "target": "17",
+      "predicate": "is_part_of",
+      "dependencyDigest": "4e896bc2abd3419c72e95d0ad36e1231f792de42d9c317f0a786bfc53da73e0e",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "622",
+      "target": "17",
+      "predicate": "is_part_of",
+      "dependencyDigest": "fcd5d1e7ec7c3e2aad5742c34a49f1f3993af732c060fe96a545410871efef69",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "624",
+      "target": "17",
+      "predicate": "is_part_of",
+      "dependencyDigest": "fcf7ef6d3c24bf8d4b64f4ef4aba663927e544aa05a010d95ed67f310465179e",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "625",
+      "target": "18",
+      "predicate": "is_part_of",
+      "dependencyDigest": "4ec3b9e1aedbe940329f86103322349c62b51687d465d71027c005c9b1d45ae5",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "626",
+      "target": "18",
+      "predicate": "is_part_of",
+      "dependencyDigest": "38ca77c964af3c8efb7582607a864dc2ec9a9ab9fe8552562d87d4489f6b61e4",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "627",
+      "target": "18",
+      "predicate": "is_part_of",
+      "dependencyDigest": "f9b26d258415d43d148eec36464880fedc8bdf6c6c836aca58e5a775b6ff366f",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "660",
+      "target": "23",
+      "predicate": "is_part_of",
+      "dependencyDigest": "2eb61f0af7ff633592e51380646f6292d1480e7a97c7f73b00683ef0e4faec21",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "667",
+      "target": "24",
+      "predicate": "is_part_of",
+      "dependencyDigest": "d807755847850e0792acde6aea6c9b302e167d84123b38cdd57c49aa2a878d38",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "669",
+      "target": "24",
+      "predicate": "is_part_of",
+      "dependencyDigest": "f8d186ccf0489ec62a2e65cd74e6dbc49437d030d75c0b19433a341224d0c1d4",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "671",
+      "target": "24",
+      "predicate": "is_part_of",
+      "dependencyDigest": "d1a6bf6573e4d7acd326c387cfdc834d54d67eeb7dfd7befd410eda19d48c63e",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "674",
+      "target": "25",
+      "predicate": "is_part_of",
+      "dependencyDigest": "7f985f1f65cee7ea031b93e1aca4e1821815839ce8ef4a615bc5edcff416a8d4",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "676",
+      "target": "25",
+      "predicate": "is_part_of",
+      "dependencyDigest": "e35979e20aff8f8ceef18b247b95f5e5dddca359914dd3db124abee89a74af35",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "678",
+      "target": "25",
+      "predicate": "is_part_of",
+      "dependencyDigest": "132b8b9d49f948f77a5b32165bac8282cb57091a0b7d56a4555e6d3f9cb46689",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "679",
+      "target": "25",
+      "predicate": "is_part_of",
+      "dependencyDigest": "4113432199d39fbe1e8b03fdf7615aeb1246a7a1c6694a9f9dfe28abfc9efc3c",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "685",
+      "target": "27",
+      "predicate": "is_part_of",
+      "dependencyDigest": "ea9bc3b76f7a4a0de5cb47aaeeaa91e55c73869dec648bc46a12f3c754568853",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "686",
+      "target": "27",
+      "predicate": "is_part_of",
+      "dependencyDigest": "017149262cd75b37c898a4118dd1a38c3aa480833b216238fd7e763658d7f0a1",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "689",
+      "target": "27",
+      "predicate": "is_part_of",
+      "dependencyDigest": "cbca8e483de7a769f4474d7298ed8248c23953bf40c696feac03d80c6af69748",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "699",
+      "target": "29",
+      "predicate": "is_part_of",
+      "dependencyDigest": "3e9621e1e8aa4347f2348debbb0c992c18115628557b8ad4fc65bd59715e9eb0",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "700",
+      "target": "30",
+      "predicate": "is_part_of",
+      "dependencyDigest": "3e33410bc8632756d1e548d0f2aa5057de57a5669bcb46f87605481641c2efd8",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "702",
+      "target": "30",
+      "predicate": "is_part_of",
+      "dependencyDigest": "d009af5338f9eb214cf0e5dc13e18c550038c5c224e3041e52bb1e8b689c42e2",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "703",
+      "target": "31",
+      "predicate": "is_part_of",
+      "dependencyDigest": "c661684fa5cc7e78a304f2a833e97810b0ec97a15bdcbf11318a30a2f4c073e6",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "704",
+      "target": "31",
+      "predicate": "is_part_of",
+      "dependencyDigest": "8819a49b84ea8ada31fe8b34fa8dbbaf1ba5e620cff79eecc98fdee85bc3521f",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "707",
+      "target": "32",
+      "predicate": "is_part_of",
+      "dependencyDigest": "8bad306d9cb464c41c96986844c33fc818d5bfaf672a61df9d48b2c8c2e6dcdc",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "710",
+      "target": "32",
+      "predicate": "is_part_of",
+      "dependencyDigest": "2698b39016a1ef1f0cc45b5613350006b4c959a55393cbffc06af9a5b1c5a100",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "713",
+      "target": "33",
+      "predicate": "is_part_of",
+      "dependencyDigest": "e7d93fcdb811a700559e9475dc635024f5f569fe2ddc797fd967a74b8bb8a49a",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "716",
+      "target": "34",
+      "predicate": "is_part_of",
+      "dependencyDigest": "edb1127236fc3711856165b2b15be6a904c10eeac15f105639fa807d7a586b59",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "717",
+      "target": "34",
+      "predicate": "is_part_of",
+      "dependencyDigest": "88f44076ab4af31d93581ba558de34c7a30c4200ff3f79f96a4fa0de31810b7d",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "737",
+      "target": "37",
+      "predicate": "is_part_of",
+      "dependencyDigest": "a9a55a0051a9c1f4e92956c597b17130f4baff30a6cb491e8291556ffd207f3a",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "741",
+      "target": "37",
+      "predicate": "is_part_of",
+      "dependencyDigest": "1d70a5d6bfd9360c33bf73f2f53ae5ec348d65f0872c1753da4f0278e1f5f2a7",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "744",
+      "target": "37",
+      "predicate": "is_part_of",
+      "dependencyDigest": "d42e19e550f930f17b11cb43a1d73578fec22e9452b8498f3750b3aa669c5fd4",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "815",
+      "target": "46",
+      "predicate": "is_part_of",
+      "dependencyDigest": "307af47d951f378c7fe38a6a02c13a31227dfd708edc730fcaf8bc18faab1e78",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "870",
+      "target": "55",
+      "predicate": "is_part_of",
+      "dependencyDigest": "589e6fb9e7ddd8e9f4ae5f0d989481d9d34617d07de69a339b7ea70d35efea13",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "906",
+      "target": "61",
+      "predicate": "is_part_of",
+      "dependencyDigest": "884dc886d8940b8933e82b156efd9502188dd5f93484fbf08ed02bb232aacf50",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "908",
+      "target": "61",
+      "predicate": "is_part_of",
+      "dependencyDigest": "6b5c2773bad83a45fe6d8c637b012eab2dc965239a2e4fce7e5bc15d6c15a65a",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "909",
+      "target": "61",
+      "predicate": "is_part_of",
+      "dependencyDigest": "16d5f17d3babcd7a7a33c61391365024961301ec6fc326e0ecd87727534deeeb",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "915",
+      "target": "62",
+      "predicate": "is_part_of",
+      "dependencyDigest": "98de01f8dbc42bc31856fcd348e1569ece01f6ed8d363d896cf502f48be3260b",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "941",
+      "target": "67",
+      "predicate": "is_part_of",
+      "dependencyDigest": "63d36e139dc10bde343cc70a779e1477f35ba4cafcffd66db2a19f1db15cc66c",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "942",
+      "target": "67",
+      "predicate": "is_part_of",
+      "dependencyDigest": "b7248abb1efa1cd4074516b033f93873e25f1de2b85263a1408468273e9edf59",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "943",
+      "target": "67",
+      "predicate": "is_part_of",
+      "dependencyDigest": "0f15fd237115f293cb68b3197073f6a5d073f7929087b7dc3d076246a417ccad",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "964",
+      "target": "72",
+      "predicate": "is_part_of",
+      "dependencyDigest": "ee3f49112c1a9a34ab73604ba1e276fc45727b1eac24e8963f5ad39ce86d826c",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "973",
+      "target": "73",
+      "predicate": "is_part_of",
+      "dependencyDigest": "0bad233fe415045e09a94c9f1c5748cb2ec3d9c0d9fa1d3228bf9eb922f976c4",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "974",
+      "target": "73",
+      "predicate": "is_part_of",
+      "dependencyDigest": "aa6e72584e4a2258c3f8fc86102b7e2d03ca7737fec79bdd06221e0b98c68eac",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "1015",
+      "target": "82",
+      "predicate": "is_part_of",
+      "dependencyDigest": "52519c4392a810ceba3471e6ce3d21833c821e6fc2ad5a420cd0b35207c94a0c",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "1016",
+      "target": "82",
+      "predicate": "is_part_of",
+      "dependencyDigest": "f7e98e842e2734e4e7df2d98bf736e6b5813e952abe9f2e3ad1095d90e09bfa1",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "1030",
+      "target": "83",
+      "predicate": "is_part_of",
+      "dependencyDigest": "6bec01a7bd12ebcb2ac6ead7b029368846dd0963568f3d5980f278070503e632",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "1071",
+      "target": "92",
+      "predicate": "is_part_of",
+      "dependencyDigest": "925a37f2d58233779d1a73589a7087763725d6e7037f0f6040da39e3a6c1ed9b",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "1076",
+      "target": "95",
+      "predicate": "is_part_of",
+      "dependencyDigest": "96ca0b4c0a404cbdd92c12fd8b56e172f22fed5f8bb8b7c2c318be456eec9bc6",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "1080",
+      "target": "96",
+      "predicate": "is_part_of",
+      "dependencyDigest": "5ab77d64d85d38422e3a117725cd467571252f47e1bebebc0424c3af2aab25b6",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    },
+    {
+      "source": "1115",
+      "target": "1122",
+      "predicate": "can_be_described_by",
+      "dependencyDigest": "c4c715c7fa524cddc852a154d4788b13e4f37b3a93d3f5b6d70bde1cba050cbd",
+      "locales": [
+        "en",
+        "es"
+      ],
+      "status": "PUBLISHED"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+.promotion {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  transition: opacity .2s ease;
+}
+.promotion[data-promotion-faded=true]{opacity:.25}
+.promotion:is(:hover, :focus, :focus-within) { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .promotion { transition: none; } }
+@media (max-width: 768px) {
+  [data-language="es"][data-theme="light"] .counter { color: #000000; }
+}
+
+.frame { min-width:0; }
+
+[data-theme=light] .counter{color:#000}
+[data-theme=dark] .counter{color:#fff}
+
+.promotion[data-promotion-revealed=true]{opacity:1;transition:none}

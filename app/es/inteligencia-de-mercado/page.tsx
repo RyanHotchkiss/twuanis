@@ -1,0 +1,181 @@
+import {readHubPackageAccess} from '@/lib/intelligence-hub-access'
+import {hubEngineIdentity} from '@/app/components/intelligence-hub-navigation'
+import { readAskingPriceCatalog } from '@/lib/asking-price-data'
+import TopBar
+  from '@/app/components/TopBar'
+
+import PestanasInteligenciaMercado
+  from './PestanasInteligenciaMercado'
+
+import {
+  resolveMarketIntelligenceWorkspace,
+  type MarketIntelligenceSearchParams
+} from '@/lib/market-intelligence-workspace'
+
+
+type PageProps = {
+  searchParams:
+    Promise<
+      MarketIntelligenceSearchParams
+    >
+}
+
+
+export default async function MarketIntelligencePage({
+  searchParams
+}: PageProps) {
+
+  const params =
+    await searchParams
+
+    // TEMP PPM2 TRACE BEGIN
+          if (typeof params.__ppm2trace === 'string') {
+            console.info(
+              '[PPM2 TRACE]',
+              JSON.stringify({
+                stage: 'page',
+                traceId: params.__ppm2trace,
+                eventId: crypto.randomUUID(),
+                page: '/es/inteligencia-de-mercado',
+              })
+            )
+          }
+          // TEMP PPM2 TRACE END
+
+  const workspace =
+    await resolveMarketIntelligenceWorkspace({
+      params,
+      language:
+        'es'
+    })
+
+
+  return (
+    <main className="mobile-page-fit" style={main}>
+      <TopBar mobileFit />
+
+
+      <section style={hero}>
+        <h1 style={heading}>
+          Centro de Inteligencia
+        </h1>
+
+
+      </section>
+
+
+      <PestanasInteligenciaMercado
+        packageAccess={await readHubPackageAccess(hubEngineIdentity(workspace.activeTab,params.analysis_question??null),params.population==='BANK'?'BANK':'PRIVATE')}
+        askingPriceCatalog={workspace.activeTab==='asking-price'||params.population==='BANK'?await readAskingPriceCatalog():undefined}
+        activeTab={
+          workspace.activeTab
+        }
+
+        options={
+          workspace.options
+        }
+
+        filters={
+          workspace.filters
+        }
+
+        explorerResult={
+          workspace.explorerResult
+        }
+
+        priceMeterAnalysis={
+          workspace.priceMeterAnalysis
+        }
+
+        pricingStrategy={
+          workspace.pricingStrategy
+        }
+
+        marketScarcity={
+          workspace.marketScarcity
+        }
+
+        marketMatches={
+          workspace.marketMatches
+        }
+
+        valuation={
+          workspace.valuation
+        }
+
+        buyerDemand={
+          workspace.buyerDemand
+        }
+
+        comparison={
+          workspace.comparison
+        }
+      />
+    </main>
+  )
+}
+
+
+const main = {
+  minHeight:
+    '100vh',
+  padding:
+    'clamp(1rem, 3vw, 2rem)',
+
+  backgroundColor:
+    'var(--background)',
+
+  backgroundImage:
+    'var(--ih-background-image)',
+
+  backgroundSize:
+    'cover',
+
+  backgroundPosition:
+    'center top',
+
+  backgroundRepeat:
+    'no-repeat',
+
+  backgroundAttachment:
+    'fixed',
+
+  color:
+    'var(--foreground)'
+}
+
+
+const hero = {
+  textAlign:
+    'center' as const,
+
+  marginBottom:
+    '2rem'
+}
+
+
+const heading = {
+  fontSize:
+    'clamp(1.6rem, 4vw, 3rem)',
+
+  marginBottom:
+    '.75rem'
+}
+
+
+const intro = {
+  maxWidth:
+    '850px',
+
+  margin:
+    '0 auto',
+
+  color:
+    'var(--muted)',
+
+  lineHeight:
+    1.6,
+
+  fontSize:
+    '1.05rem'
+}

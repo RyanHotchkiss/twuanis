@@ -1,0 +1,1970 @@
+[
+  {
+    "id": 0,
+    "part": "intro",
+    "kind": "heading",
+    "emphasis": "bold",
+    "en": "Professional Package",
+    "es": "Paquete Profesional"
+  },
+  {
+    "id": 1,
+    "part": "intro",
+    "kind": "paragraph",
+    "emphasis": "italic",
+    "en": "For those whose real-estate decisions have real financial consequences.",
+    "es": "Para quienes toman decisiones inmobiliarias con consecuencias financieras reales."
+  },
+  {
+    "id": 2,
+    "part": "intro",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "en": "When your money, your clients' money, or your professional reputation is on the line, how much confidence can you place in your market knowledge?",
+    "es": "Cuando están en juego su dinero, el de sus clientes o su reputación profesional, ¿cuánta confianza puede depositar en su conocimiento del mercado?"
+  },
+  {
+    "id": 3,
+    "part": "intro",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "A property can look like an extraordinary opportunity. The asking price seems reasonable. The location is desirable. The numbers appear to make sense.",
+    "es": "Una propiedad puede parecer una oportunidad extraordinaria. El precio de oferta parece razonable. La ubicación es atractiva. Los números parecen tener sentido."
+  },
+  {
+    "id": 4,
+    "part": "intro",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "en": "But appearances are not evidence. And an asking price is not a valuation.",
+    "es": "Pero las apariencias no son evidencia. Y un precio de oferta no es una valoración."
+  },
+  {
+    "id": 5,
+    "part": "intro",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Whether you're advising a client, negotiating a sale, acquiring an investment property, or evaluating a potential resale opportunity, the difference between a sound decision and an expensive mistake often begins with the questions you ask before committing.",
+    "es": "Ya sea que asesore a un cliente, negocie una venta, adquiera una propiedad de inversión o evalúe una posible oportunidad de reventa, la diferencia entre una decisión acertada y un error costoso suele comenzar con las preguntas que hace antes de comprometerse."
+  },
+  {
+    "id": 6,
+    "part": "intro",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The Professional Package gives you the analytical tools to investigate those questions. Examine comparable property characteristics, identify matching listings, compare geographic markets, and evaluate asking prices and Price / m² using current, observable market evidence.",
+    "es": "El Paquete Profesional le brinda las herramientas analíticas para investigar esas preguntas. Examine características de propiedades comparables, identifique anuncios coincidentes, compare mercados geográficos y evalúe precios de oferta y Precio / m² utilizando evidencia actual y observable del mercado."
+  },
+  {
+    "id": 7,
+    "part": "intro",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Go beyond what a seller is asking. Examine what the surrounding market actually shows.",
+    "es": "Vaya más allá de lo que pide un vendedor. Examine lo que realmente muestra el mercado circundante."
+  },
+  {
+    "id": 8,
+    "part": "intro",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "en": "Because when the financial consequences are real, your analysis needs to be more than an opinion.",
+    "es": "Porque, cuando las consecuencias financieras son reales, su análisis debe ser más que una opinión."
+  },
+  {
+    "id": 9,
+    "part": "intro",
+    "kind": "paragraph",
+    "emphasis": "italic",
+    "en": "Your judgment makes the decision. Twuanis provides the evidence to challenge it.",
+    "es": "Su criterio toma la decisión. Twuanis aporta la evidencia para ponerlo a prueba."
+  },
+  {
+    "id": 10,
+    "part": "overlay",
+    "kind": "heading",
+    "emphasis": "bold",
+    "en": "Professional Package",
+    "es": "Paquete Profesional"
+  },
+  {
+    "id": 11,
+    "part": "overlay",
+    "kind": "heading",
+    "emphasis": "bold",
+    "en": "Package Algorithms Specifics",
+    "es": "Detalles de los algoritmos del Paquete"
+  },
+  {
+    "id": 12,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "en": "7 Analytical Algorithms | Current Costa Rican Real-Estate Market",
+    "es": "7 algoritmos analíticos | Mercado inmobiliario actual de Costa Rica"
+  },
+  {
+    "id": 13,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The Professional Package includes all three Entertainment Package algorithms and four additional analytical algorithms designed to examine property matching, geographic Price / m² differences, market comparisons, and the position of eligible listings within their defined Price / m² populations.",
+    "es": "El Paquete Profesional incluye los tres algoritmos del Paquete de Entretenimiento y cuatro algoritmos analíticos adicionales diseñados para examinar coincidencias de propiedades, diferencias geográficas de Precio / m², comparaciones de mercados y la posición de anuncios elegibles dentro de sus poblaciones definidas de Precio / m²."
+  },
+  {
+    "id": 14,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "These capabilities allow real-estate professionals, investors, buyers, sellers, and analysts to investigate current asking-price evidence across explicitly defined markets and property characteristics.",
+    "es": "Estas capacidades permiten a profesionales inmobiliarios, inversionistas, compradores, vendedores y analistas investigar evidencia actual de precios de oferta en mercados y características de propiedades definidos explícitamente."
+  },
+  {
+    "id": 15,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The algorithms provide descriptive and comparative market intelligence, not formal property appraisals, verified transaction prices, or predictions of future market performance.",
+    "es": "Los algoritmos brindan inteligencia descriptiva y comparativa del mercado, no avalúos formales, precios verificados de transacciones ni predicciones del desempeño futuro del mercado."
+  },
+  {
+    "id": 16,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "en": "All Entertainment Package algorithms are included:",
+    "es": "Se incluyen todos los algoritmos del Paquete de Entretenimiento:"
+  },
+  {
+    "id": 17,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Market Asking Price Distribution",
+    "es": "Distribución de Precios de Oferta del Mercado"
+  },
+  {
+    "id": 18,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Market Composition",
+    "es": "Composición del Mercado"
+  },
+  {
+    "id": 19,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Market Summary",
+    "es": "Resumen del Mercado"
+  },
+  {
+    "id": 20,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The four additional Professional algorithms are detailed below.",
+    "es": "Los cuatro algoritmos adicionales del Paquete Profesional se detallan a continuación."
+  },
+  {
+    "id": 21,
+    "part": "overlay",
+    "kind": "heading",
+    "emphasis": "bold",
+    "en": "1. Comparative Price / m² Discovery",
+    "es": "1. Descubrimiento Comparativo de Precio / m²"
+  },
+  {
+    "id": 22,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "en": "Where does each eligible listing sit within the defined market's Price / m² distribution?",
+    "es": "¿Dónde se sitúa cada anuncio elegible dentro de la distribución de Precio / m² del mercado definido?"
+  },
+  {
+    "id": 23,
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "en": "Questions This Algorithm Answers",
+    "es": "Preguntas que responde este algoritmo"
+  },
+  {
+    "id": 24,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "What is the Price / m² of each eligible listing in the defined market?",
+    "es": "¿Cuál es el Precio / m² de cada anuncio elegible del mercado definido?"
+  },
+  {
+    "id": 25,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "How does each listing's Price / m² compare with the market median?",
+    "es": "¿Cómo se compara el Precio / m² de cada anuncio con la mediana del mercado?"
+  },
+  {
+    "id": 26,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Which eligible listings have higher or lower Price / m² than others in the same normalized market population?",
+    "es": "¿Qué anuncios elegibles tienen un Precio / m² mayor o menor que otros de la misma población de mercado normalizada?"
+  },
+  {
+    "id": 27,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "What are the minimum, maximum, and quantile thresholds of Price / m² across the eligible listings?",
+    "es": "¿Cuáles son el mínimo, el máximo y los umbrales de cuantiles de Precio / m² entre los anuncios elegibles?"
+  },
+  {
+    "id": 28,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "How widely do individual listing Price / m² observations differ within the defined market?",
+    "es": "¿Qué tanto difieren las observaciones individuales de Precio / m² dentro del mercado definido?"
+  },
+  {
+    "id": 29,
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "en": "Methodology",
+    "es": "Metodología"
+  },
+  {
+    "id": 30,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The algorithm constructs an eligible market population using canonical geography, property type, transaction type, property basis, and the explicitly selected Price / m² normalization.",
+    "es": "El algoritmo construye una población de mercado elegible utilizando geografía canónica, tipo de propiedad, tipo de transacción, base de propiedad y la normalización de Precio / m² seleccionada explícitamente."
+  },
+  {
+    "id": 31,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Sale and Rent populations remain separate.",
+    "es": "Las poblaciones de venta y alquiler se mantienen separadas."
+  },
+  {
+    "id": 32,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Each eligible listing must have compatible, valid asking-price and area evidence.",
+    "es": "Cada anuncio elegible debe contar con evidencia válida y compatible de precio de oferta y área."
+  },
+  {
+    "id": 33,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The algorithm calculates normalized Price / m² observations for the qualifying listings, constructs a common market distribution, and associates individual listings with their corresponding market evidence.",
+    "es": "El algoritmo calcula observaciones normalizadas de Precio / m² para los anuncios que cumplen los requisitos, construye una distribución común del mercado y asocia los anuncios individuales con su evidencia de mercado correspondiente."
+  },
+  {
+    "id": 34,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The common reference population ensures that individual listing observations are examined against the same defined market and normalization basis.",
+    "es": "La población de referencia común garantiza que las observaciones individuales se examinen frente al mismo mercado definido y la misma base de normalización."
+  },
+  {
+    "id": 35,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The algorithm preserves the distinction between:",
+    "es": "El algoritmo conserva la distinción entre:"
+  },
+  {
+    "id": 36,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Individual listing Price / m².",
+    "es": "Precio / m² de cada anuncio."
+  },
+  {
+    "id": 37,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "The eligible market's Price / m² distribution.",
+    "es": "Distribución de Precio / m² del mercado elegible."
+  },
+  {
+    "id": 38,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Market median and quantile statistics.",
+    "es": "Mediana del mercado y estadísticas de cuantiles."
+  },
+  {
+    "id": 39,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Individual listing evidence.",
+    "es": "Evidencia de cada anuncio."
+  },
+  {
+    "id": 40,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Eligibility exclusions and unavailable observations.",
+    "es": "Exclusiones por elegibilidad y observaciones no disponibles."
+  },
+  {
+    "id": 41,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The analysis does not establish a property's appraised value or predict its eventual sale price.",
+    "es": "El análisis no establece el valor de avalúo de una propiedad ni predice su precio final de venta."
+  },
+  {
+    "id": 42,
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "en": "Mathematical Formulas",
+    "es": "Fórmulas matemáticas"
+  },
+  {
+    "id": 43,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "en": "Individual listing Price / m²",
+    "es": "Precio / m² de cada anuncio"
+  },
+  {
+    "id": 44,
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "en": "PPM2ᵢ = Pᵢ / Aᵢ",
+    "es": "PPM2ᵢ = Pᵢ / Aᵢ"
+  },
+  {
+    "id": 45,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Where:",
+    "es": "Donde:"
+  },
+  {
+    "id": 46,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Pᵢ = eligible normalized asking price of listing i.",
+    "es": "Pᵢ = precio de oferta normalizado elegible del anuncio i."
+  },
+  {
+    "id": 47,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Aᵢ = eligible area under the selected normalization.",
+    "es": "Aᵢ = área elegible según la normalización seleccionada."
+  },
+  {
+    "id": 48,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "PPM2ᵢ = asking Price / m² for listing i.",
+    "es": "PPM2ᵢ = Precio / m² de oferta del anuncio i."
+  },
+  {
+    "id": 49,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "en": "Market median Price / m²",
+    "es": "Mediana del Precio / m² del mercado"
+  },
+  {
+    "id": 50,
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "en": "M = median(PPM2₁, …, PPM2ₙ)",
+    "es": "M = mediana(PPM2₁, …, PPM2ₙ)"
+  },
+  {
+    "id": 51,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "en": "Difference from market median",
+    "es": "Diferencia respecto de la mediana del mercado"
+  },
+  {
+    "id": 52,
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "en": "Dᵢ = PPM2ᵢ − M",
+    "es": "Dᵢ = PPM2ᵢ − M"
+  },
+  {
+    "id": 53,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "en": "Relative difference from market median",
+    "es": "Diferencia relativa respecto de la mediana del mercado"
+  },
+  {
+    "id": 54,
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "en": "Rᵢ = ((PPM2ᵢ − M) / M) × 100%",
+    "es": "Rᵢ = ((PPM2ᵢ − M) / M) × 100%"
+  },
+  {
+    "id": 55,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The relative difference is defined only when the reference median is valid and nonzero.",
+    "es": "La diferencia relativa se define únicamente cuando la mediana de referencia es válida y distinta de cero."
+  },
+  {
+    "id": 56,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "These expressions describe the relevant comparisons; any displayed per-listing difference or relative measure must be supported by the existing executable output contract rather than calculated as an unapproved new algorithm result.",
+    "es": "Estas expresiones describen las comparaciones pertinentes; cualquier diferencia o medida relativa por anuncio que se muestre debe estar respaldada por el contrato de salida ejecutable existente, y no calcularse como un resultado nuevo de algoritmo no aprobado."
+  },
+  {
+    "id": 57,
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "en": "How to Interpret the Results",
+    "es": "Cómo interpretar los resultados"
+  },
+  {
+    "id": 58,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "A listing with a Price / m² above the market median has a higher asking-price intensity than the median eligible observation.",
+    "es": "Un anuncio cuyo Precio / m² está por encima de la mediana del mercado tiene una mayor intensidad de precio de oferta que la observación mediana elegible."
+  },
+  {
+    "id": 59,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "A listing below the median has a lower asking-price intensity.",
+    "es": "Un anuncio por debajo de la mediana tiene una menor intensidad de precio de oferta."
+  },
+  {
+    "id": 60,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "These differences are meaningful only when the listings share compatible transaction, property-basis, and normalization definitions.",
+    "es": "Estas diferencias solo tienen sentido cuando los anuncios comparten definiciones compatibles de transacción, base de propiedad y normalización."
+  },
+  {
+    "id": 61,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "A lower Price / m² does not automatically indicate a bargain. Property condition, location-specific differences, legal status, improvements, and other characteristics may not be fully represented by this particular measure.",
+    "es": "Un menor Precio / m² no indica automáticamente una ganga. El estado de la propiedad, las diferencias propias de la ubicación, la situación legal, las mejoras y otras características pueden no estar plenamente representados por esta medida específica."
+  },
+  {
+    "id": 62,
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "en": "Limitations",
+    "es": "Limitaciones"
+  },
+  {
+    "id": 63,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Asking prices are not completed-sale prices.",
+    "es": "Los precios de oferta no son precios de ventas realizadas."
+  },
+  {
+    "id": 64,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Incompatible area definitions cannot be compared directly.",
+    "es": "Las definiciones de área incompatibles no pueden compararse directamente."
+  },
+  {
+    "id": 65,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Listings without eligible price or area evidence are excluded from the numerical population.",
+    "es": "Los anuncios sin evidencia elegible de precio o área se excluyen de la población numérica."
+  },
+  {
+    "id": 66,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "The selected market definition determines which listings qualify.",
+    "es": "La definición del mercado seleccionado determina qué anuncios cumplen los requisitos."
+  },
+  {
+    "id": 67,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "An individual Price / m² difference does not establish overvaluation or undervaluation.",
+    "es": "Una diferencia individual de Precio / m² no establece sobrevaloración ni infravaloración."
+  },
+  {
+    "id": 68,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "The algorithm does not predict appreciation, liquidity, or investment returns.",
+    "es": "El algoritmo no predice apreciación, liquidez ni rendimientos de inversión."
+  },
+  {
+    "id": 69,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "The existing analysis is population-wide; it is not automatically equivalent to a custom comparable-property cohort.",
+    "es": "El análisis existente abarca toda la población; no equivale automáticamente a una cohorte personalizada de propiedades comparables."
+  },
+  {
+    "id": 70,
+    "part": "overlay",
+    "kind": "heading",
+    "emphasis": "bold",
+    "en": "2. Geographic Price / m² Comparison",
+    "es": "2. Comparación Geográfica de Precio / m²"
+  },
+  {
+    "id": 71,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "en": "How does Price / m² differ across geographic areas in the defined Costa Rican real-estate market?",
+    "es": "¿Cómo difiere el Precio / m² entre áreas geográficas del mercado inmobiliario definido de Costa Rica?"
+  },
+  {
+    "id": 72,
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "en": "Questions This Algorithm Answers",
+    "es": "Preguntas que responde este algoritmo"
+  },
+  {
+    "id": 73,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "What is the median Price / m² in each eligible geographic subdivision of the selected market?",
+    "es": "¿Cuál es la mediana del Precio / m² en cada subdivisión geográfica elegible del mercado seleccionado?"
+  },
+  {
+    "id": 74,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Which eligible geographic areas have higher or lower median Price / m²?",
+    "es": "¿Qué áreas geográficas elegibles tienen medianas de Precio / m² mayores o menores?"
+  },
+  {
+    "id": 75,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "How large are the differences between geographic-area medians and the defined reference market?",
+    "es": "¿Qué magnitud tienen las diferencias entre las medianas de las áreas geográficas y el mercado de referencia definido?"
+  },
+  {
+    "id": 76,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "How are the geographic areas ordered by their observed Price / m² statistics?",
+    "es": "¿Cómo se ordenan las áreas geográficas según sus estadísticas observadas de Precio / m²?"
+  },
+  {
+    "id": 77,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Which geographic areas have sufficient eligible observations to establish the requested statistics?",
+    "es": "¿Qué áreas geográficas tienen suficientes observaciones elegibles para establecer las estadísticas solicitadas?"
+  },
+  {
+    "id": 78,
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "en": "Methodology",
+    "es": "Metodología"
+  },
+  {
+    "id": 79,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The algorithm begins with an explicitly selected canonical geographic market and an eligible comparison level.",
+    "es": "El algoritmo comienza con un mercado geográfico canónico seleccionado explícitamente y un nivel de comparación elegible."
+  },
+  {
+    "id": 80,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Depending on the selected geographic scope, the algorithm evaluates its supported child geographic areas.",
+    "es": "Según el ámbito geográfico seleccionado, el algoritmo evalúa sus áreas geográficas subordinadas admitidas."
+  },
+  {
+    "id": 81,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Each geographic population must satisfy the existing transaction, property-type, property-basis, monetary, and area-normalization rules.",
+    "es": "Cada población geográfica debe satisfacer las reglas existentes de transacción, tipo de propiedad, base de propiedad, moneda y normalización de área."
+  },
+  {
+    "id": 82,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The algorithm calculates eligible Price / m² statistics for the supported geographic subdivisions and compares those statistics with the applicable reference market.",
+    "es": "El algoritmo calcula estadísticas elegibles de Precio / m² para las subdivisiones geográficas admitidas y las compara con el mercado de referencia aplicable."
+  },
+  {
+    "id": 83,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The results may include:",
+    "es": "Los resultados pueden incluir:"
+  },
+  {
+    "id": 84,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Geographic identity.",
+    "es": "Identidad geográfica."
+  },
+  {
+    "id": 85,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Eligible observation counts.",
+    "es": "Recuentos de observaciones elegibles."
+  },
+  {
+    "id": 86,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Median Price / m².",
+    "es": "Mediana de Precio / m²."
+  },
+  {
+    "id": 87,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Geographic ordering.",
+    "es": "Ordenamiento geográfico."
+  },
+  {
+    "id": 88,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Differences from the reference median.",
+    "es": "Diferencias respecto de la mediana de referencia."
+  },
+  {
+    "id": 89,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Unavailable or undefined comparisons.",
+    "es": "Comparaciones no disponibles o indefinidas."
+  },
+  {
+    "id": 90,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The algorithm does not automatically select unrelated geographic markets.",
+    "es": "El algoritmo no selecciona automáticamente mercados geográficos no relacionados."
+  },
+  {
+    "id": 91,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "A district is a terminal geographic level for child-area comparison. The algorithm must not silently expand to a canton or province merely to produce a graph.",
+    "es": "Un distrito es el nivel geográfico terminal para comparar áreas subordinadas. El algoritmo no debe ampliar silenciosamente el ámbito a un cantón o una provincia solo para producir un gráfico."
+  },
+  {
+    "id": 92,
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "en": "Mathematical Formulas",
+    "es": "Fórmulas matemáticas"
+  },
+  {
+    "id": 93,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "en": "Median Price / m² for geographic area g",
+    "es": "Mediana de Precio / m² del área geográfica g"
+  },
+  {
+    "id": 94,
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "en": "M_g = median(PPM2_(g,1), …, PPM2_(g,n_g))",
+    "es": "M_g = mediana(PPM2_(g,1), …, PPM2_(g,n_g))"
+  },
+  {
+    "id": 95,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Where n_g is the eligible numerical observation count in area g.",
+    "es": "Donde n_g es el número de observaciones numéricas elegibles del área g."
+  },
+  {
+    "id": 96,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "en": "Difference from reference-market median",
+    "es": "Diferencia respecto de la mediana del mercado de referencia"
+  },
+  {
+    "id": 97,
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "en": "Δ_g = M_g − M_ref",
+    "es": "Δ_g = M_g − M_ref"
+  },
+  {
+    "id": 98,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "M_ref is the median of the selected market’s eligible observations in the same transaction, property-basis and normalization cohort; it is not the median of the geographic-child medians.",
+    "es": "M_ref es la mediana de las observaciones elegibles del mercado seleccionado en la misma cohorte de transacción, base de propiedad y normalización; no es la mediana de las medianas de las áreas geográficas subordinadas."
+  },
+  {
+    "id": 99,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "en": "Relative difference",
+    "es": "Diferencia relativa"
+  },
+  {
+    "id": 100,
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "en": "R_g = ((M_g − M_ref) / M_ref) × 100%",
+    "es": "R_g = ((M_g − M_ref) / M_ref) × 100%"
+  },
+  {
+    "id": 101,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "This relative expression is valid only when the reference median is established and nonzero. Its display must follow the current algorithm output contract.",
+    "es": "Esta expresión relativa es válida únicamente cuando la mediana de referencia está establecida y es distinta de cero. Su presentación debe seguir el contrato de salida actual del algoritmo."
+  },
+  {
+    "id": 102,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "en": "Geographic ordering",
+    "es": "Ordenamiento geográfico"
+  },
+  {
+    "id": 103,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Geographic areas are ordered by median Price / m², highest first; null medians sort last. Equal medians retain their existing ordering.",
+    "es": "Las áreas geográficas se ordenan por mediana de Precio / m², de mayor a menor; las medianas null se colocan al final. Las medianas iguales conservan su ordenamiento existente."
+  },
+  {
+    "id": 104,
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "en": "How to Interpret the Results",
+    "es": "Cómo interpretar los resultados"
+  },
+  {
+    "id": 105,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "A geographic area with a higher median Price / m² has a higher observed asking-price intensity than the comparison area's median under the same normalization.",
+    "es": "Un área geográfica con una mediana de Precio / m² mayor tiene una intensidad observada de precio de oferta superior a la mediana del área de comparación, bajo la misma normalización."
+  },
+  {
+    "id": 106,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "This may reveal meaningful geographic variation in advertised property prices.",
+    "es": "Esto puede revelar variaciones geográficas significativas en los precios anunciados de propiedades."
+  },
+  {
+    "id": 107,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "However, geographic differences alone do not establish that one area is a better investment or that properties in another area are underpriced.",
+    "es": "Sin embargo, las diferencias geográficas por sí solas no establecen que un área sea una mejor inversión ni que las propiedades de otra tengan precios inferiores a los adecuados."
+  },
+  {
+    "id": 108,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "A valid comparison requires consistent market definitions and sufficient eligible evidence.",
+    "es": "Una comparación válida requiere definiciones de mercado coherentes y suficiente evidencia elegible."
+  },
+  {
+    "id": 109,
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "en": "Limitations",
+    "es": "Limitaciones"
+  },
+  {
+    "id": 110,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Geographic comparisons depend on canonical geographic identities.",
+    "es": "Las comparaciones geográficas dependen de identidades geográficas canónicas."
+  },
+  {
+    "id": 111,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Not every selected geography has an eligible child comparison level.",
+    "es": "No toda geografía seleccionada tiene un nivel elegible de comparación de áreas subordinadas."
+  },
+  {
+    "id": 112,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Empty or unsupported populations produce unavailable statistics.",
+    "es": "Las poblaciones vacías o no admitidas producen estadísticas no disponibles."
+  },
+  {
+    "id": 113,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Sale and Rent are never combined into one Price / m² comparison.",
+    "es": "Venta y alquiler nunca se combinan en una sola comparación de Precio / m²."
+  },
+  {
+    "id": 114,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Land and construction-area normalization must remain consistent.",
+    "es": "La normalización por área del terreno o de construcción debe mantenerse coherente."
+  },
+  {
+    "id": 115,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Geographic median differences do not measure investment returns.",
+    "es": "Las diferencias entre medianas geográficas no miden rendimientos de inversión."
+  },
+  {
+    "id": 116,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "The algorithm does not determine the causes of observed price differences.",
+    "es": "El algoritmo no determina las causas de las diferencias de precios observadas."
+  },
+  {
+    "id": 117,
+    "part": "overlay",
+    "kind": "heading",
+    "emphasis": "bold",
+    "en": "3. Market Comparison",
+    "es": "3. Comparación de Mercados"
+  },
+  {
+    "id": 118,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "en": "How do two defined Costa Rican real-estate markets differ?",
+    "es": "¿En qué difieren dos mercados inmobiliarios definidos de Costa Rica?"
+  },
+  {
+    "id": 119,
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "en": "Questions This Algorithm Answers",
+    "es": "Preguntas que responde este algoritmo"
+  },
+  {
+    "id": 120,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "How do the asking-price means and medians compare between two explicitly defined markets?",
+    "es": "¿Cómo se comparan las medias y medianas de precios de oferta de dos mercados definidos explícitamente?"
+  },
+  {
+    "id": 121,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "How do eligible property-area and construction-area characteristics differ between the markets?",
+    "es": "¿Cómo difieren las características elegibles del área del terreno y del área de construcción entre los mercados?"
+  },
+  {
+    "id": 122,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "How does the composition of property listings differ between the two populations?",
+    "es": "¿Cómo difiere la composición de los anuncios inmobiliarios entre las dos poblaciones?"
+  },
+  {
+    "id": 123,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "What differences in observed market characteristics emerge when both markets are examined using consistent analytical definitions?",
+    "es": "¿Qué diferencias en las características observadas del mercado surgen al examinar ambos con definiciones analíticas coherentes?"
+  },
+  {
+    "id": 124,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Which results cannot be established because one or both markets lack sufficient eligible evidence?",
+    "es": "¿Qué resultados no pueden establecerse porque uno o ambos mercados carecen de suficiente evidencia elegible?"
+  },
+  {
+    "id": 125,
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "en": "Methodology",
+    "es": "Metodología"
+  },
+  {
+    "id": 126,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The algorithm requires two explicitly defined market populations.",
+    "es": "El algoritmo requiere dos poblaciones de mercado definidas explícitamente."
+  },
+  {
+    "id": 127,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Each market is constructed using the existing supported canonical geography, transaction, property-type, and analytical filter contracts.",
+    "es": "Cada mercado se construye mediante los contratos existentes de geografía canónica, transacción, tipo de propiedad y filtros analíticos admitidos."
+  },
+  {
+    "id": 128,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The algorithm acquires eligible evidence for each market and calculates the supported descriptive statistics independently.",
+    "es": "El algoritmo adquiere evidencia elegible de cada mercado y calcula sus estadísticas descriptivas admitidas de forma independiente."
+  },
+  {
+    "id": 129,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The resulting analysis places the two sets of market evidence alongside one another.",
+    "es": "El análisis resultante presenta en paralelo ambos conjuntos de evidencia de mercado."
+  },
+  {
+    "id": 130,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Depending on the applicable inputs and output contract, the comparison includes:",
+    "es": "Según los datos de entrada y el contrato de salida aplicables, la comparación incluye:"
+  },
+  {
+    "id": 131,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Eligible market populations.",
+    "es": "Poblaciones de mercado elegibles."
+  },
+  {
+    "id": 132,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Asking-price means.",
+    "es": "Medias de precios de oferta."
+  },
+  {
+    "id": 133,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Asking-price medians.",
+    "es": "Medianas de precios de oferta."
+  },
+  {
+    "id": 134,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Supported property-area statistics.",
+    "es": "Estadísticas admitidas del área del terreno."
+  },
+  {
+    "id": 135,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Supported construction-area statistics.",
+    "es": "Estadísticas admitidas del área de construcción."
+  },
+  {
+    "id": 136,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Market-composition evidence.",
+    "es": "Evidencia de composición del mercado."
+  },
+  {
+    "id": 137,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Missing or unavailable measurements.",
+    "es": "Mediciones ausentes o no disponibles."
+  },
+  {
+    "id": 138,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The algorithm preserves the distinction between the two market definitions and does not invent a second comparison market.",
+    "es": "El algoritmo conserva la distinción entre las dos definiciones de mercado y no inventa un segundo mercado de comparación."
+  },
+  {
+    "id": 139,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Where monetary comparisons require a common currency, the existing dated BCCR conversion authority applies.",
+    "es": "Cuando las comparaciones monetarias requieren una moneda común, se aplica la autoridad existente de conversión del BCCR con su contexto de fecha."
+  },
+  {
+    "id": 140,
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "en": "Mathematical Formulas",
+    "es": "Fórmulas matemáticas"
+  },
+  {
+    "id": 140.5,
+    "en": "Each monetary mean or median uses the valid asking-price observations for its specified transaction measure. Sale total asking amounts and Rent monthly asking amounts are calculated separately and are never pooled into one mean or median. Their contributing counts may differ from the full listing-population denominator used for composition.",
+    "es": "Cada media o mediana monetaria utiliza las observaciones válidas de precios de oferta de su medida de transacción especificada. Los montos totales de oferta de venta y los montos mensuales de alquiler se calculan por separado y nunca se agrupan en una misma media o mediana. Sus recuentos de observaciones pueden diferir del denominador completo de anuncios utilizado para la composición.",
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold"
+  },
+  {
+    "id": 141,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "en": "Market A mean asking price",
+    "es": "Media del precio de oferta del mercado A"
+  },
+  {
+    "id": 142,
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "en": "P̄_A = (1/n_A) Σᵢ₌₁ⁿᴬ P_(A,i)",
+    "es": "P̄_A = (1/n_A) Σᵢ₌₁ⁿᴬ P_(A,i)"
+  },
+  {
+    "id": 143,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "en": "Market B mean asking price",
+    "es": "Media del precio de oferta del mercado B"
+  },
+  {
+    "id": 144,
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "en": "P̄_B = (1/n_B) Σᵢ₌₁ⁿᴮ P_(B,i)",
+    "es": "P̄_B = (1/n_B) Σᵢ₌₁ⁿᴮ P_(B,i)"
+  },
+  {
+    "id": 144.5,
+    "en": "Explanatory comparison only: the current Market Comparison algorithm does not calculate or return signed A−B differences. These equations are not additional algorithm outputs.",
+    "es": "Comparación únicamente explicativa: el algoritmo actual de Comparación de Mercados no calcula ni devuelve diferencias A−B con signo. Estas ecuaciones no son resultados adicionales del algoritmo.",
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold"
+  },
+  {
+    "id": 145,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "en": "Difference between market means",
+    "es": "Diferencia entre las medias de los mercados"
+  },
+  {
+    "id": 146,
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "en": "Δ_mean = P̄_A − P̄_B",
+    "es": "Δ_mean = P̄_A − P̄_B"
+  },
+  {
+    "id": 147,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "en": "Difference between market medians",
+    "es": "Diferencia entre las medianas de los mercados"
+  },
+  {
+    "id": 148,
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "en": "Δ_median = median(P_A) − median(P_B)",
+    "es": "Δ_median = mediana(P_A) − mediana(P_B)"
+  },
+  {
+    "id": 149,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "These differences are explanatory comparisons of independently calculated statistics; the current algorithm presents the market statistics side by side and does not produce these derived difference values.",
+    "es": "Estas diferencias son comparaciones explicativas de estadísticas calculadas de manera independiente; el algoritmo actual presenta las estadísticas de mercado en paralelo y no produce estos valores derivados de diferencia."
+  },
+  {
+    "id": 150,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "en": "Market composition share",
+    "es": "Proporción de composición del mercado"
+  },
+  {
+    "id": 151,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "For supported characteristic c within market A:",
+    "es": "Para una característica admitida c dentro del mercado A:"
+  },
+  {
+    "id": 152,
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "en": "For N_A>0, S_(A,c)=(N_(A,c)/N_A)×100%.",
+    "es": "Para N_A>0, S_(A,c)=(N_(A,c)/N_A)×100%."
+  },
+  {
+    "id": 153,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "N_A is the full distinct eligible listing population of Market A. The same definition applies separately to Market B. Represented and unrepresented evidence are separate; missing evidence does not reduce this denominator. An empty population has no defined percentage.",
+    "es": "N_A es la población completa de anuncios elegibles distintos del mercado A. La misma definición se aplica por separado al mercado B. La evidencia representada y no representada se informa por separado; la evidencia ausente no reduce este denominador. Una población vacía no tiene un porcentaje definido."
+  },
+  {
+    "id": 154,
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "en": "How to Interpret the Results",
+    "es": "Cómo interpretar los resultados"
+  },
+  {
+    "id": 155,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The comparison shows how two defined markets differ in their observable listing and asking-price characteristics.",
+    "es": "La comparación muestra en qué difieren dos mercados definidos en sus características observables de anuncios y precios de oferta."
+  },
+  {
+    "id": 156,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "For example, one market may have a higher median asking price but a different distribution of property sizes or property types.",
+    "es": "Por ejemplo, un mercado puede tener una mediana de precio de oferta mayor, pero una distribución distinta de tamaños o tipos de propiedad."
+  },
+  {
+    "id": 157,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Those findings can help an analyst understand why a simple comparison of headline asking prices may be incomplete.",
+    "es": "Estos hallazgos pueden ayudar al analista a comprender por qué una comparación simple de precios de oferta destacados puede ser incompleta."
+  },
+  {
+    "id": 158,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "However, the algorithm does not automatically attribute differences to a particular cause or establish which market offers superior investment opportunities.",
+    "es": "Sin embargo, el algoritmo no atribuye automáticamente las diferencias a una causa concreta ni establece qué mercado ofrece mejores oportunidades de inversión."
+  },
+  {
+    "id": 159,
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "en": "Limitations",
+    "es": "Limitaciones"
+  },
+  {
+    "id": 160,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Two market definitions must be explicitly supplied.",
+    "es": "Deben proporcionarse explícitamente dos definiciones de mercado."
+  },
+  {
+    "id": 161,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "The algorithm does not automatically choose a comparison market.",
+    "es": "El algoritmo no elige automáticamente un mercado de comparación."
+  },
+  {
+    "id": 162,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Incompatible transaction or normalization definitions must not be treated as directly comparable.",
+    "es": "Las definiciones incompatibles de transacción o normalización no deben tratarse como directamente comparables."
+  },
+  {
+    "id": 163,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Missing monetary or area evidence can limit individual statistics.",
+    "es": "La evidencia monetaria o de área ausente puede limitar estadísticas individuales."
+  },
+  {
+    "id": 164,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Empty markets produce null or unavailable results where required.",
+    "es": "Los mercados vacíos producen resultados null o no disponibles cuando corresponda."
+  },
+  {
+    "id": 165,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Differences between markets do not establish causation.",
+    "es": "Las diferencias entre mercados no establecen causalidad."
+  },
+  {
+    "id": 166,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "The algorithm does not forecast market appreciation, liquidity, or future sales.",
+    "es": "El algoritmo no pronostica apreciación del mercado, liquidez ni ventas futuras."
+  },
+  {
+    "id": 167,
+    "part": "overlay",
+    "kind": "heading",
+    "emphasis": "bold",
+    "en": "4. Property Matching",
+    "es": "4. Coincidencia de Propiedades"
+  },
+  {
+    "id": 168,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "en": "Which listings most closely match the selected property attributes?",
+    "es": "¿Qué anuncios coinciden más con los atributos de propiedad seleccionados?"
+  },
+  {
+    "id": 169,
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "en": "Questions This Algorithm Answers",
+    "es": "Preguntas que responde este algoritmo"
+  },
+  {
+    "id": 170,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Which eligible listings satisfy the selected property characteristics within the defined market?",
+    "es": "¿Qué anuncios elegibles satisfacen las características de propiedad seleccionadas dentro del mercado definido?"
+  },
+  {
+    "id": 171,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "How closely does each candidate listing match the supported selected characteristics?",
+    "es": "¿Qué tan estrechamente coincide cada anuncio candidato con las características seleccionadas admitidas?"
+  },
+  {
+    "id": 172,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Which characteristics are confirmed matches, confirmed nonmatches, or unknown for each candidate?",
+    "es": "¿Qué características son coincidencias confirmadas, no coincidencias confirmadas o desconocidas para cada candidato?"
+  },
+  {
+    "id": 173,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Which eligible properties rank highest under the algorithm's established matching rules?",
+    "es": "¿Qué propiedades elegibles ocupan los primeros puestos según las reglas de coincidencia establecidas del algoritmo?"
+  },
+  {
+    "id": 174,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Where is there insufficient evidence to establish a meaningful match?",
+    "es": "¿Dónde es insuficiente la evidencia para establecer una coincidencia significativa?"
+  },
+  {
+    "id": 175,
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "en": "Methodology",
+    "es": "Metodología"
+  },
+  {
+    "id": 176,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The algorithm begins with a defined eligible market and one or more explicitly selected property characteristics.",
+    "es": "El algoritmo comienza con un mercado elegible definido y una o más características de propiedad seleccionadas explícitamente."
+  },
+  {
+    "id": 177,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Supported inputs may include canonical property attributes, ontology characteristics, and approved area or category constraints.",
+    "es": "Los datos de entrada admitidos pueden incluir atributos canónicos de propiedad, características de la ontología y restricciones aprobadas de área o categoría."
+  },
+  {
+    "id": 178,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "For listing-specific and pre-publication use, supported characteristics may be derived from the subject property or validated draft, provided they are actually evidenced and expressible in the algorithm's existing input grammar.",
+    "es": "Para su uso en propiedades concretas y antes de publicar, las características admitidas pueden derivarse de la propiedad examinada o de un borrador validado, siempre que exista evidencia real y puedan expresarse en la gramática de entrada existente del algoritmo."
+  },
+  {
+    "id": 179,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The algorithm evaluates candidate listings against the selected characteristics.",
+    "es": "El algoritmo evalúa los anuncios candidatos frente a las características seleccionadas."
+  },
+  {
+    "id": 180,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Each supported characteristic is classified according to available evidence:",
+    "es": "Cada característica admitida se clasifica según la evidencia disponible:"
+  },
+  {
+    "id": 181,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "MATCH: The candidate satisfies the selected criterion.",
+    "es": "MATCH: el candidato satisface el criterio seleccionado."
+  },
+  {
+    "id": 182,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "NONMATCH: The candidate is confirmed not to satisfy it.",
+    "es": "NONMATCH: se confirma que el candidato no satisface el criterio."
+  },
+  {
+    "id": 183,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "UNKNOWN: Available evidence does not establish either conclusion.",
+    "es": "UNKNOWN: la evidencia disponible no permite establecer ninguna de las dos conclusiones."
+  },
+  {
+    "id": 184,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The algorithm calculates its existing known-evidence matching score and produces a ranked set of eligible candidates.",
+    "es": "El algoritmo calcula su puntuación existente de coincidencia basada en evidencia conocida y produce un conjunto ordenado de candidatos elegibles."
+  },
+  {
+    "id": 185,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The current presentation supports up to 12 ranked candidate listings.",
+    "es": "La presentación actual admite hasta 12 anuncios candidatos ordenados."
+  },
+  {
+    "id": 186,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Unknown evidence must not be treated as a confirmed nonmatch.",
+    "es": "La evidencia desconocida no debe tratarse como una no coincidencia confirmada."
+  },
+  {
+    "id": 187,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "No unsupported weights or preferences are invented.",
+    "es": "No se inventan ponderaciones ni preferencias no admitidas."
+  },
+  {
+    "id": 188,
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "en": "Mathematical Formulas",
+    "es": "Fórmulas matemáticas"
+  },
+  {
+    "id": 189,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The algorithm's matching score is based on the existing known-evidence contract.",
+    "es": "La puntuación de coincidencia del algoritmo se basa en el contrato existente de evidencia conocida."
+  },
+  {
+    "id": 190,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "For a candidate listing i, let:",
+    "es": "Para un anuncio candidato i, sean:"
+  },
+  {
+    "id": 191,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "mᵢ = number of confirmed matching criteria.",
+    "es": "mᵢ = número de criterios con coincidencia confirmada."
+  },
+  {
+    "id": 192,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "kᵢ = number of criteria with evaluable MATCH or NONMATCH evidence.",
+    "es": "kᵢ = número de criterios con evidencia evaluable MATCH o NONMATCH."
+  },
+  {
+    "id": 193,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "A conceptual known-evidence matching percentage is:",
+    "es": "Un porcentaje conceptual de coincidencia basado en evidencia conocida es:"
+  },
+  {
+    "id": 194,
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "en": "Sᵢ = (mᵢ / kᵢ) × 100%",
+    "es": "Sᵢ = (mᵢ / kᵢ) × 100%"
+  },
+  {
+    "id": 195,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "when kᵢ>0.",
+    "es": "cuando kᵢ>0."
+  },
+  {
+    "id": 196,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "When kᵢ=0, the score is undefined rather than zero.",
+    "es": "Cuando kᵢ=0, la puntuación es indefinida, no cero."
+  },
+  {
+    "id": 196.5,
+    "en": "The executable ranking sorts by matching percentage descending, then confirmed-match count descending, then stable listing identity ascending. Each selected characteristic has equal weight; unknown criteria are excluded from the denominator. At most 12 candidates are presented.",
+    "es": "El ordenamiento ejecutable clasifica por porcentaje de coincidencia de mayor a menor, luego por número de coincidencias confirmadas de mayor a menor y, por último, por identidad estable del anuncio en orden ascendente. Cada característica seleccionada tiene igual peso; los criterios desconocidos se excluyen del denominador. Se presentan como máximo 12 candidatos.",
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold"
+  },
+  {
+    "id": 197,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "This is the existing executable known-evidence scoring and ranking contract; no new weighting or probability model is introduced.",
+    "es": "Este es el contrato existente de puntuación y ordenamiento ejecutables basado en evidencia conocida; no se introduce ninguna ponderación ni modelo de probabilidad nuevos."
+  },
+  {
+    "id": 198,
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "en": "How to Interpret the Results",
+    "es": "Cómo interpretar los resultados"
+  },
+  {
+    "id": 199,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "A higher matching score indicates that a candidate satisfies a greater proportion of the evaluated selected characteristics under the algorithm's established rules.",
+    "es": "Una puntuación mayor indica que el candidato satisface una mayor proporción de las características seleccionadas evaluadas según las reglas establecidas del algoritmo."
+  },
+  {
+    "id": 200,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The ranking helps identify listings that share supported characteristics with the selected analytical question.",
+    "es": "El ordenamiento ayuda a identificar anuncios que comparten características admitidas con la pregunta analítica seleccionada."
+  },
+  {
+    "id": 201,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "A high match score does not establish that two properties have the same market value.",
+    "es": "Una puntuación alta no establece que dos propiedades tengan el mismo valor de mercado."
+  },
+  {
+    "id": 202,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "It also does not guarantee that all relevant characteristics have been observed.",
+    "es": "Tampoco garantiza que se hayan observado todas las características pertinentes."
+  },
+  {
+    "id": 203,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Unknown evidence remains an explicit limitation of the comparison.",
+    "es": "La evidencia desconocida sigue siendo una limitación explícita de la comparación."
+  },
+  {
+    "id": 204,
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "en": "Limitations",
+    "es": "Limitaciones"
+  },
+  {
+    "id": 205,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Matching depends on the selected supported characteristics.",
+    "es": "La coincidencia depende de las características admitidas seleccionadas."
+  },
+  {
+    "id": 206,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Missing evidence must not be interpreted as a negative match.",
+    "es": "La evidencia ausente no debe interpretarse como una coincidencia negativa."
+  },
+  {
+    "id": 207,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Candidate eligibility is governed by the defined market population.",
+    "es": "La elegibilidad de los candidatos está regida por la población de mercado definida."
+  },
+  {
+    "id": 208,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "A matching score is not a statistical probability or valuation confidence.",
+    "es": "Una puntuación de coincidencia no es una probabilidad estadística ni una confianza de valoración."
+  },
+  {
+    "id": 209,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "A subject property may appear among eligible published candidates under the existing participation rules.",
+    "es": "Una propiedad examinada puede aparecer entre los candidatos publicados elegibles según las reglas existentes de participación."
+  },
+  {
+    "id": 210,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "A draft property is not inserted into the published reference population.",
+    "es": "Una propiedad en borrador no se inserta en la población de referencia publicada."
+  },
+  {
+    "id": 211,
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "en": "Matching does not predict investment performance or resale prices.",
+    "es": "La coincidencia no predice desempeño de inversión ni precios de reventa."
+  },
+  {
+    "id": 212,
+    "part": "overlay",
+    "kind": "heading",
+    "emphasis": "bold",
+    "en": "Where These Algorithms Can Be Used",
+    "es": "Dónde se pueden utilizar estos algoritmos"
+  },
+  {
+    "id": 213,
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "en": "Intelligence Hub",
+    "es": "Centro de Inteligencia"
+  },
+  {
+    "id": 214,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "All seven Professional Package algorithms are available through their supported Intelligence Hub interfaces, subject to active entitlement and population authorization.",
+    "es": "Los siete algoritmos del Paquete Profesional están disponibles en sus interfaces admitidas del Centro de Inteligencia, sujetos a un derecho activo y a la autorización de población."
+  },
+  {
+    "id": 215,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Customers can configure supported market definitions, compare geographic areas, examine Price / m² evidence, and identify properties matching selected characteristics.",
+    "es": "Los clientes pueden configurar definiciones de mercado admitidas, comparar áreas geográficas, examinar evidencia de Precio / m² e identificar propiedades que coincidan con las características seleccionadas."
+  },
+  {
+    "id": 216,
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "en": "Individual Published Property Listings",
+    "es": "Anuncios individuales de propiedades publicadas"
+  },
+  {
+    "id": 216.5,
+    "en": "Planned integration — not currently available on the production website. The following describes the intended experience after the separately qualified Listing Intelligence release.",
+    "es": "Integración prevista: actualmente no está disponible en el sitio web de producción. Lo siguiente describe la experiencia prevista después del lanzamiento de Inteligencia de Propiedades, sujeto a su verificación independiente.",
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold"
+  },
+  {
+    "id": 217,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Professional includes the Entertainment Package's eligible Market Asking Price Distribution lens.",
+    "es": "Professional incluye la perspectiva elegible de Distribución de Precios de Oferta del Mercado del Paquete de Entretenimiento."
+  },
+  {
+    "id": 218,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "It additionally provides the eligible Property Matching lens, which can identify published properties sharing supported characteristics with the property being viewed.",
+    "es": "También ofrece la perspectiva elegible de Coincidencia de Propiedades, que puede identificar propiedades publicadas con características admitidas que comparten con la propiedad que se está viendo."
+  },
+  {
+    "id": 219,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The subject property's canonical evidence supplies the supported matching inputs when sufficient information exists.",
+    "es": "La evidencia canónica de la propiedad examinada aporta los datos de entrada de coincidencia admitidos cuando existe información suficiente."
+  },
+  {
+    "id": 220,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The customer must explicitly click Run Algorithm.",
+    "es": "El cliente debe hacer clic explícitamente en Ejecutar Algoritmo."
+  },
+  {
+    "id": 221,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The broader Market Comparison and Geographic Price / m² Comparison workflows remain in the Intelligence Hub because they require market-level questions rather than direct subject-property evaluation.",
+    "es": "Los flujos más amplios de Comparación de Mercados y Comparación Geográfica de Precio / m² permanecen en el Centro de Inteligencia porque requieren preguntas a nivel de mercado, no una evaluación directa de la propiedad examinada."
+  },
+  {
+    "id": 222,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Comparative Price / m² Discovery remains available in its supported analytical workspace. A narrower published-listing application may be introduced only after its population-wide execution and result-delivery costs are qualified.",
+    "es": "El Descubrimiento Comparativo de Precio / m² sigue disponible en su espacio analítico admitido. Solo podrá introducirse una aplicación más acotada a anuncios publicados después de verificar sus costos de ejecución sobre toda la población y entrega de resultados."
+  },
+  {
+    "id": 223,
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "en": "Create / Publish a Property Listing",
+    "es": "Crear / publicar un anuncio inmobiliario"
+  },
+  {
+    "id": 223.5,
+    "en": "Planned integration — not currently available on the production website. The following describes the intended experience after the separately qualified Listing Intelligence release.",
+    "es": "Integración prevista: actualmente no está disponible en el sitio web de producción. Lo siguiente describe la experiencia prevista después del lanzamiento de Inteligencia de Propiedades, sujeto a su verificación independiente.",
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold"
+  },
+  {
+    "id": 224,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Professional includes the Entertainment Package's proposed asking-price distribution lens.",
+    "es": "Professional incluye la perspectiva de distribución del precio de oferta propuesto del Paquete de Entretenimiento."
+  },
+  {
+    "id": 225,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "It also provides Property Matching using the seller's validated draft characteristics.",
+    "es": "También ofrece Coincidencia de Propiedades utilizando las características validadas del borrador del vendedor."
+  },
+  {
+    "id": 226,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "This allows the seller to examine current published listings that match the proposed property's supported characteristics before publication.",
+    "es": "Esto permite al vendedor examinar anuncios publicados actuales que coincidan con las características admitidas de la propiedad propuesta antes de publicar."
+  },
+  {
+    "id": 227,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The unpublished draft is not inserted into the market population.",
+    "es": "El borrador no publicado no se inserta en la población del mercado."
+  },
+  {
+    "id": 228,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "All analytical execution remains optional and explicitly requested.",
+    "es": "Toda ejecución analítica sigue siendo opcional y solicitada explícitamente."
+  },
+  {
+    "id": 229,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "en": "Publishing a listing is free. Purchasing Intelligence is not required.",
+    "es": "Publicar un anuncio es gratis. Comprar Inteligencia no es obligatorio."
+  },
+  {
+    "id": 230,
+    "part": "overlay",
+    "kind": "heading",
+    "emphasis": "bold",
+    "en": "Analytical Integrity and Access",
+    "es": "Integridad analítica y acceso"
+  },
+  {
+    "id": 231,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The Professional Package includes all Entertainment Package capabilities and the four additional algorithms described above.",
+    "es": "El Paquete Profesional incluye todas las capacidades del Paquete de Entretenimiento y los cuatro algoritmos adicionales descritos arriba."
+  },
+  {
+    "id": 232,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "The current canonical Package configuration contains seven algorithms in total.",
+    "es": "La configuración canónica actual del Paquete contiene siete algoritmos en total."
+  },
+  {
+    "id": 233,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Every algorithm uses its existing methodology, eligible market population, and authorization rules.",
+    "es": "Cada algoritmo utiliza su metodología existente, su población de mercado elegible y sus reglas de autorización."
+  },
+  {
+    "id": 234,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Actual execution requires an explicit customer request and current authorization for the selected capability and population.",
+    "es": "La ejecución real requiere una solicitud explícita del cliente y la autorización vigente para la capacidad y la población seleccionadas."
+  },
+  {
+    "id": 235,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Static examples do not execute algorithms or reveal protected market results.",
+    "es": "Los ejemplos estáticos no ejecutan algoritmos ni revelan resultados protegidos del mercado."
+  },
+  {
+    "id": 236,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Missing evidence, unsupported geographic comparisons, incompatible normalization, empty populations, and undefined statistics must be presented truthfully.",
+    "es": "La evidencia ausente, las comparaciones geográficas no admitidas, la normalización incompatible, las poblaciones vacías y las estadísticas indefinidas deben presentarse con veracidad."
+  },
+  {
+    "id": 237,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "en": "One active Professional Package provides access to its included capabilities across eligible listings, supported markets, and qualifying pre-publication analyses during the purchased coverage period.",
+    "es": "Un Paquete Profesional activo permite acceder a sus capacidades incluidas en anuncios elegibles, mercados admitidos y análisis previos a la publicación que cumplan los requisitos durante el período de cobertura adquirido."
+  },
+  {
+    "id": 238,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "en": "Each analytical execution remains individually requested.",
+    "es": "Cada ejecución analítica se solicita individualmente."
+  },
+  {
+    "id": 239,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "italic",
+    "en": "Twuanis Market Intelligence | Professional Package",
+    "es": "Inteligencia de Mercado Twuanis | Paquete Profesional"
+  },
+  {
+    "id": 240,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "italic",
+    "en": "Current listing and asking-price evidence. Not a formal appraisal, verified transaction-price analysis, or prediction of future investment returns.",
+    "es": "Evidencia actual de anuncios y precios de oferta. No es un avalúo formal, un análisis de precios de transacciones verificadas ni una predicción de rendimientos futuros de inversión."
+  }
+]

@@ -1,0 +1,284 @@
+import {validateComparableInputEvidence} from './comparable-input-evidence'
+import 'server-only'
+import {comparableStage} from './comparable-private-diagnostics'
+import type {PriceMeterFxIdentity} from './price-meter-identity'
+
+import {
+  validatePriceMeterComparableRequest,
+  type PriceMeterComparableRequest
+} from '@/lib/price-meter-comparable-request'
+
+import {
+  loadPriceMeterComparableBoundedPopulation,
+  loadPriceMeterComparableSubjectConfiguration
+} from '@/lib/price-meter-comparable-loader'
+
+import {
+  runPriceMeterComparableEngine,
+  type PriceMeterComparableEngineResult
+} from '@/lib/price-meter-comparable-engine'
+
+import {
+  buildPriceMeterComparableConfigurationPresentation,
+  buildPriceMeterComparablePresentation,
+  type PriceMeterComparablePresentation
+} from '@/lib/price-meter-comparable-presentation'
+
+/*
+ * ---------------------------------------------------------
+ * PRICE / M² USER-DEFINED COMPARABLE SERVER BOUNDARY
+ * ---------------------------------------------------------
+ *
+ * Phase 12A
+ *
+ * REQUEST FIRST.
+ * AUTHORIZE SECOND.
+ * RETURN MINIMUM THIRD.
+ *
+ * This is the commercial/security boundary around the
+ * Crown Jewel comparable-cohort machinery.
+ */
+
+
+export { PRICE_METER_INTELLIGENCE_ENTITLEMENT, PriceMeterComparableAuthenticationError, PriceMeterComparableAuthorizationError } from '@/lib/price-meter-authorization'
+import { authorizePriceMeterIntelligenceExecution } from '@/lib/price-meter-authorization'
+
+export type PriceMeterComparableConfigurationServerResult = {
+  userId:
+    string
+
+  presentation:
+    PriceMeterComparablePresentation
+}
+
+
+export async function executePriceMeterComparableConfiguration(
+  subjectListingId:
+    string
+): Promise<
+  PriceMeterComparableConfigurationServerResult
+> {
+
+  /*
+   * -------------------------------------------------------
+   * 1. REQUEST
+   * -------------------------------------------------------
+   */
+
+  const normalizedSubjectListingId =
+    typeof subjectListingId ===
+      'string'
+      ? subjectListingId.trim()
+      : ''
+
+
+  if (
+    normalizedSubjectListingId.length ===
+      0
+  ) {
+    throw new Error(
+      'Phase 12A configuration requires a subject listing ID.'
+    )
+  }
+
+
+  /*
+   * -------------------------------------------------------
+   * 2. AUTHORIZE
+   * -------------------------------------------------------
+   *
+   * No subject listing, ontology, geography, FX, or
+   * analytical identity is loaded before entitlement.
+   */
+
+  const userId =
+    await authorizePriceMeterIntelligenceExecution('cap-user-defined-comparable-cohort')
+
+
+  /*
+   * -------------------------------------------------------
+   * 3. SUBJECT ONLY
+   * -------------------------------------------------------
+   *
+   * No peer population.
+   * No comparable execution.
+   */
+
+  const loaded =
+    await loadPriceMeterComparableSubjectConfiguration(
+      normalizedSubjectListingId
+    )
+
+
+  /*
+   * -------------------------------------------------------
+   * 4. MINIMUM PRESENTATION CONFIGURATION
+   * -------------------------------------------------------
+   */
+
+  const presentation =
+    buildPriceMeterComparableConfigurationPresentation({
+      observations:
+        loaded.observations,
+
+      characteristics:
+        loaded.characteristics,
+
+      yearBuiltRange:
+        loaded.yearBuiltRange
+    })
+
+
+  return {
+    userId,
+    presentation
+  }
+}
+
+export type PriceMeterComparableServerResult = {
+  context?:{subjectTitle:string|null;analyticalDate:string;fx:PriceMeterFxIdentity|null}
+  userId:
+    string
+
+  analysis:
+    PriceMeterComparableEngineResult
+
+  presentation:
+    PriceMeterComparablePresentation
+}
+
+
+export async function executePriceMeterComparableAnalysis(
+  rawRequest:
+    PriceMeterComparableRequest,
+  selectedOnly=false
+): Promise<
+  PriceMeterComparableServerResult
+> {
+
+  /*
+   * -------------------------------------------------------
+   * 1. REQUEST
+   * -------------------------------------------------------
+   */
+
+  comparableStage('request_validation')
+  const request =
+    validatePriceMeterComparableRequest(
+      rawRequest
+    )
+
+
+  /*
+   * -------------------------------------------------------
+   * 2. AUTHORIZE
+   * -------------------------------------------------------
+   *
+   * No subject load.
+   * No market load.
+   * No ontology load.
+   * No Crown Jewel execution.
+   *
+   * until entitlement succeeds.
+   */
+
+  comparableStage('authorization')
+  const userId =
+    await authorizePriceMeterIntelligenceExecution('cap-user-defined-comparable-cohort')
+
+
+  /*
+   * -------------------------------------------------------
+   * 3. BOUND + FETCH
+   * -------------------------------------------------------
+   */
+
+  comparableStage('bounded_population_load')
+  const loaded =
+    await loadPriceMeterComparableBoundedPopulation({
+      selectedOnly,
+      activeDimensions:request.activeDimensions,
+      subjectListingId:
+        request.subjectListingId,
+
+      geographyLevel:
+        request.geographyLevel,
+
+      normalizationBasis:
+        request.normalizationBasis
+    })
+
+
+  /*
+   * -------------------------------------------------------
+   * 4. CALCULATE
+   * -------------------------------------------------------
+   */
+
+   comparableStage('subject_input_evidence_validation')
+   validateComparableInputEvidence(request.activeDimensions, buildPriceMeterComparableConfigurationPresentation({
+     observations:[loaded.subject.observation],
+     characteristics:loaded.subject.characteristics,
+     yearBuiltRange:loaded.subject.yearBuiltRange
+   }))
+
+   comparableStage('engine_invocation')
+   const analysis =
+  runPriceMeterComparableEngine({
+    request,
+
+    subjectObservation:
+      loaded.subject.observation,
+
+    subjectCharacteristics:
+      loaded.subject.characteristics,
+
+    subjectYearBuiltRange:
+      loaded.subject.yearBuiltRange,
+
+    boundedObservations:
+      loaded.observations,
+
+    memberships:
+      loaded.memberships
+  })
+
+
+comparableStage('engine_returned')
+comparableStage('presentation_projection')
+const presentation =
+  buildPriceMeterComparablePresentation({
+    subject:
+      analysis.subject,
+
+    observation:
+      loaded.subject.observation
+  })
+
+
+  /*
+   * -------------------------------------------------------
+   * 5. SERVER RESULT
+   * -------------------------------------------------------
+   *
+   * This is still an INTERNAL server result.
+   *
+   * Do not serialize this object directly to the browser.
+   *
+   * The API boundary will map it to the minimum evidence
+   * DTO and deliberately remove:
+   *
+   * - matchingListingIds
+   * - raw peer observations
+   * - ontology term IDs
+   * - internal cohort structures
+   * - analytical machinery
+   */
+
+    return {
+    ...(selectedOnly?{context:{subjectTitle:typeof loaded.subject.listing.title==='string'?loaded.subject.listing.title:null,analyticalDate:loaded.analyticalDate,fx:loaded.fxIdentity}}:{}),
+    userId,
+    analysis,
+    presentation
+  }
+}

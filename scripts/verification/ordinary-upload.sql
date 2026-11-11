@@ -1,0 +1,34 @@
+\set ON_ERROR_STOP on
+BEGIN;
+DO $$BEGIN IF inet_server_addr() IS NOT NULL OR current_database()<>'s7_upload' THEN RAISE EXCEPTION 'disposable only';END IF;END$$;
+CREATE TEMP TABLE checks(label text);
+CREATE FUNCTION pg_temp.ok(v boolean,t text) RETURNS void LANGUAGE plpgsql AS $$BEGIN IF v IS NOT TRUE THEN RAISE EXCEPTION 'FAIL %',t;END IF;INSERT INTO checks VALUES(t);END$$;
+CREATE FUNCTION pg_temp.reject(q text,t text) RETURNS void LANGUAGE plpgsql AS $$DECLARE bad boolean:=false;BEGIN BEGIN EXECUTE q;EXCEPTION WHEN OTHERS THEN bad:=true;END;PERFORM pg_temp.ok(bad,t);END$$;
+INSERT INTO listings(id,owner_id,listing_status,canonical_domain_version) VALUES('10000000-0000-0000-0000-000000000001','20000000-0000-0000-0000-000000000001','active',1);
+SELECT public.prepare_ordinary_upload('20000000-0000-0000-0000-000000000001','10000000-0000-0000-0000-000000000001',4)->>'id' AS op \gset
+SELECT pg_temp.ok((SELECT storage_path='20000000-0000-0000-0000-000000000001/10000000-0000-0000-0000-000000000001/upload-'||id||'.jpg' AND NOT completed FROM twuanis_canonical_private.ordinary_upload_operations WHERE id=:'op'),'server-generated identity/path');
+SELECT pg_temp.reject(format('SELECT public.get_ordinary_upload(gen_random_uuid(),%L)',:'op'),'foreign owner read rejected');
+SELECT pg_temp.reject(format('SELECT public.attach_ordinary_upload(gen_random_uuid(),%L)',:'op'),'foreign owner attach rejected');
+SELECT pg_temp.ok(NOT has_table_privilege('service_role','twuanis_canonical_private.ordinary_upload_operations','UPDATE'),'service cannot forge table state');
+SELECT pg_temp.ok(NOT has_function_privilege('authenticated','public.attach_ordinary_upload(uuid,uuid)','EXECUTE'),'browser cannot attach');
+SELECT pg_temp.ok(has_function_privilege('service_role','public.attach_ordinary_upload(uuid,uuid)','EXECUTE'),'server can attach');
+CREATE FUNCTION pg_temp.fail_completion() RETURNS trigger LANGUAGE plpgsql AS $$BEGIN RAISE EXCEPTION 'injected';END$$;
+CREATE TRIGGER inject BEFORE UPDATE ON twuanis_canonical_private.ordinary_upload_operations FOR EACH ROW EXECUTE FUNCTION pg_temp.fail_completion();
+SELECT pg_temp.reject(format('SELECT public.attach_ordinary_upload(''20000000-0000-0000-0000-000000000001'',%L)',:'op'),'completion failure rolls back');
+SELECT pg_temp.ok((SELECT images IS NULL FROM listings),'failed completion no attachment');
+SELECT pg_temp.ok((SELECT NOT completed FROM twuanis_canonical_private.ordinary_upload_operations WHERE id=:'op'),'failed completion remains retryable');
+DROP TRIGGER inject ON twuanis_canonical_private.ordinary_upload_operations;
+SELECT public.attach_ordinary_upload('20000000-0000-0000-0000-000000000001',:'op');
+SELECT public.attach_ordinary_upload('20000000-0000-0000-0000-000000000001',:'op');
+SELECT pg_temp.ok((SELECT jsonb_array_length(images::jsonb)=1 FROM listings),'repeat attaches once');
+SELECT pg_temp.ok((SELECT listing_status='active' AND canonical_revision=5 AND publication_expires_at='2030-01-01'::timestamptz FROM listings),'lifecycle deadline revision unchanged');
+UPDATE listings SET images='[]';
+SELECT public.attach_ordinary_upload('20000000-0000-0000-0000-000000000001',:'op');
+SELECT pg_temp.ok((SELECT images='[]' FROM listings),'old receipt cannot resurrect removed media');
+UPDATE listings SET listing_status='deleted';
+SELECT pg_temp.reject(format('SELECT public.attach_ordinary_upload(''20000000-0000-0000-0000-000000000001'',%L)',:'op'),'completed retry rechecks lifecycle eligibility');
+UPDATE listings SET listing_status='draft',owner_id=gen_random_uuid();
+SELECT pg_temp.reject(format('SELECT public.get_ordinary_upload(''20000000-0000-0000-0000-000000000001'',%L)',:'op'),'ownership change revokes retry');
+SELECT pg_temp.ok((SELECT bool_and(prosecdef AND proconfig @> ARRAY['search_path=pg_catalog, pg_temp']) FROM pg_proc WHERE proname IN ('prepare_ordinary_upload','get_ordinary_upload','attach_ordinary_upload')),'fixed search paths');
+SELECT 'ORDINARY UPLOAD SQL ASSERTIONS '||count(*) FROM checks;
+ROLLBACK;

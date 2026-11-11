@@ -1,0 +1,43 @@
+import 'server-only'
+import {bathroomSelectionLabel} from './bathroom-selection'
+import {authorizePreviouslyPublicCapability} from './package-capability-authorization'
+import { resolveCanonicalMarketRequest } from './canonical-market-request'
+import { countCanonicalMarket } from './canonical-market-population'
+import { countMarketNumericalSurvivors } from './canonical-market-acquisition'
+
+// Historical route name retained; the surviving product is Configuration Frequency.
+// No Rare Configuration Discovery, powerset, weighting, or scarcity score executes.
+export async function getMarketScarcity(filters:Record<string,string|undefined>,language:'en'|'es'='en'){
+ await authorizePreviouslyPublicCapability('cap-property-configuration-frequency')
+
+  const resolved=await resolveCanonicalMarketRequest(filters,language)
+  // Numerical options are alternatives within each dimension; selected dimensions
+  // and all semantic requirements remain joint. Preserve Year/Road binding.
+  const numericalTerms=resolved.terms.filter(t=>['bedrooms','bathrooms','parking'].includes(t.dimension))
+  const request=Object.freeze({...resolved,numericalTerms:Object.freeze(numericalTerms)})
+  const marketSize=await countCanonicalMarket(request.base)
+  const configuration=request.terms.filter(t=>t.dimension!=='property_type')
+  const numerator={...request.base,membershipGroups:[...request.base.membershipGroups,...configuration.filter(t=>!numericalTerms.includes(t)).map(t=>[t.id])],
+    propertyArea:request.propertyArea,constructionArea:request.constructionArea}
+  const hasConfiguration=configuration.length>0||!!request.bathroomConstraints||!!request.year||!!request.road||!!request.propertyArea||!!request.constructionArea
+  const matchingCount=marketSize===0?0:hasConfiguration?await countMarketNumericalSurvivors(request,numerator):marketSize
+  if(matchingCount>marketSize)throw Error('Configuration population changed during acquisition.')
+  return calculateConfigurationFrequency(filters,language,marketSize,matchingCount,hasConfiguration,configuration)
+}
+
+export function calculateConfigurationFrequency(filters:Record<string,string|undefined>,language:'en'|'es',marketSize:number,matchingCount:number,hasConfiguration:boolean,configuration:{dimension:string;label:string;id:string}[]){
+ if(!Number.isSafeInteger(marketSize)||!Number.isSafeInteger(matchingCount)||matchingCount<0||matchingCount>marketSize)throw Error('Invalid configuration population.')
+  const percentage=marketSize?matchingCount/marketSize*100:null
+  const attributes=[...(filters.bathrooms?.startsWith('bn')?[{category:'bathrooms',value:bathroomSelectionLabel(filters.bathrooms,language),termId:null}]:[]),...configuration.filter(t=>!(t.dimension==='bathrooms'&&filters.bathrooms?.startsWith('bn'))).map(t=>({category:t.dimension,value:t.label,termId:t.id})),
+    ...(['year_built','distance_to_paved_road_range','property_area','construction_area'] as const)
+      .flatMap(key=>filters[key]?[{category:key,value:filters[key]!,termId:null}]:[])]
+  return {language,filters,marketSize,matchingCount,percentage,
+    state:marketSize?'ESTABLISHED':'EMPTY_BASE_MARKET',
+    denominator:'distinct active canonical listings satisfying transaction, geography and property type',
+    unknownPolicy:'Unknown evidence does not establish configuration membership.',
+    scarcityShare:percentage===null?null:`${percentage.toFixed(2)}%`,
+    selectedCombination:hasConfiguration?{attributes,explanation:language==='es'
+      ?`${matchingCount} de ${marketSize} propiedades satisfacen la configuración seleccionada.`
+      :`${matchingCount} of ${marketSize} listings establish the selected configuration.`}:null,
+    combinations:[]}
+}

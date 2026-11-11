@@ -1,0 +1,71 @@
+{
+  "revision": "KA-OD-018-2026-10-16-INCLUSIVE-R1",
+  "state": "INACTIVE_PENDING_CANONICAL_CORRECTION",
+  "ownerPolicyApproved": true,
+  "canonicalCorrectionExecuted": false,
+  "currentCanonicalVerification": false,
+  "runtimeConsumer": "NONE: existing reader intentionally does not import this pending document",
+  "records": [
+    {
+      "termId": "1148",
+      "ownerDecision": "KA-OD-018: Owner-approved inclusive terminal-boundary policy,2026-10-16; new normative decision, not historical intent",
+      "documentationRevision": "KA-OD-018-2026-10-16-INCLUSIVE-R1",
+      "verificationStatus": "PENDING_CANONICAL_CORRECTION",
+      "activationState": "INACTIVE",
+      "definitions": {
+        "en": "Construction area of 800 square meters or more.",
+        "es": "Área de construcción de 800 metros cuadrados o más."
+      },
+      "currentSourceDependencyDigest": "dae26b661c05112a32782572a68f5a444315afa34fead4fabe4b0e68ae0296fb",
+      "requiredCorrectedSourceDependencyDigest": "45ae6788aa9b50ed9eb06a2447c64587e469be079976ab41b344ab72ade1e3b9",
+      "requiredCanonicalFieldChanges": {
+        "description": "Construction area of 800 square meters or more."
+      },
+      "currentSourceObservation": "KA-EV-0098/0099",
+      "semanticReview": {
+        "status": "REVIEWED_AGAINST_APPROVED_NEW_OWNER_POLICY_ONLY",
+        "canonicalAuthorityAligned": false,
+        "scope": "Exact >=800m² or >=50000m²;5ha=50000m². No footprint, exact measurement from range, membership, permission or entitlement inference."
+      },
+      "activationRequirements": [
+        "Separately approved canonical transaction executed",
+        "Fresh actual canonical records and row revision re-read",
+        "Source dependency and semantic equivalence verified against actual corrected authority",
+        "Existing active explanations/manifest updated through a separately evidenced activation step; preserve C2 history",
+        "Only then eligible under existing disclosure/publication guards"
+      ]
+    },
+    {
+      "termId": "1155",
+      "ownerDecision": "KA-OD-018: Owner-approved inclusive terminal-boundary policy,2026-10-16; new normative decision, not historical intent",
+      "documentationRevision": "KA-OD-018-2026-10-16-INCLUSIVE-R1",
+      "verificationStatus": "PENDING_CANONICAL_CORRECTION",
+      "activationState": "INACTIVE",
+      "definitions": {
+        "en": "Property land area of 5 hectares (50,000 square meters) or more.",
+        "es": "Área de terreno de 5 hectáreas (50.000 metros cuadrados) o más."
+      },
+      "currentSourceDependencyDigest": "87ae5148f28d1b8ea4f5ff5a9f9d4b4eb38da7d6829e62e2832bd29bfb6ccbc8",
+      "requiredCorrectedSourceDependencyDigest": "9d963e46c4b23187e4b870a1727525f42efbe51096f0b8ff4382021f935c1432",
+      "requiredCanonicalFieldChanges": {
+        "term_name": "5 Hectares+",
+        "term_name_en": "5 Hectares+",
+        "term_name_es": "5 Hectáreas+",
+        "description": "Property land area of 5 hectares (50,000 square meters) or more."
+      },
+      "currentSourceObservation": "KA-EV-0098/0099",
+      "semanticReview": {
+        "status": "REVIEWED_AGAINST_APPROVED_NEW_OWNER_POLICY_ONLY",
+        "canonicalAuthorityAligned": false,
+        "scope": "Exact >=800m² or >=50000m²;5ha=50000m². No footprint, exact measurement from range, membership, permission or entitlement inference."
+      },
+      "activationRequirements": [
+        "Separately approved canonical transaction executed",
+        "Fresh actual canonical records and row revision re-read",
+        "Source dependency and semantic equivalence verified against actual corrected authority",
+        "Existing active explanations/manifest updated through a separately evidenced activation step; preserve C2 history",
+        "Only then eligible under existing disclosure/publication guards"
+      ]
+    }
+  ]
+}

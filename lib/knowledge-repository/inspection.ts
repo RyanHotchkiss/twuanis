@@ -1,0 +1,16 @@
+import 'server-only'
+import {assertOwner} from '@/lib/administrative-control'
+import {readKnowledge,canonicalRelationships} from './server'
+import {definitionReviewMetadata,sourceDependencyDigest,termDocumentation} from './definitions'
+/** Fresh canonical Owner authority is required on every read, before canonical or diagnostic acquisition. */
+export async function readOwnerKnowledgeInspection(input:{entry?:string;page?:number}={}){
+ await assertOwner()
+ if((input.entry&&input.entry.length>240)||input.page!==undefined&&(!Number.isSafeInteger(input.page)||input.page<1||input.page>1000))throw Error('Knowledge inspection unavailable')
+ const corpus=await readKnowledge(),review=definitionReviewMetadata(),terms=corpus.terms,map=new Map(terms.map(t=>[t.id,t]));const termEntries=corpus.entries.filter(e=>e.key.startsWith('term:'));const page=input.page||1
+ const selected=input.entry?termEntries.find(e=>e.key===input.entry):undefined
+ let detail:null|{canonicalTermId:string;canonicalType:string;names:{en:string;es:string};definitions:{en:string|null;es:string|null};canonicalDescription:string|null;definitionStatus:string;documentationRevision:string;sourceDependencyDigest:string;reviewEvidence:string|null;relationships:{source:string;target:string;predicate:string}[];relationshipStatus:string}=null
+ if(selected?.termId){const term=map.get(selected.termId);if(term){const doc=termDocumentation(term,map);let relationships:{source:string;target:string;predicate:string}[]=[],relationshipStatus='UNAVAILABLE';try{const edges=await canonicalRelationships(term.id,1,corpus.sourceFingerprint);relationships=edges.rows.map(e=>({source:e.source_term_id,target:e.target_term_id,predicate:e.relationship_type}));relationshipStatus='CURRENT_FIRST_25_OUTGOING'}catch{/* No raw error or protected data disclosure. */}
+ detail={canonicalTermId:term.id,canonicalType:term.term_type,names:selected.names,definitions:selected.definitions,canonicalDescription:term.description,definitionStatus:doc.status,documentationRevision:selected.version,sourceDependencyDigest:sourceDependencyDigest(term,map),reviewEvidence:doc.status==='VERIFIED_LOCAL'?doc.record.verificationEvidence:null,relationships,relationshipStatus}
+ }}
+ return {observedAt:corpus.observedAt,access:'AUTHENTICATED_OWNER_READ_ONLY' as const,sourceClasses:['ontology_terms','ontology_relationships','approved methodology explanations','canonical Package catalog'],sourceStatus:corpus.state,definitions:corpus.definitionDiagnostics,review,selected:detail,selectionUnavailable:!!input.entry&&!detail,terms:termEntries.slice((page-1)*20,page*20).map(e=>({reference:e.key,names:e.names,status:e.definitionStatus||'INCOMPLETE'})),totalTerms:termEntries.length,page,methodologies:corpus.entries.filter(e=>e.category==='methodologies').map(e=>({names:e.names,explanationRevision:e.version})),semantics:{enginePublicIdentities:'UNISSUED / PUBLICATION BLOCKED',methodologyPageRelease:'LOCAL PREVIEW ONLY',newStructuredData:'NONE'},consistency:{cache:'REQUEST_SCOPED ONLY',sourceChecks:'CURRENT TERM AND ANCESTOR DEPENDENCIES',operationalQualification:'LOCAL CANDIDATE; PRODUCTION NOT QUALIFIED'},machineContracts:{phase:'KA-06',status:'NOT IMPLEMENTED'},mutationsAvailable:false as const}
+}

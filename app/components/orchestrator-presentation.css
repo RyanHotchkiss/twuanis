@@ -1,0 +1,15 @@
+
+.orchestrator-workspace{margin-block:24px;line-height:1.6}
+.orchestrator-workspace label{display:block;min-height:44px;margin-block:12px;max-width:100%!important}
+.orchestrator-workspace fieldset{min-width:0}
+.orchestrator-workspace input:not([type=checkbox]),.orchestrator-workspace select{display:block;width:100%;max-width:100%!important;min-height:44px;padding:10px 12px;font:inherit;line-height:1.5;white-space:nowrap;background:var(--surface);color:var(--foreground);border:1px solid var(--border);border-radius:6px;box-sizing:border-box}
+.orchestrator-workspace input[type=checkbox]{margin-right:8px;appearance:auto}
+.orchestrator-workspace button{font:inherit;min-height:44px;cursor:pointer;border-radius:8px;padding:10px 20px;border:1px solid var(--border);background:var(--surface);color:var(--foreground);margin:8px 8px 8px 0;max-width:100%!important;overflow-wrap:anywhere}
+.orchestrator-workspace button:disabled{opacity:.55;cursor:not-allowed}
+.orchestrator-workspace details>summary{cursor:pointer;min-height:44px;align-content:center}
+.orchestrator-workspace :focus-visible{outline:2px solid #d4af37;outline-offset:4px}
+.orchestrator-offerings{margin-bottom:24px;max-width:1100px;min-width:0}
+.orchestrator-offerings details{margin-block:16px;padding:22px;background:var(--surface);border:1px solid var(--border);border-radius:12px}
+.orchestrator-offerings summary{cursor:pointer;min-height:44px;line-height:1.6;font-size:1.1rem;font-weight:600}
+.orchestrator-offerings p{line-height:1.6;margin-block:12px}
+@media(max-width:760px){.orchestrator-offerings details{padding:16px}}

@@ -1,0 +1,659 @@
+[
+  {
+    "id": "account",
+    "label": {
+      "en": "Account and sign-in",
+      "es": "Cuenta e inicio de sesión"
+    },
+    "subjects": [
+      {
+        "id": "sign_in",
+        "label": {
+          "en": "Sign in",
+          "es": "Inicio de sesión"
+        },
+        "issues": [
+          {
+            "id": "cannot_access",
+            "label": {
+              "en": "Cannot access my account",
+              "es": "No puedo acceder a mi cuenta"
+            }
+          },
+          {
+            "id": "confirmation",
+            "label": {
+              "en": "Email confirmation",
+              "es": "Confirmación del correo"
+            }
+          },
+          {
+            "id": "other",
+            "label": {
+              "en": "Other",
+              "es": "Otro asunto"
+            }
+          }
+        ]
+      },
+      {
+        "id": "profile",
+        "label": {
+          "en": "Profile and security",
+          "es": "Perfil y seguridad"
+        },
+        "issues": [
+          {
+            "id": "email_password",
+            "label": {
+              "en": "Email or password",
+              "es": "Correo o contraseña"
+            }
+          },
+          {
+            "id": "contact",
+            "label": {
+              "en": "Account contact information",
+              "es": "Información de contacto de la cuenta"
+            }
+          },
+          {
+            "id": "other",
+            "label": {
+              "en": "Other",
+              "es": "Otro asunto"
+            }
+          }
+        ]
+      },
+      {
+        "id": "other",
+        "label": {
+          "en": "Other",
+          "es": "Otro asunto"
+        },
+        "issues": [
+          {
+            "id": "other",
+            "label": {
+              "en": "Other",
+              "es": "Otro asunto"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "listings",
+    "label": {
+      "en": "Property listings",
+      "es": "Anuncios de propiedades"
+    },
+    "subjects": [
+      {
+        "id": "publication",
+        "label": {
+          "en": "Publication",
+          "es": "Publicación"
+        },
+        "issues": [
+          {
+            "id": "not_appearing",
+            "label": {
+              "en": "Listing not appearing",
+              "es": "Mi anuncio no aparece"
+            }
+          },
+          {
+            "id": "photos",
+            "label": {
+              "en": "Photographs or uploads",
+              "es": "Fotografías o archivos"
+            }
+          },
+          {
+            "id": "other",
+            "label": {
+              "en": "Other",
+              "es": "Otro asunto"
+            }
+          }
+        ]
+      },
+      {
+        "id": "management",
+        "label": {
+          "en": "Listing management",
+          "es": "Administración de anuncios"
+        },
+        "issues": [
+          {
+            "id": "edit_status",
+            "label": {
+              "en": "Edit, renew or archive",
+              "es": "Editar, renovar o archivar"
+            }
+          },
+          {
+            "id": "ownership",
+            "label": {
+              "en": "Claim or manage my listings",
+              "es": "Reclamar mis anuncios"
+            }
+          },
+          {
+            "id": "other",
+            "label": {
+              "en": "Other",
+              "es": "Otro asunto"
+            }
+          }
+        ]
+      },
+      {
+        "id": "other",
+        "label": {
+          "en": "Other",
+          "es": "Otro asunto"
+        },
+        "issues": [
+          {
+            "id": "other",
+            "label": {
+              "en": "Other",
+              "es": "Otro asunto"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "markethub",
+    "label": {
+      "en": "MarketHub",
+      "es": "Centro del Mercado"
+    },
+    "subjects": [
+      {
+        "id": "workspace",
+        "label": {
+          "en": "Workspace",
+          "es": "Mi espacio de trabajo"
+        },
+        "issues": [
+          {
+            "id": "saved_items",
+            "label": {
+              "en": "Favorites or saved searches",
+              "es": "Favoritos o búsquedas guardadas"
+            }
+          },
+          {
+            "id": "notes",
+            "label": {
+              "en": "Private notes",
+              "es": "Notas privadas"
+            }
+          },
+          {
+            "id": "other",
+            "label": {
+              "en": "Other",
+              "es": "Otro asunto"
+            }
+          }
+        ]
+      },
+      {
+        "id": "notifications",
+        "label": {
+          "en": "Notifications",
+          "es": "Notificaciones"
+        },
+        "issues": [
+          {
+            "id": "delivery",
+            "label": {
+              "en": "Missing notifications",
+              "es": "No recibo notificaciones"
+            }
+          },
+          {
+            "id": "preferences",
+            "label": {
+              "en": "Notification preferences",
+              "es": "Preferencias de notificación"
+            }
+          },
+          {
+            "id": "other",
+            "label": {
+              "en": "Other",
+              "es": "Otro asunto"
+            }
+          }
+        ]
+      },
+      {
+        "id": "other",
+        "label": {
+          "en": "Other",
+          "es": "Otro asunto"
+        },
+        "issues": [
+          {
+            "id": "other",
+            "label": {
+              "en": "Other",
+              "es": "Otro asunto"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "intelligence",
+    "label": {
+      "en": "Market Intelligence",
+      "es": "Inteligencia de Mercado"
+    },
+    "subjects": [
+      {
+        "id": "algorithms",
+        "label": {
+          "en": "Algorithms",
+          "es": "Algoritmos"
+        },
+        "issues": [
+          {
+            "id": "cannot_run",
+            "label": {
+              "en": "Cannot run a purchased algorithm",
+              "es": "No puedo ejecutar el algoritmo"
+            }
+          },
+          {
+            "id": "inputs_results",
+            "label": {
+              "en": "Inputs or results",
+              "es": "Datos de entrada o resultados"
+            }
+          },
+          {
+            "id": "other",
+            "label": {
+              "en": "Other",
+              "es": "Otro asunto"
+            }
+          }
+        ]
+      },
+      {
+        "id": "saved_analysis",
+        "label": {
+          "en": "Saved analyses",
+          "es": "Análisis guardados"
+        },
+        "issues": [
+          {
+            "id": "save_restore",
+            "label": {
+              "en": "Save or reopen an analysis",
+              "es": "Guardar o volver a abrir un análisis"
+            }
+          },
+          {
+            "id": "missing",
+            "label": {
+              "en": "Saved analysis missing",
+              "es": "No encuentro un análisis guardado"
+            }
+          },
+          {
+            "id": "other",
+            "label": {
+              "en": "Other",
+              "es": "Otro asunto"
+            }
+          }
+        ]
+      },
+      {
+        "id": "other",
+        "label": {
+          "en": "Other",
+          "es": "Otro asunto"
+        },
+        "issues": [
+          {
+            "id": "other",
+            "label": {
+              "en": "Other",
+              "es": "Otro asunto"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "packages",
+    "label": {
+      "en": "Packages and access",
+      "es": "Paquetes y acceso"
+    },
+    "subjects": [
+      {
+        "id": "access",
+        "label": {
+          "en": "Purchased access",
+          "es": "Acceso adquirido"
+        },
+        "issues": [
+          {
+            "id": "paid_no_access",
+            "label": {
+              "en": "Paid but no access",
+              "es": "Pagué, pero no tengo acceso"
+            }
+          },
+          {
+            "id": "duration",
+            "label": {
+              "en": "Access duration or expiration",
+              "es": "Duración o vencimiento del acceso"
+            }
+          },
+          {
+            "id": "other",
+            "label": {
+              "en": "Other",
+              "es": "Otro asunto"
+            }
+          }
+        ]
+      },
+      {
+        "id": "selection",
+        "label": {
+          "en": "Package selection",
+          "es": "Selección de Paquetes"
+        },
+        "issues": [
+          {
+            "id": "coverage",
+            "label": {
+              "en": "What a Package includes",
+              "es": "Qué incluye un Paquete"
+            }
+          },
+          {
+            "id": "upgrade",
+            "label": {
+              "en": "Bank / Remates upgrade",
+              "es": "Mejora de bancos y remates"
+            }
+          },
+          {
+            "id": "other",
+            "label": {
+              "en": "Other",
+              "es": "Otro asunto"
+            }
+          }
+        ]
+      },
+      {
+        "id": "other",
+        "label": {
+          "en": "Other",
+          "es": "Otro asunto"
+        },
+        "issues": [
+          {
+            "id": "other",
+            "label": {
+              "en": "Other",
+              "es": "Otro asunto"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "payments",
+    "label": {
+      "en": "SINPE payments and billing",
+      "es": "Pagos SINPE y facturación"
+    },
+    "subjects": [
+      {
+        "id": "sinpe",
+        "label": {
+          "en": "SINPE Móvil",
+          "es": "SINPE Móvil"
+        },
+        "issues": [
+          {
+            "id": "pending",
+            "label": {
+              "en": "Payment remains pending",
+              "es": "Mi pago sigue pendiente"
+            }
+          },
+          {
+            "id": "paid_no_access",
+            "label": {
+              "en": "Paid but no access",
+              "es": "Pagué, pero no tengo acceso"
+            }
+          },
+          {
+            "id": "instructions",
+            "label": {
+              "en": "Transfer instructions",
+              "es": "Instrucciones de transferencia"
+            }
+          },
+          {
+            "id": "other",
+            "label": {
+              "en": "Other",
+              "es": "Otro asunto"
+            }
+          }
+        ]
+      },
+      {
+        "id": "billing",
+        "label": {
+          "en": "Billing",
+          "es": "Facturación"
+        },
+        "issues": [
+          {
+            "id": "receipt_invoice",
+            "label": {
+              "en": "Payment receipt or invoice",
+              "es": "Comprobante de pago o factura"
+            }
+          },
+          {
+            "id": "duplicate",
+            "label": {
+              "en": "Possible duplicate payment",
+              "es": "Posible pago duplicado"
+            }
+          },
+          {
+            "id": "other",
+            "label": {
+              "en": "Other",
+              "es": "Otro asunto"
+            }
+          }
+        ]
+      },
+      {
+        "id": "other",
+        "label": {
+          "en": "Other",
+          "es": "Otro asunto"
+        },
+        "issues": [
+          {
+            "id": "other",
+            "label": {
+              "en": "Other",
+              "es": "Otro asunto"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "technical",
+    "label": {
+      "en": "Technical problems",
+      "es": "Problemas técnicos"
+    },
+    "subjects": [
+      {
+        "id": "payments",
+        "label": {
+          "en": "Payments",
+          "es": "Pagos"
+        },
+        "issues": [
+          {
+            "id": "paid_no_access",
+            "label": {
+              "en": "Paid but no access to algorithms",
+              "es": "Pago sin acceso a algoritmos"
+            }
+          },
+          {
+            "id": "stuck_checkout",
+            "label": {
+              "en": "Checkout does not progress",
+              "es": "El proceso de pago no avanza"
+            }
+          },
+          {
+            "id": "other",
+            "label": {
+              "en": "Other",
+              "es": "Otro asunto"
+            }
+          }
+        ]
+      },
+      {
+        "id": "website",
+        "label": {
+          "en": "Website",
+          "es": "Sitio web"
+        },
+        "issues": [
+          {
+            "id": "display",
+            "label": {
+              "en": "Display or mobile layout",
+              "es": "Visualización o diseño en el celular"
+            }
+          },
+          {
+            "id": "error",
+            "label": {
+              "en": "An error or unavailable feature",
+              "es": "Error o función no disponible"
+            }
+          },
+          {
+            "id": "other",
+            "label": {
+              "en": "Other",
+              "es": "Otro asunto"
+            }
+          }
+        ]
+      },
+      {
+        "id": "other",
+        "label": {
+          "en": "Other",
+          "es": "Otro asunto"
+        },
+        "issues": [
+          {
+            "id": "other",
+            "label": {
+              "en": "Other",
+              "es": "Otro asunto"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "general",
+    "label": {
+      "en": "Other / general inquiry",
+      "es": "Otras consultas"
+    },
+    "subjects": [
+      {
+        "id": "inquiry",
+        "label": {
+          "en": "General inquiry",
+          "es": "Consulta general"
+        },
+        "issues": [
+          {
+            "id": "information",
+            "label": {
+              "en": "Product information",
+              "es": "Información sobre Twuanis"
+            }
+          },
+          {
+            "id": "feedback",
+            "label": {
+              "en": "Suggestion or feedback",
+              "es": "Sugerencia o comentario"
+            }
+          },
+          {
+            "id": "other",
+            "label": {
+              "en": "Other",
+              "es": "Otro asunto"
+            }
+          }
+        ]
+      },
+      {
+        "id": "other",
+        "label": {
+          "en": "Other",
+          "es": "Otro asunto"
+        },
+        "issues": [
+          {
+            "id": "other",
+            "label": {
+              "en": "Other",
+              "es": "Otro asunto"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

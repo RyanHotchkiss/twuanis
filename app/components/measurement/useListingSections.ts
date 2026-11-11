@@ -1,0 +1,8 @@
+'use client'
+import {useEffect} from 'react'
+import {context,once,state} from '@/lib/measurement/runtime'
+export function useListingSections(id:string){useEffect(()=>{
+ const active=new Map<Element,{visible:boolean;timer?:ReturnType<typeof setTimeout>}>();const locale=location.pathname.startsWith('/es')?'es':'en'
+ const update=()=>{for(const [node,x]of active){if(x.timer)clearTimeout(x.timer);x.timer=undefined;const section=(node as HTMLElement).dataset.measurementSection;if(!section||!['description','geography','characteristics'].includes(section)||!x.visible||document.visibilityState!=='visible'||!document.hasFocus()||state().consent!=='granted')continue;x.timer=setTimeout(()=>once('tw_listing_section',{...context(locale),listing_id:id,section_id:section as 'description'|'geography'|'characteristics',active_seconds_bucket:'10_29'},'listing-section:'+id+':'+section),10000)}}
+ const io=new IntersectionObserver(es=>{for(const e of es){const x=active.get(e.target);if(x)x.visible=e.isIntersecting&&e.intersectionRatio>=.5}update()},{threshold:[0,.5]});document.querySelectorAll('[data-measurement-section]').forEach(n=>{active.set(n,{visible:false});io.observe(n)});document.addEventListener('visibilitychange',update);window.addEventListener('tw-measurement-consent',update);window.addEventListener('focus',update);window.addEventListener('blur',update);return()=>{io.disconnect();for(const x of active.values())if(x.timer)clearTimeout(x.timer);document.removeEventListener('visibilitychange',update);window.removeEventListener('tw-measurement-consent',update);window.removeEventListener('focus',update);window.removeEventListener('blur',update)}
+ },[id])}

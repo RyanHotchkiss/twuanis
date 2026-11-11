@@ -1,0 +1,6 @@
+.boundary{position:relative;min-width:0;max-width:100%}
+.boundary[data-covered]{height:clamp(12rem,30vh,18rem);overflow:hidden;border-radius:var(--radius,16px)}
+.hidden{visibility:hidden;pointer-events:none;user-select:none}
+.authorized,.pending{position:absolute;inset:0;display:grid;place-items:center;padding:clamp(1rem,4vw,2rem);text-align:center;font:inherit;font-size:clamp(1rem,3vw,1.35rem);font-weight:600;line-height:1.5;overflow-wrap:anywhere;border:1px solid #4386d5;border-radius:inherit;box-sizing:border-box}
+.authorized{background:#0b3b74;color:#fff}
+.pending{background:var(--surface,var(--background));color:var(--foreground);border-color:var(--border)}

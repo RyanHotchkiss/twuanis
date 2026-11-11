@@ -1,0 +1,205 @@
+'use client'
+
+import { useMarketplaceFx } from '@/app/hooks/useMarketplaceFx'
+import { priceOptions as createPriceOptions } from '@/lib/marketplace-price-ranges'
+
+type PriceFilterProps = {
+  selectedprice_range: string
+  setSelectedprice_range: (value: string) => void
+
+  showPriceOptions: boolean
+  setShowPriceOptions: (value: boolean) => void
+
+  setShowProvinceOptions: (value: boolean) => void
+
+  setShowCantonOptions: (value: boolean) => void
+
+  setShowDistrictOptions: (value: boolean) => void
+}
+
+export default function PriceFilter({
+  selectedprice_range,
+  setSelectedprice_range,
+
+  showPriceOptions,
+  setShowPriceOptions,
+
+  setShowProvinceOptions,
+
+  setShowCantonOptions,
+
+  setShowDistrictOptions
+}: PriceFilterProps) {
+
+  const fx = useMarketplaceFx()
+  const priceOptions = createPriceOptions('buy', 'es', fx?.usdToCrcRate ?? null, selectedprice_range)
+
+  return (
+
+    <div>
+
+      <h3 style={filterHeading}>
+        PRECIO
+      </h3>
+
+{showPriceOptions && (
+
+            <div style={pillWrap}>
+              {priceOptions.map((price) => (
+                <button
+                  key={price.label}
+                  onClick={() => {
+                    setSelectedprice_range(price.label)
+                    setShowProvinceOptions(false)
+                    setShowCantonOptions(false)
+                    setShowDistrictOptions(false)
+                    setShowPriceOptions(false)
+                  }}
+                  style={
+                    selectedprice_range === price.label
+                      ? activePill
+                      : pill
+                  }
+                >
+                  <span style={priceColones}>
+                    {price.label}
+                  </span>
+                  <span style={priceDollars}>
+                    {price.usd}
+                  </span>
+                </button>
+              ))}
+            </div>
+
+          )}
+
+{!showPriceOptions &&
+            selectedprice_range && (
+                <div style={summaryCard}>
+                  <div
+                    onClick={() => {
+                      setShowPriceOptions(true)
+                    }}
+                    style={{
+                      cursor:'pointer'
+                    }}
+                  >
+                    <div style={priceColones}>
+                      {selectedprice_range}
+                    </div>
+                    <div style={priceDollars}>
+                      {
+                        priceOptions.find(
+                          p => p.label === selectedprice_range
+                        )?.usd
+                      }
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedprice_range('')
+                      setShowPriceOptions(true)
+                    }}
+                    style={resetButton}
+                  >
+                    ✕
+                  </button>
+                </div>
+
+            )}
+
+    </div>
+
+  )
+
+}
+
+
+const breadcrumbText = {
+  color:'var(--foreground)',
+  fontSize:'.85rem'
+}
+
+const resetButton = {
+  background:'transparent',
+  border:'none',
+  color:'var(--error-text)',
+  cursor:'pointer',
+  fontSize:'1rem'
+}
+
+const filterHeading = {
+  fontSize:'1rem',
+  marginBottom:'1rem',
+  color:'#D4AF37  '
+}
+
+const summaryCard = {
+  display:'flex',
+  flexDirection:'row' as const,
+  justifyContent:'space-between',
+  alignItems:'center',
+  background:'var(--surface)',
+  border:'1px solid #FFFFFF50',
+  borderRadius:'1rem',
+  padding:'1rem',
+  marginTop:'1rem'
+}
+
+const pillWrap = {
+  display:'flex',
+  flexDirection:'row' as const,
+  flexWrap:'wrap' as const,
+  gap:'.5rem',
+  alignItems:'flex-start'
+}
+
+const pill = {
+  background:'var(--surface)',
+  border:'.25px solid #D4AF3750',
+  color:'var(--foreground)',
+  padding:'.85rem 1rem',
+  borderRadius:'999rem',
+  cursor:'pointer',
+  transition:'all .2s ease',
+  display:'flex',
+  flexDirection:'column' as const,
+  alignItems:'center',
+  justifyContent:'center',
+  gap:'.2rem'
+}
+
+const activePill = {
+  ...pill,
+  background:'#D4AF37',
+  border:'1px solid #FFFFFF',
+  color:'#000'
+}
+
+const priceColones = {
+  fontSize:'.8rem',
+  color:'var(--foreground)',
+  fontWeight:'500'
+}
+
+const priceDollars = {
+  fontSize:'.75rem',
+  color:'var(--muted)'
+}
+
+/*
+
+IMPORT:
+
+import PriceFilterES from '@/app/components/filter-bar/PriceFilterES'
+
+USAGE:
+
+<PriceFilterES
+  selectedprice_range={selectedprice_range}
+  setSelectedprice_range={setSelectedprice_range}
+/>
+
+*/

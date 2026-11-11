@@ -1,0 +1,5968 @@
+{
+  "page_view": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "page_location": {
+        "type": "string",
+        "maxLength": 1000,
+        "minLength": 1
+      },
+      "page_title": {
+        "type": "string",
+        "maxLength": 300,
+        "minLength": 1
+      },
+      "page_referrer": {
+        "type": "string",
+        "maxLength": 420
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "page_location",
+      "page_title",
+      "page_referrer"
+    ]
+  },
+  "tw_search_commit": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 20,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "logical_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "state_digest": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      },
+      "reason": {
+        "enum": [
+          "initial_load",
+          "explicit_submit",
+          "refinement",
+          "removed",
+          "reset",
+          "transaction_change",
+          "repeat_deliberate",
+          "dependency_clear"
+        ]
+      },
+      "transaction": {
+        "enum": [
+          "sale",
+          "rent"
+        ]
+      },
+      "count_kind": {
+        "enum": [
+          "filtered_local_total",
+          "server_total",
+          "page_count",
+          "displayed_count",
+          "unknown"
+        ]
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "listing_market": {
+        "enum": [
+          "private",
+          "bank",
+          "combined",
+          "unknown"
+        ]
+      },
+      "surface": {
+        "enum": [
+          "marketplace",
+          "home",
+          "bank",
+          "swipe",
+          "intelligence",
+          "unknown"
+        ]
+      },
+      "expected_state_scopes": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 2
+      },
+      "source_coverage": {
+        "enum": [
+          "source_complete_canonical_complete",
+          "source_complete_canonical_partial",
+          "incomplete"
+        ]
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "logical_id",
+      "state_digest",
+      "reason",
+      "transaction",
+      "count_kind",
+      "listing_market",
+      "surface",
+      "expected_state_scopes",
+      "source_coverage"
+    ]
+  },
+  "tw_search_part": {
+    "type": "object",
+    "additionalProperties": false,
+    "minProperties": 20,
+    "maxProperties": 20,
+    "required": [
+      "f00",
+      "f01",
+      "f02",
+      "f03",
+      "f04",
+      "f05",
+      "f06",
+      "f07",
+      "f08",
+      "f09",
+      "f10",
+      "f11",
+      "f12",
+      "f13",
+      "f14",
+      "f15",
+      "f16",
+      "f17",
+      "logical_id",
+      "cfg"
+    ],
+    "properties": {
+      "f00": {
+        "type": "string",
+        "maxLength": 100,
+        "pattern": "^[A-Za-z0-9._-]+$",
+        "minLength": 1
+      },
+      "f01": {
+        "type": "string",
+        "maxLength": 100,
+        "pattern": "^[A-Za-z0-9._-]+$",
+        "minLength": 1
+      },
+      "f02": {
+        "type": "string",
+        "maxLength": 100,
+        "pattern": "^[A-Za-z0-9._-]+$",
+        "minLength": 1
+      },
+      "f03": {
+        "type": "string",
+        "maxLength": 100,
+        "pattern": "^[A-Za-z0-9._-]+$",
+        "minLength": 1
+      },
+      "f04": {
+        "type": "string",
+        "maxLength": 100,
+        "pattern": "^[A-Za-z0-9._-]+$",
+        "minLength": 1
+      },
+      "f05": {
+        "type": "string",
+        "maxLength": 100,
+        "pattern": "^[A-Za-z0-9._-]+$",
+        "minLength": 1
+      },
+      "f06": {
+        "type": "string",
+        "maxLength": 100,
+        "pattern": "^[A-Za-z0-9._-]+$",
+        "minLength": 1
+      },
+      "f07": {
+        "type": "string",
+        "maxLength": 100,
+        "pattern": "^[A-Za-z0-9._-]+$",
+        "minLength": 1
+      },
+      "f08": {
+        "type": "string",
+        "maxLength": 100,
+        "pattern": "^[A-Za-z0-9._-]+$",
+        "minLength": 1
+      },
+      "f09": {
+        "type": "string",
+        "maxLength": 100,
+        "pattern": "^[A-Za-z0-9._-]+$",
+        "minLength": 1
+      },
+      "f10": {
+        "type": "string",
+        "maxLength": 100,
+        "pattern": "^[A-Za-z0-9._-]+$",
+        "minLength": 1
+      },
+      "f11": {
+        "type": "string",
+        "maxLength": 100,
+        "pattern": "^[A-Za-z0-9._-]+$",
+        "minLength": 1
+      },
+      "f12": {
+        "type": "string",
+        "maxLength": 100,
+        "pattern": "^[A-Za-z0-9._-]+$",
+        "minLength": 1
+      },
+      "f13": {
+        "type": "string",
+        "maxLength": 100,
+        "pattern": "^[A-Za-z0-9._-]+$",
+        "minLength": 1
+      },
+      "f14": {
+        "type": "string",
+        "maxLength": 100,
+        "pattern": "^[A-Za-z0-9._-]+$",
+        "minLength": 1
+      },
+      "f15": {
+        "type": "string",
+        "maxLength": 100,
+        "pattern": "^[A-Za-z0-9._-]+$",
+        "minLength": 1
+      },
+      "f16": {
+        "type": "string",
+        "maxLength": 100,
+        "pattern": "^[A-Za-z0-9._-]+$",
+        "minLength": 1
+      },
+      "f17": {
+        "type": "string",
+        "maxLength": 100,
+        "pattern": "^[A-Za-z0-9._-]+$",
+        "minLength": 1
+      },
+      "logical_id": {
+        "type": "string",
+        "maxLength": 80,
+        "pattern": "^q[A-Za-z0-9_-]+$",
+        "minLength": 1
+      },
+      "cfg": {
+        "type": "string",
+        "maxLength": 65,
+        "pattern": "^c[0-9a-f]{64}$"
+      }
+    }
+  },
+  "tw_search_result": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "logical_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "result_version": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "result_status": {
+        "enum": [
+          "settled",
+          "error",
+          "pending"
+        ]
+      },
+      "count_kind": {
+        "enum": [
+          "filtered_local_total",
+          "server_total",
+          "page_count",
+          "displayed_count",
+          "unknown"
+        ]
+      },
+      "result_count": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "logical_id",
+      "result_version",
+      "result_status",
+      "count_kind"
+    ],
+    "allOf": [
+      {
+        "if": {
+          "properties": {
+            "result_status": {
+              "const": "settled"
+            },
+            "count_kind": {
+              "not": {
+                "const": "unknown"
+              }
+            }
+          },
+          "required": [
+            "result_status",
+            "count_kind"
+          ]
+        },
+        "then": {
+          "required": [
+            "result_count"
+          ]
+        },
+        "else": {
+          "not": {
+            "required": [
+              "result_count"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "tw_search_exit": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "logical_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "reason": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "observation_scope": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "logical_id",
+      "reason",
+      "observation_scope"
+    ]
+  },
+  "tw_context_part": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 20,
+    "properties": {
+      "logical_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "state_digest": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "codec": {
+        "const": "canonical_json_base64url_v1"
+      },
+      "schema_v": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "part_index": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 7
+      },
+      "part_count": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 8
+      },
+      "c00": {
+        "type": "string",
+        "maxLength": 96,
+        "pattern": "^[A-Za-z0-9_-]*$"
+      },
+      "c01": {
+        "type": "string",
+        "maxLength": 96,
+        "pattern": "^[A-Za-z0-9_-]*$"
+      },
+      "c02": {
+        "type": "string",
+        "maxLength": 96,
+        "pattern": "^[A-Za-z0-9_-]*$"
+      },
+      "c03": {
+        "type": "string",
+        "maxLength": 96,
+        "pattern": "^[A-Za-z0-9_-]*$"
+      },
+      "c04": {
+        "type": "string",
+        "maxLength": 96,
+        "pattern": "^[A-Za-z0-9_-]*$"
+      },
+      "c05": {
+        "type": "string",
+        "maxLength": 96,
+        "pattern": "^[A-Za-z0-9_-]*$"
+      },
+      "c06": {
+        "type": "string",
+        "maxLength": 96,
+        "pattern": "^[A-Za-z0-9_-]*$"
+      },
+      "c07": {
+        "type": "string",
+        "maxLength": 96,
+        "pattern": "^[A-Za-z0-9_-]*$"
+      },
+      "c08": {
+        "type": "string",
+        "maxLength": 96,
+        "pattern": "^[A-Za-z0-9_-]*$"
+      },
+      "c09": {
+        "type": "string",
+        "maxLength": 96,
+        "pattern": "^[A-Za-z0-9_-]*$"
+      },
+      "c10": {
+        "type": "string",
+        "maxLength": 96,
+        "pattern": "^[A-Za-z0-9_-]*$"
+      },
+      "c11": {
+        "type": "string",
+        "maxLength": 96,
+        "pattern": "^[A-Za-z0-9_-]*$"
+      }
+    },
+    "required": [
+      "logical_id",
+      "state_digest",
+      "part_index",
+      "part_count",
+      "codec",
+      "schema_v",
+      "consent_epoch",
+      "page_instance",
+      "c00"
+    ]
+  },
+  "tw_listing_exposure": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "listing_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "listing_market": {
+        "enum": [
+          "private",
+          "bank"
+        ]
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "placement_kind": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "listing_id",
+      "listing_market",
+      "context_digest",
+      "placement_kind"
+    ]
+  },
+  "tw_listing_view": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "listing_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "listing_market": {
+        "enum": [
+          "private",
+          "bank"
+        ]
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "listing_id",
+      "listing_market",
+      "context_digest",
+      "internal_discovery"
+    ]
+  },
+  "tw_listing_image": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "listing_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "image_index": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "action": {
+        "enum": [
+          "save",
+          "remove",
+          "open",
+          "change_image"
+        ]
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "listing_id",
+      "image_index",
+      "action"
+    ]
+  },
+  "tw_listing_section": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "listing_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "section_id": {
+        "enum": [
+          "description",
+          "geography",
+          "characteristics",
+          "methodology",
+          "formula",
+          "explanation"
+        ]
+      },
+      "active_seconds_bucket": {
+        "enum": [
+          "10_29",
+          "30_59",
+          "60_plus"
+        ]
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "listing_id",
+      "section_id",
+      "active_seconds_bucket"
+    ]
+  },
+  "tw_save_intent": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "listing_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "action": {
+        "enum": [
+          "save",
+          "remove",
+          "open",
+          "change_image"
+        ]
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "listing_id",
+      "action"
+    ]
+  },
+  "tw_save_change": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "listing_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "action": {
+        "enum": [
+          "save",
+          "remove",
+          "open",
+          "change_image"
+        ]
+      },
+      "outcome": {
+        "enum": [
+          "success",
+          "failure",
+          "rejected",
+          "cancelled",
+          "unavailable",
+          "initiated"
+        ]
+      },
+      "operation_key": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "listing_id",
+      "action",
+      "outcome",
+      "operation_key"
+    ]
+  },
+  "tw_share": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "listing_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "method": {
+        "enum": [
+          "copy",
+          "native_share",
+          "external_link",
+          "password",
+          "approved_existing_auth"
+        ]
+      },
+      "outcome": {
+        "enum": [
+          "success",
+          "failure",
+          "rejected",
+          "cancelled",
+          "unavailable",
+          "initiated"
+        ]
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "listing_id",
+      "method",
+      "outcome"
+    ]
+  },
+  "tw_contact_start": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "listing_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "channel": {
+        "enum": [
+          "whatsapp",
+          "email",
+          "phone",
+          "in_app"
+        ]
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "listing_id",
+      "channel"
+    ]
+  },
+  "tw_contact_result": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "listing_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "channel": {
+        "enum": [
+          "whatsapp",
+          "email",
+          "phone",
+          "in_app"
+        ]
+      },
+      "outcome": {
+        "enum": [
+          "success",
+          "failure",
+          "rejected",
+          "cancelled",
+          "unavailable",
+          "initiated"
+        ]
+      },
+      "operation_key": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "listing_id",
+      "channel",
+      "outcome",
+      "operation_key"
+    ]
+  },
+  "tw_navigation": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "source_surface": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "destination_surface": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "source_surface",
+      "destination_surface",
+      "internal_discovery"
+    ]
+  },
+  "tw_knowledge_view": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "view_kind": {
+        "enum": [
+          "index",
+          "glossary",
+          "entity",
+          "methodology",
+          "formula",
+          "report",
+          "saved_report"
+        ]
+      },
+      "entity_ref": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "view_kind"
+    ]
+  },
+  "tw_knowledge_search": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "view_kind": {
+        "enum": [
+          "index",
+          "glossary",
+          "entity",
+          "methodology",
+          "formula",
+          "report",
+          "saved_report"
+        ]
+      },
+      "query_length_bucket": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "result_count": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "canonical_category": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "view_kind",
+      "query_length_bucket",
+      "result_count"
+    ]
+  },
+  "tw_knowledge_select": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "entity_ref": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "selection_kind": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "source_view": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "entity_ref",
+      "selection_kind",
+      "source_view"
+    ]
+  },
+  "tw_knowledge_engage": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "entity_ref": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "section_id": {
+        "enum": [
+          "description",
+          "geography",
+          "characteristics",
+          "methodology",
+          "formula",
+          "explanation"
+        ]
+      },
+      "active_seconds_bucket": {
+        "enum": [
+          "10_29",
+          "30_59",
+          "60_plus"
+        ]
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "entity_ref",
+      "section_id",
+      "active_seconds_bucket"
+    ]
+  },
+  "tw_package_view": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "package_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "market_variant": {
+        "enum": [
+          "PRIVATE",
+          "BANK",
+          "COMBINED",
+          "unknown"
+        ]
+      },
+      "duration_kind": {
+        "enum": [
+          "daily",
+          "monthly",
+          "trial",
+          "unknown"
+        ]
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "package_id",
+      "market_variant",
+      "duration_kind"
+    ]
+  },
+  "tw_package_select": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "package_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "market_variant": {
+        "enum": [
+          "PRIVATE",
+          "BANK",
+          "COMBINED",
+          "unknown"
+        ]
+      },
+      "duration_kind": {
+        "enum": [
+          "daily",
+          "monthly",
+          "trial",
+          "unknown"
+        ]
+      },
+      "selection_kind": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "package_id",
+      "market_variant",
+      "duration_kind",
+      "selection_kind"
+    ]
+  },
+  "begin_checkout": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "package_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "market_variant": {
+        "enum": [
+          "PRIVATE",
+          "BANK",
+          "COMBINED",
+          "unknown"
+        ]
+      },
+      "duration_kind": {
+        "enum": [
+          "daily",
+          "monthly",
+          "trial",
+          "unknown"
+        ]
+      },
+      "currency": {
+        "enum": [
+          "USD",
+          "CRC"
+        ]
+      },
+      "value": {
+        "type": "number",
+        "minimum": 0
+      },
+      "items": {
+        "type": "array",
+        "minItems": 1,
+        "maxItems": 5,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "item_id": {
+              "type": "string",
+              "maxLength": 100
+            },
+            "quantity": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "price": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "item_id",
+            "quantity",
+            "price"
+          ]
+        }
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "package_id",
+      "market_variant",
+      "duration_kind",
+      "currency",
+      "value",
+      "items"
+    ]
+  },
+  "tw_payment_state": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "payment_measurement_key": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "state": {
+        "enum": [
+          "initiated",
+          "pending",
+          "processing",
+          "failed",
+          "cancelled",
+          "expired",
+          "verified",
+          "active",
+          "renewed",
+          "revoked",
+          "unknown"
+        ]
+      },
+      "package_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "session_id": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "engagement_time_msec": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 3600000
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "payment_measurement_key",
+      "state",
+      "package_id"
+    ]
+  },
+  "purchase": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "transaction_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "currency": {
+        "enum": [
+          "USD",
+          "CRC"
+        ]
+      },
+      "value": {
+        "type": "number",
+        "minimum": 0
+      },
+      "items": {
+        "type": "array",
+        "minItems": 1,
+        "maxItems": 5,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "item_id": {
+              "type": "string",
+              "maxLength": 100
+            },
+            "quantity": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "price": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "item_id",
+            "quantity",
+            "price"
+          ]
+        }
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "session_id": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "engagement_time_msec": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 3600000
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "transaction_id",
+      "currency",
+      "value",
+      "items"
+    ]
+  },
+  "tw_entitlement_state": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "entitlement_measurement_key": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "package_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "market_variant": {
+        "enum": [
+          "PRIVATE",
+          "BANK",
+          "COMBINED",
+          "unknown"
+        ]
+      },
+      "duration_kind": {
+        "enum": [
+          "daily",
+          "monthly",
+          "trial",
+          "unknown"
+        ]
+      },
+      "state": {
+        "enum": [
+          "initiated",
+          "pending",
+          "processing",
+          "failed",
+          "cancelled",
+          "expired",
+          "verified",
+          "active",
+          "renewed",
+          "revoked",
+          "unknown"
+        ]
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "session_id": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "engagement_time_msec": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 3600000
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "entitlement_measurement_key",
+      "package_id",
+      "market_variant",
+      "duration_kind",
+      "state"
+    ]
+  },
+  "refund": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "transaction_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "currency": {
+        "enum": [
+          "USD",
+          "CRC"
+        ]
+      },
+      "value": {
+        "type": "number",
+        "minimum": 0
+      },
+      "items": {
+        "type": "array",
+        "minItems": 1,
+        "maxItems": 5,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "item_id": {
+              "type": "string",
+              "maxLength": 100
+            },
+            "quantity": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "price": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "item_id",
+            "quantity",
+            "price"
+          ]
+        }
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "transaction_id",
+      "currency",
+      "value",
+      "items"
+    ]
+  },
+  "tw_analytics_select": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "engine_id": {
+        "enum": [
+          "summary",
+          "composition",
+          "market-asking-price-distribution",
+          "matching",
+          "comparison",
+          "configuration",
+          "distribution",
+          "geography",
+          "size",
+          "construction-land",
+          "cohort-comparison",
+          "cross-dimensional",
+          "discovery",
+          "position",
+          "comparables",
+          "asking-area-ratio",
+          "weighted-price"
+        ]
+      },
+      "package_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "selection_kind": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "engine_id",
+      "selection_kind"
+    ]
+  },
+  "tw_config_commit": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "engine_id": {
+        "enum": [
+          "summary",
+          "composition",
+          "market-asking-price-distribution",
+          "matching",
+          "comparison",
+          "configuration",
+          "distribution",
+          "geography",
+          "size",
+          "construction-land",
+          "cohort-comparison",
+          "cross-dimensional",
+          "discovery",
+          "position",
+          "comparables",
+          "asking-area-ratio",
+          "weighted-price"
+        ]
+      },
+      "configuration_kind": {
+        "enum": [
+          "canonical_market",
+          "canonical_property",
+          "hypothetical",
+          "unknown"
+        ]
+      },
+      "configuration_version": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "engine_id",
+      "configuration_kind",
+      "configuration_version"
+    ]
+  },
+  "tw_execution_request": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "execution_measurement_key": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "package_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "capability_id": {
+        "enum": [
+          "summary",
+          "composition",
+          "market-asking-price-distribution",
+          "matching",
+          "comparison",
+          "configuration",
+          "distribution",
+          "geography",
+          "size",
+          "construction-land",
+          "cohort-comparison",
+          "cross-dimensional",
+          "discovery",
+          "position",
+          "comparables",
+          "asking-area-ratio",
+          "weighted-price",
+          "orchestrator-markets-current-valuation-of-property",
+          "orchestrator-market-comparison"
+        ]
+      },
+      "capability_kind": {
+        "enum": [
+          "engine",
+          "orchestrator"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "execution_measurement_key",
+      "package_id",
+      "capability_id",
+      "capability_kind"
+    ],
+    "allOf": [
+      {
+        "if": {
+          "properties": {
+            "capability_kind": {
+              "const": "engine"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "capability_id": {
+              "enum": [
+                "summary",
+                "composition",
+                "market-asking-price-distribution",
+                "matching",
+                "comparison",
+                "configuration",
+                "distribution",
+                "geography",
+                "size",
+                "construction-land",
+                "cohort-comparison",
+                "cross-dimensional",
+                "discovery",
+                "position",
+                "comparables",
+                "asking-area-ratio",
+                "weighted-price"
+              ]
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "capability_id": {
+              "enum": [
+                "orchestrator-markets-current-valuation-of-property",
+                "orchestrator-market-comparison"
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "tw_authorization": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "request_measurement_key": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "outcome": {
+        "enum": [
+          "success",
+          "failure",
+          "rejected",
+          "cancelled",
+          "unavailable",
+          "initiated"
+        ]
+      },
+      "reason_class": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "request_measurement_key",
+      "outcome",
+      "reason_class"
+    ]
+  },
+  "tw_execution_result": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "execution_measurement_key": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "outcome": {
+        "enum": [
+          "success",
+          "failure",
+          "rejected",
+          "cancelled",
+          "unavailable",
+          "initiated"
+        ]
+      },
+      "engine_id": {
+        "enum": [
+          "summary",
+          "composition",
+          "market-asking-price-distribution",
+          "matching",
+          "comparison",
+          "configuration",
+          "distribution",
+          "geography",
+          "size",
+          "construction-land",
+          "cohort-comparison",
+          "cross-dimensional",
+          "discovery",
+          "position",
+          "comparables",
+          "asking-area-ratio",
+          "weighted-price"
+        ]
+      },
+      "result_grain": {
+        "enum": [
+          "engine",
+          "orchestrator"
+        ]
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "capability_id": {
+        "enum": [
+          "summary",
+          "composition",
+          "market-asking-price-distribution",
+          "matching",
+          "comparison",
+          "configuration",
+          "distribution",
+          "geography",
+          "size",
+          "construction-land",
+          "cohort-comparison",
+          "cross-dimensional",
+          "discovery",
+          "position",
+          "comparables",
+          "asking-area-ratio",
+          "weighted-price",
+          "orchestrator-markets-current-valuation-of-property",
+          "orchestrator-market-comparison"
+        ]
+      },
+      "capability_kind": {
+        "enum": [
+          "engine",
+          "orchestrator"
+        ]
+      },
+      "session_id": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "engagement_time_msec": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 3600000
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "execution_measurement_key",
+      "outcome",
+      "result_grain",
+      "capability_id",
+      "capability_kind"
+    ],
+    "allOf": [
+      {
+        "if": {
+          "properties": {
+            "capability_kind": {
+              "const": "engine"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "capability_id": {
+              "enum": [
+                "summary",
+                "composition",
+                "market-asking-price-distribution",
+                "matching",
+                "comparison",
+                "configuration",
+                "distribution",
+                "geography",
+                "size",
+                "construction-land",
+                "cohort-comparison",
+                "cross-dimensional",
+                "discovery",
+                "position",
+                "comparables",
+                "asking-area-ratio",
+                "weighted-price"
+              ]
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "capability_id": {
+              "enum": [
+                "orchestrator-markets-current-valuation-of-property",
+                "orchestrator-market-comparison"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "if": {
+          "properties": {
+            "capability_kind": {
+              "const": "engine"
+            }
+          }
+        },
+        "then": {
+          "required": [
+            "engine_id"
+          ],
+          "properties": {
+            "result_grain": {
+              "const": "engine"
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "result_grain": {
+              "const": "orchestrator"
+            }
+          },
+          "not": {
+            "required": [
+              "engine_id"
+            ]
+          }
+        }
+      },
+      {
+        "if": {
+          "properties": {
+            "capability_id": {
+              "const": "summary"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "engine_id": {
+              "const": "summary"
+            }
+          }
+        }
+      },
+      {
+        "if": {
+          "properties": {
+            "capability_id": {
+              "const": "composition"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "engine_id": {
+              "const": "composition"
+            }
+          }
+        }
+      },
+      {
+        "if": {
+          "properties": {
+            "capability_id": {
+              "const": "market-asking-price-distribution"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "engine_id": {
+              "const": "market-asking-price-distribution"
+            }
+          }
+        }
+      },
+      {
+        "if": {
+          "properties": {
+            "capability_id": {
+              "const": "matching"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "engine_id": {
+              "const": "matching"
+            }
+          }
+        }
+      },
+      {
+        "if": {
+          "properties": {
+            "capability_id": {
+              "const": "comparison"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "engine_id": {
+              "const": "comparison"
+            }
+          }
+        }
+      },
+      {
+        "if": {
+          "properties": {
+            "capability_id": {
+              "const": "configuration"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "engine_id": {
+              "const": "configuration"
+            }
+          }
+        }
+      },
+      {
+        "if": {
+          "properties": {
+            "capability_id": {
+              "const": "distribution"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "engine_id": {
+              "const": "distribution"
+            }
+          }
+        }
+      },
+      {
+        "if": {
+          "properties": {
+            "capability_id": {
+              "const": "geography"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "engine_id": {
+              "const": "geography"
+            }
+          }
+        }
+      },
+      {
+        "if": {
+          "properties": {
+            "capability_id": {
+              "const": "size"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "engine_id": {
+              "const": "size"
+            }
+          }
+        }
+      },
+      {
+        "if": {
+          "properties": {
+            "capability_id": {
+              "const": "construction-land"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "engine_id": {
+              "const": "construction-land"
+            }
+          }
+        }
+      },
+      {
+        "if": {
+          "properties": {
+            "capability_id": {
+              "const": "cohort-comparison"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "engine_id": {
+              "const": "cohort-comparison"
+            }
+          }
+        }
+      },
+      {
+        "if": {
+          "properties": {
+            "capability_id": {
+              "const": "cross-dimensional"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "engine_id": {
+              "const": "cross-dimensional"
+            }
+          }
+        }
+      },
+      {
+        "if": {
+          "properties": {
+            "capability_id": {
+              "const": "discovery"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "engine_id": {
+              "const": "discovery"
+            }
+          }
+        }
+      },
+      {
+        "if": {
+          "properties": {
+            "capability_id": {
+              "const": "position"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "engine_id": {
+              "const": "position"
+            }
+          }
+        }
+      },
+      {
+        "if": {
+          "properties": {
+            "capability_id": {
+              "const": "comparables"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "engine_id": {
+              "const": "comparables"
+            }
+          }
+        }
+      },
+      {
+        "if": {
+          "properties": {
+            "capability_id": {
+              "const": "asking-area-ratio"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "engine_id": {
+              "const": "asking-area-ratio"
+            }
+          }
+        }
+      },
+      {
+        "if": {
+          "properties": {
+            "capability_id": {
+              "const": "weighted-price"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "engine_id": {
+              "const": "weighted-price"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "tw_report_ready": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "report_measurement_key": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "execution_measurement_key": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "report_kind": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "session_id": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 9007199254740991
+      },
+      "engagement_time_msec": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 3600000
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "report_measurement_key",
+      "execution_measurement_key",
+      "report_kind"
+    ]
+  },
+  "tw_report_view": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "report_measurement_key": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "view_kind": {
+        "enum": [
+          "index",
+          "glossary",
+          "entity",
+          "methodology",
+          "formula",
+          "report",
+          "saved_report"
+        ]
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "report_measurement_key",
+      "view_kind"
+    ]
+  },
+  "tw_report_retrieve": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "report_measurement_key": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "outcome": {
+        "enum": [
+          "success",
+          "failure",
+          "rejected",
+          "cancelled",
+          "unavailable",
+          "initiated"
+        ]
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "report_measurement_key",
+      "outcome"
+    ]
+  },
+  "tw_analysis_save": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "analysis_measurement_key": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "outcome": {
+        "enum": [
+          "success",
+          "failure",
+          "rejected",
+          "cancelled",
+          "unavailable",
+          "initiated"
+        ]
+      },
+      "engine_id": {
+        "enum": [
+          "summary",
+          "composition",
+          "market-asking-price-distribution",
+          "matching",
+          "comparison",
+          "configuration",
+          "distribution",
+          "geography",
+          "size",
+          "construction-land",
+          "cohort-comparison",
+          "cross-dimensional",
+          "discovery",
+          "position",
+          "comparables",
+          "asking-area-ratio",
+          "weighted-price"
+        ]
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "analysis_measurement_key",
+      "outcome",
+      "engine_id"
+    ]
+  },
+  "login": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "method": {
+        "enum": [
+          "copy",
+          "native_share",
+          "external_link",
+          "password",
+          "approved_existing_auth"
+        ]
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "method"
+    ]
+  },
+  "sign_up": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "method": {
+        "enum": [
+          "copy",
+          "native_share",
+          "external_link",
+          "password",
+          "approved_existing_auth"
+        ]
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "method"
+    ]
+  },
+  "tw_sponsored_exposure": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "canonical_listing_ref": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "campaign_ref": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "advertiser_ref": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "placement_kind": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "canonical_listing_ref",
+      "campaign_ref",
+      "advertiser_ref",
+      "placement_kind"
+    ]
+  },
+  "tw_trei_interaction": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "interaction_kind": {
+        "enum": [
+          "question_submit",
+          "supported_classification",
+          "unsupported_classification",
+          "suggested_question_select",
+          "authorized_capability_invoke",
+          "response_available",
+          "response_unavailable",
+          "follow_up",
+          "navigate_market_hub",
+          "navigate_package"
+        ]
+      },
+      "supported_class": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "capability_id": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "interaction_kind",
+      "supported_class",
+      "capability_id"
+    ]
+  },
+  "tw_sponsored_engagement": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "canonical_listing_ref": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "campaign_ref": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "advertiser_ref": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "placement_kind": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "canonical_listing_ref",
+      "campaign_ref",
+      "advertiser_ref",
+      "placement_kind"
+    ]
+  },
+  "tw_sponsored_conversion": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 25,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "canonical_listing_ref": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "campaign_ref": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "advertiser_ref": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "placement_kind": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "query_id": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "context_digest": {
+        "type": "string",
+        "maxLength": 100
+      },
+      "internal_discovery": {
+        "enum": [
+          "direct_listing_landing",
+          "marketplace_search",
+          "filtered_results",
+          "related_property",
+          "saved_property",
+          "market_hub",
+          "knowledge",
+          "intelligence_report",
+          "verified_other",
+          "unknown"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "client_seq": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "outcome_key": {
+        "type": "string",
+        "maxLength": 100,
+        "minLength": 1
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "canonical_listing_ref",
+      "campaign_ref",
+      "advertiser_ref",
+      "placement_kind"
+    ]
+  },
+  "tw_support_interaction": {
+    "type": "object",
+    "additionalProperties": false,
+    "maxProperties": 15,
+    "properties": {
+      "schema_v": {
+        "const": "1-proposed"
+      },
+      "event_id": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "locale": {
+        "enum": [
+          "en",
+          "es"
+        ]
+      },
+      "page_instance": {
+        "type": "string",
+        "maxLength": 80,
+        "minLength": 1
+      },
+      "consent_epoch": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "environment": {
+        "enum": [
+          "isolated_test",
+          "staging",
+          "production"
+        ]
+      },
+      "auth_state": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "unknown"
+        ]
+      },
+      "continuity_status": {
+        "enum": [
+          "first_observed_in_available_lookback",
+          "returning_observed",
+          "unknown"
+        ]
+      },
+      "customer_state": {
+        "enum": [
+          "active",
+          "former",
+          "no_purchased_access",
+          "unknown"
+        ]
+      },
+      "stage": {
+        "enum": [
+          "opened",
+          "category",
+          "subject",
+          "issue",
+          "whatsapp_opened"
+        ]
+      },
+      "support_category": {
+        "enum": [
+          "none",
+          "account",
+          "listings",
+          "markethub",
+          "intelligence",
+          "packages",
+          "payments",
+          "technical",
+          "general"
+        ]
+      },
+      "support_subject": {
+        "enum": [
+          "none",
+          "sign_in",
+          "profile",
+          "other",
+          "publication",
+          "management",
+          "workspace",
+          "notifications",
+          "algorithms",
+          "saved_analysis",
+          "access",
+          "selection",
+          "sinpe",
+          "billing",
+          "payments",
+          "website",
+          "inquiry"
+        ]
+      },
+      "support_issue": {
+        "enum": [
+          "none",
+          "cannot_access",
+          "confirmation",
+          "other",
+          "email_password",
+          "contact",
+          "not_appearing",
+          "photos",
+          "edit_status",
+          "ownership",
+          "saved_items",
+          "notes",
+          "delivery",
+          "preferences",
+          "cannot_run",
+          "inputs_results",
+          "save_restore",
+          "missing",
+          "paid_no_access",
+          "duration",
+          "coverage",
+          "upgrade",
+          "pending",
+          "instructions",
+          "receipt_invoice",
+          "duplicate",
+          "stuck_checkout",
+          "display",
+          "error",
+          "information",
+          "feedback"
+        ]
+      },
+      "observed_at_ms": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "schema_v",
+      "event_id",
+      "locale",
+      "page_instance",
+      "consent_epoch",
+      "environment",
+      "stage",
+      "support_category",
+      "support_subject",
+      "support_issue"
+    ]
+  }
+}

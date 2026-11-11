@@ -1,0 +1,316 @@
+{
+  "kind": "UNPUBLISHED_PUBLIC_PROJECTION_CANDIDATE",
+  "engineId": "asking-area-ratio",
+  "name": "Relación entre los coeficientes del precio de oferta por m² de área de construcción y de área del terreno",
+  "locale": "es",
+  "explanationRevision": "KA02-2026-10-15-R1/R16",
+  "historicalReleaseReference": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+  "publicationState": "WITHHELD_PENDING_KA02_OWNER_REVIEW",
+  "inputs": [
+    {
+      "name": "canonicalScope",
+      "meaning": "Capacidad/población autenticada existente, transacción, geografía/tipo canónico y selección explícita del cliente; se mantienen identidades distintas por origen.",
+      "unit": "canonical IDs and scope / IDs y ámbito canónicos",
+      "evidenceKind": "scope",
+      "required": true,
+      "missingBehavior": "Deny/unavailable; never widen scope / denegar/no disponible; nunca ampliar ámbito"
+    },
+    {
+      "name": "canonicalEvidence",
+      "meaning": "Observaciones actuales elegibles privadas o bancarias mediante lectores/procedencia canónicos existentes; para bancos se requiere venta directa/ciclo de vida/transacción original, no tasación.",
+      "unit": "source-qualified records / registros con origen",
+      "evidenceKind": "identity",
+      "required": true,
+      "missingBehavior": "Missing/inconsistent acquisition is unavailable or excluded with explicit reason; not a successful empty market / adquisición ausente/incoherente no disponible o exclusión explícita; no mercado vacío exitoso"
+    },
+    {
+      "name": "askingMoney",
+      "meaning": "Importe/moneda originales e identidad de transacción; CRC analíticos usa tipo BCCR de venta de referencia vinculado a fecha cuando se convierte USD.",
+      "unit": "CRC or USD; Sale total / monthly Rent / venta total o alquiler mensual",
+      "evidenceKind": "monetary",
+      "required": true,
+      "missingBehavior": "No default money or FX; exclude invalid value or return unavailable according to engine state; count scope may remain / sin dinero/tipo supuesto; excluir valor inválido o no disponible según estado; el ámbito de conteo puede permanecer"
+    },
+    {
+      "name": "areaIdentity",
+      "meaning": "Área exacta positiva de terreno o construcción seleccionada, base de inmueble y normalización explícitas; intervalos/categorías siguen siendo evidencia distinta.",
+      "unit": "m²; land/construction / terreno/construcción",
+      "evidenceKind": "exact",
+      "required": true,
+      "missingBehavior": "Range-only cannot create exact normalization; exclude or not-establish with canonical reason; never substitute footprint / solo intervalo no crea normalización exacta; excluir/no establecer con razón canónica; no sustituir huella"
+    }
+  ],
+  "calculationStages": [
+    {
+      "id": "acquire",
+      "meaning": "Adquirir solo evidencia canónica actualmente autorizada; rechazar entradas incompletas, incoherentes o fuera de ámbito.",
+      "formulaRefs": []
+    },
+    {
+      "id": "calculate",
+      "meaning": "Aplicar la secuencia existente de elegibilidad, normalización y fórmulas del motor; conservar cada estado no establecido.",
+      "formulaRefs": [
+        "ols",
+        "hc3",
+        "fieller",
+        "precision",
+        "stability",
+        "influence",
+        "diagnostics"
+      ]
+    },
+    {
+      "id": "deliver",
+      "meaning": "Devolver evidencia vinculada a origen/versión mediante controles existentes; consultar metodología nunca ejecuta el motor ni cobra ejecución.",
+      "formulaRefs": []
+    }
+  ],
+  "question": "¿Está identificada finitamente la relación entre coeficientes del precio de oferta para área construida y área de terreno, con incertidumbre e influencia aceptables en esta cohorte actual explícita?",
+  "applications": [
+    "Los desarrolladores pueden examinar una asociación relativa calificada por evidencia de dos áreas exactas con el importe de oferta, en vez de sustituir una relación simple de áreas o una tasación."
+  ],
+  "formulas": [
+    {
+      "id": "ols",
+      "equation": "P_i=b0+aL_i+bC_i+e_i; theta=argmin Σe_i²; r=b/a",
+      "variables": [
+        {
+          "symbol": "P",
+          "meaning": "Precio de oferta elegible en CRC analíticos en la fecha explícita",
+          "unit": "CRC or CRC/month"
+        },
+        {
+          "symbol": "L_i",
+          "meaning": "Área de terreno exacta",
+          "unit": "m²"
+        },
+        {
+          "symbol": "C_i",
+          "meaning": "Área construida exacta",
+          "unit": "m²"
+        },
+        {
+          "symbol": "a",
+          "meaning": "Coeficiente del área de terreno",
+          "unit": "CRC/m² or CRC/m²/month"
+        },
+        {
+          "symbol": "b",
+          "meaning": "Coeficiente del área construida",
+          "unit": "CRC/m² or CRC/m²/month"
+        },
+        {
+          "symbol": "b0",
+          "meaning": "Intercepto",
+          "unit": "CRC or CRC/month"
+        }
+      ],
+      "statisticalMethod": "OLS; scaled/centered design; pivoted reorthogonalized QR / MCO; diseño escalado/centrado; QR pivotado reortogonalizado",
+      "denominator": "a≠0; n−3 degrees of freedom / grados de libertad",
+      "normalization": "Canonical source identity / identidad canónica de origen",
+      "precisionAndRounding": "IEEE754 binary64; analytical values not display-rounded / valores analíticos sin redondeo de presentación. Area-ratio fit uses compensated summation, scaled QR and explicit numerical gates / ajuste de relación usa suma compensada, QR escalado y controles numéricos explícitos."
+    },
+    {
+      "id": "hc3",
+      "equation": "G=(XᵀX)^−1; V=T G Xᵀ diag[e_i²/(1−h_i)²] X G Tᵀ",
+      "variables": [
+        {
+          "symbol": "X",
+          "meaning": "Intercepto y áreas centradas/escaladas",
+          "unit": "scaled design"
+        },
+        {
+          "symbol": "h_i",
+          "meaning": "Apalancamiento MCO",
+          "unit": "fraction"
+        },
+        {
+          "symbol": "e_i",
+          "meaning": "Residuo",
+          "unit": "scaled amount"
+        },
+        {
+          "symbol": "V",
+          "meaning": "Covarianza HC3 transformada a unidades originales",
+          "unit": "coefficient²"
+        },
+        {
+          "symbol": "T",
+          "meaning": "Transformación del diseño escalado a coeficientes originales",
+          "unit": "unit transform"
+        }
+      ],
+      "statisticalMethod": "HC3",
+      "denominator": "(1−h_i)²>0",
+      "normalization": "Canonical source identity / identidad canónica de origen",
+      "precisionAndRounding": "IEEE754 binary64; analytical values not display-rounded / valores analíticos sin redondeo de presentación. Area-ratio fit uses compensated summation, scaled QR and explicit numerical gates / ajuste de relación usa suma compensada, QR escalado y controles numéricos explícitos."
+    },
+    {
+      "id": "fieller",
+      "equation": "(b−ra)²≤t(.975,n−3)²(V_bb−2rV_ab+r²V_aa)",
+      "variables": [
+        {
+          "symbol": "r",
+          "meaning": "Relación entre coeficientes construcción/terreno",
+          "unit": "dimensionless"
+        },
+        {
+          "symbol": "t",
+          "meaning": "Valor crítico Student al95%",
+          "unit": "dimensionless"
+        },
+        {
+          "symbol": "V",
+          "meaning": "Covarianza HC3",
+          "unit": "coefficient²"
+        }
+      ],
+      "statisticalMethod": "Fieller95%",
+      "denominator": "Finite identified quadratic set / conjunto cuadrático identificado finito",
+      "normalization": "Canonical source identity / identidad canónica de origen",
+      "precisionAndRounding": "IEEE754 binary64; analytical values not display-rounded / valores analíticos sin redondeo de presentación. Area-ratio fit uses compensated summation, scaled QR and explicit numerical gates / ajuste de relación usa suma compensada, QR escalado y controles numéricos explícitos."
+    },
+    {
+      "id": "precision",
+      "equation": "max(|r−lower|,|upper−r|)/|r|≤0.25",
+      "variables": [
+        {
+          "symbol": "r",
+          "meaning": "Relación estimada entre coeficientes",
+          "unit": "dimensionless"
+        },
+        {
+          "symbol": "lower,upper",
+          "meaning": "Extremos Fieller acotados",
+          "unit": "dimensionless"
+        }
+      ],
+      "statisticalMethod": "Existing uncertainty policy / política existente de incertidumbre",
+      "denominator": "|r|>0",
+      "normalization": "Canonical source identity / identidad canónica de origen",
+      "precisionAndRounding": "IEEE754 binary64; analytical values not display-rounded / valores analíticos sin redondeo de presentación. Area-ratio fit uses compensated summation, scaled QR and explicit numerical gates / ajuste de relación usa suma compensada, QR escalado y controles numéricos explícitos."
+    },
+    {
+      "id": "stability",
+      "equation": "rho=cor(L_scaled,C_scaled); kappa=sqrt((1+|rho|)/(1−|rho|)); gamma=n eps/(1−n eps); kappa gamma≤1e−8; sqrt[n(1−|rho|)]>max(n,3)eps sqrt[n(1+|rho|)]",
+      "variables": [
+        {
+          "symbol": "N",
+          "meaning": "Número de observaciones elegibles distintas",
+          "unit": "count"
+        },
+        {
+          "symbol": "rho",
+          "meaning": "Correlación entre predictores de área escalados",
+          "unit": "dimensionless"
+        },
+        {
+          "symbol": "eps",
+          "meaning": "Number.EPSILON",
+          "unit": "dimensionless"
+        }
+      ],
+      "statisticalMethod": "Numerical rank/conditioning gate / control de rango/acondicionamiento",
+      "denominator": "1−|rho|>0;1−n eps>0",
+      "normalization": "Canonical source identity / identidad canónica de origen",
+      "precisionAndRounding": "IEEE754 binary64; analytical values not display-rounded / valores analíticos sin redondeo de presentación. Area-ratio fit uses compensated summation, scaled QR and explicit numerical gates / ajuste de relación usa suma compensada, QR escalado y controles numéricos explícitos."
+    },
+    {
+      "id": "influence",
+      "equation": "E2=sum two largest e_i²; B_L=sqrt(sum2(g_i,L²) E2)/(1−2hmax); B_C analogous; bound=(B_C+|r|B_L)/(|a|−B_L); relative=bound/|r|≤.25",
+      "variables": [
+        {
+          "symbol": "g_i",
+          "meaning": "Vector de influencia en unidades originales T G x_i",
+          "unit": "coefficient/scaled residual"
+        },
+        {
+          "symbol": "hmax",
+          "meaning": "Mayor apalancamiento",
+          "unit": "fraction"
+        },
+        {
+          "symbol": "a",
+          "meaning": "Coeficiente de terreno",
+          "unit": "CRC/m² or CRC/m²/month"
+        },
+        {
+          "symbol": "r",
+          "meaning": "Relación de coeficientes",
+          "unit": "dimensionless"
+        }
+      ],
+      "statisticalMethod": "Certified influence bound / cota certificada de influencia",
+      "denominator": "2hmax<1 AND B_L<|a| AND |r|>0",
+      "normalization": "Canonical source identity / identidad canónica de origen",
+      "precisionAndRounding": "IEEE754 binary64; analytical values not display-rounded / valores analíticos sin redondeo de presentación. Area-ratio fit uses compensated summation, scaled QR and explicit numerical gates / ajuste de relación usa suma compensada, QR escalado y controles numéricos explícitos."
+    },
+    {
+      "id": "diagnostics",
+      "equation": "R²=1−SSE/SST; adjR²=1−[SSE/(n−3)]/[SST/(n−1)]; residualScale=sqrt(SSE/(n−3))×responseScale",
+      "variables": [
+        {
+          "symbol": "N",
+          "meaning": "Número de observaciones elegibles distintas",
+          "unit": "count"
+        },
+        {
+          "symbol": "SSE,SST",
+          "meaning": "Sumas de cuadrados residual y total",
+          "unit": "scaled amount²"
+        }
+      ],
+      "statisticalMethod": "Descriptive fit diagnostics / diagnósticos descriptivos",
+      "denominator": "SST>0; n−3>0",
+      "normalization": "Canonical source identity / identidad canónica de origen",
+      "precisionAndRounding": "IEEE754 binary64; analytical values not display-rounded / valores analíticos sin redondeo de presentación. Area-ratio fit uses compensated summation, scaled QR and explicit numerical gates / ajuste de relación usa suma compensada, QR escalado y controles numéricos explícitos."
+    }
+  ],
+  "population": {
+    "definition": "Mercado actual observable de anuncios/oferta elegibles dentro del ámbito explícito con origen, no transacciones históricas. Resultados privados y bancarios separados; solo las ramas existentes que exponen crossMarket admiten cálculo entre mercados.",
+    "eligibility": [
+      "Mercado actual observable de anuncios/oferta elegibles dentro del ámbito explícito con origen, no transacciones históricas. Resultados privados y bancarios separados; solo las ramas existentes que exponen crossMarket admiten cálculo entre mercados.",
+      "Salvo matching/configuration, los grupos de preferencias seleccionados del adaptador deben coincidir positivamente (algún valor del grupo y todos los grupos). Matching ordena evidencia; configuration cuenta la conjunción completa respecto a la base.",
+      "Venta y alquiler mensual nunca se mezclan. La reducción bancaria canónica requiere DIRECT_SALE, transacción de venta original exacta, ciclo PUBLISHED, vigencia/procedencia válidas y geografía/tipo coherentes; no se inventa alquiler bancario.",
+      "Al menos4 IDs distintos válidos con origen; P,L,C positivos finitos; n−3>0; variación positiva/rango completo y todos los controles de incertidumbre/influencia. Los límites de intervalo son explícitos e inclusivos en este adaptador."
+    ],
+    "exclusions": [
+      "La evidencia requerida ausente, contradictoria, inválida, no confirmada o desactualizada no se convierte en cero, valor supuesto ni población ampliada silenciosamente.",
+      "Sin área exacta desde categoría/intervalo; construcción no sustituye huella; importes de oferta no son transacciones realizadas; identidades monetarias/fecha BCCR explícitas."
+    ]
+  },
+  "outputs": [
+    {
+      "name": "state/n/reasons/diagnostics",
+      "meaning": "Decisión de establecimiento, razones y diagnósticos numéricos",
+      "unit": "state; count; diagnostics",
+      "interpretation": "Rango, variación, acondicionamiento, covarianza, incertidumbre no degenerada, intervalo finito, precisión e influencia gobiernan la disponibilidad."
+    },
+    {
+      "name": "coefficients.intercept/propertyArea/constructionArea; ratio; interval",
+      "meaning": "Coeficientes en unidades originales e intervalo Fieller95% acotado de la relación",
+      "unit": "amount; amount/m²; dimensionless",
+      "interpretation": "Una relación establecida no implica coeficientes positivos; el Motor17 aplica un control adicional de positividad."
+    }
+  ],
+  "resultStates": {
+    "empty": "Una población seleccionada vacía establecida tiene conteo cero y resúmenes numéricos indefinidos; conservar los estados específicos siguientes.",
+    "zero": "Conteos cero y diferencias/IQR cero válidos pueden tener sentido; precio de oferta o área de normalización cero/negativos no son observaciones positivas elegibles.",
+    "invalid": "Entrada inválida, identidad contradictoria, evidencia canónica duplicada o ámbito mezclado sigue la rama existente de error/exclusión; sin resultado exitoso inventado.",
+    "unavailable": "Autoridad, derechos actuales, instantánea coherente, tipo de cambio o sujeto requeridos ausentes son no disponibles/denegados bajo controles existentes; nunca sustituto vacío exitoso.",
+    "undefined": "Intervalos ausentes→explicit_area_ranges_required. not_established incluye insufficient_observations, insufficient_variation, rank_deficiency, numerical_instability, covariance_unavailable, degenerate_uncertainty, ratio_not_finitely_identified, ratio_uncertainty_exceeds_policy, influence_stability_not_certified. Observaciones inválidas producen error. Fieller puede ser bounded, disconnected, all_real, empty, half_line o unresolved."
+  },
+  "supportedInterpretation": "Los desarrolladores pueden examinar una asociación relativa calificada por evidencia de dos áreas exactas con el importe de oferta, en vez de sustituir una relación simple de áreas o una tasación.",
+  "unsupportedInterpretations": [
+    "¿Cuál fue el precio realizado, apreciación histórica, rendimiento causal, pronóstico o resultado garantizado de inversión? Este motor del mercado actual de oferta no los establece.",
+    "Es una asociación de precios de oferta con ambas áreas, no huella de edificio, distribución de costos, valor marginal causal, tasación del terreno ni rendimiento temporal."
+  ],
+  "packageMembership": [
+    {
+      "packageId": "pkg-pricing-position-relationships",
+      "capabilityId": "cap-asking-area-coefficient-ratio",
+      "availability": "Configured at original observation; purchased rights and production execution verified separately / configurado en observación original; derechos comprados y ejecución de producción se verifican por separado"
+    }
+  ],
+  "evidenceState": "DOCUMENTED; MATHEMATICALLY_VERIFIED_FOR_PINNED_CONTRACTS; BILINGUAL_TECHNICAL_REVIEWED; SCHEMA_VALIDATED; DISCLOSURE_ALLOWLIST_CHECKED; OWNER_NOT_ACCEPTED"
+}

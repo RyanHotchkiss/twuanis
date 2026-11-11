@@ -1,0 +1,42 @@
+.synthesis,
+.legacy {
+  color: #ff3b00;
+  font-family: inherit;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 1.45;
+  text-align: left;
+  text-transform: none;
+  text-shadow: none;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  animation: none;
+  padding: 0;
+  margin: 0.75rem 0 1rem;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  min-width: 0;
+  max-width: 100%;
+}
+@media (max-width: 767px) {
+  .synthesis, .legacy { font-size: 28px; }
+}
+
+.prefix {
+  color: #ff3b00;
+  font-weight: 700;
+  font-style: italic;
+  text-decoration: underline;
+}
+
+.evidence {
+  color: #ffffff;
+  font: inherit;
+  line-height: inherit;
+  text-decoration: none;
+  text-shadow: none;
+  background: transparent;
+  border: none;
+}

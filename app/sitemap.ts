@@ -1,0 +1,110 @@
+export const dynamic='force-dynamic'
+import {knowledgeSitemapEntries} from '@/lib/knowledge-public/knowledge-page'
+import { isStagingApplication } from '@/lib/staging-identity'
+import type { MetadataRoute } from 'next'
+
+import {
+  supabaseAdmin
+} from '@/lib/supabase-admin'
+
+import {
+  getPublicListingSitemapRows
+} from '@/lib/public-listings-server'
+
+const SITE_URL = 'https://twuanis.com'
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  if (isStagingApplication()) return []
+  const staticRoutes = [
+    '',
+    '/en',
+    '/es',
+    '/en/buy',
+    '/en/rent-lease',
+    '/es/comprar',
+    '/es/alquilar-arrendar'
+  ]
+
+  const staticUrls = staticRoutes.map((route) => ({
+    url: `${SITE_URL}${route}`,
+    lastModified: new Date(),
+    changeFrequency: 'daily' as const,
+    priority: route === '' ? 1 : 0.8
+  }))
+
+const listings =
+  await getPublicListingSitemapRows()
+
+  const listingUrls = listings?.flatMap(listing=>{
+  if(listing.transaction_type!=='sale'&&listing.transaction_type!=='rent')return []
+  const rent=listing.transaction_type==='rent'
+  return [{url:`${SITE_URL}/en/${rent?'rent-lease':'buy'}/listing/${listing.id}`,changeFrequency:'weekly' as const,priority:0.7},{url:`${SITE_URL}/es/${rent?'alquilar-arrendar':'comprar'}/anuncio/${listing.id}`,changeFrequency:'weekly' as const,priority:0.7}]
+})??[]
+
+const { data: terms, error: termsError } =
+  await supabaseAdmin
+    .from('ontology_terms')
+    .select(
+      'term_type, slug, slug_en, slug_es, created_at'
+    )
+
+  if (termsError) {
+    console.error('Sitemap ontology error:', termsError)
+  }
+
+  const entityUrls =
+    terms?.flatMap((term) => {
+      const slugEn = term.slug_en || term.slug
+      const slugEs = term.slug_es || term.slug
+
+      if (!slugEn && !slugEs) return []
+
+      if (term.term_type === 'province') {
+        return [
+          {
+            url: `${SITE_URL}/province/${slugEn}`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly' as const,
+            priority: 0.75
+          }
+        ]
+      }
+
+      if (term.term_type === 'canton') {
+        return [
+          {
+            url: `${SITE_URL}/canton/${slugEn}`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly' as const,
+            priority: 0.7
+          }
+        ]
+      }
+
+      if (term.term_type === 'district') {
+        return [
+          {
+            url: `${SITE_URL}/district/${slugEn}`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly' as const,
+            priority: 0.65
+          }
+        ]
+      }
+
+      if (term.term_type === 'property_type') {
+        return [
+          {
+            url: `${SITE_URL}/property-type/${slugEn}`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly' as const,
+            priority: 0.7
+          }
+        ]
+      }
+
+      return []
+    }) ?? []
+
+  return [...staticUrls, ...listingUrls, ...entityUrls, ...await knowledgeSitemapEntries()]
+}

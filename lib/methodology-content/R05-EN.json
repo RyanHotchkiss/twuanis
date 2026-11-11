@@ -1,0 +1,185 @@
+{
+  "kind": "UNPUBLISHED_PUBLIC_PROJECTION_CANDIDATE",
+  "engineId": "comparison",
+  "name": "Market Comparison",
+  "locale": "en",
+  "explanationRevision": "KA02-2026-10-15-R1/R05",
+  "historicalReleaseReference": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+  "publicationState": "WITHHELD_PENDING_KA02_OWNER_REVIEW",
+  "inputs": [
+    {
+      "name": "canonicalScope",
+      "meaning": "Existing authenticated capability/population, transaction, canonical geography/type and explicit customer selection; source-qualified identities stay distinct.",
+      "unit": "canonical IDs and scope / IDs y ámbito canónicos",
+      "evidenceKind": "scope",
+      "required": true,
+      "missingBehavior": "Deny/unavailable; never widen scope / denegar/no disponible; nunca ampliar ámbito"
+    },
+    {
+      "name": "canonicalEvidence",
+      "meaning": "Current eligible Private or Bank observations through existing canonical readers and provenance; Bank direct-sale/lifecycle/raw transaction evidence is required, not appraisal.",
+      "unit": "source-qualified records / registros con origen",
+      "evidenceKind": "identity",
+      "required": true,
+      "missingBehavior": "Missing/inconsistent acquisition is unavailable or excluded with explicit reason; not a successful empty market / adquisición ausente/incoherente no disponible o exclusión explícita; no mercado vacío exitoso"
+    },
+    {
+      "name": "askingMoney",
+      "meaning": "Original amount/currency and transaction identity; analytical CRC uses date-bound BCCR reference-sale rate when USD conversion is needed.",
+      "unit": "CRC or USD; Sale total / monthly Rent / venta total o alquiler mensual",
+      "evidenceKind": "monetary",
+      "required": false,
+      "missingBehavior": "No default money or FX; exclude invalid value or return unavailable according to engine state; count scope may remain / sin dinero/tipo supuesto; excluir valor inválido o no disponible según estado; el ámbito de conteo puede permanecer"
+    }
+  ],
+  "calculationStages": [
+    {
+      "id": "acquire",
+      "meaning": "Acquire only currently authorized canonical evidence; reject incomplete, incoherent or out-of-scope inputs.",
+      "formulaRefs": []
+    },
+    {
+      "id": "calculate",
+      "meaning": "Apply the existing engine-specific eligibility, normalization and formula sequence below; preserve every non-established state.",
+      "formulaRefs": [
+        "mean",
+        "quantile",
+        "display"
+      ]
+    },
+    {
+      "id": "deliver",
+      "meaning": "Return source/release-bound evidence through existing guards; methodology retrieval itself never runs the engine or charges execution.",
+      "formulaRefs": []
+    }
+  ],
+  "question": "How do explicitly defined current markets differ in their asking amounts, exact areas and evidenced composition?",
+  "applications": [
+    "Agents and developers can compare like-for-like scopes while displaying separate valid-value sample sizes and preserving Sale/Rent boundaries."
+  ],
+  "formulas": [
+    {
+      "id": "mean",
+      "equation": "mean=Σx_i/N; IQR=Q(.75)−Q(.25)",
+      "variables": [
+        {
+          "symbol": "N",
+          "meaning": "Number of distinct eligible observations",
+          "unit": "count"
+        },
+        {
+          "symbol": "x_i",
+          "meaning": "Eligible numerical observation",
+          "unit": "same as input"
+        }
+      ],
+      "statisticalMethod": "Descriptive / descriptivo",
+      "denominator": "N>0",
+      "normalization": "Canonical source identity / identidad canónica de origen",
+      "precisionAndRounding": "IEEE754 binary64; analytical values not display-rounded / valores analíticos sin redondeo de presentación. Comparison display Math.round integer / presentación de comparación redondeada al entero."
+    },
+    {
+      "id": "quantile",
+      "equation": "h=(N−1)p; Q(p)=(1−w)x[floor(h)]+w x[ceil(h)]; w=h−floor(h)",
+      "variables": [
+        {
+          "symbol": "N",
+          "meaning": "Number of distinct eligible observations",
+          "unit": "count"
+        },
+        {
+          "symbol": "p",
+          "meaning": "Quantile probability from0 to1",
+          "unit": "fraction"
+        },
+        {
+          "symbol": "x",
+          "meaning": "Sorted finite positive observations, zero-based indexing",
+          "unit": "same as input"
+        }
+      ],
+      "statisticalMethod": "Linear interpolation / interpolación lineal",
+      "denominator": "None: interpolation / ninguna: interpolación",
+      "normalization": "Canonical source identity / identidad canónica de origen",
+      "precisionAndRounding": "IEEE754 binary64; analytical values not display-rounded / valores analíticos sin redondeo de presentación. Comparison display Math.round integer / presentación de comparación redondeada al entero."
+    },
+    {
+      "id": "display",
+      "equation": "USD_display=CRC_amount/r_t; display integer=Math.round(value)",
+      "variables": [
+        {
+          "symbol": "P",
+          "meaning": "Eligible asking amount in analytical CRC at the explicit date",
+          "unit": "CRC or CRC/month"
+        },
+        {
+          "symbol": "r_t",
+          "meaning": "Same date-bound BCCR rate",
+          "unit": "CRC/USD"
+        }
+      ],
+      "statisticalMethod": "Descriptive / descriptivo",
+      "denominator": "r_t>0",
+      "normalization": "Canonical source identity / identidad canónica de origen",
+      "precisionAndRounding": "IEEE754 binary64; analytical values not display-rounded / valores analíticos sin redondeo de presentación. Comparison display Math.round integer / presentación de comparación redondeada al entero."
+    }
+  ],
+  "population": {
+    "definition": "Current observable eligible listings/asking market within the explicit source-qualified scope, not historical transactions. Private and Bank results remain separate; only the existing adapter branches explicitly exposing crossMarket support a cross-market calculation.",
+    "eligibility": [
+      "Current observable eligible listings/asking market within the explicit source-qualified scope, not historical transactions. Private and Bank results remain separate; only the existing adapter branches explicitly exposing crossMarket support a cross-market calculation.",
+      "Except matching/configuration, adapter selected preference groups must positively match (any selected value within a group, all selected groups). Matching ranks evidence; configuration counts its full conjunction against the base.",
+      "Sale and monthly Rent never mix. Bank canonical reduction requires DIRECT_SALE, exact retained sale transaction, PUBLISHED lifecycle, valid source freshness/provenance and coherent geography/type; Bank rent is not fabricated.",
+      "Each metric needs at least one eligible value; empty arrays produce null. One side does not validate the other side."
+    ],
+    "exclusions": [
+      "Missing, contradictory, invalid, unconfirmed or stale required evidence cannot become zero, a guessed value or a silently widened population.",
+      "No exact area from category/range; no construction-as-footprint; asking amounts are not realized transactions; canonical money identities and BCCR date remain explicit."
+    ]
+  },
+  "outputs": [
+    {
+      "name": "metrics.{averageSalePrice,medianSalePrice,averageRent,medianRent}",
+      "meaning": "Separate mean and median asking amounts",
+      "unit": "CRC; CRC/month",
+      "interpretation": "Sale and monthly Rent values never share one monetary average."
+    },
+    {
+      "name": "metrics.averagePropertyArea/averageConstructionArea",
+      "meaning": "Means over available positive areas",
+      "unit": "m²",
+      "interpretation": "The displayed sampleSize is listing count, not proof every metric uses all those listings."
+    },
+    {
+      "name": "sampleSize/prevalence/top*; formatted CRC/USD/m²",
+      "meaning": "Scope count, leading evidenced categories and display forms",
+      "unit": "count; labels; formatted units",
+      "interpretation": "Internal metrics remain binary64; CRC/USD/area display rounds to integer. No cross-market percent difference is invented by this side-calculation helper."
+    }
+  ],
+  "resultStates": {
+    "empty": "An established empty selected population has zero count and undefined numerical summaries; retain the engine-specific states below.",
+    "zero": "Zero counts and zero valid differences/IQR may be meaningful; zero/negative asking price or normalization area is not an eligible positive observation.",
+    "invalid": "Invalid input, contradictory identity, duplicate canonical evidence or mixed scope follows the existing throw/exclusion branch; no invented successful result.",
+    "unavailable": "Missing authority, current rights, coherent source snapshot, required FX or subject is unavailable/denied under existing guards; never a successful empty substitute.",
+    "undefined": "Empty listings: sampleSize0 and null means/medians. Missing prices/areas do not create zeros. Adapter requires a valid canonical BCCR comparison rate."
+  },
+  "supportedInterpretation": "Agents and developers can compare like-for-like scopes while displaying separate valid-value sample sizes and preserving Sale/Rent boundaries.",
+  "unsupportedInterpretations": [
+    "What was the realized sale price, historical appreciation, causal return, forecast or guaranteed investment outcome? These are not established by this current asking-market engine.",
+    "Different geographic/type/transaction or valid-value populations must be shown explicitly; averages do not establish causal or investment comparisons."
+  ],
+  "packageMembership": [
+    {
+      "packageId": "pkg-matching-market-comparison",
+      "capabilityId": "cap-market-comparison",
+      "availability": "Configured at original observation; purchased rights and production execution verified separately / configurado en observación original; derechos comprados y ejecución de producción se verifican por separado"
+    },
+    {
+      "packageId": "pkg-pricing-position-relationships",
+      "capabilityId": "cap-market-comparison",
+      "availability": "Configured at original observation; purchased rights and production execution verified separately / configurado en observación original; derechos comprados y ejecución de producción se verifican por separado"
+    }
+  ],
+  "evidenceState": "DOCUMENTED; MATHEMATICALLY_VERIFIED_FOR_PINNED_CONTRACTS; BILINGUAL_TECHNICAL_REVIEWED; SCHEMA_VALIDATED; DISCLOSURE_ALLOWLIST_CHECKED; OWNER_NOT_ACCEPTED"
+}

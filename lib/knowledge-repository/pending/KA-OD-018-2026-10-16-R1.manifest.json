@@ -1,0 +1,9 @@
+{
+  "revision": "KA-OD-018-2026-10-16-INCLUSIVE-R1",
+  "contentDigest": "1435beae280c4f848cdf9fc2ee15b53647e93450057ec9703a135e8868e90126",
+  "state": "INACTIVE_PENDING_CANONICAL_CORRECTION",
+  "activeDefinitionRevisionUnchanged": "KA05-2026-10-15-C2/definitions-R1",
+  "ownerPolicyEvidence": "KA-EV-0097; OWNER-ASSIGNMENT.txt",
+  "currentSourceEvidence": "KA-EV-0098/0099",
+  "canonicalCorrectionExecuted": false
+}

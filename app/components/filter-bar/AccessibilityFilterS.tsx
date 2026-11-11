@@ -1,0 +1,240 @@
+'use client'
+
+import {
+  accessibilityOptions,
+  pavedRoadDistanceRangeOptions
+} from '@/data/property-data'
+
+type AccessibilityFiltersProps = {
+    selectedAccessibility: string
+    setSelectedAccessibility: (value: string) => void
+
+    selectedPavedRoadDistanceRange: string
+    setSelectedPavedRoadDistanceRange: (value: string) => void
+
+    showAccessibilityOptions: boolean
+    setShowAccessibilityOptions: (value: boolean) => void
+  }
+
+export default function AccessibilityFilters({
+  selectedAccessibility,
+  setSelectedAccessibility,
+
+  selectedPavedRoadDistanceRange,
+  setSelectedPavedRoadDistanceRange,
+
+  showAccessibilityOptions,
+  setShowAccessibilityOptions
+
+}: AccessibilityFiltersProps) {
+
+  return (
+<div>
+
+  {/* HEADER */}
+            <div style={{
+              display:'flex',
+              justifyContent:'space-between',
+              alignItems:'center',
+              marginBottom:'1rem'
+            }}>
+
+              <h2 style={filterHeading}>
+                Accessibility
+              </h2>
+
+              <button
+                type="button"
+                onClick={() =>
+                  setShowAccessibilityOptions(
+                    !showAccessibilityOptions
+                  )
+                }
+                style={collapseButton}
+              >
+                {showAccessibilityOptions ? '−' : '+'}
+              </button>
+
+            </div>
+
+            {/* COLLAPSED SUMMARY */}
+            {!showAccessibilityOptions && (
+
+              <div style={summaryCard}>
+
+                <span>
+                  {selectedAccessibility || 'None Selected'}
+                </span>
+
+                <button
+                  type="button"
+                  onClick={() => {
+
+                    setSelectedAccessibility('')
+                    setShowAccessibilityOptions(true)
+
+                  }}
+                  style={resetButton}
+                >
+                  ✕
+                </button>
+
+              </div>
+
+            )}
+
+            {/* OPTIONS */}
+            {showAccessibilityOptions && (
+
+                  <div style={pillWrap}>
+
+                    {accessibilityOptions.map((option) => {
+
+                      const alreadySelected =
+                        selectedAccessibility === option.en
+
+                      return (
+
+                        <button
+                          type="button"
+                          key={option.en}
+                          onClick={() => {
+
+                            setSelectedAccessibility(option.en)
+                            setShowAccessibilityOptions(false)
+
+                          }}
+                          style={
+                            alreadySelected
+                              ? activePill
+                              : pill
+                          }
+                        >
+                          {option.en}
+                        </button>
+
+                      )
+
+                    })}
+
+                  </div>
+
+                )}
+
+                {selectedAccessibility ===
+                  'Unpaved Road to Property' && (
+
+                  <div style={distanceRangeSection}>
+
+                    <div style={distanceRangeHeading}>
+                      Distance to Paved Road
+                    </div>
+
+                    <div style={pillWrap}>
+
+                      {pavedRoadDistanceRangeOptions.map(
+                        (option) => (
+
+                          <button
+                            type="button"
+                            key={option.value}
+                            onClick={() =>
+                              setSelectedPavedRoadDistanceRange(
+                                option.value
+                              )
+                            }
+                            style={
+                              selectedPavedRoadDistanceRange ===
+                              option.value
+                                ? activePill
+                                : pill
+                            }
+                          >
+                            {option.en}
+                          </button>
+
+                        )
+                      )}
+
+                    </div>
+
+                  </div>
+
+                )}
+
+              </div>
+
+      )
+
+    }
+
+
+
+
+const filterHeading = {
+  fontSize:'1rem',
+  marginBottom:'1rem',
+  color:'#D4AF37'
+}
+
+const pillWrap = {
+  display:'flex',
+  flexWrap:'wrap' as const,
+  gap:'.5rem'
+}
+
+const pill = {
+  background:'var(--surface)',
+  border:'.25px solid #D4AF3750',
+  color:'var(--foreground)',
+  padding:'.85rem 1rem',
+  borderRadius:'999rem',
+  cursor:'pointer',
+  transition:'all .2s ease'
+}
+
+const activePill = {
+  ...pill,
+  background:'#D4AF37',
+  border:'1px solid #FFFFFF',
+  color:'#000'
+}
+
+const collapseButton = {
+  background:'var(--surface)',
+  border:'1px solid #333',
+  color:'var(--foreground)',
+  width:'2rem',
+  height:'2rem',
+  borderRadius:'999rem',
+  cursor:'pointer'
+}
+
+const summaryCard = {
+  display:'flex',
+  justifyContent:'space-between',
+  alignItems:'flex-start',
+  background:'var(--surface)',
+  border:'1px solid #D4AF3750',
+  borderRadius:'1rem',
+  padding:'1rem',
+  marginTop:'1rem'
+}
+
+const resetButton = {
+  background:'transparent',
+  border:'none',
+  color:'var(--error-text)',
+  cursor:'pointer',
+  fontSize:'1rem'
+}
+
+const distanceRangeSection = {
+  marginTop: '1rem'
+}
+
+const distanceRangeHeading = {
+  fontSize: '.85rem',
+  color: 'var(--muted)',
+  marginBottom: '.75rem'
+}

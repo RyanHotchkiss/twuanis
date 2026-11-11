@@ -1,0 +1,1402 @@
+[
+  {
+    "part": "intro",
+    "kind": "heading",
+    "emphasis": "bold",
+    "id": 0,
+    "en": "Entertainment Package",
+    "es": "Paquete de Entretenimiento"
+  },
+  {
+    "part": "intro",
+    "kind": "paragraph",
+    "emphasis": "italic",
+    "id": 1,
+    "en": "For those who know a remarkable property when they see one.",
+    "es": "Para quienes reconocen una propiedad extraordinaria en cuanto la ven."
+  },
+  {
+    "part": "intro",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "id": 2,
+    "en": "Are you a midnight real-estate connoisseur?",
+    "es": "¿Es usted un conocedor de bienes raíces de medianoche?"
+  },
+  {
+    "part": "intro",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 3,
+    "en": "Do you scroll through property listings with a discerning eye, ruthless opinions, and an uncanny ability to spot a spectacular house at a suspiciously spectacular price?",
+    "es": "¿Recorre anuncios de propiedades con ojo crítico, opiniones implacables y una habilidad extraordinaria para detectar una casa espectacular a un precio sospechosamente espectacular?"
+  },
+  {
+    "part": "intro",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 4,
+    "en": "You know what you like. You know what you think it's worth.",
+    "es": "Sabe lo que le gusta. Sabe cuánto cree que vale."
+  },
+  {
+    "part": "intro",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "id": 5,
+    "en": "But how well do your instincts stand up to the market?",
+    "es": "Pero ¿qué tan bien resisten sus instintos la prueba del mercado?"
+  },
+  {
+    "part": "intro",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 6,
+    "en": "Put your judgment to the test. The Entertainment Package gives you real market intelligence to explore asking prices, examine property characteristics, and discover where a property's price stands among others in its market.",
+    "es": "Ponga a prueba su criterio. El Paquete de Entretenimiento le brinda inteligencia real del mercado para explorar precios de oferta, examinar características de propiedades y descubrir dónde se sitúa el precio de una propiedad entre los de otras de su mercado."
+  },
+  {
+    "part": "intro",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "id": 7,
+    "en": "You bring the opinions. Twuanis brings the evidence.",
+    "es": "Usted pone las opiniones. Twuanis pone la evidencia."
+  },
+  {
+    "part": "intro",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 8,
+    "en": "For less than the price of a few drinks, turn a month of real-estate browsing into a much more entertaining pursuit.",
+    "es": "Por menos de lo que cuestan unas cuantas copas, convierta un mes de explorar bienes raíces en una actividad mucho más entretenida."
+  },
+  {
+    "part": "overlay",
+    "kind": "heading",
+    "emphasis": "bold",
+    "id": 9,
+    "en": "Entertainment Package",
+    "es": "Paquete de Entretenimiento"
+  },
+  {
+    "part": "overlay",
+    "kind": "heading",
+    "emphasis": "bold",
+    "id": 10,
+    "en": "Package Algorithms Specifics",
+    "es": "Detalles de los algoritmos del Paquete"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "id": 11,
+    "en": "3 Analytical Algorithms | Current Costa Rican Real-Estate Market",
+    "es": "3 algoritmos analíticos | Mercado inmobiliario actual de Costa Rica"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 12,
+    "en": "The Entertainment Package provides three analytical algorithms for examining the geographic distribution, composition, and asking prices of properties in Costa Rica.",
+    "es": "El Paquete de Entretenimiento ofrece tres algoritmos analíticos para examinar la distribución geográfica, la composición y los precios de oferta de propiedades en Costa Rica."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 13,
+    "en": "Each algorithm analyzes a defined population of eligible property listings using current observable market evidence.",
+    "es": "Cada algoritmo analiza una población definida de anuncios inmobiliarios elegibles utilizando evidencia observable actual del mercado."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 14,
+    "en": "The algorithms provide descriptive market intelligence, not formal property appraisals, verified transaction prices, or predictions of future market performance.",
+    "es": "Los algoritmos brindan inteligencia descriptiva del mercado, no avalúos formales, precios de transacciones verificadas ni predicciones del desempeño futuro del mercado."
+  },
+  {
+    "part": "overlay",
+    "kind": "heading",
+    "emphasis": "bold",
+    "id": 15,
+    "en": "1. Market Asking Price Distribution",
+    "es": "1. Distribución de Precios de Oferta del Mercado"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "id": 16,
+    "en": "How are asking prices distributed across the defined Costa Rican real-estate market?",
+    "es": "¿Cómo se distribuyen los precios de oferta en el mercado inmobiliario definido de Costa Rica?"
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "id": 17,
+    "en": "Questions This Algorithm Answers",
+    "es": "Preguntas que responde este algoritmo"
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 18,
+    "en": "What are the lowest, highest, mean, and median asking prices among eligible listings in the selected market?",
+    "es": "¿Cuáles son los precios de oferta mínimo, máximo, medio y mediano entre los anuncios elegibles del mercado seleccionado?"
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 19,
+    "en": "What asking-price thresholds define the 10th, 25th, 75th, and 90th percentiles of the distribution?",
+    "es": "¿Qué umbrales de precios de oferta definen los percentiles 10, 25, 75 y 90 de la distribución?"
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 20,
+    "en": "How widely are asking prices dispersed, and what is the difference between the 25th and 75th percentile prices?",
+    "es": "¿Qué tan dispersos están los precios de oferta y cuál es la diferencia entre los precios de los percentiles 25 y 75?"
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 21,
+    "en": "How many eligible listings contribute valid asking-price observations to the analysis?",
+    "es": "¿Cuántos anuncios elegibles aportan observaciones válidas de precios de oferta al análisis?"
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "id": 22,
+    "en": "Methodology",
+    "es": "Metodología"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 23,
+    "en": "The algorithm constructs a market population using the selected canonical geographic area, property type, transaction type, and any supported analytical filters.",
+    "es": "El algoritmo construye una población de mercado utilizando el área geográfica canónica seleccionada, el tipo de propiedad, el tipo de transacción y los filtros analíticos admitidos."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 24,
+    "en": "Sale and Rent populations are analyzed separately.",
+    "es": "Las poblaciones de venta y alquiler se analizan por separado."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 25,
+    "en": "Only listings meeting the applicable publication, population, and monetary eligibility rules contribute to the asking-price calculations.",
+    "es": "Solo los anuncios que cumplen las reglas aplicables de publicación, población y elegibilidad monetaria contribuyen a los cálculos de precios de oferta."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 26,
+    "en": "Eligible asking prices are normalized into the required monetary basis using the established currency and exchange-rate rules.",
+    "es": "Los precios de oferta elegibles se normalizan a la base monetaria requerida utilizando las reglas establecidas de moneda y tipo de cambio."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 27,
+    "en": "The algorithm orders the eligible prices from lowest to highest and calculates descriptive statistics, including:",
+    "es": "El algoritmo ordena los precios elegibles de menor a mayor y calcula estadísticas descriptivas, entre ellas:"
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 28,
+    "en": "Minimum and maximum asking price.",
+    "es": "Precio de oferta mínimo y máximo."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 29,
+    "en": "Arithmetic mean.",
+    "es": "Media aritmética."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 30,
+    "en": "Median.",
+    "es": "Mediana."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 31,
+    "en": "10th and 90th percentiles.",
+    "es": "Percentiles 10 y 90."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 32,
+    "en": "25th and 75th percentiles.",
+    "es": "Percentiles 25 y 75."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 33,
+    "en": "Interquartile range.",
+    "es": "Rango intercuartílico."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 34,
+    "en": "Market population, eligible asking-price population, and exclusions.",
+    "es": "Población del mercado, población con precios de oferta elegibles y exclusiones."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 35,
+    "en": "The resulting distribution describes asking prices observed in the selected market. It does not establish the market value of an individual property.",
+    "es": "La distribución resultante describe los precios de oferta observados en el mercado seleccionado. No establece el valor de mercado de una propiedad individual."
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "id": 36,
+    "en": "Mathematical Formulas",
+    "es": "Fórmulas matemáticas"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "id": 37,
+    "en": "Arithmetic mean",
+    "es": "Media aritmética"
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "id": 38,
+    "en": "x̄ = (1/n) Σᵢ₌₁ⁿ xᵢ",
+    "es": "x̄ = (1/n) Σᵢ₌₁ⁿ xᵢ"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 39,
+    "en": "Where xᵢ is an eligible normalized asking price and n is the number of eligible price observations.",
+    "es": "Donde xᵢ es un precio de oferta normalizado elegible y n es el número de observaciones de precios elegibles."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "id": 40,
+    "en": "Quantiles",
+    "es": "Cuantiles"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 41,
+    "en": "For n ≥ 1 ordered eligible prices x₍₁₎ ≤ … ≤ x₍ₙ₎ and 0 ≤ p ≤ 1:",
+    "es": "Para n ≥ 1 precios elegibles ordenados x₍₁₎ ≤ … ≤ x₍ₙ₎ y 0 ≤ p ≤ 1:"
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "id": 42,
+    "en": "h = (n−1)p",
+    "es": "h = (n−1)p"
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "id": 43,
+    "en": "j = ⌊h⌋, k = ⌈h⌉, α = h−j",
+    "es": "j = ⌊h⌋, k = ⌈h⌉, α = h−j"
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "id": 44,
+    "en": "If j=k, Q(p)=x₍ⱼ₊₁₎. Otherwise Q(p)=(1−α)x₍ⱼ₊₁₎+αx₍ₖ₊₁₎.",
+    "es": "Si j=k, Q(p)=x₍ⱼ₊₁₎. En otro caso, Q(p)=(1−α)x₍ⱼ₊₁₎+αx₍ₖ₊₁₎."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 45,
+    "en": "Thus Q(0)=x₍₁₎, Q(1)=x₍ₙ₎, and a one-observation population returns that observation for every quantile. With no eligible observations, quantiles, mean and IQR are undefined (null), not zero.",
+    "es": "Por tanto, Q(0)=x₍₁₎ y Q(1)=x₍ₙ₎. Una población de una sola observación devuelve esa observación para todos los cuantiles. Sin observaciones elegibles, los cuantiles, la media y el rango intercuartílico son indefinidos (null), no cero."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "id": 46,
+    "en": "Median",
+    "es": "Mediana"
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "id": 47,
+    "en": "Median = Q(0.50)",
+    "es": "Mediana = Q(0,50)"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "id": 48,
+    "en": "Interquartile range",
+    "es": "Rango intercuartílico"
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "id": 49,
+    "en": "IQR = Q(0.75) − Q(0.25)",
+    "es": "IQR = Q(0,75) − Q(0,25)"
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "id": 50,
+    "en": "How to Interpret the Results",
+    "es": "Cómo interpretar los resultados"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 51,
+    "en": "The median divides the ordered asking-price observations into lower and upper portions.",
+    "es": "La mediana divide las observaciones ordenadas de precios de oferta en una parte inferior y otra superior."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 52,
+    "en": "The 25th and 75th percentiles describe the central portion of the distribution. The interquartile range measures the difference between those two thresholds.",
+    "es": "Los percentiles 25 y 75 describen la parte central de la distribución. El rango intercuartílico mide la diferencia entre esos dos umbrales."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 53,
+    "en": "The 10th and 90th percentiles provide additional information about the lower and upper portions of the observed price distribution.",
+    "es": "Los percentiles 10 y 90 aportan información adicional sobre las partes inferior y superior de la distribución observada de precios de oferta."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 54,
+    "en": "A property's asking price can be displayed as a marker against the distribution when its canonical monetary and market context are compatible.",
+    "es": "El precio de oferta de una propiedad puede mostrarse como un marcador frente a la distribución cuando su contexto monetario y de mercado canónico sea compatible."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "id": 55,
+    "en": "The marker is not, by itself, an appraisal, an exact percentile ranking, or proof that the property is underpriced or overpriced.",
+    "es": "El marcador, por sí solo, no es un avalúo, una posición percentil exacta ni una prueba de que la propiedad tenga un precio inferior o superior al adecuado."
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "id": 56,
+    "en": "Limitations",
+    "es": "Limitaciones"
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 57,
+    "en": "Asking prices are not verified completed-sale prices.",
+    "es": "Los precios de oferta no son precios verificados de ventas realizadas."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 58,
+    "en": "Results depend on the eligible listings available in the defined market.",
+    "es": "Los resultados dependen de los anuncios elegibles disponibles en el mercado definido."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 59,
+    "en": "Listings with invalid or unavailable monetary evidence do not contribute valid price observations.",
+    "es": "Los anuncios con evidencia monetaria inválida o no disponible no aportan observaciones válidas de precios."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 60,
+    "en": "Empty markets and markets without eligible asking prices are reported explicitly.",
+    "es": "Los mercados vacíos y los mercados sin precios de oferta elegibles se informan explícitamente."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 61,
+    "en": "Quantile statistics do not establish the frequency distribution required for a histogram or density curve.",
+    "es": "Las estadísticas de cuantiles no establecen la distribución de frecuencias necesaria para un histograma o una curva de densidad."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 62,
+    "en": "Results describe the current observable asking-price market, not future property values.",
+    "es": "Los resultados describen el mercado actual observable de precios de oferta, no los valores futuros de las propiedades."
+  },
+  {
+    "part": "overlay",
+    "kind": "heading",
+    "emphasis": "bold",
+    "id": 63,
+    "en": "2. Market Composition",
+    "es": "2. Composición del Mercado"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "id": 64,
+    "en": "What characteristics compose the defined Costa Rican real-estate market?",
+    "es": "¿Qué características componen el mercado inmobiliario definido de Costa Rica?"
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "id": 65,
+    "en": "Questions This Algorithm Answers",
+    "es": "Preguntas que responde este algoritmo"
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 66,
+    "en": "Which supported property characteristics are represented among the listings in the selected market?",
+    "es": "¿Qué características de propiedades admitidas están representadas entre los anuncios del mercado seleccionado?"
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 67,
+    "en": "How many eligible listings exhibit each represented characteristic?",
+    "es": "¿Cuántos anuncios elegibles presentan cada característica representada?"
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 68,
+    "en": "What percentage of the relevant eligible population is represented by each characteristic?",
+    "es": "¿Qué porcentaje de la población elegible pertinente representa cada característica?"
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 69,
+    "en": "Which characteristics are more or less frequently represented within the defined market?",
+    "es": "¿Qué características están representadas con mayor o menor frecuencia en el mercado definido?"
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "id": 70,
+    "en": "Methodology",
+    "es": "Metodología"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 71,
+    "en": "The algorithm constructs an eligible market population using canonical geographic identity, transaction type, property type, and supported market filters.",
+    "es": "El algoritmo construye una población de mercado elegible utilizando identidad geográfica canónica, tipo de transacción, tipo de propiedad y filtros de mercado admitidos."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 72,
+    "en": "It examines the canonical characteristics and ontology associations recorded for the listings in that population.",
+    "es": "Examina las características canónicas y las asociaciones de la ontología registradas para los anuncios de esa población."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 73,
+    "en": "For each supported analytical dimension, the algorithm identifies:",
+    "es": "Para cada dimensión analítica admitida, el algoritmo identifica:"
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 74,
+    "en": "The full number N of distinct eligible listings in the defined market, used as the denominator for every dimension.",
+    "es": "El número completo N de anuncios elegibles distintos del mercado definido, utilizado como denominador en todas las dimensiones."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 75,
+    "en": "The represented characteristics.",
+    "es": "Las características representadas."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 76,
+    "en": "The number of listings associated with each characteristic.",
+    "es": "El número de anuncios asociados con cada característica."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 77,
+    "en": "The corresponding share of the relevant population.",
+    "es": "La proporción correspondiente de la población pertinente."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 78,
+    "en": "Represented and unrepresented evidence.",
+    "es": "La evidencia representada y no representada."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 79,
+    "en": "Distinct represented terms.",
+    "es": "Los términos representados distintos."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 80,
+    "en": "Each characteristic is counted according to the existing canonical membership and analytical rules.",
+    "es": "Cada característica se cuenta según las reglas existentes de pertenencia canónica y análisis."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 81,
+    "en": "A listing may possess multiple characteristics within a dimension. Consequently, characteristic percentages are not necessarily mutually exclusive and must not automatically be expected to total 100%.",
+    "es": "Un anuncio puede poseer varias características dentro de una dimensión. Por eso, sus porcentajes no son necesariamente mutuamente excluyentes y no debe suponerse que suman el 100%."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 82,
+    "en": "The algorithm measures the composition of the observed listing population. It does not determine whether a particular configuration is desirable or predict its market performance.",
+    "es": "El algoritmo mide la composición de la población observada de anuncios. No determina si una configuración concreta es deseable ni predice su desempeño en el mercado."
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "id": 83,
+    "en": "Mathematical Formulas",
+    "es": "Fórmulas matemáticas"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "id": 84,
+    "en": "Characteristic count",
+    "es": "Recuento de una característica"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 85,
+    "en": "For a supported characteristic c, let Iᵢ꜀=1 when eligible listing i has confirmed membership in characteristic c, and 0 otherwise.",
+    "es": "Para una característica admitida c, sea Iᵢ꜀=1 cuando el anuncio elegible i tiene pertenencia confirmada a la característica c, y 0 en otro caso."
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "id": 86,
+    "en": "N_c = Σᵢ₌₁ᴺ Iᵢ꜀",
+    "es": "N_c = Σᵢ₌₁ᴺ Iᵢ꜀"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 87,
+    "en": "Where N_c is the number of eligible listings exhibiting characteristic c.",
+    "es": "Donde N_c es el número de anuncios elegibles que presentan la característica c."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "id": 88,
+    "en": "Characteristic share",
+    "es": "Proporción de una característica"
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "id": 89,
+    "en": "For N>0, S_c=(N_c/N)×100%. When N=0, the percentage is undefined, not zero.",
+    "es": "Para N>0, S_c=(N_c/N)×100%. Cuando N=0, el porcentaje es indefinido, no cero."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 90,
+    "en": "Where:",
+    "es": "Donde:"
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 91,
+    "en": "N_c = confirmed characteristic count.",
+    "es": "N_c = recuento confirmado de la característica."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 92,
+    "en": "N = the full defined eligible listing population.",
+    "es": "N = población completa de anuncios elegibles del mercado definido."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 93,
+    "en": "S_c = characteristic share expressed as a percentage.",
+    "es": "S_c = proporción de la característica expresada como porcentaje."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 94,
+    "en": "Every dimension uses the same full eligible listing population as its denominator. Represented and unrepresented evidence are reported separately; missing evidence does not reduce that denominator.",
+    "es": "Todas las dimensiones utilizan como denominador la misma población completa de anuncios elegibles. La evidencia representada y no representada se informa por separado; la evidencia ausente no reduce ese denominador."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "id": 95,
+    "en": "Distinct represented characteristics",
+    "es": "Características representadas distintas"
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "id": 96,
+    "en": "K_d = |{c in dimension d : N_c>0}|",
+    "es": "K_d = |{c en la dimensión d : N_c>0}|"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 97,
+    "en": "K_d counts distinct canonical term identities represented by at least one eligible listing in dimension d.",
+    "es": "K_d cuenta las identidades de términos canónicos distintos representados por al menos un anuncio elegible en la dimensión d."
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "id": 98,
+    "en": "How to Interpret the Results",
+    "es": "Cómo interpretar los resultados"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 99,
+    "en": "A characteristic's count indicates how many eligible listings possess that recorded characteristic.",
+    "es": "El recuento de una característica indica cuántos anuncios elegibles poseen esa característica registrada."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 100,
+    "en": "Its share indicates how common that characteristic is within the applicable denominator.",
+    "es": "Su proporción indica qué tan común es esa característica dentro del denominador aplicable."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 101,
+    "en": "For example, a characteristic represented in 30 of 100 applicable listings has a 30% share for that denominator.",
+    "es": "Por ejemplo, una característica representada en 30 de 100 anuncios aplicables tiene una proporción del 30% para ese denominador."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 102,
+    "en": "That is a description of the observed inventory, not evidence that the characteristic increases or decreases a property's value.",
+    "es": "Eso describe el inventario observado; no demuestra que la característica aumente o disminuya el valor de una propiedad."
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "id": 103,
+    "en": "Limitations",
+    "es": "Limitaciones"
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 104,
+    "en": "Results depend on recorded and canonically recognized listing characteristics.",
+    "es": "Los resultados dependen de las características de anuncios registradas y reconocidas canónicamente."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 105,
+    "en": "Missing evidence must not be interpreted as confirmed absence.",
+    "es": "La evidencia ausente no debe interpretarse como ausencia confirmada de la característica."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 106,
+    "en": "A listing may contribute to multiple characteristic categories.",
+    "es": "Un anuncio puede contribuir a varias categorías de características."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 107,
+    "en": "A dimension may contain unrepresented listing evidence; its denominator remains the full eligible market population.",
+    "es": "Una dimensión puede contener anuncios sin evidencia representada; su denominador sigue siendo la población completa del mercado elegible."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 108,
+    "en": "A characteristic's prevalence does not establish its effect on asking price.",
+    "es": "La prevalencia de una característica no establece su efecto en el precio de oferta."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 109,
+    "en": "This algorithm does not automatically evaluate the frequency of a customer-defined combination of characteristics. That is a separate analytical capability.",
+    "es": "Este algoritmo no evalúa automáticamente la frecuencia de una combinación de características definida por el cliente. Esa es una capacidad analítica distinta."
+  },
+  {
+    "part": "overlay",
+    "kind": "heading",
+    "emphasis": "bold",
+    "id": 110,
+    "en": "3. Market Summary",
+    "es": "3. Resumen del Mercado"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "id": 111,
+    "en": "How many listings are in the defined Costa Rican real-estate market?",
+    "es": "¿Cuántos anuncios hay en el mercado inmobiliario definido de Costa Rica?"
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "id": 112,
+    "en": "Questions This Algorithm Answers",
+    "es": "Preguntas que responde este algoritmo"
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 113,
+    "en": "How many eligible property listings are currently represented in the defined market?",
+    "es": "¿Cuántos anuncios inmobiliarios elegibles están representados actualmente en el mercado definido?"
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 114,
+    "en": "How many eligible listings belong to the Sale or Rent/Lease population under the selected market scope?",
+    "es": "¿Cuántos anuncios elegibles pertenecen a la población de venta o alquiler/arrendamiento dentro del ámbito de mercado seleccionado?"
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 115,
+    "en": "How does the eligible listing count change when the supported geographic area or property-type definition changes?",
+    "es": "¿Cómo cambia el recuento de anuncios elegibles al cambiar el área geográfica o el tipo de propiedad admitidos?"
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 116,
+    "en": "Does the selected market contain an established eligible listing population, or is that population empty?",
+    "es": "¿Contiene el mercado seleccionado una población establecida de anuncios elegibles o está vacía?"
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "id": 117,
+    "en": "Methodology",
+    "es": "Metodología"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 118,
+    "en": "The algorithm identifies the eligible property-listing population associated with the selected canonical geographic area, property type, transaction scope, and supported market filters.",
+    "es": "El algoritmo identifica la población de anuncios inmobiliarios elegibles asociada con el área geográfica canónica seleccionada, el tipo de propiedad, el ámbito de transacción y los filtros de mercado admitidos."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 119,
+    "en": "It counts qualifying listings using the existing canonical population and transaction rules.",
+    "es": "Cuenta los anuncios que cumplen los requisitos utilizando las reglas existentes de población canónica y transacción."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 120,
+    "en": "Sale and Rent/Lease identities remain distinct.",
+    "es": "Las identidades de venta y alquiler/arrendamiento siguen siendo distintas."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 121,
+    "en": "The algorithm produces the applicable inventory counts and explicitly distinguishes an established population from an empty population.",
+    "es": "El algoritmo produce los recuentos de inventario aplicables y distingue explícitamente una población establecida de una población vacía."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 122,
+    "en": "Unlike Market Asking Price Distribution, Market Summary does not require every counted listing to contribute a valid numerical asking-price observation when its inventory eligibility rules permit inclusion.",
+    "es": "A diferencia de la Distribución de Precios de Oferta del Mercado, el Resumen del Mercado no exige que cada anuncio contado aporte una observación numérica válida de precio de oferta cuando sus reglas de elegibilidad de inventario permiten incluirlo."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 123,
+    "en": "Its purpose is to describe the size of the eligible listing inventory, not the distribution of monetary values.",
+    "es": "Su finalidad es describir el tamaño del inventario de anuncios elegibles, no la distribución de valores monetarios."
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "id": 124,
+    "en": "Mathematical Formulas",
+    "es": "Fórmulas matemáticas"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "id": 125,
+    "en": "Eligible listing count",
+    "es": "Recuento de anuncios elegibles"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 126,
+    "en": "For a defined market population M:",
+    "es": "Para una población de mercado definida M:"
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "id": 127,
+    "en": "N_M = Σᵢ₌₁ᴸ I(i∈M)",
+    "es": "N_M = Σᵢ₌₁ᴸ I(i∈M)"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 128,
+    "en": "Where:",
+    "es": "Donde:"
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 129,
+    "en": "L = listings evaluated under the authorized population acquisition.",
+    "es": "L = anuncios evaluados mediante la adquisición de población autorizada."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 130,
+    "en": "I(i∈M)=1 when listing i qualifies for the defined market.",
+    "es": "I(i∈M)=1 cuando el anuncio i cumple los requisitos del mercado definido."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 131,
+    "en": "N_M = eligible listing count.",
+    "es": "N_M = recuento de anuncios elegibles."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "id": 132,
+    "en": "Transaction-specific counts",
+    "es": "Recuentos por tipo de transacción"
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "id": 133,
+    "en": "N_Sale = Σᵢ₌₁ᴸ I(i∈M_Sale)",
+    "es": "N_Venta = Σᵢ₌₁ᴸ I(i∈M_Venta)"
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "id": 134,
+    "en": "N_Rent = Σᵢ₌₁ᴸ I(i∈M_Rent)",
+    "es": "N_Alquiler = Σᵢ₌₁ᴸ I(i∈M_Alquiler)"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 135,
+    "en": "Where the corresponding transaction population is included in the authorized analytical question.",
+    "es": "Cuando la población de transacción correspondiente está incluida en la pregunta analítica autorizada."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "id": 136,
+    "en": "Combined inventory count, where the output contract permits both transaction counts",
+    "es": "Recuento combinado de inventario, cuando el contrato de salida permite ambos recuentos por transacción"
+  },
+  {
+    "part": "overlay",
+    "kind": "formula",
+    "emphasis": "none",
+    "id": 137,
+    "en": "N_Total = N_Sale + N_Rent",
+    "es": "N_Total = N_Venta + N_Alquiler"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 138,
+    "en": "This count combines inventory quantities only. It does not combine Sale and Rent asking-price distributions.",
+    "es": "Este recuento combina únicamente cantidades de inventario. No combina distribuciones de precios de oferta de venta y alquiler."
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "id": 139,
+    "en": "How to Interpret the Results",
+    "es": "Cómo interpretar los resultados"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 140,
+    "en": "Market Summary tells you how many eligible listings are represented within the selected market definition.",
+    "es": "El Resumen del Mercado indica cuántos anuncios elegibles están representados dentro de la definición de mercado seleccionada."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 141,
+    "en": "A larger listing count means more qualifying advertisements are present in the observed population. It does not, by itself, establish stronger demand, higher liquidity, faster sales, or better investment opportunities.",
+    "es": "Un mayor recuento significa que hay más anuncios que cumplen los requisitos en la población observada. Por sí solo, no demuestra mayor demanda, liquidez, rapidez de venta ni mejores oportunidades de inversión."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 142,
+    "en": "An empty result indicates that no listings qualified for the defined population under the applicable rules.",
+    "es": "Un resultado vacío indica que ningún anuncio cumplió los requisitos de la población definida según las reglas aplicables."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 143,
+    "en": "It does not establish that no properties exist in that geographic area.",
+    "es": "No demuestra que no existan propiedades en esa área geográfica."
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "id": 144,
+    "en": "Limitations",
+    "es": "Limitaciones"
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 145,
+    "en": "Counts describe eligible observed listings, not the complete physical housing stock.",
+    "es": "Los recuentos describen anuncios elegibles observados, no la totalidad de las propiedades físicas existentes."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 146,
+    "en": "The algorithm does not measure completed transactions.",
+    "es": "El algoritmo no mide transacciones realizadas."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 147,
+    "en": "Listing counts are not measures of buyer demand or sales velocity.",
+    "es": "Los recuentos de anuncios no son medidas de demanda de compradores ni de velocidad de ventas."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 148,
+    "en": "Geographic and property-type restrictions affect the eligible inventory.",
+    "es": "Las restricciones geográficas y de tipo de propiedad afectan al inventario elegible."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 149,
+    "en": "Missing or unresolved canonical identity can prevent a listing from qualifying.",
+    "es": "La identidad canónica ausente o no resuelta puede impedir que un anuncio cumpla los requisitos."
+  },
+  {
+    "part": "overlay",
+    "kind": "item",
+    "emphasis": "none",
+    "id": 150,
+    "en": "The algorithm does not forecast future inventory or prices.",
+    "es": "El algoritmo no pronostica el inventario ni los precios futuros."
+  },
+  {
+    "part": "overlay",
+    "kind": "heading",
+    "emphasis": "bold",
+    "id": 151,
+    "en": "Where These Algorithms Can Be Used",
+    "es": "Dónde se pueden utilizar estos algoritmos"
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "id": 152,
+    "en": "Intelligence Hub",
+    "es": "Centro de Inteligencia"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 153,
+    "en": "All three Entertainment Package algorithms are available through the existing Intelligence Hub, subject to active Package entitlement and supported market/population authorization.",
+    "es": "Los tres algoritmos del Paquete de Entretenimiento están disponibles en el Centro de Inteligencia existente, sujetos a un derecho activo del Paquete y a la autorización de mercado/población admitida."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 154,
+    "en": "Customers can investigate the supported geographic markets, property characteristics, and asking-price distributions using the existing analytical interfaces.",
+    "es": "Los clientes pueden investigar los mercados geográficos, las características de propiedades y las distribuciones de precios de oferta admitidos mediante las interfaces analíticas existentes."
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "id": 155,
+    "en": "Individual Published Property Listings",
+    "es": "Anuncios individuales de propiedades publicadas"
+  },
+  {
+    "id": 155.5,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "en": "Planned integration — not currently available on the production website. The following describes the intended experience after the separately qualified Listing Intelligence release.",
+    "es": "Integración prevista: actualmente no está disponible en el sitio web de producción. Lo siguiente describe la experiencia prevista después del lanzamiento de Inteligencia de Propiedades, sujeto a su verificación independiente."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 156,
+    "en": "The eligible Market Asking Price Distribution lens can examine a published property's asking price against the supported asking-price distribution for its defined geographic and property-type market.",
+    "es": "La perspectiva elegible de Distribución de Precios de Oferta del Mercado puede examinar el precio de oferta de una propiedad publicada frente a la distribución admitida para su mercado definido por geografía y tipo de propiedad."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 157,
+    "en": "The property supplies the required canonical context where sufficient evidence exists.",
+    "es": "La propiedad aporta el contexto canónico requerido cuando existe evidencia suficiente."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 158,
+    "en": "The customer must explicitly click Run Algorithm.",
+    "es": "El cliente debe hacer clic explícitamente en Ejecutar Algoritmo."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 159,
+    "en": "Market Composition and Market Summary remain available in the Intelligence Hub rather than being presented as direct subject-property valuation algorithms.",
+    "es": "La Composición del Mercado y el Resumen del Mercado siguen disponibles en el Centro de Inteligencia; no se presentan como algoritmos de valoración directa de una propiedad concreta."
+  },
+  {
+    "part": "overlay",
+    "kind": "subheading",
+    "emphasis": "bold",
+    "id": 160,
+    "en": "Create / Publish a Property Listing",
+    "es": "Crear / publicar un anuncio inmobiliario"
+  },
+  {
+    "id": 160.5,
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "en": "Planned integration — not currently available on the production website. The following describes the intended experience after the separately qualified Listing Intelligence release.",
+    "es": "Integración prevista: actualmente no está disponible en el sitio web de producción. Lo siguiente describe la experiencia prevista después del lanzamiento de Inteligencia de Propiedades, sujeto a su verificación independiente."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 161,
+    "en": "The eligible Market Asking Price Distribution lens can place a seller's proposed asking price against the supported current market distribution before publication.",
+    "es": "La perspectiva elegible de Distribución de Precios de Oferta del Mercado puede situar el precio de oferta propuesto por un vendedor frente a la distribución actual admitida del mercado antes de publicar."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 162,
+    "en": "Where the methodology permits, the proposed-price marker can move when the seller changes the asking price without repeating the market calculation.",
+    "es": "Cuando la metodología lo permite, el marcador del precio propuesto puede moverse cuando el vendedor cambia el precio de oferta sin repetir el cálculo del mercado."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 163,
+    "en": "Changes to the underlying market definition require a new explicit analysis.",
+    "es": "Los cambios en la definición subyacente del mercado requieren un nuevo análisis explícito."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "id": 164,
+    "en": "Publishing a listing is free. Purchasing Intelligence is optional.",
+    "es": "Publicar un anuncio es gratis. Comprar Inteligencia es opcional."
+  },
+  {
+    "part": "overlay",
+    "kind": "heading",
+    "emphasis": "bold",
+    "id": 165,
+    "en": "Analytical Integrity and Access",
+    "es": "Integridad analítica y acceso"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 166,
+    "en": "All Entertainment Package analyses use current observable listing evidence and the existing canonical analytical methodologies.",
+    "es": "Todos los análisis del Paquete de Entretenimiento utilizan evidencia actual observable de anuncios y las metodologías analíticas canónicas existentes."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 167,
+    "en": "Actual analytical execution requires an explicit Run Algorithm action and the applicable active Package and market-population authorization.",
+    "es": "La ejecución analítica real requiere una acción explícita de Ejecutar Algoritmo y la autorización activa aplicable del Paquete y de mercado/población."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 168,
+    "en": "Static example graphs are demonstrations only. They do not contain protected market results and do not execute analytical algorithms.",
+    "es": "Los gráficos estáticos de ejemplo son únicamente demostraciones. No contienen resultados protegidos del mercado ni ejecutan algoritmos analíticos."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "none",
+    "id": 169,
+    "en": "Results may be unavailable when the requested market, property evidence, monetary context, or authorized population does not satisfy the algorithm's eligibility requirements.",
+    "es": "Los resultados pueden no estar disponibles cuando el mercado solicitado, la evidencia de la propiedad, el contexto monetario o la población autorizada no satisfacen los requisitos de elegibilidad del algoritmo."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "bold",
+    "id": 170,
+    "en": "One Package provides access to its included capabilities across eligible properties and supported markets during the purchased coverage period. Each analytical execution remains individually requested.",
+    "es": "Un Paquete permite acceder a sus capacidades incluidas en propiedades elegibles y mercados admitidos durante el período de cobertura adquirido. Cada ejecución analítica se solicita individualmente."
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "italic",
+    "id": 171,
+    "en": "Twuanis Market Intelligence | Entertainment Package",
+    "es": "Inteligencia de Mercado Twuanis | Paquete de Entretenimiento"
+  },
+  {
+    "part": "overlay",
+    "kind": "paragraph",
+    "emphasis": "italic",
+    "id": 172,
+    "en": "Current asking-price and listing-market evidence. Not a formal property appraisal or a prediction of future transaction prices.",
+    "es": "Evidencia actual de precios de oferta y del mercado de anuncios. No es un avalúo formal de una propiedad ni una predicción de precios de transacciones futuras."
+  }
+]

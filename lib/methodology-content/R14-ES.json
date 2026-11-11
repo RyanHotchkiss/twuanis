@@ -1,0 +1,246 @@
+{
+  "kind": "UNPUBLISHED_PUBLIC_PROJECTION_CANDIDATE",
+  "engineId": "position",
+  "name": "Posición del precio por m² de una propiedad",
+  "locale": "es",
+  "explanationRevision": "KA02-2026-10-15-R1/R14",
+  "historicalReleaseReference": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+  "publicationState": "WITHHELD_PENDING_KA02_OWNER_REVIEW",
+  "inputs": [
+    {
+      "name": "canonicalScope",
+      "meaning": "Capacidad/población autenticada existente, transacción, geografía/tipo canónico y selección explícita del cliente; se mantienen identidades distintas por origen.",
+      "unit": "canonical IDs and scope / IDs y ámbito canónicos",
+      "evidenceKind": "scope",
+      "required": true,
+      "missingBehavior": "Deny/unavailable; never widen scope / denegar/no disponible; nunca ampliar ámbito"
+    },
+    {
+      "name": "canonicalEvidence",
+      "meaning": "Observaciones actuales elegibles privadas o bancarias mediante lectores/procedencia canónicos existentes; para bancos se requiere venta directa/ciclo de vida/transacción original, no tasación.",
+      "unit": "source-qualified records / registros con origen",
+      "evidenceKind": "identity",
+      "required": true,
+      "missingBehavior": "Missing/inconsistent acquisition is unavailable or excluded with explicit reason; not a successful empty market / adquisición ausente/incoherente no disponible o exclusión explícita; no mercado vacío exitoso"
+    },
+    {
+      "name": "askingMoney",
+      "meaning": "Importe/moneda originales e identidad de transacción; CRC analíticos usa tipo BCCR de venta de referencia vinculado a fecha cuando se convierte USD.",
+      "unit": "CRC or USD; Sale total / monthly Rent / venta total o alquiler mensual",
+      "evidenceKind": "monetary",
+      "required": true,
+      "missingBehavior": "No default money or FX; exclude invalid value or return unavailable according to engine state; count scope may remain / sin dinero/tipo supuesto; excluir valor inválido o no disponible según estado; el ámbito de conteo puede permanecer"
+    },
+    {
+      "name": "areaIdentity",
+      "meaning": "Área exacta positiva de terreno o construcción seleccionada, base de inmueble y normalización explícitas; intervalos/categorías siguen siendo evidencia distinta.",
+      "unit": "m²; land/construction / terreno/construcción",
+      "evidenceKind": "exact",
+      "required": true,
+      "missingBehavior": "Range-only cannot create exact normalization; exclude or not-establish with canonical reason; never substitute footprint / solo intervalo no crea normalización exacta; excluir/no establecer con razón canónica; no sustituir huella"
+    },
+    {
+      "name": "subject",
+      "meaning": "Sujeto compatible identificado; solo weighted-price admite además un sujeto hipotético de cliente validado explícitamente.",
+      "unit": "source-qualified identity or protected hypothetical / identidad con origen o hipotético protegido",
+      "evidenceKind": "identity",
+      "required": true,
+      "missingBehavior": "subject_unavailable or hypothetical incompatibility; a no-money valid weighted hypothetical yields distribution_only / sujeto no disponible o hipotético incompatible; hipotético ponderado válido sin dinero produce distribution_only"
+    }
+  ],
+  "calculationStages": [
+    {
+      "id": "acquire",
+      "meaning": "Adquirir solo evidencia canónica actualmente autorizada; rechazar entradas incompletas, incoherentes o fuera de ámbito.",
+      "formulaRefs": []
+    },
+    {
+      "id": "calculate",
+      "meaning": "Aplicar la secuencia existente de elegibilidad, normalización y fórmulas del motor; conservar cada estado no establecido.",
+      "formulaRefs": [
+        "normalization",
+        "quantile",
+        "midrank",
+        "difference",
+        "tail"
+      ]
+    },
+    {
+      "id": "deliver",
+      "meaning": "Devolver evidencia vinculada a origen/versión mediante controles existentes; consultar metodología nunca ejecuta el motor ni cobra ejecución.",
+      "formulaRefs": []
+    }
+  ],
+  "question": "¿Cómo se compara el precio de oferta/m² actual de un sujeto identificado con la población de referencia seleccionada explícitamente?",
+  "applications": [
+    "Un comprador puede examinar rango medio, diferencia frente a mediana y colas estrictas viendo si el sujeto está incluido o es externo."
+  ],
+  "formulas": [
+    {
+      "id": "normalization",
+      "equation": "P_CRC=P_USD×r_t or P_CRC(original); y=P_CRC/A",
+      "variables": [
+        {
+          "symbol": "P",
+          "meaning": "Precio de oferta elegible en CRC analíticos en la fecha explícita",
+          "unit": "CRC or CRC/month"
+        },
+        {
+          "symbol": "A",
+          "meaning": "Área exacta seleccionada para normalizar, terreno o construcción",
+          "unit": "m²"
+        },
+        {
+          "symbol": "y",
+          "meaning": "Precio de oferta dividido entre el área exacta seleccionada",
+          "unit": "CRC/m² or CRC/m²/month"
+        },
+        {
+          "symbol": "r_t",
+          "meaning": "Tipo BCCR canónico de venta de referencia USD→CRC para la fecha analítica",
+          "unit": "CRC/USD"
+        }
+      ],
+      "statisticalMethod": "Descriptive / descriptivo",
+      "denominator": "Exact positive A / A exacta positiva",
+      "normalization": "Sale CRC/m²; monthly rent CRC/m²/month; land/construction separate / venta y alquiler mensual, terreno/construcción separados",
+      "precisionAndRounding": "IEEE754 binary64; analytical values not display-rounded / valores analíticos sin redondeo de presentación. No additional rounding or inferential precision claimed / sin redondeo adicional ni precisión inferencial afirmada."
+    },
+    {
+      "id": "quantile",
+      "equation": "h=(N−1)p; Q(p)=(1−w)x[floor(h)]+w x[ceil(h)]; w=h−floor(h)",
+      "variables": [
+        {
+          "symbol": "N",
+          "meaning": "Número de observaciones elegibles distintas",
+          "unit": "count"
+        },
+        {
+          "symbol": "p",
+          "meaning": "Probabilidad cuantil de0 a1",
+          "unit": "fraction"
+        },
+        {
+          "symbol": "x",
+          "meaning": "Observaciones positivas finitas ordenadas, índices desde cero",
+          "unit": "same as input"
+        }
+      ],
+      "statisticalMethod": "Linear interpolation / interpolación lineal",
+      "denominator": "None: interpolation / ninguna: interpolación",
+      "normalization": "Canonical source identity / identidad canónica de origen",
+      "precisionAndRounding": "IEEE754 binary64; analytical values not display-rounded / valores analíticos sin redondeo de presentación. No additional rounding or inferential precision claimed / sin redondeo adicional ni precisión inferencial afirmada."
+    },
+    {
+      "id": "midrank",
+      "equation": "B+E+U=N; position=100(B+0.5E)/N",
+      "variables": [
+        {
+          "symbol": "N",
+          "meaning": "Número de observaciones elegibles distintas",
+          "unit": "count"
+        },
+        {
+          "symbol": "B",
+          "meaning": "Observaciones de referencia estrictamente inferiores al sujeto",
+          "unit": "count"
+        },
+        {
+          "symbol": "E",
+          "meaning": "Observaciones de referencia iguales al sujeto",
+          "unit": "count"
+        },
+        {
+          "symbol": "U",
+          "meaning": "Observaciones de referencia estrictamente superiores al sujeto",
+          "unit": "count"
+        }
+      ],
+      "statisticalMethod": "Midrank / rango medio",
+      "denominator": "N>0",
+      "normalization": "Canonical source identity / identidad canónica de origen",
+      "precisionAndRounding": "IEEE754 binary64; analytical values not display-rounded / valores analíticos sin redondeo de presentación. No additional rounding or inferential precision claimed / sin redondeo adicional ni precisión inferencial afirmada."
+    },
+    {
+      "id": "difference",
+      "equation": "Δ=y_s−m; Δ%=100(y_s−m)/m",
+      "variables": [
+        {
+          "symbol": "y_s",
+          "meaning": "Valor numérico del sujeto",
+          "unit": "same as median"
+        },
+        {
+          "symbol": "m",
+          "meaning": "Mediana de la cohorte de referencia",
+          "unit": "same unit as observations"
+        }
+      ],
+      "statisticalMethod": "Descriptive / descriptivo",
+      "denominator": "m>0",
+      "normalization": "Canonical source identity / identidad canónica de origen",
+      "precisionAndRounding": "IEEE754 binary64; analytical values not display-rounded / valores analíticos sin redondeo de presentación. No additional rounding or inferential precision claimed / sin redondeo adicional ni precisión inferencial afirmada."
+    },
+    {
+      "id": "tail",
+      "equation": "tail only if y_s<P10 or y_s>P90; tailΔ%=100(y_s−q_tail)/q_tail",
+      "variables": [
+        {
+          "symbol": "y_s",
+          "meaning": "Intensidad de precio de oferta del sujeto",
+          "unit": "price/m²"
+        },
+        {
+          "symbol": "q_tail",
+          "meaning": "Umbral P10 o P90 identificado explícitamente",
+          "unit": "price/m²"
+        }
+      ],
+      "statisticalMethod": "Descriptive / descriptivo",
+      "denominator": "q_tail>0",
+      "normalization": "Canonical source identity / identidad canónica de origen",
+      "precisionAndRounding": "IEEE754 binary64; analytical values not display-rounded / valores analíticos sin redondeo de presentación. No additional rounding or inferential precision claimed / sin redondeo adicional ni precisión inferencial afirmada."
+    }
+  ],
+  "population": {
+    "definition": "Mercado actual observable de anuncios/oferta elegibles dentro del ámbito explícito con origen, no transacciones históricas. Resultados privados y bancarios separados; solo las ramas existentes que exponen crossMarket admiten cálculo entre mercados.",
+    "eligibility": [
+      "Mercado actual observable de anuncios/oferta elegibles dentro del ámbito explícito con origen, no transacciones históricas. Resultados privados y bancarios separados; solo las ramas existentes que exponen crossMarket admiten cálculo entre mercados.",
+      "Salvo matching/configuration, los grupos de preferencias seleccionados del adaptador deben coincidir positivamente (algún valor del grupo y todos los grupos). Matching ordena evidencia; configuration cuenta la conjunción completa respecto a la base.",
+      "Venta y alquiler mensual nunca se mezclan. La reducción bancaria canónica requiere DIRECT_SALE, transacción de venta original exacta, ciclo PUBLISHED, vigencia/procedencia válidas y geografía/tipo coherentes; no se inventa alquiler bancario.",
+      "Sujeto válido y al menos una observación de referencia compatible; inferiores+iguales+superiores deben sumarN."
+    ],
+    "exclusions": [
+      "La evidencia requerida ausente, contradictoria, inválida, no confirmada o desactualizada no se convierte en cero, valor supuesto ni población ampliada silenciosamente.",
+      "Sin área exacta desde categoría/intervalo; construcción no sustituye huella; importes de oferta no son transacciones realizadas; identidades monetarias/fecha BCCR explícitas."
+    ]
+  },
+  "outputs": [
+    {
+      "name": "percentile/medianPosition/interval/tail/constructionToLandContext",
+      "meaning": "Posición del sujeto, diferencias con signo, intervalo cuantil y evidencia de cola estricta",
+      "unit": "counts; percent; price/m²; contextual ratio",
+      "interpretation": "En la mediana es un intervalo separado. La igualdad enP10/P90 no es cola estricta; las referencias porcentuales son explícitas."
+    }
+  ],
+  "resultStates": {
+    "empty": "Una población seleccionada vacía establecida tiene conteo cero y resúmenes numéricos indefinidos; conservar los estados específicos siguientes.",
+    "zero": "Conteos cero y diferencias/IQR cero válidos pueden tener sentido; precio de oferta o área de normalización cero/negativos no son observaciones positivas elegibles.",
+    "invalid": "Entrada inválida, identidad contradictoria, evidencia canónica duplicada o ámbito mezclado sigue la rama existente de error/exclusión; sin resultado exitoso inventado.",
+    "unavailable": "Autoridad, derechos actuales, instantánea coherente, tipo de cambio o sujeto requeridos ausentes son no disponibles/denegados bajo controles existentes; nunca sustituto vacío exitoso.",
+    "undefined": "Referencia vacía→reference_population_empty; sujeto inválido/ausente→subject_unavailable. Denominador cero o conteos/cuantiles incoherentes producen error; no disponible no equivale al percentil0."
+  },
+  "supportedInterpretation": "Un comprador puede examinar rango medio, diferencia frente a mediana y colas estrictas viendo si el sujeto está incluido o es externo.",
+  "unsupportedInterpretations": [
+    "¿Cuál fue el precio realizado, apreciación histórica, rendimiento causal, pronóstico o resultado garantizado de inversión? Este motor del mercado actual de oferta no los establece.",
+    "La inclusión/exclusión del sujeto cambia la interpretación; colas y diferencias no implican precio incorrecto ni valor realizado."
+  ],
+  "packageMembership": [
+    {
+      "packageId": "pkg-pricing-position-relationships",
+      "capabilityId": "cap-property-price-m2-position",
+      "availability": "Configured at original observation; purchased rights and production execution verified separately / configurado en observación original; derechos comprados y ejecución de producción se verifican por separado"
+    }
+  ],
+  "evidenceState": "DOCUMENTED; MATHEMATICALLY_VERIFIED_FOR_PINNED_CONTRACTS; BILINGUAL_TECHNICAL_REVIEWED; SCHEMA_VALIDATED; DISCLOSURE_ALLOWLIST_CHECKED; OWNER_NOT_ACCEPTED"
+}

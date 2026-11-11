@@ -1,0 +1,7 @@
+'use server'
+import {createServerSupabaseClient} from '@/lib/supabase-server'
+import {directUuid,type DirectCheckout} from '@/lib/direct-sinpe'
+import {assertOwner} from '@/lib/administrative-control'
+export async function readDirectSinpe(order:string){try{if(!directUuid(order))throw Error();const db=await createServerSupabaseClient(),a=await db.auth.getUser();if(a.error||!a.data.user)throw Error();const r=await db.rpc('read_direct_sinpe_checkout',{p_order:order});if(r.error||!r.data||r.data.orderId!==order||r.data.accountId&&r.data.accountId!==a.data.user.id)throw Error();return{ok:true as const,data:r.data as DirectCheckout}}catch{return{ok:false as const}}}
+export async function readDirectReceipts(after:string|null=null){try{await assertOwner();if(after!==null&&!directUuid(after))throw Error();const db=await createServerSupabaseClient(),r=await db.rpc('admin_direct_sinpe_receipts',{p_after:after});if(r.error||!Array.isArray(r.data)||r.data.length>26)throw Error();return{ok:true as const,items:r.data.slice(0,25),next:r.data.length>25?r.data[24].id as string:null}}catch{return{ok:false as const}}}
+export async function reconcileDirectReceipt(id:string,status:'RECONCILED'|'UNMATCHED'){try{await assertOwner();if(!directUuid(id)||!['RECONCILED','UNMATCHED'].includes(status))throw Error();const db=await createServerSupabaseClient(),r=await db.rpc('reconcile_direct_sinpe_receipt',{p_receipt:id,p_status:status});return{ok:!r.error&&r.data===true}}catch{return{ok:false}}}

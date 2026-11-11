@@ -1,0 +1,2 @@
+import content from '@/lib/measurement/privacy-notice-content.json'
+export default function PrivacyNoticeDraft({locale}:{locale:'en'|'es'}){const es=locale==='es';return <main style={{maxWidth:850,margin:'0 auto',padding:'40px 24px 180px',fontFamily:'sans-serif',lineHeight:1.7,overflowWrap:'anywhere'}}><h1>{es?'Aviso de Privacidad':'Privacy Notice'}</h1><a href={es?'/en/privacy':'/es/privacidad'}>{es?'English':'Español'}</a>{content[locale].map(([title,text],i)=><section key={i}><h2>{i+1}. {title}</h2><p>{text}</p></section>)}</main>}

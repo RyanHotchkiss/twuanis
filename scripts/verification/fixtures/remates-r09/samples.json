@@ -1,0 +1,101 @@
+{
+  "provenance": "RECONSTRUCTED from recorded reconnaissance labels/values; not captured bank HTML/PDF, not provider acceptance",
+  "fixtures": {
+    "bn": {
+      "capturedAt": "2026-10-09T12:00:00Z",
+      "scope": "SAMPLE",
+      "pages": [
+        {
+          "url": "https://ventadebienes.bncr.fi.cr/sample",
+          "finalUrl": "https://ventadebienes.bncr.fi.cr/sample",
+          "status": 200,
+          "contentType": "text/html",
+          "body": "<article><dl><dt>Código</dt><dd>9050-1</dd><dt>Tipo de bien</dt><dd>Casa</dd><dt>Provincia</dt><dd>San José</dd><dt>Valor informativo</dt><dd>CRC 45,000,000</dd><dt>Valor avalúo</dt><dd>CRC 48,000,000</dd><dt>Descuento</dt><dd>10%</dd></dl></article>",
+          "number": 1,
+          "terminal": true,
+          "next": null
+        }
+      ]
+    },
+    "bcr": {
+      "capturedAt": "2026-10-09T12:00:00Z",
+      "scope": "SAMPLE",
+      "pages": [
+        {
+          "url": "https://ventadebienes.bancobcr.com/wps/portal/bcrb/bcrbienes/sample",
+          "finalUrl": "https://ventadebienes.bancobcr.com/wps/portal/bcrb/bcrbienes/sample",
+          "status": 200,
+          "contentType": "text/html",
+          "body": "<article><dl><dt>Código</dt><dd>BCR-BA1028511122</dd><dt>Tipo de bien</dt><dd>Casa</dd><dt>Folio</dt><dd>2-480182-000</dd><dt>Provincia</dt><dd>Alajuela</dd><dt>Cantón</dt><dd>San Carlos</dd><dt>Distrito</dt><dd>Quesada</dd><dt>Área terreno</dt><dd>695 m²</dd><dt>Área construcción</dt><dd>287 m²</dd><dt>Precio inicial</dt><dd>CRC 72,525,000</dd><dt>Descuento</dt><dd>35%</dd><dt>Monto del descuento</dt><dd>CRC 25,383,750</dd><dt>Precio de venta final</dt><dd>CRC 47,141,250</dd></dl></article>",
+          "number": 1,
+          "terminal": true,
+          "next": null
+        }
+      ]
+    },
+    "bp-inventory": {
+      "capturedAt": "2026-10-09T12:00:00Z",
+      "scope": "SAMPLE",
+      "pages": [
+        {
+          "url": "https://srv.bancopopular.fi.cr/Wb_BA_SharepointU/sample",
+          "finalUrl": "https://srv.bancopopular.fi.cr/Wb_BA_SharepointU/sample",
+          "status": 200,
+          "contentType": "text/html",
+          "body": "<article><dl><dt>codBien</dt><dd>10554</dd><dt>Tipo de bien</dt><dd>Casa</dd><dt>Expediente</dt><dd>5129-22-01</dd><dt>Folio</dt><dd>1-499895-000</dd><dt>Precio Real</dt><dd>CRC 33,515,082</dd><dt>Precio Venta</dt><dd>CRC 26,812,065.60</dd><dt>Descuento</dt><dd>₡ 20%</dd><dt>Cuota Aproximada</dt><dd>CRC 121,598.68</dd></dl></article>",
+          "number": 1,
+          "terminal": true,
+          "next": null
+        }
+      ]
+    },
+    "bp-catalog": {
+      "capturedAt": "2026-10-09T12:00:00Z",
+      "scope": "SAMPLE",
+      "pages": [
+        {
+          "url": "https://www.bancopopular.fi.cr/wp-content/uploads/sample-catalog.pdf",
+          "finalUrl": "https://www.bancopopular.fi.cr/wp-content/uploads/sample-catalog.pdf",
+          "status": 200,
+          "contentType": "application/vnd.twuanis.positioned-text+json",
+          "body": "{\"format\":\"positioned-label-rows-v1\",\"rows\":[{\"box\":[0,0,600,800],\"fields\":[{\"label\":\"Expediente\",\"raw\":\"5129-22-01\",\"box\":[10,10,500,30]},{\"label\":\"Tipo de bien\",\"raw\":\"Casa\",\"box\":[10,35,500,55]},{\"label\":\"Folio\",\"raw\":\"1-499895-000\",\"box\":[10,60,500,80]},{\"label\":\"Precio base de venta\",\"raw\":\"CRC 26,812,065.60\",\"box\":[10,85,500,105]},{\"label\":\"Precio avalúo\",\"raw\":\"CRC 33,515,082\",\"box\":[10,110,500,130]}]}]}",
+          "number": 1,
+          "terminal": true,
+          "next": null
+        }
+      ]
+    },
+    "bp-auctions": {
+      "capturedAt": "2026-10-09T12:00:00Z",
+      "scope": "SAMPLE",
+      "pages": [
+        {
+          "url": "https://www.bancopopular.fi.cr/wp-content/uploads/sample-auctions.pdf",
+          "finalUrl": "https://www.bancopopular.fi.cr/wp-content/uploads/sample-auctions.pdf",
+          "status": 200,
+          "contentType": "application/vnd.twuanis.positioned-text+json",
+          "body": "{\"format\":\"positioned-label-rows-v1\",\"rows\":[{\"box\":[0,0,600,800],\"fields\":[{\"label\":\"Expediente judicial\",\"raw\":\"24-004938-1164-CJ\",\"box\":[10,10,500,30]},{\"label\":\"Tipo de bien\",\"raw\":\"Finca\",\"box\":[10,35,500,55]},{\"label\":\"Folio\",\"raw\":\"3-156212-000\",\"box\":[10,60,500,80]},{\"label\":\"Valor del Mercado\",\"raw\":\"USD 93,278.82\",\"box\":[10,85,500,105]},{\"label\":\"Base de Primer Remate\",\"raw\":\"USD 56,115.12\",\"box\":[10,110,500,130]},{\"label\":\"Fecha Primer Remate\",\"raw\":\"2026-10-08\",\"box\":[10,135,500,155]},{\"label\":\"Hora Primer Remate\",\"raw\":\"09:00\",\"box\":[10,160,500,180]}]}]}",
+          "number": 1,
+          "terminal": true,
+          "next": null
+        }
+      ]
+    },
+    "bac": {
+      "capturedAt": "2026-10-09T12:00:00Z",
+      "scope": "SAMPLE",
+      "pages": [
+        {
+          "url": "https://www.baccredomatic.com/es-cr/personas/viviendas-adjudicadas",
+          "finalUrl": "https://www.baccredomatic.com/es-cr/personas/viviendas-adjudicadas",
+          "status": 200,
+          "contentType": "text/html",
+          "body": "<article><dl><dt>Folio</dt><dd>1-128546-f-000</dd><dt>Tipo de bien</dt><dd>Apartamento</dd><dt>País</dt><dd>Costa Rica</dd><dt>Precio base</dt><dd>USD 100,000</dd><dt>Precio con Descuento</dt><dd>USD 90,000</dd><dt>Cuota Condominal</dt><dd>CRC 45,000</dd></dl></article>",
+          "number": 1,
+          "terminal": true,
+          "next": null
+        }
+      ]
+    }
+  }
+}

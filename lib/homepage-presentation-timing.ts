@@ -1,0 +1,3 @@
+export const HOMEPAGE_INTRO_MS = 15000
+export const HOMEPAGE_EXIT_MS = 500
+export const HOMEPAGE_ROTATION_MS = 3000

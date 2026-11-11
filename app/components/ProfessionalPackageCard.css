@@ -1,0 +1,1 @@
+.professional-card::before{background:linear-gradient(110deg,#581324,#be6178 30%,#96283f 55%,#541223)}.professional-duration{display:flex;flex-wrap:wrap;gap:.75rem;margin-bottom:1rem}.professional-duration .commercial-action{flex:1;min-width:8rem}.professional-duration [aria-pressed="true"]{outline:2px solid var(--commercial-theme,#9b233a);outline-offset:2px}

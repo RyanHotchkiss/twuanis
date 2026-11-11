@@ -1,0 +1,846 @@
+'use client'
+import {supabase} from '@/lib/supabase'
+import {propertyInteractionMessage,propertySignIn} from '@/lib/property-interaction-errors'
+
+import {
+  useEffect,
+  useRef,
+  useState
+} from 'react'
+
+import Link from 'next/link'
+import {
+  useSearchParams
+} from 'next/navigation'
+
+import CollectionPicker from '@/app/components/CollectionPicker'
+
+import {
+  addPropertiesToCollection,
+  FavoriteCollectionRecord,
+  getCollectionListingIds,
+  getFavoriteCollections,
+  movePropertiesBetweenCollections,
+  removePropertiesFromCollection
+} from '@/lib/collections'
+
+import TopBar from '@/app/components/TopBar'
+
+import {
+  Suspense
+} from 'react'
+
+import {
+  resolveListingImages
+} from '@/app/utils/resolveListingImages'
+
+import {
+  getListingFavoriteIds
+} from '@/lib/account-storage'
+
+export default function FavoritesPage() {
+      return (
+        <Suspense fallback={null}>
+          <FavoritesContent />
+        </Suspense>
+      )
+    }
+
+    function FavoritesContent() {
+      const searchParams =
+        useSearchParams()
+
+  const collectionId =
+    searchParams.get(
+      'collection'
+    )
+
+  const loadVersion=useRef(0)
+  const [authenticated,setAuthenticated]=useState(false)
+  const [favoriteError,setFavoriteError]=useState('')
+  const [refresh,setRefresh]=useState(0)
+  useEffect(()=>{let active=true;const update=()=>setRefresh(v=>v+1);window.addEventListener('favorites-updated',update);void supabase.auth.getSession().then(({data})=>{if(active)setAuthenticated(Boolean(data.session?.user))});const {data:{subscription}}=supabase.auth.onAuthStateChange((_event,session)=>{++loadVersion.current;setAuthenticated(Boolean(session?.user));setFavorites([]);setCollections([]);setSelectedIds(new Set());queueMicrotask(()=>{if(active)update()})});return()=>{active=false;subscription.unsubscribe();window.removeEventListener('favorites-updated',update)}},[])
+  const [favorites, setFavorites] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
+  const [
+      collections,
+      setCollections
+    ] = useState<
+      FavoriteCollectionRecord[]
+    >([])
+
+    const [
+      selectedIds,
+      setSelectedIds
+    ] = useState<
+      Set<string>
+    >(new Set())
+
+    const [
+      targetCollectionId,
+      setTargetCollectionId
+    ] = useState('')
+
+    const [
+      bulkWorking,
+      setBulkWorking
+    ] = useState(false)
+
+    const [
+      bulkStatus,
+      setBulkStatus
+    ] = useState('')
+
+  const [showMobileFilters, setShowMobileFilters] =
+  useState(false)
+
+      useEffect(() => {
+        let active=true;const version=loadVersion.current
+        async function loadCollections() {
+          const loadedCollections =
+            await getFavoriteCollections()
+
+          if(!active||version!==loadVersion.current)return
+          setCollections(
+            loadedCollections
+          )
+        }
+
+        function handleCollectionsUpdated() {
+          void loadCollections().catch(error=>active&&setFavoriteError(propertyInteractionMessage(error,'en')))
+        }
+
+        void loadCollections().catch(error=>active&&setFavoriteError(propertyInteractionMessage(error,'en')))
+
+        window.addEventListener(
+          'collections-updated',
+          handleCollectionsUpdated
+        )
+
+        return () => {
+          active=false
+          window.removeEventListener(
+            'collections-updated',
+            handleCollectionsUpdated
+          )
+        }
+      }, [refresh])
+  useEffect(() => {
+
+    async function fetchFavorites() {
+      const version=loadVersion.current
+
+            const favoriteIds =
+              await getListingFavoriteIds()
+      if(!active||version!==loadVersion.current)return
+
+      if (favoriteIds.length === 0) {
+
+        setFavorites([])
+        setSelectedIds(
+            new Set()
+          )
+        setLoading(false)
+
+        return
+
+      }
+
+        const supabaseFavoriteIds =
+        favoriteIds.filter(
+            (id: string) => {
+
+            return /^[0-9a-fA-F-]{36}$/.test(id)
+
+            }
+        )
+
+        let data: any[] = []
+
+if (
+  supabaseFavoriteIds.length > 0
+) {
+  const response =
+    await fetch(
+      '/api/public-listings/by-ids',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type':
+            'application/json'
+        },
+        body: JSON.stringify({
+          listingIds:
+            supabaseFavoriteIds
+        })
+      }
+    )
+
+  if (!response.ok) {
+        throw new Error(
+          'Unable to load favorite listings.'
+        )
+      }
+
+      const result =
+        await response.json()
+
+      if(!active||version!==loadVersion.current)return
+      data =
+        Array.isArray(
+          result?.listings
+        )
+          ? result.listings
+          : []
+    }
+
+
+  
+
+            const normalizedSupabaseListings =
+            (data || []).map(
+                (listing: any) => ({
+
+                ...listing,
+
+                images:
+                resolveListingImages(
+                  listing.images
+                )
+
+                })
+            )
+
+            setFavorites(
+                normalizedSupabaseListings
+              )
+
+      setLoading(false)
+
+    }
+
+    setLoading(true);setFavoriteError('')
+    let active=true
+    void fetchFavorites().catch(error=>{if(active)setFavoriteError(propertyInteractionMessage(error,'en'))}).finally(()=>{if(active)setLoading(false)})
+    return()=>{active=false}
+
+  }, [collectionId,refresh])
+
+  const selectedListingIds =
+      Array.from(selectedIds)
+
+    const availableCollections =
+      collections.filter(
+        collection =>
+          collection.id !==
+          collectionId
+      )
+
+    const allSelected =
+      favorites.length > 0 &&
+      selectedIds.size ===
+        favorites.length
+
+    function handleToggleSelection(
+      listingId: string
+    ) {
+      setSelectedIds(
+        currentIds => {
+          const nextIds =
+            new Set(currentIds)
+
+          if (
+            nextIds.has(listingId)
+          ) {
+            nextIds.delete(
+              listingId
+            )
+          } else {
+            nextIds.add(
+              listingId
+            )
+          }
+
+          return nextIds
+        }
+      )
+
+      setBulkStatus('')
+    }
+
+    function handleSelectAll() {
+      setSelectedIds(
+        new Set(
+          favorites.map(
+            property =>
+              property.id
+          )
+        )
+      )
+
+      setBulkStatus('')
+    }
+
+    function handleClearSelection() {
+      setSelectedIds(
+        new Set()
+      )
+
+      setBulkStatus('')
+    }
+
+    async function handleBulkAdd() {
+      if (
+        selectedListingIds.length === 0 ||
+        !targetCollectionId
+      ) {
+        return
+      }
+
+      try {
+        setBulkWorking(true)
+        setBulkStatus(
+          'Adding properties...'
+        )
+
+        await addPropertiesToCollection(
+          targetCollectionId,
+          selectedListingIds
+        )
+
+        setBulkStatus(
+          `${selectedListingIds.length} properties added.`
+        )
+
+        setSelectedIds(
+          new Set()
+        )
+      } catch (error) {
+        console.error(
+          'BULK ADD ERROR:',
+          error
+        )
+
+        setBulkStatus(
+          'Unable to add the selected properties.'
+        )
+      } finally {
+        setBulkWorking(false)
+      }
+    }
+
+    async function handleBulkRemove() {
+      if (
+        !collectionId ||
+        selectedListingIds.length === 0
+      ) {
+        return
+      }
+
+      try {
+        setBulkWorking(true)
+        setBulkStatus(
+          'Removing properties...'
+        )
+
+        await removePropertiesFromCollection(
+          collectionId,
+          selectedListingIds
+        )
+
+        const removedIds =
+          new Set(
+            selectedListingIds
+          )
+
+        setFavorites(
+          currentFavorites =>
+            currentFavorites.filter(
+              property =>
+                !removedIds.has(
+                  property.id
+                )
+            )
+        )
+
+        setSelectedIds(
+          new Set()
+        )
+
+        setBulkStatus(
+          `${selectedListingIds.length} properties removed.`
+        )
+      } catch (error) {
+        console.error(
+          'BULK REMOVE ERROR:',
+          error
+        )
+
+        setBulkStatus(
+          'Unable to remove the selected properties.'
+        )
+      } finally {
+        setBulkWorking(false)
+      }
+    }
+
+    async function handleBulkMove() {
+      if (
+        !collectionId ||
+        !targetCollectionId ||
+        selectedListingIds.length === 0
+      ) {
+        return
+      }
+
+      try {
+        setBulkWorking(true)
+        setBulkStatus(
+          'Moving properties...'
+        )
+
+        await movePropertiesBetweenCollections(
+          collectionId,
+          targetCollectionId,
+          selectedListingIds
+        )
+
+        const movedIds =
+          new Set(
+            selectedListingIds
+          )
+
+        setFavorites(
+          currentFavorites =>
+            currentFavorites.filter(
+              property =>
+                !movedIds.has(
+                  property.id
+                )
+            )
+        )
+
+        setSelectedIds(
+          new Set()
+        )
+
+        setBulkStatus(
+          `${selectedListingIds.length} properties moved.`
+        )
+      } catch (error) {
+        console.error(
+          'BULK MOVE ERROR:',
+          error
+        )
+
+        setBulkStatus(
+          'Unable to move the selected properties.'
+        )
+      } finally {
+        setBulkWorking(false)
+      }
+    }
+
+  if (loading) {
+
+    return (
+
+      <main style={mainStyle}>
+        Loading Favorites...
+      </main>
+
+    )
+
+  }
+
+  return (
+
+    <main style={mainStyle}>
+
+                    <TopBar
+                        onFilterClick={() =>
+                          setShowMobileFilters(true)
+                        }
+                      />
+
+      {favoriteError&&<p role="alert">{favoriteError}</p>}
+      {!authenticated&&<button type="button" onClick={()=>propertySignIn('en')}>{'Sign in'}</button>}
+      <h1 style={{
+        fontSize: '3rem',
+        marginBottom: '2rem'
+      }}>
+        Favorites
+      </h1>
+
+      {favorites.length > 0 && (
+        <section style={bulkToolbar}>
+          <div style={selectionActions}>
+            <strong>
+              {selectedIds.size}{' '}
+              selected
+            </strong>
+
+            <button
+              type="button"
+              onClick={
+                allSelected
+                  ? handleClearSelection
+                  : handleSelectAll
+              }
+              disabled={bulkWorking}
+              style={secondaryButton}
+            >
+              {allSelected
+                ? 'Clear Selection'
+                : 'Select All'}
+            </button>
+          </div>
+
+          <div style={bulkActions}>
+            <select
+              value={
+                targetCollectionId
+              }
+              onChange={event =>
+                setTargetCollectionId(
+                  event.target.value
+                )
+              }
+              disabled={
+                bulkWorking ||
+                availableCollections.length ===
+                  0
+              }
+              style={collectionSelect}
+            >
+              <option value="">
+                Choose Collection
+              </option>
+
+              {availableCollections.map(
+                collection => (
+                  <option
+                    key={
+                      collection.id
+                    }
+                    value={
+                      collection.id
+                    }
+                  >
+                    {collection.name}
+                  </option>
+                )
+              )}
+            </select>
+
+            <button
+              type="button"
+              onClick={() =>
+                void handleBulkAdd()
+              }
+              disabled={
+                bulkWorking ||
+                selectedIds.size === 0 ||
+                !targetCollectionId
+              }
+              style={primaryButton}
+            >
+              Add
+            </button>
+
+            {collectionId && (
+              <>
+                <button
+                  type="button"
+                  onClick={() =>
+                    void handleBulkMove()
+                  }
+                  disabled={
+                    bulkWorking ||
+                    selectedIds.size === 0 ||
+                    !targetCollectionId
+                  }
+                  style={primaryButton}
+                >
+                  Move
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    void handleBulkRemove()
+                  }
+                  disabled={
+                    bulkWorking ||
+                    selectedIds.size === 0
+                  }
+                  style={dangerButton}
+                >
+                  Remove
+                </button>
+              </>
+            )}
+          </div>
+
+          {bulkStatus && (
+            <p style={bulkStatusStyle}>
+              {bulkStatus}
+            </p>
+          )}
+        </section>
+      )}
+
+      {favorites.length === 0 ? (
+
+        <div style={{
+          color: 'var(--muted)'
+        }}>
+          No saved listings yet.
+        </div>
+
+      ) : (
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          gap: '1.5rem'
+        }}>
+
+          {favorites.map((property) => (
+
+            <div
+              key={property.id}
+              style={{
+                position: 'relative',
+                background: 'var(--surface-raised)',
+                border:
+                  selectedIds.has(
+                    property.id
+                  )
+                    ? '1px solid #C7A44B'
+                    : '1px solid #222',
+                borderRadius: '1.5rem',
+                overflow: 'visible'
+              }}
+            >
+              <label style={cardCheckbox}>
+                <input
+                  type="checkbox"
+                  checked={
+                    selectedIds.has(
+                      property.id
+                    )
+                  }
+                  onChange={() =>
+                    handleToggleSelection(
+                      property.id
+                    )
+                  }
+                  disabled={bulkWorking}
+                  style={checkboxInput}
+                />
+
+                <span>
+                  Select
+                </span>
+              </label>
+                <Link
+                  href={
+                    property.transaction_type ===
+                      'rent' ||
+                    property.transaction_type ===
+                      'lease'
+                      ? `/en/rent-lease/listing/${property.id}`
+                      : `/en/buy/listing/${property.id}`
+                  }
+                  style={{
+                    display: 'block',
+                    overflow: 'hidden',
+                    color: 'var(--foreground)',
+                    borderRadius: '1.5rem',
+                    textDecoration: 'none'
+                  }}
+                >
+                  <div
+                    style={{
+                      aspectRatio: '4 / 3',
+                      overflow: 'hidden',
+                      background: 'var(--surface)'
+                    }}
+                  >
+                    {property.images?.[0] ? (
+                      <img
+                        src={property.images[0]}
+                        alt={property.title}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                          display: 'block'
+                        }}
+                      />
+                    ) : (
+                      <div
+                        style={{
+                          height: '100%',
+                          display: 'flex',
+                          justifyContent:
+                            'center',
+                          alignItems: 'center',
+                          color: 'var(--muted)'
+                        }}
+                      >
+                        No Image
+                      </div>
+                    )}
+                  </div>
+
+                  <div
+                    style={{
+                      padding: '1.25rem'
+                    }}
+                  >
+                    <h2
+                      style={{
+                        fontSize: '1.1rem',
+                        marginBottom: '.5rem'
+                      }}
+                    >
+                      {property.title}
+                    </h2>
+
+                    <p style={{ color: 'var(--muted)' }}>
+                      {property.province}
+                      {' → '}
+                      {property.canton}
+                    </p>
+                  </div>
+                </Link>
+
+                <div
+                  style={{
+                    padding:
+                      '0 1.25rem 1.25rem'
+                  }}
+                >
+                  <CollectionPicker
+                    listingId={property.id}
+                    language="en"
+                  />
+                </div>
+              </div>
+
+          ))}
+
+        </div>
+
+      )}
+
+    </main>
+
+  )
+
+}
+
+const mainStyle = {
+  background: 'var(--background)',
+  minHeight: '100vh',
+  color: 'var(--foreground)',
+  padding: '2rem'
+}
+
+const bulkToolbar = {
+  display: 'grid',
+  gap: '.8rem',
+  marginBottom: '2rem',
+  padding: '1rem',
+  background: 'var(--surface)',
+  border: '1px solid var(--border)',
+  borderRadius: '1rem'
+}
+
+const selectionActions = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent:
+    'space-between',
+  gap: '1rem',
+  flexWrap: 'wrap' as const
+}
+
+const bulkActions = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '.65rem',
+  flexWrap: 'wrap' as const
+}
+
+const collectionSelect = {
+  minWidth: '210px',
+  padding: '.7rem',
+  color: 'var(--foreground)',
+  background: 'var(--input)',
+  border: '1px solid var(--border)',
+  borderRadius: '8px'
+}
+
+const primaryButton = {
+  padding: '.7rem 1rem',
+  color: '#000',
+  background: '#C7A44B',
+  border: 'none',
+  borderRadius: '8px',
+  cursor: 'pointer',
+  fontWeight: 700
+}
+
+const secondaryButton = {
+  padding: '.7rem 1rem',
+  color: 'var(--foreground)',
+  background: 'var(--surface-raised)',
+  border: '1px solid var(--border)',
+  borderRadius: '8px',
+  cursor: 'pointer'
+}
+
+const dangerButton = {
+  padding: '.7rem 1rem',
+  color: '#fff',
+  background: '#5c1c1c',
+  border: '1px solid #883434',
+  borderRadius: '8px',
+  cursor: 'pointer',
+  fontWeight: 700
+}
+
+const bulkStatusStyle = {
+  margin: 0,
+  color: 'var(--muted)',
+  fontSize: '.85rem'
+}
+
+const cardCheckbox = {
+  position: 'absolute' as const,
+  zIndex: 20,
+  top: '.75rem',
+  left: '.75rem',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '.4rem',
+  padding: '.45rem .65rem',
+  color: '#fff',
+  background:
+    'rgba(0,0,0,.82)',
+  border: '1px solid #555',
+  borderRadius: '8px',
+  cursor: 'pointer',
+  fontSize: '.78rem',
+  fontWeight: 700
+}
+
+const checkboxInput = {
+  width: '1rem',
+  height: '1rem',
+  accentColor: '#C7A44B'
+}

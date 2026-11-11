@@ -1,0 +1,12 @@
+/* Inline-only treatment. The Hub/Package modal body keeps its own scrolling. */
+.example{position:relative;isolation:isolate;min-width:0;max-width:100%;color:var(--foreground);overflow-wrap:anywhere;overflow:visible;touch-action:auto}
+/* Override the shared modal body's scroll containment without changing that class globally. */
+.content.content{opacity:.5;min-width:0;max-width:100%;box-sizing:border-box;overflow:visible;overscroll-behavior:auto;touch-action:auto}
+/* Preserve the existing disclosure text, but let its label stick within the whole report.
+   The aside has no separate box/scroll boundary; its remaining paragraphs keep their flow. */
+.content :global([data-example-id] > aside){display:contents}
+.content :global([data-example-id] > aside > strong){position:sticky;top:5rem;z-index:2;display:block;background:var(--surface,var(--background));padding:.25rem 0}
+.content :global([data-example-id] > aside > p:last-child){padding-bottom:1rem;margin-bottom:1.5rem;border-bottom:1px solid var(--border)}
+/* Exactly one real text label. Clip paint only; do not create a scrolling mechanism. */
+.watermark{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.5;color:var(--foreground);overflow:clip}
+.watermark span{position:sticky;top:calc(50dvh - 2.5rem);display:block;width:max-content;max-width:100%;margin-inline:auto;font-size:clamp(2.75rem,8vw,5rem);font-weight:bold;line-height:1;text-align:center;white-space:nowrap;transform:rotate(-25deg);pointer-events:none;user-select:none}

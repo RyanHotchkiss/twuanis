@@ -1,0 +1,12 @@
+'use client'
+import {selectedPaymentQuote,paymentDisplay,type PaymentQuote} from '@/lib/package-payment-price'
+export default function PackagePaymentButtons({quotes,duration,bank,language,theme,busy,sinpeAvailable,stripeAvailable,onPurchase}:{quotes:PaymentQuote[]|null|undefined;duration:'day'|'month';bank:boolean;language:'en'|'es';theme:string;busy:boolean;sinpeAvailable:boolean;stripeAvailable:boolean;onPurchase:(provider:'existing'|'stripe')=>void}){
+ const q=selectedPaymentQuote(quotes,duration,bank),currency=language==='es'?'CRC':'USD',es=language==='es'
+ return <><button type="button" className="commercial-action" data-commercial-theme={theme} disabled={busy||!sinpeAvailable||!q?.sinpe.available} onClick={()=>onPurchase('existing')}>{es?'Pagar con SINPE':'Pay with SINPE'} · {paymentDisplay(q?.sinpe.displayAmounts[currency],language)}</button><button type="button" className="commercial-action" data-commercial-theme={theme} disabled={busy||!stripeAvailable||!q?.stripe.available||Number(q.stripe.chargeAmount)<2} onClick={()=>onPurchase('stripe')}>{es?'Pagar con tarjeta de débito/crédito':'Pay with Debit/Credit Card'} · {paymentDisplay(q?.stripe.displayAmounts[currency],language)}</button></>
+}
+export function PackagePaymentHeading({quotes,duration,bank,language}:{quotes:PaymentQuote[]|null|undefined;duration:'day'|'month';bank:boolean;language:'en'|'es'}){
+ const q=selectedPaymentQuote(quotes,duration,bank),currency=language==='es'?'CRC':'USD',es=language==='es';const different=q&&Number(q.sinpe.standardDisplayAmounts[currency])>Number(q.sinpe.displayAmounts[currency])
+ return <>{different&&<p className="package-standard-price">{es?'Precios mensuales estándar':'Standard monthly prices'}: SINPE {paymentDisplay(q.sinpe.standardDisplayAmounts[currency],language)} · {es?'Tarjeta':'Card'} {paymentDisplay(q.stripe.standardDisplayAmounts[currency],language)}</p>}<p className="package-offer-price">{es?'Elige tu método de pago':'Choose your payment method'}</p></>
+}
+
+export function PackagePaymentMethodHeading({language}:{language:'en'|'es'}){return <div className="package-payment-method-row"><h4>{language==='es'?'Método de pago':'Payment method'}</h4><p className="package-wide-access-note">{language==='es'?'*Compra el Paquete para ejecutar sus algoritmos en cualquier página de anuncios, no solo en esta.':'*Purchase Package to run its algorithms on any listing page, not just this one.'}</p></div>}

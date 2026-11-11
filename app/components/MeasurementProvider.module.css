@@ -1,0 +1,27 @@
+.notice { align-items: center; }
+.choices { display: contents; }
+.notice > button, .notice > a, .choices > button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--border, #808080);
+  border-radius: 12px;
+  color: var(--muted, #777777);
+  background: transparent;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+  text-decoration: none;
+  cursor: pointer;
+}
+.choices > .allow {
+  font-size: 16px;
+  color: light-dark(#000000, #ffffff);
+}
+.notice > button:focus-visible, .notice > a:focus-visible, .choices > button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}

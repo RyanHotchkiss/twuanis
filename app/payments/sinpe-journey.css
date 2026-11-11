@@ -1,0 +1,22 @@
+.sinpe-progress ol{display:flex;flex-wrap:wrap;gap:.65rem;list-style:none;padding:0;margin:0 0 1.5rem}.sinpe-progress li{display:flex;align-items:center;gap:.4rem;padding:.45rem .6rem;border:1px solid currentColor;border-radius:12px;opacity:.65;font-size:.9rem}.sinpe-progress li[aria-current=step]{opacity:1;font-weight:700;outline:2px solid currentColor;outline-offset:2px}.sinpe-progress li[data-complete=true]{opacity:1}.sinpe-sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.sinpe-instructions,.sinpe-coverage{min-width:0;overflow-wrap:anywhere}.sinpe-transfer-details{padding:1rem;border:1px solid currentColor;border-radius:16px;margin:1rem 0}.sinpe-transfer-details strong{font-size:clamp(1.4rem,4vw,2rem)}.sinpe-transfer-details button,.sinpe-instructions button{min-height:44px;padding:.65rem 1rem;border:1px solid currentColor;border-radius:12px;white-space:normal;max-width:100%}.sinpe-instructions ol:not(.sinpe-progress ol){padding-inline-start:1.6rem}.sinpe-instructions li{margin-bottom:.6rem}.sinpe-instructions button:focus-visible,.sinpe-instructions a:focus-visible{outline:2px solid currentColor;outline-offset:3px}.sinpe-primary{display:block;margin:1.25rem 0;font-weight:700}.sinpe-coverage{padding:1rem 0}.sinpe-coverage ul{padding-inline-start:1.4rem}.sinpe-instructions p{margin-block:.8rem}.sinpe-instructions button:disabled{opacity:.6;cursor:wait}@media(max-width:600px){.sinpe-progress li{font-size:.8rem;flex:1 1 28%}.sinpe-transfer-details{padding:.8rem}.sinpe-instructions{width:100%}}
+
+/* One transfer card; existing theme tokens and rounded controls are retained. */
+.sinpe-compact{max-width:800px;margin-inline:auto;line-height:1.5}
+.sinpe-compact .sinpe-transfer-details{margin-block:.8rem;padding:1rem}
+.sinpe-compact h2{margin-top:0}
+.sinpe-order-details{margin-top:1rem;padding:1rem;border:1px solid var(--border,#888);border-radius:12px;overflow-wrap:anywhere}
+.sinpe-order-details>summary{cursor:pointer;min-height:44px}
+
+/* Scoped one-screen Package checkout; existing provider and status behavior is reused. */
+.sinpe-two-step section{min-width:0;border:1px solid var(--border,#888);border-radius:12px;padding:clamp(.8rem,3vw,1.2rem);margin:1rem 0}
+.sinpe-two-step h2{font-size:clamp(1.15rem,4vw,1.5rem);line-height:1.4;overflow-wrap:anywhere}
+.sinpe-two-step .sinpe-selected-amount{font-size:clamp(1.3rem,4vw,1.7rem)}
+.sinpe-two-step .sinpe-transfer-details{border:0;padding:0}
+.sinpe-two-step button{min-height:44px;padding:.7rem 1rem;border:1px solid currentColor;border-radius:12px;max-width:100%;font:inherit;white-space:normal;cursor:pointer}
+.sinpe-two-step button+button{margin-inline-start:.65rem}
+.sinpe-two-step :is(button,a):focus-visible{outline:2px solid currentColor;outline-offset:3px}
+.sinpe-two-step button:disabled{opacity:.55;cursor:not-allowed}
+@media(max-width:480px){.sinpe-two-step button{width:100%}.sinpe-two-step button+button{margin-inline-start:0;margin-top:.7rem}}
+
+/* Receipt checkout reuses the existing one-screen SINPE controls. */
+.direct-sinpe-checkout{min-width:0;overflow-wrap:anywhere}.direct-sinpe-checkout label{display:block}.direct-sinpe-checkout input[type=file]{display:block;box-sizing:border-box;width:100%;min-width:0;max-width:100%;min-height:44px;margin-block:.65rem;font:inherit}.direct-sinpe-checkout .sinpe-copy-row{margin-block:1rem}.direct-sinpe-checkout .sinpe-copy-row span{display:block;margin-bottom:.45rem}

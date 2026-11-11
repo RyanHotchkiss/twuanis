@@ -1,0 +1,5 @@
+/* Shared Run Algorithm surface; retain each consumer's dimensions and disabled state. */
+button.algorithm-run.algorithm-run{color:light-dark(#fff,#111);border-color:light-dark(#62666d,#c2c6cb);background:linear-gradient(165deg,light-dark(#181a1e,#fff) 0%,light-dark(#4b5057,#d8dce1) 28%,light-dark(#202329,#fafbfc) 53%,light-dark(#383d45,#e0e3e7) 77%,light-dark(#111318,#fff) 100%);box-shadow:inset 0 1px 0 #ffffff65,inset 0 -2px 2px #00000024,0 3px 7px #00000032}
+button.algorithm-run.algorithm-run:hover:not(:disabled){filter:brightness(1.08)}
+button.algorithm-run.algorithm-run:focus-visible{outline:3px solid var(--accent-text);outline-offset:3px}
+@media(forced-colors:active){button.algorithm-run.algorithm-run{background:ButtonFace;color:ButtonText;border-color:ButtonText}}

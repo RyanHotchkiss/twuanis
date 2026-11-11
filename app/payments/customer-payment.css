@@ -1,0 +1,15 @@
+.customer-payment{min-width:0;max-width:100%;overflow-wrap:anywhere;padding:1rem;box-sizing:border-box}
+.customer-payment form,.customer-payment label{min-width:0;max-width:100%;box-sizing:border-box}
+.customer-payment label{flex:1 1 240px}
+.customer-payment input,.customer-payment select{min-width:0;width:100%;max-width:100%;box-sizing:border-box}
+.customer-payment button{max-width:100%;white-space:normal}
+.customer-payment :focus-visible{outline:3px solid #ff6a00;outline-offset:2px}
+
+.customer-payment .stripe-checkout-action{border:1px solid var(--border,#888);border-radius:8px;background:var(--background);color:var(--foreground);font:inherit;cursor:pointer}
+.customer-payment .stripe-checkout-action:hover{background:var(--surface-raised)}
+.customer-payment .stripe-checkout-action:disabled{cursor:wait;opacity:.65}
+
+.sinpe-instructions button{min-height:44px;padding:.7rem 1rem;margin:.4rem .3rem .4rem 0;border:1px solid var(--foreground,#777);border-radius:8px;background:var(--background,#fff);color:var(--foreground,#111);font:inherit;cursor:pointer}
+.sinpe-instructions button:hover{background:var(--surface-raised,#eee)}
+.sinpe-instructions button:disabled{opacity:.6;cursor:wait}
+.sinpe-instructions [aria-label]{padding:1rem;border:1px solid var(--foreground,#777);border-radius:12px;margin-block:1rem}

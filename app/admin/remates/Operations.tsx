@@ -1,0 +1,27 @@
+'use client'
+import {useEffect,useRef,useState} from 'react'
+import {operationsAccess} from './operations-actions'
+import Institutions from './Institutions'
+import Retrieval from './Retrieval'
+import Authority from '@/app/remates/authority/Authority'
+import Ingestion from '@/app/remates/ingestion/Ingestion'
+import Evidence from '@/app/remates/evidence/Evidence'
+import Identity from '@/app/remates/identity/Identity'
+import Financial from '@/app/remates/financial/Financial'
+import Classification from '@/app/remates/classification/Classification'
+import Media from '@/app/remates/media/Media'
+import InstitutionInventory from '@/app/components/remates/InstitutionInventory'
+import SourceStatus from './SourceStatus'
+import Audit from './Audit'
+import Adapters from '@/app/remates/adapters/Adapters'
+const sections=['controls','audit','registry','authority','lifecycle','evidence','identity','classification','financial','media','inventory','adapters','retrieval'] as const
+type Section=typeof sections[number]
+export default function Operations({language='en'}:{language?:'en'|'es'}){
+ const es=language==='es',t=(en:string,sp:string)=>es?sp:en
+ const focusSection=useRef<Section|null>(null),sectionButtons=useRef<Partial<Record<Section,HTMLButtonElement|null>>>({})
+ const [section,setSection]=useState<Section>('controls'),[access,setAccess]=useState<'loading'|'allowed'|'denied'>('loading'),[flags,setFlags]=useState({owner:false,sourceOperations:false,moderation:false}),[refresh,setRefresh]=useState(0)
+ useEffect(()=>{if(access==='allowed'&&focusSection.current){sectionButtons.current[section]?.focus();focusSection.current=null}else if(access==='denied')focusSection.current=null},[access,section])
+ useEffect(()=>{let live=true;setAccess('loading');operationsAccess().then(r=>{if(live){setAccess(r.ok?'allowed':'denied');setFlags(r.ok?r.data:{owner:false,sourceOperations:false,moderation:false});if(r.ok&&!r.data.owner&&section!=='controls'&&section!=='audit')setSection('controls')}}).catch(()=>{if(live)setAccess('denied')});return()=>{live=false}},[section,refresh])
+ const names={retrieval:t('Scheduled retrieval','Recuperación programada'),controls:t('Operational controls','Controles operativos'),audit:t('Operational audit','Auditoría operativa'),registry:t('Institutions and sources','Instituciones y fuentes'),authority:t('Representatives, permissions and audit','Representantes, permisos y auditoría'),lifecycle:t('Publication review and lifecycle','Revisión de publicación y ciclo de vida'),evidence:t('Runs, failures and observations','Ejecuciones, fallos y observaciones'),identity:t('Identity reconciliation','Conciliación de identidad'),classification:t('Geography and classification','Geografía y clasificación'),media:t('Private media evidence','Evidencia privada de medios'),financial:t('Financial evidence review','Revisión de evidencia financiera'),inventory:t('Institutional inventory','Inventario institucional'),adapters:t('Source compatibility diagnostics','Diagnóstico de compatibilidad de fuentes')}
+ return <section className="remates-operations"><h3>{t('Bank Properties administration','Administración de Remates')}</h3><p>{t('Independent bank inventory. Ordinary listing permissions grant no access here.','Inventario bancario independiente. Los permisos de propiedades ordinarias no otorgan acceso aquí.')}</p><p>{t('Retrieval requires separate source-specific Owner authorization and operational activation. Publication always requires canonical review.','La recuperación requiere autorización del Propietario por fuente y activación operativa. La publicación siempre requiere revisión canónica.')}</p><button type="button" onClick={()=>setRefresh(n=>n+1)}>{t('Refresh access','Actualizar acceso')}</button>{access==='loading'?<p role="status">{t('Checking access…','Verificando acceso…')}</p>:access==='denied'?<p role="alert">{t('Access denied. Explicit Remates authority required.','Acceso denegado. Se requiere autoridad explícita de Remates.')}</p>:<><nav aria-label={t('Bank administration sections','Secciones de administración bancaria')}>{sections.filter(s=>flags.owner||s==='controls'||s==='audit').map(s=><button type="button" key={s} ref={node=>{sectionButtons.current[s]=node}} aria-pressed={section===s} onClick={()=>{if(s!==section){focusSection.current=s;setAccess('loading');setSection(s)}}}>{names[s]}</button>)}</nav><div key={section+language+refresh}>{section==='retrieval'?<Retrieval language={language}/>:section==='controls'?<SourceStatus language={language}/>:section==='audit'?<Audit language={language}/>:section==='registry'?<Institutions language={language}/>:section==='authority'?<Authority language={language}/>:section==='lifecycle'?<Ingestion language={language}/>:section==='evidence'?<Evidence language={language}/>:section==='identity'?<Identity language={language}/>:section==='classification'?<Classification language={language}/>:section==='media'?<Media language={language}/>:section==='financial'?<Financial language={language}/>:section==='inventory'?<InstitutionInventory language={language}/>:<Adapters language={language}/>}</div></>}<style jsx>{`.remates-operations{min-width:0;max-width:100%;overflow-wrap:anywhere}.remates-operations nav{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}.remates-operations button{font:inherit;padding:8px;border:1px solid currentColor;border-radius:6px;background:transparent;color:inherit;cursor:pointer}.remates-operations button:focus-visible{outline:3px solid #ff3b00;outline-offset:3px}`}</style></section>
+}

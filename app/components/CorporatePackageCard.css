@@ -1,0 +1,4 @@
+.corporate-card{--commercial-theme:#ad8a3f}
+.entertainment-card.corporate-card::before{background:linear-gradient(110deg,#7b5b13,#e3c276 30%,#b58b32 55%,#795910)}
+.corporate-card .commercial-action[data-commercial-theme="gold"]:is(:hover,:focus-visible):not(:disabled):not([aria-disabled=true]){background:#fff;color:#735600;border-color:#b9bfc8}
+#corporate-specifics .corporate-weighted-disclaimer{margin-top:1.5rem;margin-bottom:1.5rem;line-height:1.65}

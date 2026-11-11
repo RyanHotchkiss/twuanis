@@ -1,0 +1,2 @@
+// Execute accepted negative cases; retain old reports and fixtures unchanged.
+const fs=require('fs');let s=fs.readFileSync(__dirname+'/remates-r09-adapters.cjs','utf8');s=s.replaceAll('R-09-adapter-results.json','R-10-adapter-regression-results.json');const start=s.indexOf("fs.writeFileSync(root+'/scripts/verification/fixtures/remates-r09/samples.json'");const end=s.indexOf("fs.writeFileSync(out+",start);if(start<0||end<0)throw Error('Unknown regression writer structure');s=s.slice(0,start)+s.slice(end);eval(s);

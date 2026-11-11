@@ -1,0 +1,150 @@
+{
+  "configObservedAt": "2026-10-15T20:43:26.730747+00:00",
+  "capabilities": [
+    {
+      "id": "cap-market-summary",
+      "name_en": "Market Summary",
+      "name_es": "Resumen del mercado"
+    },
+    {
+      "id": "cap-market-composition",
+      "name_en": "Market Composition",
+      "name_es": "Composición del mercado"
+    },
+    {
+      "id": "cap-market-asking-price-distribution",
+      "name_en": "Market Asking Price Distribution",
+      "name_es": "Distribución de precios de oferta del mercado"
+    },
+    {
+      "id": "cap-property-matching",
+      "name_en": "Property Matching",
+      "name_es": "Coincidencia de Propiedades"
+    },
+    {
+      "id": "cap-market-comparison",
+      "name_en": "Market Comparison",
+      "name_es": "Comparación de Mercados"
+    },
+    {
+      "id": "cap-property-configuration-frequency",
+      "name_en": "Property Configuration Frequency",
+      "name_es": "Frecuencia de configuración de propiedades"
+    },
+    {
+      "id": "cap-price-m2-distribution",
+      "name_en": "Price / m² Distribution",
+      "name_es": "Distribución del precio por m²"
+    },
+    {
+      "id": "cap-geographic-price-m2-comparison",
+      "name_en": "Geographic Price / m² Comparison",
+      "name_es": "Comparación geográfica del precio por m²"
+    },
+    {
+      "id": "cap-size-price-m2",
+      "name_en": "Size → Price / m²",
+      "name_es": "Tamaño → Precio por m²"
+    },
+    {
+      "id": "cap-construction-land-price-m2",
+      "name_en": "Construction-to-Land → Price / m²",
+      "name_es": "Construcción/terreno → Precio por m²"
+    },
+    {
+      "id": "cap-user-defined-cohort-price-m2-comparison",
+      "name_en": "User-Defined Cohort Price / m² Comparison",
+      "name_es": "Comparación de precio por m² entre cohortes definidas por el usuario"
+    },
+    {
+      "id": "cap-cross-dimensional-analysis",
+      "name_en": "Cross-Dimensional Analysis",
+      "name_es": "Análisis multidimensional"
+    },
+    {
+      "id": "cap-comparative-price-m2-discovery",
+      "name_en": "Comparative Price / m² Discovery",
+      "name_es": "Descubrimiento comparativo de precio / m²"
+    },
+    {
+      "id": "cap-property-price-m2-position",
+      "name_en": "Property Price / m² Position",
+      "name_es": "Posición del precio por m² de una propiedad"
+    },
+    {
+      "id": "cap-user-defined-comparable-cohort",
+      "name_en": "User-Defined Comparable Cohort",
+      "name_es": "Cohorte comparable definida por el usuario"
+    },
+    {
+      "id": "cap-asking-area-coefficient-ratio",
+      "name_en": "Construction Area-to-Property Area Asking-Price Relationship Ratio",
+      "name_es": "Relación entre los coeficientes del precio de oferta por m² de área de construcción y de área del terreno"
+    },
+    {
+      "id": "cap-weighted-price-m2",
+      "name_en": "Weighted Price / m²",
+      "name_es": "Precio ponderado por m²"
+    }
+  ],
+  "currentPackages": [
+    {
+      "id": "pkg-geographic-distribution-price-range",
+      "revision": 2,
+      "configuration": "04000000-0000-4000-8000-000000000001",
+      "version": 1,
+      "term_unit": "month",
+      "term_quantity": 1,
+      "capabilities": [
+        "cap-market-asking-price-distribution",
+        "cap-market-composition",
+        "cap-market-summary"
+      ]
+    },
+    {
+      "id": "pkg-matching-market-comparison",
+      "revision": 3,
+      "configuration": "05600000-0000-4000-8000-000000000002",
+      "version": 2,
+      "term_unit": "month",
+      "term_quantity": 1,
+      "capabilities": [
+        "cap-comparative-price-m2-discovery",
+        "cap-geographic-price-m2-comparison",
+        "cap-market-asking-price-distribution",
+        "cap-market-comparison",
+        "cap-market-composition",
+        "cap-market-summary",
+        "cap-property-matching"
+      ]
+    },
+    {
+      "id": "pkg-pricing-position-relationships",
+      "revision": 3,
+      "configuration": "05600000-0000-4000-8000-000000000003",
+      "version": 2,
+      "term_unit": "month",
+      "term_quantity": 1,
+      "capabilities": [
+        "cap-asking-area-coefficient-ratio",
+        "cap-comparative-price-m2-discovery",
+        "cap-construction-land-price-m2",
+        "cap-cross-dimensional-analysis",
+        "cap-geographic-price-m2-comparison",
+        "cap-market-asking-price-distribution",
+        "cap-market-comparison",
+        "cap-market-composition",
+        "cap-market-summary",
+        "cap-price-m2-distribution",
+        "cap-property-configuration-frequency",
+        "cap-property-matching",
+        "cap-property-price-m2-position",
+        "cap-size-price-m2",
+        "cap-user-defined-cohort-price-m2-comparison",
+        "cap-user-defined-comparable-cohort",
+        "cap-weighted-price-m2"
+      ]
+    }
+  ],
+  "historicalConfigurations": "Five rows returned: first tier v1, second tier v1 four capabilities and v2 seven, third tier v1 ten and v2 seventeen; current pointers determine active composition."
+}

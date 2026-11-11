@@ -1,0 +1,595 @@
+'use client'
+import type {HubPackageAccess} from '@/lib/intelligence-hub-access-contract'
+import AskingPriceDistribution from '@/app/components/AskingPriceDistribution'
+import type { Catalog } from '@/lib/asking-price-contract'
+import IntelligenceHubShell from '@/app/components/IntelligenceHubShell'
+import hubStyles from '@/app/components/market-summary/workspace.module.css'
+import LegacyHubApplyPanel from '@/app/components/LegacyHubApplyPanel'
+import CanonicalMarketApplyPanel from '@/app/components/CanonicalMarketApplyPanel'
+
+
+import Link from 'next/link'
+
+import {
+  useEffect,
+  useState
+} from 'react'
+
+import {
+  saveAnalysis,
+  SavedAnalysisEngine
+} from '@/lib/saved-analyses'
+import {
+  createMarketComparisonName,
+  saveMarketComparison
+} from '@/lib/market-comparisons'
+import PricingStrategyResults from '@/app/pricing-strategy/PricingStrategyResults'
+import BuyerDemandResults from '@/app/buyer-demand/BuyerDemandResults'
+import ValuationResults from '@/app/valuation/ValuationResults'
+import MarketFilters from '@/app/components/MarketFilters'
+import PriceMeterApplyPanel from '@/app/components/PriceMeterApplyPanel'
+
+import {
+  Compass,
+  BadgeDollarSign,
+  Target,
+  HeartHandshake,
+  Scale,
+  Ruler,
+  ChartColumnIncreasing,
+  Construction
+} from 'lucide-react'
+
+import {
+  recordMarketViewed
+} from '@/lib/activity/markets'
+
+import {
+  recordRecentActivity
+} from '@/lib/account-storage'
+
+import type {
+  IntelligenceWorkspaceId
+} from '@/app/components/market-filters/filter-registry'
+
+type Props = {
+  packageAccess?:HubPackageAccess
+  askingPriceCatalog?: Catalog
+  activeTab: string
+  filters: any
+  explorerResult: any
+  priceMeterAnalysis: any
+  pricingStrategy: any
+  marketScarcity: any
+  buyerDemand: any
+  marketMatches: any
+  valuation: any
+  comparison: any
+  options: any
+  embedded?: boolean
+}
+
+const tabs = [
+      {
+        id: 'explorer',
+        package: 'Market Discovery Package (Free)',
+        color: '#2ecc71',
+        icon: Compass,
+        label: 'Market Explorer',
+        description: 'Explore listings and market characteristics.'
+      },
+
+      {
+        id: 'valuation',
+        package: 'Valuation & Pricing Package',
+        color: '#0066cc',
+        icon: BadgeDollarSign,
+        label: 'Valuation',
+        description: 'Estimate what a property is worth.'
+      },
+
+      {
+        id: 'pricing',
+        package: 'Valuation & Pricing Package',
+        color: '#0066cc',
+        icon: Target,
+        label: 'Pricing Strategy',
+        description: 'Choose a competitive listing price.'
+      },
+
+      {
+        id: 'matching',
+        package: 'Valuation & Pricing Package',
+        color: '#0066cc',
+        icon: HeartHandshake,
+        label: 'Property Matching',
+        description: 'Find better matching properties.'
+      },
+
+      {
+        id: 'comparison',
+        package: 'Market Analysis Package',
+        color: '#ff3b00',
+        icon: Scale,
+        label: 'Market Comparison',
+        description: 'Compare two real estate markets.'
+      },
+
+      {
+        id: 'scarcity',
+        package: 'Market Analysis Package',
+        color: '#ff3b00',
+        icon: ChartColumnIncreasing,
+        label: 'Property Configuration Frequency',
+        description: 'Measure how common or uncommon property characteristics are.'
+      },
+
+       {
+        id: 'price-meter',
+        package: 'Pricing Intelligence Package',
+        color: '#ffd700',
+        icon: Ruler,
+        label: 'Price / m² Distribution',
+        description: 'Analyze pricing efficiency across markets.'
+      },
+
+      {
+        id: 'buyer-demand',
+        package: 'Market Behavior & Dynamics Package',
+        color: '#dc143c',
+        icon: Construction,
+        label: 'Buyer Demand',
+        description: 'Future Algorithm',
+        disabled: true
+      },
+
+      {
+        id: 'market-velocity',
+        package: 'Market Behavior & Dynamics Package',
+        color: '#dc143c',
+        icon: Construction,
+        label: 'Market Velocity',
+        description: 'Future Algorithm',
+        disabled: true
+      },
+
+      {
+        id: 'price-dynamics',
+        package: 'Market Behavior & Dynamics Package',
+        color: '#dc143c',
+        icon: Construction,
+        label: 'Price Dynamics',
+        description: 'Future Algorithm',
+        disabled: true
+      },
+
+      {
+        id: 'listing-lifecycle',
+        package: 'Market Behavior & Dynamics Package',
+        color: '#dc143c',
+        icon: Construction,
+        label: 'Listing Lifecycle',
+        description: 'Future Algorithm',
+        disabled: true
+      },
+
+      {
+        id: 'seller-behavior',
+        package: 'Market Behavior & Dynamics Package',
+        color: '#dc143c',
+        icon: Construction,
+        label: 'Seller Behavior',
+        description: 'Future Algorithm',
+        disabled: true
+      }
+    ]
+
+    export default function MarketIntelligenceTabs({
+        packageAccess,askingPriceCatalog,
+        activeTab,
+        options,
+        filters,
+        explorerResult,
+        priceMeterAnalysis,
+        pricingStrategy,
+        marketScarcity,
+        buyerDemand,
+        marketMatches,
+        valuation,
+        comparison,
+        embedded = false
+      }: Props) {
+
+                            const [
+                saveStatus,
+                setSaveStatus
+              ] = useState<
+                'idle' |
+                'saving' |
+                'saved' |
+                'error'
+              >('idle')
+
+              function getActiveResult() {
+                switch (activeTab) {
+                  case 'explorer':
+                    return explorerResult
+
+                  case 'valuation':
+                    return valuation
+
+                  case 'pricing':
+                    return pricingStrategy
+
+                  case 'matching':
+                    return marketMatches
+
+                  case 'comparison':
+                    return comparison
+
+                  case 'scarcity':
+                    return marketScarcity
+
+                  case 'price-meter':
+                    return priceMeterAnalysis
+
+                  case 'buyer-demand':
+                    return buyerDemand
+
+                  default:
+                    return null
+                }
+              }
+
+              function getAnalysisName() {
+                const tab =
+                  tabs.find(
+                    item =>
+                      item.id === activeTab
+                  )
+
+                const location = [
+                  filters.district,
+                  filters.canton,
+                  filters.province
+                ]
+                  .filter(Boolean)
+                  .join(', ')
+
+                return location
+                  ? `${tab?.label || 'Market Analysis'} · ${location}`
+                  : tab?.label || 'Market Analysis'
+              }
+
+              async function handleSaveAnalysis() {
+                  const result =
+                    getActiveResult()
+                  if (!result) {
+                    setSaveStatus(
+                      'error'
+                    )
+                    return
+                  }
+                  try {
+                    setSaveStatus(
+                      'saving'
+                    )
+                    if (
+                      activeTab ===
+                      'comparison'
+                    ) {
+                      await saveMarketComparison({
+                        name:
+                          createMarketComparisonName({
+                            filters,
+                            language: 'en'
+                          }),
+                        filters,
+                        result
+                      })
+                    } else {
+                      await saveAnalysis({
+                        engineType:
+                          activeTab as
+                            SavedAnalysisEngine,
+                        language:
+                          'en',
+                        name:
+                          getAnalysisName(),
+                        filters,
+                        result
+                      })
+
+                    await recordRecentActivity(
+                      'market_saved',
+                      'market',
+                      `explorer:${queryString}`,
+                      {
+                        title: getAnalysisName(),
+                        href: `/en/market-intelligence?${queryString}&tab=${activeTab}`,
+                        engine: activeTab,
+                        filters
+                      }
+                    )
+
+                    }
+                    setSaveStatus(
+                      'saved'
+                    )
+                    window.dispatchEvent(
+                      new Event(
+                        'market-comparisons-updated'
+                      )
+                    )
+                  } catch (error) {
+                    console.error(
+                      'SAVE ANALYSIS ERROR:',
+                      error
+                    )
+                    setSaveStatus(
+                      'error'
+                    )
+                  }
+                }
+
+
+              const query =
+                new URLSearchParams()
+
+              Object.entries(filters).forEach(
+                ([key, value]) => {
+                  if (value) {
+                    query.set(
+                      key,
+                      String(value)
+                    )
+                  }
+                }
+              )
+
+              const queryString =
+                  query.toString()
+
+                useEffect(() => {
+                  const result = getActiveResult()
+
+                  if (!result) {
+                    return
+                  }
+
+                  const location = [
+                    filters.district,
+                    filters.canton,
+                    filters.province
+                  ]
+                    .filter(Boolean)
+                    .join(', ')
+
+                  const tab =
+                    tabs.find(
+                      item => item.id === activeTab
+                    )
+
+                  const title =
+                    location || 'Costa Rica'
+
+                  recordMarketViewed({
+                    id: `${activeTab}:${queryString}`,
+                    title,
+                    marketType:
+                      tab?.label || activeTab,
+                    summary:
+                      `${tab?.label || activeTab} analysis`,
+                    href:
+                      `/en/market-intelligence?${queryString}&tab=${activeTab}`
+                  })
+                }, [
+                  activeTab,
+                  explorerResult,
+                  valuation,
+                  pricingStrategy,
+                  marketMatches,
+                  comparison,
+                  marketScarcity,
+                  priceMeterAnalysis,
+                  buyerDemand,
+                  queryString,
+                  filters.district,
+                  filters.canton,
+                  filters.province
+                ])
+
+              return (
+                <IntelligenceHubShell options={options} catalog={askingPriceCatalog} tabs={tabs} activeTab={activeTab} query={queryString} basePath="/en/market-intelligence" language="en" embedded={embedded} packageAccess={packageAccess} preview={activeTab==='asking-price'?<AskingPriceDistribution key="locked-preview" lang="en" catalog={askingPriceCatalog??{state:'unavailable'}}/>:activeTab==='price-meter'?<PriceMeterApplyPanel previewOnly key={filters.analysis_question} options={options} filters={filters} language="en" source="workspace"/>:<CanonicalMarketApplyPanel hideSelector={!embedded} inventoryQuestion={filters.analysis_question==='composition'?'composition':'summary'} key={`${activeTab}:${filters.analysis_question||""}`} workspace={activeTab as 'explorer'|'scarcity'|'matching'|'comparison'} options={options} filters={filters} language="en"/>}>
+
+
+      {activeTab==='asking-price'?<AskingPriceDistribution lang="en" catalog={askingPriceCatalog??{state:'unavailable'}}/>:<>
+      <div className={hubStyles.workspace}>
+<section style={filterSection}>
+        {!['explorer','matching','comparison','scarcity','price-meter'].includes(activeTab) && <h2 style={sectionTitle}>
+          Market Filters
+        </h2>}
+
+        {activeTab === 'price-meter' && <div>
+          <PriceMeterApplyPanel key={filters.analysis_question} options={options} filters={filters} language="en" source="workspace" />
+        </div>}
+        {activeTab !== 'price-meter' && (
+        (['explorer','scarcity','matching','comparison'].includes(activeTab) ? <CanonicalMarketApplyPanel hideSelector={!embedded} inventoryQuestion={embedded ? undefined : filters.analysis_question==='composition'?'composition':'summary'} key={`${activeTab}:${filters.analysis_question || ""}`} workspace={activeTab as 'explorer'|'scarcity'|'matching'|'comparison'} options={options} filters={filters} language="en"/> : (['pricing','valuation','buyer-demand'].includes(activeTab) ? <LegacyHubApplyPanel key={activeTab} engine={activeTab as 'pricing'|'valuation'|'buyer-demand'} options={options} filters={filters} language="en"/> : <MarketFilters
+            language="en"
+            workspace={
+              activeTab as IntelligenceWorkspaceId
+            }
+          
+          options={options}
+          filters={filters}
+          basePath={
+            embedded
+              ? `/en/market-hub?intelligence=${
+                  activeTab === 'explorer'
+                    ? 'explore'
+                    : activeTab
+                }`
+              : `/en/market-intelligence?tab=${activeTab}`
+          }
+        />))
+        )}
+      </section>
+
+           <div
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          marginBottom: '1rem'
+        }}
+      >
+        <button
+          type="button"
+          hidden={['price-meter','explorer','matching','scarcity','comparison','pricing','valuation','buyer-demand'].includes(activeTab)}
+          onClick={handleSaveAnalysis}
+          disabled={
+            saveStatus === 'saving' ||
+            !getActiveResult()
+          }
+          style={{
+            background:
+              saveStatus === 'saved'
+                ? '#D4AF37'
+                : '#fff',
+            border: '1px solid #fff',
+            color: '#000',
+            padding: '12px 20px',
+            borderRadius: '999px',
+            cursor:
+              saveStatus === 'saving'
+                ? 'wait'
+                : 'pointer',
+            fontWeight: 'bold',
+            opacity:
+              !getActiveResult()
+                ? .45
+                : 1
+          }}
+        >
+          {saveStatus === 'saving'
+                ? 'Saving...'
+                : saveStatus === 'saved'
+                ? (
+                    activeTab ===
+                      'comparison'
+                      ? 'Comparison Saved'
+                      : 'Analysis Saved'
+                  )
+                : saveStatus === 'error'
+                ? 'Unable to Save'
+                : (
+                    activeTab ===
+                      'comparison'
+                      ? 'Save Comparison'
+                      : 'Save Analysis'
+                  )}
+        </button>
+      </div>     
+
+      <div style={content}>
+
+        
+
+        {activeTab === 'pricing' && pricingStrategy && (
+          <PricingStrategyResults
+            filters={filters}
+            strategy={pricingStrategy}
+          />
+        )}
+
+        
+
+        
+
+        {activeTab === 'valuation' && valuation && (
+          <ValuationResults
+            filters={filters}
+            valuation={valuation}
+          />
+        )}
+
+        
+
+        {activeTab === 'buyer-demand' && buyerDemand && (
+          <BuyerDemandResults
+            filters={filters}
+            demand={buyerDemand}
+          />
+        )}
+
+      </div>
+      </div>
+    </>}
+    </IntelligenceHubShell>
+  )
+}
+
+function EmptyState() {
+  return (
+    <div style={empty}>
+      Select market filters to begin exploring.
+    </div>
+  )
+}
+
+const tabBar = {
+  display: 'grid',
+  gridTemplateColumns:
+    'repeat(auto-fit,minmax(220px,1fr))',
+  gap: '1rem',
+  marginTop: '2rem',
+  marginBottom: '2.5rem'
+}
+
+const card = {
+  background: '#181818',
+  border: '2px solid',
+  borderRadius: '16px',
+  padding: '1.25rem',
+  textDecoration: 'none',
+  transition: '.2s',
+  minHeight: '170px',
+  display: 'flex',
+  flexDirection: 'column' as const,
+  justifyContent: 'flex-start'
+}
+
+const tabButton = {
+  padding: '.8rem 1.25rem',
+  borderRadius: '999px',
+  textDecoration: 'none',
+  background: '#181818',
+  color: '#aaa',
+  border: '1px solid #333',
+  transition: '.2s'
+}
+
+const activeTabStyle = {
+  color: '#fff',
+  border: '1px solid #D4AF37',
+  background: '#222'
+}
+
+const content = {
+  marginTop: '2rem'
+}
+
+const empty = {
+  padding: '3rem',
+  textAlign: 'center' as const,
+  color: '#888'
+}
+
+const sectionTitle = {
+  color: '#ff3B00',
+  fontSize: '2rem',
+  margin: '2rem 0 1rem'
+}
+
+const filterSection = {
+  marginBottom: '2rem'
+}

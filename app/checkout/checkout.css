@@ -1,0 +1,39 @@
+.purchase-review{min-width:0;overflow-wrap:anywhere}.purchase-review h1{font-size:clamp(1.6rem,5vw,2.3rem)}.purchase-review h2{font-size:clamp(1.25rem,4vw,1.8rem)}.purchase-review section{padding:1rem;border:1px solid var(--border,#888);border-radius:10px;margin:1rem 0}.purchase-review label{display:flex;align-items:flex-start;gap:.6rem;margin:.8rem 0}.purchase-review input[type=radio]{width:1.2rem;height:1.2rem;flex-shrink:0}.purchase-review dl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:.65rem}.purchase-review dd{margin:0;text-align:right}.purchase-review .review-total{font-size:1.4rem;font-weight:700}.review-actions{display:flex;gap:1rem;align-items:center;flex-wrap:wrap}.purchase-review button:disabled{opacity:.55;cursor:not-allowed}@media(max-width:480px){.purchase-review dl{grid-template-columns:1fr}.purchase-review dd{text-align:left}.review-actions>*{width:100%}}
+
+/* Bounded review typography and payment-summary grouping. */
+.purchase-review .review-product-title{margin-block:1rem 1.25rem}
+.purchase-review .review-product-description{margin-block:0 1.75rem;line-height:1.65}
+.purchase-review .review-capability-heading{margin-block:0 .75rem}
+.purchase-review .review-capability-list{list-style:none;padding:0 0 0 1.4rem;margin:.75rem 0 1.75rem}
+.purchase-review .review-capability-list li{display:list-item;list-style:none;margin:.4rem 0;padding:0;line-height:1.55}
+.purchase-review .review-capability-list li::marker{content:""}
+.purchase-review .review-bank-heading{font-weight:700;margin-block:0 .8rem}
+.purchase-review dl.payment-summary{border:1px solid var(--foreground,#111);border-radius:12px;padding:1.15rem;margin-block:1.5rem;gap:.9rem 1.25rem}
+
+/* Payer fields remain visible at rest in both themes, not only on focus. */
+.purchase-review .sinpe-payer{min-width:0;border:1px solid var(--foreground,#777);border-radius:12px;padding:clamp(1rem,3vw,1.5rem);margin:1.5rem 0}
+.purchase-review .sinpe-payer legend{font-weight:700;padding:0 .4rem;max-width:100%;white-space:normal}
+.purchase-review .sinpe-payer label{display:block;margin:1.15rem 0 .45rem;font-weight:600}
+.purchase-review .sinpe-payer input,.purchase-review .sinpe-payer select{display:block;box-sizing:border-box;width:100%;min-width:0;min-height:48px;border:1px solid var(--foreground,#777);border-radius:8px;padding:.8rem 1rem;font:inherit;background:var(--background,#fff);color:var(--foreground,#111);box-shadow:inset 0 1px 3px #00000014}
+.purchase-review .sinpe-payer input::placeholder{color:var(--foreground,#555);opacity:.65}
+.purchase-review .sinpe-payer :is(input,select):focus-visible{outline:3px solid var(--foreground,#111);outline-offset:3px}
+.purchase-review .sinpe-payer [aria-invalid=true]{border-width:2px;border-color:#c13232}
+.purchase-review .sinpe-payer .field-error{font-weight:600;margin:.5rem 0;line-height:1.5}
+.purchase-review .sinpe-payer:disabled{opacity:.7}
+
+/* Separate the optional Bank explanation from its monthly price in EN and ES. */
+.purchase-review .review-bank-heading + p + p{margin-top:1rem}
+.purchase-review .sinpe-payer #payer-help + p{margin-top:1rem}
+.purchase-review .payment-summary .review-summary-label{font-weight:700}
+.purchase-review .review-access-duration{margin-bottom:1rem}
+
+/* Compact SINPE preparation; Stripe's original product container remains unchanged. */
+.purchase-review details.review-product-details{margin-block:1rem;border:1px solid var(--border,#888);border-radius:10px;padding:.75rem 1rem}
+.purchase-review details.review-product-details>summary{cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:center}
+.purchase-review[data-sinpe-compact=true] .sinpe-coverage{padding:.8rem 1rem;margin:.8rem 0}
+.purchase-review[data-sinpe-compact=true] .sinpe-coverage h3{margin-top:0}
+.purchase-review[data-sinpe-compact=true] .sinpe-coverage p{margin-block:.6rem}
+
+.payment-brand-mark{width:44px;height:44px;object-fit:contain;flex:none}.purchase-review>.payment-brand-mark{float:right;margin:0 0 12px 16px}.receipt-picker{min-width:0;margin:12px 0}.receipt-selection{display:flex;align-items:center;gap:12px;min-width:0;margin:12px 0}.receipt-thumbnail,.receipt-pdf{width:80px;height:80px;object-fit:contain;border:1px solid var(--border);border-radius:8px;background:var(--surface);flex:none}.receipt-pdf{display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12px}.receipt-pdf svg{width:38px;height:38px}.receipt-filename{min-width:0;overflow-wrap:anywhere;font-size:.85rem;color:var(--muted)}.package-recovery{padding:12px 0;overflow-wrap:anywhere}.package-recovery a{display:inline-block;margin:0 12px 12px 0}
+
+.receipt-picker>input[type=file][hidden]{display:none!important}

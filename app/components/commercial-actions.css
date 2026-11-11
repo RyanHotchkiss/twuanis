@@ -1,0 +1,31 @@
+/* Shared commercial actions; 12px follows the existing commercial-card convention. */
+.commercial-action{
+ --metal-ink:#fff;--metal-hover:#303642;--metal-edge:#69717c;
+ --metal-ramp:linear-gradient(165deg,#414954 0%,#69717c 28%,#343c48 53%,#4e5867 77%,#303744 100%);
+ display:inline-flex;align-items:center;justify-content:center;gap:.5rem;box-sizing:border-box;
+ min-height:48px;max-width:100%;padding:.85rem 1.2rem;margin:.2rem 0;
+ border:2px solid var(--metal-edge);border-radius:12px;font:inherit;font-weight:700;line-height:1.35;
+ white-space:normal;overflow-wrap:anywhere;text-align:center;text-decoration:none;
+ background:linear-gradient(180deg,#ffffff1c 0%,#ffffff00 45%,#00000012 100%),var(--metal-ramp);
+ color:var(--metal-ink);box-shadow:inset 0 1px 0 #ffffff65,inset 0 -2px 2px #00000024,0 3px 7px #00000032;
+ cursor:pointer;transition:border-color 140ms ease,box-shadow 140ms ease,background-color 140ms ease;
+}
+.commercial-action[data-commercial-theme=red]{--metal-hover:#861b30;--metal-edge:#9c5461;--metal-ramp:linear-gradient(165deg,#64192b 0%,#96344a 28%,#741d32 52%,#8b2b41 76%,#591625 100%)}
+.commercial-action[data-commercial-theme=blue]{--metal-hover:#174b7e;--metal-edge:#6089ac;--metal-ramp:linear-gradient(165deg,#143655 0%,#28628d 28%,#16466e 52%,#21567f 76%,#102f50 100%)}
+.commercial-action[data-commercial-theme=gold]{--metal-ink:#211600;--metal-hover:#674600;--metal-edge:#ad8a3f;--metal-ramp:linear-gradient(165deg,#c39c44 0%,#f4df98 27%,#c49b3c 52%,#e8cc7c 76%,#bb9130 100%)}
+.customer-commercial .commercial-action,.purchase-review .commercial-action{border-radius:12px;text-decoration:none;padding:.85rem 1.2rem;min-height:48px;margin:.2rem 0}
+.commercial-action.commercial-secondary{background:transparent;color:inherit;border-color:#9199a4;box-shadow:inset 0 0 0 1px #ffffff55,0 1px 3px #00000020;font-weight:600}
+.commercial-action:is(:hover,:focus-visible):not(:disabled):not([aria-disabled=true]){background:#fff;color:var(--metal-hover);border-color:#b9bfc8;filter:none;box-shadow:inset 0 0 0 1px #fff,0 0 0 1px #737c89,0 3px 7px #00000032}
+.commercial-action:focus-visible{outline:3px solid #697a91;outline-offset:4px;box-shadow:0 0 0 2px #fff,0 0 0 5px #303c4f}
+.commercial-action:active:not(:disabled):not([aria-disabled=true]){box-shadow:inset 0 2px 5px #00000036,0 0 0 1px #737c89}
+.commercial-action:disabled,.commercial-action[aria-disabled=true]{opacity:.6;cursor:not-allowed;box-shadow:inset 0 1px 0 #ffffff40;filter:none}
+.intelligence-package .commercial-action{width:100%}
+.review-actions .commercial-action{flex:1 1 220px;min-width:0}
+@media(prefers-reduced-motion:reduce){.commercial-action{transition:none}}
+@media(forced-colors:active){.commercial-action{border:2px solid ButtonText;background:ButtonFace;color:ButtonText}.commercial-action:focus-visible{outline:3px solid Highlight}}
+/* Owner-approved gold exception: retain black default text; invert on hover/focus. */
+.commercial-action[data-commercial-theme=gold]{--metal-ink:#000;--metal-hover:#e8cc7c}
+.commercial-action[data-commercial-theme=gold]:is(:hover,:focus-visible):not(:disabled):not([aria-disabled=true]){background:#000;color:#e8cc7c;border-color:#b9bfc8}
+
+.package-payment-method-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px 24px;min-width:0;flex-wrap:wrap}.package-payment-method-row>h4{flex:0 0 auto;margin:0}.package-payment-method-row>.package-wide-access-note{flex:1 1 300px;min-width:0;margin:0;text-align:right;color:light-dark(#000,#fff);background:none;border:0;font-size:.9rem;font-weight:400;line-height:1.5;overflow-wrap:anywhere}
+@media(max-width:600px){.package-payment-method-row>.package-wide-access-note{flex-basis:100%;text-align:right}}

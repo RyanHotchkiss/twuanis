@@ -1,0 +1,54 @@
+ 'use client'
+import GeographicResult from './GeographicResult'
+import {commitConfiguration} from '@/lib/measurement/analytical'
+import {useEffect,useId,useRef,useState} from 'react'
+import {measuredPriceMeterApply} from '@/lib/measurement/actions'
+import {serverSignal} from '@/lib/measurement/runtime'
+import {validateGeographicCommand,validateGeographicApply} from '@/lib/price-meter-geographic-command'
+import {summaryKeys,summaryOptions,summaryLabel,summaryIdentity,summarySnapshot} from '../market-summary/contract'
+import {applyFilterChange,optionValue,optionLabel} from '../market-filters/utils'
+import type {ExplorerOptions,Filters} from '../market-filters/types'
+import FilterSelect from '../market-filters/FilterSelect'
+import AnalysisActions from '../AnalysisActions'
+import {geographicQuestion,type GeographicEvidence} from './contract'
+import styles from '../market-summary/workspace.module.css'
+import chart from '../price-meter-distribution/distribution.module.css'
+import geo from './geography.module.css'
+export default function GeographicWorkspace({options,filters,language,source}:{options:ExplorerOptions;filters:Filters;language:'en'|'es';source:'workspace'|'standalone'}){
+ const es=language==='es',id=useId(),title=es?'Comparación geográfica del precio por m²':'Geographic Price / m² Comparison'
+ const [draft,setDraft]=useState<Filters>(()=>({...summarySnapshot(filters),district:undefined})),[basis,setBasis]=useState(filters.property_basis??''),[normalization,setNormalization]=useState(filters.normalization_basis??''),[level,setLevel]=useState(filters.comparison_level??'')
+ const [open,setOpen]=useState(true),[pending,setPending]=useState(false),[error,setError]=useState(false)
+ const [committed,setCommitted]=useState<{version:number;filters:Filters;labels:string[];boundaryLabel:string;result:Awaited<ReturnType<typeof measuredPriceMeterApply>>;evidence:GeographicEvidence}|null>(null)
+ const generation=useRef(0),inFlight=useRef(false),heading=useRef<HTMLHeadingElement>(null)
+ useEffect(()=>()=>{generation.current++},[])
+ useEffect(()=>{if(committed)heading.current?.focus()},[committed])
+ const incoming=JSON.stringify(filters),previous=useRef(incoming)
+ useEffect(()=>{if(previous.current!==incoming){previous.current=incoming;generation.current++;inFlight.current=false;setPending(false);setDraft({...summarySnapshot(filters),district:undefined});setBasis(filters.property_basis??'');setNormalization(filters.normalization_basis??'');setLevel(filters.comparison_level??'');setOpen(true);setError(false)}},[incoming,filters])
+ async function apply(){if(inFlight.current)return
+ let snapshot:Filters,labels:string[],command:ReturnType<typeof validateGeographicCommand>
+ try{command=validateGeographicCommand({definition:{propertyBasis:basis,normalizationBasis:normalization},comparisonLevel:level});snapshot=validateGeographicApply(draft,command);labels=summaryIdentity(snapshot,options,language)}catch{setError(true);return}
+ const ticket=++generation.current;inFlight.current=true;setPending(true);setError(false)
+ try{commitConfiguration('geography',language,'sd6bea9543c20f23cc6ca73261be41c32d69cf663f1863dabe25d7758f1f24a63');const result=await measuredPriceMeterApply([snapshot,language,source,['geography'],undefined,command],serverSignal(language))
+ if(ticket!==generation.current)return
+ const evidence=result.geographicResult as GeographicEvidence
+ if(!evidence||evidence.comparisonLevel!==command.comparisonLevel||evidence.definition.propertyBasis!==command.definition.propertyBasis||evidence.definition.normalizationBasis!==command.definition.normalizationBasis||evidence.transactionType!==snapshot.transaction_type)throw Error('Invalid geographic response')
+ const boundaryKey=level==='canton'?'province':'canton';const boundaryTerm=summaryOptions(boundaryKey,options,language).find(o=>optionValue(o)===snapshot[boundaryKey]);const boundaryLabel=level==='province'?'Costa Rica':boundaryTerm?optionLabel(boundaryTerm,language):''
+ setCommitted({version:ticket,boundaryLabel,filters:{...snapshot,property_basis:basis,normalization_basis:normalization,comparison_level:level},labels,result,evidence});setOpen(false)
+ }catch{if(ticket===generation.current)setError(true)}finally{if(ticket===generation.current){inFlight.current=false;setPending(false)}}}
+ const nf=new Intl.NumberFormat(es?'es-CR':'en-US',{maximumFractionDigits:2}),integer=new Intl.NumberFormat(es?'es-CR':'en-US')
+ const number=(v:number|null)=>v===null?(es?'No establecido':'Not established'):v!==0&&Math.abs(v)<0.005?new Intl.NumberFormat(es?'es-CR':'en-US',{maximumSignificantDigits:4}).format(v):nf.format(v)
+ function field(key:typeof summaryKeys[number]){return <FilterSelect key={key} compact label={summaryLabel(key,language)} filterKey={key} options={summaryOptions(key,options,language,draft)} filters={draft} language={language} onFilterChange={(k,v)=>setDraft(d=>({...((k==='accessibility'?{...d,[k]:v||undefined}:applyFilterChange(d,k,v))),district:undefined}))} emptyLabel={['transaction_type','property_type','province','canton'].includes(key)?(es?'Seleccionar (obligatorio)':'Select (required)'):(es?'Sin restricción':'Unrestricted')}/>}
+ const levels={province:es?'Provincias':'Provinces',canton:es?'Cantones':'Cantons',district:es?'Distritos':'Districts'}
+ const c=committed?.evidence,unit=c?(es?`CRC / m² de ${c.definition.normalizationBasis==='land'?'terreno':'construcción'}`:`CRC / ${c.definition.normalizationBasis==='land'?'land':'construction'} m²`):''
+ const maximum=c?Math.max(c.reference.median??0,...c.rows.map(r=>r.median??0)):0
+ return <article className={styles.summary} aria-label={title}>
+ <header className={styles.introduction}><p className={styles.eyebrow}>{es?'Precio por m²':'Price / m²'}</p><>{!committed&&<><h2>{title}</h2><p className={styles.primaryQuestion}>{geographicQuestion[language]}</p></>}</></header>
+ {committed&&c&&<GeographicResult options={options} pending={pending} part="introduction" committed={committed} language={language} heading={heading}/> }
+ {committed&&c&&<GeographicResult options={options} pending={pending} part="identity" committed={committed} language={language} heading={heading} modify={<button type="button" className={styles.modify} aria-expanded={open} aria-controls={id} disabled={pending} onClick={()=>setOpen(!open)}>{es?'Modificar':'Modify'}</button>}/>}
+ <section id={id} hidden={!open} className={styles.inputs}><fieldset disabled={pending} className={styles.fieldset}><legend>{es?'Definir la comparación':'Define the comparison'}</legend><div className={`${styles.inputGrid} ${chart.controls}`}><label>{es?'Comparar':'Compare'}<select aria-label={es?'Comparar':'Compare'} value={level} onChange={e=>{const next=e.target.value;setLevel(next);setDraft(d=>({...d,province:next==='province'?undefined:d.province,canton:next==='district'?d.canton:undefined,district:undefined}))}}><option value="">{es?'Seleccionar':'Select'}</option>{Object.entries(levels).map(([k,v])=><option key={k} value={k}>{v}</option>)}</select></label>{level==='province'?<p>{es?'Dentro de Costa Rica':'Within Costa Rica'}</p>:null}{(level==='canton'||level==='district')&&field('province')}{level==='district'&&field('canton')}</div>
+ <h3>{es?'Definir el mercado':'Define the market'}</h3><div className={styles.inputGrid}>{field('transaction_type')}{field('property_type')}</div><details className={styles.optional}><summary>{es?'Restricciones opcionales':'Optional constraints'}</summary><div className={styles.inputGrid}>{summaryKeys.slice(5).map(field)}</div></details>
+ <h3>{es?'Definir precio por m²':'Define Price / m²'}</h3><div className={`${styles.inputGrid} ${chart.controls}`}><label>{es?'Base de propiedad':'Property Basis'}<select aria-label={es?'Base de propiedad':'Property Basis'} value={basis} onChange={e=>{setBasis(e.target.value);setNormalization(e.target.value==='land_only'?'land':'')}}><option value="">{es?'Seleccionar':'Select'}</option><option value="land_only">{es?'Terreno sin construcción':'Vacant Land'}</option><option value="improved_property">{es?'Propiedad con construcción':'Improved Property'}</option></select></label>{basis==='land_only'?<p>{es?'Normalización: área del terreno.':'Normalization: Land Area.'}</p>:basis==='improved_property'?<label>{es?'Normalización':'Normalization'}<select aria-label={es?'Normalización':'Normalization'} value={normalization} onChange={e=>setNormalization(e.target.value)}><option value="">{es?'Seleccionar':'Select'}</option><option value="land">{es?'Área del terreno':'Land Area'}</option><option value="construction">{es?'Área de construcción':'Construction Area'}</option></select></label>:null}</div><button type="button" className={styles.apply} disabled={pending} onClick={apply}>{pending?(es?'Comparando…':'Comparing…'):(es?'Comparar precio por m² por geografía':'Compare Price / m² by Geography')}</button></fieldset></section>
+ {error&&<p role="alert" className={styles.error}>{es?'Revisa las entradas. No se pudo completar la comparación; el resultado anterior se conserva.':'Check inputs. Comparison could not complete; the previous result is retained.'}</p>}
+ {committed&&c&&<GeographicResult options={options} pending={pending} part="result" committed={committed} language={language} heading={heading} actions={<AnalysisActions key={committed.version} engineType="price-meter" language={language} filters={{...committed.filters,analysis_question:'geography'}} result={committed.result} defaultName={title}/>}/>}
+ </article>
+}

@@ -1,0 +1,41 @@
+'use client'
+import ResultSynthesis from '../ResultSynthesis'
+import {useHubUniverse} from '../HubUniverseContext'
+import RatioResult from './RatioResult'
+import {commitConfiguration} from '@/lib/measurement/analytical'
+import {useEffect,useRef,useState} from 'react'
+import {measuredRatio as executeAskingAreaRatio} from '@/lib/measurement/actions'
+import {serverSignal} from '@/lib/measurement/runtime'
+import {loadAreaRatioOptions} from '@/lib/asking-area-ratio-action'
+import {ratioTitle,ratioQuestion,parseRatioQuestion,type RatioQuestion,type RatioResponse} from '@/lib/asking-area-ratio-contract'
+import AnalysisActions from '../AnalysisActions'
+import styles from './workspace.module.css'
+type Success=Extract<RatioResponse,{question:RatioQuestion}>
+const blank={transaction:'',geography:{level:'canton',termId:''},propertyType:'',propertyArea:{min:'',max:''},constructionArea:{min:'',max:''}}
+function restore(s?:string){try{return s?parseRatioQuestion(JSON.parse(s)):blank}catch{return blank}}
+export default function RatioWorkspace({language,serialized}:{language:'en'|'es';serialized?:string}){
+ const universe=useHubUniverse()
+ const es=language==='es',[draft,setDraft]=useState(()=>{const d=restore(serialized);return universe?{...d,transaction:universe==='RENT'?'rent':'sale'}:d}),[committed,setCommitted]=useState<Success|null>(null),[editing,setEditing]=useState(true),[busy,setBusy]=useState(false),[error,setError]=useState(''),[catalog,setCatalog]=useState<Awaited<ReturnType<typeof loadAreaRatioOptions>>|null>(null)
+ const lock=useRef(false),generation=useRef(0),heading=useRef<HTMLHeadingElement>(null);useEffect(()=>()=>{generation.current++},[]);useEffect(()=>{if(committed)heading.current?.focus()},[committed])
+ const text=(en:string,esText:string)=>es?esText:en
+ async function apply(e:React.FormEvent){e.preventDefault();if(lock.current)return;let q:RatioQuestion;try{q=parseRatioQuestion(draft)}catch{setError(text('Select one transaction, geography and Property Type, and four valid inclusive bounds.','Selecciona una transacción, geografía y tipo de propiedad, y cuatro límites inclusivos válidos.'));return}
+ lock.current=true;setBusy(true);setError('');const ticket=++generation.current
+ try{commitConfiguration('asking-area-ratio',language,'sd1bf88960e87882e6474fc36a4ca606c01e06c12018349b6e32b3c80f775ba8a');const r=await executeAskingAreaRatio(q,serverSignal(language));if(ticket!==generation.current)return;if('access'in r){setCommitted(null);setError(text('Authorized access is required.','Se requiere acceso autorizado.'))}else if('error'in r)setError(text('Analysis unavailable. Prior evidence is unchanged.','Análisis no disponible. La evidencia anterior no cambia.'));else{setCommitted(r);setEditing(false)}}catch{if(ticket===generation.current)setError(text('Analysis unavailable. Prior evidence is unchanged.','Análisis no disponible. La evidencia anterior no cambia.'))}finally{if(ticket===generation.current){lock.current=false;setBusy(false)}}}
+ const options=catalog?.state==='ready'?catalog.options:[],format=(v:number)=>new Intl.NumberFormat(es?'es-CR':'en-US',{maximumSignificantDigits:6}).format(v)
+ const reasons:Record<string,[string,string]>={covariance_unavailable:['Uncertainty could not be resolved for this cohort','No se pudo resolver la incertidumbre para esta cohorte'],insufficient_observations:['Insufficient residual degrees of freedom','Grados de libertad residuales insuficientes'],insufficient_variation:['Insufficient observed area variation','Variación observada de áreas insuficiente'],rank_deficiency:['The two area relationships cannot be separated','No se pueden separar las dos relaciones de área'],numerical_instability:['Numerically unresolved relationship','Relación numéricamente no resuelta'],degenerate_uncertainty:['Uncertainty cannot be established from this fit','La incertidumbre no se puede establecer con este ajuste'],ratio_not_finitely_identified:['The ratio has no established finite interval','La razón no tiene un intervalo finito establecido'],ratio_uncertainty_exceeds_policy:['Ratio uncertainty exceeds the approved 25% tolerance','La incertidumbre de la razón supera la tolerancia aprobada del 25%'],influence_stability_not_certified:['Stability under removal of one or two observations is not certified','No se certificó la estabilidad al retirar una o dos observaciones']}
+ return <section className={styles.workspace} style={{minWidth:0,overflowWrap:'anywhere'}}><header><p className={styles.eyebrow}>{text('Cohort-specific relationship','Relación específica de la cohorte')}</p><h2>{ratioTitle[language]}</h2><p className={styles.question}>{ratioQuestion[language]}</p></header>
+ {committed&&<ResultSynthesis engine={'asking-area-ratio'} evidence={committed} language={language}/>}
+ <form className={styles.inputs} onSubmit={apply} hidden={!editing}><fieldset disabled={busy} style={{minWidth:0}}><legend>{text('Define the market question','Define la pregunta del mercado')}</legend>
+ <button type="button" onClick={async()=>{try{setCatalog(await loadAreaRatioOptions())}catch{setError(text('Market options unavailable','Opciones del mercado no disponibles'))}}}>{text('Load market options','Cargar opciones del mercado')}</button>
+ <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(min(100%,240px),1fr))',gap:16}}>
+ <label>{text('Transaction','Transacción')}<select disabled={!!universe} required value={draft.transaction} onChange={e=>setDraft({...draft,transaction:e.target.value})}><option value="">—</option><option value="sale">{text('Sale','Venta')}</option><option value="rent">{text('Monthly asking rent','Alquiler mensual de oferta')}</option></select></label>
+ <label>{text('Geographic level','Nivel geográfico')}<select value={draft.geography.level} onChange={e=>setDraft({...draft,geography:{level:e.target.value,termId:''}})}>{['province','canton','district'].map((g,i)=><option key={g} value={g}>{es?['Provincia','Cantón','Distrito'][i]:g}</option>)}</select></label>
+ <label>{text('Canonical geography','Geografía canónica')}<select required value={draft.geography.termId} onChange={e=>setDraft({...draft,geography:{...draft.geography,termId:e.target.value}})}><option value="">—</option>{options.filter(o=>o.type===draft.geography.level).map(o=><option key={o.id} value={o.id}>{o[language]} ({o.code})</option>)}</select></label>
+ <label>{text('Property Type','Tipo de propiedad')}<select required value={draft.propertyType} onChange={e=>setDraft({...draft,propertyType:e.target.value})}><option value="">—</option>{options.filter(o=>o.type==='property_type').map(o=><option key={o.id} value={o.id}>{o[language]}</option>)}</select></label>
+ {(['propertyArea','constructionArea'] as const).flatMap((dimension,i)=>(['min','max'] as const).map((bound,j)=><label key={dimension+bound}>{(es?['Área del terreno','Área de construcción']:['Property Area','Construction Area'])[i]} · {(es?['mínimo inclusivo','máximo inclusivo']:['inclusive minimum','inclusive maximum'])[j]} (m²)<input required inputMode="decimal" value={draft[dimension][bound]} onChange={e=>setDraft({...draft,[dimension]:{...draft[dimension],[bound]:e.target.value}})}/></label>))}</div>
+ <p>{text('Improved Property · exact measurements only. Edits do not run analysis.','Propiedad mejorada · solo medidas exactas. Editar no ejecuta el análisis.')}</p><button className={styles.apply} type="submit">{busy?text('Analyzing…','Analizando…'):text('Analyze','Analizar')}</button></fieldset></form>
+ {error&&<p role="alert">{error}</p>}
+ <div aria-live="polite" aria-busy={busy}>{committed&&<RatioResult part="result" editing={editing} committed={committed} language={language} heading={heading} modify={<button type="button" disabled={busy} onClick={()=>{setDraft(committed.question);setEditing(true)}}>{text('Modify','Modificar')}</button>} actions={<AnalysisActions key={JSON.stringify(committed)} engineType="price-meter" language={language} filters={{analysis_question:'asking-area-ratio',ratio_request:JSON.stringify(committed.question)}} result={committed} defaultName={ratioTitle[language]}/>}/>}</div>
+ <RatioResult part="method" committed={committed} language={language} heading={heading} />
+ </section>
+}

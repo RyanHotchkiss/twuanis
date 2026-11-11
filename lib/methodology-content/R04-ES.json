@@ -1,0 +1,137 @@
+{
+  "kind": "UNPUBLISHED_PUBLIC_PROJECTION_CANDIDATE",
+  "engineId": "matching",
+  "name": "Coincidencia de Propiedades",
+  "locale": "es",
+  "explanationRevision": "KA02-2026-10-15-R1/R04",
+  "historicalReleaseReference": "b6e2e5578a14a13e2e0db58096a03001c51c0407f353f53f4dabe684b6c4080b",
+  "publicationState": "WITHHELD_PENDING_KA02_OWNER_REVIEW",
+  "inputs": [
+    {
+      "name": "canonicalScope",
+      "meaning": "Capacidad/población autenticada existente, transacción, geografía/tipo canónico y selección explícita del cliente; se mantienen identidades distintas por origen.",
+      "unit": "canonical IDs and scope / IDs y ámbito canónicos",
+      "evidenceKind": "scope",
+      "required": true,
+      "missingBehavior": "Deny/unavailable; never widen scope / denegar/no disponible; nunca ampliar ámbito"
+    },
+    {
+      "name": "canonicalEvidence",
+      "meaning": "Observaciones actuales elegibles privadas o bancarias mediante lectores/procedencia canónicos existentes; para bancos se requiere venta directa/ciclo de vida/transacción original, no tasación.",
+      "unit": "source-qualified records / registros con origen",
+      "evidenceKind": "identity",
+      "required": true,
+      "missingBehavior": "Missing/inconsistent acquisition is unavailable or excluded with explicit reason; not a successful empty market / adquisición ausente/incoherente no disponible o exclusión explícita; no mercado vacío exitoso"
+    },
+    {
+      "name": "canonicalCharacteristics",
+      "meaning": "Pertenencias canónicas positivas y evidencia tipada; se conservan distinciones exacto/intervalo/desconocido.",
+      "unit": "canonical IDs / IDs canónicos",
+      "evidenceKind": "category",
+      "required": false,
+      "missingBehavior": "Unknown never becomes false or an invented selected value / desconocido nunca se convierte en falso ni valor seleccionado inventado"
+    }
+  ],
+  "calculationStages": [
+    {
+      "id": "acquire",
+      "meaning": "Adquirir solo evidencia canónica actualmente autorizada; rechazar entradas incompletas, incoherentes o fuera de ámbito.",
+      "formulaRefs": []
+    },
+    {
+      "id": "calculate",
+      "meaning": "Aplicar la secuencia existente de elegibilidad, normalización y fórmulas del motor; conservar cada estado no establecido.",
+      "formulaRefs": [
+        "score"
+      ]
+    },
+    {
+      "id": "deliver",
+      "meaning": "Devolver evidencia vinculada a origen/versión mediante controles existentes; consultar metodología nunca ejecuta el motor ni cobra ejecución.",
+      "formulaRefs": []
+    }
+  ],
+  "question": "¿Qué anuncios actuales coinciden mejor con las preferencias cuya evidencia realmente se puede evaluar?",
+  "applications": [
+    "Los compradores pueden examinar coincidencias confirmadas, no coincidencias confirmadas y desconocidos por separado, sin recibir una probabilidad de coincidencia injustificada."
+  ],
+  "formulas": [
+    {
+      "id": "score",
+      "equation": "known=M+F; score=100M/(M+F); U=selected−M−F",
+      "variables": [
+        {
+          "symbol": "M",
+          "meaning": "Coincidencias de preferencia confirmadas",
+          "unit": "count"
+        },
+        {
+          "symbol": "F",
+          "meaning": "No coincidencias confirmadas",
+          "unit": "count"
+        },
+        {
+          "symbol": "U",
+          "meaning": "Preferencias desconocidas",
+          "unit": "count"
+        }
+      ],
+      "statisticalMethod": "Descriptive / descriptivo",
+      "denominator": "M+F>0",
+      "normalization": "Canonical source identity / identidad canónica de origen",
+      "precisionAndRounding": "IEEE754 binary64; analytical values not display-rounded / valores analíticos sin redondeo de presentación. No additional rounding or inferential precision claimed / sin redondeo adicional ni precisión inferencial afirmada."
+    }
+  ],
+  "population": {
+    "definition": "Mercado actual observable de anuncios/oferta elegibles dentro del ámbito explícito con origen, no transacciones históricas. Resultados privados y bancarios separados; solo las ramas existentes que exponen crossMarket admiten cálculo entre mercados.",
+    "eligibility": [
+      "Mercado actual observable de anuncios/oferta elegibles dentro del ámbito explícito con origen, no transacciones históricas. Resultados privados y bancarios separados; solo las ramas existentes que exponen crossMarket admiten cálculo entre mercados.",
+      "Salvo matching/configuration, los grupos de preferencias seleccionados del adaptador deben coincidir positivamente (algún valor del grupo y todos los grupos). Matching ordena evidencia; configuration cuenta la conjunción completa respecto a la base.",
+      "Venta y alquiler mensual nunca se mezclan. La reducción bancaria canónica requiere DIRECT_SALE, transacción de venta original exacta, ciclo PUBLISHED, vigencia/procedencia válidas y geografía/tipo coherentes; no se inventa alquiler bancario.",
+      "Se requiere al menos un MATCH o NONMATCH para calcular la puntuación; las filas solo desconocidas no tienen puntuación."
+    ],
+    "exclusions": [
+      "La evidencia requerida ausente, contradictoria, inválida, no confirmada o desactualizada no se convierte en cero, valor supuesto ni población ampliada silenciosamente.",
+      "Sin área exacta desde categoría/intervalo; construcción no sustituye huella; importes de oferta no son transacciones realizadas; identidades monetarias/fecha BCCR explícitas."
+    ]
+  },
+  "outputs": [
+    {
+      "name": "confirmedMatches/confirmedNonmatches/unknown",
+      "meaning": "Evidencia de preferencias de tres estados",
+      "unit": "count",
+      "interpretation": "La pertenencia ausente no exclusiva permanece desconocida; legal_status puede establecer una no coincidencia exclusiva."
+    },
+    {
+      "name": "matchScore/matchState; ranked first12",
+      "meaning": "Proporción de evidencia conocida y candidatos ordenados",
+      "unit": "percent; state; ordered listings",
+      "interpretation": "Ordenar por puntuación descendente, coincidencias confirmadas descendentes e ID ascendente; el adaptador devuelve los primeros12. No representa la compra individual de un motor ni una puntuación de recomendación."
+    }
+  ],
+  "resultStates": {
+    "empty": "Una población seleccionada vacía establecida tiene conteo cero y resúmenes numéricos indefinidos; conservar los estados específicos siguientes.",
+    "zero": "Conteos cero y diferencias/IQR cero válidos pueden tener sentido; precio de oferta o área de normalización cero/negativos no son observaciones positivas elegibles.",
+    "invalid": "Entrada inválida, identidad contradictoria, evidencia canónica duplicada o ámbito mezclado sigue la rama existente de error/exclusión; sin resultado exitoso inventado.",
+    "unavailable": "Autoridad, derechos actuales, instantánea coherente, tipo de cambio o sujeto requeridos ausentes son no disponibles/denegados bajo controles existentes; nunca sustituto vacío exitoso.",
+    "undefined": "Conocidos=0→puntuación null, NO_EVALUABLE_MATCH_EVIDENCE; conocidos>0→ESTABLISHED. Cero coincidencias entre no coincidencias conocidas es un0% real. Los filtros de área usan [min,max); valores exactos inválidos o no positivos son UNKNOWN."
+  },
+  "supportedInterpretation": "Los compradores pueden examinar coincidencias confirmadas, no coincidencias confirmadas y desconocidos por separado, sin recibir una probabilidad de coincidencia injustificada.",
+  "unsupportedInterpretations": [
+    "¿Cuál fue el precio realizado, apreciación histórica, rendimiento causal, pronóstico o resultado garantizado de inversión? Este motor del mercado actual de oferta no los establece.",
+    "No se establece ponderación, importancia causal ni probabilidad de una transacción cerrada."
+  ],
+  "packageMembership": [
+    {
+      "packageId": "pkg-matching-market-comparison",
+      "capabilityId": "cap-property-matching",
+      "availability": "Configured at original observation; purchased rights and production execution verified separately / configurado en observación original; derechos comprados y ejecución de producción se verifican por separado"
+    },
+    {
+      "packageId": "pkg-pricing-position-relationships",
+      "capabilityId": "cap-property-matching",
+      "availability": "Configured at original observation; purchased rights and production execution verified separately / configurado en observación original; derechos comprados y ejecución de producción se verifican por separado"
+    }
+  ],
+  "evidenceState": "DOCUMENTED; MATHEMATICALLY_VERIFIED_FOR_PINNED_CONTRACTS; BILINGUAL_TECHNICAL_REVIEWED; SCHEMA_VALIDATED; DISCLOSURE_ALLOWLIST_CHECKED; OWNER_NOT_ACCEPTED"
+}

@@ -1,0 +1,16 @@
+.evidence, .evidence div, .evidence section { min-width: 0; }
+.evidence { max-width: 100%; }
+.evidence table { overflow-wrap: anywhere; }
+.evidence svg { max-width: 100%; }
+.results { display: grid; gap: 1.5rem; line-height: 1.6; }
+.results h4 { font-size: 1.05rem; margin: 0 0 .6rem; color: var(--foreground); }
+.results p { color: var(--muted); margin: .5rem 0; }
+.results .question { color: var(--foreground); font-size: 1.12rem; }
+.group { border-bottom: 1px solid var(--border); padding: .8rem 0; }
+.group summary { cursor: pointer; color: var(--foreground); }
+.group summary:focus-visible { outline: 2px solid #ff6b00; outline-offset: 4px; }
+.tableWrap { overflow-x: auto; max-width: 100%; }
+.results table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+.results th, .results td { padding: .65rem .5rem; text-align: left; border-bottom: 1px solid var(--border); font-variant-numeric: tabular-nums; }
+.results th { color: var(--muted); font-weight: 500; }
+.results td { color: var(--foreground); }

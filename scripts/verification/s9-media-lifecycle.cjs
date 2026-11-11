@@ -1,0 +1,24 @@
+'use strict';
+const fs=require('fs'),path=require('path'),vm=require('vm'),assert=require('assert/strict'),{execFileSync}=require('child_process');
+const root=path.resolve(__dirname,'../..'),ts=require(root+'/node_modules/typescript'),pg='/opt/homebrew/opt/postgresql@17/bin',env={PATH:'/usr/bin:/bin',LC_ALL:'C'},dir=process.argv[2];assert.match(dir||'',/^\/private\/tmp\/twuanis-s9-chain-[a-zA-Z0-9]+$/);const data=dir+'/data',socket=dir+'/socket';let started=false,n=0;
+const call=(bin,args,input)=>execFileSync(pg+'/'+bin,args,{env,input,encoding:'utf8',timeout:30000,stdio:['pipe','pipe','pipe']});const sql=q=>call('psql',['-X','-qAt','-h',socket,'-p','55449','-U','postgres','-d','cg_s1_verification','-v','ON_ERROR_STOP=1'],q).trim();const lit=v=>"'"+String(v).replaceAll("'","''")+"'",ok=(v,l)=>{assert.ok(v,l);n++;console.log('PASS '+l)};
+(async()=>{try{
+ call('pg_ctl',['-D',data,'-l',dir+'/server.log','-o',`-k ${socket} -p 55449 -c listen_addresses=`,'start']);started=true;assert.equal(sql(`SELECT inet_server_addr() IS NULL AND current_setting('data_directory')=${lit(data)};`),'t');
+ for(const prefix of ['020_','021_','022_'])sql(fs.readFileSync(root+'/supabase/migrations/'+fs.readdirSync(root+'/supabase/migrations').find(p=>p.startsWith(prefix)),'utf8'));
+ const row=JSON.parse(sql("SELECT to_jsonb(l) FROM listings l WHERE title='S9 token';")),owner=row.owner_id,id=row.id;
+ const lifecycle=()=>sql(`SELECT json_build_array(listing_status,canonical_revision,publication_expires_at,(SELECT count(*) FROM listing_lifecycle_events WHERE listing_id=l.id)) FROM listings l WHERE id=${lit(id)};`),before=lifecycle();
+ const op=JSON.parse(sql(`SET ROLE service_role;SELECT prepare_ordinary_upload(${lit(owner)},${lit(id)},10);`));let size=9;
+ const admin={rpc:async(name,args)=>{assert.ok(['get_ordinary_upload','attach_ordinary_upload'].includes(name));return {data:JSON.parse(sql(`SET ROLE service_role;SELECT ${name}(${lit(args.p_owner)},${lit(args.p_operation)});`))}},storage:{from:()=>({info:async()=>({data:{size}})})}};
+ const m={exports:{}};vm.runInNewContext(ts.transpileModule(fs.readFileSync(root+'/lib/ordinary-upload-operation.ts','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,{module:m,exports:m.exports,require:k=>{assert.equal(k,'server-only');return{}},console});
+ const first=await m.exports.retryOrdinaryUpload(admin,owner,op.id,id);ok(first.status==='ATTACHMENT_UNCONFIRMED','storage byte mismatch cannot attach');
+ size=10;const next=await m.exports.retryOrdinaryUpload(admin,owner,op.id,id);ok(next.status==='ATTACHMENT_CONFIRMED','same operation attaches confirmed file');
+ const detach=JSON.parse(sql(`SET ROLE service_role;SELECT detach_listing_image(${lit(owner)},${lit(id)},${lit(op.storage_path)});`));ok(detach.managed&&!detach.cleanup_completed,'detach records managed cleanup obligation');
+ await m.exports.retryOrdinaryUpload(admin,owner,op.id,id);ok(!JSON.parse(sql(`SELECT images FROM listings WHERE id=${lit(id)};`)).includes(op.storage_path),'old upload replay cannot resurrect detached media');
+ sql(`SET ROLE service_role;SELECT confirm_image_cleanup(${lit(owner)},${lit(detach.id)});`);
+ ok(JSON.parse(sql(`SET ROLE service_role;SELECT get_image_detach_operation(${lit(owner)},${lit(detach.id)});`)).cleanup_completed,'cleanup receipt confirms same operation');
+ ok(lifecycle()===before,'attachment/detach/replay preserve lifecycle revision deadline and journal');
+ const token=JSON.parse(sql("SELECT to_jsonb(t) FROM listing_publish_tokens t LIMIT 1;"));
+ ok(sql(`SET ROLE service_role;SELECT claim_abandoned_listing_token(${lit(token.id)}) IS NULL;`)==='t','canonical token not claimed by temporary cleanup');
+ ok(sql("SELECT NOT has_function_privilege('authenticated','public.attach_ordinary_upload(uuid,uuid)','EXECUTE') AND NOT has_function_privilege('authenticated','public.confirm_image_cleanup(uuid,uuid)','EXECUTE');")==='t','browser cannot manufacture attachment or cleanup completion');
+ console.log('S9 MEDIA LIFECYCLE '+n+' checks passed');
+ }finally{if(started){call('pg_ctl',['-D',data,'stop','-m','fast']);console.log('S9 isolated PostgreSQL stopped; fixture retained')}}})().catch(e=>{console.error(String(e.stderr||e.stack||e));process.exitCode=1});

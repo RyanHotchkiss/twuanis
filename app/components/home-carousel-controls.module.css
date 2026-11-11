@@ -1,0 +1,29 @@
+.control.control{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;width:var(--carousel-control-width,56px);height:var(--carousel-control-height,48px);padding:var(--carousel-control-padding,5px);border:var(--carousel-control-border,2px) solid #ff3b00;border-radius:var(--carousel-control-radius,12px);background:#fff4da;color:white;font-family:inherit;font-size:var(--carousel-control-font,30px);line-height:1;font-weight:500;cursor:pointer;flex-shrink:0;transition:box-shadow 140ms ease,opacity 140ms ease}
+.control.control>span,.control.control>svg{display:inline-flex;align-items:center;justify-content:center;background:#202020;color:#fff;border-radius:var(--carousel-control-inner-radius,7px);width:100%;height:100%;padding:0 var(--carousel-control-padding,5px);box-sizing:border-box}
+.control.control:hover:not(:disabled),.touchTarget:hover:not(:disabled) .control{box-shadow:0 0 0 2px var(--foreground)}
+.control.control:focus-visible,.touchTarget:focus-visible .control{outline:var(--carousel-control-focus,3px) solid #ff3b00;outline-offset:var(--carousel-control-focus-offset,4px)}
+.control.control:disabled,.touchTarget:disabled .control{opacity:.5;cursor:not-allowed}
+.control.control:active:not(:disabled),.touchTarget:active:not(:disabled) .control{box-shadow:inset 0 0 0 2px #202020}
+@media(prefers-reduced-motion:reduce){.control.control{transition:none}}
+
+/* Same visual authority at half size, with an independently usable touch target. */
+.half{--carousel-control-width:28px;--carousel-control-height:24px;--carousel-control-padding:2.5px;--carousel-control-border:1px;--carousel-control-radius:6px;--carousel-control-inner-radius:3.5px;--carousel-control-font:15px;--carousel-control-focus:1.5px;--carousel-control-focus-offset:2px}
+.touchTarget{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;width:44px;height:44px;min-width:44px;min-height:44px;padding:0;border:0;border-radius:8px;background:transparent;color:inherit;font:inherit;cursor:pointer;flex-shrink:0}
+.touchTarget:focus-visible{outline:none}
+.touchTarget>.control{pointer-events:none}
+.touchTarget:disabled{cursor:not-allowed}
+
+/* Match the one-pixel site borders without shrinking touch targets. */
+.thin{--carousel-control-border:1px;--carousel-control-padding:1px}
+.thin.control:hover:not(:disabled),.touchTarget:hover:not(:disabled) .thin.control{box-shadow:0 0 0 1px var(--foreground)}
+
+.pauseGlyph *{stroke-width:1px;vector-effect:non-scaling-stroke}
+
+/* Chevron controllers retain only their orange perimeter. */
+.chevron.control{background:#202020;--carousel-control-padding:0px}
+.control.control>span>.pauseGlyph{width:56.25%;height:56.25%;padding:0;flex-shrink:0}
+
+.chevron.control>span{background:transparent}
+
+.pauseControl.control{background:#202020}
+.pauseControl.control>span{background:transparent}

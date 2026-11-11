@@ -1,0 +1,11 @@
+{
+  "revision": "KA05-2026-10-16-FINAL-R1/definitions-R2",
+  "contentDigest": "44c489a4194080b53bf07b95e77eb42f3bd9b5408eb1c2f0639313ee92809c27",
+  "evidenceRef": "K05-FINAL-E03",
+  "reviewer": "Codex source-backed semantic review; no independent human or Owner C2 acceptance claimed",
+  "verified": 677,
+  "blocked": 0,
+  "predicatesVerified": 3,
+  "OwnerAcceptance": "Prior C2 accepted; current FINAL-R1 awaiting Owner review; local activation expressly authorized",
+  "releaseState": "LOCAL_CANDIDATE_NOT_DEPLOYED"
+}

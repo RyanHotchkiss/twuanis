@@ -1,0 +1,342 @@
+'use client'
+import {useRef} from 'react'
+import {useFavoriteIds} from '@/app/components/property-detail/useFavoriteIds'
+import {PropertyAuthenticationRequired,propertySignIn,propertyInteractionMessage} from '@/lib/property-interaction-errors'
+
+import {context,emit,interactionKey} from '@/lib/measurement/runtime'
+import {
+  useEffect,
+  useState
+} from 'react'
+
+import {
+  recordListingSaved,
+  recordListingShared
+} from '@/lib/activity'
+
+import {
+  trackListingWhatsAppClicked
+} from '@/lib/activity/listings'
+
+import {
+  toggleFavorite,
+  isFavorite
+} from '@/lib/favorites'
+
+type ListingActionsProps = {
+  listingId: string
+  title?: string | null
+  province?: string | null
+  canton?: string | null
+  district?: string | null
+  propertyType?: string | null
+  transactionType:
+    | 'buy'
+    | 'rent'
+    | 'lease'
+  language:
+    | 'en'
+    | 'es'
+}
+
+export default function ListingActions({
+  listingId,
+  title,
+  province,
+  canton,
+  district,
+  propertyType,
+  transactionType,
+  language  
+}: ListingActionsProps) {
+  const {favoriteIds,favoriteError}=useFavoriteIds(language)
+  const saved=favoriteIds.includes(listingId)
+  const saveLock=useRef(false)
+  const [saving,setSaving]=useState(false)
+
+  const [message, setMessage] =
+    useState('')
+
+  const labels =
+    language === 'es'
+      ? {
+          save: 'Guardar',
+          saved: 'Guardada',
+          share: 'Compartir',
+          copied: 'Enlace Copiado',
+          error: 'No se pudo completar la acción.'
+        }
+      : {
+          save: 'Save',
+          saved: 'Saved',
+          share: 'Share',
+          copied: 'Link Copied',
+          error: 'The action could not be completed.'
+        }
+
+  function getMetadata() {
+        return {
+            title: title ?? undefined,
+            province: province ?? undefined,
+            canton: canton ?? undefined,
+            district: district ?? undefined,
+            propertyType:
+            propertyType ?? undefined,
+            transactionType,
+            pathname:
+            window.location.pathname,
+            href:
+            window.location.href
+        }
+        }
+
+  async function handleSave() {
+  if(saveLock.current)return
+  saveLock.current=true;setSaving(true)
+  emit('tw_save_intent',{...context(language),listing_id:listingId,action:saved?'remove':'save'},'save:'+interactionKey())
+
+  try {
+
+    await toggleFavorite(
+      listingId
+    )
+
+    const nowSaved =
+      await isFavorite(
+        listingId
+      )
+
+    // Saved state is synchronized from the authoritative Favorites reader.
+
+    if (!nowSaved) {
+      setMessage('')
+      return
+    }
+
+    await recordListingSaved({
+      listingId,
+      metadata: getMetadata()
+    })
+
+    setMessage('')
+
+  } catch (error) {
+
+    console.error(
+      'LISTING SAVE ERROR:',
+      error
+    )
+
+    setMessage(propertyInteractionMessage(error,language,labels.error))
+    if(error instanceof PropertyAuthenticationRequired)propertySignIn(language)
+  } finally {saveLock.current=false;setSaving(false)}
+}
+
+async function handleShare() 
+    {
+      try {
+        const shareData = {
+          title:
+            title || 'Twuanis',
+          url:
+            window.location.href
+        }
+
+        let shareMethod =
+          'clipboard'
+
+        if (navigator.share) {
+          await navigator.share(
+            shareData
+          )
+
+          shareMethod =
+            'native'
+        } else {
+          await navigator.clipboard.writeText(
+            window.location.href
+          )
+
+          setMessage(
+            labels.copied
+          )
+        }
+
+        emit('tw_share',{...context(language),listing_id:listingId,method:shareMethod==='native'?'native_share':'copy',outcome:'success'} as any,'share:'+interactionKey())
+        await recordListingShared({
+          listingId,
+          metadata: {
+            ...getMetadata(),
+            shareMethod
+          }
+        })
+      } catch (error) {
+        if (
+          error instanceof DOMException &&
+          error.name === 'AbortError'
+        ) {
+          return
+        }
+
+        setMessage(
+          labels.error
+        )
+      }
+    }
+
+    async function handleWhatsApp() {
+    emit('tw_contact_start',{...context(language),listing_id:listingId,channel:'whatsapp'},'contact:'+interactionKey())
+  try {
+    const response =
+      await fetch(
+        `/api/public-listing-contact?listingId=${encodeURIComponent(
+          listingId
+        )}`,
+        {
+          method: 'GET',
+          cache: 'no-store'
+        }
+      )
+
+    if (!response.ok) {
+      setMessage(
+        labels.error
+      )
+      return
+    }
+
+    const contact =
+      await response.json()
+
+    const whatsapp =
+      typeof contact?.whatsapp === 'string'
+        ? contact.whatsapp
+        : null
+
+    if (!whatsapp) {
+      setMessage(
+        labels.error
+      )
+      return
+    }
+
+    try {
+      await trackListingWhatsAppClicked({
+        listingId,
+        metadata: getMetadata()
+      })
+    } catch (error) {
+      console.error(
+        'WHATSAPP TRACKING ERROR:',
+        error
+      )
+    }
+
+    window.open(
+      `https://wa.me/${whatsapp}`,
+      '_blank',
+      'noopener,noreferrer'
+    )
+  } catch (error) {
+    console.error(
+      'WHATSAPP CONTACT ERROR:',
+      error
+    )
+
+    setMessage(
+      labels.error
+    )
+  }
+}
+ 
+  return (
+    <div
+      data-listing-actions
+      style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: '.75rem',
+        marginBottom: '1.5rem'
+      }}
+    >
+      <button
+        type="button"
+        onClick={handleSave}
+        disabled={saving}
+        aria-pressed={saved}
+        style={{
+          flex: 1,
+          minWidth: '8rem',
+          border: '1px solid #fff',
+          borderRadius: '999px',
+          padding: '.85rem 1.25rem',
+          background:
+            saved
+              ? '#fff'
+              : 'transparent',
+          color:
+            saved
+              ? '#000'
+              : '#fff',
+          cursor:
+            saved
+              ? 'default'
+              : 'pointer',
+          fontWeight: 'bold'
+        }}
+      >
+        {saved
+          ? labels.saved
+          : labels.save}
+      </button>
+
+      <button
+        type="button"
+        onClick={handleShare}
+        style={{
+          flex: 1,
+          minWidth: '8rem',
+          border: '1px solid #fff',
+          borderRadius: '999px',
+          padding: '.85rem 1.25rem',
+          background: '#fff',
+          color: '#000',
+          cursor: 'pointer',
+          fontWeight: 'bold'
+        }}
+      >
+        {labels.share}
+      </button>
+
+      <button
+        type="button"
+        onClick={handleWhatsApp}
+        style={{
+          flex: 1,
+          minWidth: '8rem',
+          border: '1px solid #25D366',
+          borderRadius: '999px',
+          padding: '.85rem 1.25rem',
+          background: '#25D366',
+          color: '#fff',
+          cursor: 'pointer',
+          fontWeight: 'bold'
+        }}
+      >
+        WhatsApp
+      </button>
+
+      {(message || favoriteError) && (
+        <div
+          style={{
+            width: '100%',
+            color: '#aaa',
+            fontSize: '.9rem'
+          }}
+        >
+          {message || favoriteError}
+        </div>
+      )}
+    </div>
+  )
+}

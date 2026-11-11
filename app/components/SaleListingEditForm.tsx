@@ -1,0 +1,2101 @@
+'use client'
+import {productAction} from '@/lib/measurement/journey-client'
+import {bathroomEditValue,legacyBathroomWriteValue} from '@/lib/bathroom-selection'
+import ListingIntelligencePanel from '@/app/components/ListingIntelligencePanel'
+
+import {
+  FormEvent,
+  useState,
+  useRef
+} from 'react'
+
+import {
+  useRouter
+} from 'next/navigation'
+
+import {
+  supabase
+} from '@/lib/supabase'
+
+import { submitCanonicalCustomerEdit } from '@/app/utils/canonicalCustomerEdit'
+
+import {
+  updateListing
+} from '@/app/utils/updateListing'
+
+import {
+  provinces,
+  districts,
+  property_types,
+  residential_property_types,
+  bedroom_options,
+  bathroom_options,
+  parking_options,
+  year_built_options,
+  construction_area_options,
+  property_areas,
+  utilities,
+  terrainOptions
+} from '@/data/property-data'
+
+import {
+  formatColones
+} from '@/app/utils/listing-utils'
+
+import {
+  useMarketplaceFx
+} from '@/app/hooks/useMarketplaceFx'
+
+import LocationSelectorS from '@/app/components/filter-bar/LocationSelectorS'
+import PropertyTypeFilterS from '@/app/components/filter-bar/PropertyTypeFilterS'
+import BedroomFilterS from '@/app/components/filter-bar/BedroomFilterS'
+import BathroomFilterS from '@/app/components/filter-bar/BathroomFilterS'
+import ParkingFilterS from '@/app/components/filter-bar/ParkingFilterS'
+import YearBuiltFilterS from '@/app/components/filter-bar/YearBuiltFilterS'
+import ExactPropertyAreaInput
+from '@/app/components/listing-input/ExactPropertyAreaInput'
+import PropertyAreaFilterS from '@/app/components/filter-bar/PropertyAreaFilterS'
+import UtilitiesFilterS from '@/app/components/filter-bar/UtilitiesFilterS'
+import EnvironmentFilterS from '@/app/components/filter-bar/EnvironmentFilterS'
+import AccessibilityFilterS from '@/app/components/filter-bar/AccessibilityFilterS'
+import TerrainFilterS from '@/app/components/filter-bar/TerrainFilterS'
+import LegalStatusFilterS from '@/app/components/filter-bar/LegalStatusFilterS'
+import PriceSelectorS from '@/app/components/filter-bar/PriceSelectorS'
+import PropertyDefinitionPanel from '@/app/components/PropertyDefinitionPanel'
+import TopBar from '@/app/components/TopBar'
+import ExactConstructionAreaInput
+from '@/app/components/listing-input/ExactConstructionAreaInput'
+
+import PropertyTypeFilterSES from '@/app/components/filter-bar/PropertyTypeFilterSES'
+import BedroomFilterSES from '@/app/components/filter-bar/BedroomFilterSES'
+import BathroomFilterSES from '@/app/components/filter-bar/BathroomFilterSES'
+import ParkingFilterSES from '@/app/components/filter-bar/ParkingFilterSES'
+import YearBuiltFilterSES from '@/app/components/filter-bar/YearBuiltFilterSES'
+
+import PropertyAreaFilterES from '@/app/components/filter-bar/PropertyAreaFilterES'
+import UtilitiesFilterES from '@/app/components/filter-bar/UtilitiesFilterES'
+import EnvironmentFilterSES from '@/app/components/filter-bar/EnvironmentFilterSES'
+import AccessibilityFilterES from '@/app/components/filter-bar/AccessibilityFilterES'
+import TerrainFilterES from '@/app/components/filter-bar/TerrainFilterES'
+import LegalStatusFilterSES from '@/app/components/filter-bar/LegalStatusFilterSES'
+import PropertyDefinitionPanelES from '@/app/components/PropertyDefinitionPanelES'
+
+import {
+  resolveEditableListingImages
+} from '@/app/utils/resolveListingImages'
+
+type SupportedLanguage =
+  | 'en'
+  | 'es'
+
+type SaleListingEditFormProps = {
+  listing: any
+  language?: SupportedLanguage
+}
+
+function normalizeStringArray(
+  value: unknown
+): string[] {
+  if (Array.isArray(value)) {
+    return value
+      .map(item => String(item))
+      .filter(Boolean)
+  }
+
+  if (typeof value !== 'string') {
+    return []
+  }
+
+  const trimmedValue = value.trim()
+
+  if (!trimmedValue) {
+    return []
+  }
+
+  try {
+    const parsed = JSON.parse(
+      trimmedValue
+    )
+
+    if (Array.isArray(parsed)) {
+      return parsed
+        .map(item => String(item))
+        .filter(Boolean)
+    }
+
+    if (
+      typeof parsed === 'string' &&
+      parsed.trim()
+    ) {
+      return [parsed.trim()]
+    }
+  } catch {
+    // Continue to delimiter parsing.
+  }
+
+  return trimmedValue
+    .split('|')
+    .map(item => item.trim())
+    .filter(Boolean)
+}
+
+function normalizeAccessibility(
+  value: unknown
+): string {
+  if (
+    Array.isArray(value)
+  ) {
+    return value[0]
+      ? String(value[0])
+      : ''
+  }
+
+  return typeof value === 'string'
+    ? value
+    : ''
+}
+
+function normalizeExactAreaMeasurement(
+      value: unknown
+    ): number | null {
+      if (
+        typeof value === 'number' &&
+        Number.isFinite(value) &&
+        value > 0
+      ) {
+        return value
+      }
+
+      if (typeof value !== 'string') {
+        return null
+      }
+
+      const trimmedValue =
+        value.trim()
+
+      if (!trimmedValue) {
+        return null
+      }
+
+      const normalizedValue =
+        trimmedValue
+          .replace(/,/g, '')
+          .replace(/\s*m²\s*$/i, '')
+          .trim()
+
+      if (
+        !/^\d+(?:\.\d+)?$/.test(
+          normalizedValue
+        )
+      ) {
+        return null
+      }
+
+      const numericValue =
+        Number(normalizedValue)
+
+      if (
+        !Number.isFinite(numericValue) ||
+        numericValue <= 0
+      ) {
+        return null
+      }
+
+      return numericValue
+    }
+
+export default function SaleListingEditForm({
+  listing,
+  language = 'en'
+}: SaleListingEditFormProps) {
+  const router =
+    useRouter()
+
+  const marketplaceFx =
+    useMarketplaceFx()
+
+  const usdToCrcRate =
+    marketplaceFx?.usdToCrcRate ?? null
+
+  const labels =
+  language === 'es'
+    ? {
+        eyebrow:
+          'Administración de Publicaciones en Venta',
+
+        heading:
+          'Editar Publicación en Venta',
+
+        intro:
+          'Actualice la definición de la propiedad, el precio de venta, la información de contacto y la descripción de la publicación.',
+
+        titleRequired:
+          'Ingrese un título para la publicación.',
+
+        priceRequired:
+          'Ingrese un precio de venta válido.',
+
+        updateError:
+          'No se pudo actualizar la publicación en venta.',
+
+        listingTitle:
+          'Título de la Publicación',
+
+        listingDescription:
+          'Descripción de la Publicación',
+
+        whatsapp:
+          'Número de WhatsApp',
+
+        currentImages:
+          'Imágenes Actuales de la Publicación',
+
+        remove:
+          'Eliminar',
+
+        moveLeft:
+          'Mover a la izquierda',
+
+        moveRight:
+          'Mover a la derecha',
+
+        cancel:
+          'Cancelar',
+
+        saving:
+          'Guardando Cambios...',
+
+        save:
+          'Guardar Publicación en Venta'
+      }
+    : {
+        eyebrow:
+          'Sale Listing Management',
+
+        heading:
+          'Edit Sale Listing',
+
+        intro:
+          'Update the property definition, sale price, contact information, and marketplace description.',
+
+        titleRequired:
+          'Please enter a listing title.',
+
+        priceRequired:
+          'Please enter a valid sale price.',
+
+        updateError:
+          'The sale listing could not be updated.',
+
+        listingTitle:
+          'Listing Title',
+
+        listingDescription:
+          'Listing Description',
+
+        whatsapp:
+          'WhatsApp Number',
+
+        currentImages:
+          'Current Listing Images',
+
+        remove:
+          'Remove',
+
+        moveLeft:
+          'Move Left',
+
+        moveRight:
+          'Move Right',
+
+        cancel:
+          'Cancel',
+
+        saving:
+          'Saving Changes...',
+
+        save:
+          'Save Sale Listing'
+      }
+
+  const [propertyData, setPropertyData] =
+    useState({
+      province:
+        listing.province || '',
+
+      canton:
+        listing.canton || '',
+
+      district:
+        listing.district || '',
+
+      property_type:
+        listing.property_type || '',
+
+      property_area:
+        normalizeExactAreaMeasurement(
+          listing.property_area
+        ),
+
+      bedrooms:
+        listing.bedrooms
+          ? String(
+              listing.bedrooms
+            )
+          : '',
+
+      bathrooms: bathroomEditValue(listing),
+
+      parking:
+        listing.parking
+          ? String(
+              listing.parking
+            )
+          : '',
+
+      year_built_range:
+        listing.year_built_range ||
+        '',
+
+      construction_area:
+        normalizeExactAreaMeasurement(
+          listing.construction_area
+        ),
+
+      utility:
+        normalizeStringArray(
+          listing.utility
+        ),
+
+      use_type:
+        listing.use_type || '',
+
+      legal_status:
+        listing.legal_status || '',
+
+      connectivity:
+        listing.connectivity || '',
+
+      environment:
+        listing.environment || '',
+
+      accessibility:
+        normalizeAccessibility(
+          listing.accessibility
+        ),
+
+      distance_to_paved_road_range:
+        listing.distance_to_paved_road_range || '',
+
+      terrain:
+        normalizeStringArray(
+          listing.terrain
+        ),
+
+      priceMillions:
+        listing.canonical_domain_version === 1 ? String(listing.current_price ?? '') : Number(listing.price_millions || 0),
+
+      transaction_type: 'sale',
+
+      listing_status:
+        listing.listing_status ||
+        'active',
+
+      currency: listing.canonical_domain_version === 1 ? listing.currency : 'CRC',
+
+      whatsapp:
+        listing.whatsapp || '',
+
+      title:
+        listing.title || '',
+
+      description:
+        listing.description || '',
+
+      images:
+        resolveEditableListingImages(
+          listing.images
+        )
+    })
+  const initialPropertyData = useRef(propertyData)
+  const [measurementClears, setMeasurementClears] = useState<Record<string, boolean>>({})
+      const [
+    showLocationOptions,
+    setShowLocationOptions
+  ] = useState(true)
+
+  const [
+    showProvinceOptions,
+    setShowProvinceOptions
+  ] = useState(true)
+
+  const [
+    showCantonOptions,
+    setShowCantonOptions
+  ] = useState(false)
+
+  const [
+    showDistrictOptions,
+    setShowDistrictOptions
+  ] = useState(false)
+
+  const [
+    showPropertyTypeOptions,
+    setShowPropertyTypeOptions
+  ] = useState(true)
+
+  const [
+    showBedroomOptions,
+    setShowBedroomOptions
+  ] = useState(true)
+
+  const [
+    showBathroomOptions,
+    setShowBathroomOptions
+  ] = useState(true)
+
+  const [
+    showParkingOptions,
+    setShowParkingOptions
+  ] = useState(true)
+
+  const [
+    showYearBuiltOptions,
+    setShowYearBuiltOptions
+  ] = useState(true)
+
+  const [
+    showConstructionAreaOptions,
+    setShowConstructionAreaOptions
+  ] = useState(true)
+
+  const [
+    showPropertyAreaOptions,
+    setShowPropertyAreaOptions
+  ] = useState(true)
+
+  const [
+    showUtilityOptions,
+    setShowUtilityOptions
+  ] = useState(true)
+
+  const [
+    showEnvironmentOptions,
+    setShowEnvironmentOptions
+  ] = useState(true)
+
+  const [
+    showAccessibilityOptions,
+    setShowAccessibilityOptions
+  ] = useState(true)
+
+  const [
+    showTerrainOptions,
+    setShowTerrainOptions
+  ] = useState(true)
+
+  const [
+    showLegalStatusOptions,
+    setShowLegalStatusOptions
+  ] = useState(true)
+
+  const [
+    saving,
+    setSaving
+  ] = useState(false)
+
+  const [
+    errorMessage,
+    setErrorMessage
+  ] = useState('')
+
+  function setField(
+    field: string,
+    value: unknown
+  ) {
+    if (field === 'property_area' || field === 'construction_area') {
+      setMeasurementClears(previous => ({ ...previous, [field]: false }))
+    }
+    setPropertyData(
+      previous => ({
+        ...previous,
+        [field]: value
+      })
+    )
+  }
+
+  const [pendingImageCleanup, setPendingImageCleanup] = useState<string[]>([])
+
+  async function getAccessToken() {
+    const {
+      data: { session }
+    } = await supabase.auth.getSession()
+
+    return session?.access_token ?? null
+  }
+
+  async function deleteImage(
+    imageValue: string, operationId?: string
+  ) {
+    const token =
+      await getAccessToken()
+
+    if (!token) {
+      return
+    }
+
+    const response =
+      await fetch(
+        '/api/delete-listing-image',
+        {
+          method: 'POST',
+
+          headers: {
+            'Content-Type':
+              'application/json',
+
+            Authorization:
+              `Bearer ${token}`
+          },
+
+          body: JSON.stringify(operationId ? { operationId } : {
+            listingId: listing.id,
+            imageValue
+          })
+        }
+      )
+
+    const result =
+      await response.json()
+
+    if (!result.success) {
+      alert(result.error)
+      return
+    }
+
+    productAction('listing_media_update','listing_manage','acknowledged')
+    setPendingImageCleanup(previous => {
+      const remaining = previous.filter(id => id !== result.operationId)
+      return result.storageCleanupPending ? [...remaining, result.operationId] : remaining
+    })
+
+    setField(
+        'images',
+        resolveEditableListingImages(
+          result.images
+        )
+      )
+    }
+
+    async function reorderImages(
+      images: string[]
+    ) {
+      const token =
+        await getAccessToken()
+
+      if (!token) {
+        return
+      }
+
+      const response =
+        await fetch(
+          '/api/reorder-listing-images',
+          {
+            method: 'POST',
+
+            headers: {
+              'Content-Type':
+                'application/json',
+
+              Authorization:
+                `Bearer ${token}`
+            },
+
+            body: JSON.stringify({
+              listingId: listing.id,
+              images
+            })
+          }
+        )
+
+      const result =
+        await response.json()
+
+      if (!result.success) {
+        alert(result.error)
+        return
+      }
+
+      setField(
+        'images',
+        resolveEditableListingImages(
+          result.images
+        )
+      )
+    }
+
+  async function moveImage(
+      currentIndex: number,
+      direction: -1 | 1
+    ) {
+      const targetIndex =
+        currentIndex + direction
+
+      if (
+        targetIndex < 0 ||
+        targetIndex >=
+          propertyData.images.length
+      ) {
+        return
+      }
+
+      const reorderedImages = [
+        ...propertyData.images
+      ]
+
+      const currentImage =
+        reorderedImages[
+          currentIndex
+        ]
+
+      reorderedImages[
+        currentIndex
+      ] =
+        reorderedImages[
+          targetIndex
+        ]
+
+      reorderedImages[
+        targetIndex
+      ] =
+        currentImage
+
+      await reorderImages(
+        reorderedImages.map(
+          image =>
+            image.storedValue
+        )
+      )
+    }
+
+  async function handleSubmit(
+    event:
+      FormEvent<HTMLFormElement>
+  ) {
+    event.preventDefault()
+
+    if (
+      !propertyData.title.trim()
+    ) {
+      setErrorMessage(
+        labels.titleRequired
+      )
+
+      return
+    }
+
+    if (
+      !propertyData.priceMillions ||
+      Number(propertyData.priceMillions) <= 0
+    ) {
+      setErrorMessage(
+        labels.priceRequired
+      )
+
+      return
+    }
+
+    setSaving(true)
+    setErrorMessage('')
+
+    try {
+      if (listing.canonical_domain_version === 1) {
+        await submitCanonicalCustomerEdit(supabase, listing, initialPropertyData.current, propertyData, measurementClears)
+      } else {
+      await updateListing({
+        supabase,
+        listingId:
+          listing.id,
+
+        updates: {
+          province:
+            propertyData.province,
+
+          canton:
+            propertyData.canton,
+
+          district:
+            propertyData.district,
+
+          property_type:
+            propertyData.property_type,
+
+          bedrooms:
+            propertyData.bedrooms ||
+            null,
+
+          bathrooms: propertyData.bathrooms===initialPropertyData.current.bathrooms?listing.bathrooms??null:legacyBathroomWriteValue(propertyData.bathrooms),
+
+          parking:
+            propertyData.parking ||
+            null,
+
+          year_built_range:
+            propertyData.year_built_range ||
+            null,
+
+          construction_area:
+            propertyData.construction_area ||
+            null,
+
+          property_area:
+            propertyData.property_area ||
+            null,
+
+          utility:
+            propertyData.utility,
+
+          environment:
+            propertyData.environment ||
+            null,
+
+          accessibility:
+            propertyData.accessibility ||
+            null,
+
+          distance_to_paved_road_range:
+            propertyData.accessibility ===
+              'Unpaved Road to Property'
+                ? propertyData.distance_to_paved_road_range ||
+                  null
+                : null,
+
+          terrain:
+            propertyData.terrain,
+
+          legal_status:
+            propertyData.legal_status ||
+            null,
+
+          price_millions:
+            propertyData.priceMillions,
+
+          monthly_price:
+            null,
+
+          transaction_type:
+            'sale',
+
+          listing_status:
+            propertyData.listing_status,
+
+          currency: 'CRC',
+
+          whatsapp:
+            propertyData.whatsapp,
+
+          title:
+            propertyData.title.trim(),
+
+          description:
+            propertyData.description.trim()
+        }
+      })
+      }
+
+      productAction('listing_update','listing_manage','acknowledged')
+      router.push(
+        language === 'es'
+          ? `/es/comprar/listing/${listing.id}`
+          : `/en/buy/listing/${listing.id}`
+      )
+
+      router.refresh()
+    } catch (error) {
+      console.error(
+        'SALE LISTING UPDATE ERROR:',
+        error
+      )
+
+      setErrorMessage(
+        labels.updateError
+      )
+
+      setSaving(false)
+    }
+  }
+
+  function handleCancel() {
+    router.push(
+  language === 'es'
+    ? `/es/comprar/listing/${listing.id}`
+        : `/en/buy/listing/${listing.id}`
+    )
+  }
+
+  return (
+    <main style={page}>
+      <div style={container}>
+        <TopBar />
+
+        <header style={header}>
+          <div>
+            <p style={eyebrow}>
+              {labels.eyebrow}
+            </p>
+
+            <h1 style={heading}>
+              {labels.heading}
+            </h1>
+
+            <p style={intro}>
+              {labels.intro}
+            </p>
+          </div>
+        </header>
+
+        <form
+          onSubmit={handleSubmit}
+          style={form}
+        >
+          <div style={mainGrid}>
+            <section style={editorPanel}>
+              <LocationSelectorS
+                province={
+                  propertyData.province
+                }
+                canton={
+                  propertyData.canton
+                }
+                district={
+                  propertyData.district
+                }
+                setShowPropertyTypeOptions={
+                  setShowPropertyTypeOptions
+                }
+                setProvince={value =>
+                  setPropertyData(
+                    previous => ({
+                      ...previous,
+                      province: value,
+                      canton: '',
+                      district: ''
+                    })
+                  )
+                }
+                setCanton={value =>
+                  setPropertyData(
+                    previous => ({
+                      ...previous,
+                      canton: value,
+                      district: ''
+                    })
+                  )
+                }
+                setDistrict={value =>
+                  setField(
+                    'district',
+                    value
+                  )
+                }
+                provinces={provinces}
+                districts={districts}
+                showLocationOptions={
+                  showLocationOptions
+                }
+                setShowLocationOptions={
+                  setShowLocationOptions
+                }
+                showProvinceOptions={
+                  showProvinceOptions
+                }
+                setShowProvinceOptions={
+                  setShowProvinceOptions
+                }
+                showCantonOptions={
+                  showCantonOptions
+                }
+                setShowCantonOptions={
+                  setShowCantonOptions
+                }
+                showDistrictOptions={
+                  showDistrictOptions
+                }
+                setShowDistrictOptions={
+                  setShowDistrictOptions
+                }
+              />
+
+              {language === 'es' ? (
+                <PropertyTypeFilterSES
+                  bedrooms={
+                    propertyData.bedrooms
+                  }
+                  bathrooms={
+                    propertyData.bathrooms
+                  }
+                  parking={
+                    propertyData.parking
+                  }
+                  yearBuiltRange={
+                    propertyData.year_built_range
+                  }
+                  constructionArea={
+                    propertyData.construction_area
+                  }
+                  selectedproperty_type={
+                    propertyData.property_type
+                  }
+                  setselectedproperty_type={
+                    value =>
+                      setField(
+                        'property_type',
+                        value
+                      )
+                  }
+                  showproperty_typeOptions={
+                    showPropertyTypeOptions
+                  }
+                  setShowproperty_typeOptions={
+                    setShowPropertyTypeOptions
+                  }
+                  setShowproperty_areaOptions={
+                    setShowPropertyAreaOptions
+                  }
+                  setShowBedroomOptions={
+                    setShowBedroomOptions
+                  }
+                  setShowProvinceOptions={
+                    setShowProvinceOptions
+                  }
+                  setShowCantonOptions={
+                    setShowCantonOptions
+                  }
+                  setShowDistrictOptions={
+                    setShowDistrictOptions
+                  }
+                  propertyTypes={
+                    property_types
+                  }
+                  residentialPropertyTypes={
+                    residential_property_types
+                  }
+                  resetResidentialFields={() =>
+                    setPropertyData(
+                      previous => ({
+                        ...previous,
+                        bedrooms: '',
+                        bathrooms: '',
+                        parking: '',
+                        year_built_range: '',
+                        construction_area: listing.canonical_domain_version === 1 ? previous.construction_area : null
+                      })
+                    )
+                  }
+                />
+              ) : (
+                <PropertyTypeFilterS
+                  bedrooms={
+                    propertyData.bedrooms
+                  }
+                  bathrooms={
+                    propertyData.bathrooms
+                  }
+                  parking={
+                    propertyData.parking
+                  }
+                  yearBuiltRange={
+                    propertyData.year_built_range
+                  }
+                  constructionArea={
+                    propertyData.construction_area
+                  }
+                  setShowPropertyAreaOptions={
+                    setShowPropertyAreaOptions
+                  }
+                  setShowBedroomOptions={
+                    setShowBedroomOptions
+                  }
+                  setShowProvinceOptions={
+                    setShowProvinceOptions
+                  }
+                  setShowCantonOptions={
+                    setShowCantonOptions
+                  }
+                  setShowDistrictOptions={
+                    setShowDistrictOptions
+                  }
+                  selectedPropertyType={
+                    propertyData.property_type
+                  }
+                  setSelectedPropertyType={
+                    value =>
+                      setField(
+                        'property_type',
+                        value
+                      )
+                  }
+                  propertyTypes={
+                    property_types
+                  }
+                  residentialPropertyTypes={
+                    residential_property_types
+                  }
+                  showPropertyTypeOptions={
+                    showPropertyTypeOptions
+                  }
+                  setShowPropertyTypeOptions={
+                    setShowPropertyTypeOptions
+                  }
+                  resetResidentialFields={() =>
+                    setPropertyData(
+                      previous => ({
+                        ...previous,
+                        bedrooms: '',
+                        bathrooms: '',
+                        parking: '',
+                        year_built_range: '',
+                        construction_area: listing.canonical_domain_version === 1 ? previous.construction_area : null
+                      })
+                    )
+                  }
+                />
+              )}
+
+              {language === 'es' ? (
+                <BedroomFilterSES
+                  selectedBedrooms={
+                    propertyData.bedrooms
+                  }
+                  setSelectedBedrooms={
+                    value =>
+                      setField(
+                        'bedrooms',
+                        value
+                      )
+                  }
+                  bedroomOptions={
+                    bedroom_options
+                  }
+                  showBedroomOptions={
+                    showBedroomOptions
+                  }
+                  setShowBedroomOptions={
+                    setShowBedroomOptions
+                  }
+                  setShowBathroomOptions={
+                    setShowBathroomOptions
+                  }
+                />
+              ) : (
+                <BedroomFilterS
+                  selectedBedrooms={
+                    propertyData.bedrooms
+                  }
+                  setSelectedBedrooms={
+                    value =>
+                      setField(
+                        'bedrooms',
+                        value
+                      )
+                  }
+                  bedroomOptions={
+                    bedroom_options
+                  }
+                  showBedroomOptions={
+                    showBedroomOptions
+                  }
+                  setShowBedroomOptions={
+                    setShowBedroomOptions
+                  }
+                  setShowBathroomOptions={
+                    setShowBathroomOptions
+                  }
+                />
+              )}
+
+              {language === 'es' ? (
+                <BathroomFilterSES
+                  selectedBathrooms={
+                    propertyData.bathrooms
+                  }
+                  setSelectedBathrooms={
+                    value =>
+                      setField(
+                        'bathrooms',
+                        value
+                      )
+                  }
+                  bathroomOptions={
+                    bathroom_options
+                  }
+                  showBathroomOptions={
+                    showBathroomOptions
+                  }
+                  setShowBathroomOptions={
+                    setShowBathroomOptions
+                  }
+                  setShowParkingOptions={
+                    setShowParkingOptions
+                  }
+                />
+              ) : (
+                <BathroomFilterS
+                  selectedBathrooms={
+                    propertyData.bathrooms
+                  }
+                  setSelectedBathrooms={
+                    value =>
+                      setField(
+                        'bathrooms',
+                        value
+                      )
+                  }
+                  bathroomOptions={
+                    bathroom_options
+                  }
+                  showBathroomOptions={
+                    showBathroomOptions
+                  }
+                  setShowBathroomOptions={
+                    setShowBathroomOptions
+                  }
+                  setShowParkingOptions={
+                    setShowParkingOptions
+                  }
+                />
+              )}
+
+              {language === 'es' ? (
+                <ParkingFilterSES
+                  selectedParking={
+                    propertyData.parking
+                  }
+                  setSelectedParking={
+                    value =>
+                      setField(
+                        'parking',
+                        value
+                      )
+                  }
+                  parkingOptions={
+                    parking_options
+                  }
+                  showParkingOptions={
+                    showParkingOptions
+                  }
+                  setShowParkingOptions={
+                    setShowParkingOptions
+                  }
+                  setShowYearBuiltOptions={
+                    setShowYearBuiltOptions
+                  }
+                />
+              ) : (
+                <ParkingFilterS
+                  selectedParking={
+                    propertyData.parking
+                  }
+                  setSelectedParking={
+                    value =>
+                      setField(
+                        'parking',
+                        value
+                      )
+                  }
+                  parkingOptions={
+                    parking_options
+                  }
+                  showParkingOptions={
+                    showParkingOptions
+                  }
+                  setShowParkingOptions={
+                    setShowParkingOptions
+                  }
+                  setShowYearBuiltOptions={
+                    setShowYearBuiltOptions
+                  }
+                />
+              )}
+
+              {language === 'es' ? (
+                <YearBuiltFilterSES
+                  selectedYearBuilt={
+                    propertyData.year_built_range
+                  }
+                  setSelectedYearBuilt={
+                    value =>
+                      setField(
+                        'year_built_range',
+                        value
+                      )
+                  }
+                  yearBuiltOptions={
+                    year_built_options
+                  }
+                  showYearBuiltOptions={
+                    showYearBuiltOptions
+                  }
+                  setShowYearBuiltOptions={
+                    setShowYearBuiltOptions
+                  }
+                  setShowConstructionAreaOptions={
+                    setShowConstructionAreaOptions
+                  }
+                />
+              ) : (
+                <YearBuiltFilterS
+                  selectedYearBuilt={
+                    propertyData.year_built_range
+                  }
+                  setSelectedYearBuilt={
+                    value =>
+                      setField(
+                        'year_built_range',
+                        value
+                      )
+                  }
+                  yearBuiltOptions={
+                    year_built_options
+                  }
+                  showYearBuiltOptions={
+                    showYearBuiltOptions
+                  }
+                  setShowYearBuiltOptions={
+                    setShowYearBuiltOptions
+                  }
+                  setShowConstructionAreaOptions={
+                    setShowConstructionAreaOptions
+                  }
+                />
+              )}
+
+              {language === 'es' ? (
+                <ExactConstructionAreaInput
+                  valueSquareMeters={
+                    propertyData.construction_area
+                  }
+                  onChange={(valueSquareMeters) =>
+                    setField(
+                      'construction_area',
+                      valueSquareMeters
+                    )
+                  }
+                  language="es"
+                  initiallyOpen={
+                    showConstructionAreaOptions
+                  }
+                />
+              ) : (
+                <ExactConstructionAreaInput
+                  valueSquareMeters={
+                    propertyData.construction_area
+                  }
+                  onChange={(valueSquareMeters) =>
+                    setField(
+                      'construction_area',
+                      valueSquareMeters
+                    )
+                  }
+                  language="en"
+                  initiallyOpen={
+                    showConstructionAreaOptions
+                  }
+                />
+              )}
+
+              {language === 'es' ? (
+                <ExactPropertyAreaInput
+                  valueSquareMeters={
+                    propertyData.property_area
+                  }
+                  onChange={(valueSquareMeters) =>
+                    setField(
+                      'property_area',
+                      valueSquareMeters
+                    )
+                  }
+                  language="es"
+                  initiallyOpen={
+                    showPropertyAreaOptions
+                  }
+                />
+              ) : (
+                <ExactPropertyAreaInput
+                  valueSquareMeters={
+                    propertyData.property_area
+                  }
+                  onChange={(valueSquareMeters) =>
+                    setField(
+                      'property_area',
+                      valueSquareMeters
+                    )
+                  }
+                  language="en"
+                  initiallyOpen={
+                    showPropertyAreaOptions
+                  }
+                />
+              )}
+
+              {language === 'es' ? (
+                <UtilitiesFilterES
+                  selectedutility={
+                    propertyData.utility
+                  }
+                  setSelectedutility={
+                    value =>
+                      setField(
+                        'utility',
+                        value
+                      )
+                  }
+                  showutilityOptions={
+                    showUtilityOptions
+                  }
+                  setShowutilityOptions={
+                    setShowUtilityOptions
+                  }
+                  setShowenvironmentOptions={
+                    setShowEnvironmentOptions
+                  }
+                  setShowProvinceOptions={
+                    setShowProvinceOptions
+                  }
+                  setShowCantonOptions={
+                    setShowCantonOptions
+                  }
+                  setShowDistrictOptions={
+                    setShowDistrictOptions
+                  }
+                />
+              ) : (
+                <UtilitiesFilterS
+                  selectedUtilities={
+                    propertyData.utility
+                  }
+                  setSelectedUtilities={
+                    value =>
+                      setField(
+                        'utility',
+                        value
+                      )
+                  }
+                  showUtilityOptions={
+                    showUtilityOptions
+                  }
+                  setShowUtilityOptions={
+                    setShowUtilityOptions
+                  }
+                  setShowEnvironmentOptions={
+                    setShowEnvironmentOptions
+                  }
+                  utilities={
+                    utilities
+                  }
+                />
+              )}
+
+
+              {language === 'es' ? (
+                <EnvironmentFilterSES
+                  selectedEnvironment={
+                    propertyData.environment
+                  }
+                  setSelectedEnvironment={
+                    (value: string) =>
+                      setField(
+                        'environment',
+                        value
+                      )
+                  }
+                  showEnvironmentOptions={
+                    showEnvironmentOptions
+                  }
+                  setShowEnvironmentOptions={
+                    setShowEnvironmentOptions
+                  }
+                  setShowUtilityOptions={
+                    setShowUtilityOptions
+                  }
+                />
+              ) : (
+                <EnvironmentFilterS
+                  selectedEnvironment={
+                    propertyData.environment
+                  }
+                  setSelectedEnvironment={
+                    (value: string) =>
+                      setField(
+                        'environment',
+                        value
+                      )
+                  }
+                  showEnvironmentOptions={
+                    showEnvironmentOptions
+                  }
+                  setShowEnvironmentOptions={
+                    setShowEnvironmentOptions
+                  }
+                  setShowUtilityOptions={
+                    setShowUtilityOptions
+                  }
+                />
+              )}
+
+             {language === 'es' ? (
+                <AccessibilityFilterES
+                    selectedaccessibility={
+                      propertyData.accessibility
+                    }
+
+                    setSelectedaccessibility={
+                      (value: string) => {
+                        setPropertyData(prev => ({
+                          ...prev,
+                          accessibility: value,
+                          distance_to_paved_road_range:
+                            (listing.canonical_domain_version === 1 || value ===
+                            'Unpaved Road to Property')
+                              ? prev.distance_to_paved_road_range
+                              : ''
+                        }))
+                      }
+                    }
+
+                    selectedPavedRoadDistanceRange={
+                      propertyData.distance_to_paved_road_range
+                    }
+
+                    setSelectedPavedRoadDistanceRange={
+                      (value: string) =>
+                        setField(
+                          'distance_to_paved_road_range',
+                          value
+                        )
+                    }
+
+                    showAccessibilityOptions={
+                      showAccessibilityOptions
+                    }
+
+                    setShowAccessibilityOptions={
+                      setShowAccessibilityOptions
+                    }
+                  />
+              ) : (
+                <AccessibilityFilterS
+                  selectedAccessibility={
+                    propertyData.accessibility
+                  }
+
+                  setSelectedAccessibility={
+                    (value: string) => {
+                      setPropertyData(prev => ({
+                        ...prev,
+                        accessibility: value,
+                        distance_to_paved_road_range:
+                          (listing.canonical_domain_version === 1 || value ===
+                          'Unpaved Road to Property')
+                            ? prev.distance_to_paved_road_range
+                            : ''
+                      }))
+                    }
+                  }
+
+                  selectedPavedRoadDistanceRange={
+                    propertyData.distance_to_paved_road_range
+                  }
+
+                  setSelectedPavedRoadDistanceRange={
+                    (value: string) =>
+                      setField(
+                        'distance_to_paved_road_range',
+                        value
+                      )
+                  }
+
+                  showAccessibilityOptions={
+                    showAccessibilityOptions
+                  }
+
+                  setShowAccessibilityOptions={
+                    setShowAccessibilityOptions
+                  }
+                />
+              )}
+
+              {language === 'es' ? (
+                <TerrainFilterES
+                  selectedterrain={
+                    propertyData.terrain
+                  }
+                  setSelectedterrain={
+                    (value: string[]) =>
+                      setField(
+                        'terrain',
+                        value
+                      )
+                  }
+                  showTerrainOptions={
+                    showTerrainOptions
+                  }
+                  setShowTerrainOptions={
+                    setShowTerrainOptions
+                  }
+                />
+              ) : (
+                <TerrainFilterS
+                  selectedTerrain={
+                    propertyData.terrain
+                  }
+                  setSelectedTerrain={
+                    (value: string[]) =>
+                      setField(
+                        'terrain',
+                        value
+                      )
+                  }
+                  showTerrainOptions={
+                    showTerrainOptions
+                  }
+                  setShowTerrainOptions={
+                    setShowTerrainOptions
+                  }
+                  setShowAccessibilityOptions={
+                    setShowAccessibilityOptions
+                  }
+                  setShowLegalStatusOptions={
+                    setShowLegalStatusOptions
+                  }
+                  terrainOptions={
+                    terrainOptions
+                  }
+                />
+              )}
+
+              {language === 'es' ? (
+                <LegalStatusFilterSES
+                  selectedLegalStatus={
+                    propertyData.legal_status
+                  }
+                  setSelectedLegalStatus={
+                    (value: string) =>
+                      setField(
+                        'legal_status',
+                        value
+                      )
+                  }
+                  showLegalStatusOptions={
+                    showLegalStatusOptions
+                  }
+                  setShowLegalStatusOptions={
+                    setShowLegalStatusOptions
+                  }
+                  setShowTerrainOptions={
+                    setShowTerrainOptions
+                  }
+                />
+              ) : (
+                <LegalStatusFilterS
+                  selectedLegalStatus={
+                    propertyData.legal_status
+                  }
+                  setSelectedLegalStatus={
+                    (value: string) =>
+                      setField(
+                        'legal_status',
+                        value
+                      )
+                  }
+                  showLegalStatusOptions={
+                    showLegalStatusOptions
+                  }
+                  setShowLegalStatusOptions={
+                    setShowLegalStatusOptions
+                  }
+                  setShowTerrainOptions={
+                    setShowTerrainOptions
+                  }
+                />
+              )}
+
+              {listing.canonical_domain_version === 1 ? (
+                <label style={fieldLabel}>
+                  {language === 'es' ? 'Precio' : 'Price'} ({propertyData.currency})
+                  <input type="number" min="0" step="any" value={propertyData.priceMillions}
+                    onChange={event => setField('priceMillions', event.target.value)} style={input} />
+                </label>
+              ) : (
+              <PriceSelectorS
+                priceMillions={
+                  Number(propertyData.priceMillions)
+                }
+                setPriceMillions={
+                  updater =>
+                    setPropertyData(
+                      previous => ({
+                        ...previous,
+                        priceMillions:
+                          updater(
+                            Number(previous.priceMillions)
+                          )
+                      })
+                    )
+                }
+                formatColones={
+                  formatColones
+                }
+                usdToCrcRate={
+                  usdToCrcRate
+                }
+              />
+              )}
+
+              {listing.canonical_domain_version === 1 && (
+                <section style={textSection}>
+                  {(['property_area', 'construction_area'] as const).map(dimension => (
+                    <div key={dimension}>
+                      <span>{dimension === 'property_area'
+                        ? (language === 'es' ? 'Área del terreno' : 'Property area')
+                        : (language === 'es' ? 'Área de construcción' : 'Construction area')}</span>{' '}
+                      <button type="button" onClick={() => {
+                        const clear = !measurementClears[dimension]
+                        setMeasurementClears(previous => ({ ...previous, [dimension]: clear }))
+                        setPropertyData(previous => ({ ...previous, [dimension]: clear ? null : initialPropertyData.current[dimension] }))
+                      }}>
+                        {measurementClears[dimension]
+                          ? (language === 'es' ? 'Deshacer eliminación' : 'Undo clear')
+                          : (language === 'es' ? 'Eliminar medida' : 'Clear measurement')}
+                      </button>
+                      {measurementClears[dimension] && <p>{language === 'es'
+                        ? 'Se eliminará esta medida y su clasificación actual al guardar.'
+                        : 'Saving will remove this measurement and its current classification.'}</p>}
+                    </div>
+                  ))}
+                </section>
+              )}
+              <section style={textSection}>
+                <label style={fieldLabel}>
+                  {labels.listingTitle}
+
+                  <input
+                    type="text"
+                    value={
+                      propertyData.title
+                    }
+                    onChange={event =>
+                      setField(
+                        'title',
+                        event.target.value
+                      )
+                    }
+                    style={input}
+                  />
+                </label>
+
+                <label style={fieldLabel}>
+                  {labels.listingDescription}
+
+                  <textarea
+                    value={
+                      propertyData.description
+                    }
+                    onChange={event =>
+                      setField(
+                        'description',
+                        event.target.value
+                      )
+                    }
+                    rows={8}
+                    style={textarea}
+                  />
+                </label>
+
+                <label style={fieldLabel}>
+                  {labels.whatsapp}
+
+                  <input
+                    type="tel"
+                    value={
+                      propertyData.whatsapp
+                    }
+                    onChange={event =>
+                      setField(
+                        'whatsapp',
+                        event.target.value
+                          .replace(
+                            /[^\d+]/g,
+                            ''
+                          )
+                      )
+                    }
+                    style={input}
+                  />
+                </label>
+              </section>
+
+              {propertyData.images.length >
+                0 && (
+                <section style={imageSection}>
+                  <h2 style={sectionHeading}>
+                    {labels.currentImages}
+                  </h2>
+
+                  <div style={imageGrid}>
+                    {propertyData.images.map(
+                      (
+                          image,
+                          index
+                      ) => (
+                        <article
+                          key={`${image.storedValue}-${index}`}
+                          style={imageCard}
+                        >
+                          <img
+                            src={image.displayUrl}
+                            alt=""
+                            referrerPolicy="no-referrer"
+                            style={imageStyle}
+                          />
+
+                          <div style={imageActions}>
+                              <button
+                                type="button"
+                                disabled={index === 0}
+                                onClick={() =>
+                                  moveImage(
+                                    index,
+                                    -1
+                                  )
+                                }
+                                style={{
+                                  ...imageActionButton,
+                                  opacity:
+                                    index === 0
+                                      ? 0.35
+                                      : 1
+                                }}
+                              >
+                                {labels.moveLeft}
+                              </button>
+
+                              <button
+                                type="button"
+                                disabled={
+                                  index ===
+                                  propertyData.images.length - 1
+                                }
+                                onClick={() =>
+                                  moveImage(
+                                    index,
+                                    1
+                                  )
+                                }
+                                style={{
+                                  ...imageActionButton,
+                                  opacity:
+                                    index ===
+                                    propertyData.images.length - 1
+                                      ? 0.35
+                                      : 1
+                                }}
+                              >
+                                {labels.moveRight}
+                              </button>
+
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  deleteImage(
+                                    image.storedValue
+                                  )
+                                }
+                                style={removeButton}
+                              >
+                                {labels.remove}
+                              </button>
+                            </div>
+                        </article>
+                      )
+                    )}
+                  </div>
+                </section>
+              )}
+
+              {pendingImageCleanup.map(operationId => (
+                <div key={operationId} role="status">
+                  <p>{language === 'es' ? 'La imagen permanece retirada. La limpieza del almacenamiento está pendiente.' : 'The image remains detached. Storage cleanup is pending.'}</p>
+                  <button type="button" onClick={() => deleteImage('', operationId)}>
+                    {language === 'es' ? 'Reintentar limpieza' : 'Retry cleanup'}
+                  </button>
+                </div>
+              ))}
+              {errorMessage && (
+                <div style={errorBox}>
+                  {errorMessage}
+                </div>
+              )}
+
+              <div style={actions}>
+                <button
+                  type="button"
+                  onClick={handleCancel}
+                  disabled={saving}
+                  style={secondaryButton}
+                >
+                  {labels.cancel}
+                </button>
+
+                <button
+                  type="submit"
+                  disabled={saving}
+                  style={{
+                    ...primaryButton,
+                    opacity:
+                      saving
+                        ? 0.6
+                        : 1
+                  }}
+                >
+                  {saving
+                    ? labels.saving
+                    : labels.save}
+                </button>
+              </div>
+            </section>
+
+            <aside style={previewPanel}>
+              {language === 'es' ? (
+                <PropertyDefinitionPanelES
+                  saleAmountUnit={listing.canonical_domain_version === 1 ? 'major' : 'crc_millions'}
+                  propertyData={propertyData}
+                  usdToCrcRate={usdToCrcRate}
+                />
+              ) : (
+                <PropertyDefinitionPanel
+                  saleAmountUnit={listing.canonical_domain_version === 1 ? 'major' : 'crc_millions'}
+                  propertyData={propertyData}
+                  usdToCrcRate={usdToCrcRate}
+                />
+              )}
+            </aside>
+          </div>
+        </form>
+      </div>
+    <ListingIntelligencePanel context={{kind:"draft",transaction:"sale",draft:propertyData}} language={language} />
+</main>
+  )
+}
+const page = {
+  minHeight: '100vh',
+  padding: '1rem',
+  background: 'var(--background)',
+  color: 'var(--foreground)'
+}
+
+const container = {
+  width: '100%',
+  maxWidth: '90rem',
+  margin: '0 auto'
+}
+
+const header = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'flex-start',
+  gap: '2rem',
+  margin: '3rem 0'
+}
+
+const eyebrow = {
+  margin: '0 0 .5rem',
+  color: 'var(--foreground)',
+  fontSize: '.8rem',
+  fontWeight: 700,
+  letterSpacing: '.12em',
+  textTransform: 'uppercase' as const
+}
+
+const heading = {
+  margin: 0,
+  color: 'var(--foreground)',
+  fontSize:
+    'clamp(2.5rem, 6vw, 4rem)'
+}
+
+const intro = {
+  maxWidth: '48rem',
+  margin: '1rem 0 0',
+  color: 'var(--muted)',
+  fontSize: '1.05rem',
+  lineHeight: 1.7
+}
+
+const form = {
+  width: '100%'
+}
+
+const mainGrid = {
+  display: 'grid',
+  gridTemplateColumns:
+    'repeat(auto-fit, minmax(min(100%, 32rem), 1fr))',
+  gap: '2rem',
+  alignItems: 'start'
+}
+
+const editorPanel = {
+  display: 'flex',
+  flexDirection:
+    'column' as const,
+  gap: '2rem',
+  padding: '2rem',
+  background: 'var(--surface)',
+  border: '1px solid var(--border)',
+  borderRadius: '1.5rem'
+}
+
+const previewPanel = {
+  position:
+    'sticky' as const,
+  top: '1rem',
+  padding: '2rem',
+  background: 'var(--surface)',
+  border: '1px solid var(--border)',
+  borderRadius: '1.5rem'
+}
+
+const textSection = {
+  display: 'grid',
+  gap: '1.25rem',
+  paddingTop: '1rem',
+  borderTop:
+    '1px solid var(--border)'
+}
+
+const fieldLabel = {
+  display: 'grid',
+  gap: '.55rem',
+  color: 'var(--muted)',
+  fontSize: '.85rem',
+  fontWeight: 600
+}
+
+const input = {
+  width: '100%',
+  padding: '1rem',
+  background: 'var(--input)',
+  color: 'var(--foreground)',
+  border: '1px solid var(--border)',
+  borderRadius: '.85rem',
+  fontSize: '1rem',
+  outline: 'none'
+}
+
+const textarea = {
+  ...input,
+  minHeight: '12rem',
+  resize:
+    'vertical' as const,
+  lineHeight: 1.6
+}
+
+const imageSection = {
+  paddingTop: '1rem',
+  borderTop:
+    '1px solid var(--border)'
+}
+
+const sectionHeading = {
+  margin: '0 0 1rem',
+  color: 'var(--foreground)',
+  fontSize: '1.1rem'
+}
+
+const imageGrid = {
+  display: 'grid',
+  gridTemplateColumns:
+    'repeat(auto-fit, minmax(140px, 1fr))',
+  gap: '1rem'
+}
+
+const imageCard = {
+  overflow: 'hidden',
+  background: 'var(--input)',
+  border: '1px solid var(--border)',
+  borderRadius: '1rem'
+}
+
+const imageStyle = {
+  display: 'block',
+  width: '100%',
+  aspectRatio: '4 / 3',
+  objectFit:
+    'cover' as const
+}
+
+const removeButton = {
+  gridColumn: '1 / -1',
+  width: '100%',
+  padding: '.7rem',
+  background: 'transparent',
+  color: 'var(--error-text)',
+  border: 0,
+  borderTop:
+    '1px solid var(--border)',
+  cursor: 'pointer'
+}
+
+const errorBox = {
+  padding: '1rem',
+  background: '#2a1010',
+  color: '#ffb4b4',
+  border: '1px solid #6b2222',
+  borderRadius: '.85rem'
+}
+
+const actions = {
+  display: 'flex',
+  justifyContent: 'flex-end',
+  gap: '1rem',
+  paddingTop: '1rem',
+  borderTop:
+    '1px solid var(--border)'
+}
+
+const secondaryButton = {
+  padding: '.9rem 1.4rem',
+  background: 'transparent',
+  color: 'var(--foreground)',
+  border: '1px solid var(--border)',
+  borderRadius: '999px',
+  fontWeight: 700,
+  cursor: 'pointer'
+}
+
+const primaryButton = {
+  padding: '.9rem 1.4rem',
+  background: 'var(--foreground)',
+  color: 'var(--background)',
+  border: 0,
+  borderRadius: '999px',
+  fontWeight: 800,
+  cursor: 'pointer'
+}
+
+const imageActions = {
+  display: 'grid',
+  gridTemplateColumns:
+    '1fr 1fr',
+  gap: '.5rem',
+  padding: '.6rem'
+}
+
+const imageActionButton = {
+  padding: '.65rem',
+  background: 'var(--surface-raised)',
+  color: 'var(--foreground)',
+  border: '1px solid var(--border)',
+  borderRadius: '.6rem',
+  cursor: 'pointer'
+}

@@ -1,0 +1,12 @@
+'use client'
+import {useEffect,useState} from 'react'
+import BusinessTable from './BusinessTable'
+import AdminPaymentStatus from './AdminPaymentStatus'
+import type {BusinessRow} from './business-contract'
+import {businessDate} from './business-contract'
+import {readBusinessPayments} from './business-actions'
+export default function BusinessPayments({language}:{language:'en'|'es'}){const es=language==='es',[rows,setRows]=useState<BusinessRow[]>([]),[detail,setDetail]=useState<BusinessRow|null>(null),[busy,setBusy]=useState(true),[error,setError]=useState(false),[revision,setRevision]=useState(0)
+ useEffect(()=>{let live=true;setBusy(true);setError(false);void readBusinessPayments().then(r=>{if(!live)return;setError(!r.ok);setRows(r.ok?r.data:[]);setBusy(false)});return()=>{live=false}},[revision])
+ useEffect(()=>{const refresh=()=>setRevision(v=>v+1);window.addEventListener('tw-direct-recovery',refresh);return()=>window.removeEventListener('tw-direct-recovery',refresh)},[])
+ return <section><h3>{es?'Pagos de clientes':'Customer payments'}</h3>{busy?<p role="status">{es?'Cargando pagos…':'Loading payments…'}</p>:error?<p role="alert">{es?'No se pueden cargar los pagos o los datos del cliente.':'Unable to load payments or customer details.'}</p>:detail?<><button type="button" onClick={()=>setDetail(null)}>{es?'Volver a pagos':'Back to payments'}</button><h4>{detail.customer.name||detail.customer.email||(es?'No proporcionado':'Not provided')}</h4><AdminPaymentStatus status={detail.state} language={language}/>{detail.receiptId&&<p>{es?'El comprobante aceptado activa el acceso automáticamente. La conciliación bancaria es posterior e independiente.':'Accepted receipts activate access automatically. Bank reconciliation is subsequent and separate.'}</p>}<dl className="order-evidence"><div><dt>{es?'Pedido':'Order'}</dt><dd>{detail.orderId}</dd></div><div><dt>{es?'Cuenta del cliente':'Customer account'}</dt><dd>{detail.accountId}</dd></div><div><dt>{es?'Fecha de pago':'Payment date'}</dt><dd>{businessDate(detail.paymentAt,language)}</dd></div></dl><pre className="business-evidence">{JSON.stringify(detail.evidence,null,2)}</pre>{detail.receiptId&&<a href={'/api/direct-sinpe/receipt/'+detail.receiptId}>{es?'Descargar comprobante privado':'Download private receipt'}</a>}</>:<BusinessTable rows={rows} language={language} mode="payments" inspect={setDetail}/>}<button type="button" disabled={busy} onClick={()=>{setDetail(null);setRevision(x=>x+1)}}>{es?'Actualizar pagos':'Refresh payments'}</button></section>
+}

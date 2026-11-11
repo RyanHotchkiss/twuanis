@@ -1,0 +1,110 @@
+{
+  "en": [
+    [
+      "Scope",
+      "This notice explains how Twuanis.com handles information when you use its property marketplace, accounts, MarketHub, Knowledge and analytical services. Optional behavioral analytics, when enabled, is subject to the purposes, permissions and choices described below."
+    ],
+    [
+      "Who is responsible",
+      "Ryan Hotchkiss operates Twuanis.com as an individual and is the controller. Correspondence: Dome Commercial Center, Office #7, Uvita, Osa, Puntarenas, Costa Rica. Privacy: privacy@twuanis.com. Administration: admin@twuanis.com. Inteligencia Inmobiliaria de Twuanis is a prospective, unincorporated company name; it is not the current controller."
+    ],
+    [
+      "Information and sources",
+      "We process information you provide for accounts, authentication, property listings, saved properties and searches, analytical requests and reports, Package orders, payment status, support and requested notifications. This can include listing descriptions, photographs, locations and contact details. We also process technical request, session and security information. Sources include you, your browser, application records and payment confirmations. Public listings display information submitted and authorized for publication. Please avoid unnecessary sensitive information in free text."
+    ],
+    [
+      "Purposes and choices",
+      "We use information to provide sign-in, listing publication and discovery, saved work, analytical services, payment confirmation, access control, requested notifications, support and security. Optional analytics measures navigation, search filters and refinements, property and Knowledge engagement, and Package interest to improve the service. Verified payment, access, execution and report outcomes may be measured only when separately activated and appropriately authorized. Declining optional measurement does not disable core services or independently lawful operational processing."
+    ],
+    [
+      "Consent, cookies and local storage",
+      "Authentication, session and preference storage support requested functions. Collection without prior consent is permitted only where an applicable basis has been established for that purpose and visitor scope. Where prior consent is required, nonessential analytics waits for affirmative permission. Silence or an unknown preference is not consent. Google Analytics cookies and pseudonymous identifiers are not assumed to be anonymous or exempt. Privacy preferences provides rejection and withdrawal controls in English and Spanish. Choices are remembered in the same browser where storage is available; clearing storage or using another browser may require choosing again. A separate account-linked outcome permission, if activated, lasts no more than 24 hours, is limited by the current session and does not renew automatically. It does not enroll past outcomes."
+    ],
+    [
+      "Withdrawal and erasure",
+      "You can change your choice through the persistent Privacy preferences control. Rejection or withdrawal stops subsequent optional collection; it cannot recall requests already sent and does not itself erase earlier Google records. A server-side revocation that cannot be acknowledged remains pending. Account changes, logout and permission expiry do not renew outcome permission. Account deletion does not automatically remove records that must lawfully be retained. Contact privacy@twuanis.com for requests concerning previously collected information."
+    ],
+    [
+      "Measurement boundaries",
+      "Permitted measurements describe pages, language, controlled search selections, property references, engagement, coarse acquisition context and event identifiers. Separately authorized outcome measurement uses verified application outcomes. We exclude names, email addresses, telephone numbers, payment credentials, free-text searches, sensitive URL parameters, private analytical inputs and report contents from Analytics payloads. Pseudonymous identifiers may still relate to a person. A connection to a provider exposes network information, including an IP address, to that provider. We do not use fingerprinting or hidden cross-device identity matching."
+    ],
+    [
+      "Retention",
+      "GA4 is configured for14 months of applicable user/event data without resetting retention on new activity; this does not describe every aggregate or provider record. The separate Google outcome permission is limited to24 hours/current session, eligible delivery never exceeds72 hours from binding, and its operational permission/delivery records are limited to7 days. These are not retention periods for first-party R4 history. R4 individual-history, account-linkage, already linked Order-follow-up and minimal rights-suppression periods require a purpose-based approved policy; the exact periods are displayed before consent and bound to its version. The Owner has approved business-policy maxima of 730 days for each category, subject to applicable legal/privacy requirements and recorded controller authorization before expanded collection activates. R4 collection permission lasts no more than 24 hours, and a sequence closes after 30 minutes of inactivity, sign-out, account switch or permission expiry, whichever comes first. Controlled campaign codes describe acquisition; they do not establish a customer identity from a campaign email or IP address. Journey history starts at sequence closure; account linkage at the first verified link; each Order follow-up at its verified binding; and minimal suppression evidence at the first accepted verified request. Later commercial evidence has a full evidence window from the later of sequence closure and its canonical outcome time, rather than being cut off at the original session deadline. Retries do not reset these clocks. Ordinary expiry preserves only approved business aggregates with sparse-group and dominance protection; there is no automatic24-month business-statistics cutoff. Removing identifiers alone does not establish anonymity. Applicable withdrawal and verified deletion requests remove individual optional history; only aggregates separately qualified as appropriately non-identifying for their reporting context may be preserved beyond individual retention. Passing numerical thresholds or removing identifiers alone is not that qualification. Account, financial and security records have separate stated purposes and obligations. Erasure from provider backups or caches is not asserted to be immediate."
+    ],
+    [
+      "Providers and recipients",
+      "Vercel and Supabase support the application and data services. ONVO supports payments; Resend and existing notification services support requested communications. Namecheap/cPanel hosts the contact mailboxes. Google Analytics receives authorized measurements through Google Tag Manager when optional measurement is enabled. BigQuery export, behavioral Looker reporting, recurring source transfers, advertising personalization, remarketing and advertising audiences remain inactive. Public listing information remains subject to the publication choices described above."
+    ],
+    [
+      "International processing",
+      "Providers may process information outside your country, including in the United States. The primary Supabase project is in the US East (Ohio) region. The dormant BigQuery datasets are in Iowa; that does not establish where Google Analytics, Looker, support, logs, backups or all provider operations take place. Processing must meet applicable contractual and international-transfer requirements. We do not claim that one provider agreement or a selected region establishes compliance for every service or jurisdiction."
+    ],
+    [
+      "Rights and requests",
+      "Contact privacy@twuanis.com or write to the correspondence address above to request access, correction or deletion, or exercise other rights available under applicable law. We verify identity and scope proportionately before disclosing or deleting information. Do not send passwords, login codes or payment credentials. We explain any lawful retention exception or limitation; we do not disclose or erase another person’s records. Pseudonymous history cannot always be linked to an account. Where Costa Rica’s Law 8968 applies, Article 7 requires a response within five business days of receipt; other applicable rights and deadlines depend on the governing law. You may complain to the competent data-protection authority. Existing authenticated account deletion is separate from other privacy requests."
+    ],
+    [
+      "Security, children and changes",
+      "We use authentication, access controls and other safeguards to protect information; no system guarantees absolute security. Questions or requests concerning children’s information should be sent to the privacy contact and will be handled under applicable law. We update this notice when processing changes. New optional purposes remain subject to the notice and permission required by law."
+    ],
+    [
+      "Further information",
+      "Google’s partner-site information: https://policies.google.com/technologies/partner-sites ; Google Privacy Policy: https://policies.google.com/privacy ; GA4 retention information: https://support.google.com/analytics/answer/7667196 . These explain Google’s practices and do not replace Twuanis’s obligations."
+    ]
+  ],
+  "es": [
+    [
+      "Alcance",
+      "Este aviso explica cómo Twuanis.com trata información cuando utiliza su marketplace inmobiliario, cuentas, el Centro del Mercado, Knowledge y servicios analíticos. La analítica conductual opcional, cuando se habilita, está sujeta a las finalidades, permisos y opciones descritos a continuación."
+    ],
+    [
+      "Responsable",
+      "Ryan Hotchkiss opera Twuanis.com como persona física y es el responsable del tratamiento. Correspondencia: Dome Commercial Center, Office #7, Uvita, Osa, Puntarenas, Costa Rica. Privacidad: privacy@twuanis.com. Administración: admin@twuanis.com. Inteligencia Inmobiliaria de Twuanis es un nombre societario previsto, aún sin constituir; no es el responsable actual."
+    ],
+    [
+      "Información y fuentes",
+      "Tratamos la información que proporciona para cuentas, autenticación, anuncios inmobiliarios, propiedades y búsquedas guardadas, solicitudes e informes analíticos, pedidos de Paquetes, estados de pago, soporte y notificaciones solicitadas. Puede incluir descripciones, fotografías, ubicaciones y contactos de anuncios. También tratamos información técnica de solicitudes, sesiones y seguridad. Las fuentes incluyen a usted, su navegador, los registros de la aplicación y las confirmaciones de pago. Los anuncios públicos muestran información presentada y autorizada para publicación. Evite incluir datos sensibles innecesarios en texto libre."
+    ],
+    [
+      "Finalidades y opciones",
+      "Utilizamos información para ofrecer inicio de sesión, publicación y descubrimiento de propiedades, trabajo guardado, servicios analíticos, confirmación de pagos, control de acceso, notificaciones solicitadas, soporte y seguridad. La analítica opcional mide navegación, filtros y cambios de búsqueda, interacción con propiedades y Knowledge e interés en Paquetes para mejorar el servicio. Los resultados verificados de pagos, acceso, ejecución e informes solo podrán medirse cuando se activen por separado y cuenten con la autorización correspondiente. Rechazar la medición opcional no desactiva los servicios esenciales ni el tratamiento operativo lícito de forma independiente."
+    ],
+    [
+      "Consentimiento, cookies y almacenamiento local",
+      "El almacenamiento de autenticación, sesiones y preferencias permite las funciones solicitadas. La recopilación sin consentimiento previo solo se permite cuando se ha establecido una base aplicable para esa finalidad y ámbito de visitantes. Cuando se exija consentimiento previo, la analítica no esencial espera una autorización afirmativa. El silencio o una preferencia desconocida no son consentimiento. No se presupone que las cookies e identificadores seudónimos de Google Analytics sean anónimos o estén exentos. Preferencias de privacidad ofrece controles de rechazo y retirada en inglés y español. Las opciones se recuerdan en el mismo navegador cuando el almacenamiento está disponible; borrar el almacenamiento o utilizar otro navegador puede requerir elegir nuevamente. Un permiso separado para resultados vinculados a una cuenta, si se activa, dura como máximo 24 horas, se limita a la sesión actual y no se renueva automáticamente. No incorpora resultados anteriores."
+    ],
+    [
+      "Retirada y supresión",
+      "Puede cambiar su elección mediante el control permanente Preferencias de privacidad. El rechazo o la retirada detienen la recopilación opcional posterior; no permiten recuperar solicitudes ya transmitidas ni eliminan por sí solos registros anteriores de Google. Una revocación del servidor que no pueda confirmarse sigue pendiente. Cambiar de cuenta, cerrar sesión o vencer el permiso no renueva la autorización de resultados. Eliminar la cuenta no suprime automáticamente los registros que deban conservarse lícitamente. Contacte privacy@twuanis.com para solicitudes sobre información recopilada anteriormente."
+    ],
+    [
+      "Límites de la medición",
+      "Las mediciones permitidas describen páginas, idioma, selecciones controladas de búsqueda, referencias de propiedades, interacción, contexto general de adquisición e identificadores de eventos. La medición de resultados autorizada por separado utiliza resultados verificados de la aplicación. Excluimos de los datos enviados a Analytics nombres, correos electrónicos, teléfonos, credenciales de pago, búsquedas de texto libre, parámetros sensibles de URL, entradas analíticas privadas y contenido de informes. Los identificadores seudónimos pueden relacionarse con una persona. La conexión con un proveedor le expone información de red, incluida la dirección IP. No utilizamos huellas digitales ni coincidencias ocultas de identidad entre dispositivos."
+    ],
+    [
+      "Retención",
+      "GA4 está configurado para conservar14 meses los datos pertinentes de usuarios y eventos, sin reiniciar el plazo por nueva actividad; esto no describe todos los agregados ni registros del proveedor. El permiso separado de resultados para Google se limita a24 horas y la sesión actual; el envío elegible no supera72 horas desde la vinculación y sus registros operativos de permiso/envío se limitan a7 días. Estos no son plazos del historial propio R4. Los plazos de historial individual, vinculación con cuentas, seguimiento de pedidos ya vinculados y prueba mínima de supresión requieren una política aprobada y justificada por finalidad; los plazos exactos se muestran antes del consentimiento y se vinculan a su versión. El Propietario ha aprobado máximos de política empresarial de 730 días para cada categoría, sujetos a los requisitos legales y de privacidad aplicables y a la autorización documentada del responsable antes de activar la recopilación ampliada. El permiso R4 de recopilación dura como máximo 24 horas; la secuencia se cierra tras 30 minutos de inactividad, al cerrar sesión, cambiar de cuenta o vencer el permiso, lo que ocurra primero. Los códigos controlados de campaña describen la adquisición; no establecen la identidad de un cliente a partir de un correo de campaña ni una dirección IP. El historial comienza al cerrarse la secuencia; la vinculación de cuenta con la primera vinculación verificada; el seguimiento de cada pedido con su vinculación verificada; y la prueba mínima de supresión con la primera solicitud verificada aceptada. La prueba comercial tardía conserva un plazo completo desde el momento posterior entre el cierre y su fecha canónica, sin cortarse por el plazo de la sesión original. Los reintentos no reinician los plazos. El vencimiento ordinario conserva solo agregados empresariales aprobados con protección frente a grupos pequeños y contribuciones dominantes; no hay un corte automático de24 meses para estadísticas empresariales. Quitar identificadores no demuestra anonimato. La retirada aplicable y las solicitudes verificadas eliminan el historial individual opcional; solo pueden conservarse más allá del plazo individual los agregados cuya condición de adecuadamente no identificativos haya sido cualificada por separado para su contexto de uso. Superar umbrales numéricos o quitar identificadores no constituye por sí solo esa cualificación. Los registros de cuenta, financieros y de seguridad tienen finalidades y obligaciones separadas. No se afirma una eliminación inmediata de respaldos o cachés de proveedores."
+    ],
+    [
+      "Proveedores y destinatarios",
+      "Vercel y Supabase sostienen la aplicación y los servicios de datos. ONVO permite los pagos; Resend y los servicios de notificación existentes permiten las comunicaciones solicitadas. Namecheap/cPanel aloja los buzones de contacto. Google Analytics recibe mediciones autorizadas mediante Google Tag Manager cuando se habilita la medición opcional. La exportación a BigQuery, los informes conductuales de Looker, los traslados recurrentes de fuentes, la personalización publicitaria, el remarketing y las audiencias publicitarias siguen inactivos. La información pública de los anuncios se rige por las opciones de publicación descritas anteriormente."
+    ],
+    [
+      "Tratamiento internacional",
+      "Los proveedores pueden tratar información fuera de su país, incluidos los Estados Unidos. El proyecto principal de Supabase está en la región Este de EE. UU. (Ohio). Los conjuntos de datos inactivos de BigQuery están en Iowa; esto no determina dónde operan Google Analytics, Looker, soporte, registros, respaldos ni todos los servicios del proveedor. El tratamiento debe cumplir los requisitos contractuales y de transferencias internacionales aplicables. No afirmamos que un único acuerdo de proveedor o una región elegida establezcan el cumplimiento para todos los servicios o jurisdicciones."
+    ],
+    [
+      "Derechos y solicitudes",
+      "Contacte privacy@twuanis.com o escriba a la dirección de correspondencia indicada para solicitar acceso, rectificación o supresión, o ejercer otros derechos disponibles según la ley aplicable. Verificamos la identidad y el alcance de forma proporcional antes de divulgar o eliminar información. No envíe contraseñas, códigos de acceso ni credenciales de pago. Explicamos las excepciones legales de retención o las limitaciones; no divulgamos ni eliminamos registros de otra persona. El historial seudónimo no siempre puede vincularse a una cuenta. Cuando sea aplicable la Ley 8968 de Costa Rica, su artículo 7 exige responder dentro de cinco días hábiles desde la recepción; los demás derechos y plazos dependen de la ley aplicable. Puede reclamar ante la autoridad competente de protección de datos. La eliminación de cuenta con autenticación existente es independiente de otras solicitudes de privacidad."
+    ],
+    [
+      "Seguridad, menores y cambios",
+      "Utilizamos autenticación, controles de acceso y otras salvaguardas para proteger la información; ningún sistema garantiza seguridad absoluta. Las consultas o solicitudes sobre información de menores deben dirigirse al contacto de privacidad y se atenderán conforme a la ley aplicable. Actualizamos este aviso cuando cambia el tratamiento. Las nuevas finalidades opcionales siguen sujetas al aviso y al permiso exigidos por ley."
+    ],
+    [
+      "Más información",
+      "Información de Google para sitios asociados: https://policies.google.com/technologies/partner-sites?hl=es ; Política de Privacidad de Google: https://policies.google.com/privacy?hl=es ; información sobre retención de GA4: https://support.google.com/analytics/answer/7667196?hl=es . Estas fuentes explican las prácticas de Google y no sustituyen las obligaciones de Twuanis."
+    ]
+  ]
+}

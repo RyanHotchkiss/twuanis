@@ -1,0 +1,36 @@
+/* Desktop retains its existing inline presentation. These rules only repair mobile. */
+@media (max-width: 768px) {
+  .page {
+    box-sizing: border-box;
+    min-width: 0;
+    padding: 16px !important;
+    /* Fixed utility rail: 44px control + 8px padding + 12px right offset + 12px clearance. */
+    padding-right: calc(76px + env(safe-area-inset-right, 0px)) !important;
+    padding-left: max(12px, env(safe-area-inset-left, 0px)) !important;
+  }
+  :global(body:has(nav[data-marketplace="true"][data-expanded="true"])) .page {
+    /* The existing expanded rail is 128px wide. Keep it out of the reading area too. */
+    padding-right: calc(160px + env(safe-area-inset-right, 0px)) !important;
+  }
+  /* The existing topbar uses viewport width; keep its origin independent of the reading gutter. */
+  .page > :global(.twuanis-mobile-topbar:not([data-floating="true"])) {
+    margin-left: calc(5px - max(12px, env(safe-area-inset-left, 0px))) !important;
+    margin-right: 0 !important;
+  }
+  .layout { grid-template-columns: minmax(0, 1fr) !important; gap: 16px !important; }
+  .layout > div { min-width: 0; }
+  .layout img { max-width: 100%; box-sizing: border-box; }
+  .thumbnails { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 8px !important; }
+  .thumbnails > img { width: 100%; height: auto !important; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
+  .information { position: static !important; padding: 12px !important; min-width: 0; overflow-wrap: anywhere; }
+  .information *, .analyticsGrid * { min-width: 0; max-width: 100%; box-sizing: border-box; }
+  .information h1 { font-size: clamp(1.375rem, 5.5vw, 1.75rem) !important; line-height: 1.25; }
+  .information [data-listing-actions] { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px !important; }
+  .information [data-listing-actions] > button { min-width: 0 !important; min-height: 44px; border-color: var(--border) !important; padding: 10px 6px !important; overflow-wrap: anywhere; }
+  .information [data-listing-actions] > button:nth-of-type(3),
+  .information [data-listing-actions] > div { grid-column: 1 / -1; }
+  .information [data-listing-actions] > button[style*="transparent"] { color: var(--foreground) !important; border-color: var(--border) !important; }
+  .information > button { min-height: 44px; padding: 10px 8px !important; overflow-wrap: anywhere; }
+  .information textarea { max-width: 100%; }
+  .analyticsGrid { overflow-wrap: anywhere; grid-template-columns: minmax(0, 1fr) !important; }
+}
