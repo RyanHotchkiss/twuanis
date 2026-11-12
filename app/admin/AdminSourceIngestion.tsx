@@ -10,7 +10,8 @@ const copy={en:{intro:'Submit externally acquired source observations to the can
 function classification(record:CanonicalImportRecord){
  const text=`${record.outcome||''} ${record.error||''}`.toLowerCase()
  if(record.success)return 'accepted'
- if(/duplicate|review|hold|quarantine/.test(text))return 'hold'
+ if(/duplicate.*review|review.*duplicate|review_required|duplicate_hold/.test(text))return 'hold'
+ if(/statement timeout|timeout|import not confirmed|network/.test(text))return 'error'
  return 'rejected'
 }
 function publication(record:CanonicalImportRecord,empty:string){
@@ -35,14 +36,14 @@ export default function AdminSourceIngestion({language}:{language:AdminLanguage}
   setBusy(true);setError('');setSummary(null);setCompleted(0)
   try{const result=await submitCanonicalCsv(rows,()=>{},setRows,progress=>setCompleted(progress.completed));setSummary(result)}catch(cause){setError(cause instanceof Error?cause.message:t.invalid)}finally{setBusy(false)}
  }
- const records=summary?.records||[], accepted=records.filter(r=>classification(r)==='accepted').length, holds=records.filter(r=>classification(r)==='hold').length,rejected=records.filter(r=>classification(r)==='rejected').length
+ const records=summary?.records||[], accepted=records.filter(r=>classification(r)==='accepted').length, holds=records.filter(r=>classification(r)==='hold').length,rejected=records.filter(r=>classification(r)==='rejected').length,errors=records.filter(r=>classification(r)==='error').length
  return <section className="admin-source-ingestion">
   <p>{t.intro}</p><p>{t.limit}</p>
   <label>{t.choose}<input type="file" accept=".csv,text/csv" disabled={busy} onChange={event=>choose(event.target.files?.[0])}/></label>
   {!!rows.length&&<p>{rows.length} {t.ready}</p>}{error&&<p role="alert">{error}</p>}
   <button onClick={()=>void submit()} disabled={busy||!rows.length}>{busy?`${t.submitting} ${completed}/${rows.length}`:t.submit}</button>
   {busy&&<progress aria-label={t.submitting} max={rows.length} value={completed}/>}
-  {summary&&<><h3>{t.result}</h3><dl><div><dt>{t.accepted}</dt><dd>{accepted}</dd></div><div><dt>{t.holds}</dt><dd>{holds}</dd></div><div><dt>{t.rejected}</dt><dd>{rejected}</dd></div><div><dt>{t.errors}</dt><dd>{rejected}</dd></div></dl>{summary.remaining.length>0&&<p>{t.retry}</p>}
+  {summary&&<><h3>{t.result}</h3><dl><div><dt>{t.accepted}</dt><dd>{accepted}</dd></div><div><dt>{t.holds}</dt><dd>{holds}</dd></div><div><dt>{t.rejected}</dt><dd>{rejected}</dd></div><div><dt>{t.errors}</dt><dd>{errors}</dd></div></dl>{summary.remaining.length>0&&<p>{t.retry}</p>}
    <table><thead><tr><th>{t.source}</th><th>{t.outcome}</th><th>{t.publication}</th><th>{t.error}</th></tr></thead><tbody>{records.map((record,index)=><tr key={`${record.sourceId}-${index}`} className={`result-${classification(record)}`}><td>{record.sourceId}</td><td>{record.outcome||t.unknown}</td><td>{publication(record,t.noPublication)}</td><td>{record.error||'—'}</td></tr>)}</tbody></table>
   </>}
  </section>
