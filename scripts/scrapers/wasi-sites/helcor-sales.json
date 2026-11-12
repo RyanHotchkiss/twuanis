@@ -1,0 +1,18 @@
+{
+  "source_name": "HELCOR",
+  "source_website": "https://helcor.inmo.co",
+  "sale_start_url": "https://helcor.inmo.co/s/ventas",
+  "inventory_query": {"business_type[0]": "for_sale"},
+  "allowed_host": "helcor.inmo.co",
+  "transaction": "sale",
+  "property_area_labels": ["Área Terreno", "Área de Terreno", "Área Lote", "Área del Terreno"],
+  "construction_area_labels": ["Área Construida", "Área de Construcción", "Área Construcción"],
+  "geography": {
+    "source_field_map": {
+      "province": "Cantón / Distrito",
+      "canton": "Ciudad",
+      "district": "Zona"
+    },
+    "resolution_policy": "Resolve only one exact Twuanis canonical Province → Canton → District chain. Preserve Cantón / Distrito, Ciudad, and Zona as source evidence; do not treat a neighborhood, development, beach, or project name as a district."
+  }
+}

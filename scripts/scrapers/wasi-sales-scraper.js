@@ -67,6 +67,21 @@ function absolute(config,href){
  return url.href
 }
 
+function inventoryPage(config,href){
+ const url=new URL(href,config.source_website)
+ if(url.hostname!==config.allowed_host)throw Error('UNEXPECTED_HOST')
+ for(const [key,value] of Object.entries(config.inventory_query||{}))url.searchParams.set(key,String(value))
+ return url.href
+}
+
+function sourceTransaction(seed,attributes,title){
+ const business=normalize(attributes['Tipo de negocio']||'')
+ const evidence=normalize(`${new URL(seed.source_url).pathname} ${title||''}`)
+ const sale=/\bventa\b|\bfor sale\b/.test(business||evidence)
+ const rent=/\balquiler\b|\barriendo\b|\bfor rent\b/.test(business||evidence)
+ return sale===rent?null:sale?'sale':'rent'
+}
+
 function parseListingPage(html,config){
  const $=load(html), listings=[]
  $('.list-properties .item').each((_,node)=>{
@@ -76,7 +91,7 @@ function parseListingPage(html,config){
   listings.push({source_listing_id:sourceId,source_url:absolute(config,href),listing_title:clean(anchor.text()),property_type:clean(item.find('.tag1').first().text()),listing_location:clean(item.find('.location,.ubicacion').first().text()),listing_image_urls:unique(item.find('img[src]').map((_,image)=>$(image).attr('src')).get())})
  })
  const next=$('a[aria-label="Next"]').attr('href')
- return {listings,next:next?absolute(config,next):null}
+ return {listings,next:next?inventoryPage(config,next):null}
 }
 
 function parseDecimal(text){
@@ -127,7 +142,7 @@ function parseDetail(html,seed,config,terms){
  })
  const lookup=labels=>labels.map(label=>attributes[label]===undefined?null:measurement(label,attributes[label])).find(Boolean)||null
  const priceText=clean($('.blq_precio .pr1').first().text())||clean($('.blq_precio span').first().text())||clean($('.areaPrecio p').last().text())
- const salePriceAmount=parseDecimal(priceText)
+ const askingPriceAmount=parseDecimal(priceText)
  const priceBlock=clean($('.blq_precio').first().text())||clean($('.areaPrecio').first().text())
  const currency=/col[oó]n|₡/i.test(priceBlock)?'CRC':/usd|d[oó]lar|\$/i.test(priceBlock)?'USD':null
  const descriptionHeading=$('h3').filter((_,node)=>/descripci[oó]n adicional/i.test(clean($(node).text()))).first()
@@ -141,15 +156,18 @@ function parseDetail(html,seed,config,terms){
  const images=unique($('.Gallery a[href], .Gallery img[src]').map((_,node)=>$(node).attr('href')||$(node).attr('src')).get())
  const rawGeography=config.geography?Object.fromEntries(Object.entries(config.geography.source_field_map).map(([canonical,sourceLabel])=>[canonical,attributes[sourceLabel]||null])):null
  const resolvedGeography=rawGeography&&terms?resolveGeography(terms,rawGeography):null
-  const collectionReasons=[]
+ const observedTransaction=sourceTransaction(seed,attributes,clean($('h1.title').first().text())||seed.listing_title)
+ const collectionReasons=[]
   if(!seed.source_url||new URL(seed.source_url).hostname!==config.allowed_host)collectionReasons.push('SOURCE_URL_NOT_ALLOWED')
-  if(!priceText||!salePriceAmount||!currency)collectionReasons.push('EXACT_SOURCE_PRICE_UNAVAILABLE')
+  if(!priceText||!askingPriceAmount||!currency)collectionReasons.push('EXACT_SOURCE_PRICE_UNAVAILABLE')
   if(!rawJsonLd.length)collectionReasons.push('SOURCE_JSONLD_UNAVAILABLE')
+  if(observedTransaction!==config.transaction)collectionReasons.push('SOURCE_TRANSACTION_MISMATCH')
   const collectionEligibility={status:collectionReasons.length?'REJECTED':'ELIGIBLE',reasons:collectionReasons}
-  const rawPriceEvidence={flight_price:{amount:{value:salePriceAmount===null?'':String(salePriceAmount)},currency,source_label:'Precio de venta',source_value:priceText||''},source_url:seed.source_url,observed_at:now()}
+  const priceLabel=config.transaction==='rent'?'Precio de arriendo':'Precio de venta'
+  const rawPriceEvidence={flight_price:{amount:{value:askingPriceAmount===null?'':String(askingPriceAmount)},currency,source_label:priceLabel,source_value:priceText||''},source_url:seed.source_url,observed_at:now()}
   return {
-  source_name:config.source_name,source_platform:'Wasi',transaction:config.transaction,source_listing_id:attributes.Código||seed.source_listing_id,source_url:seed.source_url,title:clean($('h1.title').first().text())||seed.listing_title,property_type:attributes['Tipo de inmueble']||seed.property_type||null,
-  property_area:lookup(config.property_area_labels),construction_area:lookup(config.construction_area_labels),sale_asking_price:{source_value:priceText||null,amount:salePriceAmount,currency,source_label:'Precio de venta'},
+  source_name:config.source_name,source_platform:'Wasi',transaction:config.transaction,source_transaction:observedTransaction,source_listing_id:attributes.Código||seed.source_listing_id,source_url:seed.source_url,title:clean($('h1.title').first().text())||seed.listing_title,property_type:attributes['Tipo de inmueble']||seed.property_type||null,
+  property_area:lookup(config.property_area_labels),construction_area:lookup(config.construction_area_labels),[config.transaction==='rent'?'rental_asking_price':'sale_asking_price']:{source_value:priceText||null,amount:askingPriceAmount,currency,source_label:priceLabel},
   geography:resolvedGeography?{source_fields:{canton_district:attributes['Cantón / Distrito']||null,city:attributes.Ciudad||null,zone:attributes.Zona||null},province:resolvedGeography.province?.term_name||null,canton:resolvedGeography.canton?.term_name||null,district:resolvedGeography.district?.term_name||null,canonical_codes:{province:resolvedGeography.province?.official_code||null,canton:resolvedGeography.canton?.official_code||null,district:resolvedGeography.district?.official_code||null},resolution_reasons:resolvedGeography.reasons,exact_pcd_published:resolvedGeography.complete}:{country:attributes.País||null,province:attributes.Provincia||null,canton:null,district:null,source_city:attributes.Ciudad||null,exact_pcd_published:false},
   whatsapp_numbers:whatsapp,telephone_numbers:tel,description:description||null,image_urls:images,attributes,raw_jsonld:JSON.stringify(rawJsonLd),collection_eligibility:JSON.stringify(collectionEligibility),raw_price_evidence:JSON.stringify(rawPriceEvidence),source_evidence:{property_area_label:lookup(config.property_area_labels)?.source_label??null,construction_area_label:lookup(config.construction_area_labels)?.source_label??null,detail_retrieved_at:rawPriceEvidence.observed_at}
  }
@@ -167,7 +185,7 @@ async function main(){
    discovered.set(item.source_listing_id,{source_listing_id:item.source_listing_id,source_url:item.source_url,listing_title:item.title||'',property_type:item.property_type||'',listing_location:''})
   }
  }else{
-  let url=config.sale_start_url
+  let url=config.start_url||config.sale_start_url
   while(url&&!pages.includes(url)){
    try{const html=await fetchPublic(url),parsed=parseListingPage(html,config);pages.push(url);parsed.listings.forEach(item=>discovered.set(item.source_listing_id,item));url=parsed.next;await delay(350)}catch(error){failures.push({url,error:String(error.message||error)});break}
   }
@@ -179,7 +197,7 @@ async function main(){
  const count=predicate=>records.filter(predicate).length
  const byPropertyType=Object.fromEntries(['houses','apartments','condominiums','undeveloped_land','other'].map(group=>{const rows=records.filter(r=>propertyTypeGroup(r.property_type)===group);return [group,{total:rows.length,with_property_area:rows.filter(r=>!!r.property_area).length,with_construction_area:rows.filter(r=>!!r.construction_area).length,with_both_measurements:rows.filter(r=>!!r.property_area&&!!r.construction_area).length,missing_construction_area:rows.filter(r=>!r.construction_area).length}]}))
  const reasons={};for(const row of records)for(const [level,reason] of Object.entries(row.geography.resolution_reasons||{})){if(reason!=='resolved')reasons[`${level}:${reason}`]=(reasons[`${level}:${reason}`]||0)+1}
- const summary={source_name:config.source_name,source_platform:'Wasi',transaction:'sale',run_started_at:runAt,run_finished_at:now(),listing_pages_discovered:pages.length,sale_listings_discovered:discovered.size,successfully_extracted:records.length,with_property_area:count(r=>!!r.property_area),with_construction_area:count(r=>!!r.construction_area),with_both_measurements:count(r=>!!r.property_area&&!!r.construction_area),missing_either_measurement:count(r=>!r.property_area||!r.construction_area),with_whatsapp:count(r=>r.whatsapp_numbers.length>0),with_image_urls:count(r=>r.image_urls.length>0),with_complete_province_canton_district:count(r=>r.geography.exact_pcd_published),unresolved_or_ambiguous_geography:count(r=>!r.geography.exact_pcd_published),geography_unresolved_reasons:reasons,measurement_completeness_by_property_type:byPropertyType,canonical_geography_terms_loaded:terms?.length||0,failed_or_inaccessible_listing_pages:failures.length,failures}
+ const summary={source_name:config.source_name,source_platform:'Wasi',transaction:config.transaction,run_started_at:runAt,run_finished_at:now(),listing_pages_discovered:pages.length,listings_discovered:discovered.size,successfully_extracted:records.length,source_transaction_confirmed:count(r=>r.source_transaction===config.transaction),source_transaction_mismatch:count(r=>r.source_transaction!==config.transaction),with_property_area:count(r=>!!r.property_area),with_construction_area:count(r=>!!r.construction_area),with_both_measurements:count(r=>!!r.property_area&&!!r.construction_area),missing_either_measurement:count(r=>!r.property_area||!r.construction_area),with_whatsapp:count(r=>r.whatsapp_numbers.length>0),with_image_urls:count(r=>r.image_urls.length>0),with_complete_province_canton_district:count(r=>r.geography.exact_pcd_published),unresolved_or_ambiguous_geography:count(r=>!r.geography.exact_pcd_published),geography_unresolved_reasons:reasons,measurement_completeness_by_property_type:byPropertyType,canonical_geography_terms_loaded:terms?.length||0,failed_or_inaccessible_listing_pages:failures.length,failures}
  const directory=path.join(outputRoot,runAt.replace(/[:.]/g,'-'))
  await fs.mkdir(directory,{recursive:true})
  await fs.writeFile(path.join(directory,'devop-wasi-sales.json'),JSON.stringify(records,null,2)+'\n')
