@@ -661,14 +661,14 @@ const languageUrls={
         {/* KNOWLEDGE — same navigation controls and responsive behavior. */}
         <Link data-tour-id="N08"
           href={isSpanish ? '/es/conocimiento' : '/en/knowledge'}
-          aria-label={isSpanish ? 'CONOCIMIENTO' : 'KNOWLEDGE'}
+          aria-label={isSpanish ? 'conocimiento' : 'knowledge'}
           aria-current={pathname === '/en/knowledge' || pathname.startsWith('/en/knowledge/') || pathname === '/es/conocimiento' || pathname.startsWith('/es/conocimiento/') ? 'page' : undefined}
           style={itemStyle()}
           onMouseEnter={() => setHoveredItem('knowledge')}
           onMouseLeave={() => setHoveredItem(null)}
         >
           <BookOpen size={TOPBAR_ICON_SIZE} strokeWidth={0.65} color={UTILITY_ORANGE}/>
-          {navigationLabel('knowledge',isSpanish ? 'CONOCIMIENTO' : 'KNOWLEDGE',isSpanish ? 'Saber' : 'Know')}
+          {navigationLabel('knowledge',isSpanish ? 'conocimiento' : 'knowledge',isSpanish ? 'Saber' : 'Know')}
         </Link>
 
       </nav>
