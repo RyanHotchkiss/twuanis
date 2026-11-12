@@ -458,27 +458,36 @@ export async function ingestCsvObservation(
     const listingId =
       applied.data.listing_id
 
+    const outcome =
+      typeof applied.data.outcome === 'string'
+        ? applied.data.outcome
+        : 'unreported'
+
     if (
       ![
         'accepted',
         'succeeded'
       ].includes(
-        applied.data.outcome
+        outcome
       )
     ) {
       return {
         success: false,
         evidenceId,
         listingId,
+        outcome,
+        result: applied.data,
         error:
-          `Source observation ${applied.data.outcome}; evidence retained.`
+          `Source observation ${outcome}; evidence retained.`
       }
     }
 
     return {
       success: true,
       evidenceId,
-      listingId
+      listingId,
+      outcome,
+      result: applied.data
     }
   } catch (error) {
     return {
