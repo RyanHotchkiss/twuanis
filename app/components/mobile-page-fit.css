@@ -113,29 +113,83 @@
 .twuanis-topbar-row .twuanis-top-navigation{display:contents!important}
 .twuanis-topbar-row .twuanis-top-navigation>a,
 .twuanis-topbar-row .twuanis-top-navigation>button{
+ --topbar-icon-size:2.25rem;
+ --topbar-control-size:calc(var(--topbar-icon-size) * 1.25);
+ --topbar-label-space:3.25rem;
+ position:relative!important;
+ isolation:isolate;
  display:flex!important;
- flex:0 0 clamp(4.25em,8vw,5.5em)!important;
- inline-size:clamp(4.25em,8vw,5.5em)!important;
- min-block-size:7.25em!important;
+ flex:0 0 var(--topbar-control-size)!important;
+ inline-size:var(--topbar-control-size)!important;
+ block-size:var(--topbar-control-size)!important;
+ min-inline-size:var(--topbar-control-size)!important;
+ min-block-size:var(--topbar-control-size)!important;
+ max-inline-size:var(--topbar-control-size)!important;
  box-sizing:border-box!important;
  align-items:center!important;
  justify-content:center!important;
- padding:.65em!important;
- background:var(--surface)!important;
- border:.12em solid var(--border)!important;
- border-radius:1em!important;
- box-shadow:var(--topbar-mobile-shadow,0 .5em 1.875em rgba(0,0,0,.18))!important;
- backdrop-filter:blur(.875em)!important;
- -webkit-backdrop-filter:blur(.875em)!important;
+ padding:0!important;
+ background:transparent!important;
+ border:0!important;
+ overflow:visible!important;
+}
+.twuanis-topbar-row .twuanis-top-navigation>a::before,
+.twuanis-topbar-row .twuanis-top-navigation>button::before{
+ content:"";
+ position:absolute;
+ inset:0;
+ z-index:-1;
+ box-sizing:border-box;
+ border:.12em solid var(--border);
+ border-radius:1em;
+ background:var(--surface);
+ box-shadow:var(--topbar-mobile-shadow,0 .5em 1.875em rgba(0,0,0,.18));
+ backdrop-filter:blur(.875em);
+ -webkit-backdrop-filter:blur(.875em);
+ transition:block-size .45s ease;
+}
+.twuanis-topbar-row .twuanis-top-navigation>a>svg,
+.twuanis-topbar-row .twuanis-top-navigation>a>img,
+.twuanis-topbar-row .twuanis-top-navigation .topbar-theme-icon,
+.twuanis-topbar-row .twuanis-top-navigation .topbar-language-icon{
+ inline-size:var(--topbar-icon-size)!important;
+ block-size:var(--topbar-icon-size)!important;
+ min-inline-size:var(--topbar-icon-size)!important;
+ min-block-size:var(--topbar-icon-size)!important;
+}
+.twuanis-topbar-row .twuanis-top-navigation .topbar-theme-icon>svg{inline-size:100%!important;block-size:100%!important}
+.twuanis-topbar-row .topbar-desktop-label,
+.twuanis-topbar-row .topbar-mobile-label{
+ position:absolute!important;
+ inset-inline:0!important;
+ top:calc(var(--topbar-control-size) - .08em)!important;
+ margin:0!important;
+ padding:.25em!important;
+ box-sizing:border-box!important;
+ text-align:center!important;
+ overflow-wrap:anywhere!important;
+ pointer-events:none;
+}
+@media(hover:hover) and (pointer:fine){
+ .twuanis-topbar-row .twuanis-top-navigation>a:hover::before,
+ .twuanis-topbar-row .twuanis-top-navigation>button:hover::before{block-size:calc(var(--topbar-control-size) + var(--topbar-label-space))}
+}
+@media(min-width:769px){
+ .twuanis-top-navigation[data-labels-visible=true]>a::before,
+ .twuanis-top-navigation[data-labels-visible=true]>button::before{block-size:calc(var(--topbar-control-size) + var(--topbar-label-space))}
 }
 
 @media(max-width:768px){
  .twuanis-topbar-row{gap:clamp(.1em,.7vw,.3em)!important}
  .twuanis-topbar-row .twuanis-top-navigation>a,
  .twuanis-topbar-row .twuanis-top-navigation>button{
-  flex:0 1 calc(var(--topbar-mobile-icon) + .75em)!important;
-  inline-size:calc(var(--topbar-mobile-icon) + .75em)!important;
-  min-block-size:calc(var(--topbar-mobile-icon) + 2.9em)!important;
-  padding:.22em!important;
+  --topbar-icon-size:var(--topbar-mobile-icon);
+  --topbar-control-size:calc(var(--topbar-icon-size) * 1.25);
+  --topbar-label-space:2.2em;
+  flex:0 1 var(--topbar-control-size)!important;
  }
+ .twuanis-top-navigation[data-labels-visible=true]>a::before,
+ .twuanis-top-navigation[data-labels-visible=true]>button::before{block-size:calc(var(--topbar-control-size) + var(--topbar-label-space))}
+ .twuanis-topbar-row .topbar-desktop-label{display:none!important}
+ .twuanis-topbar-row .topbar-mobile-label{display:block!important;max-inline-size:var(--topbar-control-size)!important;font-size:clamp(.38em,1.7vw,.62em)!important;line-height:1!important;white-space:normal!important}
 }
