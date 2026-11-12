@@ -120,8 +120,13 @@
  isolation:isolate;
  display:flex!important;
  flex:0 0 var(--topbar-control-size)!important;
+ width:var(--topbar-control-size)!important;
+ height:var(--topbar-control-size)!important;
  inline-size:var(--topbar-control-size)!important;
  block-size:var(--topbar-control-size)!important;
+ min-width:var(--topbar-control-size)!important;
+ min-height:var(--topbar-control-size)!important;
+ max-width:var(--topbar-control-size)!important;
  min-inline-size:var(--topbar-control-size)!important;
  min-block-size:var(--topbar-control-size)!important;
  max-inline-size:var(--topbar-control-size)!important;
