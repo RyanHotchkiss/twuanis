@@ -86,6 +86,33 @@ export default function MarketHubShell({
   remates
 }: MarketHubShellProps) {
 
+  const [ownerSupportTarget,setOwnerSupportTarget]=useState<{id:string;email:string|null}|null>(null)
+  const [ownerSupportRecovery,setOwnerSupportRecovery]=useState(false)
+  const [ownerSupportError,setOwnerSupportError]=useState('')
+
+  useEffect(()=>{
+    try{
+      const raw=sessionStorage.getItem('twuanis-owner-workspace-target-v1')
+      if(!raw)return
+      const value=JSON.parse(raw) as {id?:unknown;email?:unknown}
+      if(typeof value.id==='string'&&(typeof value.email==='string'||value.email===null))setOwnerSupportTarget({id:value.id,email:value.email})
+    }catch{}
+    fetch('/api/admin/customer-workspace/recovery',{cache:'no-store'}).then(async response=>{
+      const value=await response.json()
+      if(response.ok&&value.ok&&value.recovery===true)setOwnerSupportRecovery(true)
+    }).catch(()=>{})
+  },[])
+
+  async function returnToAdmin(){
+    try{
+      const response=await fetch('/api/admin/customer-workspace/recovery',{method:'POST'})
+      const restored=await response.json()
+      if(!response.ok||!restored.ok)throw Error()
+      sessionStorage.removeItem('twuanis-owner-workspace-target-v1')
+      location.assign('/admin?workspace=users&lang='+language)
+    }catch{setOwnerSupportError(language==='es'?'No se pudo restaurar la sesión de Propietario. Inicie sesión de nuevo.':'The Owner session could not be restored. Sign in again.')}
+  }
+
   const [
     activeWorkspace,
     setActiveWorkspace
@@ -767,6 +794,8 @@ export default function MarketHubShell({
               </div>
             </div>
 
+            {ownerSupportRecovery&&<div className="marketHubOwnerSupport"><p>{language==='es'?'Soporte de cliente':'Customer support'}{ownerSupportTarget?': '+(ownerSupportTarget.email??ownerSupportTarget.id):''}</p><button type="button" onClick={()=>void returnToAdmin()}>{language==='es'?'Volver a Administración':'Return to Admin'}</button>{ownerSupportError&&<p role="alert">{ownerSupportError}</p>}</div>}
+
           </header>
 
 
@@ -1139,6 +1168,10 @@ export default function MarketHubShell({
           align-items: flex-start;
           gap: 14px;
         }
+
+        .marketHubOwnerSupport { text-align:right; }
+        .marketHubOwnerSupport p { margin:.25rem 0; overflow-wrap:anywhere; }
+        .marketHubOwnerSupport button { font:inherit; padding:.45rem .7rem; border:1px solid currentColor; border-radius:.4rem; background:transparent; color:inherit; cursor:pointer; }
 
         .marketHubWorkspaceEyebrow {
           margin-bottom: 7px;
