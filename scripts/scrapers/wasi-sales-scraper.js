@@ -13,6 +13,7 @@ const {load}=require('cheerio')
 const defaultConfig=path.join(__dirname,'wasi-sites','devop-sales.json')
 const configPath=process.argv[2]||defaultConfig
 const outputRoot=process.argv[3]||path.join(process.cwd(),'work',process.argv[2]?'wasi-sales-extraction':'devop-wasi-sales')
+const selectionPath=process.argv[4]||null
 const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms))
 const clean=value=>String(value??'').replace(/\s+/g,' ').trim()
 const unique=values=>[...new Set(values.filter(Boolean))]
@@ -158,9 +159,18 @@ async function main(){
  const config=JSON.parse(await fs.readFile(configPath,'utf8'))
  const terms=config.geography?await canonicalTerms():null
  const runAt=now(), discovered=new Map(), pages=[], failures=[]
- let url=config.sale_start_url
- while(url&&!pages.includes(url)){
-  try{const html=await fetchPublic(url),parsed=parseListingPage(html,config);pages.push(url);parsed.listings.forEach(item=>discovered.set(item.source_listing_id,item));url=parsed.next;await delay(350)}catch(error){failures.push({url,error:String(error.message||error)});break}
+ if(selectionPath){
+  const selected=JSON.parse(await fs.readFile(selectionPath,'utf8'))
+  if(!Array.isArray(selected))throw Error('SELECTION_ARRAY_REQUIRED')
+  for(const item of selected){
+   if(!item||typeof item.source_listing_id!=='string'||typeof item.source_url!=='string')throw Error('SELECTION_IDENTITY_REQUIRED')
+   discovered.set(item.source_listing_id,{source_listing_id:item.source_listing_id,source_url:item.source_url,listing_title:item.title||'',property_type:item.property_type||'',listing_location:''})
+  }
+ }else{
+  let url=config.sale_start_url
+  while(url&&!pages.includes(url)){
+   try{const html=await fetchPublic(url),parsed=parseListingPage(html,config);pages.push(url);parsed.listings.forEach(item=>discovered.set(item.source_listing_id,item));url=parsed.next;await delay(350)}catch(error){failures.push({url,error:String(error.message||error)});break}
+  }
  }
  const records=[]
  for(const seed of discovered.values()){
