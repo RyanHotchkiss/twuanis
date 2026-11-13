@@ -67,6 +67,14 @@ function absolute(config,href){
  return url.href
 }
 
+function sourceImageUrl(config,value){
+ if(!value)return null
+ try{
+  const url=new URL(value,config.source_website)
+  return url.protocol==='https:'&&!url.username&&!url.password?url.href:null
+ }catch{return null}
+}
+
 function inventoryPage(config,href){
  const url=new URL(href,config.source_website)
  if(url.hostname!==config.allowed_host)throw Error('UNEXPECTED_HOST')
@@ -154,6 +162,11 @@ function parseDetail(html,seed,config,terms){
  ])
  const tel=unique($('a[href^="tel:"]').map((_,node)=>clean($(node).attr('href')).replace(/^tel:/,'')).get())
  const images=unique($('.Gallery a[href], .Gallery img[src]').map((_,node)=>$(node).attr('href')||$(node).attr('src')).get())
+ const agencyLogoUrl=sourceImageUrl(config,$('.navbar-brand img[src]').first().attr('src')||$('.whatsApp_widget img[src]').first().attr('src'))
+ const agencyName=clean($('.navbar-brand img').first().attr('alt'))||clean($('.whatsApp_widget .tt1').first().text())||null
+ const advisor=$('.right-aside .asesor').first()
+ const listingAgentPhotoUrl=sourceImageUrl(config,advisor.find('img[src]').first().attr('src'))
+ const listingAgentName=clean(advisor.find('.notranslate').first().text())||clean(advisor.find('p').first().text())||null
  const rawGeography=config.geography?Object.fromEntries(Object.entries(config.geography.source_field_map).map(([canonical,sourceLabel])=>[canonical,attributes[sourceLabel]||null])):null
  const resolvedGeography=rawGeography&&terms?resolveGeography(terms,rawGeography):null
  const observedTransaction=sourceTransaction(seed,attributes,clean($('h1.title').first().text())||seed.listing_title)
@@ -169,7 +182,9 @@ function parseDetail(html,seed,config,terms){
   source_name:config.source_name,source_platform:'Wasi',transaction:config.transaction,source_transaction:observedTransaction,source_listing_id:attributes.Código||seed.source_listing_id,source_url:seed.source_url,title:clean($('h1.title').first().text())||seed.listing_title,property_type:attributes['Tipo de inmueble']||seed.property_type||null,
   property_area:lookup(config.property_area_labels),construction_area:lookup(config.construction_area_labels),[config.transaction==='rent'?'rental_asking_price':'sale_asking_price']:{source_value:priceText||null,amount:askingPriceAmount,currency,source_label:priceLabel},
   geography:resolvedGeography?{source_fields:{canton_district:attributes['Cantón / Distrito']||null,city:attributes.Ciudad||null,zone:attributes.Zona||null},province:resolvedGeography.province?.term_name||null,canton:resolvedGeography.canton?.term_name||null,district:resolvedGeography.district?.term_name||null,canonical_codes:{province:resolvedGeography.province?.official_code||null,canton:resolvedGeography.canton?.official_code||null,district:resolvedGeography.district?.official_code||null},resolution_reasons:resolvedGeography.reasons,exact_pcd_published:resolvedGeography.complete}:{country:attributes.País||null,province:attributes.Provincia||null,canton:null,district:null,source_city:attributes.Ciudad||null,exact_pcd_published:false},
-  whatsapp_numbers:whatsapp,telephone_numbers:tel,description:description||null,image_urls:images,attributes,raw_jsonld:JSON.stringify(rawJsonLd),collection_eligibility:JSON.stringify(collectionEligibility),raw_price_evidence:JSON.stringify(rawPriceEvidence),source_evidence:{property_area_label:lookup(config.property_area_labels)?.source_label??null,construction_area_label:lookup(config.construction_area_labels)?.source_label??null,detail_retrieved_at:rawPriceEvidence.observed_at}
+  whatsapp_numbers:whatsapp,telephone_numbers:tel,description:description||null,image_urls:images,
+  agency:{name:agencyName,logo_url:agencyLogoUrl},listing_agent:{name:listingAgentName,photo_url:listingAgentPhotoUrl},
+  attributes,raw_jsonld:JSON.stringify(rawJsonLd),collection_eligibility:JSON.stringify(collectionEligibility),raw_price_evidence:JSON.stringify(rawPriceEvidence),source_evidence:{property_area_label:lookup(config.property_area_labels)?.source_label??null,construction_area_label:lookup(config.construction_area_labels)?.source_label??null,agency_logo_url:agencyLogoUrl,listing_agent_photo_url:listingAgentPhotoUrl,detail_retrieved_at:rawPriceEvidence.observed_at}
  }
 }
 

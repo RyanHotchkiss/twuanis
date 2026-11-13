@@ -109,6 +109,16 @@ export default function PropertyCard({
       ? 'Construcción'
       : 'Construction'
 
+  const agencyLogoUrl =
+    typeof property.agency_logo_url === 'string' && property.agency_logo_url
+      ? property.agency_logo_url
+      : null
+
+  const listingAgentPhotoUrl =
+    typeof property.listing_agent_photo_url === 'string' && property.listing_agent_photo_url
+      ? property.listing_agent_photo_url
+      : null
+
   return (
     <Link data-placement-kind={placementKind} prefetch={prefetchListing} onClick={()=>noteDiscovery('marketplace_search')}
       href={bank ? `${bankPath(language)}/${property.id}` : listingHref(property.id, transactionType === 'rent' ? 'rent' : 'sale', language)}
@@ -190,6 +200,13 @@ export default function PropertyCard({
            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1" aria-hidden="true"><path vectorEffect="non-scaling-stroke" d="M20.5 11.5a8.5 8.5 0 0 1-12.8 7.3L3 20l1.3-4.5a8.5 8.5 0 1 1 16.2-4Z"/><path vectorEffect="non-scaling-stroke" d="m8 7 2 3-1 1c1 2 2 3 4 3l1-1 3 2c-1 3-4 2-7 0S6 8 8 7Z"/></svg>
           </button>}
 
+          {agencyLogoUrl && <img
+            src={agencyLogoUrl}
+            alt={language === 'es' ? 'Logo de la agencia' : 'Agency logo'}
+            referrerPolicy="no-referrer"
+            style={{position:'absolute',top:'1rem',left:spotlight&&spotlightContactHref?'4.25rem':'1rem',width:'1.9rem',height:'1.9rem',objectFit:'contain',borderRadius:'.3rem',background:'rgba(255,255,255,.92)',padding:'.12rem',boxSizing:'border-box',zIndex:2}}
+          />}
+
           {favoriteError&&<span role="alert" style={{position:'absolute',top:64,left:12,right:12,zIndex:21,background:'var(--surface)',color:'var(--foreground)',padding:8,borderRadius:8}}>{favoriteError}</span>}
           {/* FAVORITE */}
           <button disabled={favoritePending} aria-pressed={isFavorite}
@@ -234,6 +251,13 @@ export default function PropertyCard({
           >
             <Heart size={24} strokeWidth={0} fill={isFavorite?'#D4AF37':'#fff'} aria-hidden="true" style={{display:'block',flexShrink:0,transition:'fill .2s ease'}}/>
           </button>
+
+          {listingAgentPhotoUrl && <img
+            src={listingAgentPhotoUrl}
+            alt={language === 'es' ? 'Agente de la propiedad' : 'Listing agent'}
+            referrerPolicy="no-referrer"
+            style={{position:'absolute',right:'1rem',bottom:'1rem',width:'1.9rem',height:'1.9rem',objectFit:'cover',borderRadius:'999px',border:'1px solid rgba(255,255,255,.85)',background:'#fff',zIndex:20}}
+          />}
 
           {/* COMPARE */}
           <button

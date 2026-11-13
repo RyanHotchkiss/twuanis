@@ -32,7 +32,9 @@ export const PUBLIC_LISTING_DISCOVERY_COLUMNS = `
   canonical_domain_version,
   currency,
   transaction_type,
-  images
+  images,
+  agency_logo_url,
+  listing_agent_photo_url
 `
 
 export const PUBLIC_LISTING_DETAIL_COLUMNS = `
@@ -62,7 +64,9 @@ export const PUBLIC_LISTING_DETAIL_COLUMNS = `
   canonical_domain_version,
   currency,
   transaction_type,
-  images
+  images,
+  agency_logo_url,
+  listing_agent_photo_url
 `
 
 export type PublicListingTransaction =
@@ -258,5 +262,10 @@ export async function getPublicListingsByIds(
 export async function getPublicListingPage(transaction:PublicListingTransaction,filters:Record<string,unknown>,page:number,size:number,fx:number) {
  const {data,error}=await supabaseAdmin.rpc('read_marketplace_listing_page',{p_transaction:transaction,p_filters:filters,p_page:page-1,p_size:size,p_fx:fx,p_addon:canonicalAddonPlacementEnabled()})
  if(error||!data||!Number.isSafeInteger(data.count)||data.count<0||!Array.isArray(data.items)||data.items.length>size)throw new Error('Bounded listing page unavailable')
- return {count:data.count,listings:await hydrateCanonicalPopulation(data.items)}
+ const ids=data.items.map((item: {id?: unknown})=>typeof item.id==='string'?item.id:null).filter((id: string|null):id is string=>Boolean(id))
+ const {data:attribution,error:attributionError}=ids.length?await supabaseAdmin.from('listings').select('id,agency_logo_url,listing_agent_photo_url').in('id',ids).eq('listing_status','active'):{data:[],error:null}
+ if(attributionError)throw new Error('Listing attribution lookup unavailable.')
+ const byId=new Map((attribution||[]).map(item=>[item.id,item]))
+ const items=data.items.map((item: {id:string})=>({...item,...(byId.get(item.id)||{})}))
+ return {count:data.count,listings:await hydrateCanonicalPopulation(items)}
 }

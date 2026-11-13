@@ -15,6 +15,26 @@ export function csvEvidenceEnvelope(row: Record<string, unknown>) {
   return {raw,review}
 }
 
+function observedAttribution(raw: Record<string, unknown>) {
+  const validImageUrl = (value: unknown) => {
+    if (typeof value !== 'string' || !value.trim()) return null
+    try {
+      const url = new URL(value)
+      return url.protocol === 'https:' && !url.username && !url.password
+        ? url.href
+        : null
+    } catch {
+      return null
+    }
+  }
+  const agencyLogoUrl = validImageUrl(raw.agency_logo_url)
+  const listingAgentPhotoUrl = validImageUrl(raw.listing_agent_photo_url)
+  return {
+    ...(agencyLogoUrl ? {agency_logo_url: agencyLogoUrl} : {}),
+    ...(listingAgentPhotoUrl ? {listing_agent_photo_url: listingAgentPhotoUrl} : {})
+  }
+}
+
 export async function ingestCsvObservation(
   admin: SupabaseClient,
   row: Record<string, unknown>,
@@ -458,6 +478,23 @@ export async function ingestCsvObservation(
     const listingId =
       applied.data.listing_id
 
+    const attribution = observedAttribution(raw)
+    let attributionWarning: string | undefined
+    if (Object.keys(attribution).length > 0) {
+      const projection = await admin
+        .from('listings')
+        .update(attribution)
+        .eq('id', listingId)
+        .eq('listing_origin', 'imported')
+        .eq('source_name', raw.source_name)
+        .eq('source_listing_id', raw.source_listing_id)
+        .select('id')
+        .maybeSingle()
+      if (projection.error || !projection.data) {
+        attributionWarning = projection.error?.message || 'Source attribution was retained but could not be projected.'
+      }
+    }
+
     const outcome =
       typeof applied.data.outcome === 'string'
         ? applied.data.outcome
@@ -487,7 +524,8 @@ export async function ingestCsvObservation(
       evidenceId,
       listingId,
       outcome,
-      result: applied.data
+      result: applied.data,
+      ...(attributionWarning ? {attributionWarning} : {})
     }
   } catch (error) {
     return {
