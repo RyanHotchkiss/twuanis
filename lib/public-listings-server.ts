@@ -34,7 +34,9 @@ export const PUBLIC_LISTING_DISCOVERY_COLUMNS = `
   transaction_type,
   images,
   agency_logo_url,
-  listing_agent_photo_url
+  agency_name,
+  listing_agent_photo_url,
+  listing_agent_name
 `
 
 export const PUBLIC_LISTING_DETAIL_COLUMNS = `
@@ -66,7 +68,9 @@ export const PUBLIC_LISTING_DETAIL_COLUMNS = `
   transaction_type,
   images,
   agency_logo_url,
-  listing_agent_photo_url
+  agency_name,
+  listing_agent_photo_url,
+  listing_agent_name
 `
 
 export type PublicListingTransaction =

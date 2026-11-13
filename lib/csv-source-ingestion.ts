@@ -29,9 +29,14 @@ function observedAttribution(raw: Record<string, unknown>) {
   }
   const agencyLogoUrl = validImageUrl(raw.agency_logo_url)
   const listingAgentPhotoUrl = validImageUrl(raw.listing_agent_photo_url)
+  const name = (value: unknown) => typeof value === 'string' && value.trim() ? value.trim().slice(0, 200) : null
+  const agencyName = name(raw.agency_name)
+  const listingAgentName = name(raw.listing_agent_name)
   return {
     ...(agencyLogoUrl ? {agency_logo_url: agencyLogoUrl} : {}),
-    ...(listingAgentPhotoUrl ? {listing_agent_photo_url: listingAgentPhotoUrl} : {})
+    ...(agencyName ? {agency_name: agencyName} : {}),
+    ...(listingAgentPhotoUrl ? {listing_agent_photo_url: listingAgentPhotoUrl} : {}),
+    ...(listingAgentName ? {listing_agent_name: listingAgentName} : {})
   }
 }
 

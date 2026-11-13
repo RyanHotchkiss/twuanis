@@ -32,18 +32,22 @@ async function main(){
  if(!Array.isArray(rows))throw Error('EXTRACTION_ARRAY_REQUIRED')
  const base=env.NEXT_PUBLIC_SUPABASE_URL,key=env.SUPABASE_SERVICE_ROLE_KEY
  if(!base||!key)throw Error('SERVICE_AUTHORITY_UNAVAILABLE')
- const eligible=rows.filter(row=>row&&row.source_name===sourceName&&typeof row.source_listing_id==='string'&&(imageUrl(row.agency?.logo_url)||imageUrl(row.listing_agent?.photo_url)))
- const result={source_name:sourceName,input_rows:rows.length,observed_attribution:eligible.length,matched:0,updated_with_agency_logo:0,updated_with_agent_photo:0,unmatched:[],failed:[]}
+ const name=value=>typeof value==='string'&&value.trim()?value.trim().slice(0,200):null
+ const eligible=rows.filter(row=>row&&row.source_name===sourceName&&typeof row.source_listing_id==='string'&&(imageUrl(row.agency?.logo_url)||imageUrl(row.listing_agent?.photo_url)||name(row.agency?.name)||name(row.listing_agent?.name)))
+ const result={source_name:sourceName,input_rows:rows.length,observed_attribution:eligible.length,matched:0,updated_with_agency_logo:0,updated_with_agency_name:0,updated_with_agent_photo:0,updated_with_agent_name:0,unmatched:[],failed:[]}
  for(const row of eligible){
   const agencyLogo=imageUrl(row.agency?.logo_url),agentPhoto=imageUrl(row.listing_agent?.photo_url)
-  const body={...(agencyLogo?{agency_logo_url:agencyLogo}:{}),...(agentPhoto?{listing_agent_photo_url:agentPhoto}:{})}
+  const agencyName=name(row.agency?.name),agentName=name(row.listing_agent?.name)
+  const body={...(agencyLogo?{agency_logo_url:agencyLogo}:{}),...(agencyName?{agency_name:agencyName}:{}),...(agentPhoto?{listing_agent_photo_url:agentPhoto}:{}),...(agentName?{listing_agent_name:agentName}:{})}
   try{
-   const params=new URLSearchParams({source_name:`eq.${sourceName}`,source_listing_id:`eq.${row.source_listing_id}`,listing_origin:'eq.imported',select:'id,listing_status,agency_logo_url,listing_agent_photo_url'})
+   const params=new URLSearchParams({source_name:`eq.${sourceName}`,source_listing_id:`eq.${row.source_listing_id}`,listing_origin:'eq.imported',select:'id,listing_status,agency_logo_url,agency_name,listing_agent_photo_url,listing_agent_name'})
    const updated=await request(base,key,`/rest/v1/listings?${params}`,{method:'PATCH',headers:{Prefer:'return=representation'},body:JSON.stringify(body)})
    if(!Array.isArray(updated)||updated.length!==1){result.unmatched.push(row.source_listing_id);continue}
    result.matched++
    if(agencyLogo)result.updated_with_agency_logo++
+   if(agencyName)result.updated_with_agency_name++
    if(agentPhoto)result.updated_with_agent_photo++
+   if(agentName)result.updated_with_agent_name++
   }catch(error){result.failed.push({source_listing_id:row.source_listing_id,error:String(error.message||error)})}
  }
  console.log(JSON.stringify(result,null,2))

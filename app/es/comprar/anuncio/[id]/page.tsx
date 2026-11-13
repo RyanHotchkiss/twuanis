@@ -18,6 +18,7 @@ import JsonLd from '@/app/components/JsonLd'
 import TopBar from '@/app/components/TopBar'
 import ListingActivityTracker from '@/app/components/ListingActivityTracker'
 import ListingActions from '@/app/components/ListingActions'
+import ListingAttribution from '@/app/components/property-detail/ListingAttribution'
 import { buildListingSchema } from '@/lib/schema-engine'
 import RecordRecentlyViewedProperty
   from '@/app/components/RecordRecentlyViewedProperty'
@@ -211,6 +212,8 @@ return (
               transactionType="buy"
               language="es"
             />
+
+            <ListingAttribution language="es" agencyLogoUrl={listing.agency_logo_url} agencyName={listing.agency_name} listingAgentPhotoUrl={listing.listing_agent_photo_url} listingAgentName={listing.listing_agent_name} />
 
             <ListingCompareButton
               listingId={listing.id}

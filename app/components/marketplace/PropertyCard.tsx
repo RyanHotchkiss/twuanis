@@ -200,12 +200,7 @@ export default function PropertyCard({
            <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1" aria-hidden="true"><path vectorEffect="non-scaling-stroke" d="M20.5 11.5a8.5 8.5 0 0 1-12.8 7.3L3 20l1.3-4.5a8.5 8.5 0 1 1 16.2-4Z"/><path vectorEffect="non-scaling-stroke" d="m8 7 2 3-1 1c1 2 2 3 4 3l1-1 3 2c-1 3-4 2-7 0S6 8 8 7Z"/></svg>
           </button>}
 
-          {agencyLogoUrl && <img
-            src={agencyLogoUrl}
-            alt={language === 'es' ? 'Logo de la agencia' : 'Agency logo'}
-            referrerPolicy="no-referrer"
-            style={{position:'absolute',top:'1rem',left:spotlight&&spotlightContactHref?'4.25rem':'1rem',width:'1.9rem',height:'1.9rem',objectFit:'contain',borderRadius:'.3rem',background:'rgba(255,255,255,.92)',padding:'.12rem',boxSizing:'border-box',zIndex:2}}
-          />}
+          {agencyLogoUrl && <span aria-hidden="true" style={{position:'absolute',top:'1rem',left:spotlight&&spotlightContactHref?'4.25rem':'1rem',width:'2.35rem',height:'2.35rem',borderRadius:'999px',overflow:'hidden',background:'rgba(255,255,255,.96)',border:'1px solid rgba(255,255,255,.85)',boxSizing:'border-box',display:'grid',placeItems:'center',zIndex:2}}><img src={agencyLogoUrl} alt={language === 'es' ? 'Logo de la agencia' : 'Agency logo'} referrerPolicy="no-referrer" style={{display:'block',width:'100%',height:'100%',objectFit:'contain'}} /></span>}
 
           {favoriteError&&<span role="alert" style={{position:'absolute',top:64,left:12,right:12,zIndex:21,background:'var(--surface)',color:'var(--foreground)',padding:8,borderRadius:8}}>{favoriteError}</span>}
           {/* FAVORITE */}
