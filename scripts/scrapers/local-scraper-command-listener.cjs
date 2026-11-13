@@ -82,6 +82,7 @@ async function execute(command) {
   const startedAt = new Date().toISOString()
   let terminalState = 'failed'
   let terminalSummary = {}
+  let wasiResult = null
   const logs = []
   let stopTimer = null
   const addLog = (stream, value) => {
@@ -89,6 +90,14 @@ async function execute(command) {
     if (!line) return
     logs.push({ at: new Date().toISOString(), stream, line: line.slice(0, 1000) })
     if (logs.length > 24) logs.splice(0, logs.length - 24)
+    if (stream === 'stdout') {
+      for (const candidate of line.split(/\r?\n/)) {
+        try {
+          const payload = JSON.parse(candidate)
+          if (payload?.wasi_result?.counts) wasiResult = payload.wasi_result
+        } catch { /* non-JSON controller output is retained as a log */ }
+      }
+    }
   }
   try {
     await report(command.id, 'running', { selected, startedAt, logs: [{ at: startedAt, stream: 'listener', line: 'Command accepted by local listener.' }] })
@@ -127,7 +136,17 @@ async function execute(command) {
       child.once('exit', (code, signal) => resolve({ code, signal }))
     })
     terminalState = stopping ? 'failed' : result.code === 0 ? 'completed' : 'failed'
-    terminalSummary = { selected, exitCode: result.code, signal: result.signal, stopRequested: stopping, logs }
+    const counts = wasiResult?.counts
+    terminalSummary = counts ? {
+      selected, exitCode: result.code, signal: result.signal, stopRequested: stopping, logs,
+      saleListingsExtracted: selected[0].endsWith('-sale') ? counts.extracted : 0,
+      rentListingsExtracted: selected[0].endsWith('-rent') ? counts.extracted : 0,
+      pagesRetrieved: counts.pagesRetrieved, paginationStatus: counts.paginationStatus,
+      created: counts.created, updated: counts.updated, published: counts.published,
+      rejected: counts.rejected, archived: 'unavailable', activeInventoryTotal: 'unavailable',
+      agencyLogos: counts.agencyLogos, agentPhotos: counts.agentPhotos,
+      errors: counts.errors?.length ?? 0, wasiOutputDirectory: wasiResult.directory,
+    } : { selected, exitCode: result.code, signal: result.signal, stopRequested: stopping, logs }
     await report(command.id, terminalState, terminalSummary)
   } catch (error) {
     terminalSummary = { selected, error: error.message, stopRequested: stopping, logs }
