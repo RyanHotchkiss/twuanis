@@ -1439,9 +1439,7 @@ function writeCsv({
 
     
 
-async function scrapeEncuentra24Sale() {
-  const regionSlug =
-    process.argv[2]
+async function scrapeEncuentra24Sale({ regionSlug = process.argv[2] || 'bienes-raices-venta-de-propiedades', output = process.argv[3] } = {}) {
   if (!regionSlug) {
     console.error('Missing region slug')
     process.exit(1)
@@ -1584,12 +1582,7 @@ console.log('FINISHED LISTING:', listingUrl)
 
     
 
-    const fileName =
-      path.join(
-        os.homedir(),
-        'Desktop',
-        `${regionSlug}-sale-raw.csv`
-      )
+    const fileName = output ? path.resolve(output) : path.join(os.homedir(), 'Desktop', `${regionSlug}-sale-raw.csv`)
 
 console.log('ROWS COLLECTED:', rows.length)
       
@@ -1624,6 +1617,7 @@ console.log(
     }
   }
 }
-scrapeEncuentra24Sale()
+if (require.main === module) scrapeEncuentra24Sale().catch(error => { console.error(error.message); process.exitCode = 1 })
+module.exports = { scrapeEncuentra24Sale, createSourceListingId }
 
 

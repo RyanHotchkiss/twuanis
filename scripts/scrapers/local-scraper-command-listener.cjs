@@ -83,6 +83,7 @@ async function execute(command) {
   let terminalState = 'failed'
   let terminalSummary = {}
   let wasiResult = null
+  let encuentraResult = null
   const logs = []
   let stopTimer = null
   const addLog = (stream, value) => {
@@ -95,6 +96,7 @@ async function execute(command) {
         try {
           const payload = JSON.parse(candidate)
           if (payload?.wasi_result?.counts) wasiResult = payload.wasi_result
+          if (payload?.scraper_execution_summary) encuentraResult = payload.scraper_execution_summary
         } catch { /* non-JSON controller output is retained as a log */ }
       }
     }
@@ -146,7 +148,17 @@ async function execute(command) {
       rejected: counts.rejected, archived: 'unavailable', activeInventoryTotal: 'unavailable',
       agencyLogos: counts.agencyLogos, agentPhotos: counts.agentPhotos,
       errors: counts.errors?.length ?? 0, wasiOutputDirectory: wasiResult.directory,
-    } : { selected, exitCode: result.code, signal: result.signal, stopRequested: stopping, logs }
+    } : encuentraResult ? (() => {
+      const sale=encuentraResult.sale?.ingestion||{}, rent=encuentraResult.rent?.ingestion||{}
+      return { selected, exitCode: result.code, signal: result.signal, stopRequested: stopping, logs,
+        saleListingsExtracted:sale.captured, rentListingsExtracted:rent.captured,
+        pagesRetrieved:'unavailable', paginationStatus:encuentraResult.status,
+        created:'unavailable', updated:'unavailable', published:(sale.published||0)+(rent.published||0),
+        rejected:(sale.rejected||0)+(rent.rejected||0), archived:(sale.reconciliation?.archived||0)+(rent.reconciliation?.archived||0),
+        activeInventoryTotal:'unavailable', agencyLogos:'unavailable', agentPhotos:'unavailable',
+        errors:[...(sale.errors||[]),...(rent.errors||[])].length, reconciliation:{sale:sale.reconciliation,rent:rent.reconciliation},
+      }
+    })() : { selected, exitCode: result.code, signal: result.signal, stopRequested: stopping, logs }
     await report(command.id, terminalState, terminalSummary)
   } catch (error) {
     terminalSummary = { selected, error: error.message, stopRequested: stopping, logs }

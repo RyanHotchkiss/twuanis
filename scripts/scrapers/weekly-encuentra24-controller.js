@@ -7,7 +7,7 @@ const crypto = require('node:crypto')
 const fs = require('node:fs')
 const path = require('node:path')
 const { spawn } = require('node:child_process')
-const { createClient } = require('./encuentra24-canonical-ingestion-adapter.cjs')
+const { createClient, ingestObservation, completeScopedSourceRun } = require('./encuentra24-canonical-ingestion-adapter.cjs')
 const { readLedger, recordLedger, interruptedSourceIds } = require('./rent-run-ledger.cjs')
 
 if (process.env.ENCUENTRA24_ENV_FILE) {
@@ -35,6 +35,15 @@ function iso() { return new Date().toISOString() }
 function atomic(file, value) { const temporary = `${file}.${process.pid}.tmp`; fs.writeFileSync(temporary, JSON.stringify(value, null, 2), { mode: 0o600 }); fs.renameSync(temporary, file) }
 function validCap(value, name) { required(Number.isInteger(value) && value > 0 && value <= 10000, `${name} must be an integer from 1 to 10000`) }
 function sha256(file) { return crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex') }
+function parseCsv(text) { const rows=[]; let row=[], value='', quoted=false; for(let i=0;i<text.length;i++){const c=text[i];if(c==='"'){if(quoted&&text[i+1]==='"'){value+='"';i++}else quoted=!quoted}else if(c===','&&!quoted){row.push(value);value=''}else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&text[i+1]==='\n')i++;row.push(value);if(row.some(Boolean))rows.push(row);row=[];value=''}else value+=c}if(value||row.length){row.push(value);rows.push(row)}const [headers,...data]=rows;return data.map(values=>Object.fromEntries(headers.map((header,index)=>[header,values[index]||''])))}
+async function ingestAndReconcile(file, transaction, runId, startedAt, processResult) {
+  let rows=[], errors=[]; try { rows=parseCsv(fs.readFileSync(file,'utf8')) } catch(error) { errors.push(error.message) }
+  const client=createClient(), observedIds=[...new Set(rows.map(row=>String(row.source_listing_id||'').trim()).filter(Boolean))]
+  let published=0,rejected=0,failed=0
+  for(const row of rows){try{const result=await ingestObservation(client,row,{runId,startedAt});const outcome=String(result?.outcome||'');if(outcome==='accepted'||outcome==='succeeded')published++;else rejected++}catch(error){failed++;errors.push(error.message)}}
+  const reconciliation=await completeScopedSourceRun(client,{sourceName:'encuentra24',transaction,runId,startedAt,completion:{status:processResult.code===0?'completed':'failed',errors},observedIds})
+  return { captured:observedIds.length,published,rejected,failed,errors,reconciliation }
+}
 
 function authorityPreflight() {
   const geography = process.env.ENCUENTRA24_GEOGRAPHY_CSV
@@ -177,6 +186,7 @@ async function main() {
       const resume = priorOutput && fs.existsSync(priorOutput) ? { ENCUENTRA24_SKIP_CSV: priorOutput, ENCUENTRA24_SKIP_SHA256: sha256(priorOutput) } : {}
       summary.sale = { ...summary.sale, run_id: saleRunId, cap: SALE_CAP, started_at: summary.sale.started_at || iso(), output: saleOutput, attempts: retry + 1 }; persist()
       summary.sale.process = await runChild('scripts/scrapers/encuentra24-sale-scraper.js', ['bienes-raices-venta-de-propiedades', String(SALE_CAP), saleOutput], { ...process.env, ...resume, ENCUENTRA24_CANONICAL_INGEST: '1', ENCUENTRA24_RUN_ID: saleRunId, ENCUENTRA24_RUN_STARTED_AT: startedAt }, path.join(directory, 'sale.log'))
+      summary.sale.ingestion = await ingestAndReconcile(saleOutput,'sale',saleRunId,startedAt,summary.sale.process)
       summary.sale.finished_at = iso(); summary.sale.completed = summary.sale.process.code === 0; persist()
       if (!summary.sale.completed) throw new Error('Sale scraper did not complete successfully')
     }
@@ -189,6 +199,7 @@ async function main() {
       summary.rent = { ...summary.rent, run_id: rentRunId, cap: RENT_CAP, started_at: summary.rent.started_at || iso(), output: rentOutput, ledger, attempts: retry + 1 }; persist()
       await reconcileInterruptedRent(ledger, path.join(directory, 'rent-reconciliation.json'))
       summary.rent.process = await runChild('scripts/scrapers/encuentra24-rent-scraper.js', ['bienes-raices-alquiler', String(RENT_CAP), rentOutput], { ...process.env, ENCUENTRA24_CANONICAL_INGEST: '1', ENCUENTRA24_RUN_ID: rentRunId, ENCUENTRA24_RUN_STARTED_AT: startedAt, ENCUENTRA24_RENT_RUN_LEDGER: ledger }, path.join(directory, 'rent.log'))
+      summary.rent.ingestion = await ingestAndReconcile(rentOutput,'rent',rentRunId,startedAt,summary.rent.process)
       summary.rent.finished_at = iso(); summary.rent.completed = summary.rent.process.code === 0; summary.status = summary.rent.completed ? 'COMPLETED' : 'PARTIAL'; persist()
     }
     if (summary.status === 'COMPLETED') fs.unlinkSync(activeFile)

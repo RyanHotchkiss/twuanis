@@ -48,7 +48,7 @@ function qualifying(row) {
   return null
 }
 
-async function ingestWasiObservation(client, row) {
+async function ingestWasiObservation(client, row, { runId, startedAt }) {
   const raw = rawObservation(row); const review = { status:'unresolved', canonical_authority:false, values:{} }
   const evidence = await client.rpc('retain_csv_source_evidence', { p_raw: raw, p_review: review })
   const normalized = { province:raw.province,canton:raw.canton,district:raw.district,property_type:typeMap[row.property_type] }
@@ -57,8 +57,15 @@ async function ingestWasiObservation(client, row) {
   const measurements = {}; const property = area(raw.raw_property_area), construction = area(raw.raw_construction_area)
   if (property) measurements.property_area = { value:property }; if (construction) measurements.construction_area = { value:construction }
   const input = { transaction:tx, geography:{province:String(ontology.province.official_code),canton:String(ontology.canton.official_code),district:String(ontology.district.official_code)}, semantics:{property_type:[String(ontology.propertyType.id)]}, facts:{}, measurements, money:{amount:String(raw[moneyField]),currency:raw.currency}, content:{whatsapp:raw.whatsapp} }
-  const result = await client.rpc('ingest_canonical_source_observation', { p_evidence:evidence, p_input:input })
+  const result = await client.rpc('ingest_canonical_source_observation_in_run', { p_evidence:evidence, p_input:input, p_run:runId, p_started_at:iso(startedAt) })
   return { evidence, result }
 }
 
-module.exports = { createClient, qualifying, ingestWasiObservation, rawObservation, iso }
+async function completeSourceRun(client, { sourceName, transaction, runId, startedAt, completion, observedIds }) {
+  return client.rpc('complete_canonical_source_run_scoped', {
+    p_source: sourceName, p_transaction: transaction, p_run: runId,
+    p_started_at: iso(startedAt), p_completion: completion, p_observed_ids: observedIds,
+  })
+}
+
+module.exports = { createClient, qualifying, ingestWasiObservation, completeSourceRun, rawObservation, iso }

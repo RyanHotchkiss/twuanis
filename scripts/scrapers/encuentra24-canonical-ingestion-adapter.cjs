@@ -134,4 +134,8 @@ async function ingestObservation(client, row, { runId, startedAt }) {
   })
 }
 
-module.exports = { createClient, resolveOntology, ingestObservation, authorizedDistrictAbsence }
+async function completeScopedSourceRun(client, { sourceName, transaction, runId, startedAt, completion, observedIds }) {
+  return client.rpc('complete_canonical_source_run_scoped', { p_source: sourceName, p_transaction: transaction, p_run: runId, p_started_at: iso(startedAt), p_completion: completion, p_observed_ids: observedIds })
+}
+
+module.exports = { createClient, resolveOntology, ingestObservation, completeScopedSourceRun, authorizedDistrictAbsence }
