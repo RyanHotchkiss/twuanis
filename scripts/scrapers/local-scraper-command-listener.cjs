@@ -12,7 +12,8 @@ const { createClient } = require('./encuentra24-canonical-ingestion-adapter.cjs'
 const root = path.resolve(__dirname, '../..')
 const client = createClient()
 const intervalMs = Number(process.env.ENCUENTRA24_COMMAND_POLL_MS || 30000)
-const supported = new Set(['encuentra24-sale', 'encuentra24-rent'])
+const { configurations: wasiConfigurations, run: runWasi } = require('./wasi-command-runner.cjs')
+const supported = new Set(['encuentra24-sale', 'encuentra24-rent', ...Object.keys(wasiConfigurations)])
 const REPORT_TO = 'ryan@twuanis.com'
 let busy = false
 let child = null
@@ -21,6 +22,7 @@ let stopping = false
 function selection(value) {
   const selected = [...new Set((value || []).map(String))].sort()
   if (!selected.length || selected.length > 2 || selected.some(item => !supported.has(item))) throw new Error('Unsupported scraper selection')
+  if (selected.some(item => item.startsWith('encuentra24-')) && selected.some(item => !item.startsWith('encuentra24-'))) throw new Error('Select one scraper website per command')
   return selected
 }
 
@@ -96,7 +98,7 @@ async function execute(command) {
     } catch (error) {
       await report(command.id, 'running', { selected, notification: { state: 'failed', error: error.message } }, 'failed')
     }
-    child = spawn(process.execPath, ['scripts/scrapers/weekly-encuentra24-controller.js'], {
+    if (selected.every(item => item.startsWith('encuentra24-'))) child = spawn(process.execPath, ['scripts/scrapers/weekly-encuentra24-controller.js'], {
       cwd: root,
       env: {
         ...process.env,
@@ -105,6 +107,9 @@ async function execute(command) {
         ENCUENTRA24_SELECTED_SCRAPERS: selected.join(','),
       },
       stdio: ['ignore', 'pipe', 'pipe'],
+    })
+    else child = spawn(process.execPath, ['scripts/scrapers/wasi-command-runner.cjs', selected[0], path.join(process.env.ENCUENTRA24_RUN_ROOT || path.join(root, 'var'), 'wasi-manual-runs')], {
+      cwd: root, env: process.env, stdio: ['ignore', 'pipe', 'pipe']
     })
     child.stdout.on('data', value => addLog('stdout', value))
     child.stderr.on('data', value => addLog('stderr', value))

@@ -1,0 +1,11 @@
+{
+  "source_name": "RE/MAX Central",
+  "source_website": "https://remaxcentralcr.com",
+  "start_url": "https://remaxcentralcr.com/s/ventas",
+  "inventory_query": {"business_type[0]": "for_sale", "for_sale": "1", "for_rent": "0", "for_temporary_rent": "0", "for_transfer": "0", "lax_business_type": "1"},
+  "allowed_host": "remaxcentralcr.com",
+  "transaction": "sale",
+  "property_area_labels": ["Área Terreno", "Área de Terreno", "Área Lote", "Área del Terreno"],
+  "construction_area_labels": ["Área Construida", "Área de Construcción", "Área Construcción"],
+  "geography": {"resolution_mode": "city_exact_district", "source_field_map": {"province": "Provincia", "city": "Ciudad"}}
+}

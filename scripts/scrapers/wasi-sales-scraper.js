@@ -39,6 +39,24 @@ function resolveGeography(terms,raw){
  return {raw,province,canton,district,reasons:{province:reason(raw.province,pm,true),canton:reason(raw.canton,cm,!!province),district:reason(raw.district,dm,!!canton)},complete:!!(province&&canton&&district)}
 }
 
+function cityAliases(value){
+ const normalized=normalize(value)
+ if(!normalized)return []
+ return unique([normalized,normalized.replace(/^la\s+/,'').trim(),normalized.replace(/^ciudad\s+/,'').trim()])
+}
+
+function resolveCityGeography(terms,raw){
+ const pm=matchTerms(terms,raw.province,'province'),province=pm.length===1?pm[0]:null
+ const city=cityAliases(raw.city)
+ const candidates=province?terms.filter(term=>term.term_type==='district'&&terms.some(parent=>parent.term_type==='canton'&&Number(parent.id)===Number(term.parent_id)&&Number(parent.parent_id)===Number(province.id))).map(district=>({district,canton:terms.find(term=>Number(term.id)===Number(district.parent_id))})).filter(pair=>pair.canton):[]
+ const exact=candidates.filter(({district})=>city.some(value=>sourceAliases(district.term_name,'district').includes(value)||aliases(district).includes(value)))
+ const phrase=candidates.filter(({district,canton})=>city.some(value=>sourceAliases(district.term_name,'district').some(d=>value.includes(d))&&sourceAliases(canton.term_name,'canton').some(c=>value.includes(c))))
+ const matches=exact.length===1?exact:phrase.length===1?phrase:[]
+ const match=matches[0]||null
+ const reason=(value,ready,found)=>!value?'missing':!ready?'hierarchy_conflict':found?'resolved':exact.length+phrase.length>1?'ambiguous':'unrecognized'
+ return {raw,province,canton:match?.canton||null,district:match?.district||null,reasons:{province:reason(raw.province,true,!!province),canton:reason(raw.city,!!province,!!match),district:reason(raw.city,!!match?.canton,!!match)},complete:!!(province&&match?.canton&&match?.district)}
+}
+
 async function canonicalTerms(){
  const env=Object.fromEntries((await fs.readFile(path.join(process.cwd(),'.env.local'),'utf8')).split(/\r?\n/).filter(line=>/^[A-Z0-9_]+=/.test(line)).map(line=>{const at=line.indexOf('=');return [line.slice(0,at),unquote(line.slice(at+1))]}))
  const base=env.NEXT_PUBLIC_SUPABASE_URL,key=env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -56,9 +74,12 @@ async function canonicalTerms(){
 function propertyTypeGroup(value){const v=normalize(value);return /terreno|lote|finca|land/.test(v)?'undeveloped_land':/apartamento/.test(v)?'apartments':/condominio/.test(v)?'condominiums':/casa|house/.test(v)?'houses':'other'}
 
 async function fetchPublic(url){
- const response=await fetch(url,{headers:{'user-agent':'Mozilla/5.0 (compatible; TwuanisResearch/1.0; +https://twuanis.com)','accept':'text/html,application/xhtml+xml'}})
- if(!response.ok)throw Error(`HTTP_${response.status}`)
- return response.text()
+ const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),20000)
+ try{
+  const response=await fetch(url,{signal:controller.signal,headers:{'user-agent':'Mozilla/5.0 (compatible; TwuanisResearch/1.0; +https://twuanis.com)','accept':'text/html,application/xhtml+xml'}})
+  if(!response.ok)throw Error(`HTTP_${response.status}`)
+  return await response.text()
+ }finally{clearTimeout(timeout)}
 }
 
 function absolute(config,href){
@@ -71,6 +92,8 @@ function sourceImageUrl(config,value){
  if(!value)return null
  try{
   const url=new URL(value,config.source_website)
+  // Attribution media is an observed presentation asset, never a redirect or
+  // executable scheme. Wasi commonly serves it from its image CDN.
   return url.protocol==='https:'&&!url.username&&!url.password?url.href:null
  }catch{return null}
 }
@@ -168,7 +191,7 @@ function parseDetail(html,seed,config,terms){
  const listingAgentPhotoUrl=sourceImageUrl(config,advisor.find('img[src]').first().attr('src'))
  const listingAgentName=clean(advisor.find('.notranslate').first().text())||clean(advisor.find('p').first().text())||null
  const rawGeography=config.geography?Object.fromEntries(Object.entries(config.geography.source_field_map).map(([canonical,sourceLabel])=>[canonical,attributes[sourceLabel]||null])):null
- const resolvedGeography=rawGeography&&terms?resolveGeography(terms,rawGeography):null
+ const resolvedGeography=rawGeography&&terms?(config.geography.resolution_mode==='city_exact_district'?resolveCityGeography(terms,rawGeography):resolveGeography(terms,rawGeography)):null
  const observedTransaction=sourceTransaction(seed,attributes,clean($('h1.title').first().text())||seed.listing_title)
  const collectionReasons=[]
   if(!seed.source_url||new URL(seed.source_url).hostname!==config.allowed_host)collectionReasons.push('SOURCE_URL_NOT_ALLOWED')

@@ -1,0 +1,9 @@
+{
+  "source_name": "Devop",
+  "source_website": "https://devop.inmo.co",
+  "sale_start_url": "https://devop.inmo.co/s/ventas",
+  "allowed_host": "devop.inmo.co",
+  "transaction": "sale",
+  "property_area_labels": ["Área Terreno", "Área de Terreno", "Área Lote", "Área del Terreno"],
+  "construction_area_labels": ["Área Construida", "Área de Construcción", "Área Construcción"]
+}
