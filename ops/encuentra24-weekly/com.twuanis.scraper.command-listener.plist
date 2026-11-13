@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+  <key>Label</key><string>com.twuanis.scraper.command-listener</string>
+  <key>ProgramArguments</key><array><string>/Users/cassidydaddy/.nvm/versions/node/v24.21.0/bin/node</string><string>/Users/cassidydaddy/twuanis/scripts/scrapers/local-scraper-command-listener.cjs</string></array>
+  <key>WorkingDirectory</key><string>/Users/cassidydaddy/twuanis</string>
+  <key>EnvironmentVariables</key><dict>
+    <key>ENCUENTRA24_ENV_FILE</key><string>/Users/cassidydaddy/twuanis/.env.local</string>
+    <key>ENCUENTRA24_COMMAND_POLL_MS</key><string>30000</string>
+    <key>ENCUENTRA24_RUN_ROOT</key><string>/Users/cassidydaddy/twuanis/var/encuentra24-weekly-runs</string>
+    <key>ENCUENTRA24_GEOGRAPHY_CSV</key><string>/Users/cassidydaddy/twuanis/var/encuentra24-sale/authority/canonical-geography.csv</string>
+    <key>ENCUENTRA24_GEOGRAPHY_SHA256</key><string>be0c04721952cbc711c6802ff130125707b6edd74a8683ab277bfa964ff8e31f</string>
+    <key>ENCUENTRA24_QUARANTINE_REGISTER</key><string>/Users/cassidydaddy/twuanis/var/encuentra24-sale/authority/acquisition-quarantine-register.json</string>
+    <key>ENCUENTRA24_QUARANTINE_SHA256</key><string>57b7c059974c06e5bbf2ed66451f5bae27fbb01045854d15a8a300ccfc72c8c0</string>
+    <key>ENCUENTRA24_WEEKLY_SALE_CAP</key><string>10000</string>
+    <key>ENCUENTRA24_WEEKLY_RENT_CAP</key><string>10000</string>
+    <key>ENCUENTRA24_WEEKLY_MAX_RUNTIME_MS</key><string>10800000</string>
+  </dict>
+  <key>KeepAlive</key><true/><key>RunAtLoad</key><true/><key>ProcessType</key><string>Background</string>
+  <key>StandardOutPath</key><string>/Users/cassidydaddy/twuanis/var/encuentra24-weekly-runs/command-listener.log</string>
+  <key>StandardErrorPath</key><string>/Users/cassidydaddy/twuanis/var/encuentra24-weekly-runs/command-listener-error.log</string>
+</dict></plist>
