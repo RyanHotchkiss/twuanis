@@ -1,5 +1,5 @@
 export type ScraperSource = {
-  id: 'encuentra24' | 'helcor' | 'remax-central' | 'devop'
+  id: 'encuentra24' | 'helcor' | 'remax-central' | 'inmobiliaria-cdj' | 'devop'
   label: { en: string; es: string }
   selections: Array<{ id: string; label: { en: string; es: string } }>
   operational: boolean
@@ -31,6 +31,10 @@ export const scraperSources: ScraperSource[] = [
   {
     id: 'remax-central', label: { en: 'RE/MAX Central', es: 'RE/MAX Central' },
     selections: [{ id: 'remax-central-sale', label: { en: 'Sale', es: 'Venta' } }, { id: 'remax-central-rent', label: { en: 'Rent', es: 'Alquiler' } }], operational: true
+  },
+  {
+    id: 'inmobiliaria-cdj', label: { en: 'Inmobiliaria CDJ', es: 'Inmobiliaria CDJ' },
+    selections: [{ id: 'inmobiliaria-cdj-sale', label: { en: 'Sale', es: 'Venta' } }, { id: 'inmobiliaria-cdj-rent', label: { en: 'Rent', es: 'Alquiler' } }], operational: true
   },
   { id: 'devop', label: { en: 'Devop', es: 'Devop' }, selections: [{ id: 'devop-sale', label: { en: 'Sale', es: 'Venta' } }], operational: true }
 ]
