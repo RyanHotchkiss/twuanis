@@ -9,13 +9,14 @@
 const fs=require('node:fs/promises')
 const path=require('node:path')
 
-const [input,sourceName]=process.argv.slice(2)
-if(!input||!sourceName)throw Error('Usage: node refresh-wasi-listing-attribution.js EXTRACTION_JSON SOURCE_NAME')
-
 function unquote(value){return String(value??'').trim().replace(/^['"]|['"]$/g,'')}
 async function environment(){
- const raw=await fs.readFile(path.join(process.cwd(),'.env.local'),'utf8')
- return Object.fromEntries(raw.split(/\r?\n/).filter(line=>/^[A-Z0-9_]+=/.test(line)).map(line=>{const at=line.indexOf('=');return [line.slice(0,at),unquote(line.slice(at+1))]}))
+ let file={}
+ try{
+  const raw=await fs.readFile(path.join(process.cwd(),'.env.local'),'utf8')
+  file=Object.fromEntries(raw.split(/\r?\n/).filter(line=>/^[A-Z0-9_]+=/.test(line)).map(line=>{const at=line.indexOf('=');return [line.slice(0,at),unquote(line.slice(at+1))]}))
+ }catch(error){if(error.code!=='ENOENT')throw error}
+ return {...file,...process.env}
 }
 function imageUrl(value){
  if(typeof value!=='string'||!value)return null
@@ -27,8 +28,8 @@ async function request(base,key,pathname,options={}){
  if(!response.ok)throw Error(`HTTP_${response.status}:${text.slice(0,300)}`)
  return text?JSON.parse(text):[]
 }
-async function main(){
- const [rows,env]=await Promise.all([fs.readFile(input,'utf8').then(JSON.parse),environment()])
+async function projectAttribution(rows,sourceName,providedEnv){
+ const env=providedEnv||await environment()
  if(!Array.isArray(rows))throw Error('EXTRACTION_ARRAY_REQUIRED')
  const base=env.NEXT_PUBLIC_SUPABASE_URL,key=env.SUPABASE_SERVICE_ROLE_KEY
  if(!base||!key)throw Error('SERVICE_AUTHORITY_UNAVAILABLE')
@@ -50,7 +51,16 @@ async function main(){
    if(agentName)result.updated_with_agent_name++
   }catch(error){result.failed.push({source_listing_id:row.source_listing_id,error:String(error.message||error)})}
  }
+ return result
+}
+
+async function main(){
+ const [input,sourceName]=process.argv.slice(2)
+ if(!input||!sourceName)throw Error('Usage: node refresh-wasi-listing-attribution.js EXTRACTION_JSON SOURCE_NAME')
+ const result=await projectAttribution(JSON.parse(await fs.readFile(input,'utf8')),sourceName)
  console.log(JSON.stringify(result,null,2))
  if(result.failed.length)process.exitCode=1
 }
-main().catch(error=>{console.error(error.message||error);process.exitCode=1})
+
+module.exports={projectAttribution}
+if(require.main===module)main().catch(error=>{console.error(error.message||error);process.exitCode=1})
