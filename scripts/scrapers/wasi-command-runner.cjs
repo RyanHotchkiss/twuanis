@@ -42,7 +42,9 @@ async function run(selection, outputRoot, onProgress=()=>{}) {
     }
   }
   const observedIds=[...new Set(records.filter(row=>row.source_transaction===site.transaction).map(row=>String(row.source_listing_id)).filter(Boolean))]
-  const reconciliation=await completeSourceRun(client,{sourceName:site.source_name,transaction:site.transaction,runId,startedAt,completion:{status:executionError?'failed':'completed',pagination_status:counts.paginationStatus,errors:counts.errors},observedIds})
+  const reconciliation=payload?.summary?.listing_discovery_verified===true
+    ?await completeSourceRun(client,{sourceName:site.source_name,transaction:site.transaction,runId,startedAt,completion:{status:executionError?'failed':'completed',pagination_status:counts.paginationStatus,errors:counts.errors},observedIds})
+    :{absence_applied:false,status:'skipped',reason:'LISTING_DISCOVERY_UNVERIFIED'}
   counts.archived=Number(reconciliation?.archived ?? 'unavailable'); counts.activeInventoryTotal=reconciliation?.remaining_published ?? 'unavailable'; counts.captured=observedIds.length
   const output={directory,counts,reconciliation}; onProgress({event:'completed',selection,...output}); if(executionError) throw executionError; return output
 }

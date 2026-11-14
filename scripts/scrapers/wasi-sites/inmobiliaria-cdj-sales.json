@@ -5,6 +5,7 @@
   "inventory_query": {"business_type[0]": "for_sale", "for_sale": "1", "for_rent": "0", "for_temporary_rent": "0", "for_transfer": "0", "lax_business_type": "1"},
   "allowed_host": "inmobiliariacdj.com",
   "transaction": "sale",
+  "listing_discovery": {"container_selector": ".list_Propiedades", "item_selector": ".list_Propiedades .item", "link_selector": "a[href]", "title_selector": ".caption h2", "property_type_selector": ".tag-tipo"},
   "property_area_labels": ["área Terreno", "Área Terreno", "Área de Terreno", "Área Lote", "Área del Terreno"],
   "construction_area_labels": ["área Construida", "Área Construida", "Área de Construcción", "Área Construcción"],
   "geography": {"resolution_mode": "city_exact_district", "source_field_map": {"province": "Provincia", "city": "Ciudad"}}
