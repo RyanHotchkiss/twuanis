@@ -41,7 +41,7 @@ export default function AdminScrapers({ language }: { language: AdminLanguage })
     return worker.state === 'running' ? text.running : worker.state === 'offline' ? text.offline : text.available
   }, [checkedAt, data?.worker, text])
   function toggle(id: string) { setSelected(current => current.includes(id) ? current.filter(value => value !== id) : [...current, id]) }
-  async function submit() { if (!selected.length) return; setBusy(true); const result = await scraperRequest(crypto.randomUUID(), selected); setBusy(false); if (!result.ok) setError(text.requestError); await refresh() }
+  async function submit() { if (!selected.length) return; setBusy(true); const result = await scraperRequest(crypto.randomUUID(), selected); setBusy(false); await refresh(); if (!result.ok) setError(result.error || text.requestError) }
   async function stop(commandId: string) { setBusy(true); const result = await scraperStop(commandId); setBusy(false); if (!result.ok) setError(text.stopError); await refresh() }
   return <section className="admin-scrapers">
     <p><strong>{status}</strong></p>
