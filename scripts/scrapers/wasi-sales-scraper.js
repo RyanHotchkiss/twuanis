@@ -106,9 +106,9 @@ function inventoryPage(config,href){
 }
 
 function sourceTransaction(seed,attributes,title){
- const business=normalize(attributes['Tipo de negocio']||'')
+ const business=normalize(attributes['Tipo de negocio']||attributes['Business type']||'')
  const evidence=normalize(`${new URL(seed.source_url).pathname} ${title||''}`)
- const sale=/\bventa\b|\bfor sale\b/.test(business||evidence)
+ const sale=/\bventa\b|\bfor sale\b|\bsale\b/.test(business||evidence)
  const rent=/\balquiler\b|\barriendo\b|\bfor rent\b/.test(business||evidence)
  return sale===rent?null:sale?'sale':'rent'
 }

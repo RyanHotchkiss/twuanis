@@ -54,6 +54,7 @@ before writing a second scraper.
 | HELCOR | `https://helcor.inmo.co/s/ventas` | `https://helcor.inmo.co/s/arriendos?business_type%5B0%5D=for_rent` | `helcor-sales.json`, `helcor-rent.json` |
 | RE/MAX Central | `https://remaxcentralcr.com/s/ventas` | `https://remaxcentralcr.com/s/alquiler` | `remax-central-sales.json`, `remax-central-rent.json` |
 | Inmobiliaria CDJ | `https://inmobiliariacdj.com/s/ventas` | `https://inmobiliariacdj.com/s/en-alquiler` | `inmobiliaria-cdj-sales.json`, `inmobiliaria-cdj-rent.json` |
+| Montero Realty Group | `https://monterorealtygroup.com/s/ventas` | `https://monterorealtygroup.com/s/alquileres` | `montero-realty-group-sales.json`, `montero-realty-group-rent.json` |
 | Devop | `https://devop.inmo.co/s/ventas` | — | `devop-sales.json` |
 
 HELCOR demonstrates a source whose `Cantón / Distrito`, `Ciudad`, and `Zona`
@@ -63,6 +64,9 @@ RE/MAX Central demonstrates explicit Sale/Rent URL and query separation plus
 Inmobiliaria CDJ uses the same Wasi list/detail structure, with source codes,
 `Tipo de negocio`, `área Terreno` / `área Construida`, `Provincia` / `Ciudad`,
 agency branding, and listing-advisor evidence on its public detail pages.
+Montero Realty Group uses the standard `.list-properties` listing structure and
+English `Business type`, `Área Ground`, and `Área Built` detail labels; its
+Sale and Rent routes remain independently configured.
 
 ## 2. Add the configuration—not a new execution architecture
 

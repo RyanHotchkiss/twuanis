@@ -8,6 +8,7 @@ const configurations = {
   'helcor-sale':'scripts/scrapers/wasi-sites/helcor-sales.json', 'helcor-rent':'scripts/scrapers/wasi-sites/helcor-rent.json',
   'remax-central-sale':'scripts/scrapers/wasi-sites/remax-central-sales.json', 'remax-central-rent':'scripts/scrapers/wasi-sites/remax-central-rent.json',
   'inmobiliaria-cdj-sale':'scripts/scrapers/wasi-sites/inmobiliaria-cdj-sales.json', 'inmobiliaria-cdj-rent':'scripts/scrapers/wasi-sites/inmobiliaria-cdj-rent.json',
+  'montero-realty-group-sale':'scripts/scrapers/wasi-sites/montero-realty-group-sales.json', 'montero-realty-group-rent':'scripts/scrapers/wasi-sites/montero-realty-group-rent.json',
   'devop-sale':'scripts/scrapers/wasi-sites/devop-sales.json'
 }
 function execute(file, outputRoot) { return new Promise((resolve,reject) => { let text=''; const child=spawn(process.execPath,['scripts/scrapers/wasi-sales-scraper.js',file,outputRoot],{cwd:root,env:process.env,stdio:['ignore','pipe','pipe']}); child.stdout.on('data',d=>text+=d); child.stderr.on('data',d=>text+=d); child.once('error',reject); child.once('exit',(code,signal)=>{ if(code===0)resolve({text,signal});else reject(Error(`WASI scraper exited ${code}: ${text.slice(-1000)}`)) }) }) }
