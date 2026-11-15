@@ -5,6 +5,7 @@
 
 .home{--market-button-bg:#000;--market-button-text:#fff}.home[data-arrow-theme=light]{--market-button-bg:#fff;--market-button-text:#000}
 .marketplaceActions > a,.marketplaceActions > button:nth-of-type(2){background:var(--market-button-bg)!important;color:var(--market-button-text)!important;border:1px solid var(--border)!important;font-weight:400!important}
+.propertyCountPill{display:inline-block;max-width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:18px;padding:2px 10px;background:#fff!important;color:#000!important;vertical-align:middle;overflow-wrap:anywhere}.home[data-arrow-theme=light] .propertyCountPill{background:#000!important;color:#fff!important}.propertyCount{display:inline-block;color:inherit!important;font-size:1.5em;font-weight:700;line-height:1;vertical-align:baseline}
 
 @media(max-width:768px){.sidebarLayer>div:first-child>div{top:0!important;height:100vh!important}.sidebarLayer>div:first-child>div>button{top:calc(var(--question-ticker-height,0px) + 1.25rem)!important}}
 

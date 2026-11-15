@@ -362,7 +362,8 @@ html[style*="color-scheme: light"] .floating-home-logo-light {
 [data-home-editorial] [data-homepage-engines]>.home-text-pill{display:block;width:100%;padding:15px 22px;background:var(--editorial-paper);color:var(--editorial-ink);border:0;border-radius:0;text-shadow:none}
 [data-home-editorial] [data-homepage-engines]>.home-text-pill>span{display:inline-block;font-size:2.4em;line-height:1;vertical-align:middle;margin-right:8px}
 [data-home-editorial] [data-homepage-subtitle]{grid-column:2;font-size:clamp(12px,1.2vw,16px)!important;padding:14px 20px;background:var(--editorial-paper);color:var(--editorial-ink);line-height:1.6;align-self:stretch}
-[data-home-editorial] :is(.home-sale-counter,.home-rent-counter){display:block;border:0;border-radius:0;padding:0;background:transparent!important;text-shadow:none}
+[data-home-editorial] :is(.home-sale-counter,.home-rent-counter){display:block;border:1px solid var(--border);border-radius:18px;padding:2px 10px;background:#fff!important;color:#000!important;text-shadow:none}
+[data-home-editorial-root][data-arrow-theme=light] :is(.home-sale-counter,.home-rent-counter){background:#000!important;color:#fff!important}
 [data-home-editorial] [data-homepage-subtitle]{font-size:0!important}
 [data-home-editorial] :is(.home-sale-counter,.home-rent-counter){font-size:clamp(12px,1.2vw,16px)}
 [data-home-editorial]>div:last-child{margin-top:26px!important}

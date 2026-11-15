@@ -43,7 +43,7 @@ export function MarketplaceContextHeading({language, mode, count, loading, onFil
   const swipeLabel = es ? 'Deslizar Properties' : 'Swipe Properties'
   return <header className={styles.marketplaceActions} style={{display:'flex',gap:12,flexWrap:'wrap',alignItems:'center',marginBottom:12}}>
     <div style={{flex:'1 1 260px'}}>
-      <p aria-live="polite" data-marketplace-count style={{margin:0}}>{loading ? (es ? 'Cargando propiedades…' : 'Loading listings…') : `${formatListingCount(count,language)} ${mode === 'bank' ? (es ? 'Propiedades Bancarias y Remates' : 'Bank Properties & Remates') : mode === 'sale' ? (es ? 'Propiedades en Venta' : 'For Sale Listings') : (es ? 'Propiedades en Alquiler / Arrendamiento' : 'For Rent / For Lease Listings')}`}</p>
+      <p aria-live="polite" data-marketplace-count className={styles.propertyCountPill} style={{margin:0}}>{loading ? (es ? 'Cargando propiedades…' : 'Loading listings…') : <><span className={styles.propertyCount}>{formatListingCount(count,language)}</span>{` ${mode === 'bank' ? (es ? 'Propiedades Bancarias y Remates' : 'Bank Properties & Remates') : mode === 'sale' ? (es ? 'Propiedades en Venta' : 'For Sale Listings') : (es ? 'Propiedades en Alquiler / Arrendamiento' : 'For Rent / For Lease Listings')}`}</>}</p>
     </div>
     {mode==='bank'&&<>    <button type="button" onClick={onFilters} style={{border:'2px solid var(--border)',borderRadius:999,padding:'12px 20px',background:'var(--surface)',color:'var(--foreground)',cursor:'pointer'}}>{es ? 'Filtros' : 'Filters'}</button>
     <Link href={es?'/es/deslizar':'/en/swipe'} aria-label={swipeLabel} data-home-swipe
