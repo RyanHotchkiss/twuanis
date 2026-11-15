@@ -3,6 +3,7 @@
 // Service-only bridge. It contains no duplicate or lifecycle decision: those
 // remain exclusively in the canonical SQL functions.
 const crypto = require('node:crypto')
+const { generateListingTitle, generateListingDescription } = require('../../app/utils/listing-content-generator.cjs')
 
 function required(name) {
   const value = process.env[name]
@@ -45,10 +46,17 @@ function createClient(fetchImpl = fetch) {
   const base = required('SUPABASE_URL').replace(/\/$/, '')
   const key = required('SUPABASE_SERVICE_ROLE_KEY')
   const request = async (path, options = {}) => {
-    const response = await fetchImpl(`${base}${path}`, {
-      ...options,
-      headers: { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json', ...(options.headers || {}) }
-    })
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), Number(process.env.TWUANIS_SCRAPER_CANONICAL_TIMEOUT_MS || 30000))
+    let response
+    try {
+      response = await fetchImpl(`${base}${path}`, {
+        ...options, signal: controller.signal,
+        headers: { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json', ...(options.headers || {}) }
+      })
+    } catch (error) {
+      throw new Error(error?.name === 'AbortError' ? `Canonical service request timed out: ${path}` : `Canonical service request failed: ${error.message || error}`)
+    } finally { clearTimeout(timeout) }
     const body = await response.text()
     if (!response.ok) throw new Error(`Canonical service request failed (${response.status}): ${body.slice(0, 300)}`)
     return body ? JSON.parse(body) : null
@@ -122,12 +130,24 @@ async function ingestObservation(client, row, { runId, startedAt }) {
   })
   const measurements = { property_area: { value: propertyArea } }
   if (construction) measurements.construction_area = { value: construction }
+  // Preserve the publisher's prose in retained source evidence while using
+  // Twuanis's shared deterministic generator for source-managed publication.
+  const generated = {
+    property_type: ontology.propertyType.term_name,
+    province: ontology.province.term_name,
+    canton: ontology.canton.term_name,
+    district: ontology.district?.term_name,
+    property_area: propertyArea,
+    ...(construction ? { construction_area: construction } : {}),
+  }
+  const title = generateListingTitle(generated)
+  const description = generateListingDescription(generated)
   const input = {
     transaction,
     geography: { province: String(ontology.province.official_code), canton: String(ontology.canton.official_code), district: ontology.district ? String(ontology.district.official_code) : null },
     semantics: { property_type: [String(ontology.propertyType.id)] }, facts: {}, measurements,
     money: { amount: positive(row[moneyField], moneyField), currency: String(row.currency) },
-    content: { whatsapp: raw.whatsapp }
+    content: { ...(title ? { title } : {}), ...(description ? { description } : {}), whatsapp: raw.whatsapp }
   }
   return client.rpc('ingest_canonical_source_observation_in_run', {
     p_evidence: evidence, p_input: input, p_run: runId, p_started_at: iso(startedAt)

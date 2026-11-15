@@ -18,6 +18,20 @@ const REPORT_TO = 'ryan@twuanis.com'
 let busy = false
 let child = null
 let stopping = false
+let stopCheckInFlight = false
+
+function terminateControllerTree(reason) {
+  if (!child?.pid) return { requested: false, reason: 'controller_not_running' }
+  const pid = child.pid
+  try {
+    // The controller is spawned as a process-group leader.  Signalling the
+    // group, not merely Node's direct child, terminates the extractor too.
+    process.kill(-pid, 'SIGTERM')
+    return { requested: true, pid, signal: 'SIGTERM', reason }
+  } catch (error) {
+    return { requested: false, pid, reason, error: String(error.message || error) }
+  }
+}
 
 function selection(value) {
   const selected = [...new Set((value || []).map(String))].sort()
@@ -86,6 +100,8 @@ async function execute(command) {
   let encuentraResult = null
   const logs = []
   let stopTimer = null
+  let lastProgressReport = 0
+  let termination = null
   const addLog = (stream, value) => {
     const line = String(value || '').trim()
     if (!line) return
@@ -97,6 +113,13 @@ async function execute(command) {
           const payload = JSON.parse(candidate)
           if (payload?.wasi_result?.counts) wasiResult = payload.wasi_result
           if (payload?.scraper_execution_summary) encuentraResult = payload.scraper_execution_summary
+          if (payload?.wasi_progress) {
+            const at = Date.now()
+            if (at - lastProgressReport >= 1000) {
+              lastProgressReport = at
+              void report(command.id, 'running', { selected, startedAt, progress: payload.wasi_progress, logs }).catch(error => addLog('listener', `Progress report unavailable: ${error.message}`))
+            }
+          }
         } catch { /* non-JSON controller output is retained as a log */ }
       }
     }
@@ -110,7 +133,7 @@ async function execute(command) {
       await report(command.id, 'running', { selected, notification: { state: 'failed', error: error.message } }, 'failed')
     }
     if (selected.every(item => item.startsWith('encuentra24-'))) child = spawn(process.execPath, ['scripts/scrapers/weekly-encuentra24-controller.js'], {
-      cwd: root,
+      cwd: root, detached: true,
       env: {
         ...process.env,
         ENCUENTRA24_WEEKLY_SCHEDULE_ENABLED: '0',
@@ -120,18 +143,23 @@ async function execute(command) {
       stdio: ['ignore', 'pipe', 'pipe'],
     })
     else child = spawn(process.execPath, ['scripts/scrapers/wasi-command-runner.cjs', selected[0], path.join(process.env.ENCUENTRA24_RUN_ROOT || path.join(root, 'var'), 'wasi-manual-runs')], {
-      cwd: root, env: process.env, stdio: ['ignore', 'pipe', 'pipe']
+      cwd: root, env: process.env, detached: true, stdio: ['ignore', 'pipe', 'pipe']
     })
     child.stdout.on('data', value => addLog('stdout', value))
     child.stderr.on('data', value => addLog('stderr', value))
     stopTimer = setInterval(() => {
+      if (stopCheckInFlight) return
+      stopCheckInFlight = true
       void stopRequested(command.id).then(requested => {
-        if (requested && child && !child.killed) {
+        if (requested && child && !stopping) {
           stopping = true
           addLog('listener', 'Owner requested stop; sending SIGTERM to controller.')
-          child.kill('SIGTERM')
+          termination = terminateControllerTree('owner_stop')
+          if (termination.requested) setTimeout(() => {
+            try { process.kill(-termination.pid, 'SIGKILL'); addLog('listener', 'Controller tree required SIGKILL after the grace period.') } catch { /* the group already exited */ }
+          }, 10000).unref()
         }
-      }).catch(error => addLog('listener', `Stop check unavailable: ${error.message}`))
+      }).catch(error => addLog('listener', `Stop check unavailable: ${error.message}`)).finally(() => { stopCheckInFlight = false })
     }, 2000)
     const result = await new Promise((resolve, reject) => {
       child.once('error', reject)
@@ -140,7 +168,7 @@ async function execute(command) {
     terminalState = stopping ? 'failed' : result.code === 0 ? 'completed' : 'failed'
     const counts = wasiResult?.counts
     terminalSummary = counts ? {
-      selected, exitCode: result.code, signal: result.signal, stopRequested: stopping, logs,
+      selected, exitCode: result.code, signal: result.signal, stopRequested: stopping, termination, controllerExitConfirmed: true, logs,
       saleListingsExtracted: selected[0].endsWith('-sale') ? counts.extracted : 0,
       rentListingsExtracted: selected[0].endsWith('-rent') ? counts.extracted : 0,
       pagesRetrieved: counts.pagesRetrieved, paginationStatus: counts.paginationStatus,
@@ -150,7 +178,7 @@ async function execute(command) {
       errors: counts.errors?.length ?? 0, wasiOutputDirectory: wasiResult.directory,
     } : encuentraResult ? (() => {
       const sale=encuentraResult.sale?.ingestion||{}, rent=encuentraResult.rent?.ingestion||{}
-      return { selected, exitCode: result.code, signal: result.signal, stopRequested: stopping, logs,
+      return { selected, exitCode: result.code, signal: result.signal, stopRequested: stopping, termination, controllerExitConfirmed: true, logs,
         saleListingsExtracted:sale.captured, rentListingsExtracted:rent.captured,
         pagesRetrieved:'unavailable', paginationStatus:encuentraResult.status,
         created:'unavailable', updated:'unavailable', published:(sale.published||0)+(rent.published||0),
@@ -158,10 +186,10 @@ async function execute(command) {
         activeInventoryTotal:'unavailable', agencyLogos:'unavailable', agentPhotos:'unavailable',
         errors:[...(sale.errors||[]),...(rent.errors||[])].length, reconciliation:{sale:sale.reconciliation,rent:rent.reconciliation},
       }
-    })() : { selected, exitCode: result.code, signal: result.signal, stopRequested: stopping, logs }
+    })() : { selected, exitCode: result.code, signal: result.signal, stopRequested: stopping, termination, controllerExitConfirmed: true, logs }
     await report(command.id, terminalState, terminalSummary)
   } catch (error) {
-    terminalSummary = { selected, error: error.message, stopRequested: stopping, logs }
+    terminalSummary = { selected, error: error.message, stopRequested: stopping, termination, controllerExitConfirmed: !child, logs }
     try { await report(command.id, 'failed', terminalSummary) } catch { /* the next heartbeat exposes connectivity loss */ }
   } finally {
     if (stopTimer) clearInterval(stopTimer)
@@ -185,7 +213,7 @@ async function tick() {
 
 async function stop(signal) {
   stopping = true
-  if (child) child.kill('SIGTERM')
+  terminateControllerTree(`listener_${signal}`)
   try { await rpc('heartbeat', { state: 'offline', signal }) } catch { /* process is stopping */ }
   process.exitCode = 0
 }

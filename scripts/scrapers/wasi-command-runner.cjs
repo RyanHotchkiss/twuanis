@@ -11,14 +11,28 @@ const configurations = {
   'montero-realty-group-sale':'scripts/scrapers/wasi-sites/montero-realty-group-sales.json', 'montero-realty-group-rent':'scripts/scrapers/wasi-sites/montero-realty-group-rent.json',
   'devop-sale':'scripts/scrapers/wasi-sites/devop-sales.json'
 }
-function execute(file, outputRoot) { return new Promise((resolve,reject) => { let text=''; const child=spawn(process.execPath,['scripts/scrapers/wasi-sales-scraper.js',file,outputRoot],{cwd:root,env:process.env,stdio:['ignore','pipe','pipe']}); child.stdout.on('data',d=>text+=d); child.stderr.on('data',d=>text+=d); child.once('error',reject); child.once('exit',(code,signal)=>{ if(code===0)resolve({text,signal});else reject(Error(`WASI scraper exited ${code}: ${text.slice(-1000)}`)) }) }) }
+function execute(file, outputRoot, { deadlineMs, onProgress=()=>{} }={}) { return new Promise((resolve,reject) => {
+  let text='', timedOut=false, terminated=false
+  const child=spawn(process.execPath,['scripts/scrapers/wasi-sales-scraper.js',file,outputRoot],{cwd:root,env:{...process.env,WASI_PROGRESS_STREAM:'1'},stdio:['ignore','pipe','pipe']})
+  const emit = chunk => {
+    text += chunk
+    for (const line of String(chunk).split(/\r?\n/)) {
+      try { const event=JSON.parse(line); if(event?.wasi_progress) onProgress(event.wasi_progress) } catch { /* final evidence is parsed after exit */ }
+    }
+  }
+  child.stdout.on('data',emit); child.stderr.on('data',d=>text+=d)
+  const stop = () => { if(terminated) return; terminated=true; child.kill('SIGTERM'); setTimeout(()=>{if(!child.killed)child.kill('SIGKILL')},10000).unref() }
+  const timer=setTimeout(()=>{timedOut=true;onProgress({event:'deadline_exceeded',deadline_ms:deadlineMs});stop()},Math.max(1,Number(deadlineMs)||45*60*1000))
+  child.once('error',error=>{clearTimeout(timer);reject(error)})
+  child.once('exit',(code,signal)=>{clearTimeout(timer);if(timedOut)return reject(Error('WASI_EXECUTION_DEADLINE_EXCEEDED'));if(code!==0)return reject(Error(`WASI scraper exited ${code}: ${text.slice(-1000)}`));const payload=String(text).split(/\r?\n/).reverse().map(line=>{try{return JSON.parse(line)}catch{return null}}).find(value=>value?.summary);if(!payload)return reject(Error('WASI_RESULT_MISSING'));resolve({payload,signal})})
+}) }
 async function run(selection, outputRoot, onProgress=()=>{}) {
   const config = configurations[selection]; if (!config) throw Error(`Unsupported Wasi selection ${selection}`)
   const site=JSON.parse(await fs.readFile(path.join(root,config),'utf8')), runId=crypto.randomUUID(), startedAt=new Date().toISOString(), client=createClient()
   let directory, records=[], payload, executionError
   const counts={extracted:0,qualified:0,published:0,heldForReview:0,rejected:0,failed:0,created:0,updated:0,agencyLogos:0,agentPhotos:0,pagesRetrieved:'unavailable',paginationStatus:'failed',errors:[],attribution:{observed:0,matched:0,updated:0,unmatched:0,failed:0}}
   try {
-    onProgress({event:'extracting',selection}); const result=await execute(config,outputRoot); payload=JSON.parse(result.text.trim()); directory=payload.directory; records=JSON.parse(await fs.readFile(path.join(directory,'devop-wasi-sales.json'),'utf8'))
+    onProgress({event:'extracting',selection}); const result=await execute(config,outputRoot,{deadlineMs:site.max_runtime_ms,onProgress:event=>onProgress({event:'extracting_progress',selection,...event})}); payload=result.payload; directory=payload.directory; records=JSON.parse(await fs.readFile(path.join(directory,'devop-wasi-sales.json'),'utf8'))
     counts.extracted=records.length; counts.pagesRetrieved=payload.summary?.listing_pages_discovered ?? 'unavailable'; counts.paginationStatus=payload.summary?.failed_or_inaccessible_listing_pages ? 'failed' : 'completed'; counts.errors.push(...(payload.summary?.failures||[]))
     for (const row of records) { const reason=qualifying(row); if (reason) { counts.rejected++; continue }; counts.qualified++; if (row.agency?.logo_url) counts.agencyLogos++; if (row.listing_agent?.photo_url) counts.agentPhotos++; try { const accepted=await ingestWasiObservation(client,row,{runId,startedAt}); const outcome=String(accepted.result?.outcome || 'unknown'); if (outcome==='accepted'||outcome==='succeeded') { counts.published++; counts.created++ } else if (/duplicate|review/i.test(outcome)) counts.heldForReview++; else counts.rejected++ } catch (error) { counts.failed++; counts.errors.push(String(error.message||error)) } }
   } catch (error) { executionError=error; counts.failed++; counts.errors.push(String(error.message||error)) }
@@ -43,7 +57,7 @@ async function run(selection, outputRoot, onProgress=()=>{}) {
     }
   }
   const observedIds=[...new Set(records.filter(row=>row.source_transaction===site.transaction).map(row=>String(row.source_listing_id)).filter(Boolean))]
-  const reconciliation=payload?.summary?.listing_discovery_verified===true
+  const reconciliation=!executionError&&payload?.summary?.extraction_complete===true
     ?await completeSourceRun(client,{sourceName:site.source_name,transaction:site.transaction,runId,startedAt,completion:{status:executionError?'failed':'completed',pagination_status:counts.paginationStatus,errors:counts.errors},observedIds})
     :{absence_applied:false,status:'skipped',reason:'LISTING_DISCOVERY_UNVERIFIED'}
   counts.archived=Number(reconciliation?.archived ?? 'unavailable'); counts.activeInventoryTotal=reconciliation?.remaining_published ?? 'unavailable'; counts.captured=observedIds.length

@@ -1,4 +1,9 @@
 // Shared intake and marketplace generation. Omitted language preserves historical English output.
+const sharedGenerator = require('./listing-content-generator.cjs') as {
+  generateListingTitle: (propertyData: any, language?: 'en' | 'es') => string
+  generateListingDescription: (propertyData: any, language?: 'en' | 'es') => string
+}
+
 const spanishTerms: Record<string, string> = {
   house: 'casa', condo: 'condominio', condominium: 'condominio', land: 'terreno',
   farm: 'finca', cabin: 'cabaña', 'commercial property': 'propiedad comercial',
@@ -10,6 +15,13 @@ function spanishAttribute(value: unknown): string {
   return spanishTerms[text.toLowerCase()] || text.replace(/(\d+) bedrooms?/gi, (_, count) => `${count} ${count === '1' ? 'habitación' : 'habitaciones'}`).replace(/(\d+) bathrooms?/gi, (_, count) => `${count} ${count === '1' ? 'baño' : 'baños'}`).replace(/parking spaces?/gi, 'espacios de estacionamiento')
 }
  export function generateListingTitle(propertyData: any, language: 'en' | 'es' = 'en') {
+  return sharedGenerator.generateListingTitle(propertyData, language)
+ }
+
+ export function generateListingDescription(propertyData: any, language: 'en' | 'es' = 'en') {
+  return sharedGenerator.generateListingDescription(propertyData, language)
+ }
+/*
 
                     if (language === 'es') {
                       const title = [propertyData.property_type && spanishAttribute(propertyData.property_type),
@@ -155,7 +167,8 @@ function spanishAttribute(value: unknown): string {
                return sentences.join(' ')
                         }
 
-                        export function formatColones(
+*/
+                    export function formatColones(
                         amount: string | number
                         ) {
 

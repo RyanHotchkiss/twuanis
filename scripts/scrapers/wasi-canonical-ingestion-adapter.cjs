@@ -4,6 +4,7 @@
 // retained first; all listing admission and publication decisions remain in
 // the existing canonical authority.
 const { createClient, resolveOntology } = require('./encuentra24-canonical-ingestion-adapter.cjs')
+const { generateListingTitle, generateListingDescription } = require('../../app/utils/listing-content-generator.cjs')
 
 const typeMap = { Casa:'House','Casa de Playa':'House','Casa de Campo':'House',Lote:'Land',Terreno:'Land','Lote Comercial':'Land',Apartamento:'Condo',Apartaestudio:'Condo',Finca:'Farm','Campos, Chacras y Quintas':'Farm',Local:'Commercial Property',Edificio:'Commercial Property',Oficina:'Commercial Property','Cabaña':'Cabin' }
 const iso = value => new Date(value).toISOString()
@@ -48,6 +49,20 @@ function qualifying(row) {
   return null
 }
 
+function generatedContent(row, type) {
+  const property = {
+    property_type: type,
+    province: row.geography?.province || undefined,
+    canton: row.geography?.canton || undefined,
+    district: row.geography?.district || undefined,
+    property_area: area(row.property_area?.source_value) || undefined,
+    construction_area: area(row.construction_area?.source_value) || undefined,
+  }
+  const title = generateListingTitle(property)
+  const description = generateListingDescription(property)
+  return { ...(title ? { title } : {}), ...(description ? { description } : {}) }
+}
+
 async function ingestWasiObservation(client, row, { runId, startedAt }) {
   const raw = rawObservation(row); const review = { status:'unresolved', canonical_authority:false, values:{} }
   const evidence = await client.rpc('retain_csv_source_evidence', { p_raw: raw, p_review: review })
@@ -56,7 +71,9 @@ async function ingestWasiObservation(client, row, { runId, startedAt }) {
   const tx = raw.transaction_type, moneyField = tx === 'rent' ? 'monthly_price' : 'current_price'
   const measurements = {}; const property = area(raw.raw_property_area), construction = area(raw.raw_construction_area)
   if (property) measurements.property_area = { value:property }; if (construction) measurements.construction_area = { value:construction }
-  const input = { transaction:tx, geography:{province:String(ontology.province.official_code),canton:String(ontology.canton.official_code),district:String(ontology.district.official_code)}, semantics:{property_type:[String(ontology.propertyType.id)]}, facts:{}, measurements, money:{amount:String(raw[moneyField]),currency:raw.currency}, content:{whatsapp:raw.whatsapp} }
+  // The source title/description remain immutable observation evidence.  The
+  // canonical publication content is generated from only validated fields.
+  const input = { transaction:tx, geography:{province:String(ontology.province.official_code),canton:String(ontology.canton.official_code),district:String(ontology.district.official_code)}, semantics:{property_type:[String(ontology.propertyType.id)]}, facts:{}, measurements, money:{amount:String(raw[moneyField]),currency:raw.currency}, content:{...generatedContent(row,typeMap[row.property_type]),whatsapp:raw.whatsapp} }
   const result = await client.rpc('ingest_canonical_source_observation_in_run', { p_evidence:evidence, p_input:input, p_run:runId, p_started_at:iso(startedAt) })
   return { evidence, result }
 }
@@ -68,4 +85,4 @@ async function completeSourceRun(client, { sourceName, transaction, runId, start
   })
 }
 
-module.exports = { createClient, qualifying, ingestWasiObservation, completeSourceRun, rawObservation, iso }
+module.exports = { createClient, qualifying, ingestWasiObservation, completeSourceRun, rawObservation, generatedContent, iso }
