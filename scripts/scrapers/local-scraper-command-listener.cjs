@@ -143,7 +143,7 @@ async function execute(command) {
       stdio: ['ignore', 'pipe', 'pipe'],
     })
     else child = spawn(process.execPath, ['scripts/scrapers/wasi-command-runner.cjs', selected[0], path.join(process.env.ENCUENTRA24_RUN_ROOT || path.join(root, 'var'), 'wasi-manual-runs')], {
-      cwd: root, env: process.env, detached: true, stdio: ['ignore', 'pipe', 'pipe']
+      cwd: root, env: { ...process.env, TWUANIS_SCRAPER_COMMAND_ID: command.id, TWUANIS_SCRAPER_STARTED_AT: startedAt }, detached: true, stdio: ['ignore', 'pipe', 'pipe']
     })
     child.stdout.on('data', value => addLog('stdout', value))
     child.stderr.on('data', value => addLog('stderr', value))

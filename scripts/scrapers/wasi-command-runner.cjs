@@ -28,7 +28,7 @@ function execute(file, outputRoot, { deadlineMs, onProgress=()=>{} }={}) { retur
 }) }
 async function run(selection, outputRoot, onProgress=()=>{}) {
   const config = configurations[selection]; if (!config) throw Error(`Unsupported Wasi selection ${selection}`)
-  const site=JSON.parse(await fs.readFile(path.join(root,config),'utf8')), runId=crypto.randomUUID(), startedAt=new Date().toISOString(), client=createClient()
+  const site=JSON.parse(await fs.readFile(path.join(root,config),'utf8')), runId=process.env.TWUANIS_SCRAPER_COMMAND_ID||crypto.randomUUID(), startedAt=process.env.TWUANIS_SCRAPER_STARTED_AT||new Date().toISOString(), client=createClient()
   let directory, records=[], payload, executionError
   const counts={extracted:0,qualified:0,published:0,heldForReview:0,rejected:0,failed:0,created:0,updated:0,agencyLogos:0,agentPhotos:0,pagesRetrieved:'unavailable',paginationStatus:'failed',errors:[],attribution:{observed:0,matched:0,updated:0,unmatched:0,failed:0}}
   try {
