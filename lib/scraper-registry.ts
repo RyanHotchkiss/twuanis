@@ -3,7 +3,7 @@ export type ScraperSource = {
   label: { en: string; es: string }
   selections: Array<{ id: string; label: { en: string; es: string } }>
   operational: boolean
-  agency?: { label: string; sourceName: string }
+  agency?: { label: string; sourceName: string; aliases?: string[] }
   unavailableReason?: { en: string; es: string }
 }
 
@@ -23,7 +23,7 @@ export const scraperSources: ScraperSource[] = [
   {
     id: 'helcor',
     label: { en: 'HELCOR', es: 'HELCOR' },
-    agency: { label: 'HELCOR Inmobiliaria', sourceName: 'HELCOR' },
+    agency: { label: 'HELCOR Inmobiliaria', sourceName: 'HELCOR', aliases: ['helcor inmobiliaria'] },
     selections: [
       { id: 'helcor-sale', label: { en: 'Sale', es: 'Venta' } },
       { id: 'helcor-rent', label: { en: 'Rent', es: 'Alquiler' } }
@@ -32,7 +32,7 @@ export const scraperSources: ScraperSource[] = [
   },
   {
     id: 'remax-central', label: { en: 'RE/MAX Central', es: 'RE/MAX Central' },
-    agency: { label: 'RE/MAX Central', sourceName: 'RE/MAX Central' },
+    agency: { label: 'RE/MAX Central', sourceName: 'RE/MAX Central', aliases: ['remax central san jose costa rica real estate bienes raices'] },
     selections: [{ id: 'remax-central-sale', label: { en: 'Sale', es: 'Venta' } }, { id: 'remax-central-rent', label: { en: 'Rent', es: 'Alquiler' } }], operational: true
   },
   {

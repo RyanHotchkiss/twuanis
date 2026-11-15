@@ -18,8 +18,10 @@ export default function AdminListings({language,manage}:{language:AdminLanguage;
  async function inspect(id:string){setBusy(true);setError(false);const r=await adminRead({mode:'detail',listing:id});setBusy(false);if(r.ok&&r.data)setDetail(r.data);else setError(true)}
  const label=(value:string)=>t[value as keyof typeof t]||value
  const optionLabel=(o:Option)=>(language==='es'?o.term_name_es:o.term_name_en)||o.term_name||o.label||o.id
+ const normalizeAgency=(value:string)=>value.trim().toLocaleLowerCase()
+ const registeredAgencyNames=new Set(scraperSources.flatMap(source=>source.agency?[source.agency.label,...(source.agency.aliases||[])]:[]).map(normalizeAgency))
  const registryAgencies=Array.from(new Map(scraperSources.flatMap(source=>source.agency?[[`source:${source.agency.sourceName}`,{id:`source:${source.agency.sourceName}`,label:source.agency.label}]]:[])).values())
- const agencies=Array.from(new Map([...registryAgencies,...(options.agency||[])].map(o=>[o.id,o])).values())
+ const agencies=[...registryAgencies,...(options.agency||[]).filter(o=>!registeredAgencyNames.has(normalizeAgency(optionLabel(o))))]
  const publicUrl=(row:Row)=>`https://twuanis.com/${language==='es'?(row.transaction_type==='sale'?'comprar/anuncio':'alquilar-arrendar/anuncio'):(row.transaction_type==='sale'?'buy/listing':'rent-lease/listing')}/${row.id}`
  const copyPublicUrl=async(row:Row)=>{const url=publicUrl(row);await navigator.clipboard.writeText(url);setCopied(row.id)}
  if(creating)return <AdminCreate language={language} cancel={()=>setCreating(false)} done={id=>{setCreating(false);inspect(id);setRefresh(n=>n+1)}}/>
