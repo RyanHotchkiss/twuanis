@@ -1,7 +1,8 @@
 'use client'
 import PromotionRevealLink from './PromotionRevealLink'
 import advertisingStyles from './AddonHomepageCarousel.module.css'
-import type {ComponentProps} from 'react'
+import type {ComponentProps, ReactNode} from 'react'
+import sectionStyles from './AddonMarketplaceGrid.module.css'
 import Link from 'next/link'
 import MarketplaceListingGrid from './MarketplaceListingGrid'
 import PropertyCard from './PropertyCard'
@@ -25,25 +26,170 @@ export default function AddonMarketplaceGrid(props:ComponentProps<typeof Marketp
  const items=bank?[]:populations.spotlight
  const homepageIsExample=items.every(item=>item.demonstration)
  const featured=populations.featured.map(item=>({...item.listing,id:item.id,demonstration:item.demonstration,advertisingPlacementKind:item.demonstration?'demonstration':'paid'}))
- const featuredIsExample=featured.every(item=>item.demonstration)
- const grids=(spotlightId?:string)=>{
-  // An example may not displace a paid Featured Listing, even when only one listing is available.
-  const visibleFeatured=featured
-  const remaining=(bank?grid.listings:placement.listings.filter(l=>!featured.some(f=>f.id===l.id))).filter(p=>!items.some(item=>item.id===p.id))
-  return <>
-   {!bank&&visibleFeatured.length>0&&<section data-featured-listings data-placement-kind={featuredIsExample?'demonstration':featured.some(item=>item.demonstration)?'mixed':'paid'} aria-label={es?'Propiedades destacadas de Twuanis':'Twuanis Featured Properties'} style={{marginBottom:28}}>
-    <div style={{display:'flex',gap:12,alignItems:'center',justifyContent:'space-between',padding:'0 1.25rem',marginBottom:12,boxSizing:'border-box',color:grid.theme==='light'?'#000000':'var(--foreground)'}}><h2 style={{minWidth:0,maxWidth:'60%',fontSize:'clamp(14px, 2vw, 20px)'}}>{es?'Propiedades destacadas de Twuanis':'Twuanis Featured Properties'}</h2>
-    <PromotionRevealLink data-featured-promotion className={`listing-advertising-action ${advertisingStyles.promotion}`} style={{marginLeft:'auto',maxWidth:'40%',textAlign:'center',background:grid.theme==='dark'?'#000000':'#ffffff',color:'inherit',fontSize:'clamp(12px, 1.4vw, 16px)'}} href={es?'/es/inteligencia-de-mercado/paquetes?tab=addons':'/en/market-intelligence/packages?tab=addons'}>{es?'Destaque sus anuncios':'Feature Your Listing(s)'}</PromotionRevealLink></div>
-    <FeaturedPlacementCarousel {...grid} homepage={homepage} prefetchListings={false} imageLoading="lazy" listings={visibleFeatured}/>
-   </section>}
-   {!bank&&featured.length>0&&remaining.length>0&&<h2 data-all-properties>{es?'Todas las propiedades':'All properties'}</h2>}
-   {(remaining.length>0||!spotlightId&&!visibleFeatured.length)&&<MarketplaceListingGrid {...grid} prefetchListings={false} listings={remaining}/>}
-  </>
- }
- if(!items.length)return grids()
- return <><AddonHomepageCarousel homepage={homepage} items={items} language={grid.language??'en'} demonstration={homepageIsExample}>{(item,contactHref)=>
-  <div data-homepage-exposure-card style={{width:'100%',minWidth:0}}><PropertyCard key={item.id} spotlight spotlightContactHref={contactHref} placementKind={item.demonstration?'demonstration':'paid'} prefetchListing={false} imageLoading={items[0]?.id===item.id?'eager':'lazy'} property={item.listing} theme={grid.theme} transactionType={grid.transactionType} language={grid.language}
-   isFavorite={grid.favoriteIds.includes(item.id)} isSelected={grid.isSelected(item.id)} compareDisabled={!grid.isSelected(item.id)&&grid.selectedPropertyIds.length>=grid.maximumProperties}
-   onToggleFavorite={()=>grid.onToggleFavorite(item.listing)} onToggleCompare={()=>grid.onToggleCompare(item.id)}/></div>
- }</AddonHomepageCarousel><div>{grids()}</div></>
+   const featuredIsExample=featured.every(item=>item.demonstration)
+   const HomepageSection = ({
+    kind,
+    children
+  }: {
+    kind: 'spotlight' | 'all' | 'featured'
+    children: ReactNode
+  }) => homepage ? (
+    <section
+      className={sectionStyles.homepageSection}
+      data-home-property-section={kind}
+      data-theme={grid.theme}
+    >
+      {children}
+    </section>
+  ) : (
+    <>{children}</>
+  )
+   const grids = (spotlightId?: string) => {
+    // An example may not displace a paid Featured Listing,
+    // even when only one listing is available.
+    const visibleFeatured = featured
+
+    const remaining = (
+      bank
+        ? grid.listings
+        : placement.listings.filter(l => !featured.some(f => f.id === l.id))
+    ).filter(p => !items.some(item => item.id === p.id))
+
+    return (
+      <>
+        {(remaining.length > 0 || (!spotlightId && !visibleFeatured.length)) && (
+          <HomepageSection kind="all">
+            {!bank && featured.length > 0 && remaining.length > 0 && (
+              <h2 data-all-properties>
+                {es ? 'Todas las propiedades' : 'All properties'}
+              </h2>
+            )}
+
+            <MarketplaceListingGrid
+              {...grid}
+              prefetchListings={false}
+              listings={remaining}
+            />
+          </HomepageSection>
+        )}
+
+        {!bank && visibleFeatured.length > 0 && (
+          <HomepageSection kind="featured">
+            <section
+              data-featured-listings
+              data-placement-kind={
+                featuredIsExample
+                  ? 'demonstration'
+                  : featured.some(item => item.demonstration)
+                    ? 'mixed'
+                    : 'paid'
+              }
+              aria-label={
+                es
+                  ? 'Propiedades destacadas de Twuanis'
+                  : 'Twuanis Featured Properties'
+              }
+              style={{ marginBottom: homepage ? 0 : 28 }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  gap: 12,
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '0 1.25rem',
+                  marginBottom: 12,
+                  boxSizing: 'border-box',
+                  color: grid.theme === 'light' ? '#000000' : 'var(--foreground)'
+                }}
+              >
+                <h2
+                  style={{
+                    minWidth: 0,
+                    maxWidth: '60%',
+                    fontSize: 'clamp(14px, 2vw, 20px)'
+                  }}
+                >
+                  {es
+                    ? 'Propiedades destacadas de Twuanis'
+                    : 'Twuanis Featured Properties'}
+                </h2>
+
+                <PromotionRevealLink
+                  data-featured-promotion
+                  className={`listing-advertising-action ${advertisingStyles.promotion}`}
+                  style={{
+                    marginLeft: 'auto',
+                    maxWidth: '40%',
+                    textAlign: 'center',
+                    background: grid.theme === 'dark' ? '#000000' : '#ffffff',
+                    color: 'inherit',
+                    fontSize: 'clamp(12px, 1.4vw, 16px)'
+                  }}
+                  href={
+                    es
+                      ? '/es/inteligencia-de-mercado/paquetes?tab=addons'
+                      : '/en/market-intelligence/packages?tab=addons'
+                  }
+                >
+                  {es ? 'Destaque sus anuncios' : 'Feature Your Listing(s)'}
+                </PromotionRevealLink>
+              </div>
+
+              <FeaturedPlacementCarousel
+                {...grid}
+                homepage={homepage}
+                prefetchListings={false}
+                imageLoading="lazy"
+                listings={visibleFeatured}
+              />
+            </section>
+          </HomepageSection>
+        )}
+      </>
+    )
+  }
+    if(!items.length)return grids()
+   return (
+    <>
+      <HomepageSection kind="spotlight">
+        <AddonHomepageCarousel
+          homepage={homepage}
+          items={items}
+          language={grid.language ?? 'en'}
+          demonstration={homepageIsExample}
+        >
+          {(item, contactHref) => (
+            <div
+              data-homepage-exposure-card
+              style={{ width: '100%', minWidth: 0 }}
+            >
+              <PropertyCard
+                key={item.id}
+                spotlight
+                spotlightContactHref={contactHref}
+                placementKind={item.demonstration ? 'demonstration' : 'paid'}
+                prefetchListing={false}
+                imageLoading={items[0]?.id === item.id ? 'eager' : 'lazy'}
+                property={item.listing}
+                theme={grid.theme}
+                transactionType={grid.transactionType}
+                language={grid.language}
+                isFavorite={grid.favoriteIds.includes(item.id)}
+                isSelected={grid.isSelected(item.id)}
+                compareDisabled={
+                  !grid.isSelected(item.id) &&
+                  grid.selectedPropertyIds.length >= grid.maximumProperties
+                }
+                onToggleFavorite={() => grid.onToggleFavorite(item.listing)}
+                onToggleCompare={() => grid.onToggleCompare(item.id)}
+              />
+            </div>
+          )}
+        </AddonHomepageCarousel>
+      </HomepageSection>
+
+      {grids()}
+    </>
+  )
 }

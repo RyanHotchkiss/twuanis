@@ -1043,19 +1043,22 @@ const filteredProperties = market === 'bank'
 
         {/* BUY EXPERIENCE */}
           <div
+            data-home-marketplace-shell={embedded || undefined}
             style={{
-              background:
-                theme === 'dark'
+              background: embedded
+                ? 'transparent'
+                : theme === 'dark'
                   ? '#111111'
                   : '#ffffff',
-              borderRadius: '28px',
+              borderRadius: embedded ? 0 : '28px',
               overflow: isMobile
                 ? 'visible'
                 : 'clip',
               textDecoration: 'none',
               color: '#fff',
-              border:
-                theme === 'dark'
+              border: embedded
+                ? 'none'
+                : theme === 'dark'
                   ? '1px solid #222222'
                   : '1px solid rgba(0,0,0,.12)',
 
@@ -1066,7 +1069,7 @@ const filteredProperties = market === 'bank'
                   : embedded && desktopSidebarCollapsed ? '48px minmax(0, 1fr)' : '320px 1fr',
               transition:
                   'background .25s ease, color .25s ease, border-color .25s ease',
-              minHeight: '620px',
+                        minHeight: embedded ? 0 : '620px',
               width: '100%'
             }}
           >

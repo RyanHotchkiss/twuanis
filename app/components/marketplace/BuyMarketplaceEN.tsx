@@ -886,9 +886,7 @@ const filteredProperties = market === 'bank'
       : '360px',
 
     marginBottom: '24px',
-
     borderRadius: '28px',
-
     overflow: 'hidden',
 
     backgroundImage:
@@ -1018,21 +1016,24 @@ const filteredProperties = market === 'bank'
               position: 'relative'
           }}>
 
-        {/* BUY EXPERIENCE */}
-          <div
-            style={{
-              background:
-                theme === 'dark'
-                  ? '#111111'
-                  : '#ffffff',
+            {/* BUY EXPERIENCE */}
+              <div
+                data-home-marketplace-shell={embedded || undefined}
+                style={{
+                  background: embedded
+                    ? 'transparent'
+                    : theme === 'dark'
+                      ? '#111111'
+                      : '#ffffff',
 
               color:
                 theme === 'dark'
                   ? '#ffffff'
                   : '#111111',
 
-              border:
-                theme === 'dark'
+              border: embedded
+                ? 'none'
+                : theme === 'dark'
                   ? '1px solid #222222'
                   : '1px solid rgba(0,0,0,.12)',
               display: 'grid',
@@ -1047,7 +1048,7 @@ const filteredProperties = market === 'bank'
                 isMobile
                   ? 'background .25s ease, color .25s ease, border-color .25s ease'
                   : 'grid-template-columns .28s ease, background .25s ease, color .25s ease, border-color .25s ease',
-              minHeight: '620px',
+                            minHeight: embedded ? 0 : '620px',
               width: '100%'
             }}
           >

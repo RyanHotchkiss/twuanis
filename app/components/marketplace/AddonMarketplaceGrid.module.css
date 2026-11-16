@@ -1,0 +1,26 @@
+.homepageSection {
+  width: 100%;
+  box-sizing: border-box;
+  padding: clamp(1rem, 2.25vw, 1.875rem);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 28px;
+  background: #ffffff;
+  color: #111111;
+}
+
+.homepageSection[data-theme='dark'] {
+  border-color: #222222;
+  background: #111111;
+  color: #ffffff;
+}
+
+.homepageSection + .homepageSection {
+  margin-block-start: clamp(2rem, 4vw, 3.5rem);
+}
+
+@media (max-width: 768px) {
+  .homepageSection {
+    padding: 1rem;
+    border-radius: 22px;
+  }
+}

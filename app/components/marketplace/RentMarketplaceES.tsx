@@ -777,8 +777,7 @@ const matchesFilters = (property: any) => {
     marginBottom:
       '24px',
 
-    borderRadius:
-      '28px',
+    borderRadius: embedded ? 0 : '28px',
 
     overflow:
       'hidden',
@@ -992,11 +991,13 @@ const matchesFilters = (property: any) => {
 
         {/* BUY EXPERIENCE */}
           <div
-            style={{
-              background:
-                theme === 'dark'
-                  ? '#111111'
-                  : '#ffffff',
+              data-home-marketplace-shell={embedded || undefined}
+              style={{
+                background: embedded
+                  ? 'transparent'
+                  : theme === 'dark'
+                    ? '#111111'
+                    : '#ffffff',
 
               borderRadius:
                 '28px',
@@ -1014,10 +1015,11 @@ const matchesFilters = (property: any) => {
                   ? '#ffffff'
                   : '#111111',
 
-              border:
-                theme === 'dark'
-                  ? '1px solid #222222'
-                  : '1px solid rgba(0,0,0,.12)',
+              border: embedded
+                  ? 'none'
+                  : theme === 'dark'
+                    ? '1px solid #222222'
+                    : '1px solid rgba(0,0,0,.12)',
 
               display:
                 'grid',
@@ -1030,8 +1032,7 @@ const matchesFilters = (property: any) => {
               transition:
                 'background .25s ease, color .25s ease, border-color .25s ease',
 
-              minHeight:
-                '620px',
+              minHeight: embedded ? 0 : '620px',
 
               width:
                 '100%'
