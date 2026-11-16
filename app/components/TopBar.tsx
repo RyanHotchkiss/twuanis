@@ -561,8 +561,12 @@ const languageUrls={
           )}
 
           {navigationLabel('hub',isSpanish?'Espacio de\nTrabajo':'Workspace',isSpanish?'Esp.':'Work.')}
-        </Link>
+                </Link>
+                </nav>
+                </div>
 
+                <div className="twuanis-topbar-navigation-group" style={navigationGroupStyle}>
+                <nav className="twuanis-top-navigation" data-labels-visible={showLabels} style={{...navContainer,width:'auto',overflowX:'visible'}}>
 
         {/* INTELLIGENCE HUB */}
         <Link data-tour-id="N02"
@@ -619,10 +623,15 @@ const languageUrls={
           />
 
           {navigationLabel('buy',isSpanish?'Comprar\nAlquilar\nArrendar':'Buy\nRent\nLease',isSpanish?'Comp.':'Buy')}
-        </Link>
+                </Link>
+                      </nav>
+                      </div>
 
+                      <div className="twuanis-topbar-navigation-group" style={navigationGroupStyle}>
+                      <nav className="twuanis-top-navigation" data-labels-visible={showLabels} style={{...navContainer,width:'auto',overflowX:'visible'}}>
 
-        <Link className="topbar-desktop-only-destination" data-tour-id="N04" href={isSpanish?'/es/remates':'/en/bank-properties'} aria-label={isSpanish?'Remates':'Bank Properties'} style={itemStyle()} onMouseEnter={()=>setHoveredItem('banks')} onMouseLeave={()=>setHoveredItem(null)}>
+        <Link className="topbar-desktop-only-destination"
+         data-tour-id="N04" href={isSpanish?'/es/remates':'/en/bank-properties'} aria-label={isSpanish?'Remates':'Bank Properties'} style={itemStyle()} onMouseEnter={()=>setHoveredItem('banks')} onMouseLeave={()=>setHoveredItem(null)}>
           <Landmark size={TOPBAR_ICON_SIZE} strokeWidth={0.65} color={GOLD}/>
           {navigationLabel('banks',isSpanish?'Remates':'Bank\nProperties',isSpanish?'Remates':'Bank')}
         </Link>
@@ -655,8 +664,12 @@ const languageUrls={
           />
 
           {navigationLabel('packages',isSpanish?'Paquetes':'Packages',isSpanish?'Paq.':'Pks.')}
-        </Link>
+                </Link>
+                  </nav>
+                  </div>
 
+                  <div className="twuanis-topbar-navigation-group" style={navigationGroupStyle}>
+                  <nav className="twuanis-top-navigation" data-labels-visible={showLabels} style={{...navContainer,width:'auto',overflowX:'visible'}}>
 
         {/* KNOWLEDGE — same navigation controls and responsive behavior. */}
         <Link data-tour-id="N08"
