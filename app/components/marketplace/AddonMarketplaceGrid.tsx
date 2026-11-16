@@ -45,8 +45,7 @@ export default function AddonMarketplaceGrid(props:ComponentProps<typeof Marketp
     <>{children}</>
   )
    const grids = (spotlightId?: string) => {
-    // An example may not displace a paid Featured Listing,
-    // even when only one listing is available.
+ 
     const visibleFeatured = featured
 
     const remaining = (
@@ -57,22 +56,6 @@ export default function AddonMarketplaceGrid(props:ComponentProps<typeof Marketp
 
     return (
       <>
-        {(remaining.length > 0 || (!spotlightId && !visibleFeatured.length)) && (
-          <HomepageSection kind="all">
-            {!bank && featured.length > 0 && remaining.length > 0 && (
-              <h2 data-all-properties>
-                {es ? 'Todas las propiedades' : 'All properties'}
-              </h2>
-            )}
-
-            <MarketplaceListingGrid
-              {...grid}
-              prefetchListings={false}
-              listings={remaining}
-            />
-          </HomepageSection>
-        )}
-
         {!bank && visibleFeatured.length > 0 && (
           <HomepageSection kind="featured">
             <section
@@ -146,9 +129,26 @@ export default function AddonMarketplaceGrid(props:ComponentProps<typeof Marketp
             </section>
           </HomepageSection>
         )}
+
+        {(remaining.length > 0 || (!spotlightId && !visibleFeatured.length)) && (
+          <HomepageSection kind="all">
+            {!bank && featured.length > 0 && remaining.length > 0 && (
+              <h2 data-all-properties>
+                {es ? 'Todas las propiedades' : 'All properties'}
+              </h2>
+            )}
+
+            <MarketplaceListingGrid
+              {...grid}
+              prefetchListings={false}
+              listings={remaining}
+            />
+          </HomepageSection>
+        )}
       </>
     )
-  }
+    }
+
     if(!items.length)return grids()
    return (
     <>
