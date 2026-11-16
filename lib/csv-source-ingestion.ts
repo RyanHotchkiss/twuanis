@@ -483,6 +483,12 @@ export async function ingestCsvObservation(
     const listingId =
       applied.data.listing_id
 
+    /*
+     * Optional presentation attribution is retained in the immutable raw
+     * observation first. It is only projected onto the listing returned by
+     * the canonical authority, and only when that listing still has the
+     * exact source identity that produced the observed image URL.
+     */
     const attribution = observedAttribution(raw)
     let attributionWarning: string | undefined
     if (Object.keys(attribution).length > 0) {
