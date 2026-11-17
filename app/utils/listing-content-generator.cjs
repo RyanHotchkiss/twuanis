@@ -19,21 +19,33 @@ function spanishAttribute(value) {
 }
 
 function generateListingTitle(propertyData, language = 'en') {
+  const propertyType = String(propertyData.property_type ?? '').trim()
+  const district = String(propertyData.district ?? '').trim()
+  const canton = String(propertyData.canton ?? '').trim()
+  const province = String(propertyData.province ?? '').trim()
+
+  const location = [district, canton, province]
+    .filter(Boolean)
+    .filter((value, index, values) =>
+      values.findIndex(item => item.toLowerCase() === value.toLowerCase()) === index
+    )
+    .join(', ')
+
+  const type = language === 'es'
+    ? spanishAttribute(propertyType)
+    : propertyType
+
   if (language === 'es') {
-    const title = [
-      propertyData.property_type && spanishAttribute(propertyData.property_type),
-      propertyData.environment && `en un entorno ${spanishAttribute(propertyData.environment).toLowerCase()}`,
-      propertyData.district && `en ${propertyData.district}`,
-      propertyData.canton,
-    ].filter(Boolean).join(' ')
-    return title.charAt(0).toUpperCase() + title.slice(1)
+    return [type, location ? `en ${location}` : '']
+      .filter(Boolean)
+      .join(' ')
+      .replace(/^./, char => char.toUpperCase())
   }
-  const parts = []
-  if (propertyData.environment) parts.push(propertyData.environment)
-  if (propertyData.property_type) parts.push(propertyData.property_type)
-  if (propertyData.district) parts.push(`in ${propertyData.district}`)
-  if (propertyData.canton) parts.push(propertyData.canton)
-  return parts.join(' ')
+
+  return [type, location ? `in ${location}` : '']
+    .filter(Boolean)
+    .join(' ')
+    .replace(/^./, char => char.toUpperCase())
 }
 
 function generateListingDescription(propertyData, language = 'en') {

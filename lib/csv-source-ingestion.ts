@@ -2,6 +2,7 @@ import 'server-only'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { customerEditDomains } from '@/lib/canonical-customer-edit'
 import { resolveListingGeography } from '@/lib/geography/resolve-listing-geography'
+import { generateListingTitle } from '@/app/utils/listing-utils'
 
 export function csvEvidenceEnvelope(row: Record<string, unknown>) {
   if(typeof row.source_observation_input!=='string'||typeof row.unresolved_normalizer_review!=='string')throw Error('Original observation evidence is required; historical CSV cannot be promoted.')
@@ -199,18 +200,18 @@ export async function ingestCsvObservation(
     changes.whatsapp =
       whatsapp
 
-    for (
-      const key of [
-        'title',
-        'description'
-      ]
-    ) {
-      if (
-        typeof raw[key] === 'string'
-      ) {
-        changes[key] =
-          raw[key]
-      }
+    changes.title = generateListingTitle(
+      {
+        property_type: normalizedPropertyType,
+        district: geography.district?.term_name ?? '',
+        canton: geography.canton.term_name,
+        province: geography.province.term_name
+      },
+      'es'
+    )
+
+    if (typeof raw.description === 'string') {
+      changes.description = raw.description
     }
 
     // Optional original-source selections only. Keep missing/empty cells out of
