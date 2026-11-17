@@ -49,20 +49,74 @@ function generateListingTitle(propertyData, language = 'en') {
 }
 
 function generateListingDescription(propertyData, language = 'en') {
-  if (language === 'es') {
-    const sentences = []
-    const location = propertyData.district || propertyData.canton || propertyData.province
-    if (propertyData.environment && propertyData.property_type && location) sentences.push(`La propiedad de tipo ${spanishAttribute(propertyData.property_type).toLowerCase()}, en un entorno ${spanishAttribute(propertyData.environment).toLowerCase()}, se ubica en ${location}.`)
-    if (propertyData.property_area) sentences.push(`El área del terreno es de ${propertyData.property_area} m².`)
-    for (const key of ['bedrooms', 'bathrooms']) if (propertyData[key]) { const value = String(propertyData[key]); const count = /^\d+$/.test(value) ? `${value} ${key === 'bedrooms' ? (value === '1' ? 'habitación' : 'habitaciones') : (value === '1' ? 'baño' : 'baños')}` : spanishAttribute(value).toLowerCase(); sentences.push(`La propiedad incluye ${count}.`) }
-    if (propertyData.parking) sentences.push(`Capacidad de estacionamiento: ${spanishAttribute(propertyData.parking).toLowerCase()}.`)
-    if (propertyData.year_built_range) sentences.push(`La construcción data del período ${propertyData.year_built_range}.`)
-    if (propertyData.construction_area) sentences.push(`El área de construcción es de ${propertyData.construction_area} m².`)
-    if (propertyData.utility?.length) sentences.push(`Servicios disponibles: ${propertyData.utility.map(spanishAttribute).join(', ')}.`)
-    if (propertyData.terrain?.length) sentences.push(`Características del terreno: ${propertyData.terrain.map(spanishAttribute).join(', ').toLowerCase()}.`)
-    if (propertyData.legal_status) sentences.push(`La condición legal registrada es ${spanishAttribute(propertyData.legal_status).toLowerCase()}.`)
-    return sentences.join(' ')
-  }
+      if (language === 'es') {
+      const sentences = []
+      const values = value =>
+        (Array.isArray(value) ? value : value ? [value] : [])
+          .map(item => String(item).trim())
+          .filter(Boolean)
+
+      const location = [
+        propertyData.district,
+        propertyData.canton,
+        propertyData.province
+      ]
+        .filter(Boolean)
+        .filter((value, index, all) =>
+          all.findIndex(item =>
+            item.toLowerCase() === value.toLowerCase()
+          ) === index
+        )
+        .join(', ')
+
+      const type = spanishAttribute(propertyData.property_type || 'propiedad')
+      if (location) {
+        sentences.push(
+          `${type.charAt(0).toUpperCase() + type.slice(1)} ubicada en ${location}.`
+        )
+      }
+
+      const propertyArea = propertyData.property_area
+      const constructionArea = propertyData.construction_area
+
+      if (propertyArea && constructionArea) {
+        sentences.push(
+          `El terreno tiene una superficie de ${propertyArea} m² y la construcción de ${constructionArea} m².`
+        )
+      } else {
+        if (propertyArea) sentences.push(`La superficie del terreno es de ${propertyArea} m².`)
+        if (constructionArea) sentences.push(`El área de construcción es de ${constructionArea} m².`)
+      }
+
+      const features = []
+      if (propertyData.bedrooms) features.push(`${propertyData.bedrooms} habitaciones`)
+      if (propertyData.bathrooms) features.push(`${propertyData.bathrooms} baños`)
+      if (propertyData.parking) features.push(`${propertyData.parking} espacios de estacionamiento`)
+      if (features.length) sentences.push(`La propiedad cuenta con ${features.join(', ')}.`)
+
+      const sections = [
+        ['environment', 'Entorno'],
+        ['utility', 'Servicios disponibles'],
+        ['terrain', 'Características del terreno'],
+        ['accessibility', 'Accesibilidad'],
+        ['legal_status', 'Condición legal registrada']
+      ]
+
+      for (const [key, heading] of sections) {
+        const items = values(propertyData[key])
+        if (items.length) sentences.push(`${heading}: ${items.join(', ')}.`)
+      }
+
+      if (propertyData.year_built_range) {
+        sentences.push(`Período de construcción registrado: ${propertyData.year_built_range}.`)
+      }
+
+      if (propertyData.year_built) {
+        sentences.push(`Año de construcción registrado: ${propertyData.year_built}.`)
+      }
+
+      return sentences.join(' ')
+    }
   const sentences = []
   if (propertyData.environment && propertyData.property_type) sentences.push(`This ${propertyData.environment.toLowerCase()} ${propertyData.property_type.toLowerCase()} is located in ${propertyData.district || propertyData.canton || propertyData.province}.`)
   if (propertyData.property_area) sentences.push(`The property area is ${propertyData.property_area} m².`)

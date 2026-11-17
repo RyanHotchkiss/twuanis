@@ -2,7 +2,10 @@ import 'server-only'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { customerEditDomains } from '@/lib/canonical-customer-edit'
 import { resolveListingGeography } from '@/lib/geography/resolve-listing-geography'
-import { generateListingTitle } from '@/app/utils/listing-utils'
+import {
+  generateListingTitle,
+  generateListingDescription
+} from '@/app/utils/listing-utils'
 
 export function csvEvidenceEnvelope(row: Record<string, unknown>) {
   if(typeof row.source_observation_input!=='string'||typeof row.unresolved_normalizer_review!=='string')throw Error('Original observation evidence is required; historical CSV cannot be promoted.')
@@ -450,6 +453,84 @@ export async function ingestCsvObservation(
         )
     }
 
+    const semanticDimensions = [
+  'utility',
+  'environment',
+  'terrain',
+  'accessibility',
+  'legal_status'
+]
+
+const semanticIds = [
+  ...new Set(
+    semanticDimensions.flatMap(dimension => {
+      const ids = domains.semantics?.[dimension]
+      return Array.isArray(ids) ? ids.map(String) : []
+    })
+  )
+]
+const spanishLabels = new Map<string, string>()
+
+    if (semanticIds.length > 0) {
+      const { data, error } = await admin
+        .from('ontology_terms')
+        .select('id,term_type,term_name_es')
+        .in('id', semanticIds)
+
+      if (error || !data || data.length !== semanticIds.length) {
+        throw Error('Canonical Spanish description labels could not be resolved.')
+      }
+
+      for (const term of data) {
+        if (!semanticDimensions.includes(term.term_type)) {
+          throw Error('Unexpected canonical semantic dimension.')
+        }
+
+        if (
+          typeof term.term_name_es === 'string' &&
+          term.term_name_es.trim()
+        ) {
+          spanishLabels.set(String(term.id), term.term_name_es.trim())
+        }
+      }
+    }
+
+    const labelsFor = (dimension: string): string[] => {
+      const ids = domains.semantics?.[dimension]
+
+      return Array.isArray(ids)
+        ? ids
+            .map((id: unknown) => spanishLabels.get(String(id)))
+            .filter(
+              (label: string | undefined): label is string => Boolean(label)
+            )
+        : []
+    }
+    const generatedDescription = generateListingDescription(
+            {
+              property_type: normalizedPropertyType,
+              district: geography.district?.term_name ?? '',
+              canton: geography.canton.term_name,
+              province: geography.province.term_name,
+              property_area: measurements.property_area?.value,
+              construction_area: measurements.construction_area?.value,
+              bedrooms: (facts.bedrooms as { value: string } | undefined)?.value,
+              bathrooms: (facts.bathrooms as { value: string } | undefined)?.value,
+              parking: (facts.parking as { value: string } | undefined)?.value,
+              year_built: (facts.year_built as { value: string } | undefined)?.value,
+              utility: labelsFor('utility'),
+              environment: labelsFor('environment'),
+              terrain: labelsFor('terrain'),
+              accessibility: labelsFor('accessibility'),
+              legal_status: labelsFor('legal_status')
+            },
+            'es'
+          )
+
+          if (generatedDescription.trim()) {
+            content.description = generatedDescription
+          }
+
     const input = {
       transaction:
         raw.transaction_type,
@@ -484,6 +565,12 @@ export async function ingestCsvObservation(
     const listingId =
       applied.data.listing_id
 
+    /*
+     * Optional presentation attribution is retained in the immutable raw
+     * observation first. It is only projected onto the listing returned by
+     * the canonical authority, and only when that listing still has the
+     * exact source identity that produced the observed image URL.
+     */
     const attribution = observedAttribution(raw)
     let attributionWarning: string | undefined
     if (Object.keys(attribution).length > 0) {
