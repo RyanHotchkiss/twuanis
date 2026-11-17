@@ -164,31 +164,63 @@ export const getPublicListingById=cache(async function getPublicListingById(
   return publicData
 })
 
+
+
 export async function getPublicListingSitemapRows() {
-  const {
-    data,
-    error
-  } =
-    await supabaseAdmin
+  const pageSize = 500
+
+  const listings: {
+    id: string
+    created_at: string
+    transaction_type: string
+  }[] = []
+
+  let lastId: string | null = null
+
+  while (true) {
+    let query = supabaseAdmin
       .from('listings')
       .select(`
         id,
         created_at,
         transaction_type
       `)
-      .eq(
-        'listing_status',
-        'active'
-      )
+      .eq('listing_status', 'active')
+      .in('transaction_type', ['sale', 'rent'])
+      .order('id', { ascending: true })
+      .limit(pageSize)
 
-  if (error) {
-    throw new Error(
-      `Public listing sitemap failed: ${error.message}`
-    )
+    if (lastId !== null) {
+      query = query.gt('id', lastId)
+    }
+
+    const { data, error } = await query
+
+    if (error) {
+      throw new Error(
+        `Public listing sitemap failed: ${error.message}`
+      )
+    }
+
+    const batch = data || []
+
+    if (batch.length === 0) {
+      break
+    }
+
+    listings.push(...batch)
+
+    lastId = batch[batch.length - 1].id
+
+    if (batch.length < pageSize) {
+      break
+    }
   }
 
-  return data || []
+  return listings
 }
+
+
 
 export async function getPublicListingContact(
   listingId: string
