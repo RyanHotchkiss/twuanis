@@ -22,6 +22,8 @@ import ListingActions from '@/app/components/ListingActions'
 import ListingAttribution from '@/app/components/property-detail/ListingAttribution'
 import { buildListingSchema } from '@/lib/schema-engine'
 
+import { resolveEnglishListingContent } from '@/lib/public-listing-english-content'
+
 import RecordRecentlyViewedProperty
   from '@/app/components/RecordRecentlyViewedProperty'
 
@@ -75,13 +77,12 @@ if (!data) {
   )
 }
 
+const englishData = await resolveEnglishListingContent(data)
+
 const listing = {
-    ...data,
-    images:
-      resolveListingImages(
-        data.images
-      )
-    }
+  ...englishData,
+  images: resolveListingImages(englishData.images)
+}
 
     const canonicalEvidence =
       data.canonical_domain_version === 1

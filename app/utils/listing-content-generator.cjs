@@ -117,18 +117,78 @@ function generateListingDescription(propertyData, language = 'en') {
 
       return sentences.join(' ')
     }
-  const sentences = []
-  if (propertyData.environment && propertyData.property_type) sentences.push(`This ${propertyData.environment.toLowerCase()} ${propertyData.property_type.toLowerCase()} is located in ${propertyData.district || propertyData.canton || propertyData.province}.`)
-  if (propertyData.property_area) sentences.push(`The property area is ${propertyData.property_area} m².`)
-  if (propertyData.bedrooms) sentences.push(`The property includes ${String(propertyData.bedrooms).toLowerCase()}.`)
-  if (propertyData.bathrooms) sentences.push(`The property includes ${String(propertyData.bathrooms).toLowerCase()}.`)
-  if (propertyData.parking) sentences.push(`Parking capacity supports ${String(propertyData.parking).toLowerCase()}.`)
-  if (propertyData.year_built_range) sentences.push(`The structure dates to the ${propertyData.year_built_range}.`)
-  if (propertyData.construction_area) sentences.push(`The construction area is ${propertyData.construction_area} m².`)
-  if (propertyData.utility?.length) sentences.push(`Available utilities include ${propertyData.utility.join(', ')}.`)
-  if (propertyData.terrain?.length) sentences.push(`Terrain conditions are classified as ${propertyData.terrain.join(', ').toLowerCase()}.`)
-  if (propertyData.legal_status) sentences.push(`Legal status is currently listed as ${propertyData.legal_status.toLowerCase()}.`)
-  return sentences.join(' ')
+    const sentences = []
+
+  const values = value =>
+    (Array.isArray(value) ? value : value ? [value] : [])
+      .map(item => String(item).trim())
+      .filter(Boolean)
+
+  const location = [
+    propertyData.district,
+    propertyData.canton,
+    propertyData.province
+  ]
+    .filter(Boolean)
+    .filter((value, index, all) =>
+      all.findIndex(item =>
+        item.toLowerCase() === value.toLowerCase()
+      ) === index
+    )
+    .join(', ')
+
+  const type = String(propertyData.property_type || 'property').trim()
+
+  if (location) {
+    sentences.push(
+      `${type.charAt(0).toUpperCase() + type.slice(1)} located in ${location}.`
+    )
+  }
+
+  const propertyArea = propertyData.property_area
+  const constructionArea = propertyData.construction_area
+
+  if (propertyArea && constructionArea) {
+    sentences.push(
+      `The property has ${propertyArea} m² of land and ${constructionArea} m² of construction.`
+    )
+  } else {
+    if (propertyArea) sentences.push(`The land area is ${propertyArea} m².`)
+    if (constructionArea) sentences.push(`The construction area is ${constructionArea} m².`)
+  }
+
+  const features = []
+
+  if (propertyData.bedrooms) features.push(`${propertyData.bedrooms} bedrooms`)
+  if (propertyData.bathrooms) features.push(`${propertyData.bathrooms} bathrooms`)
+  if (propertyData.parking) features.push(`${propertyData.parking} parking spaces`)
+
+  if (features.length) {
+    sentences.push(`The property includes ${features.join(', ')}.`)
+  }
+
+  const sections = [
+        ['environment', 'Environment'],
+        ['utility', 'Available utilities'],
+        ['terrain', 'Terrain characteristics'],
+        ['accessibility', 'Accessibility'],
+        ['legal_status', 'Recorded legal status']
+      ]
+
+      for (const [key, heading] of sections) {
+        const items = values(propertyData[key])
+        if (items.length) sentences.push(`${heading}: ${items.join(', ')}.`)
+      }
+
+      if (propertyData.year_built_range) {
+        sentences.push(`Recorded construction period: ${propertyData.year_built_range}.`)
+      }
+
+      if (propertyData.year_built) {
+        sentences.push(`Recorded construction year: ${propertyData.year_built}.`)
+      }
+
+      return sentences.join(' ')
 }
 
 module.exports = { generateListingTitle, generateListingDescription }

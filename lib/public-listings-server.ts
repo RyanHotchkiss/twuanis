@@ -10,6 +10,11 @@ import {
 
 export const PUBLIC_LISTING_DISCOVERY_COLUMNS = `
   id,
+  owner_id,
+  listing_origin,
+  listing_source_type,
+  source_name,
+  source_listing_id,
   title,
   province,
   canton,
@@ -41,6 +46,11 @@ export const PUBLIC_LISTING_DISCOVERY_COLUMNS = `
 
 export const PUBLIC_LISTING_DETAIL_COLUMNS = `
   id,
+  owner_id,
+  listing_origin,
+  listing_source_type,
+  source_name,
+  source_listing_id,
   listing_status,
   canonical_revision::text,
   title,
