@@ -58,8 +58,8 @@ function generatedContent(row, type) {
     property_area: area(row.property_area?.source_value) || undefined,
     construction_area: area(row.construction_area?.source_value) || undefined,
   }
-  const title = generateListingTitle(property)
-  const description = generateListingDescription(property)
+  const title = generateListingTitle(property, 'es')
+  const description = generateListingDescription(property, 'es')
   return { ...(title ? { title } : {}), ...(description ? { description } : {}) }
 }
 

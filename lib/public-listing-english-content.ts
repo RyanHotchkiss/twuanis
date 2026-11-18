@@ -27,9 +27,21 @@ type EnglishPresentationListing = {
   canonicalEvidence?: CanonicalEvidence
 }
 
+export async function resolveSpanishListingContent<
+  T extends EnglishPresentationListing
+>(listing: T): Promise<T> {
+  return resolveCanonicalListingContent(listing, 'es')
+}
+
 export async function resolveEnglishListingContent<
   T extends EnglishPresentationListing
 >(listing: T): Promise<T> {
+  return resolveCanonicalListingContent(listing, 'en')
+}
+
+async function resolveCanonicalListingContent<
+  T extends EnglishPresentationListing
+>(listing: T, language: 'en' | 'es'): Promise<T> {
   // Preserve existing presentation for non-imported listings.
   if (
     listing.listing_origin !== 'imported' ||
@@ -60,7 +72,7 @@ export async function resolveEnglishListingContent<
 
   const { data, error } = await supabaseAdmin
     .from('ontology_terms')
-    .select('id,term_type,term_name_en')
+    .select('id,term_type,term_name_en,term_name_es')
     .in('id', semanticIds)
 
   if (error || !data || data.length !== semanticIds.length) {
@@ -71,13 +83,16 @@ export async function resolveEnglishListingContent<
 
   for (const term of data) {
     if (
-      typeof term.term_name_en !== 'string' ||
-      !term.term_name_en.trim()
+      typeof term[language === 'en' ? 'term_name_en' : 'term_name_es'] !== 'string' ||
+      !term[language === 'en' ? 'term_name_en' : 'term_name_es']?.trim()
     ) {
       throw new Error('A canonical English ontology label is missing.')
     }
 
-    englishLabels.set(String(term.id), term.term_name_en.trim())
+    englishLabels.set(
+      String(term.id),
+      (language === 'en' ? term.term_name_en : term.term_name_es)!.trim()
+    )
   }
 
   const labelsFor = (dimension: string): string[] => {
@@ -107,12 +122,17 @@ export async function resolveEnglishListingContent<
   const canton = geography('canton')
   const district = geography('district')
 
+  const geographicLabel = (
+    term: typeof province
+  ): string | undefined =>
+    (language === 'es' ? term?.term_name_es : term?.term_name_en) ?? undefined
+
   if (
-    !province?.term_name_en ||
-    !canton?.term_name_en ||
-    (district && !district.term_name_en)
+    !geographicLabel(province) ||
+    !geographicLabel(canton) ||
+    (district && !geographicLabel(district))
   ) {
-    throw new Error('Canonical English geographic labels are incomplete.')
+    throw new Error('Canonical geographic labels are incomplete.')
   }
 
   const exactFact = (dimension: string): string | undefined => {
@@ -125,9 +145,9 @@ export async function resolveEnglishListingContent<
 
   const propertyData = {
     property_type: englishLabels.get(propertyType.ontology_term_id),
-    province: province.term_name_en,
-    canton: canton.term_name_en,
-    district: district?.term_name_en ?? '',
+    province: geographicLabel(province),
+    canton: geographicLabel(canton),
+    district: geographicLabel(district) ?? '',
 
     property_area: listing.property_area ?? undefined,
     construction_area: listing.construction_area ?? undefined,
@@ -144,8 +164,8 @@ export async function resolveEnglishListingContent<
     legal_status: labelsFor('legal_status')
   }
 
-  const title = generateListingTitle(propertyData, 'en')
-  const description = generateListingDescription(propertyData, 'en')
+  const title = generateListingTitle(propertyData, language)
+  const description = generateListingDescription(propertyData, language)
 
   if (!title.trim() || !description.trim()) {
     throw new Error('English listing content generation returned empty content.')

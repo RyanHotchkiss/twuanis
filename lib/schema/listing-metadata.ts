@@ -2,7 +2,7 @@
 import 'server-only'
 import type { Metadata } from 'next'
 import { getPublicListingById } from '@/lib/public-listings-server'
-import { resolveEnglishListingContent } from '@/lib/public-listing-english-content'
+import { resolveEnglishListingContent, resolveSpanishListingContent } from '@/lib/public-listing-english-content'
 import { listingRepresentationPath } from './public-listing-projection'
 
 export async function publicListingMetadata(
@@ -23,7 +23,7 @@ export async function publicListingMetadata(
     const presentation =
       locale === 'en'
         ? await resolveEnglishListingContent(row)
-        : row
+        : await resolveSpanishListingContent(row)
 
     return {
       title: presentation.title || 'Twuanis',

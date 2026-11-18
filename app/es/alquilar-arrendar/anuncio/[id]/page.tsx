@@ -3,6 +3,7 @@ import ListingIntelligencePanel from '@/app/components/ListingIntelligencePanel'
 import PropertyDetailGallery from '@/app/components/property-detail/PropertyDetailGallery'
 import PropertyAttributes from '@/app/components/property-detail/PropertyAttributes'
 import {descriptionText} from '@/lib/property-presentation'
+import { resolveSpanishListingContent } from '@/lib/public-listing-english-content'
 import detailStyles from '@/app/components/property-detail/PropertyDetailLayout.module.css'
 import {Suspense} from 'react'
 import ListingDetailLoading from '@/app/components/ListingDetailLoading'
@@ -49,10 +50,14 @@ export default async function ListingPage({
 }) {
   const { id } = await params
 
-const data =
+const originalData =
   await getPublicListingById(
     id
   )
+
+const data = originalData
+  ? await resolveSpanishListingContent(originalData)
+  : null
 
 if (!data) {
   return (
