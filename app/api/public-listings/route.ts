@@ -18,6 +18,11 @@ import {
   type PublicListingTransaction
 } from '@/lib/public-listings-server'
 
+import {
+  resolveEnglishListingContent,
+  resolveSpanishListingContent
+} from '@/lib/public-listing-english-content'
+
 const ALLOWED_TRANSACTIONS =
   new Set<PublicListingTransaction>([
     'sale',
@@ -53,6 +58,19 @@ export async function GET(
     const analyticalContext =
   await resolveMarketAnalyticalContext()
 
+const languageParameter = request.nextUrl.searchParams.get('language')
+
+if (
+  languageParameter !== null &&
+  languageParameter !== 'en' &&
+  languageParameter !== 'es'
+) {
+  return NextResponse.json(
+    { error: 'Invalid language' },
+    { status: 400 }
+  )
+}
+
 const paginated=request.nextUrl.searchParams.has('page')
 let pageResult: {count:number;listings:any[]}|undefined
 if(paginated){
@@ -70,9 +88,19 @@ const projectedListings =
     analyticalContext
   )
 
+  const presentedListings = languageParameter
+      ? await Promise.all(
+          projectedListings.map(listing =>
+            languageParameter === 'es'
+              ? resolveSpanishListingContent(listing)
+              : resolveEnglishListingContent(listing)
+          )
+        )
+      : projectedListings
+
     return NextResponse.json(
       {
-        listings: projectedListings, ...(pageResult?{count:pageResult.count}:{})
+        listings: presentedListings, ...(pageResult?{count:pageResult.count}:{})
       },
       {
         headers: {

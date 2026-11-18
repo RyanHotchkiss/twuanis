@@ -376,22 +376,84 @@ export default function PropertyCard({
               {property.marketplace_original_price && property.marketplace_original_currency
                 ? `: ${property.marketplace_original_currency} ${exactMoney(property.marketplace_original_price, language)}` : ''}
             </span>}
-            {!bank && property.marketplace_original_price && (
-              <span style={pill(theme)}>
-                {property.marketplace_original_currency ===
-                'USD'
-                  ? `$${Number(
-                      property.marketplace_original_price
-                    ).toLocaleString()}`
-                  : `₡${Number(
-                      property.marketplace_original_price
-                    ).toLocaleString()}`}
+            {!bank && (
+  <span
+    style={{
+      ...pill(theme),
+      display: 'inline-flex',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      gap: '3px'
+    }}
+  >
+    {(() => {
+      const primaryCurrency = language === 'es' ? 'CRC' : 'USD'
+      const secondaryCurrency = language === 'es' ? 'USD' : 'CRC'
 
-                {transactionType === 'rent'
-                  ? '/month'
-                  : ''}
-              </span>
-            )}
+      const amountFor = (currency: 'CRC' | 'USD') => {
+        const value =
+          currency === 'CRC'
+            ? property.marketplace_price_crc
+            : property.marketplace_price_usd
+
+        if (value === null || value === undefined || value === '') {
+          return null
+        }
+
+        const numeric = Number(value)
+
+        if (!Number.isFinite(numeric) || numeric <= 0) {
+          return null
+        }
+
+        return `${currency === 'CRC' ? '₡' : '$'}${numeric.toLocaleString(
+          language === 'es' ? 'es-CR' : 'en-US',
+          { maximumFractionDigits: 2 }
+        )}`
+      }
+
+      const primary = amountFor(primaryCurrency)
+      const secondary = amountFor(secondaryCurrency)
+      const originalPrice = (() => {
+  const currency = property.marketplace_original_currency
+  const numeric = Number(property.marketplace_original_price)
+
+  if (
+    (currency !== 'USD' && currency !== 'CRC') ||
+    property.marketplace_original_price == null ||
+    !Number.isFinite(numeric) ||
+    numeric <= 0
+  ) {
+    return null
+  }
+
+  return `${currency === 'CRC' ? '₡' : '$'}${numeric.toLocaleString(
+    language === 'es' ? 'es-CR' : 'en-US',
+    { maximumFractionDigits: 2 }
+  )}`
+})()
+      const monthly = transactionType === 'rent'
+        ? (language === 'es' ? '/mes' : '/month')
+        : ''
+
+      return (
+        <>
+          {(primary || (!secondary && originalPrice)) && (
+            <span style={{ fontSize: '16px', fontWeight: 700 }}>
+              {primary || originalPrice}{monthly}
+            </span>
+          )}
+
+          {secondary && (
+            <span style={{ fontSize: '12px', opacity: 0.6 }}>
+              {secondary}{monthly}
+            </span>
+          )}
+        </>
+      )
+    })()}
+  </span>
+)}
 
             {property.property_area && (
                 <span style={pill(theme)}>

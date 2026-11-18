@@ -14,7 +14,13 @@ export function useMarketplacePage(market:'sale'|'rent'|'bank',language:'en'|'es
   async function load(){try{
    let listings:any[],count:number
    if(market==='bank'){const data=await readBuyBankPage(page-1,language,{size:pageSize,filters});if(!data.ok)throw new Error('Unavailable');listings=data.data.items;count=data.data.count}
-   else{const query=new URLSearchParams({transaction:market,page:String(page),size:String(pageSize),filters:JSON.stringify(filters)});const response=await fetch('/api/public-listings?'+query,{cache:'no-store',signal:controller.signal});if(!response.ok)throw new Error('Unavailable');const data=await response.json();listings=data.listings;count=data.count}
+   else{const query = new URLSearchParams({
+  transaction: market,
+  language,
+  page: String(page),
+  size: String(pageSize),
+  filters: JSON.stringify(filters),
+});const response=await fetch('/api/public-listings?'+query,{cache:'no-store',signal:controller.signal});if(!response.ok)throw new Error('Unavailable');const data=await response.json();listings=data.listings;count=data.count}
    if(!Array.isArray(listings)||listings.length>pageSize||!Number.isSafeInteger(count)||count<0)throw new Error('Invalid page')
    if(page>Math.max(1,Math.ceil(count/pageSize))){if(!cancelled)setPosition({key,page:Math.max(1,Math.ceil(count/pageSize))});return}
    if(!cancelled)setResult({key:requestKey,listings:listings.map(l=>market==='bank'?l:{...l,id:createListingId(l),images:resolveListingImages(l.images)}),count,error:false})

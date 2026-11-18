@@ -5,15 +5,30 @@ import {getPublicListingById} from './public-listings-server'
 import {resolveMarketAnalyticalContext} from './market-analytical-context'
 import {projectPublicListingMonetaryValue} from './public-listing-monetary-projection'
 import type {AddonHomepageItem} from './addon-homepage-contract'
-export async function loadAddonHomepage():Promise<AddonHomepageItem[]>{
+import {
+  resolveEnglishListingContent,
+  resolveSpanishListingContent
+} from './public-listing-english-content'
+export async function loadAddonHomepage(
+  language: 'en' | 'es'
+): Promise<AddonHomepageItem[]> {
  if(!canonicalAddonPlacementEnabled())return []
- const pools=await Promise.all([loadAdvertisingPlacements('sale'),loadAdvertisingPlacements('rent')])
+ const pools = await Promise.all([
+  loadAdvertisingPlacements('sale', language),
+  loadAdvertisingPlacements('rent', language)
+])
  return pools.flatMap(pool=>[...pool.spotlight.map(item=>({...item,behavior:'homepage_carousel' as const})),...pool.featured.map(item=>({...item,behavior:'featured_collection' as const}))])
 }
 
 // One bounded acquisition per market view. The SQL reader supplies paid authority;
 // presentation examples are selected separately and never enter this result.
-export async function loadAdvertisingPlacements(market:'sale'|'rent'):Promise<{spotlight:AddonHomepageItem[];featured:AddonHomepageItem[]}>{
+export async function loadAdvertisingPlacements(
+  market: 'sale' | 'rent',
+  language: 'en' | 'es' = 'en'
+): Promise<{
+  spotlight: AddonHomepageItem[]
+  featured: AddonHomepageItem[]
+}> {
  if(!canonicalAddonPlacementEnabled())return {spotlight:[],featured:[]}
  const {data,error}=await supabaseAdmin.rpc('read_advertising_listing_ids',{p_market:market})
  if(error||!data||!Array.isArray(data.spotlight)||!Array.isArray(data.featured)||data.spotlight.length>5||data.featured.length>12)throw Error('Advertising placement unavailable')
@@ -22,6 +37,30 @@ export async function loadAdvertisingPlacements(market:'sale'|'rent'):Promise<{s
  if(!ids.length)return {spotlight:[],featured:[]}
  const context=await resolveMarketAnalyticalContext()
  const rows=await Promise.all(ids.map(id=>getPublicListingById(id)))
- const map=new Map(rows.flatMap(row=>row&&row.transaction_type===market?[[row.id,{id:row.id,title:row.title||'',transaction:market,image:null,listing:projectPublicListingMonetaryValue(row,context)}]as const]:[]))
+ const localizedRows = await Promise.all(
+  rows.map(async row => {
+    if (!row) return null
+
+    return language === 'es'
+      ? resolveSpanishListingContent(row)
+      : resolveEnglishListingContent(row)
+  })
+)
+ const map = new Map(
+  localizedRows.flatMap(row =>
+    row && row.transaction_type === market
+      ? [[
+          row.id,
+          {
+            id: row.id,
+            title: row.title || '',
+            transaction: market,
+            image: null,
+            listing: projectPublicListingMonetaryValue(row, context)
+          }
+        ] as const]
+      : []
+  )
+)
  return {spotlight:data.spotlight.map((id:string)=>map.get(id)).filter(Boolean),featured:data.featured.map((id:string)=>map.get(id)).filter(Boolean)}
 }

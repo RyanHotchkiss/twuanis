@@ -8,7 +8,7 @@ export default async function HomePage() {
   const [terms, relationships, addonHomepage, inventory] = await Promise.all([
     supabaseAdmin.from('ontology_terms').select('*'),
     supabaseAdmin.from('ontology_relationships').select('*'),
-    loadAddonHomepage(),
+    loadAddonHomepage('en'),
     getPublicListingCounts()
   ])
   const ontologyTerms = terms.data || []
