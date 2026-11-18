@@ -1192,7 +1192,12 @@ const matchesFilters = (property: any) => {
             </button></div></RentLeaseSidebarES></HomeSidebarLayer>
 
         <div data-rental-listing-content style={{padding: isMobile ? '16px' : '30px', width: '100%', minWidth: 0, boxSizing: 'border-box', overflow: 'hidden'}}>
-        <MarketplaceListingGrid homepage={embedded} homepageItems={home?.addonHomepage?.filter(item=>item.listing&&matchesFilters(item.listing))} province={filters.province} propertyType={filters.property_type}
+        {listingPage.error ? (
+  <p role="alert">
+    Las propiedades no están disponibles temporalmente. Inténtalo de nuevo.
+  </p>
+) : (
+  <MarketplaceListingGrid loading={loading} homepage={embedded} homepageItems={home?.addonHomepage?.filter(item=>item.listing&&matchesFilters(item.listing))} province={filters.province} propertyType={filters.property_type}
             theme={theme}
 
             listings={
@@ -1284,6 +1289,7 @@ const matchesFilters = (property: any) => {
               }
             }}
           />
+)}
 <MarketplacePagination page={listingPage.page} pageSize={listingPage.pageSize} total={listingPage.count} language="es" onPage={listingPage.setPage} onSize={listingPage.setPageSize} loading={loading}/>
         </div>
 

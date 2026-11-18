@@ -1196,7 +1196,12 @@ const matchesFilters = (property: any) => {
                   overflow: 'hidden'
                 }}
               >
-                <MarketplaceListingGrid homepage={embedded} homepageItems={home?.addonHomepage?.filter(item=>item.listing&&matchesFilters(item.listing))} province={filters.province} propertyType={filters.property_type}
+                {listingPage.error ? (
+  <p role="alert">
+    Properties are temporarily unavailable. Please try again.
+  </p>
+) : (
+  <MarketplaceListingGrid loading={loading} homepage={embedded} homepageItems={home?.addonHomepage?.filter(item=>item.listing&&matchesFilters(item.listing))} province={filters.province} propertyType={filters.property_type}
                     theme={theme}
 
                     listings={rankedProperties}
@@ -1283,6 +1288,7 @@ const matchesFilters = (property: any) => {
                     }
                   }}
                   />
+)}
 <MarketplacePagination page={listingPage.page} pageSize={listingPage.pageSize} total={listingPage.count} language="en" onPage={listingPage.setPage} onSize={listingPage.setPageSize} loading={loading}/>
               </div>
 

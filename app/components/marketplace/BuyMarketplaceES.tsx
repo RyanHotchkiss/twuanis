@@ -1228,7 +1228,7 @@ const filteredProperties = market === 'bank'
           
               <div aria-busy={market === 'bank' ? bank.loading : loading}>
               {market === 'bank' && filters.price_range && bank.listings.some(property => property.marketplace_original_currency === 'USD' && property.marketplace_price_crc === null) && <p role="status">Las propiedades en USD sin evidencia BCCR registrada para la fecha exacta se excluyen de los filtros de precio en CRC.</p>}
-              {market === 'bank' && (bank.loading || bank.error) ? <p role={bank.error ? 'alert' : 'status'}>{bank.error ? 'Las propiedades bancarias no están disponibles temporalmente.' : 'Cargando propiedades…'}</p> : market !== 'bank' && loading ? <p role="status">Cargando propiedades…</p> : <MarketplaceListingGrid homepage={embedded} homepageItems={home?.addonHomepage?.filter(item=>item.listing&&matchesFilters(item.listing))} province={filters.province} propertyType={filters.property_type}
+              {market === 'bank' && (bank.loading || bank.error) ? <p role={bank.error ? 'alert' : 'status'}>{bank.error ? 'Las propiedades bancarias no están disponibles temporalmente.' : 'Cargando propiedades…'}</p> : market !== 'bank' && listingPage.error ? <p role="alert">Las propiedades no están disponibles temporalmente. Inténtalo de nuevo.</p> : <MarketplaceListingGrid loading={market === 'bank' ? bank.loading : loading} homepage={embedded} homepageItems={home?.addonHomepage?.filter(item=>item.listing&&matchesFilters(item.listing))} province={filters.province} propertyType={filters.property_type}
                 theme={theme}
 
                 listings={

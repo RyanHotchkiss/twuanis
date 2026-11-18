@@ -3,7 +3,10 @@
 import PropertyCard
   from '@/app/components/marketplace/PropertyCard'
 
+import MarketplaceLoadingTrivia from '@/app/components/marketplace/MarketplaceLoadingTrivia'
+
 type MarketplaceListingGridProps = {
+    loading?: boolean
   imageLoading?: 'eager' | 'lazy'
   prefetchListings?: boolean
 
@@ -48,6 +51,7 @@ export default function MarketplaceListingGrid({
   imageLoading = 'eager',
   prefetchListings = true,
   listings,
+  loading = false,
   theme,
   transactionType,
   language = 'en',
@@ -59,37 +63,37 @@ export default function MarketplaceListingGrid({
   onToggleCompare
 }: MarketplaceListingGridProps) {
 
+
+  if (loading) {
+    return (
+      <MarketplaceLoadingTrivia
+        language={language}
+        theme={theme}
+      />
+    )
+  }
+
   if (listings.length === 0) {
     return (
       <div
         style={{
-        background:
-            theme === 'dark'
-                ? '#181818'
-                : '#ffffff',
-
-            border:
-            theme === 'dark'
-                ? '1px solid #222'
-                : '1px solid rgba(0,0,0,.12)',
+          background: theme === 'dark' ? '#181818' : '#ffffff',
+          border: theme === 'dark'
+            ? '1px solid #222'
+            : '1px solid rgba(0,0,0,.12)',
           borderRadius: '22px',
           padding: '40px',
           textAlign: 'center',
           width: '100%',
-          boxSizing: 'border-box'
+          boxSizing: 'border-box',
         }}
       >
         <h2
-        
           style={{
-            color:
-            theme === 'dark'
-                ? '#ffffff'
-                : '#111111',
-            marginBottom: '10px'
+            color: theme === 'dark' ? '#ffffff' : '#111111',
+            marginBottom: '10px',
           }}
         >
-        
           {language === 'es'
             ? 'No se encontraron propiedades'
             : 'No properties found'}
@@ -97,10 +101,7 @@ export default function MarketplaceListingGrid({
 
         <p
           style={{
-            color:
-                theme === 'dark'
-                    ? '#777'
-                    : '#666'
+            color: theme === 'dark' ? '#777' : '#666',
           }}
         >
           {language === 'es'
@@ -110,6 +111,7 @@ export default function MarketplaceListingGrid({
       </div>
     )
   }
+
 
   return (
     <div
