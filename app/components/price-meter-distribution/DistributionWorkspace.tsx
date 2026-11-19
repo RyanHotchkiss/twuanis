@@ -1,6 +1,8 @@
 'use client'
 import ResultSynthesis from '../ResultSynthesis'
 import DistributionResult from './DistributionResult'
+import DistributionNotRun from './DistributionNotRun'
+import MarketplaceLoadingTrivia from '../marketplace/MarketplaceLoadingTrivia'
 import {commitConfiguration} from '@/lib/measurement/analytical'
 import {useEffect,useId,useRef,useState} from 'react'
 import {measuredPriceMeterApply} from '@/lib/measurement/actions'
@@ -48,6 +50,12 @@ export default function DistributionWorkspace({options,filters,language,source}:
  {committed&&c&&<DistributionResult pending={pending} part="identity" committed={committed} language={language} heading={heading} modify={<button type="button" className={styles.modify} aria-expanded={open} aria-controls={id} disabled={pending} onClick={()=>setOpen(!open)}>{es?'Modificar':'Modify'}</button>}/>}
  <section id={id} hidden={!open} className={styles.inputs}><fieldset disabled={pending} className={styles.fieldset}><legend>{es?'Definir el mercado':'Define the market'}</legend><p>{es?'Transacción, tipo de propiedad, provincia y cantón son obligatorios.':'Transaction, Property Type, Province and Canton are required.'}</p><div className={styles.inputGrid}>{summaryKeys.slice(0,5).map(field)}</div><details className={styles.optional}><summary>{es?'Restricciones opcionales':'Optional constraints'}</summary><div className={styles.inputGrid}>{summaryKeys.slice(5).map(field)}</div></details>
  <h3>{es?'Definir precio por m²':'Define Price / m²'}</h3><div className={`${styles.inputGrid} ${chart.controls}`}><label>{es?'Base de propiedad':'Property Basis'}<select aria-label={es?'Base de propiedad':'Property Basis'} value={basis} onChange={e=>{setBasis(e.target.value);setNormalization(e.target.value==='land_only'?'land':'')}}><option value="">{es?'Seleccionar':'Select'}</option><option value="land_only">{es?'Terreno sin construcción':'Vacant Land'}</option><option value="improved_property">{es?'Propiedad con construcción':'Improved Property'}</option></select></label>{basis==='land_only'?<p>{es?'Normalización: área del terreno (única opción válida).':'Normalization: Land Area (only valid choice).'}</p>:basis==='improved_property'?<label>{es?'Normalización':'Normalization'}<select aria-label={es?'Normalización':'Normalization'} value={normalization} onChange={e=>setNormalization(e.target.value)}><option value="">{es?'Seleccionar':'Select'}</option><option value="land">{es?'Área del terreno':'Land Area'}</option><option value="construction">{es?'Área de construcción':'Construction Area'}</option></select></label>:null}</div><button type="button" className={styles.apply} disabled={pending} onClick={apply}>{pending?(es?'Analizando…':'Analyzing…'):(es?'Analizar distribución del precio por m²':'Analyze Price / m² Distribution')}</button></fieldset></section>
+ {!committed && !pending && (
+  <DistributionNotRun language={language} />
+)}
+{pending && (
+  <MarketplaceLoadingTrivia language={language} theme="light" />
+)}
  {error&&<p role="alert" className={styles.error}>{es?'Revisa las entradas requeridas. No se pudo completar el análisis; el resultado anterior se conserva.':'Check required inputs. Analysis could not complete; the previous result is retained.'}</p>}
  {committed&&c&&d&&<DistributionResult pending={pending} part="result" committed={committed} language={language} heading={heading} actions={<AnalysisActions engineType="price-meter" language={language} filters={{...committed.filters,analysis_question:'distribution'}} result={committed.result} defaultName={title}/>}/>}
  </article>

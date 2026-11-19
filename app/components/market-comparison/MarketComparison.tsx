@@ -1,6 +1,7 @@
 'use client'
 import ResultSynthesis from '../ResultSynthesis'
 import MarketComparisonResult from './MarketComparisonResult'
+import MarketComparisonNotRun from './MarketComparisonNotRun'
 import {useEffect,useId,useRef,useState} from 'react'
 import {executeMarketQuestion} from '@/lib/market-inventory-action'
 import {saveMarketComparison,createMarketComparisonName} from '@/lib/market-comparisons'
@@ -46,6 +47,9 @@ export default function MarketComparison({options,filters,language='en'}:{option
  {committed&&<ResultSynthesis engine={'comparison'} evidence={committed.result} language={language}/>}
   {committed&&<MarketComparisonResult id={id} pending={pending} part="identity" committed={committed} language={language} heading={heading} modify={<button className={shared.modify} style={{marginTop:16}} disabled={pending} aria-expanded={expanded} aria-controls={`${id}-inputs`} onClick={()=>{setExpanded(v=>!v);if(!expanded)requestAnimationFrame(()=>inputHeading.current?.focus())}}>{expanded?(es?'Cerrar edición':'Close editing'):(es?'Modificar':'Modify')}</button>}/>}
   <section id={`${id}-inputs`} className={shared.inputs} hidden={!expanded}><h3 tabIndex={-1} ref={inputHeading}>{es?'Definir los dos mercados':'Define both markets'}</h3><fieldset className={shared.fieldset} disabled={pending}><legend className={shared.srOnly}>{es?'Datos de comparación':'Comparison inputs'}</legend><div className={styles.markets}>{[0,1].map(i=><section className={styles.market} key={i} aria-label={`${market(i)} ${es?'datos':'inputs'}`}><h3>{market(i)}</h3><div className={shared.inputGrid}>{summaryKeys.slice(0,5).map(k=>field(k,i))}{field('price_range',i)}</div><details className={shared.optional}><summary>{es?'Características y medidas opcionales':'Optional characteristics and measurements'}</summary><div className={shared.inputGrid}>{summaryKeys.slice(5).map(k=>field(k,i))}</div></details></section>)}</div><button className={shared.apply} style={{marginTop:20}} onClick={apply} disabled={pending}>{pending?(es?'Comparando…':'Comparing…'):(es?'Comparar mercados':'Compare markets')}</button></fieldset></section>
+  {!committed && !pending && (
+  <MarketComparisonNotRun language={language} />
+)}
   {pending&&<p role="status">{es?'Comparando los mercados…':'Comparing markets…'}</p>}{error&&<p role="alert" className={shared.error}>{error}</p>}
   {committed&&<MarketComparisonResult id={id} pending={pending} part="result" committed={committed} language={language} heading={heading} actions={<div className={styles.save}><button className={shared.modify} disabled={saveStatus==='saving'||pending} onClick={save}>{es?'Guardar comparación':'Save comparison'}</button><p role="status">{saveStatus==='saving'?(es?'Guardando…':'Saving…'):saveStatus}</p></div>}/>}
  </article>

@@ -9,6 +9,8 @@ import {commitConfiguration} from '@/lib/measurement/analytical'
 import {validateQuestion} from '@/lib/asking-price-question'
 import { FACTS, SEMANTICS, type Catalog, type Constraint, type Fact, type Option, type Question, type Result } from '@/lib/asking-price-contract'
 import { PROPERTY_AREA_RANGE_OPTIONS, CONSTRUCTION_AREA_RANGE_OPTIONS } from '@/lib/market-intelligence-area-ranges'
+import AskingPriceNotRun from './AskingPriceNotRun'
+import MarketplaceLoadingTrivia from './marketplace/MarketplaceLoadingTrivia'
 import styles from './AskingPriceDistribution.module.css'
 import shared from './market-summary/workspace.module.css'
 type Lang='en'|'es'
@@ -98,6 +100,9 @@ export default function AskingPriceDistribution({lang,catalog}:{lang:Lang;catalo
  <details><summary>{w.optional}</summary><div className={styles.controls}>{(['propertyArea','constructionArea'] as const).map(k=><label key={k}>{w[k]}<select value={filters[k]??''} onChange={e=>setFilters(f=>{const next={...f};if(e.target.value)next[k]=e.target.value;else delete next[k];return next})}><option value="">{w.none}</option>{(k==='propertyArea'?PROPERTY_AREA_RANGE_OPTIONS:CONSTRUCTION_AREA_RANGE_OPTIONS).map((o,i)=><option key={o.value} value={o.value}>{areaLabels[k][i]}</option>)}</select></label>)}
  {SEMANTICS.map(d=><fieldset className={styles.fact} key={d}><legend>{w[d]}</legend><div className={styles.choices}>{options.filter(o=>o.type===d).map(o=><label className={styles.check} key={o.id}><input type="checkbox" checked={(filters.semantics[d]??[]).includes(o.id)} onChange={e=>setFilters(f=>({...f,semantics:{...f.semantics,[d]:e.target.checked?[...(f.semantics[d]??[]),o.id]:(f.semantics[d]??[]).filter(id=>id!==o.id)}}))}/>{o[lang]}</label>)}</div></fieldset>)}</div>
  <div className={styles.controls}>{FACTS.map(d=><FactEditor key={d} dimension={d} options={options.filter(o=>o.type===d)} lang={lang} values={filters.facts[d]??[]} draft={drafts[d]} onDraft={draft=>editDraft(d,draft)} add={()=>addConstraint(d)} error={fieldErrors[d]} onChange={cs=>{setFilters(f=>({...f,facts:{...f.facts,[d]:cs}}));setFieldErrors(current=>({...current,[d]:undefined}))}}/>)}</div></details>
- <button className={styles.analyze} type="submit" disabled={pending||!transaction||!geo}>{pending?w.loading:w.analyze}</button><span role="status" aria-live="polite">{pending?w.loading:''}</span></fieldset></form>}
+ <button className={styles.analyze} type="submit" disabled={pending||!transaction||!geo}>{pending?w.loading:w.analyze}</button><span role="status" aria-live="polite">{pending?w.loading:''}</span></fieldset></form>}{!result && !pending && <AskingPriceNotRun lang={lang} />}
+{pending && (
+  <MarketplaceLoadingTrivia language={lang} theme="light" />
+)}
  {failure&&<p role="alert">{failure}</p>}{result?<AskingPriceResult result={result} lang={lang} modify={<button className={shared.modify} type="button" disabled={pending} aria-expanded={expanded} aria-controls={inputId} onClick={()=>setExpanded(v=>!v)}>{expanded?(lang==='en'?'Close editing':'Cerrar edición'):(lang==='en'?'Modify':'Modificar')}</button>}/>:null}</article>
 }

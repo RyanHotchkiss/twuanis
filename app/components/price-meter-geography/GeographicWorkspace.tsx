@@ -1,5 +1,7 @@
  'use client'
 import GeographicResult from './GeographicResult'
+import GeographicNotRun from './GeographicNotRun'
+import MarketplaceLoadingTrivia from '../marketplace/MarketplaceLoadingTrivia'
 import {commitConfiguration} from '@/lib/measurement/analytical'
 import {useEffect,useId,useRef,useState} from 'react'
 import {measuredPriceMeterApply} from '@/lib/measurement/actions'
@@ -48,6 +50,12 @@ export default function GeographicWorkspace({options,filters,language,source}:{o
  <section id={id} hidden={!open} className={styles.inputs}><fieldset disabled={pending} className={styles.fieldset}><legend>{es?'Definir la comparación':'Define the comparison'}</legend><div className={`${styles.inputGrid} ${chart.controls}`}><label>{es?'Comparar':'Compare'}<select aria-label={es?'Comparar':'Compare'} value={level} onChange={e=>{const next=e.target.value;setLevel(next);setDraft(d=>({...d,province:next==='province'?undefined:d.province,canton:next==='district'?d.canton:undefined,district:undefined}))}}><option value="">{es?'Seleccionar':'Select'}</option>{Object.entries(levels).map(([k,v])=><option key={k} value={k}>{v}</option>)}</select></label>{level==='province'?<p>{es?'Dentro de Costa Rica':'Within Costa Rica'}</p>:null}{(level==='canton'||level==='district')&&field('province')}{level==='district'&&field('canton')}</div>
  <h3>{es?'Definir el mercado':'Define the market'}</h3><div className={styles.inputGrid}>{field('transaction_type')}{field('property_type')}</div><details className={styles.optional}><summary>{es?'Restricciones opcionales':'Optional constraints'}</summary><div className={styles.inputGrid}>{summaryKeys.slice(5).map(field)}</div></details>
  <h3>{es?'Definir precio por m²':'Define Price / m²'}</h3><div className={`${styles.inputGrid} ${chart.controls}`}><label>{es?'Base de propiedad':'Property Basis'}<select aria-label={es?'Base de propiedad':'Property Basis'} value={basis} onChange={e=>{setBasis(e.target.value);setNormalization(e.target.value==='land_only'?'land':'')}}><option value="">{es?'Seleccionar':'Select'}</option><option value="land_only">{es?'Terreno sin construcción':'Vacant Land'}</option><option value="improved_property">{es?'Propiedad con construcción':'Improved Property'}</option></select></label>{basis==='land_only'?<p>{es?'Normalización: área del terreno.':'Normalization: Land Area.'}</p>:basis==='improved_property'?<label>{es?'Normalización':'Normalization'}<select aria-label={es?'Normalización':'Normalization'} value={normalization} onChange={e=>setNormalization(e.target.value)}><option value="">{es?'Seleccionar':'Select'}</option><option value="land">{es?'Área del terreno':'Land Area'}</option><option value="construction">{es?'Área de construcción':'Construction Area'}</option></select></label>:null}</div><button type="button" className={styles.apply} disabled={pending} onClick={apply}>{pending?(es?'Comparando…':'Comparing…'):(es?'Comparar precio por m² por geografía':'Compare Price / m² by Geography')}</button></fieldset></section>
+ {!committed && !pending && (
+  <GeographicNotRun language={language} />
+)}
+{pending && (
+  <MarketplaceLoadingTrivia language={language} theme="light" />
+)}
  {error&&<p role="alert" className={styles.error}>{es?'Revisa las entradas. No se pudo completar la comparación; el resultado anterior se conserva.':'Check inputs. Comparison could not complete; the previous result is retained.'}</p>}
  {committed&&c&&<GeographicResult options={options} pending={pending} part="result" committed={committed} language={language} heading={heading} actions={<AnalysisActions key={committed.version} engineType="price-meter" language={language} filters={{...committed.filters,analysis_question:'geography'}} result={committed.result} defaultName={title}/>}/>}
  </article>

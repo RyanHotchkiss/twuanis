@@ -9,6 +9,8 @@ import type {ExplorerOptions,Filters} from '../market-filters/types'
 import {cohortTitle,cohortQuestion,comparisonSnapshot,comparisonKeys,type CohortResult} from './contract'
 import {CohortEditor,DraftCohortSummary} from './CohortEditor'
 import CohortEvidence from './CohortEvidence'
+import CohortNotRun from './CohortNotRun'
+import MarketplaceLoadingTrivia from '../marketplace/MarketplaceLoadingTrivia'
 import AnalysisActions from '../AnalysisActions'
 import styles from '../market-summary/workspace.module.css'
 import controls from '../price-meter-distribution/distribution.module.css'
@@ -38,6 +40,12 @@ export default function CohortWorkspace({options,filters,language}:{options:Expl
  <div className={controls.controls}>{shared('reference_cohort',es?'Referencia porcentual':'Percentage reference',[['A',es?'Cohorte A':'Cohort A'],['B',es?'Cohorte B':'Cohort B']])}</div><p>{es?'La referencia determina el denominador del porcentaje. La diferencia mantiene la dirección A − B.':'The reference determines the percentage denominator. Difference keeps the A − B direction.'}</p>
  <details className={styles.optional}><summary>{es?'Revisar las definiciones seleccionadas':'Review selected definitions'}</summary><DraftCohortSummary draft={draft} options={options} language={language}/></details>
  <button type="button" className={styles.apply} disabled={pending} onClick={compare}>{pending?(es?'Comparando cohortes…':'Comparing cohorts…'):(es?'Comparar precio por m² entre cohortes':'Compare cohort Price / m²')}</button></fieldset></section>
+ {!committed && !pending && (
+  <CohortNotRun language={language} draft={draft} />
+)}
+{pending && (
+  <MarketplaceLoadingTrivia language={language} theme="light" />
+)}
  {error&&<p role="alert" className={styles.error}><strong>{error==='invalid'?(es?'Solicitud inválida. ':'Invalid request. '):(es?'Error de ejecución. ':'Execution failure. ')}</strong>{error==='invalid'?validationMessage:es?'La comparación no se completó. Revisa que ambas cohortes tengan geografía, tipo de propiedad, dos características distintas y al menos una restricción de área, además de la identidad y referencia compartidas. El resultado anterior se conserva.':'Comparison did not complete. Check both cohorts have geography, Property Type, two distinct characteristics and at least one area constraint, plus the shared identity and reference. The previous result is retained.'}</p>}
  {committed&&<section aria-live="polite" aria-busy={pending} data-cohort-result><h3 ref={heading} tabIndex={-1}>{es?'Comparación de cohortes':'Cohort comparison'}</h3><CohortEvidence result={committed.result} language={language}/><AnalysisActions key={committed.version} engineType="price-meter" language={language} filters={committed.filters} result={committed.result} defaultName={cohortTitle[language]}/></section>}
  </article>

@@ -1,6 +1,8 @@
 'use client'
 import ResultSynthesis from '../ResultSynthesis'
 import CrossResult from './CrossResult'
+import CrossNotRun from './CrossNotRun'
+import MarketplaceLoadingTrivia from '../marketplace/MarketplaceLoadingTrivia'
 import {useEffect,useId,useRef,useState} from 'react'
 import {readCrossDimensionalQuestions} from '@/lib/price-meter-cross-dimensional-action'
 import {measuredCross as executeCrossDimensionalHub} from '@/lib/measurement/actions'
@@ -53,6 +55,18 @@ export default function CrossWorkspace({options,filters,language}:{options:Explo
  {q&&<p>{q.question}</p>}<p>{es?'Transacción, tipo de propiedad, provincia y cantón son obligatorios. Si la pregunta incluye geografía, el análisis compara distritos dentro del cantón; no selecciones un distrito terminal.':'Transaction, Property Type, Province and Canton are required. Geographic questions compare districts within the canton; do not select a terminal district.'}</p>
  <div className={styles.inputGrid}>{summaryKeys.slice(0,5).map(field)}</div><details className={styles.optional}><summary>{es?'Restricciones opcionales':'Optional constraints'}</summary><div className={styles.inputGrid}>{summaryKeys.slice(5).map(field)}</div></details>
  <button type="button" className={styles.apply} onClick={analyze} disabled={pending||!catalog.length}>{pending?(es?'Analizando…':'Analyzing…'):(es?'Analizar la relación entre grupos':'Analyze relationship across groups')}</button></fieldset></section>
+ {!committed && !pending && (
+  <CrossNotRun
+    language={language}
+    owner={owner}
+    secondary={q?.secondary ?? ''}
+    questionText={q?.question}
+    cohort={cohort}
+  />
+)}
+{pending && (
+  <MarketplaceLoadingTrivia language={language} theme="light" />
+)}
  {error&&<p role="alert" className={styles.error}>{error==='invalid'?(es?'Solicitud inválida. Revisa la pregunta y la definición del mercado.':'Invalid request. Check the question and market definition.'):(es?'No se completó el análisis. El resultado anterior se conserva.':'Analysis did not complete. The previous result is retained.')}</p>}
  {committed&&c&&r&&<CrossResult options={options} pending={pending} part="result" committed={{...committed,labels:summaryIdentity(summarySnapshot(committed.filters),options,language)}} language={language} heading={heading} actions={<AnalysisActions key={committed.version} engineType="price-meter" language={language} filters={committed.filters} result={c} defaultName={crossTitle[language]}/>}/>}
  </article>

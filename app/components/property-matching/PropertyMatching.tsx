@@ -1,5 +1,6 @@
 'use client'
 import SharedResult from './PropertyMatchingResult'
+import PropertyMatchingNotRun from './PropertyMatchingNotRun'
 import CanonicalMarketWorkspace from '../CanonicalMarketWorkspace'
 import type {ExplorerOptions,Filters,Language} from '../market-filters/types'
 import {optionLabel} from '../market-filters/utils'
@@ -22,7 +23,7 @@ export default function PropertyMatching({options,filters,language='en'}:{option
   if(v.kind==='exact')return v.value+unit
   return `${v.lowerInclusive?'[':'('}${v.lower??'−∞'}, ${v.upper??'∞'}${v.upperInclusive?']':')'}${unit}`
  }
- return <CanonicalMarketWorkspace<Result> engine="matching" options={options} filters={filters} language={language} title={es?'Coincidencia de propiedades':'Property Matching'} primaryQuestion={question}>
+ return <CanonicalMarketWorkspace<Result> engine="matching" options={options} filters={filters} language={language} title={es?'Coincidencia de propiedades':'Property Matching'} primaryQuestion={question} notRun={<PropertyMatchingNotRun language={language} />}>
  {(committed,heading,id)=><SharedResult committed={committed} heading={heading} id={id} language={language} options={options}/>}
  </CanonicalMarketWorkspace>
 }

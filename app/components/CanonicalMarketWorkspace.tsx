@@ -8,13 +8,14 @@ import {serverSignal} from '@/lib/measurement/runtime'
 import FilterSelect from './market-filters/FilterSelect'
 import { applyFilterChange, optionLabel, optionValue } from './market-filters/utils'
 import AnalysisActions from './AnalysisActions'
+import MarketplaceLoadingTrivia from './marketplace/MarketplaceLoadingTrivia'
 import type { ExplorerOptions, Filters, Language } from './market-filters/types'
 import { summaryKeys, summaryLabel, summaryOptions, summaryRoomSnapshot, summaryVisibleInputKeys, summaryIdentity, summaryOptionMatches, type SummaryKey } from './market-summary/contract'
 import styles from './market-summary/workspace.module.css'
 
 type Committed<T>={filters:Filters;labels:string[];result:T}
 // Shared presentation/commit lifecycle only. Each engine owns its result and lens.
-export default function CanonicalMarketWorkspace<T>({options,filters,language='en',engine,title,primaryQuestion,children}:{options:ExplorerOptions;filters:Filters;language?:Language;engine:'summary'|'composition'|'matching'|'configuration';title:string;primaryQuestion:string;children:(committed:Committed<T>,heading:RefObject<HTMLHeadingElement|null>,id:string)=>ReactNode}) {
+export default function CanonicalMarketWorkspace<T>({options,filters,language='en',engine,title,primaryQuestion,children,notRun}:{options:ExplorerOptions;filters:Filters;language?:Language;engine:'summary'|'composition'|'matching'|'configuration';title:string;primaryQuestion:string;children:(committed:Committed<T>,heading:RefObject<HTMLHeadingElement|null>,id:string)=>ReactNode, notRun?: ReactNode}) {
  const es=language==='es', id=useId(), grouped=engine==='matching'||engine==='configuration'
  const [draft,setDraft]=useState(()=>summaryRoomSnapshot(filters,options))
  const [committed,setCommitted]=useState<Committed<T>|null>(null)
@@ -78,9 +79,17 @@ export default function CanonicalMarketWorkspace<T>({options,filters,language='e
     {engine==='matching'&&<h4>{es?'Definir la población de búsqueda':'Define the search population'}</h4>}<div className={styles.inputGrid}>{visibleKeys.market.map(field)}</div>
     <details className={styles.optional} open={engine==='configuration'?true:undefined}><summary>{engine==='configuration'?(es?'Definir la configuración de propiedad':'Define the property configuration'):engine==='matching'?(es?'Seleccionar atributos para comparar':'Select matching attributes'):(es?'Características y medidas opcionales':'Optional characteristics and measurements')}</summary>{engine==='configuration'&&<p>{es?'Las opciones seleccionadas dentro de Habitaciones, Baños y Estacionamiento son alternativas: al menos una debe acreditarse positivamente en cada dimensión seleccionada. Todas las dimensiones seleccionadas y cada una de las demás características seleccionadas son requisitos conjuntos. Sin atributos, la configuración incluye todo el mercado.':'Selected options within Bedrooms, Bathrooms and Parking are alternatives: at least one must be positively established in each selected dimension. All selected dimensions and every other selected characteristic are joint requirements. With no attributes, the configuration includes the entire market.'}</p>}<div className={styles.inputGrid}>{visibleKeys.optional.map(field)}</div></details>
     <button type="button" className={styles.apply} onClick={apply} disabled={pending}>{pending?(es?'Analizando…':'Analyzing…'):(engine==='configuration'?(es?'Analizar configuración':'Analyze configuration'):engine==='matching'?(es?'Buscar anuncios coincidentes':'Find matching listings'):(es?'Aplicar datos':'Apply inputs'))}</button>
-   </fieldset>
-  </section>
-  {pending&&<p role="status">{es?`Ejecutando ${title}…`:`Running ${title}…`}</p>}
+       </fieldset>
+   </section>
+   {!committed && !pending && notRun}
+   {pending && (
+  <>
+    <p role="status">
+      {es ? `Ejecutando ${title}…` : `Running ${title}…`}
+    </p>
+    <MarketplaceLoadingTrivia language={language} theme="light" />
+  </>
+)}
   {error&&<p role="alert" className={styles.error}>{error}</p>}
   {committed&&<div aria-live="polite" aria-busy={pending}>
    {children(committed,resultHeading,id)}

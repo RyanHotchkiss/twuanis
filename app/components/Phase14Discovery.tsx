@@ -8,6 +8,8 @@ import type { Phase14BrowserSuccess, Phase14BrowserFailureCode } from '@/lib/pha
 import type { Phase14Filters, Phase14FactConstraint, Phase14FactDimension, Phase14SemanticDimension, Phase14PropertyAreaKey, Phase14ConstructionAreaKey } from '@/lib/phase14-question-contract'
 import { matchesSubmission, type Language } from '@/lib/comparative-discovery-presentation'
 import Phase14Results, { type QuestionLabels } from './Phase14Results'
+import DiscoveryNotRun from './price-meter-discovery/DiscoveryNotRun'
+import MarketplaceLoadingTrivia from './marketplace/MarketplaceLoadingTrivia'
 import styles from './Phase14Discovery.module.css'
 const dimensions = {
   property_type:['Property type','Tipo de propiedad'],environment:['Environment','Entorno'],terrain:['Terrain','Terreno'],utility:['Utilities','Servicios'],accessibility:['Accessibility','Accesibilidad'],legal_status:['Legal status','Estado legal'],
@@ -125,8 +127,32 @@ export default function Phase14Discovery({language,hub=false,previewOnly=false,i
       </details>
       <button type="submit" disabled={!ready||pending}>{pending?(es?'Analizando…':'Analyzing…'):(es?'Analizar mercado':'Analyze Market')}</button>
       </fieldset>
-    </form>
-    {pending&&<p role="status">{es?'Analizando la pregunta enviada. El resultado anterior permanece visible.':'Analyzing the submitted question. The previous result remains visible.'}</p>}
+        </form>
+    {hub && !previewOnly && !committed && !pending && (
+      <DiscoveryNotRun
+        language={language}
+        geography={
+          [province, canton, district]
+            .filter(Boolean)
+            .map(id => byId(id)?.[language] ?? '')
+            .filter(Boolean)
+            .join(' → ')
+        }
+        transaction={transaction}
+        propertyType={byId(propertyType)?.[language] ?? ''}
+        normalization={normalization}
+      />
+    )}
+    {pending && (
+  <>
+    <p role="status">
+      {es
+        ? 'Analizando la pregunta enviada. El resultado anterior permanece visible.'
+        : 'Analyzing the submitted question. The previous result remains visible.'}
+    </p>
+    <MarketplaceLoadingTrivia language={language} theme="light" />
+  </>
+)}
     {error&&<p role="alert">{failures[error][es?1:0]}</p>}
     {committed&&<div key={committed.generation} aria-busy={pending}>
       {hub&&<h3 ref={heading} tabIndex={-1}>{es?'Evidencia del mercado comprometido':'Committed market evidence'}</h3>}

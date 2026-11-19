@@ -2,6 +2,8 @@
 import ResultSynthesis from '../ResultSynthesis'
 import {useHubUniverse} from '../HubUniverseContext'
 import ComparableResult,{ComparableMethodology} from './ComparableResult'
+import ComparableNotRun from './ComparableNotRun'
+import MarketplaceLoadingTrivia from '../marketplace/MarketplaceLoadingTrivia'
 import {commitConfiguration} from '@/lib/measurement/analytical'
 import {useEffect,useRef,useState} from 'react'
 import {measuredComparables as executeComparablesHub} from '@/lib/measurement/actions'
@@ -48,6 +50,15 @@ function Workspace({language,serialized}:{language:'en'|'es';serialized?:string}
  <fieldset className={styles.fieldset}><legend>{es?'Características opcionales que deben coincidir':'Optional characteristics to match'}</legend><div className={cohort.dimensions}>{comparableDimensions.map(d=><label key={d}><input type="checkbox" checked={draft.activeDimensions.includes(d)} onChange={e=>setDraft({...draft,activeDimensions:e.target.checked?[...draft.activeDimensions,d]:draft.activeDimensions.filter(x=>x!==d)})}/>{comparableLabels[d][language]}</label>)}</div></fieldset>
  <p>{es?'Cada selección exige la categoría registrada de la propiedad. Todas las selecciones se intersectan. Una característica ausente o ambigua no se interpreta como cero ni se sustituye; la solicitud no se ejecutará con esa selección.':'Each selection requires the subject’s recorded category. All selected dimensions intersect. A missing or ambiguous characteristic is not zero and is not substituted; the request cannot complete with that selection.'}</p>
  <button type="submit" className={styles.apply}>{busy?(es?'Analizando…':'Analyzing…'):(es?'Analizar cohorte':'Analyze Cohort')}</button></fieldset></form>
+   {!committed && !busy && (
+    <ComparableNotRun
+      language={language}
+      request={draft}
+    />
+  )}
+  {busy && (
+  <MarketplaceLoadingTrivia language={language} theme="light" />
+)}
  {error&&<p className={styles.error} role="alert">{error}</p>}
  <div aria-live="polite" aria-busy={busy}>{committed&&r&&p&&<ComparableResult committed={committed} language={language} heading={heading} editing={editing} modify={<button className={styles.modify} disabled={busy} onClick={()=>{setDraft(committed.request);setEditing(true)}}>{es?'Modificar':'Modify'}</button>} actions={<AnalysisActions engineType="price-meter" language={language} filters={{analysis_question:'comparables',comparable_request:JSON.stringify(committed.request)}} result={committed.response} defaultName={comparablesTitle[language]}/>}/>}</div>
  <ComparableMethodology language={language}/></section>

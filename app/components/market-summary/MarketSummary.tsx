@@ -4,9 +4,10 @@ import CanonicalMarketWorkspace from '../CanonicalMarketWorkspace'
 import type { ExplorerOptions, Filters, Language } from '../market-filters/types'
 import { question, type SummaryResult } from './contract'
 import styles from './workspace.module.css'
+import MarketSummaryNotRun from './MarketSummaryNotRun'
 export default function MarketSummary({options,filters,language='en'}:{options:ExplorerOptions;filters:Filters;language?:Language}) {
  const es=language==='es',number=new Intl.NumberFormat(es?'es-CR':'en-US')
- return <CanonicalMarketWorkspace<SummaryResult> options={options} filters={filters} language={language} engine="summary" title={es?'Resumen del mercado':'Market Summary'} primaryQuestion={question[language]}>
+ return <CanonicalMarketWorkspace<SummaryResult> options={options} filters={filters} language={language} engine="summary" title={es?'Resumen del mercado':'Market Summary'} primaryQuestion={question[language]} notRun={<MarketSummaryNotRun language={language} />}>
   {(committed,resultHeading,id)=><SharedResult committed={committed} resultHeading={resultHeading} id={id} language={language} options={options}/>}
  </CanonicalMarketWorkspace>
 }

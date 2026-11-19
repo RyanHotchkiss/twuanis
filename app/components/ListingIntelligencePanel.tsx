@@ -20,8 +20,13 @@ import askingPresentation from './AskingPriceDistribution.module.css'
 import {AskingPriceResult} from './AskingPriceResult'
 import PropertyMatchingResult from './property-matching/PropertyMatchingResult'
 import ConfigurationFrequencyResult from './configuration-frequency/ConfigurationFrequencyResult'
+import ConfigurationFrequencyNotRun from './configuration-frequency/ConfigurationFrequencyNotRun'
 import PositionResult from './price-meter-position/PositionResult'
+import PositionNotRun from './price-meter-position/PositionNotRun'
+import AskingPriceNotRun from './AskingPriceNotRun'
+import MarketplaceLoadingTrivia from './marketplace/MarketplaceLoadingTrivia'
 import styles from './ListingIntelligencePanel.module.css'
+import PropertyMatchingNotRun from './property-matching/PropertyMatchingNotRun'
 type Reply=Awaited<ReturnType<typeof runListingLens>>
 // No effect invokes an executor, configuration endpoint or population reader.
 export default function ListingIntelligencePanel({context,language}:{context:Context;language:Lang}){
@@ -57,7 +62,33 @@ export default function ListingIntelligencePanel({context,language}:{context:Con
  const reply=results[l.id]?.key===key?results[l.id]?.reply:undefined
  return <section className={styles.lens} key={l.id} data-lpi-lens={l.id}>
  <h3>{l[language]}</h3>
- {!reply&&<InlineHubExample lens={l.id} language={language}/>}
+ {busy[l.id] && (
+  <MarketplaceLoadingTrivia language={language} theme="light" />
+)}
+ {l.id === 'asking' && !reply && !busy[l.id] && (
+  <div className={askingPresentation.engine}>
+    <AskingPriceNotRun lang={language} listing />
+  </div>
+)}
+{l.id === 'matching' && !reply && !busy[l.id] && (
+  <div className={sharedPresentation.summary}>
+    <PropertyMatchingNotRun language={language} listing />
+  </div>
+)}
+{l.id === 'position' && !reply && !busy[l.id] && (
+  <div className={sharedPresentation.summary}>
+    <PositionNotRun
+      language={language}
+      listing
+      geographyLevel="district"
+    />
+  </div>
+)}
+{l.id === 'frequency' && !reply && !busy[l.id] && (
+  <div className={sharedPresentation.summary}>
+    <ConfigurationFrequencyNotRun language={language} />
+  </div>
+)}
  {reply?.state==='result'&&<div data-lpi-live-result className={reply.result.kind==='asking'?askingPresentation.engine:sharedPresentation.summary}>
   {(reply.result.kind==='matching'||reply.result.kind==='frequency')&&<><CanonicalMarketIdentity committed={{filters:reply.question.filters,labels:reply.result.labels}} engine={reply.result.kind==='frequency'?'configuration':'matching'} options={reply.result.options} language={language}/>{reply.question.unsupported.length>0&&<p>{es?'Evidencia exacta/de intervalo no incluida en esta pregunta categórica':'Exact/range evidence not included in this categorical question'}: {reply.question.unsupported.join(' · ')}</p>}</>}
   {reply.result.kind==='asking'&&(reply.result.value.ok?<>

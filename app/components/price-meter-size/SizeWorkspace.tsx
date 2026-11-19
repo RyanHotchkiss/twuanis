@@ -1,6 +1,8 @@
 'use client'
 import ResultSynthesis from '../ResultSynthesis'
 import SizeResult from './SizeResult'
+import SizeNotRun from './SizeNotRun'
+import MarketplaceLoadingTrivia from '../marketplace/MarketplaceLoadingTrivia'
 import {commitConfiguration} from '@/lib/measurement/analytical'
 import {useEffect,useId,useRef,useState} from 'react'
 import {measuredPriceMeterApply} from '@/lib/measurement/actions'
@@ -44,6 +46,12 @@ export default function SizeWorkspace({options,filters,language,source,initialMo
  {committed&&c&&<SizeResult pending={pending} part="identity" committed={committed} language={language} heading={heading} modify={<button type="button" className={styles.modify} disabled={pending} aria-expanded={open} aria-controls={id} onClick={()=>setOpen(!open)}>{es?'Modificar':'Modify'}</button>}/>}
  <section id={id} hidden={!open} className={styles.inputs}><fieldset disabled={pending} className={styles.fieldset}><legend>{es?'Definir el mercado':'Define the market'}</legend><div className={styles.inputGrid}>{summaryKeys.slice(0,5).map(field)}</div><details className={styles.optional}><summary>{es?'Restricciones opcionales':'Optional constraints'}</summary><p>{es?'Los rangos de área restringen el mercado; no cambian la dimensión de tamaño analizada.':'Area ranges constrain the market; they do not change the analyzed size dimension.'}</p><div className={styles.inputGrid}>{summaryKeys.slice(5).map(field)}</div></details>
  <div className={controls.controls}><label>{es?'Análisis de tamaño':'Size analysis'}<select aria-label={es?'Análisis de tamaño':'Size analysis'} value={mode} onChange={e=>setMode(e.target.value as SizeMode)}><option value="property-area">{sizeLabel('property-area')}</option><option value="construction-area">{sizeLabel('construction-area')}</option></select></label></div><p>{es?'Propiedad con construcción. El precio por m² usa el área exacta seleccionada como denominador.':'Improved Property. Price / m² uses the selected exact area as its denominator.'}</p><button type="button" className={styles.apply} disabled={pending} onClick={apply}>{pending?(es?'Analizando…':'Analyzing…'):(es?'Analizar tamaño y precio por m²':'Analyze Size → Price / m²')}</button></fieldset></section>
+ {!committed && !pending && (
+  <SizeNotRun language={language} mode={mode} />
+)}
+{pending && (
+  <MarketplaceLoadingTrivia language={language} theme="light" />
+)}
  {error&&<p role="alert" className={styles.error}>{es?'Revisa las entradas. No se pudo completar el análisis; el resultado anterior se conserva.':'Check inputs. Analysis could not complete; the previous result is retained.'}</p>}
  {committed&&c&&<SizeResult pending={pending} part="result" committed={committed} language={language} heading={heading} actions={<AnalysisActions key={committed.version} engineType="price-meter" language={language} filters={committed.filters} result={committed.result} defaultName={title}/>}/>}
  </article>

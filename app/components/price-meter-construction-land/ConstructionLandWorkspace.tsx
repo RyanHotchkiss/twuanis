@@ -1,6 +1,8 @@
 'use client'
 import ResultSynthesis from '../ResultSynthesis'
 import ConstructionLandResult from './ConstructionLandResult'
+import ConstructionLandNotRun from './ConstructionLandNotRun'
+import MarketplaceLoadingTrivia from '../marketplace/MarketplaceLoadingTrivia'
 import {commitConfiguration} from '@/lib/measurement/analytical'
 import {useEffect,useId,useRef,useState} from 'react'
 import {measuredPriceMeterApply} from '@/lib/measurement/actions'
@@ -44,6 +46,12 @@ export default function ConstructionLandWorkspace({options,filters,language,sour
  {committed&&c&&<ConstructionLandResult pending={pending} part="identity" committed={committed} language={language} heading={heading} modify={<button type="button" className={styles.modify} disabled={pending} aria-expanded={open} aria-controls={id} onClick={()=>setOpen(!open)}>{es?'Modificar':'Modify'}</button>}/>}
  <section id={id} hidden={!open} className={styles.inputs}><fieldset disabled={pending} className={styles.fieldset}><legend>{es?'Definir el mercado':'Define the market'}</legend><div className={styles.inputGrid}>{summaryKeys.slice(0,5).map(field)}</div><details className={styles.optional}><summary>{es?'Restricciones opcionales':'Optional constraints'}</summary><p>{es?'Los rangos de área restringen el mercado; no proporcionan mediciones exactas para la relación.':'Area ranges constrain the market; they do not provide exact measurements for the ratio.'}</p><div className={styles.inputGrid}>{summaryKeys.slice(5).map(field)}</div></details>
  <p>{es?'Construcción/terreno = área exacta de construcción ÷ área exacta del terreno. No representa cobertura del suelo ni huella del edificio.':'Construction-to-Land = exact Construction Area ÷ exact Property Area. It does not represent site coverage or building footprint.'}</p><div className={controls.controls}><label>{es?'Base del precio por m²':'Price / m² basis'}<select aria-label={es?'Base del precio por m²':'Price / m² basis'} value={mode} onChange={e=>setMode(e.target.value as Normalization)}><option value="">{es?'Seleccionar (obligatorio)':'Select (required)'}</option><option value="land">{basisLabel('land')}</option><option value="construction">{basisLabel('construction')}</option></select></label></div><p>{es?'Propiedad con construcción. El precio por m² usa el área exacta seleccionada como denominador.':'Improved Property. Price / m² uses the selected exact area as its denominator.'}</p><button type="button" className={styles.apply} disabled={pending} onClick={apply}>{pending?(es?'Analizando…':'Analyzing…'):(es?'Analizar construcción/terreno y precio por m²':'Analyze Construction-to-Land → Price / m²')}</button></fieldset></section>
+ {!committed && !pending && (
+  <ConstructionLandNotRun language={language} mode={mode} />
+)}
+{pending && (
+  <MarketplaceLoadingTrivia language={language} theme="light" />
+)}
  {error&&<p role="alert" className={styles.error}>{es?'Revisa las entradas. No se pudo completar el análisis; el resultado anterior se conserva.':'Check inputs. Analysis could not complete; the previous result is retained.'}</p>}
  {committed&&c&&<ConstructionLandResult pending={pending} part="result" committed={committed} language={language} heading={heading} actions={<AnalysisActions key={committed.version} engineType="price-meter" language={language} filters={committed.filters} result={committed.result} defaultName={title}/>}/>}
  </article>

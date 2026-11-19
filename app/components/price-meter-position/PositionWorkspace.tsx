@@ -2,6 +2,8 @@
 import ResultSynthesis from '../ResultSynthesis'
 import {useHubUniverse} from '../HubUniverseContext'
 import PositionResult from './PositionResult'
+import PositionNotRun from './PositionNotRun'
+import MarketplaceLoadingTrivia from '../marketplace/MarketplaceLoadingTrivia'
 import {commitConfiguration} from '@/lib/measurement/analytical'
 import {useEffect,useRef,useState} from 'react'
 import {measuredPosition as executePositionHub} from '@/lib/measurement/actions'
@@ -50,6 +52,17 @@ function Workspace({language,serialized}:{language:'en'|'es';serialized?:string}
  <label>{es?'Referencia geográfica':'Geographic reference'}<select value={draft.requestedGeographyLevel} onChange={e=>setDraft({...draft,requestedGeographyLevel:e.target.value as PositionRequest['requestedGeographyLevel']})}>{(['district','canton','province'] as const).map(g=><option key={g} value={g}>{es?`${positionLabels.es[g]} de la propiedad`:`Subject’s ${g}`}</option>)}</select></label>
  <label>{es?'Denominador de área exacta':'Exact-area denominator'}<select value={draft.requestedNormalizationBasis} onChange={e=>setDraft({...draft,requestedNormalizationBasis:e.target.value as PositionRequest['requestedNormalizationBasis']})}><option value="land">{es?'Área del terreno':'Property Area'}</option><option value="construction">{es?'Área de construcción':'Construction Area'}</option></select></label>
  </div><p>{es?'La referencia incluye anuncios activos del mismo tipo, transacción y base, dentro de la geografía elegida de la propiedad. No se amplía automáticamente.':'The reference includes active listings of the same type, transaction and basis within the subject’s chosen geography. It never expands automatically.'}</p><button type="submit" className={styles.apply}>{busy?(es?'Analizando…':'Analyzing…'):(es?'Analizar posición':'Analyze Position')}</button></fieldset></form>
+   {!committed && !busy && (
+    <PositionNotRun
+      language={language}
+      listingId={draft.listingId.trim()}
+      geographyLevel={draft.requestedGeographyLevel}
+      normalizationBasis={draft.requestedNormalizationBasis}
+    />
+  )}
+  {busy && (
+  <MarketplaceLoadingTrivia language={language} theme="light" />
+)}
  {error&&<p className={styles.error} role="alert">{error}</p>}
  <div aria-live="polite" aria-busy={busy}>{committed&&<PositionResult part="result" editing={editing} committed={committed} language={language} heading={heading} modify={<button className={styles.modify} disabled={busy} onClick={()=>setEditing(true)}>{es?'Modificar':'Modify'}</button>} actions={<AnalysisActions engineType="price-meter" language={language} filters={{analysis_question:'position',position_request:JSON.stringify(committed.request)}} result={committed.response} defaultName={positionHubTitle[language]}/>}/>}</div>
  <PositionResult part="method" committed={committed} language={language} heading={heading} />

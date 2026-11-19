@@ -9,6 +9,8 @@ import {parseWeightedQuestion,weightedTitle,weightedQuestion,type WeightedQuesti
 import AnalysisActions from '../AnalysisActions'
 import styles from '../asking-area-ratio/workspace.module.css'
 import WeightedResult,{WeightedDisclosure} from './WeightedResult'
+import WeightedNotRun from './WeightedNotRun'
+import MarketplaceLoadingTrivia from '../marketplace/MarketplaceLoadingTrivia'
 const blank={cohort:{transaction:'',geography:{level:'canton',termId:''},propertyType:'',propertyArea:{min:'',max:''},constructionArea:{min:'',max:''}},kind:'listing',listingId:'',propertyArea:'',constructionArea:'',province:'',canton:'',district:'',amount:'',currency:'CRC'}
 function asDraft(q:WeightedQuestion){const s=q.subject;return{...blank,cohort:q.cohort,kind:s.kind,...(s.kind==='listing'?{listingId:s.listingId}:{propertyArea:s.propertyArea,constructionArea:s.constructionArea,province:s.province,canton:s.canton,district:s.district??'',amount:s.askingPrice?.amount??'',currency:s.askingPrice?.currency??'CRC'})}}
 function restore(value?:string){try{return value?asDraft(parseWeightedQuestion(JSON.parse(value))):blank}catch{return blank}}
@@ -40,6 +42,16 @@ export default function WeightedWorkspace({language,serialized}:{language:'en'|'
  <label>{text('One canonical Property Type','Un tipo de propiedad canónico')}<select required value={draft.cohort.propertyType} onChange={e=>setDraft({...draft,cohort:{...draft.cohort,propertyType:e.target.value}})}>{optionList('property_type')}</select></label>
  {(['propertyArea','constructionArea'] as const).flatMap((dimension,i)=>(['min','max'] as const).map((bound,j)=><label key={dimension+bound}>{(es?['Área del terreno','Área de construcción']:['Property Area','Construction Area'])[i]} · {(es?['mínimo inclusivo','máximo inclusivo']:['inclusive minimum','inclusive maximum'])[j]} (m²)<input required inputMode="decimal" value={draft.cohort[dimension][bound]} onChange={e=>setDraft({...draft,cohort:{...draft.cohort,[dimension]:{...draft.cohort[dimension],[bound]:e.target.value}}})}/></label>))}
  </div><p>{text('Improved Property · exact measurements only. Edits perform no analysis. The subject must belong inside both ranges.','Propiedad mejorada · solo medidas exactas. Editar no ejecuta análisis. La propiedad debe estar dentro de ambos rangos.')}</p><button className={styles.apply} type="submit">{busy?text('Analyzing…','Analizando…'):text('Analyze','Analizar')}</button></fieldset></form>
+  {!committed && !busy && (
+    <WeightedNotRun
+      language={language}
+      draft={draft}
+      options={options}
+    />
+  )}
+  {busy && (
+  <MarketplaceLoadingTrivia language={language} theme="light" />
+)}
  {error&&<p role="alert">{error}</p>}
  <div aria-live="polite" aria-busy={busy}>{committed&&evidence&&<WeightedResult committed={committed} language={language} heading={heading} editing={editing} controls={<><button type="button" disabled={busy} onClick={()=>{setDraft(asDraft(committed.question));setEditing(true)}}>{text('Modify','Modificar')}</button><AnalysisActions key={JSON.stringify(committed)} engineType="price-meter" language={language} filters={{analysis_question:'weighted-price',weighted_request:JSON.stringify(committed.question)}} result={committed} defaultName={weightedTitle[language]}/></>}/>}</div>
 

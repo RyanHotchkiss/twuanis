@@ -2,6 +2,8 @@
 import ResultSynthesis from '../ResultSynthesis'
 import {useHubUniverse} from '../HubUniverseContext'
 import RatioResult from './RatioResult'
+import RatioNotRun from './RatioNotRun'
+import MarketplaceLoadingTrivia from '../marketplace/MarketplaceLoadingTrivia'
 import {commitConfiguration} from '@/lib/measurement/analytical'
 import {useEffect,useRef,useState} from 'react'
 import {measuredRatio as executeAskingAreaRatio} from '@/lib/measurement/actions'
@@ -34,6 +36,16 @@ export default function RatioWorkspace({language,serialized}:{language:'en'|'es'
  <label>{text('Property Type','Tipo de propiedad')}<select required value={draft.propertyType} onChange={e=>setDraft({...draft,propertyType:e.target.value})}><option value="">—</option>{options.filter(o=>o.type==='property_type').map(o=><option key={o.id} value={o.id}>{o[language]}</option>)}</select></label>
  {(['propertyArea','constructionArea'] as const).flatMap((dimension,i)=>(['min','max'] as const).map((bound,j)=><label key={dimension+bound}>{(es?['Área del terreno','Área de construcción']:['Property Area','Construction Area'])[i]} · {(es?['mínimo inclusivo','máximo inclusivo']:['inclusive minimum','inclusive maximum'])[j]} (m²)<input required inputMode="decimal" value={draft[dimension][bound]} onChange={e=>setDraft({...draft,[dimension]:{...draft[dimension],[bound]:e.target.value}})}/></label>))}</div>
  <p>{text('Improved Property · exact measurements only. Edits do not run analysis.','Propiedad mejorada · solo medidas exactas. Editar no ejecuta el análisis.')}</p><button className={styles.apply} type="submit">{busy?text('Analyzing…','Analizando…'):text('Analyze','Analizar')}</button></fieldset></form>
+   {!committed && !busy && (
+    <RatioNotRun
+      language={language}
+      draft={draft}
+      options={options}
+    />
+  )}
+  {busy && (
+  <MarketplaceLoadingTrivia language={language} theme="light" />
+)}
  {error&&<p role="alert">{error}</p>}
  <div aria-live="polite" aria-busy={busy}>{committed&&<RatioResult part="result" editing={editing} committed={committed} language={language} heading={heading} modify={<button type="button" disabled={busy} onClick={()=>{setDraft(committed.question);setEditing(true)}}>{text('Modify','Modificar')}</button>} actions={<AnalysisActions key={JSON.stringify(committed)} engineType="price-meter" language={language} filters={{analysis_question:'asking-area-ratio',ratio_request:JSON.stringify(committed.question)}} result={committed} defaultName={ratioTitle[language]}/>}/>}</div>
  <RatioResult part="method" committed={committed} language={language} heading={heading} />
