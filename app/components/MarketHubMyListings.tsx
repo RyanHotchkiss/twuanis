@@ -104,6 +104,12 @@ code?: string
 
 error?: string
 
+admission?:
+  | 'REVIEW_REQUIRED'
+  | 'AUTOMATIC_REJECTION'
+
+caseId?: string
+
 listing?: {
 id: string
 title: string | null

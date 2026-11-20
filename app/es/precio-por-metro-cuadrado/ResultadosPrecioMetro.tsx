@@ -1323,7 +1323,10 @@ function GeographicPriceComparison({
           {(highest || lowest) && (
             <div style={geographicSynthesisCard}>
               {highest && (
-                <p style={synthesisConclusion}>
+                <p
+  className="analytical-synthesis-conclusion"
+  style={synthesisConclusion}
+>
                   {
                     geographicDisplayName(
                       highest
@@ -1354,11 +1357,27 @@ function GeographicPriceComparison({
                         : 'propiedades'
                     }
                   </strong>
-                  {
-                    highestComparison
-                      ? `, ${highestComparison} la mediana del mercado seleccionado.`
-                      : '.'
-                  }
+
+                    {highestComparison ? (
+                      <>
+                        {', '}
+                        {highestComparison.includes('%') ? (
+                          <>
+                            <strong>
+                              {highestComparison.split(' ')[0]}
+                            </strong>
+                            {' '}
+                            {highestComparison.split(' ').slice(1).join(' ')}
+                          </>
+                        ) : (
+                          highestComparison
+                        )}
+                        {' la mediana del mercado seleccionado.'}
+                      </>
+                    ) : (
+                      '.'
+                    )}
+
                 </p>
               )}
 
@@ -1373,7 +1392,10 @@ function GeographicPriceComparison({
                       highest
                     )
                 ) && (
-                <p style={synthesisConclusion}>
+                <p
+  className="analytical-synthesis-conclusion"
+  style={synthesisConclusion}
+>
                   {
                     geographicDisplayName(
                       lowest
@@ -1404,11 +1426,27 @@ function GeographicPriceComparison({
                         : 'propiedades'
                     }
                   </strong>
-                  {
-                    lowestComparison
-                      ? `, ${lowestComparison} la mediana del mercado seleccionado.`
-                      : '.'
-                  }
+
+                    {lowestComparison ? (
+                      <>
+                        {', '}
+                        {lowestComparison.includes('%') ? (
+                          <>
+                            <strong>
+                              {lowestComparison.split(' ')[0]}
+                            </strong>
+                            {' '}
+                            {lowestComparison.split(' ').slice(1).join(' ')}
+                          </>
+                        ) : (
+                          lowestComparison
+                        )}
+                        {' la mediana del mercado seleccionado.'}
+                      </>
+                    ) : (
+                      '.'
+                    )}
+
                 </p>
               )}
 
@@ -2438,7 +2476,10 @@ function ConstructionLandRelationshipSynthesis({
 
 
         {direction !== null && (
-          <p style={synthesisConclusion}>
+          <p
+  className="analytical-synthesis-conclusion"
+  style={synthesisConclusion}
+>
             Las Relaciones de Construcción a
             Terreno más altas están asociadas con
             un Precio / m² {normalizationLabel}{' '}

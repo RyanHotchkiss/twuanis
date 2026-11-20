@@ -1282,7 +1282,10 @@ function GeographicPriceComparison({
           {(highest || lowest) && (
             <div style={geographicSynthesisCard}>
               {highest && (
-                <p style={synthesisConclusion}>
+                <p
+  className="analytical-synthesis-conclusion"
+  style={synthesisConclusion}
+>
                   {
                     geographicDisplayName(
                       highest
@@ -1313,11 +1316,27 @@ function GeographicPriceComparison({
                         : 'properties'
                     }
                   </strong>
-                  {
-                    highestComparison
-                      ? `, ${highestComparison} the selected-market median.`
-                      : '.'
-                  }
+
+                    {highestComparison ? (
+                      <>
+                        {', '}
+                        {highestComparison.includes('%') ? (
+                          <>
+                            <strong>
+                              {highestComparison.split(' ')[0]}
+                            </strong>
+                            {' '}
+                            {highestComparison.split(' ').slice(1).join(' ')}
+                          </>
+                        ) : (
+                          highestComparison
+                        )}
+                        {' the selected-market median.'}
+                      </>
+                    ) : (
+                      '.'
+                    )}
+
                 </p>
               )}
 
@@ -1332,7 +1351,10 @@ function GeographicPriceComparison({
                       highest
                     )
                 ) && (
-                <p style={synthesisConclusion}>
+                <p
+  className="analytical-synthesis-conclusion"
+  style={synthesisConclusion}
+>
                   {
                     geographicDisplayName(
                       lowest
@@ -1363,11 +1385,27 @@ function GeographicPriceComparison({
                         : 'properties'
                     }
                   </strong>
-                  {
-                    lowestComparison
-                      ? `, ${lowestComparison} the selected-market median.`
-                      : '.'
-                  }
+
+                    {lowestComparison ? (
+                      <>
+                        {', '}
+                        {lowestComparison.includes('%') ? (
+                          <>
+                            <strong>
+                              {lowestComparison.split(' ')[0]}
+                            </strong>
+                            {' '}
+                            {lowestComparison.split(' ').slice(1).join(' ')}
+                          </>
+                        ) : (
+                          lowestComparison
+                        )}
+                        {' the selected-market median.'}
+                      </>
+                    ) : (
+                      '.'
+                    )}
+
                 </p>
               )}
 
@@ -2398,7 +2436,10 @@ function ConstructionLandRelationshipSynthesis({
 
 
         {direction !== null && (
-          <p style={synthesisConclusion}>
+          <p
+  className="analytical-synthesis-conclusion"
+  style={synthesisConclusion}
+>
             Higher Construction-to-Land Ratios
             are associated with {direction}{' '}
             {normalizationLabel} Price / m² in

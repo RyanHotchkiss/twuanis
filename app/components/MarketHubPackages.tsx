@@ -2541,7 +2541,7 @@ export default function MarketHubPackages({
 
                                         <div style={premiumInheritance}>
                                             <span style={premiumInheritanceLabel}>
-                                                {analyticalTerminology(packageItem.features[0])}
+                                                {packageItem.features[0] ? analyticalTerminology(packageItem.features[0]) : null}
                                             </span>
 
                                             <span style={premiumPlus}>+</span>

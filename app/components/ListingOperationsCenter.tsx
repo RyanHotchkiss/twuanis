@@ -817,7 +817,7 @@ export default function ListingOperationsCenter({
             'Publicar Anuncio',
 
           publishDescription:
-            'Publique este borrador en el mercado después de verificar los límites de su paquete.',
+            'Publique este anuncio en el mercado una vez que cumpla con los requisitos de publicación de Twuanis.',
           edit:
             'Editar Publicación',
           editDescription:
@@ -1010,7 +1010,7 @@ export default function ListingOperationsCenter({
             'Publish Listing',
 
           publishDescription:
-            'Publish this draft to the marketplace after verifying your package limits.',
+            'Publish this listing to the marketplace once it meets Twuanis publication requirements.',
           edit:
             'Edit Listing',
           editDescription:
