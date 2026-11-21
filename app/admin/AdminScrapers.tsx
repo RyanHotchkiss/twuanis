@@ -40,6 +40,9 @@ export default function AdminScrapers({ language }: { language: AdminLanguage })
     if (!checkedAt || checkedAt - new Date(worker.lastSeenAt).getTime() >= 120000) return text.offline
     return worker.state === 'running' ? text.running : worker.state === 'offline' ? text.offline : text.available
   }, [checkedAt, data?.worker, text])
+  // Command state is the durable authority: it is returned by the existing
+  // Admin read RPC and therefore survives refreshes and navigation.
+  const commandActive = Boolean(data?.commands.some(command => ['requested','accepted','running'].includes(command.state)))
   function toggle(id: string) { setSelected(current => current.includes(id) ? current.filter(value => value !== id) : [...current, id]) }
   async function submit() { if (!selected.length) return; setBusy(true); const result = await scraperRequest(crypto.randomUUID(), selected); setBusy(false); await refresh(); if (!result.ok) setError(result.error || text.requestError) }
   async function stop(commandId: string) { setBusy(true); const result = await scraperStop(commandId); setBusy(false); if (!result.ok) setError(text.stopError); await refresh() }
@@ -47,7 +50,7 @@ export default function AdminScrapers({ language }: { language: AdminLanguage })
     <p><strong>{status}</strong></p>
     <fieldset><legend>{text.title}</legend>
       {scraperSources.map(source => <div key={source.id} style={{marginBlock:'.75rem'}}><strong>{source.label[language]}</strong>{source.operational ? source.selections.map(selection => <label key={selection.id} style={{display:'block'}}><input type="checkbox" checked={selected.includes(selection.id)} onChange={() => toggle(selection.id)} />{selection.label[language]}</label>) : <p><em>{text.unavailableSource}</em> — {source.unavailableReason?.[language]}</p>}</div>)}
-      <button disabled={!selected.length || busy} onClick={() => { void submit() }}>{text.run}</button>
+      <button disabled={!selected.length || busy || commandActive} style={commandActive ? { backgroundColor:'#ff3b00', color:'#fff' } : undefined} onClick={() => { void submit() }}>{text.run}</button>
     </fieldset>
     {error && <p role="alert">{error}</p>}
     <h3>{text.activity}</h3>
