@@ -3,6 +3,7 @@ const { spawn } = require('node:child_process'), crypto = require('node:crypto')
 const fs = require('node:fs/promises'), path = require('node:path')
 const { createClient, qualifying, ingestWasiObservation, completeSourceRun } = require('./wasi-canonical-ingestion-adapter.cjs')
 const { projectAttribution } = require('./refresh-wasi-listing-attribution.js')
+const { createRunArchive } = require('./scraper-run-archive.cjs')
 const root = path.resolve(__dirname, '../..')
 const configurations = {
   'helcor-sale':'scripts/scrapers/wasi-sites/helcor-sales.json', 'helcor-rent':'scripts/scrapers/wasi-sites/helcor-rent.json',
@@ -32,9 +33,13 @@ async function run(selection, outputRoot, onProgress=()=>{}) {
   let directory, records=[], payload, executionError
   const counts={extracted:0,qualified:0,published:0,heldForReview:0,rejected:0,failed:0,created:0,updated:0,agencyLogos:0,agentPhotos:0,pagesRetrieved:'unavailable',paginationStatus:'failed',errors:[],attribution:{observed:0,matched:0,updated:0,unmatched:0,failed:0}}
   try {
-    onProgress({event:'extracting',selection}); const result=await execute(config,outputRoot,{deadlineMs:site.max_runtime_ms,onProgress:event=>onProgress({event:'extracting_progress',selection,...event})}); payload=result.payload; directory=payload.directory; records=JSON.parse(await fs.readFile(path.join(directory,'devop-wasi-sales.json'),'utf8')); if(result.error){executionError=result.error;counts.errors.push(result.error.message)}
+    // Collection ends at the site cap; this outer allowance is only for
+    // durable artifact finalization and canonical handoff.
+    const collectionMs=Math.min(69*60*1000,Number(site.max_runtime_ms)||69*60*1000)
+    onProgress({event:'extracting',selection}); const result=await execute(config,outputRoot,{deadlineMs:collectionMs+15*60*1000,onProgress:event=>onProgress({event:'extracting_progress',selection,...event})}); payload=result.payload; directory=payload.directory; records=JSON.parse(await fs.readFile(path.join(directory,'devop-wasi-sales.json'),'utf8')); if(result.error){executionError=result.error;counts.errors.push(result.error.message)}
+    const archive=createRunArchive(directory,{commandId:runId,sourceName:site.source_name,transaction:site.transaction,extractedAt:startedAt})
     counts.extracted=records.length; counts.pagesRetrieved=payload.summary?.listing_pages_discovered ?? 'unavailable'; counts.paginationStatus=payload.summary?.failed_or_inaccessible_listing_pages ? 'failed' : 'completed'; counts.errors.push(...(payload.summary?.failures||[]))
-    for (const row of records) { const reason=qualifying(row); if (reason) { counts.rejected++; continue }; counts.qualified++; if (row.agency?.logo_url) counts.agencyLogos++; if (row.listing_agent?.photo_url) counts.agentPhotos++; try { const accepted=await ingestWasiObservation(client,row,{runId,startedAt}); const outcome=String(accepted.result?.outcome || 'unknown'); if (outcome==='accepted'||outcome==='succeeded') { counts.published++; counts.created++ } else if (/duplicate|review/i.test(outcome)) counts.heldForReview++; else counts.rejected++ } catch (error) { counts.failed++; counts.errors.push(String(error.message||error)) } }
+    for (const row of records) { const reason=qualifying(row); if (reason) { counts.rejected++; archive.outcome(row,{outcome:'rejected',reason}); continue }; counts.qualified++; if (row.agency?.logo_url) counts.agencyLogos++; if (row.listing_agent?.photo_url) counts.agentPhotos++; try { const accepted=await ingestWasiObservation(client,row,{runId,startedAt}); const outcome=String(accepted.result?.outcome || 'unknown'); archive.outcome(row,{outcome,reason:accepted.result?.reason||null}); if (outcome==='accepted'||outcome==='succeeded') { counts.published++; counts.created++ } else if (/duplicate|review/i.test(outcome)) counts.heldForReview++; else counts.rejected++ } catch (error) { counts.failed++; const reason=String(error.message||error); archive.outcome(row,{outcome:'failed',reason}); counts.errors.push(reason) } }
   } catch (error) { executionError=error; counts.failed++; counts.errors.push(String(error.message||error)) }
   if(records.length){
     try{

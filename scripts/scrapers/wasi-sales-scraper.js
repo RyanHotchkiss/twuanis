@@ -9,6 +9,7 @@
 const fs=require('node:fs/promises')
 const path=require('node:path')
 const {load}=require('cheerio')
+const {createRunArchive}=require('./scraper-run-archive.cjs')
 
 const defaultConfig=path.join(__dirname,'wasi-sites','devop-sales.json')
 const configPath=process.argv[2]||defaultConfig
@@ -199,6 +200,10 @@ function parseDetail(html,seed,config,terms){
   ...$('.fab.fa-whatsapp,.fab.fa-whatsapp-square').map((_,node)=>clean($(node).parent().text()).match(/\+?\d[\d\s-]{6,}/)?.[0]||null).get()
  ])
  const tel=unique($('a[href^="tel:"]').map((_,node)=>clean($(node).attr('href')).replace(/^tel:/,'')).get())
+ const emails=unique([
+  ...$('a[href^="mailto:"]').map((_,node)=>clean($(node).attr('href')).replace(/^mailto:/i,'')).get(),
+  ...(html.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi)||[])
+ ])
  const images=unique($('.Gallery a[href], .Gallery img[src]').map((_,node)=>$(node).attr('href')||$(node).attr('src')).get())
  const agencyLogoUrl=sourceImageUrl(config,$('.navbar-brand img[src]').first().attr('src')||$('.whatsApp_widget img[src]').first().attr('src'))
  const agencyName=clean($('.navbar-brand img').first().attr('alt'))||clean($('.whatsApp_widget .tt1').first().text())||null
@@ -220,7 +225,7 @@ function parseDetail(html,seed,config,terms){
   source_name:config.source_name,source_platform:'Wasi',transaction:config.transaction,source_transaction:observedTransaction,source_listing_id:attributes.Código||seed.source_listing_id,source_url:seed.source_url,title:clean($('h1.title').first().text())||seed.listing_title,property_type:attributes['Tipo de inmueble']||seed.property_type||null,
   property_area:lookup(config.property_area_labels),construction_area:lookup(config.construction_area_labels),[config.transaction==='rent'?'rental_asking_price':'sale_asking_price']:{source_value:priceText||null,amount:askingPriceAmount,currency,source_label:priceLabel},
   geography:resolvedGeography?{source_fields:{canton_district:attributes['Cantón / Distrito']||null,city:attributes.Ciudad||null,zone:attributes.Zona||null},province:resolvedGeography.province?.term_name||null,canton:resolvedGeography.canton?.term_name||null,district:resolvedGeography.district?.term_name||null,canonical_codes:{province:resolvedGeography.province?.official_code||null,canton:resolvedGeography.canton?.official_code||null,district:resolvedGeography.district?.official_code||null},resolution_reasons:resolvedGeography.reasons,exact_pcd_published:resolvedGeography.complete}:{country:attributes.País||null,province:attributes.Provincia||null,canton:null,district:null,source_city:attributes.Ciudad||null,exact_pcd_published:false},
-  whatsapp_numbers:whatsapp,telephone_numbers:tel,description:description||null,image_urls:images,
+  whatsapp_numbers:whatsapp,telephone_numbers:tel,email_addresses:emails,description:description||null,image_urls:images,
   agency:{name:agencyName,logo_url:agencyLogoUrl},listing_agent:{name:listingAgentName,photo_url:listingAgentPhotoUrl},
   attributes,raw_jsonld:JSON.stringify(rawJsonLd),collection_eligibility:JSON.stringify(collectionEligibility),raw_price_evidence:JSON.stringify(rawPriceEvidence),source_evidence:{property_area_label:lookup(config.property_area_labels)?.source_label??null,construction_area_label:lookup(config.construction_area_labels)?.source_label??null,agency_logo_url:agencyLogoUrl,listing_agent_photo_url:listingAgentPhotoUrl,detail_retrieved_at:rawPriceEvidence.observed_at}
  }
@@ -228,12 +233,16 @@ function parseDetail(html,seed,config,terms){
 
 async function main(){
  const config=JSON.parse(await fs.readFile(configPath,'utf8'))
- deadlineAt=Date.now()+Number(config.max_runtime_ms||45*60*1000)
- const maxListingPages=Math.max(1,Number(config.max_listing_pages||100))
+ const collectionRuntimeMs=Math.min(69*60*1000,Math.max(1,Number(config.max_runtime_ms||69*60*1000)))
+ deadlineAt=Date.now()+collectionRuntimeMs
+ const maxListingPages=Math.min(100,Math.max(1,Number(config.max_listing_pages||100)))
  const maxDetailPages=Math.max(1,Number(config.max_detail_pages||2000))
- progress('starting',{source_name:config.source_name,transaction:config.transaction,max_runtime_ms:Number(config.max_runtime_ms||45*60*1000),max_listing_pages:maxListingPages,max_detail_pages:maxDetailPages})
+ const runAt=now(), directory=path.join(outputRoot,runAt.replace(/[:.]/g,'-'))
+ const archive=createRunArchive(directory,{commandId:process.env.TWUANIS_SCRAPER_COMMAND_ID||null,sourceName:config.source_name,transaction:config.transaction,extractedAt:runAt})
+ progress('starting',{source_name:config.source_name,transaction:config.transaction,max_runtime_ms:collectionRuntimeMs,max_listing_pages:maxListingPages,max_detail_pages:maxDetailPages,archive_directory:directory})
  const terms=config.geography?await canonicalTerms(config):null
- const runAt=now(), discovered=new Map(), pages=[], failures=[]
+ const discovered=new Map(), pages=[], failures=[]
+ let collectionBoundary=null
  let listingDiscoveryVerified=Boolean(selectionPath)
  if(selectionPath){
   const selected=JSON.parse(await fs.readFile(selectionPath,'utf8'))
@@ -245,29 +254,28 @@ async function main(){
  }else{
   let url=config.start_url||config.sale_start_url
   while(url&&!pages.includes(url)&&pages.length<maxListingPages){
-   try{const html=await fetchPublic(url,config),parsed=parseListingPage(html,config);pages.push(url);listingDiscoveryVerified=listingDiscoveryVerified||parsed.listing_discovery_verified;parsed.listings.forEach(item=>discovered.set(item.source_listing_id,item));progress('inventory_page',{pages_visited:pages.length,listings_discovered:discovered.size,url});url=parsed.next;await delay(Math.min(350,boundedMs(350,350)))}catch(error){failures.push({url,error:String(error.message||error)});progress('inventory_failure',{pages_visited:pages.length,error:String(error.message||error),url});break}
+   try{const html=await fetchPublic(url,config),parsed=parseListingPage(html,config);pages.push(url);listingDiscoveryVerified=listingDiscoveryVerified||parsed.listing_discovery_verified;parsed.listings.forEach(item=>discovered.set(item.source_listing_id,item));progress('inventory_page',{pages_visited:pages.length,listings_discovered:discovered.size,url});url=parsed.next;await delay(Math.min(350,boundedMs(350,350)))}catch(error){if(String(error.message||error)==='WASI_EXECUTION_DEADLINE_EXCEEDED'){collectionBoundary='runtime_cap';break}failures.push({url,error:String(error.message||error)});progress('inventory_failure',{pages_visited:pages.length,error:String(error.message||error),url});break}
   }
-  if(url&&pages.length>=maxListingPages)failures.push({url,error:'LISTING_PAGE_CAP_REACHED'})
+  if(url&&pages.length>=maxListingPages)collectionBoundary='listing_page_cap'
  }
  const records=[]
  let detailsProcessed=0
  for(const seed of discovered.values()){
-  if(detailsProcessed>=maxDetailPages){failures.push({source_listing_id:seed.source_listing_id,error:'DETAIL_PAGE_CAP_REACHED'});break}
-  try{records.push(parseDetail(await fetchPublic(seed.source_url,config),seed,config,terms));detailsProcessed++;if(detailsProcessed===1||detailsProcessed%10===0||detailsProcessed===discovered.size)progress('detail_progress',{listings_discovered:discovered.size,details_processed:detailsProcessed,details_extracted:records.length,failures:failures.length});await delay(Math.min(350,boundedMs(350,350)))}catch(error){detailsProcessed++;failures.push({url:seed.source_url,source_listing_id:seed.source_listing_id,error:String(error.message||error)});progress('detail_failure',{source_listing_id:seed.source_listing_id,details_processed:detailsProcessed,error:String(error.message||error)})}
+  if(detailsProcessed>=maxDetailPages){collectionBoundary='detail_page_cap';break}
+  try{const row=parseDetail(await fetchPublic(seed.source_url,config),seed,config,terms);records.push(row);archive.append(row);detailsProcessed++;if(detailsProcessed===1||detailsProcessed%10===0||detailsProcessed===discovered.size)progress('detail_progress',{listings_discovered:discovered.size,details_processed:detailsProcessed,details_extracted:records.length,failures:failures.length});await delay(Math.min(350,boundedMs(350,350)))}catch(error){if(String(error.message||error)==='WASI_EXECUTION_DEADLINE_EXCEEDED'){collectionBoundary='runtime_cap';break}detailsProcessed++;failures.push({url:seed.source_url,source_listing_id:seed.source_listing_id,error:String(error.message||error)});progress('detail_failure',{source_listing_id:seed.source_listing_id,details_processed:detailsProcessed,error:String(error.message||error)})}
  }
  const count=predicate=>records.filter(predicate).length
  const byPropertyType=Object.fromEntries(['houses','apartments','condominiums','undeveloped_land','other'].map(group=>{const rows=records.filter(r=>propertyTypeGroup(r.property_type)===group);return [group,{total:rows.length,with_property_area:rows.filter(r=>!!r.property_area).length,with_construction_area:rows.filter(r=>!!r.construction_area).length,with_both_measurements:rows.filter(r=>!!r.property_area&&!!r.construction_area).length,missing_construction_area:rows.filter(r=>!r.construction_area).length}]}))
  const reasons={};for(const row of records)for(const [level,reason] of Object.entries(row.geography.resolution_reasons||{})){if(reason!=='resolved')reasons[`${level}:${reason}`]=(reasons[`${level}:${reason}`]||0)+1}
  if(!listingDiscoveryVerified)failures.push({url:config.start_url||config.sale_start_url,error:'LISTING_DISCOVERY_UNVERIFIED'})
- const summary={source_name:config.source_name,source_platform:'Wasi',transaction:config.transaction,run_started_at:runAt,run_finished_at:now(),listing_pages_discovered:pages.length,listing_discovery_verified:listingDiscoveryVerified,extraction_complete:listingDiscoveryVerified&&failures.length===0&&detailsProcessed===discovered.size,listings_discovered:discovered.size,details_processed:detailsProcessed,successfully_extracted:records.length,source_transaction_confirmed:count(r=>r.source_transaction===config.transaction),source_transaction_mismatch:count(r=>r.source_transaction!==config.transaction),with_property_area:count(r=>!!r.property_area),with_construction_area:count(r=>!!r.construction_area),with_both_measurements:count(r=>!!r.property_area&&!!r.construction_area),missing_either_measurement:count(r=>!r.property_area||!r.construction_area),with_whatsapp:count(r=>r.whatsapp_numbers.length>0),with_image_urls:count(r=>r.image_urls.length>0),with_complete_province_canton_district:count(r=>r.geography.exact_pcd_published),unresolved_or_ambiguous_geography:count(r=>!r.geography.exact_pcd_published),geography_unresolved_reasons:reasons,measurement_completeness_by_property_type:byPropertyType,canonical_geography_terms_loaded:terms?.length||0,failed_or_inaccessible_listing_pages:failures.length,failures}
- const directory=path.join(outputRoot,runAt.replace(/[:.]/g,'-'))
- await fs.mkdir(directory,{recursive:true})
+ const archiveResult=archive.finalize()
+ const summary={source_name:config.source_name,source_platform:'Wasi',transaction:config.transaction,run_started_at:runAt,run_finished_at:now(),collection_status:collectionBoundary?'bounded_partial':'completed_full',collection_boundary:collectionBoundary,listing_pages_discovered:pages.length,listing_discovery_verified:listingDiscoveryVerified,extraction_complete:!collectionBoundary&&listingDiscoveryVerified&&records.length>0&&failures.length===0&&detailsProcessed===discovered.size,listings_discovered:discovered.size,details_processed:detailsProcessed,successfully_extracted:records.length,source_transaction_confirmed:count(r=>r.source_transaction===config.transaction),source_transaction_mismatch:count(r=>r.source_transaction!==config.transaction),with_property_area:count(r=>!!r.property_area),with_construction_area:count(r=>!!r.construction_area),with_both_measurements:count(r=>!!r.property_area&&!!r.construction_area),missing_either_measurement:count(r=>!r.property_area||!r.construction_area),with_whatsapp:count(r=>r.whatsapp_numbers.length>0),with_image_urls:count(r=>r.image_urls.length>0),with_complete_province_canton_district:count(r=>r.geography.exact_pcd_published),unresolved_or_ambiguous_geography:count(r=>!r.geography.exact_pcd_published),geography_unresolved_reasons:reasons,measurement_completeness_by_property_type:byPropertyType,canonical_geography_terms_loaded:terms?.length||0,failed_or_inaccessible_listing_pages:failures.length,archive:archiveResult,failures}
  await fs.writeFile(path.join(directory,'devop-wasi-sales.json'),JSON.stringify(records,null,2)+'\n')
  await fs.writeFile(path.join(directory,'extraction-report.json'),JSON.stringify(summary,null,2)+'\n')
  const examples=records.filter(r=>r.property_area||r.construction_area).slice(0,6).map(r=>`- ${r.source_listing_id}: Property Area ${r.property_area?`${r.property_area.source_label} = ${r.property_area.source_value}`:'missing'}; Construction Area ${r.construction_area?`${r.construction_area.source_label} = ${r.construction_area.source_value}`:'missing'}`).join('\n')
  await fs.writeFile(path.join(directory,'extraction-report.md'),`# ${config.source_name} public sale extraction\n\n- Discovered: ${summary.sale_listings_discovered}\n- Extracted: ${summary.successfully_extracted}\n- Property Area: ${summary.with_property_area}\n- Construction Area: ${summary.with_construction_area}\n- Both: ${summary.with_both_measurements}\n- Missing either: ${summary.missing_either_measurement}\n- WhatsApp: ${summary.with_whatsapp}\n- Image URLs: ${summary.with_image_urls}\n- Complete province/canton/district: ${summary.with_complete_province_canton_district}\n- Unresolved or ambiguous geography: ${summary.unresolved_or_ambiguous_geography}\n- Failed details: ${summary.failed_or_inaccessible_listing_pages}\n\n## Measurement completeness by property type\n${Object.entries(byPropertyType).map(([type,value])=>`- ${type}: ${JSON.stringify(value)}`).join('\n')}\n\n## Explicit source-label examples\n${examples||'- None'}\n`)
- progress('extraction_complete',{listing_pages_discovered:pages.length,listings_discovered:discovered.size,details_processed:detailsProcessed,successfully_extracted:records.length,failures:failures.length,verified:summary.extraction_complete})
+ progress('extraction_complete',{listing_pages_discovered:pages.length,listings_discovered:discovered.size,details_processed:detailsProcessed,successfully_extracted:records.length,failures:failures.length,verified:summary.extraction_complete,collection_status:summary.collection_status,archive:archiveResult})
  console.log(JSON.stringify({directory,summary}))
- if(!summary.extraction_complete)process.exitCode=1
+ if(!collectionBoundary&&!summary.extraction_complete)process.exitCode=1
 }
 main().catch(error=>{console.error(error);process.exitCode=1})

@@ -7,12 +7,15 @@ const path = require('path')
 const os = require('os')
 const crypto = require('crypto')
 const { extractSourcePropertyType } = require('./encuentra24-property-type')
+const { createRunArchive } = require('./scraper-run-archive.cjs')
 
 const { isObservationValid } = require('./quality/isObservationValid')
 const SOURCE_NAME = 'encuentra24'
 const TRANSACTION_TYPE = 'sale'
 const MAX_LISTINGS = 120
-const MAX_PAGES = 20
+const MAX_PAGES = 100
+let collectionStopRequested = false
+process.once('SIGTERM', () => { collectionStopRequested = true })
 
 const USER_AGENT =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
@@ -1446,6 +1449,8 @@ async function scrapeEncuentra24Sale({ regionSlug = process.argv[2] || 'bienes-r
   }
   const baseUrl =
     buildSearchUrl(regionSlug)
+  const archiveDirectory = path.join(path.dirname(path.resolve(output || path.join(os.homedir(), 'Desktop', `${regionSlug}-sale-raw.csv`))), 'source-observation-archive')
+  const archive = createRunArchive(archiveDirectory, { commandId: process.env.TWUANIS_SCRAPER_COMMAND_ID || null, sourceName: SOURCE_NAME, transaction: TRANSACTION_TYPE, extractedAt: new Date().toISOString() })
 
 console.log(
   'BASE URL:',
@@ -1457,7 +1462,7 @@ console.log(
   try {
     const cards = []
 
-for (let pageNumber = 1; pageNumber <= MAX_PAGES; pageNumber++) {
+for (let pageNumber = 1; pageNumber <= MAX_PAGES && !collectionStopRequested; pageNumber++) {
   const pageUrl =
     buildPageUrl(baseUrl, pageNumber)
 
@@ -1541,6 +1546,7 @@ if (pageNumber === 1 && pageCards[0]) {
       
 
     for (const [index, item] of listingItems.slice(0, MAX_LISTINGS).entries()) {
+  if (collectionStopRequested) break
 
   const listingUrl =
     item.listingUrl
@@ -1558,6 +1564,7 @@ console.log('START LISTING:', listingUrl)
             listingUrl,
             baseUrl: item.pageUrl
           })
+          archive.append(row)
 
           if (!isObservationValid(row)) {
 console.log(
@@ -1590,6 +1597,7 @@ console.log('ROWS COLLECTED:', rows.length)
       rows,
       fileName
     })
+    archive.finalize()
     
 console.log(
   'WRITECSV COMPLETE:',

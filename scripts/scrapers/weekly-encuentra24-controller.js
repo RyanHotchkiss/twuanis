@@ -9,6 +9,7 @@ const path = require('node:path')
 const { spawn } = require('node:child_process')
 const { createClient, ingestObservation, completeScopedSourceRun } = require('./encuentra24-canonical-ingestion-adapter.cjs')
 const { readLedger, recordLedger, interruptedSourceIds } = require('./rent-run-ledger.cjs')
+const { createRunArchive } = require('./scraper-run-archive.cjs')
 
 if (process.env.ENCUENTRA24_ENV_FILE) {
   require('dotenv').config({ path: process.env.ENCUENTRA24_ENV_FILE, override: false, quiet: true })
@@ -26,7 +27,7 @@ const MANUAL = process.env.ENCUENTRA24_WEEKLY_OPERATOR_RUN === '1'
 const VALIDATE_ONLY = process.env.ENCUENTRA24_WEEKLY_VALIDATE === '1'
 const SALE_CAP = Number(process.env.ENCUENTRA24_WEEKLY_SALE_CAP || 100)
 const RENT_CAP = Number(process.env.ENCUENTRA24_WEEKLY_RENT_CAP || 100)
-const MAX_RUNTIME_MS = Number(process.env.ENCUENTRA24_WEEKLY_MAX_RUNTIME_MS || 3 * 60 * 60 * 1000)
+const MAX_RUNTIME_MS = Math.min(69 * 60 * 1000, Number(process.env.ENCUENTRA24_WEEKLY_MAX_RUNTIME_MS || 69 * 60 * 1000))
 const REPOSITORY = path.resolve(__dirname, '../..')
 let activeChild = null
 
@@ -38,10 +39,17 @@ function sha256(file) { return crypto.createHash('sha256').update(fs.readFileSyn
 function parseCsv(text) { const rows=[]; let row=[], value='', quoted=false; for(let i=0;i<text.length;i++){const c=text[i];if(c==='"'){if(quoted&&text[i+1]==='"'){value+='"';i++}else quoted=!quoted}else if(c===','&&!quoted){row.push(value);value=''}else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&text[i+1]==='\n')i++;row.push(value);if(row.some(Boolean))rows.push(row);row=[];value=''}else value+=c}if(value||row.length){row.push(value);rows.push(row)}const [headers,...data]=rows;return data.map(values=>Object.fromEntries(headers.map((header,index)=>[header,values[index]||''])))}
 async function ingestAndReconcile(file, transaction, runId, startedAt, processResult) {
   let rows=[], errors=[]; try { rows=parseCsv(fs.readFileSync(file,'utf8')) } catch(error) { errors.push(error.message) }
+  const archive=createRunArchive(path.join(path.dirname(file),'source-observation-archive'),{commandId:process.env.TWUANIS_SCRAPER_COMMAND_ID||runId,sourceName:'encuentra24',transaction,extractedAt:startedAt})
   const client=createClient(), observedIds=[...new Set(rows.map(row=>String(row.source_listing_id||'').trim()).filter(Boolean))]
   let published=0,rejected=0,failed=0
-  for(const row of rows){try{const result=await ingestObservation(client,row,{runId,startedAt});const outcome=String(result?.outcome||'');if(outcome==='accepted'||outcome==='succeeded')published++;else rejected++}catch(error){failed++;errors.push(error.message)}}
-  const reconciliation=await completeScopedSourceRun(client,{sourceName:'encuentra24',transaction,runId,startedAt,completion:{status:processResult.code===0?'completed':'failed',errors},observedIds})
+  for(const row of rows){try{const result=await ingestObservation(client,row,{runId,startedAt});const outcome=String(result?.outcome||'');archive.outcome(row,{outcome,reason:result?.reason||null});if(outcome==='accepted'||outcome==='succeeded')published++;else rejected++}catch(error){failed++;errors.push(error.message);archive.outcome(row,{outcome:'failed',reason:error.message})}}
+  // The historic CSV does not prove a complete source population.  Absence
+  // reconciliation is deliberately opt-in until a verified full-inventory
+  // signal is supplied; partial and interrupted runs can still ingest.
+  const reconciliation=processResult.code===0&&observedIds.length>0&&process.env.ENCUENTRA24_VERIFIED_FULL_INVENTORY==='1'
+    ?await completeScopedSourceRun(client,{sourceName:'encuentra24',transaction,runId,startedAt,completion:{status:'completed',errors},observedIds})
+    :{absence_applied:false,status:'skipped',reason:'FULL_INVENTORY_NOT_VERIFIED'}
+  archive.finalize()
   return { captured:observedIds.length,published,rejected,failed,errors,reconciliation }
 }
 
