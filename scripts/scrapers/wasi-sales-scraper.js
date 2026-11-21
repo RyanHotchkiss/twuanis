@@ -276,6 +276,10 @@ async function main(){
  await fs.writeFile(path.join(directory,'extraction-report.md'),`# ${config.source_name} public sale extraction\n\n- Discovered: ${summary.sale_listings_discovered}\n- Extracted: ${summary.successfully_extracted}\n- Property Area: ${summary.with_property_area}\n- Construction Area: ${summary.with_construction_area}\n- Both: ${summary.with_both_measurements}\n- Missing either: ${summary.missing_either_measurement}\n- WhatsApp: ${summary.with_whatsapp}\n- Image URLs: ${summary.with_image_urls}\n- Complete province/canton/district: ${summary.with_complete_province_canton_district}\n- Unresolved or ambiguous geography: ${summary.unresolved_or_ambiguous_geography}\n- Failed details: ${summary.failed_or_inaccessible_listing_pages}\n\n## Measurement completeness by property type\n${Object.entries(byPropertyType).map(([type,value])=>`- ${type}: ${JSON.stringify(value)}`).join('\n')}\n\n## Explicit source-label examples\n${examples||'- None'}\n`)
  progress('extraction_complete',{listing_pages_discovered:pages.length,listings_discovered:discovered.size,details_processed:detailsProcessed,successfully_extracted:records.length,failures:failures.length,verified:summary.extraction_complete,collection_status:summary.collection_status,archive:archiveResult})
  console.log(JSON.stringify({directory,summary}))
- if(!collectionBoundary&&!summary.extraction_complete)process.exitCode=1
+ // A configured collection boundary is a normal terminal condition only when
+ // discovery and every attempted detail extraction completed cleanly.  This
+ // preserves and hands off bounded records, while still surfacing actual
+ // discovery/detail failures to the runner (which will skip reconciliation).
+ if(!listingDiscoveryVerified||records.length===0||failures.length>0)process.exitCode=1
 }
 main().catch(error=>{console.error(error);process.exitCode=1})
