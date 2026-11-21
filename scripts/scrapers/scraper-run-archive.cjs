@@ -37,8 +37,16 @@ function createRemoteArchive(meta = {}) {
   let pending = [], sequence = 0, uploaded = 0, lastError = null, flushing = null, closed = false
   const errors = []
   async function upload(objectPath, body, contentType) {
-    const { error } = await client.storage.from(REMOTE_BUCKET).upload(objectPath, body, { contentType, upsert: true })
-    if (error) throw error
+    // Bounded retries make transient Storage failures observable but do not
+    // turn a collection worker into an unbounded retry loop.
+    let lastError
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      const { error } = await client.storage.from(REMOTE_BUCKET).upload(objectPath, body, { contentType, upsert: true })
+      if (!error) return
+      lastError = error
+      if (attempt < 3) await new Promise(resolve => setTimeout(resolve, attempt * 250))
+    }
+    throw lastError
   }
   async function flush(force = false) {
     if (flushing) return flushing
