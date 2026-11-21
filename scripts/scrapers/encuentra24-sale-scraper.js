@@ -1597,7 +1597,7 @@ console.log('ROWS COLLECTED:', rows.length)
       rows,
       fileName
     })
-    archive.finalize()
+    await archive.finalize()
     
 console.log(
   'WRITECSV COMPLETE:',

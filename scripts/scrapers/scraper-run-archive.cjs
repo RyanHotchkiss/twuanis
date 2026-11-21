@@ -6,6 +6,88 @@
 // review projection; it never replaces the original observation evidence.
 const fs = require('node:fs')
 const path = require('node:path')
+const crypto = require('node:crypto')
+const { createClient } = require('@supabase/supabase-js')
+
+// Workers launched outside Next do not automatically receive .env.local.
+// Load it only when a caller has not already supplied the service credentials.
+if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  try { require('dotenv').config({ path: path.join(process.cwd(), '.env.local'), override: false, quiet: true }) } catch { /* local archive remains available */ }
+}
+
+// Checkpoints are intentionally small and immutable-in-practice batches.  A
+// source observation is first written synchronously to local disk, then queued
+// for private remote persistence.  The queue is flushed every 10 records or
+// 15 seconds (whichever comes first), with a final forced flush at run end.
+// A remote outage never discards local evidence or stops collection.
+const REMOTE_BUCKET = process.env.TWUANIS_SCRAPER_ARCHIVE_BUCKET || 'twuanis-scraper-archives'
+const REMOTE_BATCH_SIZE = 10
+const REMOTE_FLUSH_MS = 15_000
+const safeSegment = value => String(value || 'unknown').trim().toLowerCase().replace(/[^a-z0-9._-]+/g, '-').replace(/^-+|-+$/g, '') || 'unknown'
+
+function createRemoteArchive(meta = {}) {
+  const url = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+  if (!url || !serviceKey) {
+    return { enabled: false, status: 'unavailable', reason: 'SUPABASE_STORAGE_CREDENTIALS_UNAVAILABLE', enqueue() {}, flush: async () => ({ uploaded: 0 }), finalize: async () => ({ uploaded: 0 }), summary: () => ({ enabled: false, status: 'unavailable', reason: 'SUPABASE_STORAGE_CREDENTIALS_UNAVAILABLE' }) }
+  }
+  const client = createClient(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } })
+  const runId = safeSegment(meta.commandId || meta.runId || meta.extractedAt || crypto.randomUUID())
+  const prefix = [safeSegment(meta.sourceName), safeSegment(meta.transaction), runId].join('/')
+  let pending = [], sequence = 0, uploaded = 0, lastError = null, flushing = null, closed = false
+  const errors = []
+  async function upload(objectPath, body, contentType) {
+    const { error } = await client.storage.from(REMOTE_BUCKET).upload(objectPath, body, { contentType, upsert: true })
+    if (error) throw error
+  }
+  async function flush(force = false) {
+    if (flushing) return flushing
+    if (!pending.length) return { uploaded: 0 }
+    if (!force && pending.length < REMOTE_BATCH_SIZE) return { uploaded: 0 }
+    const batch = pending.splice(0, force ? pending.length : REMOTE_BATCH_SIZE)
+    const body = `${batch.join('\n')}\n`
+    const hash = crypto.createHash('sha256').update(body).digest('hex')
+    const objectPath = `${prefix}/checkpoints/${String(++sequence).padStart(8, '0')}-${hash}.ndjson`
+    flushing = upload(objectPath, Buffer.from(body), 'application/x-ndjson')
+      .then(() => { uploaded += batch.length; lastError = null; return { uploaded: batch.length, objectPath } })
+      .catch(error => {
+        pending = [...batch, ...pending]
+        lastError = String(error?.message || error)
+        errors.push({ at: new Date().toISOString(), objectPath, error: lastError })
+        return { uploaded: 0, error: lastError }
+      })
+      .finally(() => { flushing = null })
+    return flushing
+  }
+  const timer = setInterval(() => { void flush(true) }, REMOTE_FLUSH_MS)
+  timer.unref?.()
+  return {
+    enabled: true,
+    enqueue(preserved) { if (!closed) { pending.push(JSON.stringify(preserved)); void flush(false) } },
+    flush,
+    async finalize(files = []) {
+      // A batch may still be uploading while a few final observations arrive.
+      // Drain sequentially so the final manifest never claims remote success
+      // while a locally captured checkpoint remains pending.
+      while (flushing || pending.length) {
+        if (flushing) await flushing
+        if (pending.length) await flush(true)
+      }
+      closed = true
+      clearInterval(timer)
+      const final = []
+      for (const file of files) {
+        if (!file || !fs.existsSync(file)) continue
+        const body = fs.readFileSync(file)
+        const objectPath = `${prefix}/final/${path.basename(file)}`
+        try { await upload(objectPath, body, path.extname(file) === '.json' ? 'application/json' : path.extname(file) === '.csv' ? 'text/csv' : 'application/x-ndjson'); final.push(objectPath) }
+        catch (error) { lastError = String(error?.message || error); errors.push({ at: new Date().toISOString(), objectPath, error: lastError }) }
+      }
+      return { uploaded, final, pending: pending.length, lastError }
+    },
+    summary: () => ({ enabled: true, bucket: REMOTE_BUCKET, prefix, uploaded, pending: pending.length, lastError, errors: [...errors] })
+  }
+}
 
 const columns = [
   'scraper_command_id','source_name','source_platform','transaction','extracted_at',
@@ -51,6 +133,7 @@ function createRunArchive(directory, meta = {}) {
   const outcomes = path.join(directory, 'canonical-outcomes.ndjson')
   if (!fs.existsSync(checkpointCsv)) fs.writeFileSync(checkpointCsv, `${columns.join(',')}\n`, { mode: 0o600 })
   const seen = new Set()
+  const remote = createRemoteArchive(meta)
   return {
     directory, checkpoint, checkpointCsv, outcomes,
     append(row) {
@@ -60,12 +143,13 @@ function createRunArchive(directory, meta = {}) {
       const preserved = { archived_at: new Date().toISOString(), archive: meta, observation: row }
       fs.appendFileSync(checkpoint, `${JSON.stringify(preserved)}\n`, { mode: 0o600, flag: 'a' })
       fs.appendFileSync(checkpointCsv, csvRow(row, meta), { mode: 0o600, flag: 'a' })
+      remote.enqueue(preserved)
       return true
     },
     outcome(row, value) {
       fs.appendFileSync(outcomes, `${JSON.stringify({ recorded_at: new Date().toISOString(), source_listing_id: row?.source_listing_id || null, ...value })}\n`, { mode: 0o600, flag: 'a' })
     },
-    finalize() {
+    async finalize() {
       const rows = fs.existsSync(checkpoint) ? fs.readFileSync(checkpoint, 'utf8').split(/\r?\n/).filter(Boolean).map(line => JSON.parse(line).observation) : []
       const outcomeById = new Map()
       if (fs.existsSync(outcomes)) for (const line of fs.readFileSync(outcomes, 'utf8').split(/\r?\n/).filter(Boolean)) {
@@ -73,8 +157,10 @@ function createRunArchive(directory, meta = {}) {
         if (value.source_listing_id) outcomeById.set(String(value.source_listing_id), value)
       }
       fs.writeFileSync(checkpointCsv, `${columns.join(',')}\n${rows.map(row => csvRow(row, meta, outcomeById.get(String(row.source_listing_id)) || {})).join('')}`, { mode: 0o600 })
-      fs.writeFileSync(path.join(directory, 'source-observations.json'), `${JSON.stringify(rows, null, 2)}\n`, { mode: 0o600 })
-      return { observations: rows.length, json: path.join(directory, 'source-observations.json'), csv: checkpointCsv, checkpoint }
+      const json = path.join(directory, 'source-observations.json')
+      fs.writeFileSync(json, `${JSON.stringify(rows, null, 2)}\n`, { mode: 0o600 })
+      const remoteResult = await remote.finalize([checkpoint, outcomes, checkpointCsv, json])
+      return { observations: rows.length, json, csv: checkpointCsv, checkpoint, remote: { ...remote.summary(), ...remoteResult } }
     }
   }
 }

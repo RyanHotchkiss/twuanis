@@ -66,6 +66,13 @@ async function run(selection, outputRoot, onProgress=()=>{}) {
     ?await completeSourceRun(client,{sourceName:site.source_name,transaction:site.transaction,runId,startedAt,completion:{status:executionError?'failed':'completed',pagination_status:counts.paginationStatus,errors:counts.errors},observedIds})
     :{absence_applied:false,status:'skipped',reason:'LISTING_DISCOVERY_UNVERIFIED'}
   counts.archived=Number(reconciliation?.archived ?? 'unavailable'); counts.activeInventoryTotal=reconciliation?.remaining_published ?? 'unavailable'; counts.captured=observedIds.length
+  // Re-upload the final CSV/JSON projection after canonical outcomes have been
+  // recorded.  The run's immutable checkpoint batches were already persisted
+  // during collection.
+  if (directory) {
+    const archive = createRunArchive(directory,{commandId:runId,sourceName:site.source_name,transaction:site.transaction,extractedAt:startedAt})
+    counts.remoteArchive = await archive.finalize()
+  }
   const output={directory,counts,reconciliation}; onProgress({event:'completed',selection,...output}); if(executionError) throw executionError; return output
 }
 module.exports = { configurations, run }

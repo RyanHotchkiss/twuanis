@@ -49,7 +49,7 @@ async function ingestAndReconcile(file, transaction, runId, startedAt, processRe
   const reconciliation=processResult.code===0&&observedIds.length>0&&process.env.ENCUENTRA24_VERIFIED_FULL_INVENTORY==='1'
     ?await completeScopedSourceRun(client,{sourceName:'encuentra24',transaction,runId,startedAt,completion:{status:'completed',errors},observedIds})
     :{absence_applied:false,status:'skipped',reason:'FULL_INVENTORY_NOT_VERIFIED'}
-  archive.finalize()
+  await archive.finalize()
   return { captured:observedIds.length,published,rejected,failed,errors,reconciliation }
 }
 
