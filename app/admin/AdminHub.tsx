@@ -21,9 +21,15 @@ import AdminScrapers from './AdminScrapers'
 import AdminRegisteredUsers from './AdminRegisteredUsers'
 import AdminSourceIngestion from './AdminSourceIngestion'
 function AdminDuplicateReview({language}:{language:AdminLanguage}) {
- return new URLSearchParams(window.location.search).get('workspace')==='encuentra24-removed'
-  ? <AdminEncuentra24RemovedListings language={language}/>
-  : <DuplicateReviewWorkspace language={language}/>
+ const [removed,setRemoved]=useState(()=>new URLSearchParams(window.location.search).get('workspace')==='encuentra24-removed')
+ useEffect(()=>{
+  const sync=()=>setRemoved(new URLSearchParams(window.location.search).get('workspace')==='encuentra24-removed')
+  const originalPushState=history.pushState
+  history.pushState=function(data:unknown,unused:string,url?:string|URL|null){originalPushState.call(history,data,unused,url);sync()}
+  window.addEventListener('popstate',sync)
+  return()=>{history.pushState=originalPushState;window.removeEventListener('popstate',sync)}
+ },[])
+ return removed?<AdminEncuentra24RemovedListings language={language}/>:<DuplicateReviewWorkspace language={language}/>
 }
 export default function AdminHub({authority}:{authority:AdministrativeAuthority|null}) {
  const [language,setLanguage]=useState<AdminLanguage>('en')

@@ -1,5 +1,5 @@
 // Browser-safe presentation contract. No database or authority implementation.
-export const adminWorkspaces = ['duplicates','encuentra24-removed','claims','scrapers','users','imports','overview','listings','packages','addons','offers','promotions','orders','payments','entitlements','administrators','remates','configuration'] as const
+export const adminWorkspaces = ['duplicates','claims','scrapers','users','imports','overview','listings','packages','addons','offers','promotions','orders','payments','entitlements','administrators','remates','configuration'] as const
 export type AdminWorkspace = typeof adminWorkspaces[number]
 export type AdminLanguage = 'en' | 'es'
 export const adminLabels = {
