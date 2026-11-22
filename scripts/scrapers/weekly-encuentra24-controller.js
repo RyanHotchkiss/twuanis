@@ -7,7 +7,7 @@ const crypto = require('node:crypto')
 const fs = require('node:fs')
 const path = require('node:path')
 const { spawn } = require('node:child_process')
-const { createClient, ingestObservation, completeScopedSourceRun } = require('./encuentra24-canonical-ingestion-adapter.cjs')
+const { createClient, ingestObservation, recordRemovedListingCandidates } = require('./encuentra24-canonical-ingestion-adapter.cjs')
 const { readLedger, recordLedger, interruptedSourceIds } = require('./rent-run-ledger.cjs')
 const { createRunArchive } = require('./scraper-run-archive.cjs')
 
@@ -25,8 +25,6 @@ const ROOT = process.env.ENCUENTRA24_RUN_ROOT || ''
 const ENABLED = process.env.ENCUENTRA24_WEEKLY_SCHEDULE_ENABLED === '1'
 const MANUAL = process.env.ENCUENTRA24_WEEKLY_OPERATOR_RUN === '1'
 const VALIDATE_ONLY = process.env.ENCUENTRA24_WEEKLY_VALIDATE === '1'
-const SALE_CAP = Number(process.env.ENCUENTRA24_WEEKLY_SALE_CAP || 100)
-const RENT_CAP = Number(process.env.ENCUENTRA24_WEEKLY_RENT_CAP || 100)
 const MAX_RUNTIME_MS = Math.min(69 * 60 * 1000, Number(process.env.ENCUENTRA24_WEEKLY_MAX_RUNTIME_MS || 69 * 60 * 1000))
 const REPOSITORY = path.resolve(__dirname, '../..')
 let activeChild = null
@@ -36,6 +34,69 @@ function iso() { return new Date().toISOString() }
 function atomic(file, value) { const temporary = `${file}.${process.pid}.tmp`; fs.writeFileSync(temporary, JSON.stringify(value, null, 2), { mode: 0o600 }); fs.renameSync(temporary, file) }
 function validCap(value, name) { required(Number.isInteger(value) && value > 0 && value <= 10000, `${name} must be an integer from 1 to 10000`) }
 function sha256(file) { return crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex') }
+function terminalStatus(summary, transaction) {
+  const run=summary[transaction]||{}, completion=run.ingestion?.completion||{}
+  if (summary.status==='INTERRUPTED') return 'stopped'
+  if (summary.status==='FAILED') return 'failed'
+  if (run.process?.code===0 && completion.inventory_complete===true && completion.status==='COMPLETE') return 'complete'
+  return 'incomplete'
+}
+function agencyCsv(rows, transaction) {
+  const quote=value=>`"${String(value??'').replace(/"/g,'""')}"`
+  const groups=new Map()
+  for (const row of rows) { const agency=String(row.agency_name||'').trim()||'Attribution unavailable'; const list=groups.get(agency)||[]; if(!list.some(item=>item.id===row.id)) list.push(row); groups.set(agency,list) }
+  const lines=[['row_type','agency_name','published_listing_count','transaction_type','encuentra24_listing_url','twuanis_listing_url'].map(quote).join(',')]
+  for (const [agency,list] of [...groups.entries()].sort(([a],[b])=>a.localeCompare(b))) {
+    lines.push(['agency_summary',agency,list.length,transaction,'',''].map(quote).join(','))
+    for (const row of list) lines.push(['listing',agency,list.length,transaction,row.source_url||'',`https://twuanis.com/en/${transaction==='sale'?'buy/listing':'rent-lease/listing'}/${row.id}`].map(quote).join(','))
+  }
+  return '\ufeff'+lines.join('\r\n')+'\r\n'
+}
+async function publishedAgencyRows(client, transaction) {
+  const rows=[]
+  for(let offset=0;;offset+=1000) {
+    const page=await client.select('listings',`select=id,agency_name,source_url&source_name=eq.encuentra24&listing_origin=eq.imported&transaction_type=eq.${transaction}&listing_status=eq.active&order=id.asc&limit=1000&offset=${offset}`)
+    rows.push(...page); if(page.length<1000) return rows
+  }
+}
+function notificationText(summary, transaction, publication) {
+  const run=summary[transaction]||{}, ingestion=run.ingestion||{}, review=ingestion.removalReview||{}
+  const complete=ingestion.completion?.inventory_complete===true
+  return [
+    `Encuentra24 ${transaction==='sale'?'Sale':'Rent'} scraper run`,
+    `Run: ${run.run_id||summary.weekly_run_id||'unavailable'}`,
+    `Started: ${run.started_at||summary.started_at||'unavailable'}`,
+    `Finished: ${run.finished_at||summary.finished_at||'unavailable'}`,
+    `Final status: ${terminalStatus(summary,transaction)}`,
+    `Listings collected: ${ingestion.captured??'unavailable'}`,
+    publication ? `Current published Twuanis listings represented in CSV: ${publication.rows.length}` : 'Agency publication CSV: not attached because this run was not verified complete.',
+    publication ? `Distinct agencies represented: ${publication.agencies}` : 'Distinct agencies represented: unavailable.',
+    `Inventory complete: ${complete?'yes':'no'}`,
+    complete ? `Suspected removals: ${review.created??'unavailable'}` : 'Removal reconciliation: not completed because the inventory was not verified complete.',
+    complete ? `Candidates awaiting Owner review: ${review.pending??'unavailable'}` : 'Candidates awaiting Owner review: unavailable.',
+    `Inconclusive removals: ${review.inconclusive??'unavailable'}`,
+    'Listings archived through previous Owner decisions: unavailable.',
+    'Suspected removals are not confirmed source unavailability and do not establish that a property was sold.',
+    'Review: https://twuanis.com/admin?workspace=encuentra24-removed'
+  ].join('\n')
+}
+async function sendEncuentra24Notification(summary, transaction) {
+  const to=process.env.SCRAPER_NOTIFICATION_TO, from=process.env.EMAIL_FROM
+  if (!to || !from || !process.env.RESEND_API_KEY) return {state:'not_configured'}
+  try {
+    const {Resend}=require('resend')
+    const run=summary[transaction]||{}
+    let publication=null
+    if (terminalStatus(summary,transaction)==='complete') {
+      const rows=await publishedAgencyRows(createClient(),transaction)
+      publication={rows,agencies:new Set(rows.map(row=>String(row.agency_name||'').trim()||'Attribution unavailable')).size}
+    }
+    const message={from,to,subject:`Twuanis Encuentra24 ${transaction==='sale'?'Sale':'Rent'}: ${terminalStatus(summary,transaction)}`,text:notificationText(summary,transaction,publication)}
+    if (publication) message.attachments=[{filename:`encuentra24-${transaction}-published-agencies.csv`,content:Buffer.from(agencyCsv(publication.rows,transaction)).toString('base64')}]
+    const response=await new Resend(process.env.RESEND_API_KEY).emails.send(message,{idempotencyKey:`encuentra24-terminal-${run.run_id||summary.weekly_run_id}-${transaction}`})
+    return response.error||!response.data?.id?{state:'failed',error:response.error?.message||'delivery_unconfirmed'}:{state:'sent',id:response.data.id}
+  } catch(error) { return {state:'failed',error:error?.message||String(error)} }
+}
 function parseCsv(text) { const rows=[]; let row=[], value='', quoted=false; for(let i=0;i<text.length;i++){const c=text[i];if(c==='"'){if(quoted&&text[i+1]==='"'){value+='"';i++}else quoted=!quoted}else if(c===','&&!quoted){row.push(value);value=''}else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&text[i+1]==='\n')i++;row.push(value);if(row.some(Boolean))rows.push(row);row=[];value=''}else value+=c}if(value||row.length){row.push(value);rows.push(row)}const [headers,...data]=rows;return data.map(values=>Object.fromEntries(headers.map((header,index)=>[header,values[index]||''])))}
 async function ingestAndReconcile(file, transaction, runId, startedAt, processResult) {
   let rows=[], errors=[]; try { rows=parseCsv(fs.readFileSync(file,'utf8')) } catch(error) { errors.push(error.message) }
@@ -43,14 +104,19 @@ async function ingestAndReconcile(file, transaction, runId, startedAt, processRe
   const client=createClient(), observedIds=[...new Set(rows.map(row=>String(row.source_listing_id||'').trim()).filter(Boolean))]
   let published=0,rejected=0,failed=0
   for(const row of rows){try{const result=await ingestObservation(client,row,{runId,startedAt});const outcome=String(result?.outcome||'');archive.outcome(row,{outcome,reason:result?.reason||null});if(outcome==='accepted'||outcome==='succeeded')published++;else rejected++}catch(error){failed++;errors.push(error.message);archive.outcome(row,{outcome:'failed',reason:error.message})}}
-  // The historic CSV does not prove a complete source population.  Absence
-  // reconciliation is deliberately opt-in until a verified full-inventory
-  // signal is supplied; partial and interrupted runs can still ingest.
-  const reconciliation=processResult.code===0&&observedIds.length>0&&process.env.ENCUENTRA24_VERIFIED_FULL_INVENTORY==='1'
-    ?await completeScopedSourceRun(client,{sourceName:'encuentra24',transaction,runId,startedAt,completion:{status:'completed',errors},observedIds})
-    :{absence_applied:false,status:'skipped',reason:'FULL_INVENTORY_NOT_VERIFIED'}
+  // Encuentra24 absence is never an automatic lifecycle action.  A complete
+  // inventory can create Owner-review candidates; partial and failed runs
+  // retain/ingest their observations but create no absence candidates.
+  let completion={status:'incomplete',inventory_complete:false,errors}
+  for (const candidate of [path.join(path.dirname(file),'run-summary.json'), path.join(path.dirname(file),'source-observation-archive','run-summary.json')]) {
+    try { completion={...completion,...JSON.parse(fs.readFileSync(candidate,'utf8'))}; break } catch { /* absent or unreadable means incomplete */ }
+  }
+  const removalReview=processResult.code===0&&completion.inventory_complete===true&&observedIds.length>0
+    ?await recordRemovedListingCandidates(client,{transaction,runId,startedAt,completion,observedIds})
+    :{created:0,pending:0,inconclusive:0,status:'skipped',reason:'INVENTORY_NOT_VERIFIED_COMPLETE'}
   await archive.finalize()
-  return { captured:observedIds.length,published,rejected,failed,errors,reconciliation }
+  return { captured:observedIds.length,published,rejected,failed,errors,completion,removalReview,
+    reconciliation:{absence_applied:false,status:'disabled',reason:'ENCUENTRA24_OWNER_REVIEW_REQUIRED'} }
 }
 
 function authorityPreflight() {
@@ -127,7 +193,6 @@ async function reconcileInterruptedRent(ledgerFile, reportFile) {
 }
 
 function validateRuntime() {
-  validCap(SALE_CAP, 'ENCUENTRA24_WEEKLY_SALE_CAP'); validCap(RENT_CAP, 'ENCUENTRA24_WEEKLY_RENT_CAP')
   resolveSelectedScrapers()
   required(ROOT && path.isAbsolute(ROOT), 'ENCUENTRA24_RUN_ROOT must be an absolute persistent volume path')
   authorityPreflight()
@@ -138,7 +203,7 @@ function validateRuntime() {
   const lock = acquireLock(ROOT)
   try {
     const file = path.join(ROOT, 'deployment-preflight.json')
-    const evidence = { validated_at: iso(), browser_executable: browserExecutable, sale_cap: SALE_CAP, rent_cap: RENT_CAP, schedule_enabled: ENABLED }
+    const evidence = { validated_at: iso(), browser_executable: browserExecutable, schedule_enabled: ENABLED }
     atomic(file, evidence)
     required(JSON.parse(fs.readFileSync(file, 'utf8')).validated_at === evidence.validated_at, 'Persistent run storage cannot be read after write')
     const ledger = path.join(ROOT, 'deployment-preflight-rent-ledger.json')
@@ -153,7 +218,6 @@ async function main() {
   // Stage 1's secure default: a scheduler can invoke this safely, but it will
   // never acquire, ingest, or publish until an explicit Stage 2 enablement.
   if (!ENABLED && !MANUAL) { console.log(JSON.stringify({ status: 'DISABLED', schedule: 'Friday 17:00 America/Costa_Rica (23:00 UTC)' })); return }
-  validCap(SALE_CAP, 'ENCUENTRA24_WEEKLY_SALE_CAP'); validCap(RENT_CAP, 'ENCUENTRA24_WEEKLY_RENT_CAP')
   const selectedScrapers = resolveSelectedScrapers()
   required(ROOT && path.isAbsolute(ROOT), 'ENCUENTRA24_RUN_ROOT must be an absolute persistent volume path')
   required(scheduleAllowsStart() || process.env.ENCUENTRA24_WEEKLY_OPERATOR_RUN === '1', 'Refusing start outside Friday 17:00 America/Costa_Rica')
@@ -192,8 +256,8 @@ async function main() {
       const saleOutput = path.join(directory, retry ? `sale-recovery-${retry}.csv` : 'sale.csv')
       const priorOutput = summary.sale.output
       const resume = priorOutput && fs.existsSync(priorOutput) ? { ENCUENTRA24_SKIP_CSV: priorOutput, ENCUENTRA24_SKIP_SHA256: sha256(priorOutput) } : {}
-      summary.sale = { ...summary.sale, run_id: saleRunId, cap: SALE_CAP, started_at: summary.sale.started_at || iso(), output: saleOutput, attempts: retry + 1 }; persist()
-      summary.sale.process = await runChild('scripts/scrapers/encuentra24-sale-scraper.js', ['bienes-raices-venta-de-propiedades', String(SALE_CAP), saleOutput], { ...process.env, ...resume, ENCUENTRA24_CANONICAL_INGEST: '1', ENCUENTRA24_RUN_ID: saleRunId, ENCUENTRA24_RUN_STARTED_AT: startedAt }, path.join(directory, 'sale.log'))
+      summary.sale = { ...summary.sale, run_id: saleRunId, started_at: summary.sale.started_at || iso(), output: saleOutput, attempts: retry + 1 }; persist()
+      summary.sale.process = await runChild('scripts/scrapers/encuentra24-sale-scraper.js', ['bienes-raices-venta-de-propiedades', '', saleOutput], { ...process.env, ...resume, ENCUENTRA24_CANONICAL_INGEST: '1', ENCUENTRA24_RUN_ID: saleRunId, ENCUENTRA24_RUN_STARTED_AT: startedAt }, path.join(directory, 'sale.log'))
       summary.sale.ingestion = await ingestAndReconcile(saleOutput,'sale',saleRunId,startedAt,summary.sale.process)
       summary.sale.finished_at = iso(); summary.sale.completed = summary.sale.process.code === 0; persist()
       if (!summary.sale.completed) throw new Error('Sale scraper did not complete successfully')
@@ -204,9 +268,9 @@ async function main() {
       summary.rent = { skipped: true, reason: 'not_selected' }; summary.status = 'COMPLETED'; persist()
     } else if (!summary.rent.completed) {
       const rentRunId = summary.rent.run_id || crypto.randomUUID(); const ledger = summary.rent.ledger || path.join(directory, 'rent-run-ledger.json'); const retry = Number(summary.rent.attempts || 0); const rentOutput = path.join(directory, retry ? `rent-recovery-${retry}.csv` : 'rent.csv')
-      summary.rent = { ...summary.rent, run_id: rentRunId, cap: RENT_CAP, started_at: summary.rent.started_at || iso(), output: rentOutput, ledger, attempts: retry + 1 }; persist()
+      summary.rent = { ...summary.rent, run_id: rentRunId, started_at: summary.rent.started_at || iso(), output: rentOutput, ledger, attempts: retry + 1 }; persist()
       await reconcileInterruptedRent(ledger, path.join(directory, 'rent-reconciliation.json'))
-      summary.rent.process = await runChild('scripts/scrapers/encuentra24-rent-scraper.js', ['bienes-raices-alquiler', String(RENT_CAP), rentOutput], { ...process.env, ENCUENTRA24_CANONICAL_INGEST: '1', ENCUENTRA24_RUN_ID: rentRunId, ENCUENTRA24_RUN_STARTED_AT: startedAt, ENCUENTRA24_RENT_RUN_LEDGER: ledger }, path.join(directory, 'rent.log'))
+      summary.rent.process = await runChild('scripts/scrapers/encuentra24-rent-scraper.js', ['bienes-raices-alquiler', '', rentOutput], { ...process.env, ENCUENTRA24_CANONICAL_INGEST: '1', ENCUENTRA24_RUN_ID: rentRunId, ENCUENTRA24_RUN_STARTED_AT: startedAt, ENCUENTRA24_RENT_RUN_LEDGER: ledger }, path.join(directory, 'rent.log'))
       summary.rent.ingestion = await ingestAndReconcile(rentOutput,'rent',rentRunId,startedAt,summary.rent.process)
       summary.rent.finished_at = iso(); summary.rent.completed = summary.rent.process.code === 0; summary.status = summary.rent.completed ? 'COMPLETED' : 'PARTIAL'; persist()
     }
@@ -216,10 +280,15 @@ async function main() {
     // it in the Owner's execution report.  Counts that the scraper does not
     // retain remain intentionally unavailable rather than being reported as 0.
     summary.finished_at = iso();
+    summary.notifications={}
+    for (const transaction of ['sale','rent']) {
+      if (summary[transaction]?.run_id) summary.notifications[transaction]=await sendEncuentra24Notification(summary,transaction)
+    }
+    persist()
     console.log(JSON.stringify({ scraper_execution_summary: summary }))
     process.removeListener('SIGTERM', onSigterm); process.removeListener('SIGINT', onSigint); fs.unlinkSync(lock)
   }
 }
 
 if (require.main === module) main().catch(error => { console.error(error.message); process.exitCode = 1 })
-module.exports = { costaRicaScheduleNow, scheduleAllowsStart, resolveSelectedScrapers, authorityPreflight }
+module.exports = { costaRicaScheduleNow, scheduleAllowsStart, resolveSelectedScrapers, authorityPreflight, terminalStatus, notificationText, sendEncuentra24Notification, agencyCsv, publishedAgencyRows }

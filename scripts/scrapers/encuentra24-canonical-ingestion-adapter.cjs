@@ -158,4 +158,11 @@ async function completeScopedSourceRun(client, { sourceName, transaction, runId,
   return client.rpc('complete_canonical_source_run_scoped', { p_source: sourceName, p_transaction: transaction, p_run: runId, p_started_at: iso(startedAt), p_completion: completion, p_observed_ids: observedIds })
 }
 
-module.exports = { createClient, resolveOntology, ingestObservation, completeScopedSourceRun, authorizedDistrictAbsence }
+// Encuentra24 absence is a review signal only.  This records candidates after
+// a scraper has proven a complete inventory; it never invokes reconciliation
+// or a lifecycle transition.
+async function recordRemovedListingCandidates(client, { transaction, runId, startedAt, completion, observedIds }) {
+  return client.rpc('record_encuentra24_removed_listing_candidates', { p_transaction: transaction, p_run: runId, p_started_at: iso(startedAt), p_completion: completion, p_observed_ids: observedIds })
+}
+
+module.exports = { createClient, resolveOntology, ingestObservation, completeScopedSourceRun, recordRemovedListingCandidates, authorizedDistrictAbsence }

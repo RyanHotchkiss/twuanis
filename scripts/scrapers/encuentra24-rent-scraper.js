@@ -12,8 +12,6 @@ const { createRunArchive } = require('./scraper-run-archive.cjs')
 const { isObservationValid } = require('./quality/isObservationValid')
 const SOURCE_NAME = 'encuentra24'
 const TRANSACTION_TYPE = 'rent'
-const MAX_LISTINGS = 120
-const MAX_PAGES = 100
 let collectionStopRequested = false
 process.once('SIGTERM', () => { collectionStopRequested = true })
 const REQUEST_DELAY_MS = 1500
@@ -1390,14 +1388,14 @@ async function scrapeEncuentra24Rent({regionSlug = process.argv[2] || 'bienes-ra
   const archive = createRunArchive(path.join(directory, 'source-observation-archive'), { commandId: process.env.TWUANIS_SCRAPER_COMMAND_ID || null, sourceName: SOURCE_NAME, transaction: TRANSACTION_TYPE, extractedAt: new Date().toISOString() })
   fs.mkdirSync(directory,{recursive:true});evidenceDirectory=path.join(directory,'source-evidence');fs.mkdirSync(evidenceDirectory,{recursive:true,mode:0o700})
   const fileName = output ? path.resolve(output) : path.join(directory,'encuentra24-rent-raw.csv')
-  const stats = {started_at:new Date().toISOString(),source:SOURCE_NAME,transaction_type:TRANSACTION_TYPE,base_url:baseUrl,max_listings:MAX_LISTINGS,pages_inspected:0,pages_fetched:0,listing_occurrences:0,listings_discovered:0,listings_successfully_extracted:0,quality_rejected:0,duplicates_excluded:0,non_rental_excluded:0,extraction_failed:0,final_csv_rows:0,failures:[],rejections:[],csv:fileName}
+  const stats = {started_at:new Date().toISOString(),source:SOURCE_NAME,transaction_type:TRANSACTION_TYPE,base_url:baseUrl,pages_inspected:0,pages_fetched:0,listing_occurrences:0,listings_discovered:0,listings_successfully_extracted:0,quality_rejected:0,duplicates_excluded:0,non_rental_excluded:0,extraction_failed:0,final_csv_rows:0,failures:[],rejections:[],csv:fileName,inventory_complete:false}
   const rows=[],items=[],seen=new Set(),seenPages=new Set();let browser
   try {
-    for(let pageNumber=1;pageNumber<=MAX_PAGES && items.length<MAX_LISTINGS && !collectionStopRequested;pageNumber++) {
+    for(let pageNumber=1;!collectionStopRequested;pageNumber++) {
       const pageUrl=buildPageUrl(baseUrl,pageNumber);stats.pages_inspected++
       const html=await fetchHtml(pageUrl);stats.pages_fetched++;const $=cheerio.load(html),cards=getListingCards($);const pageIds=[]
-      for(const card of cards){const raw=getListingUrl($,card);if(!raw)continue;let url;try{const u=new URL(raw);u.search='';u.hash='';url=u.href}catch{continue}if(!isRentListing(url)){stats.non_rental_excluded++;continue}stats.listing_occurrences++;const id=createSourceListingId(url);pageIds.push(id);if(seen.has(id)){stats.duplicates_excluded++;continue}seen.add(id);if(items.length<MAX_LISTINGS)items.push({listingUrl:url,pageUrl})}
-      const fingerprint=[...new Set(pageIds)].sort().join(',');if(!fingerprint)break;if(seenPages.has(fingerprint)){stats.failures.push({page:pageNumber,reason:'Repeated search population; pagination did not advance'});break}seenPages.add(fingerprint)
+      for(const card of cards){const raw=getListingUrl($,card);if(!raw)continue;let url;try{const u=new URL(raw);u.search='';u.hash='';url=u.href}catch{continue}if(!isRentListing(url)){stats.non_rental_excluded++;continue}stats.listing_occurrences++;const id=createSourceListingId(url);pageIds.push(id);if(seen.has(id)){stats.duplicates_excluded++;continue}seen.add(id);items.push({listingUrl:url,pageUrl})}
+      const fingerprint=[...new Set(pageIds)].sort().join(',');if(!fingerprint){stats.inventory_complete=true;break}if(seenPages.has(fingerprint)){stats.failures.push({page:pageNumber,reason:'Repeated search population; pagination did not advance'});break}seenPages.add(fingerprint)
       console.log('PAGE',pageNumber,'unique rentals collected',items.length)
     }
     stats.listings_discovered=items.length
@@ -1406,7 +1404,7 @@ async function scrapeEncuentra24Rent({regionSlug = process.argv[2] || 'bienes-ra
       const valid=isObservationValid(row)&&isRentListing(row.source_url)&&row.transaction_type==='rent'&&['CRC','USD'].includes(row.currency)&&Number(row.monthly_price)>0&&!row.current_price
       if(!valid){stats.quality_rejected++;stats.rejections.push({url:item.listingUrl,reason:'Missing or unsupported unambiguous rental price/currency/evidence'});continue}rows.push(row)
     }catch(error){stats.extraction_failed++;stats.failures.push({url:item.listingUrl,status:error.response?.status||null,url:error.config?.url||null,reason:error.message});console.log('EXTRACTION FAILED',error.response?.status||error.code||error.message);if([401,403,429].includes(error.response?.status)||/challenge/i.test(error.message))break}}
-  }catch(error){stats.failures.push({status:error.response?.status||null,url:error.config?.url||null,reason:error.message});console.error('SCRAPER STOPPED',error.response?.status||error.code||error.message)}finally{if(browser)await browser.close();stats.listings_discovered=items.length;stats.final_csv_rows=rows.length;stats.finished_at=new Date().toISOString();stats.status=stats.failures.length?'PARTIAL':rows.length?'WORKING':'BLOCKED';if(!rows.length&&stats.failures.length)stats.status='BLOCKED';writeCsv({rows,fileName});const archiveResult=await archive.finalize();fs.writeFileSync(path.join(directory,'run-summary.json'),JSON.stringify({...stats,archive:{directory:archive.directory,csv:archive.checkpointCsv,checkpoint:archive.checkpoint,remote:archiveResult.remote}},null,2));fs.writeFileSync(path.join(directory,'source-evidence-manifest.json'),JSON.stringify([...sourceEvidence.values()],null,2));console.log(JSON.stringify(stats,null,2))}
+  }catch(error){stats.failures.push({status:error.response?.status||null,url:error.config?.url||null,reason:error.message});console.error('SCRAPER STOPPED',error.response?.status||error.code||error.message)}finally{if(browser)await browser.close();stats.listings_discovered=items.length;stats.final_csv_rows=rows.length;stats.finished_at=new Date().toISOString();stats.status=stats.inventory_complete&&!stats.failures.length&&!collectionStopRequested?'COMPLETE':stats.failures.length?'PARTIAL':collectionStopRequested?'INTERRUPTED':'BLOCKED';writeCsv({rows,fileName});const archiveResult=await archive.finalize();fs.writeFileSync(path.join(directory,'run-summary.json'),JSON.stringify({...stats,archive:{directory:archive.directory,csv:archive.checkpointCsv,checkpoint:archive.checkpoint,remote:archiveResult.remote}},null,2));fs.writeFileSync(path.join(directory,'source-evidence-manifest.json'),JSON.stringify([...sourceEvidence.values()],null,2));console.log(JSON.stringify(stats,null,2));if(stats.status!=='COMPLETE')process.exitCode=1}
   return {rows,stats}
 }
 if(require.main===module) scrapeEncuentra24Rent().catch(error=>{console.error(error.message);process.exitCode=1})

@@ -12,8 +12,6 @@ const { createRunArchive } = require('./scraper-run-archive.cjs')
 const { isObservationValid } = require('./quality/isObservationValid')
 const SOURCE_NAME = 'encuentra24'
 const TRANSACTION_TYPE = 'sale'
-const MAX_LISTINGS = 120
-const MAX_PAGES = 100
 let collectionStopRequested = false
 process.once('SIGTERM', () => { collectionStopRequested = true })
 
@@ -1459,10 +1457,12 @@ console.log(
 
   const rows = []
   let browser
+  let inventoryComplete = false
+  let collectionFailure = null
   try {
     const cards = []
 
-for (let pageNumber = 1; pageNumber <= MAX_PAGES && !collectionStopRequested; pageNumber++) {
+for (let pageNumber = 1; !collectionStopRequested; pageNumber++) {
   const pageUrl =
     buildPageUrl(baseUrl, pageNumber)
 
@@ -1500,6 +1500,7 @@ if (pageNumber === 1 && pageCards[0]) {
   )
 
   if (pageCards.length === 0) {
+    inventoryComplete = true
     break
   }
 
@@ -1512,9 +1513,6 @@ if (pageNumber === 1 && pageCards[0]) {
     })
   })
 
-  if (cards.length >= MAX_LISTINGS) {
-    break
-  }
 }
     browser =
       await puppeteer.launch({
@@ -1545,7 +1543,7 @@ if (pageNumber === 1 && pageCards[0]) {
 
       
 
-    for (const [index, item] of listingItems.slice(0, MAX_LISTINGS).entries()) {
+    for (const [index, item] of listingItems.entries()) {
   if (collectionStopRequested) break
 
   const listingUrl =
@@ -1553,7 +1551,6 @@ if (pageNumber === 1 && pageCards[0]) {
       if (!createSourceListingId(listingUrl)) continue
       if (!listingUrl) continue
       if (!isSaleListing(listingUrl)) continue
-      if (rows.length >= MAX_LISTINGS) break
       try {
 
 console.log('START LISTING:', listingUrl)
@@ -1598,6 +1595,12 @@ console.log('ROWS COLLECTED:', rows.length)
       fileName
     })
     await archive.finalize()
+    fs.writeFileSync(path.join(archive.directory, 'run-summary.json'), JSON.stringify({
+      source: SOURCE_NAME, transaction_type: TRANSACTION_TYPE,
+      inventory_complete: inventoryComplete && !collectionStopRequested,
+      status: inventoryComplete && !collectionStopRequested ? 'COMPLETE' : collectionStopRequested ? 'INTERRUPTED' : 'PARTIAL',
+      listings_successfully_extracted: rows.length, finished_at: new Date().toISOString()
+    }, null, 2))
     
 console.log(
   'WRITECSV COMPLETE:',
@@ -1615,6 +1618,7 @@ console.log(
       `RAW CSV CREATED: ${fileName}`
     )
   } catch (error) {
+    collectionFailure = error
     console.error(
       'SCRAPER ERROR:',
       error.message
@@ -1623,6 +1627,7 @@ console.log(
     if (browser) {
       await browser.close()
     }
+    if (collectionFailure || collectionStopRequested || !inventoryComplete) process.exitCode = 1
   }
 }
 if (require.main === module) scrapeEncuentra24Sale().catch(error => { console.error(error.message); process.exitCode = 1 })
