@@ -28,6 +28,7 @@ import {supabaseAdmin} from './supabase-admin'
 import {getCurrentAnalyticalDate} from './analysis-date'
 import {getHistoricalUsdToCrcRate} from './fx/fx-service'
 import {normalizeAmountToCrc} from './currency-conversion'
+import {validateMarketplaceFx} from './marketplace-fx-evidence'
 import {resolvePriceMeterAnalyticalIdentity,type PriceMeterFxIdentity} from './price-meter-identity'
 import {buildPriceMeterObservations as live_buildPriceMeterObservations} from './price-meter-observation-builder'
 import {buildPriceMeterDistribution as live_buildPriceMeterDistribution} from './price-meter-distribution'
@@ -340,7 +341,7 @@ async function executeCapturedPopulationEngine(input:PopulationEngineRequest):Pr
   acquisition={...acquisition,bank,inventoryCount:bank.length,priceEligibleCount:bank.filter(r=>r.price!==null).length,excluded:acquisitions.flatMap(a=>a.excluded),cacheIdentity:digest(acquisitions.map(a=>a.cacheIdentity))}
  }
  const terms=await orchestratorMemo('dictionary',JSON.stringify([acquisition.sourceDataRevision,r.scope,r.cohortA,r.cohortB]),()=>dictionary(acquisition,r)),all=rows(acquisition,terms),date=getCurrentAnalyticalDate();let fx:PriceMeterFxIdentity|null=null,comparisonRate:number|null=null
- if(!['summary','composition','matching','configuration'].includes(r.engine)&&all.some(i=>i.row.currency==='USD')||r.engine==='comparison'||r.hypotheticalSubject?.askingPrice?.currency==='USD'){const v=await orchestratorMemo('fx',date,()=>getHistoricalUsdToCrcRate(date));if(v.analyticalDate!==date||v.source!=='BCCR'||v.rateType!=='reference_sale'||v.baseCurrency!=='USD'||v.quoteCurrency!=='CRC'||!Number.isFinite(v.rate)||v.rate<=0)throw Error('Incoherent BCCR identity.');comparisonRate=v.rate;fx={...v,conversionApplied:true}}
+ if(!['summary','composition','matching','configuration'].includes(r.engine)&&all.some(i=>i.row.currency==='USD')||r.engine==='comparison'||r.hypotheticalSubject?.askingPrice?.currency==='USD'){const v=await orchestratorMemo('fx',date,()=>getHistoricalUsdToCrcRate(date));if(!validateMarketplaceFx({...v,usdToCrcRate:v.rate},date))throw Error('Incoherent BCCR identity.');comparisonRate=v.rate;fx={...v,conversionApplied:true}}
  const context={date,fx,comparisonRate},q=await orchestratorMemo('request',JSON.stringify([r.filters,r.scope.transaction,r.scope.propertyType,r.language]),()=>resolveCanonicalMarketRequest({...r.filters,transaction_type:r.scope.population==='BANK'?'sale':r.scope.transaction,property_type:r.scope.propertyType},r.language,{universe:r.scope.population}))
  const protectedInput=recordAnalyticalEvidence('resolved-input',{request:r,acquisition,terms,rows:all,context,resolvedRequest:q})
  const result=await calculateCapturedInputs(protectedInput.request,protectedInput.acquisition,protectedInput.terms,protectedInput.rows,protectedInput.context,protectedInput.resolvedRequest)

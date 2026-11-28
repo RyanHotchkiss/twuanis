@@ -4,6 +4,7 @@
   "sale_start_url": "https://devop.inmo.co/s/ventas",
   "allowed_host": "devop.inmo.co",
   "transaction": "sale",
+  "geography": {"resolution_mode": "city_exact_district", "source_field_map": {"province": "Estado / Departamento", "city": "Ciudad"}},
   "property_area_labels": ["Área Terreno", "Área de Terreno", "Área Lote", "Área del Terreno"],
   "construction_area_labels": ["Área Construida", "Área de Construcción", "Área Construcción"]
 }

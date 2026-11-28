@@ -1,13 +1,8 @@
 const fs = require('fs')
 const Papa = require('papaparse')
-const { chromium } = require('playwright')
+const axios = require('axios')
 
 const inputFile = process.argv[2]
-
-if (!inputFile) {
-  console.error('Usage: node scripts/scrapers/encuentra24-whatsapp-decoder.js raw.csv')
-  process.exit(1)
-}
 
 function decodeJsonString(value) {
   try {
@@ -39,25 +34,12 @@ function decodeEncuentraPhone(value) {
 }
 
 function normalizeCRPhone(value) {
-        const digits = value.replace(/\D/g, '')
-
-        // 00506XXXXXXXX
-        if (digits.startsWith('00506') && digits.length === 13) {
-            return '+506' + digits.slice(5)
-        }
-
-        // 506XXXXXXXX
-        if (digits.startsWith('506') && digits.length === 11) {
-            return '+' + digits
-        }
-
-        // XXXXXXXX
-        if (digits.length === 8) {
-            return '+506' + digits
-        }
-
-        return ''
-        }
+  const digits = String(value || '').replace(/\D/g, '')
+  if (digits.startsWith('00506') && digits.length === 13) return `+506${digits.slice(5)}`
+  if (digits.startsWith('506') && digits.length === 11) return `+${digits}`
+  if (digits.length === 8) return `+506${digits}`
+  return ''
+}
 
 function extractEncodedPhones(html) {
   const patterns = [
@@ -80,73 +62,31 @@ function extractEncodedPhones(html) {
     .filter(value => value.length >= 8 && value.length <= 30)
 }
 
-async function warmUpSession(page, firstUrl) {
-  await page.goto(firstUrl, {
-    waitUntil: 'domcontentloaded',
-    timeout: 15000
+async function fetchListingHtml(url) {
+  const response = await axios.get(url, {
+    timeout: 15000,
+    responseType: 'text',
+    headers: { 'User-Agent': 'Mozilla/5.0 (compatible; TwuanisSourceEvidence/1.0)' }
   })
-
-  await page
-    .locator('.ActionLeadButtons-whatsapp button, button:has-text("WhatsApp"), button:has-text("Whatsapp")')
-    .first()
-    .click({ timeout: 10000 })
-    .catch(() => {})
-
-  await page.waitForTimeout(1000)
-
-  const inputs = page.locator('input')
-  const count = await inputs.count().catch(() => 0)
-
-  if (count >= 3) {
-    await inputs.nth(0).fill('Carlos Mora').catch(() => {})
-    await inputs.nth(1).fill('carlos.mora.test@gmail.com').catch(() => {})
-    await inputs.nth(2).fill('87136969').catch(() => {})
-
-    await page
-      .locator('button')
-      .filter({ hasText: /whatsapp|enviar|continuar/i })
-      .last()
-      .click()
-      .catch(() => {})
-
-    await page.waitForTimeout(1500)
-  }
+  return String(response.data || '')
 }
 
 async function main() {
+  if (!inputFile) throw new Error('Usage: node scripts/scrapers/encuentra24-whatsapp-decoder.js raw.csv')
   const rows = Papa.parse(fs.readFileSync(inputFile, 'utf8'), {
     header: true,
     skipEmptyLines: true
   }).data
 
-  const context = await chromium.launchPersistentContext(
-    './playwright-encuentra24-session',
-    { headless: false }
-  )
-
-  const page = await context.newPage()
   const results = []
-
-page.on('popup', async popup => {
-    await popup.close().catch(() => {})
-    })
-
-  await warmUpSession(page, rows[0].source_url)
 
   for (const row of rows) {
     let whatsapp = ''
 
     try {
-      const response = await page.goto(row.source_url, {
-        waitUntil: 'domcontentloaded',
-        timeout: 10000
-      })
-
-      if (!response) {
-        throw new Error('No response returned')
-      }
-
-      const html = await response.text()
+      // Decoder acquisition is response-only. It never opens a contact
+      // control, submits a lead, or launches WhatsApp.
+      const html = await fetchListingHtml(row.source_url)
 
       const encodedPhones = extractEncodedPhones(html)
 
@@ -167,13 +107,14 @@ page.on('popup', async popup => {
 
     results.push({
       source_listing_id: row.source_listing_id,
-      whatsapp
+      source_url: row.source_url,
+      whatsapp,
+      evidence_origin: whatsapp ? 'encuentra24_embedded_phone_encoding' : '',
+      acquisition_status: whatsapp ? 'decoded' : 'not_decoded'
     })
   }
 
-  await context.close()
-
-  const outputFile = inputFile.replace('-raw.csv', '-whatsapp.csv')
+  const outputFile = inputFile.replace('-raw.csv', '-decoder-whatsapp.csv')
 
   fs.writeFileSync(
     outputFile,
@@ -183,7 +124,9 @@ page.on('popup', async popup => {
   console.log(`Saved ${outputFile}`)
 }
 
-main().catch(error => {
-  console.error(error)
+if (require.main === module) main().catch(error => {
+  console.error(error.message || error)
   process.exit(1)
 })
+
+module.exports = { decodeEncuentraPhone, normalizeCRPhone, extractEncodedPhones }

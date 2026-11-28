@@ -533,11 +533,33 @@ const languageUrls={
 
         {/* MARKETHUB */}
         <Link data-tour-id="N01"
-          href={
-            isSpanish
-              ? '/es/centro-de-mercado'
-              : '/en/market-hub'
-          }
+  href={
+    authenticated
+      ? (isSpanish
+          ? '/es/centro-de-mercado'
+          : '/en/market-hub')
+      : '/login?' + new URLSearchParams({
+          lang: currentLanguage,
+          next: currentLanguageHref
+        }).toString()
+  }
+  onClick={event => {
+    if (!authenticated) {
+      event.preventDefault()
+
+      const next =
+        window.location.pathname +
+        window.location.search +
+        window.location.hash
+
+      window.location.assign(
+        '/login?' + new URLSearchParams({
+          lang: currentLanguage,
+          next
+        }).toString()
+      )
+    }
+  }}
           style={itemStyle()}
           onMouseEnter={() =>
             setHoveredItem('hub')
@@ -560,7 +582,15 @@ const languageUrls={
           />
           )}
 
-          {navigationLabel('hub',isSpanish?'Espacio de\nTrabajo':'Workspace',isSpanish?'Esp.':'Work.')}
+          {navigationLabel(
+  'hub',
+  authenticated
+    ? (isSpanish ? 'Espacio de\nTrabajo' : 'Workspace')
+    : (isSpanish ? 'Iniciar sesión' : 'Sign In'),
+  authenticated
+    ? (isSpanish ? 'Esp.' : 'Work.')
+    : (isSpanish ? 'Ingresar' : 'Sign In')
+)}
                 </Link>
                 </nav>
                 </div>

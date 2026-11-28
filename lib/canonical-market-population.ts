@@ -4,11 +4,17 @@ import {evidenceCaptureActive,recordAnalyticalEvidence} from './orchestrator-evi
 import {validateOntologyTermId} from './geography/dta-identity'
 import { supabaseAdmin } from './supabase-admin'
 
-// Neutral population transport only. Callers own authorization, the question,
-// typed fact reduction, participation, analytical eligibility, and mathematics.
+// Shared canonical population transport. Callers own authorization,
+// question-specific participation, typed fact reduction, and mathematics.
+// Asking-price participation requires the database price-integrity authority.
+export type CanonicalMarketParticipation =
+  | 'inventory'
+  | 'asking_price'
+  | 'inventory_with_price_eligibility'
 export type CanonicalMarketBoundary = Readonly<{
   population?: AnalyticalUniverse
   transaction: 'sale' | 'rent'
+  participation?: CanonicalMarketParticipation
   // AND between groups; OR within a group. Atomic AND preferences are never
   // passed here by Matching; Configuration can use singleton requirement groups.
   membershipGroups: readonly (readonly string[])[]
@@ -21,10 +27,21 @@ export type MarketScalarField = typeof FIELDS[number]
 type Client = Pick<typeof supabaseAdmin,'from'>
 const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
 function fail():never {throw new Error('Incomplete or invalid canonical market population.')}
+export function hasCanonicalPriceEligibility(row: Record<string, any>): boolean {
+  if (!row || typeof row.id !== 'string' || !Object.hasOwn(row, 'price_eligibility')) fail()
+  const evidence = row.price_eligibility
+  if (evidence === null) return false
+  if (typeof evidence !== 'object' || Array.isArray(evidence) || evidence.id !== row.id) fail()
+  return true
+}
 function validate(b:CanonicalMarketBoundary) {
   if(!b||b.transaction!=='sale'&&b.transaction!=='rent'||
       !Array.isArray(b.membershipGroups)||b.membershipGroups.length>32)fail()
   if(b.population!==undefined&&b.population!==ordinaryUniverse(b.transaction))fail()
+  if(b.participation!==undefined&&
+     b.participation!=='inventory'&&
+     b.participation!=='asking_price'&&
+     b.participation!=='inventory_with_price_eligibility')fail()
   for(const group of b.membershipGroups){
     if(!Array.isArray(group)||!group.length||group.length>64||new Set(group).size!==group.length)fail()
     for(const id of group)validateOntologyTermId(id)
@@ -40,6 +57,14 @@ function query(b:CanonicalMarketBoundary,fields:readonly MarketScalarField[],hea
   // Each embedded inner relationship is an EXISTS-style filter of the parent
   // listings result. Empty embeds avoid transporting membership/presentation rows.
   const joins=b.membershipGroups.map((_,i)=>`m${i}:listings_ontology_terms!inner()`)
+
+  if(b.participation==='asking_price'){
+    joins.push(head ? 'marketplace_price_eligibility!inner()' : 'price_eligibility:marketplace_price_eligibility!inner(id)')
+  }
+
+  if(b.participation==='inventory_with_price_eligibility'&&!head){
+    joins.push('price_eligibility:marketplace_price_eligibility(id)')
+  }
   let q:any=client.from('listings').select([...fields,...(!head&&evidenceCaptureActive()?['evidence_current_price:current_price::text','evidence_monthly_price:monthly_price::text','evidence_property_area:property_area::text','evidence_construction_area:construction_area::text']:[]),...joins].join(','),{count:'exact',head})
     .eq('canonical_domain_version',1).eq('listing_status','active')
   q=q.eq('transaction_type',b.transaction)
@@ -71,6 +96,12 @@ export async function readCanonicalMarketScalars(
       recordAnalyticalEvidence('private-scalar-source',{boundary:b,source:row})
       const scalar:Record<string,any>={}
       for(const field of selected){if(!Object.hasOwn(row,field))fail();scalar[field]=row[field]}
+
+      if(b.participation==='inventory_with_price_eligibility'){
+        scalar.analytical_price_eligible=hasCanonicalPriceEligibility(row)
+      }
+      if(b.participation==='asking_price'&&!hasCanonicalPriceEligibility(row))fail()
+
       seen.add(row.id);last=row.id;rows.push(scalar)
     }
   }while(rows.length<expected!)

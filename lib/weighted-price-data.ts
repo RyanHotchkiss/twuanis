@@ -1,5 +1,6 @@
 import 'server-only'
 import {supabaseAdmin} from './supabase-admin'
+import {hasCanonicalPriceEligibility} from './canonical-market-population'
 import {readCanonicalListingEvidence} from './canonical-listing-reader'
 import {resolveListingOriginalMonetaryValue} from './listing-monetary-value'
 import {resolvePriceMeterAreaIdentity,resolvePriceMeterPropertyBasis} from './price-meter-identity'
@@ -12,14 +13,14 @@ export async function establishWeightedSubject(q:WeightedQuestion,userId:string)
  const s=q.subject,c=q.cohort
  let L:number,C:number,money:ReturnType<typeof resolveListingOriginalMonetaryValue>,listingId:string|undefined
  if(s.kind==='listing'){
-  const {data:r,error}=await supabaseAdmin.from('listings').select('id,owner_id,canonical_domain_version,listing_status,transaction_type,property_area::text,construction_area::text,current_price::text,monthly_price::text,currency').eq('id',s.listingId).maybeSingle()
+  const {data:r,error}=await supabaseAdmin.from('listings').select('id,owner_id,canonical_domain_version,listing_status,transaction_type,property_area::text,construction_area::text,current_price::text,monthly_price::text,currency,price_eligibility:marketplace_price_eligibility(id)').eq('id',s.listingId).maybeSingle()
   if(error)throw Error('Subject read unavailable')
   if(!r||r.id!==s.listingId||r.canonical_domain_version!==1||r.listing_status==='deleted'||r.listing_status!=='active'&&r.owner_id!==userId||r.transaction_type!==c.transaction)invalid()
   try{L=Number(canonicalDecimal(r.property_area));C=Number(canonicalDecimal(r.construction_area))}catch{invalid()}
   const evidence=(await readCanonicalListingEvidence([r.id],{facts:[],semantics:['property_type']})).get(r.id)
   if(!evidence||evidence.selections.length!==1||evidence.selections[0].ontology_term_id!==c.propertyType||!evidence.geography.some(g=>g.id===c.geography.termId&&g.term_type===c.geography.level))invalid()
   if(resolvePriceMeterPropertyBasis({propertyType:evidence!.selections[0].slug,constructionArea:resolvePriceMeterAreaIdentity(C!)})!=='improved_property')invalid()
-  money=resolveListingOriginalMonetaryValue(r);listingId=r.id
+  money=r.listing_status==='active'&&!hasCanonicalPriceEligibility(r)?null:resolveListingOriginalMonetaryValue(r);listingId=r.id
  }else{
   L=Number(s.propertyArea);C=Number(s.constructionArea)
   const ids=[s.province,s.canton,...(s.district?[s.district]:[]),c.propertyType]

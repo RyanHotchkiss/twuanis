@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const Papa = require('papaparse')
-const { canonicalSourcePropertyType } = require('../encuentra24-property-type')
+const { normalizeEncuentra24RowGeography } = require('../encuentra24-sale-geography.cjs')
 
 function clean(value) {
   return String(value || '')
@@ -180,7 +180,10 @@ function normalizeYearBuilt(value) {
 
 function inferPropertyType(row) {
   if (row.raw_property_type && row.raw_property_type !== row.property_type) return ''
-  return canonicalSourcePropertyType(row.property_type)
+  // The listing scraper already accepts only the explicit source type for its
+  // own listing ID. Preserve that evidence here; canonical validation remains
+  // downstream in the existing admission adapter.
+  return clean(row.property_type)
 }
 
 function inferUtilities(row) {
@@ -485,6 +488,7 @@ function cleanDescription(value) {
 }
 
 function normalizeRow(row) {
+  const geography = normalizeEncuentra24RowGeography(row)
   const normalized = {
     // Preserve event identity/time verbatim; missing evidence stays missing.
     observation_id: row.observation_id,
@@ -496,9 +500,9 @@ function normalizeRow(row) {
     transaction_type: row.transaction_type,
     listing_status: row.listing_status,
 
-    province: clean(row.province),
-    canton: clean(row.canton),
-    district: clean(row.district),
+    province: geography.province,
+    canton: geography.canton,
+    district: geography.district,
 
     title: clean(row.title),
     description: cleanDescription(row.description),
@@ -529,6 +533,7 @@ function normalizeRow(row) {
     currency: row.currency,
 
     whatsapp: row.whatsapp,
+    whatsapp_evidence_origin: row.whatsapp_evidence_origin,
 
     images: splitImages(row.images).join('|')
   }

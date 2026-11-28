@@ -5,15 +5,16 @@ const puppeteer = require('puppeteer')
 const fs = require('fs')
 const path = require('path')
 const os = require('os')
+const readline = require('readline')
 const crypto = require('crypto')
 const { extractSourcePropertyType } = require('./encuentra24-property-type')
 const { createRunArchive } = require('./scraper-run-archive.cjs')
+const { extractEncuentra24SaleGeography } = require('./encuentra24-sale-geography.cjs')
+const { recordLedger, terminalSourceIds } = require('./rent-run-ledger.cjs')
 
 const { isObservationValid } = require('./quality/isObservationValid')
 const SOURCE_NAME = 'encuentra24'
 const TRANSACTION_TYPE = 'rent'
-const MAX_LISTINGS = 120
-const MAX_PAGES = 100
 let collectionStopRequested = false
 process.once('SIGTERM', () => { collectionStopRequested = true })
 const REQUEST_DELAY_MS = 1500
@@ -185,18 +186,6 @@ function extractOffer(schema) {
   return schema.offers
 }
 
-function normalizeProvince(value) {
-  return clean(value)
-    .replace('San Jose', 'San José')
-    .replace('Limon', 'Limón')
-}
-
-function normalizeCanton(value) {
-  return clean(value)
-    .replace('Escazu', 'Escazú')
-    .replace('Central San José', 'San Jose')
-}
-
 function extractLocation($) {
   const breadcrumbParts =
     $('[class*="breadcrumb"]')
@@ -205,25 +194,7 @@ function extractLocation($) {
       .map((i, el) => clean($(el).text()))
       .get()
 
-  return {
-    raw_breadcrumbs:
-      breadcrumbParts.join('|'),
-
-    province:
-      breadcrumbParts.length >= 5
-        ? normalizeProvince(breadcrumbParts[4])
-        : '',
-
-    canton:
-      breadcrumbParts.length >= 6
-        ? normalizeCanton(breadcrumbParts[5])
-        : '',
-
-    district:
-      breadcrumbParts.length >= 7
-        ? clean(breadcrumbParts[6])
-        : ''
-  }
+  return extractEncuentra24SaleGeography(breadcrumbParts)
 }
 
 function extractTitle($, schema) {
@@ -916,95 +887,7 @@ function cleanExactAreaEvidence(value) {
   return `${number} m²`
 }
 
-async function scrapeListing({
-  browser,
-  listingUrl,
-  baseUrl
-}) {
-  console.log('Scraping:', listingUrl)
-
-  const html =
-    await fetchHtml(
-      listingUrl,
-      baseUrl
-    )
-
-// Capture the actual source-page observation, never a later CSV upload.
-  const observation_id = crypto.randomUUID()
-  const observed_at = sourceEvidence.get(listingUrl)?.observed_at || new Date().toISOString()
-
-    const sourceListingId =
-      createSourceListingId(listingUrl)
-
-    const flightAd =
-      extractFlightAd(
-        html,
-        sourceListingId
-      )
-const sourcePropertyType = extractSourcePropertyType(html, createSourceListingId(listingUrl))
-
-  const $ =
-    cheerio.load(html)
-
-  const scripts = $('script')
-        .map((_, el) => $(el).html() || '')
-        .get()
-        .filter(text => text.includes('self.__next_f.push'))
-
-  const jsonLd =
-    extractJsonLd($)
-
-  const schema =
-    findProductSchema(jsonLd)
-
-  const offer =
-    extractOffer(schema)
-
-  const bodyText =
-  clean($('body').text())
-  const location =
-    extractLocation($)
-  const title =
-    extractTitle($, schema)
-  const description =
-    extractDescription(schema)
-  const evidenceDescription =
-    clean(flightAd?.description || description)
-  const insightAttributes =
-    extractInsightAttributes($)
-  const detailAttributes =
-    extractDetailAttributes($)
-  const rentPriceIdentity =
-  resolveRentPriceIdentity({
-    offer,
-    flightAd,
-    insightAttributes,
-    detailAttributes,
-    title,
-    description,
-    $
-  })
-
-
-  const rawBedrooms =
-  extractRawBedrooms(insightAttributes) ||
-  extractFromBodyText(bodyText, [
-    /Desde\s*([\d.]+)\s*rec[áa]maras/i,
-    /([\d.]+)\s*rec[áa]maras/i
-  ])
-  const rawBathrooms =
-  extractRawBathrooms(insightAttributes) ||
-  extractFromBodyText(bodyText, [
-    /Desde\s*([\d.]+)\s*ba[ñn]os/i,
-    /([\d.]+)\s*ba[ñn]os/i
-  ])
-  const rawParking =
-  extractRawParking(insightAttributes) ||
-  extractFromBodyText(bodyText, [
-    /([\d.]+)\s*parking/i,
-    /parking\s*([\d.]+)/i
-  ])
-
+function extractLegacyMeasurements({ flightAd, detailAttributes, insightAttributes, evidenceDescription, sourcePropertyType, title }) {
 const rawConstructionAreaResult =
   cleanExactAreaEvidence(flightAd?.square)
     ? {
@@ -1220,6 +1103,103 @@ const rawConstructionArea =
 const rawPropertyArea =
   rawPropertyAreaResult.value
 
+
+return { rawConstructionAreaResult, rawPropertyAreaResult }
+}
+
+async function scrapeListing({
+  browser,
+  listingUrl,
+  baseUrl
+}) {
+  console.log('Scraping:', listingUrl)
+
+  const html =
+    await fetchHtml(
+      listingUrl,
+      baseUrl
+    )
+
+// Capture the actual source-page observation, never a later CSV upload.
+  const observation_id = crypto.randomUUID()
+  const observed_at = sourceEvidence.get(listingUrl)?.observed_at || new Date().toISOString()
+
+    const sourceListingId =
+      createSourceListingId(listingUrl)
+
+    const flightAd =
+      extractFlightAd(
+        html,
+        sourceListingId
+      )
+const sourcePropertyType = extractSourcePropertyType(html, createSourceListingId(listingUrl))
+
+  const $ =
+    cheerio.load(html)
+
+  const scripts = $('script')
+        .map((_, el) => $(el).html() || '')
+        .get()
+        .filter(text => text.includes('self.__next_f.push'))
+
+  const jsonLd =
+    extractJsonLd($)
+
+  const schema =
+    findProductSchema(jsonLd)
+
+  const offer =
+    extractOffer(schema)
+
+  const bodyText =
+  clean($('body').text())
+  const location =
+    extractLocation($)
+  const title =
+    extractTitle($, schema)
+  const description =
+    extractDescription(schema)
+  const evidenceDescription =
+    clean(flightAd?.description || description)
+  const insightAttributes =
+    extractInsightAttributes($)
+  const detailAttributes =
+    extractDetailAttributes($)
+  const rentPriceIdentity =
+  resolveRentPriceIdentity({
+    offer,
+    flightAd,
+    insightAttributes,
+    detailAttributes,
+    title,
+    description,
+    $
+  })
+
+
+  const rawBedrooms =
+  extractRawBedrooms(insightAttributes) ||
+  extractFromBodyText(bodyText, [
+    /Desde\s*([\d.]+)\s*rec[áa]maras/i,
+    /([\d.]+)\s*rec[áa]maras/i
+  ])
+  const rawBathrooms =
+  extractRawBathrooms(insightAttributes) ||
+  extractFromBodyText(bodyText, [
+    /Desde\s*([\d.]+)\s*ba[ñn]os/i,
+    /([\d.]+)\s*ba[ñn]os/i
+  ])
+  const rawParking =
+  extractRawParking(insightAttributes) ||
+  extractFromBodyText(bodyText, [
+    /([\d.]+)\s*parking/i,
+    /parking\s*([\d.]+)/i
+  ])
+
+const { rawConstructionAreaResult, rawPropertyAreaResult } = extractLegacyMeasurements({ flightAd, detailAttributes, insightAttributes, evidenceDescription, sourcePropertyType, title })
+const rawConstructionArea = rawConstructionAreaResult.value
+const rawPropertyArea = rawPropertyAreaResult.value
+
   const rawYearBuilt =
       flightAd?.age ||
       extractRawYearBuilt(detailAttributes) ||
@@ -1239,7 +1219,7 @@ const rawPropertyArea =
   } finally { await page.close() }
 
 
-  return {
+  const result = {
   observation_id,
   observed_at,
   source_name: SOURCE_NAME,
@@ -1317,6 +1297,7 @@ const rawPropertyArea =
   raw_jsonld:
     JSON.stringify(jsonLd)
  }
+  return result
 }
 
 
@@ -1357,28 +1338,38 @@ function getCsvHeaders() {
     'raw_jsonld'
   ]
 }
-function writeCsv({
-  rows,
-  fileName
-}) {
-  const headers =
-    getCsvHeaders()
-  const csvRows = [
-    headers.join(',')
-  ]
-  rows.forEach(row => {
-    csvRows.push(
-      headers
-        .map(header =>
-          csvEscape(row[header])
-        )
-        .join(',')
-    )
-  })
-  fs.writeFileSync(
-    fileName,
-    csvRows.join('\n')
-  )
+function startCsv(fileName) { fs.writeFileSync(fileName, `${getCsvHeaders().join(',')}\n`, { mode: 0o600 }) }
+function appendCsvRow(fileName, row) { fs.appendFileSync(fileName, `${getCsvHeaders().map(header => csvEscape(row[header])).join(',')}\n`, { mode: 0o600, flag: 'a' }) }
+
+async function processRentalBatch({ batch, browser, archive, fileName, stats, ledgerFile, terminalIds }) {
+  for (const item of batch) {
+    if (collectionStopRequested) return
+    const sourceListingId = createSourceListingId(item.listingUrl)
+    if (!sourceListingId) continue
+    if (terminalIds.has(sourceListingId)) continue
+    try {
+      recordLedger(ledgerFile, { sourceListingId, sourceUrl: item.listingUrl, status: 'DETAIL_STARTED', terminal: false })
+      const row = await scrapeListing({ browser, listingUrl: item.listingUrl, baseUrl: item.pageUrl })
+      archive.append(row)
+      stats.listings_successfully_extracted++
+      const valid = isObservationValid(row) && isRentListing(row.source_url) && row.transaction_type === 'rent' && ['CRC', 'USD'].includes(row.currency) && Number(row.monthly_price) > 0 && !row.current_price
+      if (!valid) {
+        stats.quality_rejected++; stats.rejections.push({ url: item.listingUrl, reason: 'Missing or unsupported unambiguous rental price/currency/evidence' })
+        recordLedger(ledgerFile, { sourceListingId, sourceUrl: item.listingUrl, status: 'QUALITY_REJECTED', terminal: true })
+        terminalIds.add(sourceListingId)
+        continue
+      }
+      appendCsvRow(fileName, row)
+      stats.final_csv_rows++
+      recordLedger(ledgerFile, { sourceListingId, sourceUrl: item.listingUrl, status: 'EXTRACTED', terminal: false })
+    } catch (error) {
+      stats.extraction_failed++; stats.failures.push({ url: item.listingUrl, status: error.response?.status || null, reason: error.message })
+      recordLedger(ledgerFile, { sourceListingId, sourceUrl: item.listingUrl, status: 'DETAIL_FAILED', terminal: false, detail: { reason: error.message } })
+      console.log('EXTRACTION FAILED', error.response?.status || error.code || error.message)
+      if ([401, 403, 429].includes(error.response?.status) || /challenge/i.test(error.message)) return 'blocked'
+    }
+  }
+  return 'complete'
 }
 
     
@@ -1390,24 +1381,33 @@ async function scrapeEncuentra24Rent({regionSlug = process.argv[2] || 'bienes-ra
   const archive = createRunArchive(path.join(directory, 'source-observation-archive'), { commandId: process.env.TWUANIS_SCRAPER_COMMAND_ID || null, sourceName: SOURCE_NAME, transaction: TRANSACTION_TYPE, extractedAt: new Date().toISOString() })
   fs.mkdirSync(directory,{recursive:true});evidenceDirectory=path.join(directory,'source-evidence');fs.mkdirSync(evidenceDirectory,{recursive:true,mode:0o700})
   const fileName = output ? path.resolve(output) : path.join(directory,'encuentra24-rent-raw.csv')
-  const stats = {started_at:new Date().toISOString(),source:SOURCE_NAME,transaction_type:TRANSACTION_TYPE,base_url:baseUrl,max_listings:MAX_LISTINGS,pages_inspected:0,pages_fetched:0,listing_occurrences:0,listings_discovered:0,listings_successfully_extracted:0,quality_rejected:0,duplicates_excluded:0,non_rental_excluded:0,extraction_failed:0,final_csv_rows:0,failures:[],rejections:[],csv:fileName}
-  const rows=[],items=[],seen=new Set(),seenPages=new Set();let browser
+  const stats = {started_at:new Date().toISOString(),source:SOURCE_NAME,transaction_type:TRANSACTION_TYPE,base_url:baseUrl,pages_inspected:0,pages_fetched:0,listing_occurrences:0,listings_discovered:0,listings_successfully_extracted:0,quality_rejected:0,duplicates_excluded:0,non_rental_excluded:0,extraction_failed:0,final_csv_rows:0,failures:[],rejections:[],csv:fileName,inventory_complete:false}
+  const indexFile = path.join(archive.directory, 'listing-index.ndjson')
+  const ledgerFile = process.env.ENCUENTRA24_RENT_RUN_LEDGER
+  if (!ledgerFile) throw new Error('Missing ENCUENTRA24_RENT_RUN_LEDGER')
+  const terminalIds = terminalSourceIds(ledgerFile)
+  const seen = new Set()
+  if (fs.existsSync(indexFile)) for (const line of fs.readFileSync(indexFile, 'utf8').split(/\r?\n/).filter(Boolean)) {
+    try { const entry = JSON.parse(line); const id = createSourceListingId(entry.listingUrl); if (id) seen.add(id) } catch { /* invalid retained entry stays non-authoritative */ }
+  }
+  const seenPages=new Set();let browser
   try {
-    for(let pageNumber=1;pageNumber<=MAX_PAGES && items.length<MAX_LISTINGS && !collectionStopRequested;pageNumber++) {
+    if (!fs.existsSync(indexFile)) fs.writeFileSync(indexFile, '', { mode: 0o600 })
+    for(let pageNumber=1;!collectionStopRequested;pageNumber++) {
       const pageUrl=buildPageUrl(baseUrl,pageNumber);stats.pages_inspected++
       const html=await fetchHtml(pageUrl);stats.pages_fetched++;const $=cheerio.load(html),cards=getListingCards($);const pageIds=[]
-      for(const card of cards){const raw=getListingUrl($,card);if(!raw)continue;let url;try{const u=new URL(raw);u.search='';u.hash='';url=u.href}catch{continue}if(!isRentListing(url)){stats.non_rental_excluded++;continue}stats.listing_occurrences++;const id=createSourceListingId(url);pageIds.push(id);if(seen.has(id)){stats.duplicates_excluded++;continue}seen.add(id);if(items.length<MAX_LISTINGS)items.push({listingUrl:url,pageUrl})}
-      const fingerprint=[...new Set(pageIds)].sort().join(',');if(!fingerprint)break;if(seenPages.has(fingerprint)){stats.failures.push({page:pageNumber,reason:'Repeated search population; pagination did not advance'});break}seenPages.add(fingerprint)
-      console.log('PAGE',pageNumber,'unique rentals collected',items.length)
+      for(const card of cards){const raw=getListingUrl($,card);if(!raw)continue;let url;try{const u=new URL(raw);u.search='';u.hash='';url=u.href}catch{continue}if(!isRentListing(url)){stats.non_rental_excluded++;continue}stats.listing_occurrences++;const id=createSourceListingId(url);if(!id)continue;pageIds.push(id);if(seen.has(id)){stats.duplicates_excluded++;continue}seen.add(id);fs.appendFileSync(indexFile,`${JSON.stringify({listingUrl:url,pageUrl})}\n`,{mode:0o600,flag:'a'})}
+      const fingerprint=[...new Set(pageIds)].sort().join(',');if(!fingerprint){stats.inventory_complete=true;break}if(seenPages.has(fingerprint)){stats.failures.push({page:pageNumber,reason:'Repeated search population; pagination did not advance'});break}seenPages.add(fingerprint)
+      console.log('PAGE',pageNumber,'unique rentals collected',seen.size)
     }
-    stats.listings_discovered=items.length
-    if(items.length)browser=await puppeteer.launch({headless:true})
-    for(const item of items){if(collectionStopRequested)break;try{const row=await scrapeListing({browser,listingUrl:item.listingUrl,baseUrl:item.pageUrl});archive.append(row);stats.listings_successfully_extracted++
-      const valid=isObservationValid(row)&&isRentListing(row.source_url)&&row.transaction_type==='rent'&&['CRC','USD'].includes(row.currency)&&Number(row.monthly_price)>0&&!row.current_price
-      if(!valid){stats.quality_rejected++;stats.rejections.push({url:item.listingUrl,reason:'Missing or unsupported unambiguous rental price/currency/evidence'});continue}rows.push(row)
-    }catch(error){stats.extraction_failed++;stats.failures.push({url:item.listingUrl,status:error.response?.status||null,url:error.config?.url||null,reason:error.message});console.log('EXTRACTION FAILED',error.response?.status||error.code||error.message);if([401,403,429].includes(error.response?.status)||/challenge/i.test(error.message))break}}
-  }catch(error){stats.failures.push({status:error.response?.status||null,url:error.config?.url||null,reason:error.message});console.error('SCRAPER STOPPED',error.response?.status||error.code||error.message)}finally{if(browser)await browser.close();stats.listings_discovered=items.length;stats.final_csv_rows=rows.length;stats.finished_at=new Date().toISOString();stats.status=stats.failures.length?'PARTIAL':rows.length?'WORKING':'BLOCKED';if(!rows.length&&stats.failures.length)stats.status='BLOCKED';writeCsv({rows,fileName});const archiveResult=await archive.finalize();fs.writeFileSync(path.join(directory,'run-summary.json'),JSON.stringify({...stats,archive:{directory:archive.directory,csv:archive.checkpointCsv,checkpoint:archive.checkpoint,remote:archiveResult.remote}},null,2));fs.writeFileSync(path.join(directory,'source-evidence-manifest.json'),JSON.stringify([...sourceEvidence.values()],null,2));console.log(JSON.stringify(stats,null,2))}
-  return {rows,stats}
+    stats.listings_discovered=seen.size
+    if(seen.size) browser=await puppeteer.launch({headless:true})
+    startCsv(fileName)
+    let batch=[]
+    for await(const line of readline.createInterface({input:fs.createReadStream(indexFile,{encoding:'utf8'}),crlfDelay:Infinity})) { if(!line||collectionStopRequested)break; batch.push(JSON.parse(line)); if(batch.length===25){const state=await processRentalBatch({batch,browser,archive,fileName,stats,ledgerFile,terminalIds});batch=[];if(state==='blocked')break} }
+    if(batch.length&&!collectionStopRequested) await processRentalBatch({batch,browser,archive,fileName,stats,ledgerFile,terminalIds})
+  }catch(error){stats.failures.push({status:error.response?.status||null,url:error.config?.url||null,reason:error.message});console.error('SCRAPER STOPPED',error.response?.status||error.code||error.message)}finally{if(browser)await browser.close();stats.listings_discovered=seen.size;stats.finished_at=new Date().toISOString();stats.status=stats.inventory_complete&&!stats.failures.length&&!collectionStopRequested?'COMPLETE':stats.failures.length?'PARTIAL':collectionStopRequested?'INTERRUPTED':'BLOCKED';const archiveResult=await archive.finalize({materialize:false});fs.writeFileSync(path.join(directory,'run-summary.json'),JSON.stringify({...stats,archive:{directory:archive.directory,csv:archive.checkpointCsv,checkpoint:archive.checkpoint,remote:archiveResult.remote}},null,2));fs.writeFileSync(path.join(directory,'source-evidence-manifest.json'),JSON.stringify([...sourceEvidence.values()],null,2));console.log(JSON.stringify(stats,null,2));if(stats.status!=='COMPLETE')process.exitCode=1}
+  return {stats}
 }
 if(require.main===module) scrapeEncuentra24Rent().catch(error=>{console.error(error.message);process.exitCode=1})
-module.exports={isRentListing,resolveRentPriceIdentity,getCsvHeaders,buildPageUrl,scrapeEncuentra24Rent}
+module.exports={isRentListing,resolveRentPriceIdentity,getCsvHeaders,buildPageUrl,scrapeEncuentra24Rent,extractFlightAd,extractJsonLd,extractLocation,extractInsightAttributes,extractDetailAttributes, extractLegacyMeasurements }

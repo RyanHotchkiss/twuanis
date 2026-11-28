@@ -8,6 +8,7 @@ type Area = 'property_area' | 'construction_area'
 type Scalars = Readonly<{
   id: string; canonical_domain_version: 1; listing_status: 'active'; transaction_type: 'sale' | 'rent'
   property_area: string | null; construction_area: string | null
+analytical_price_eligible: true
   current_price?: string | null; monthly_price?: string | null; currency: 'CRC' | 'USD' | null
 }>
 type DeepReadonly<T> = T extends object ? { readonly [K in keyof T]: DeepReadonly<T[K]> } : T
@@ -90,7 +91,16 @@ export async function hydratePhase14Survivors(envelope: Phase14ExecutionEnvelope
     }
     const priceField = envelope.question.transaction === 'sale' ? 'current_price' : 'monthly_price'
     const missingAreas = (['property_area','construction_area'] as const).filter(field => areas[field].size !== ids.length)
-    const fields = ['id','canonical_domain_version','listing_status','transaction_type','currency',priceField,...missingAreas]
+    const fields = [
+  'id',
+  'canonical_domain_version',
+  'listing_status',
+  'transaction_type',
+  'currency',
+  priceField,
+  ...missingAreas,
+  'price_eligibility:marketplace_price_eligibility!inner(id)'
+]
     const columns = fields.map(field => field === priceField || missingAreas.includes(field as Area) ? field+'::text' : field).join(',')
     for (let start = 0; start < ids.length; start += CANONICAL_READER_BATCH) {
       const batch = ids.slice(start,start+CANONICAL_READER_BATCH), scalarRows = new Map<string,Scalars>()
@@ -108,6 +118,14 @@ export async function hydratePhase14Survivors(envelope: Phase14ExecutionEnvelope
           const raw = item as Record<string,unknown>
           if (!raw || typeof raw.id !== 'string' || !batch.includes(raw.id) || scalarRows.has(raw.id) || previous !== null && raw.id <= previous) fail()
           previous = raw.id
+
+const eligibility=raw.price_eligibility
+
+if(!eligibility||
+   typeof eligibility!=='object'||
+   Array.isArray(eligibility)||
+   !('id' in eligibility)||
+   eligibility.id!==raw.id)fail()
           if (raw.canonical_domain_version !== 1 || raw.listing_status !== 'active' || raw.transaction_type !== envelope.question.transaction ||
               raw.currency !== null && raw.currency !== 'CRC' && raw.currency !== 'USD') fail()
           const areaValues = {} as Record<Area,string|null>
@@ -119,7 +137,10 @@ export async function hydratePhase14Survivors(envelope: Phase14ExecutionEnvelope
             } else areaValues[field] = positiveDecimal(raw[field])
           }
           scalarRows.set(raw.id,{id:raw.id,canonical_domain_version:1,listing_status:'active',transaction_type:envelope.question.transaction,
-            currency:raw.currency,[priceField]:positiveDecimal(raw[priceField]),...areaValues})
+            currency:raw.currency,
+analytical_price_eligible:true,
+[priceField]:positiveDecimal(raw[priceField]),
+...areaValues})
         }
         offset += data.length
       } while (offset < batch.length)

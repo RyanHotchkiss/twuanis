@@ -198,8 +198,21 @@ async function analyzeMarket(
   // Keep the existing Year/Road binding; only count-category terms leave membership joins.
   const request=Object.freeze({...resolved,numericalTerms:Object.freeze(resolved.terms.filter(
     term=>['bedrooms','bathrooms','parking'].includes(term.dimension)))})
-  const acquired=await readMarketNumericalSurvivors(request,canonicalMarketFilterBoundary(request),
-    ['canonical_domain_version','transaction_type','currency','current_price','monthly_price','property_area','construction_area'])
+     const acquired=await readMarketNumericalSurvivors(
+     request,
+     {
+       ...canonicalMarketFilterBoundary(request),
+       participation:'inventory_with_price_eligibility',
+     },
+     ['canonical_domain_version','transaction_type','currency','current_price','monthly_price','property_area','construction_area']
+   )
+
+   const resolveEligibleAmount:typeof resolveListingAmountCrc =
+  (listing,rate) =>
+    ('analytical_price_eligible' in listing &&
+     listing.analytical_price_eligible===true)
+      ? resolveListingAmountCrc(listing,rate)
+      : null
 
 const usdToCrcRate =
   analyticalContext.fx.rate
@@ -210,11 +223,19 @@ const listings =
     sideFilters[
       `${prefix}_price_range`
     ],
-    usdToCrcRate
+    usdToCrcRate,
+    resolveEligibleAmount
   )
 
   const prevalence=await canonicalMarketPrevalence(listings.map(row=>row.id),['property_type','environment','terrain','utility','accessibility','legal_status'])
-  return calculateMarketComparisonSide(listings,filters,usdToCrcRate,language,prevalence)
+  return calculateMarketComparisonSide(
+    listings,
+    filters,
+    usdToCrcRate,
+    language,
+    prevalence,
+    resolveEligibleAmount
+  )
 }
 
 export async function getMarketComparison(

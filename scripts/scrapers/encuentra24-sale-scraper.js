@@ -8,12 +8,11 @@ const os = require('os')
 const crypto = require('crypto')
 const { extractSourcePropertyType } = require('./encuentra24-property-type')
 const { createRunArchive } = require('./scraper-run-archive.cjs')
+const { extractEncuentra24SaleGeography } = require('./encuentra24-sale-geography.cjs')
 
 const { isObservationValid } = require('./quality/isObservationValid')
 const SOURCE_NAME = 'encuentra24'
 const TRANSACTION_TYPE = 'sale'
-const MAX_LISTINGS = 120
-const MAX_PAGES = 100
 let collectionStopRequested = false
 process.once('SIGTERM', () => { collectionStopRequested = true })
 
@@ -176,18 +175,6 @@ function extractOffer(schema) {
   return schema.offers
 }
 
-function normalizeProvince(value) {
-  return clean(value)
-    .replace('San Jose', 'San José')
-    .replace('Limon', 'Limón')
-}
-
-function normalizeCanton(value) {
-  return clean(value)
-    .replace('Escazu', 'Escazú')
-    .replace('Central San José', 'San Jose')
-}
-
 function extractLocation($) {
   const breadcrumbParts =
     $('[class*="breadcrumb"]')
@@ -196,25 +183,7 @@ function extractLocation($) {
       .map((i, el) => clean($(el).text()))
       .get()
 
-  return {
-    raw_breadcrumbs:
-      breadcrumbParts.join('|'),
-
-    province:
-      breadcrumbParts.length >= 5
-        ? normalizeProvince(breadcrumbParts[4])
-        : '',
-
-    canton:
-      breadcrumbParts.length >= 6
-        ? normalizeCanton(breadcrumbParts[5])
-        : '',
-
-    district:
-      breadcrumbParts.length >= 7
-        ? clean(breadcrumbParts[6])
-        : ''
-  }
+  return extractEncuentra24SaleGeography(breadcrumbParts)
 }
 
 function extractTitle($, schema) {
@@ -956,103 +925,8 @@ function extractProjectLotSizeFromHtml(html) {
 
 
 
-async function scrapeListing({
-  browser,
-  listingUrl,
-  baseUrl
-}) {
-  console.log('Scraping:', listingUrl)
-
-  const html =
-    await fetchHtml(
-      listingUrl,
-      baseUrl
-    )
-
-// Capture the actual source-page observation, never a later CSV upload.
-  const observation_id = crypto.randomUUID()
-  const observed_at = new Date().toISOString()
-
-    const sourceListingId =
-      createSourceListingId(listingUrl)
-
-    const flightAd =
-      extractFlightAd(
-        html,
-        sourceListingId
-      )
-const sourcePropertyType = extractSourcePropertyType(html, createSourceListingId(listingUrl))
-
-  fs.writeFileSync('debug-listing.html', html)
-
-  const $ =
-    cheerio.load(html)
-
-  const scripts = $('script')
-        .map((_, el) => $(el).html() || '')
-        .get()
-        .filter(text => text.includes('self.__next_f.push'))
-
-      fs.writeFileSync(
-        'flight.txt',
-        scripts.join('\n\n')
-      )
-
-  const jsonLd =
-    extractJsonLd($)
-
-  const schema =
-    findProductSchema(jsonLd)
-
-  const offer =
-    extractOffer(schema)
-
-  const bodyText =
-  clean($('body').text())
-  const location =
-    extractLocation($)
-  const title =
-  extractTitle($, schema)
-  const description =
-    extractDescription(schema)
-  const evidenceDescription =
-    clean(flightAd?.description || description)
-  const insightAttributes =
-    extractInsightAttributes($)
-  const detailAttributes =
-    extractDetailAttributes($)
-
-  const salePriceIdentity =
-    resolveSalePriceIdentity({
-      offer,
-      flightAd,
-      insightAttributes,
-      detailAttributes,
-      title,
-      description,
-      $
-    })
-
-  const rawBedrooms =
-  extractRawBedrooms(insightAttributes) ||
-  extractFromBodyText(bodyText, [
-    /Desde\s*([\d.]+)\s*rec[áa]maras/i,
-    /([\d.]+)\s*rec[áa]maras/i
-  ])
-  const rawBathrooms =
-  extractRawBathrooms(insightAttributes) ||
-  extractFromBodyText(bodyText, [
-    /Desde\s*([\d.]+)\s*ba[ñn]os/i,
-    /([\d.]+)\s*ba[ñn]os/i
-  ])
-  const rawParking =
-  extractRawParking(insightAttributes) ||
-  extractFromBodyText(bodyText, [
-    /([\d.]+)\s*parking/i,
-    /parking\s*([\d.]+)/i
-  ])
-
-  const rawConstructionAreaResult =
+function extractLegacyMeasurements({ flightAd, detailAttributes, insightAttributes, evidenceDescription, sourcePropertyType, title }) {
+const rawConstructionAreaResult =
   cleanExactAreaEvidence(flightAd?.square)
     ? {
         value:
@@ -1266,6 +1140,110 @@ const rawConstructionArea =
 const rawPropertyArea =
   rawPropertyAreaResult.value
 
+
+return { rawConstructionAreaResult, rawPropertyAreaResult }
+}
+
+async function scrapeListing({
+  browser,
+  listingUrl,
+  baseUrl
+}) {
+  console.log('Scraping:', listingUrl)
+
+  const html =
+    await fetchHtml(
+      listingUrl,
+      baseUrl
+    )
+
+// Capture the actual source-page observation, never a later CSV upload.
+  const observation_id = crypto.randomUUID()
+  const observed_at = new Date().toISOString()
+
+    const sourceListingId =
+      createSourceListingId(listingUrl)
+
+    const flightAd =
+      extractFlightAd(
+        html,
+        sourceListingId
+      )
+const sourcePropertyType = extractSourcePropertyType(html, createSourceListingId(listingUrl))
+
+  fs.writeFileSync('debug-listing.html', html)
+
+  const $ =
+    cheerio.load(html)
+
+  const scripts = $('script')
+        .map((_, el) => $(el).html() || '')
+        .get()
+        .filter(text => text.includes('self.__next_f.push'))
+
+      fs.writeFileSync(
+        'flight.txt',
+        scripts.join('\n\n')
+      )
+
+  const jsonLd =
+    extractJsonLd($)
+
+  const schema =
+    findProductSchema(jsonLd)
+
+  const offer =
+    extractOffer(schema)
+
+  const bodyText =
+  clean($('body').text())
+  const location =
+    extractLocation($)
+  const title =
+  extractTitle($, schema)
+  const description =
+    extractDescription(schema)
+  const evidenceDescription =
+    clean(flightAd?.description || description)
+  const insightAttributes =
+    extractInsightAttributes($)
+  const detailAttributes =
+    extractDetailAttributes($)
+
+  const salePriceIdentity =
+    resolveSalePriceIdentity({
+      offer,
+      flightAd,
+      insightAttributes,
+      detailAttributes,
+      title,
+      description,
+      $
+    })
+
+  const rawBedrooms =
+  extractRawBedrooms(insightAttributes) ||
+  extractFromBodyText(bodyText, [
+    /Desde\s*([\d.]+)\s*rec[áa]maras/i,
+    /([\d.]+)\s*rec[áa]maras/i
+  ])
+  const rawBathrooms =
+  extractRawBathrooms(insightAttributes) ||
+  extractFromBodyText(bodyText, [
+    /Desde\s*([\d.]+)\s*ba[ñn]os/i,
+    /([\d.]+)\s*ba[ñn]os/i
+  ])
+  const rawParking =
+  extractRawParking(insightAttributes) ||
+  extractFromBodyText(bodyText, [
+    /([\d.]+)\s*parking/i,
+    /parking\s*([\d.]+)/i
+  ])
+
+  const { rawConstructionAreaResult, rawPropertyAreaResult } = extractLegacyMeasurements({ flightAd, detailAttributes, insightAttributes, evidenceDescription, sourcePropertyType, title })
+const rawConstructionArea = rawConstructionAreaResult.value
+const rawPropertyArea = rawPropertyAreaResult.value
+
   const rawYearBuilt =
       flightAd?.age ||
       extractRawYearBuilt(detailAttributes) ||
@@ -1416,28 +1394,66 @@ function getCsvHeaders() {
     'raw_jsonld'
   ]
 }
-function writeCsv({
-  rows,
-  fileName
-}) {
-  const headers =
-    getCsvHeaders()
-  const csvRows = [
-    headers.join(',')
-  ]
-  rows.forEach(row => {
-    csvRows.push(
-      headers
-        .map(header =>
-          csvEscape(row[header])
-        )
-        .join(',')
-    )
+function startCsv(fileName) {
+  fs.writeFileSync(fileName, `${getCsvHeaders().join(',')}\n`, { mode: 0o600 })
+}
+
+function appendCsvRow(fileName, row) {
+  fs.appendFileSync(fileName, `${getCsvHeaders().map(header => csvEscape(row[header])).join(',')}\n`, { mode: 0o600, flag: 'a' })
+}
+
+function readNdjson(fileName) {
+  if (!fileName || !fs.existsSync(fileName)) return []
+  return fs.readFileSync(fileName, 'utf8').split(/\r?\n/).filter(Boolean).flatMap(line => {
+    try { return [JSON.parse(line)] } catch { return [] }
   })
-  fs.writeFileSync(
-    fileName,
-    csvRows.join('\n')
-  )
+}
+
+function completedSourceIds(checkpointFile) {
+  return new Set(readNdjson(checkpointFile).map(entry => String(entry?.observation?.source_listing_id || '')).filter(Boolean))
+}
+
+function readListingIndex(indexFile) {
+  const seen = new Set()
+  return readNdjson(indexFile).flatMap(entry => {
+    const listingUrl = String(entry?.listingUrl || '').trim()
+    if (!listingUrl || seen.has(listingUrl)) return []
+    seen.add(listingUrl)
+    return [{ listingUrl, pageUrl: String(entry?.pageUrl || '').trim() }]
+  })
+}
+
+function appendIndex(indexFile, items) {
+  const existing = new Set(readListingIndex(indexFile).map(item => item.listingUrl))
+  for (const item of items) {
+    if (!item.listingUrl || existing.has(item.listingUrl)) continue
+    existing.add(item.listingUrl)
+    fs.appendFileSync(indexFile, `${JSON.stringify(item)}\n`, { mode: 0o600, flag: 'a' })
+  }
+}
+
+async function processListingBatch({ batch, browser, archive, fileName, accepted, detailOutcomesFile }) {
+  for (const item of batch) {
+    if (collectionStopRequested) return
+    const { listingUrl, pageUrl } = item
+    if (!createSourceListingId(listingUrl) || !isSaleListing(listingUrl)) continue
+    try {
+      console.log('START LISTING:', listingUrl)
+      const row = await scrapeListing({ browser, listingUrl, baseUrl: pageUrl })
+      archive.append(row)
+      if (!isObservationValid(row)) {
+        console.log('SKIPPED LOW QUALITY OBSERVATION:', row.source_url)
+        continue
+      }
+      appendCsvRow(fileName, row)
+      accepted.count += 1
+      fs.appendFileSync(detailOutcomesFile, `${JSON.stringify({ recorded_at: new Date().toISOString(), source_listing_id: row.source_listing_id, source_url: listingUrl, outcome: 'extracted' })}\n`, { mode: 0o600, flag: 'a' })
+      console.log('FINISHED LISTING:', listingUrl)
+    } catch (error) {
+      fs.appendFileSync(detailOutcomesFile, `${JSON.stringify({ recorded_at: new Date().toISOString(), source_listing_id: createSourceListingId(listingUrl), source_url: listingUrl, outcome: 'failed', reason: error.message })}\n`, { mode: 0o600, flag: 'a' })
+      console.error('LISTING ERROR:', listingUrl, error.message)
+    }
+  }
 }
 
     
@@ -1457,12 +1473,40 @@ console.log(
   baseUrl
 )
 
-  const rows = []
+  const fileName = output ? path.resolve(output) : path.join(os.homedir(), 'Desktop', `${regionSlug}-sale-raw.csv`)
+  const indexFile = path.join(archive.directory, 'listing-index.ndjson')
+  const detailOutcomesFile = path.join(archive.directory, 'detail-outcomes.ndjson')
+  const recoveryIndex = process.env.ENCUENTRA24_SALE_RECOVERY_INDEX
+  const recoveryCheckpoint = process.env.ENCUENTRA24_SALE_RECOVERY_CHECKPOINT
+  const accepted = { count: 0 }
   let browser
+  let inventoryComplete = false
+  let collectionFailure = null
   try {
-    const cards = []
-
-for (let pageNumber = 1; pageNumber <= MAX_PAGES && !collectionStopRequested; pageNumber++) {
+    const completed = new Set([
+      ...completedSourceIds(archive.checkpoint),
+      ...completedSourceIds(recoveryCheckpoint)
+    ])
+    // A supplied durable checkpoint is evidence-only input.  Mirror it into
+    // this run's archive but never alter the original checkpoint.
+    if (recoveryIndex && fs.existsSync(recoveryIndex)) appendIndex(indexFile, readListingIndex(recoveryIndex))
+    const queued = readListingIndex(indexFile).filter(item => !completed.has(createSourceListingId(item.listingUrl)))
+    // Open the run CSV before discovery so a bounded collection preserves
+    // every valid detail observation already captured when collection stops.
+    startCsv(fileName)
+    browser = await puppeteer.launch({ headless: true })
+    if (queued.length) {
+      for (let offset = 0; offset < queued.length && !collectionStopRequested; offset += 25) {
+        await processListingBatch({ batch: queued.slice(offset, offset + 25), browser, archive, fileName, accepted, detailOutcomesFile })
+      }
+    }
+    // A retained index is only a recovery starting point. Continue at page 1
+    // afterwards so a prior interruption cannot turn a partial index into an
+    // authoritative inventory boundary.
+    const seenUrls = new Set(readListingIndex(indexFile).map(item => item.listingUrl))
+    const seenPageFingerprints = new Set()
+    let batch = []
+    for (let pageNumber = 1; !collectionStopRequested; pageNumber++) {
   const pageUrl =
     buildPageUrl(baseUrl, pageNumber)
 
@@ -1500,104 +1544,54 @@ if (pageNumber === 1 && pageCards[0]) {
   )
 
   if (pageCards.length === 0) {
+    inventoryComplete = true
     break
   }
 
-  pageCards.forEach(card => {
-    cards.push({
-      card,
-      $
-    : $page,
-      pageUrl
-    })
-  })
-
-  if (cards.length >= MAX_LISTINGS) {
-    break
-  }
-}
-    browser =
-      await puppeteer.launch({
-        headless: true
-      })
-      const seenUrls = new Set()
-      const listingItems = []
-
-      for (const item of cards) {
-        const listingUrl =
-          getListingUrl(item.$, item.card)
-
-        if (!listingUrl) continue
-        if (seenUrls.has(listingUrl)) continue
-
+      // Persist only lightweight discovery evidence.  The Cheerio page and
+      // card objects become collectible before the next inventory page.
+      let newlyDiscovered = 0
+      const pageIds = []
+      for (const card of pageCards) {
+        const listingUrl = getListingUrl($page, card)
+        const sourceListingId = createSourceListingId(listingUrl)
+        if (sourceListingId) pageIds.push(sourceListingId)
+        if (!listingUrl || seenUrls.has(listingUrl)) continue
         seenUrls.add(listingUrl)
-
-        listingItems.push({
-          ...item,
-          listingUrl
-        })
+        newlyDiscovered += 1
+        fs.appendFileSync(indexFile, `${JSON.stringify({ listingUrl, pageUrl })}\n`, { mode: 0o600, flag: 'a' })
+        batch.push({ listingUrl, pageUrl })
+        if (batch.length === 25) {
+          await processListingBatch({ batch, browser, archive, fileName, accepted, detailOutcomesFile })
+          batch = []
+          if (collectionStopRequested) break
+        }
       }
-
-      console.log(
-        'UNIQUE LISTING URLS:',
-        listingItems.length
-      )
-
-      
-
-    for (const [index, item] of listingItems.slice(0, MAX_LISTINGS).entries()) {
-  if (collectionStopRequested) break
-
-  const listingUrl =
-    item.listingUrl
-      if (!createSourceListingId(listingUrl)) continue
-      if (!listingUrl) continue
-      if (!isSaleListing(listingUrl)) continue
-      if (rows.length >= MAX_LISTINGS) break
-      try {
-
-console.log('START LISTING:', listingUrl)
-
-        const row =
-          await scrapeListing({
-            browser,
-            listingUrl,
-            baseUrl: item.pageUrl
-          })
-          archive.append(row)
-
-          if (!isObservationValid(row)) {
-console.log(
-'SKIPPED LOW QUALITY OBSERVATION:',
-row.source_url
-)
-            continue
-          }
-
-          rows.push(row)
-
-console.log('FINISHED LISTING:', listingUrl)
-
-      } catch (error) {
-        console.error(
-          'LISTING ERROR:',
-          listingUrl,
-          error.message
-        )
+      const fingerprint = [...new Set(pageIds)].sort().join(',')
+      if (!fingerprint || seenPageFingerprints.has(fingerprint)) {
+        collectionFailure = new Error('Repeated or unresolvable search population; inventory completeness cannot be verified')
+        break
+      }
+      seenPageFingerprints.add(fingerprint)
+      // A recovered index can already contain every URL from an early page.
+      // Continue pagination: a non-empty page with no new URLs is neither
+      // completion nor failure by itself. A repeated page fingerprint above
+      // remains fail-closed evidence that completion cannot be verified.
+      if (!collectionStopRequested && newlyDiscovered === 0) {
+        console.log('SEARCH PAGE ADDED NO NEW URLS; CONTINUING UNTIL VERIFIED TERMINATION')
       }
     }
+    if (batch.length && !collectionStopRequested) await processListingBatch({ batch, browser, archive, fileName, accepted, detailOutcomesFile })
 
-    
-
-    const fileName = output ? path.resolve(output) : path.join(os.homedir(), 'Desktop', `${regionSlug}-sale-raw.csv`)
-
-console.log('ROWS COLLECTED:', rows.length)
-      
-    writeCsv({
-      rows,
-      fileName
-    })
-    await archive.finalize()
+console.log('ROWS COLLECTED:', accepted.count)
+    await archive.finalize({ materialize: false })
+    fs.writeFileSync(path.join(archive.directory, 'run-summary.json'), JSON.stringify({
+      source: SOURCE_NAME, transaction_type: TRANSACTION_TYPE,
+      inventory_complete: inventoryComplete && !collectionStopRequested && !collectionFailure,
+      status: inventoryComplete && !collectionStopRequested && !collectionFailure ? 'COMPLETE' : collectionStopRequested ? 'INTERRUPTED' : 'PARTIAL',
+      ...(collectionFailure ? { failure: collectionFailure.message } : {}),
+      listings_successfully_extracted: accepted.count, finished_at: new Date().toISOString()
+    }, null, 2))
     
 console.log(
   'WRITECSV COMPLETE:',
@@ -1605,16 +1599,10 @@ console.log(
 )
 
     console.log(
-      JSON.stringify(
-        rows,
-        null,
-        2
-      )
-    )
-    console.log(
       `RAW CSV CREATED: ${fileName}`
     )
   } catch (error) {
+    collectionFailure = error
     console.error(
       'SCRAPER ERROR:',
       error.message
@@ -1623,9 +1611,10 @@ console.log(
     if (browser) {
       await browser.close()
     }
+    if (collectionFailure || collectionStopRequested || !inventoryComplete) process.exitCode = 1
   }
 }
 if (require.main === module) scrapeEncuentra24Sale().catch(error => { console.error(error.message); process.exitCode = 1 })
-module.exports = { scrapeEncuentra24Sale, createSourceListingId }
+module.exports = { scrapeEncuentra24Sale, createSourceListingId, completedSourceIds, readListingIndex, appendIndex, extractFlightAd, extractJsonLd, extractLocation, extractInsightAttributes, extractDetailAttributes, resolveSalePriceIdentity , extractLegacyMeasurements }
 
 

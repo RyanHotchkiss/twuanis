@@ -102,6 +102,7 @@ async function execute(command) {
   let stopTimer = null
   let lastProgressReport = 0
   let termination = null
+  const pendingOutput = { stdout: '', stderr: '' }
   const addLog = (stream, value) => {
     const line = String(value || '').trim()
     if (!line) return
@@ -145,8 +146,14 @@ async function execute(command) {
     else child = spawn(process.execPath, ['scripts/scrapers/wasi-command-runner.cjs', selected[0], path.join(process.env.ENCUENTRA24_RUN_ROOT || path.join(root, 'var'), 'wasi-manual-runs')], {
       cwd: root, env: { ...process.env, TWUANIS_SCRAPER_COMMAND_ID: command.id, TWUANIS_SCRAPER_STARTED_AT: startedAt }, detached: true, stdio: ['ignore', 'pipe', 'pipe']
     })
-    child.stdout.on('data', value => addLog('stdout', value))
-    child.stderr.on('data', value => addLog('stderr', value))
+    const bufferLines = (stream, value) => {
+      pendingOutput[stream] += String(value)
+      const lines = pendingOutput[stream].split(/\r?\n/)
+      pendingOutput[stream] = lines.pop()
+      for (const line of lines) addLog(stream, line)
+    }
+    child.stdout.on('data', value => bufferLines('stdout', value))
+    child.stderr.on('data', value => bufferLines('stderr', value))
     stopTimer = setInterval(() => {
       if (stopCheckInFlight) return
       stopCheckInFlight = true
@@ -165,6 +172,7 @@ async function execute(command) {
       child.once('error', reject)
       child.once('exit', (code, signal) => resolve({ code, signal }))
     })
+    for (const stream of ['stdout', 'stderr']) if (pendingOutput[stream]) addLog(stream, pendingOutput[stream])
     terminalState = stopping ? 'failed' : result.code === 0 ? 'completed' : 'failed'
     const counts = wasiResult?.counts
     terminalSummary = counts ? {

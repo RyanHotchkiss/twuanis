@@ -1,11 +1,12 @@
 import 'server-only'
+import {hasCanonicalPriceEligibility} from './canonical-market-population'
 import { supabaseAdmin } from './supabase-admin'
 import { hydrateCanonicalPopulation } from './canonical-population'
 import type { CanonicalEvidence } from './canonical-listing-reader'
 import type { PriceMeterIdentityListing } from './price-meter-identity'
 import type { PositionReference } from './price-meter-property-position-result-contract'
 
-const SELECT = 'id,canonical_domain_version,transaction_type,listing_status,property_area,construction_area,current_price,monthly_price,currency'
+const SELECT = 'id,canonical_domain_version,transaction_type,listing_status,property_area,construction_area,current_price,monthly_price,currency,price_eligibility:marketplace_price_eligibility(id)'
 export type PositionRow = PriceMeterIdentityListing & { id: string; canonical_domain_version: number; listing_status: string; transaction_type: string; canonicalEvidence: CanonicalEvidence }
 export class PositionAcquisitionError extends Error {}
 function incomplete(): never { throw new PositionAcquisitionError('Incomplete canonical reference acquisition.') }
@@ -34,7 +35,8 @@ export async function loadPositionSubject(listingId: string): Promise<PositionRo
     .eq('id', listingId).eq('listing_status','active').eq('canonical_domain_version',1).maybeSingle()
   if (error) throw error
   if (!data) return null
-  return (await hydrateCanonicalPopulation([data], undefined, []))[0] as PositionRow
+  if (!hasCanonicalPriceEligibility(data)) return null
+  return (await hydrateCanonicalPopulation([data], undefined, []))[0] as unknown as PositionRow
 }
 
 export async function loadPositionReference(reference: PositionReference): Promise<PositionRow[]> {
@@ -60,7 +62,7 @@ export async function loadPositionReference(reference: PositionReference): Promi
       const listings = await pages<PositionRow>(() => supabaseAdmin.from('listings').select(SELECT,{count:'exact'})
         .in('id',ids).eq('canonical_domain_version',1).eq('listing_status','active').eq('transaction_type',reference.transactionType).order('id'), row => validId(row.id) ? row.id : '')
       if (listings.length !== ids.length || listings.some(row => !ids.includes(row.id))) incomplete()
-      const hydrated = await hydrateCanonicalPopulation(listings, undefined, []) as PositionRow[]
+      const hydrated = await hydrateCanonicalPopulation(listings.filter(hasCanonicalPriceEligibility), undefined, []) as PositionRow[]
       for (const row of hydrated) {
         if (row.canonical_domain_version !== 1 || row.listing_status !== 'active' || row.transaction_type !== reference.transactionType ||
             !row.canonicalEvidence.geography.some(g => g.term_type === reference.geographyLevel && g.id === reference.geography.id) ||

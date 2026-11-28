@@ -1,5 +1,6 @@
 import {cache} from 'react'
 import 'server-only'
+import {hasCanonicalPriceEligibility} from './canonical-market-population'
 import { resolveMarketYearBuiltConstraint, evaluateMarketYearBuilt } from '@/lib/market-year-built-constraint'
 import { supabaseAdmin } from '@/lib/supabase-admin'
 import { hydrateCanonicalPopulation, resolvePopulationGeography } from '@/lib/canonical-population'
@@ -1078,27 +1079,13 @@ export async function saveMarketStatistics(
       entityType: string,
       entitySlug: string
     ) {
-      const { data: statistics, error: statisticsError } = await supabase
-        .from('market_statistics')
-        .select('*')
-        .eq('entity_type', entityType)
-        .eq('entity_slug', entitySlug)
-        .single()
-
-      if (statisticsError) throw statisticsError
-
-      const { data: distributions, error: distributionsError } =
-        await supabase
-          .from('market_distribution_statistics')
-          .select('*')
-          .eq('entity_type', entityType)
-          .eq('entity_slug', entitySlug)
-
-      if (distributionsError) throw distributionsError
-
+      // Stored aggregates have no price-eligibility revision. Recompute rather
+      // than reuse a result that may predate a changed integrity decision.
+      const live = await getMarketStatistics({[entityType]: entitySlug})
+      const s = live.statistics
       return {
-        statistics,
-        distributions
+        statistics: { total_listings:s.totalListings, sale_listings:s.saleListings, rental_listings:s.rentalListings, average_rent_crc:s.averageRentCRC, median_rent_crc:s.medianRentCRC, average_rent_usd:s.averageRentUSD, median_rent_usd:s.medianRentUSD, recent_listing_count:s.recentListingCount },
+        distributions: Object.entries(live.distributions).flatMap(([type, rows]) => rows.map((row, index) => ({ id:`${type}:${index}`, distribution_type:type, value:row.value, percentage:row.percentage })))
       }
     }
 
@@ -1158,7 +1145,7 @@ export async function getMatchingListings(filters: MarketFilters, onGeographyLab
   }
   const query=()=>{
     let q=supabaseAdmin.from('listings').select(`id,title,images,canonical_domain_version,
-      transaction_type,currency,monthly_price,current_price,price_millions,
+      transaction_type,currency,monthly_price,current_price,price_millions,price_eligibility:marketplace_price_eligibility(id),
       property_area,construction_area,created_at,province,canton,district`,{count:'exact'})
       .eq('canonical_domain_version',1).eq('listing_status','active')
     if (transaction_type) q=q.eq('transaction_type',transaction_type)
@@ -1171,6 +1158,7 @@ export async function getMatchingListings(filters: MarketFilters, onGeographyLab
     canonical.push(...await completePopulationRows<Listing>((from,to)=>query().in('id',chunk).range(from,to)))
   }
   if (new Set(canonical.map(l=>l.id)).size!==canonical.length) throw new Error('Duplicate canonical population evidence.')
+  canonical=canonical.map(row=>hasCanonicalPriceEligibility(row)?row:{...row,current_price:null,monthly_price:null,price_millions:null})
   canonical=await hydrateCanonicalPopulation(canonical,undefined,[...new Set([...factDimensions,...(yearConstraint?['year_built']:[]),...(distance_to_paved_road_range?['distance_to_paved_road']:[])])])
   canonical=canonical.filter(l=>(!property_area||matchesPropertyAreaConstraint(l.property_area,property_area)) &&
     (!construction_area||matchesConstructionAreaConstraint(l.construction_area,construction_area)))
@@ -1184,7 +1172,7 @@ export async function getMatchingListings(filters: MarketFilters, onGeographyLab
   }
   // Legacy compatibility strings are not canonical year evidence. They cannot
   // establish satisfaction of a selected canonical numerical year constraint.
-  const legacyRows=yearConstraint?[]:await getLegacyMatchingListings(legacy,terms)
+  const legacyRows=yearConstraint?[]:(await getLegacyMatchingListings(legacy,terms)).map(row=>({...row,current_price:null,monthly_price:null,price_millions:null}))
   if(yearConstraint) canonical=canonical.filter(l=>evaluateMarketYearBuilt(yearConstraint,
     l.canonicalEvidence.facts.find((f:any)=>f.dimension==='year_built')).state==='MATCH')
   return [...new Map([...legacyRows,...canonical].map(l=>[l.id,l])).values()]

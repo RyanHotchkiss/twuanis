@@ -30,7 +30,9 @@ function rawObservation(row) {
     agency_logo_url: String(row.agency?.logo_url || ''), agency_name: String(row.agency?.name || ''),
     listing_agent_photo_url: String(row.listing_agent?.photo_url || ''), listing_agent_name: String(row.listing_agent?.name || ''),
     raw_source_attributes: JSON.stringify(row.attributes || {}), raw_geography: JSON.stringify(row.geography?.source_fields || {}),
-    collection_eligibility: String(row.collection_eligibility || ''), raw_jsonld: String(row.raw_jsonld || ''), raw_price_evidence: String(row.raw_price_evidence || '')
+    collection_eligibility: typeof row.collection_eligibility === 'string' ? row.collection_eligibility : JSON.stringify(row.collection_eligibility || {}),
+raw_jsonld: typeof row.raw_jsonld === 'string' ? row.raw_jsonld : JSON.stringify(row.raw_jsonld || {}),
+raw_price_evidence: typeof row.raw_price_evidence === 'string' ? row.raw_price_evidence : JSON.stringify(row.raw_price_evidence || {})
   }
 }
 

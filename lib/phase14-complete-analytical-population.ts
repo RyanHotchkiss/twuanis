@@ -51,7 +51,12 @@ function validateChain(envelope:Phase14ExecutionEnvelope,s7:Phase14AnalyticalPop
   }
   snapshot(s7.completeness)
   same(s2.geography,q.geography);same(s3.geography,q.geography);same(s4.propertyType,q.propertyType)
-  same(s3.predicates,{listingStatus:'active',canonicalDomainVersion:1,transaction:q.transaction})
+  same(s3.predicates,{
+  listingStatus:'active',
+  canonicalDomainVersion:1,
+  transaction:q.transaction,
+  analyticalPriceEligible:true
+})
   requireEvidence(s3.transaction===q.transaction&&s7.normalizationBasis===s7.execution.normalizationBasis&&['land','construction'].includes(s7.normalizationBasis))
   requireEvidence(s7.execution.analyticalIdentity===JSON.stringify({version:1,question:envelope.canonicalQuestionSerialization,normalizationBasis:s7.normalizationBasis}))
   const g=ids(s2.listingIds,s2.acquiredUniqueListingCount),f=ids(s3.listingIds,s3.survivingListingCount),m=ids(s4.listingIds,s4.survivingListingCount),v=ids(s5.listingIds,s5.survivingListingCount),h=ids(s6.listingIds,s6.hydratedListingCount)
@@ -86,7 +91,8 @@ function validateChain(envelope:Phase14ExecutionEnvelope,s7:Phase14AnalyticalPop
   requireEvidence(s5.completeness.requests===s5.trail.reduce((sum,stage)=>sum+stage.completeness.requests,0))
   requireEvidence(prior===v.size);reduction(m.size,v.size,s5.excludedListingCount)
   requireEvidence(s6.step5SurvivorCount===v.size&&s6.completeness.exactRequestedIdCoverage===true&&Object.keys(s6.evidenceByListingId).length===h.size)
-  for(const id of h){const e=s6.evidenceByListingId[id];requireEvidence(e&&e.scalars.id===id&&e.canonical.listing_id===id&&e.scalars.transaction_type===q.transaction&&e.scalars.canonical_domain_version===1&&e.scalars.listing_status==='active')
+  for(const id of h){const e=s6.evidenceByListingId[id];requireEvidence(e&&e.scalars.id===id&&e.canonical.listing_id===id&&e.scalars.transaction_type===q.transaction&&e.scalars.canonical_domain_version===1&&e.scalars.listing_status==='active'&&
+e.scalars.analytical_price_eligible===true)
     const types=e.canonical.selections.filter(t=>t.dimension==='property_type');requireEvidence(types.length===1&&types[0].ontology_term_id===q.propertyType.termId)
     requireEvidence(e.canonical.geography.some(t=>t.term_type===q.geography.level&&t.id===q.geography.termId&&t.official_code===q.geography.officialCode))
   }

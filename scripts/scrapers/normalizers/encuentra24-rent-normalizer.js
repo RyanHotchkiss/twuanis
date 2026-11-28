@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const Papa = require('papaparse')
+const { normalizeEncuentra24RowGeography } = require('../encuentra24-sale-geography.cjs')
 
 function clean(value) {
   return String(value || '')
@@ -546,6 +547,7 @@ function cleanDescription(value) {
 }
 
 function normalizeRow(row) {
+  const geography = normalizeEncuentra24RowGeography(row)
   const normalized = {
     // Preserve event identity/time verbatim; missing evidence stays missing.
     observation_id: row.observation_id,
@@ -557,9 +559,9 @@ function normalizeRow(row) {
     transaction_type: row.transaction_type,
     listing_status: row.listing_status,
 
-    province: clean(row.province),
-    canton: clean(row.canton),
-    district: clean(row.district),
+    province: geography.province,
+    canton: geography.canton,
+    district: geography.district,
 
     title: clean(row.title),
     description: cleanDescription(row.description),
@@ -593,6 +595,7 @@ function normalizeRow(row) {
         currency: row.currency,
 
     whatsapp: row.whatsapp,
+    whatsapp_evidence_origin: row.whatsapp_evidence_origin,
 
     images: splitImages(row.images).join('|')
   }

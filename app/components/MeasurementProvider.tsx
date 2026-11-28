@@ -47,15 +47,212 @@ export default function MeasurementProvider({mode,sourceExcluded=false,privacyDr
  const show=ready&&(open||(!dismissed&&shouldPromptConsent()))
  useEffect(()=>{if(!show)return;const prior=document.activeElement as HTMLElement|null;noticeRef.current?.focus();return()=>{if(prior?.isConnected)prior.focus()}},[show])
  if(!show)return null
- return <aside className={styles.notice} ref={noticeRef} tabIndex={-1} role="dialog" onKeyDown={event=>{if(event.key==='Escape')close()}} aria-label={es?'Preferencias de privacidad':'Privacy preferences'} style={{position:'fixed',right:12,zIndex:10000,maxWidth:560,maxHeight:'65vh',overflowY:'auto',padding:16,borderRadius:12,background:'var(--background,#fff)',color:'var(--foreground,#111)',border:'1px solid currentColor',display:'flex',flexWrap:'wrap',gap:12,bottom:170,left:12,fontFamily:'sans-serif',fontSize:14}}>
- <>{mode==='off'&&<p>{es?'La analítica opcional no está activa en esta versión.':'Optional analytics is not active in this version.'}</p>}<p>{es?'Puede permitir estadísticas opcionales de uso. Rechazarlas no limita las funciones de Twuanis. La publicidad permanece desactivada.':'You may allow optional usage analytics. Declining does not limit Twuanis features. Advertising remains disabled.'}</p>{profile==='full'?<><p>{es?'Con tu consentimiento para analítica, Twuanis mide el uso del sitio y los resultados confirmados de pagos de Paquetes, acceso e informes analíticos para comprender el rendimiento del servicio. Un identificador autorizado de Google Analytics puede vincular resultados elegibles dentro de tu sesión actual. No transmitimos credenciales de pago, entradas analíticas privadas ni contenido de informes a Google Analytics. Puedes retirar tu consentimiento. La retirada impide nuevas mediciones autorizadas, pero no puede recuperar solicitudes ya transmitidas.':'With your analytics consent, Twuanis measures website use and confirmed Package payment, access, and analytical report outcomes to understand service performance. A consented Google Analytics identifier may connect eligible outcomes within your current session. We do not transmit payment credentials, private analytical inputs, or report contents to Google Analytics. You may withdraw consent. Withdrawal prevents newly authorized measurement, but cannot recall a request already transmitted.'}</p><p>{es?'El permiso de resultados vence en un máximo de 24 horas, sin renovación automática. La elegibilidad termina al vencer el consentimiento o la sesión y nunca supera 72 horas. Los registros operativos del permiso de envío a Google se limitan a siete días; esto no limita el historial propio descrito por separado. Google Analytics tiene una retención configurada de 14 meses.':'Outcome permission expires within 24 hours, without automatic renewal. Eligibility ends when consent or the session expires and never exceeds 72 hours. Google-delivery permission records are limited to seven days; this does not limit the separately described first-party history. Google Analytics retention is configured to 14 months.'}</p></>:!journeyEnabled&&<p>{es?'Las estadísticas opcionales miden páginas, interacción con propiedades, selecciones controladas de búsqueda e interés en algoritmos, ejemplos y Paquetes. Los códigos de campañas de correo aprobados se conservan en esta pestaña hasta 30 minutos de inactividad. Google Analytics utiliza cookies e identificadores seudónimos tras su permiso. Esta opción no vincula su cuenta de Twuanis ni activa resultados comerciales o analíticos.':'Optional site statistics measure pages, property engagement, controlled search selections, algorithm/example interest and Package selections. Approved email campaign codes are retained for up to 30 minutes of inactivity in this tab. Google Analytics uses cookies and pseudonymous identifiers after your permission. This option does not link your Twuanis account or enable commercial or analytical outcomes.'}</p>}{journeyEnabled&&journeyPolicy&&<p>{journeyDisclosure(journeyPolicy,!!es)}</p>}<div className={styles.choices}><button type="button" onClick={()=>select('denied')}>{es?'Rechazar estadísticas':'Decline analytics'}</button><button className={styles.allow} type="button" disabled={journeyEnabled&&!journeyPolicy} onClick={()=>select('granted')}>{es?'Permitir estadísticas':'Allow analytics'}</button></div>{mode==='local'&&<p>{es?'Vista previa local: no se envían datos a Google.':'Local preview: no data is sent to Google.'}</p>}</>
- {(profile==='full'||journeyEnabled)&&mode!=='off'&&choice==='granted'&&state().auth==='authenticated'&&<div><p>{es?(mode==='local'?'Prueba local opcional: asociar esta cuenta y el identificador de Analytics ya consentido con resultados oficiales durante un máximo de 24 horas. No se envían datos a Google.':'Permitir la asociación de esta cuenta y su identificador de Analytics autorizado con resultados oficiales durante un máximo de 24 horas, sin renovación automática.'):(mode==='local'?'Optional local test: associate this account and an already consented Analytics identifier with official outcomes for up to 24 hours. No data is sent to Google.':'Allow this account and its consented Analytics identifier to be associated with official outcomes for up to 24 hours, without automatic renewal.')}</p><button type="button" onClick={()=>{void grantDurable().then(setDurableStatus)}}>{es?(mode==='local'?'Permitir prueba local de resultados':'Permitir medición de resultados'):(mode==='local'?'Allow local outcome test':'Allow outcome measurement')}</button></div>}
- {mode!=='off'&&durableStatus&&<p role="status">{durableStatus==='PENDING'||durableStatus==='REVOCATION_PENDING'?(es?'La retirada está pendiente. Reintente cuando tenga conexión.':'Withdrawal is pending. Retry when connected.'):durableStatus==='GRANTED'?(es?'La medición de resultados está permitida hasta que venza este permiso.':'Outcome measurement is allowed until this permission expires.'):durableStatus==='REVOKED'?(es?'Permiso de medición de resultados retirado.':'Outcome measurement permission withdrawn.'):durableStatus==='MISSING_CONSENTED_CLIENT_ID'?(es?'Analytics se está iniciando. Vuelva a intentarlo en un momento.':'Analytics is still starting. Try again shortly.'):(es?'La medición de resultados no está disponible. Las funciones de Twuanis siguen disponibles.':'Outcome measurement is unavailable. Twuanis functions remain available.')}</p>}
- {mode!=='off'&&(durableStatus==='PENDING'||durableStatus==='REVOCATION_PENDING')&&<button type="button" onClick={()=>{void withdrawDurable().then(setDurableStatus)}}>{es?'Reintentar retiro':'Retry withdrawal'}</button>}
- {choice==='granted'&&<button type="button" onClick={()=>select('denied')}>{es?'Retirar consentimiento':'Withdraw consent'}</button>}
- {privacyDraftVisible&&<a href={es?'/es/privacidad':'/en/privacy'}>{es?'Aviso de privacidad':'Privacy notice'}</a>}
- {(profile==='full'||journeyEnabled||journeyRightsEnabled)&&<PrivacyRightsPanel es={!!es}/>}
- <a href={es?'/soporte/ayuda':'/support/help'}>{es?'Ayuda y soporte':'Help and support'}</a>
- <button type="button" onClick={close}>{es?'Cerrar':'Close'}</button>
- </aside>
+ return <aside
+  className={styles.notice}
+  ref={noticeRef}
+  tabIndex={-1}
+  role="dialog"
+  onKeyDown={event => {
+    if (event.key === 'Escape') close()
+  }}
+  aria-label={es ? 'Preferencias de privacidad' : 'Privacy preferences'}
+  style={{
+    position: 'fixed',
+    right: 12,
+    zIndex: 10000,
+    maxWidth: 560,
+    maxHeight: '65vh',
+    overflowY: 'auto',
+    padding: 16,
+    borderRadius: 12,
+    background: 'var(--background,#fff)',
+    color: 'var(--foreground,#111)',
+    border: '1px solid currentColor',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 12,
+    bottom: 170,
+    left: 12,
+    fontFamily: 'sans-serif',
+    fontSize: 14
+  }}
+>
+  <div
+    className={styles.choices}
+    style={{
+      width: '100%',
+      flexShrink: 0
+    }}
+  >
+    <button
+      className={styles.allow}
+      type="button"
+      disabled={journeyEnabled && !journeyPolicy}
+      onClick={() => select('granted')}
+      style={{
+        background: '#ff3b00',
+        color: '#111',
+        borderColor: '#ff3b00'
+      }}
+    >
+      {es ? 'Permitir estadísticas' : 'Allow analytics'}
+    </button>
+
+    <button
+      type="button"
+      onClick={() => select('denied')}
+    >
+      {es ? 'Rechazar estadísticas' : 'Decline analytics'}
+    </button>
+  </div>
+
+  {mode === 'off' && (
+    <p>
+      {es
+        ? 'La analítica opcional no está activa en esta versión.'
+        : 'Optional analytics is not active in this version.'}
+    </p>
+  )}
+
+  <p>
+    {es
+      ? 'Puede permitir estadísticas opcionales de uso. Rechazarlas no limita las funciones de Twuanis. La publicidad permanece desactivada.'
+      : 'You may allow optional usage analytics. Declining does not limit Twuanis features. Advertising remains disabled.'}
+  </p>
+
+  {profile === 'full' ? (
+    <>
+      <p>
+        {es
+          ? 'Con tu consentimiento para analítica, Twuanis mide el uso del sitio y los resultados confirmados de pagos de Paquetes, acceso e informes analíticos para comprender el rendimiento del servicio. Un identificador autorizado de Google Analytics puede vincular resultados elegibles dentro de tu sesión actual. No transmitimos credenciales de pago, entradas analíticas privadas ni contenido de informes a Google Analytics. Puedes retirar tu consentimiento. La retirada impide nuevas mediciones autorizadas, pero no puede recuperar solicitudes ya transmitidas.'
+          : 'With your analytics consent, Twuanis measures website use and confirmed Package payment, access, and analytical report outcomes to understand service performance. A consented Google Analytics identifier may connect eligible outcomes within your current session. We do not transmit payment credentials, private analytical inputs, or report contents to Google Analytics. You may withdraw consent. Withdrawal prevents newly authorized measurement, but cannot recall a request already transmitted.'}
+      </p>
+
+      <p>
+        {es
+          ? 'El permiso de resultados vence en un máximo de 24 horas, sin renovación automática. La elegibilidad termina al vencer el consentimiento o la sesión y nunca supera 72 horas. Los registros operativos del permiso de envío a Google se limitan a siete días; esto no limita el historial propio descrito por separado. Google Analytics tiene una retención configurada de 14 meses.'
+          : 'Outcome permission expires within 24 hours, without automatic renewal. Eligibility ends when consent or the session expires and never exceeds 72 hours. Google-delivery permission records are limited to seven days; this does not limit the separately described first-party history. Google Analytics retention is configured to 14 months.'}
+      </p>
+    </>
+  ) : (
+    !journeyEnabled && (
+      <p>
+        {es
+          ? 'Las estadísticas opcionales miden páginas, interacción con propiedades, selecciones controladas de búsqueda e interés en algoritmos, ejemplos y Paquetes. Los códigos de campañas de correo aprobados se conservan en esta pestaña hasta 30 minutos de inactividad. Google Analytics utiliza cookies e identificadores seudónimos tras su permiso. Esta opción no vincula su cuenta de Twuanis ni activa resultados comerciales o analíticos.'
+          : 'Optional site statistics measure pages, property engagement, controlled search selections, algorithm/example interest and Package selections. Approved email campaign codes are retained for up to 30 minutes of inactivity in this tab. Google Analytics uses cookies and pseudonymous identifiers after your permission. This option does not link your Twuanis account or enable commercial or analytical outcomes.'}
+      </p>
+    )
+  )}
+
+  {journeyEnabled && journeyPolicy && (
+    <p>{journeyDisclosure(journeyPolicy, !!es)}</p>
+  )}
+
+  {mode === 'local' && (
+    <p>
+      {es
+        ? 'Vista previa local: no se envían datos a Google.'
+        : 'Local preview: no data is sent to Google.'}
+    </p>
+  )}
+
+  {(profile === 'full' || journeyEnabled) &&
+    mode !== 'off' &&
+    choice === 'granted' &&
+    state().auth === 'authenticated' && (
+      <div>
+        <p>
+          {es
+            ? mode === 'local'
+              ? 'Prueba local opcional: asociar esta cuenta y el identificador de Analytics ya consentido con resultados oficiales durante un máximo de 24 horas. No se envían datos a Google.'
+              : 'Permitir la asociación de esta cuenta y su identificador de Analytics autorizado con resultados oficiales durante un máximo de 24 horas, sin renovación automática.'
+            : mode === 'local'
+              ? 'Optional local test: associate this account and an already consented Analytics identifier with official outcomes for up to 24 hours. No data is sent to Google.'
+              : 'Allow this account and its consented Analytics identifier to be associated with official outcomes for up to 24 hours, without automatic renewal.'}
+        </p>
+
+        <button
+          type="button"
+          onClick={() => {
+            void grantDurable().then(setDurableStatus)
+          }}
+        >
+          {es
+            ? mode === 'local'
+              ? 'Permitir prueba local de resultados'
+              : 'Permitir medición de resultados'
+            : mode === 'local'
+              ? 'Allow local outcome test'
+              : 'Allow outcome measurement'}
+        </button>
+      </div>
+    )}
+
+  {mode !== 'off' && durableStatus && (
+    <p role="status">
+      {durableStatus === 'PENDING' ||
+      durableStatus === 'REVOCATION_PENDING'
+        ? es
+          ? 'La retirada está pendiente. Reintente cuando tenga conexión.'
+          : 'Withdrawal is pending. Retry when connected.'
+        : durableStatus === 'GRANTED'
+          ? es
+            ? 'La medición de resultados está permitida hasta que venza este permiso.'
+            : 'Outcome measurement is allowed until this permission expires.'
+          : durableStatus === 'REVOKED'
+            ? es
+              ? 'Permiso de medición de resultados retirado.'
+              : 'Outcome measurement permission withdrawn.'
+            : durableStatus === 'MISSING_CONSENTED_CLIENT_ID'
+              ? es
+                ? 'Analytics se está iniciando. Vuelva a intentarlo en un momento.'
+                : 'Analytics is still starting. Try again shortly.'
+              : es
+                ? 'La medición de resultados no está disponible. Las funciones de Twuanis siguen disponibles.'
+                : 'Outcome measurement is unavailable. Twuanis functions remain available.'}
+    </p>
+  )}
+
+  {mode !== 'off' &&
+    (durableStatus === 'PENDING' ||
+      durableStatus === 'REVOCATION_PENDING') && (
+      <button
+        type="button"
+        onClick={() => {
+          void withdrawDurable().then(setDurableStatus)
+        }}
+      >
+        {es ? 'Reintentar retiro' : 'Retry withdrawal'}
+      </button>
+    )}
+
+  {choice === 'granted' && (
+    <button
+      type="button"
+      onClick={() => select('denied')}
+    >
+      {es ? 'Retirar consentimiento' : 'Withdraw consent'}
+    </button>
+  )}
+
+  {privacyDraftVisible && (
+    <a href={es ? '/es/privacidad' : '/en/privacy'}>
+      {es ? 'Aviso de privacidad' : 'Privacy notice'}
+    </a>
+  )}
+
+  {(profile === 'full' ||
+    journeyEnabled ||
+    journeyRightsEnabled) && (
+      <PrivacyRightsPanel es={!!es} />
+    )}
+
+  <a href={es ? '/soporte/ayuda' : '/support/help'}>
+    {es ? 'Ayuda y soporte' : 'Help and support'}
+  </a>
+
+  <button type="button" onClick={close}>
+    {es ? 'Cerrar' : 'Close'}
+  </button>
+</aside>
 }

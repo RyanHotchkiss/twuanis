@@ -1,7 +1,7 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),path=require('node:path');
 const root=path.resolve(__dirname,'../..'),ts=require(root+'/node_modules/typescript'),m={exports:{}};
 function pure(file){const m={exports:{}};vm.runInNewContext(ts.transpileModule(fs.readFileSync(root+'/lib/geography/'+file+'.ts','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,{module:m,exports:m.exports,require:k=>pure(k.slice(2))});return m.exports}
-vm.runInNewContext(ts.transpileModule(fs.readFileSync(root+'/lib/canonical-market-population.ts','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,{module:m,exports:m.exports,require:n=>{if(n==='server-only')return {};if(n==='./geography/dta-identity')return pure('dta-identity');if(n==='./supabase-admin')return {supabaseAdmin:{from(){throw Error('Default database forbidden')}}};throw Error(n)}});
+vm.runInNewContext(ts.transpileModule(fs.readFileSync(root+'/lib/canonical-market-population.ts','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,{module:m,exports:m.exports,require:n=>{if(n==='server-only')return {};if(n==='./analytical-universe')return {ordinaryUniverse:t=>t==='sale'?'SALE':'RENT'};if(n==='./orchestrator-evidence-v2')return {evidenceCaptureActive:()=>false,recordAnalyticalEvidence:()=>{}};if(n==='./geography/dta-identity')return pure('dta-identity');if(n==='./supabase-admin')return {supabaseAdmin:{from(){throw Error('Default database forbidden')}}};throw Error(n)}});
 const api=m.exports;let checks=0;
 const id=n=>'00000000-0000-0000-0000-'+String(n).padStart(12,'0');
 const b={transaction:'sale',membershipGroups:[['10'],['20','21']],propertyArea:{min:100,max:200},constructionArea:{min:null,max:90}};
@@ -23,7 +23,8 @@ for(const responses of [
 await fails(api.readCanonicalMarketScalars(b,['property_area'],client([{data:[{id:id(1)}],count:1}])));
 for(const invalid of [{...b,transaction:'SALE'},{...b,membershipGroups:[['bad']]},{...b,membershipGroups:[[]]},{...b,membershipGroups:[['10','10']]},{...b,propertyArea:{min:2,max:1}}]){const c=client([]);await fails(api.countCanonicalMarket(invalid,c));eq(c.calls.length,0)}
 await fails(api.readCanonicalMarketScalars(b,['images'],client([])));
-for(const tx of ['rent',null]){const c=client([{count:0}]);await api.countCanonicalMarket({...b,transaction:tx},c);eq(c.calls[0][4],tx?['eq','transaction_type','rent']:['in','transaction_type',['sale','rent']]);}
-for(const identity of ['0','-9223372036854775808','9223372036854775807']){const c=client([{count:0}]);eq(await api.countCanonicalMarket({...b,membershipGroups:[[identity]]},c),0)}
+{const c=client([{count:0}]);await api.countCanonicalMarket({...b,transaction:'rent'},c);eq(c.calls[0][4],['eq','transaction_type','rent']);} await fails(api.countCanonicalMarket({...b,transaction:null},client([])));
+{const c=client([{count:0}]);eq(await api.countCanonicalMarket({...b,membershipGroups:[['9223372036854775807']]},c),0)} for(const identity of ['0','-9223372036854775808'])await fails(api.countCanonicalMarket({...b,membershipGroups:[[identity]]},client([])));
+const eligible={id:id(1),price_eligibility:{id:id(1)}};eq(api.hasCanonicalPriceEligibility(eligible),true);eq(api.hasCanonicalPriceEligibility({id:id(1),price_eligibility:null}),false);for(const price_eligibility of [undefined,[],{},'bad',{id:id(2)}]){assert.throws(()=>api.hasCanonicalPriceEligibility({id:id(1),price_eligibility}));checks++} 
 console.log('CANONICAL MARKET POPULATION PASS:',checks,'offline assertions. No live database/network.');
 })().catch(e=>{console.error(e);process.exitCode=1});

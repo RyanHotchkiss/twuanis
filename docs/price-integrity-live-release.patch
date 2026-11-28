@@ -1,0 +1,811 @@
+--- a/lib/asking-area-ratio-data.ts
++++ b/lib/asking-area-ratio-data.ts
+@@ -1,5 +1,6 @@
+ import 'server-only';
+ import { supabaseAdmin } from './supabase-admin';
++import { hasCanonicalPriceEligibility } from './canonical-market-population';
+ import { readCanonicalListingEvidence } from './canonical-listing-reader';
+ import { resolvePriceMeterAreaIdentity, resolvePriceMeterPropertyBasis } from './price-meter-identity';
+ import { resolveListingOriginalMonetaryValue } from './listing-monetary-value';
+@@ -58,7 +59,7 @@
+         const selected = typed.map(r => r.listing_id);
+         if (!selected.length)
+             continue;
+-        const rows = await pages((a, b) => bound(supabaseAdmin.from('listings').select('id,canonical_domain_version,listing_status,transaction_type,property_area::text,construction_area::text,current_price::text,monthly_price::text,currency', { count: 'exact' }).in('id', selected).eq('canonical_domain_version', 1).eq('listing_status', 'active').eq('transaction_type', q.transaction)).order('id').range(a, b), r => { if (!selected.includes(r.id) || r.canonical_domain_version !== 1 || r.listing_status !== 'active' || r.transaction_type !== q.transaction)
++        const rows = await pages((a, b) => bound(supabaseAdmin.from('listings').select('id,canonical_domain_version,listing_status,transaction_type,property_area::text,construction_area::text,current_price::text,monthly_price::text,currency,price_eligibility:marketplace_price_eligibility(id)', { count: 'exact' }).in('id', selected).eq('canonical_domain_version', 1).eq('listing_status', 'active').eq('transaction_type', q.transaction)).order('id').range(a, b), r => { if (!selected.includes(r.id) || r.canonical_domain_version !== 1 || r.listing_status !== 'active' || r.transaction_type !== q.transaction)
+             throw Error('Scalar mismatch'); return r.id; });
+         if (rows.length !== selected.length)
+             throw Error('Missing scalar rows');
+@@ -76,6 +77,7 @@
+                 throw Error('Invalid exact area');
+             if (resolvePriceMeterPropertyBasis({ propertyType: e.selections[0].slug, constructionArea: resolvePriceMeterAreaIdentity(C) }) !== 'improved_property')
+                 throw Error('Basis mismatch');
++            if (!hasCanonicalPriceEligibility(row)) { excluded++; continue; }
+             const money = resolveListingOriginalMonetaryValue(row);
+             if (!money) {
+                 excluded++;
+--- a/lib/asking-price-data.ts
++++ b/lib/asking-price-data.ts
+@@ -1,5 +1,6 @@
+ import 'server-only'
+ import { supabaseAdmin } from './supabase-admin'
++import { hasCanonicalPriceEligibility } from './canonical-market-population'
+ import { resolveDtaGeography } from './geography/resolve-dta-geography'
+ import { readCanonicalListingEvidence, type CanonicalFact } from './canonical-listing-reader'
+ import { resolvePropertyAreaConstraint, resolveConstructionAreaConstraint } from './market-intelligence-area-ranges'
+@@ -83,7 +84,7 @@
+ }
+ export async function acquireMoney(q:Question,ids:string[]):Promise<any[]>{
+  const result:any[]=[];const field=q.transaction==='sale'?'current_price':'monthly_price'
+- for(const batch of chunks(ids)){let last='';const rows=await pages((a,b)=>supabaseAdmin.from('listings').select('id,canonical_domain_version,listing_status,transaction_type,currency,'+field+'::text',{count:'exact'}).in('id',batch).order('id').range(a,b),r=>{
++ for(const batch of chunks(ids)){let last='';const rows=await pages((a,b)=>supabaseAdmin.from('listings').select('id,canonical_domain_version,listing_status,transaction_type,currency,'+field+'::text,price_eligibility:marketplace_price_eligibility(id)',{count:'exact'}).in('id',batch).order('id').range(a,b),r=>{
+  if(!batch.includes(r.id)||r.id<=last||r.canonical_domain_version!==1||r.listing_status!=='active'||r.transaction_type!==q.transaction)fail();last=r.id
+- });if(rows.length!==batch.length)fail();result.push(...rows)}return result
++ });if(rows.length!==batch.length)fail();result.push(...rows.map(row=>hasCanonicalPriceEligibility(row)?row:{...row,[field]:null}))}return result
+ }
+--- a/lib/canonical-market-observation-rows.ts
++++ b/lib/canonical-market-observation-rows.ts
+@@ -9,7 +9,14 @@
+   // Explicit caller scope; preserve existing Year/Road binding and other caller defaults.
+   const request=options.numericalCategoryFilters===true?Object.freeze({...resolved,numericalTerms:Object.freeze(
+     resolved.terms.filter(term=>['bedrooms','bathrooms','parking'].includes(term.dimension)))}):resolved
+-  const {rows,evidence}=await acquireCanonicalMarketRows(request,canonicalMarketFilterBoundary(request),
+-    ['canonical_domain_version','transaction_type','currency','current_price','monthly_price','property_area','construction_area'],true)
++  const {rows,evidence}=await acquireCanonicalMarketRows(
++    request,
++    {
++      ...canonicalMarketFilterBoundary(request),
++      participation:'asking_price',
++    },
++    ['canonical_domain_version','transaction_type','currency','current_price','monthly_price','property_area','construction_area'],
++    true
++  )
+   return hydrateCanonicalPopulation(rows as Array<{id:string;canonical_domain_version:number;transaction_type:string}&Record<string,any>>,evidence,[])
+ }
+--- a/lib/canonical-market-population.ts
++++ b/lib/canonical-market-population.ts
+@@ -4,11 +4,17 @@
+ import {validateOntologyTermId} from './geography/dta-identity'
+ import { supabaseAdmin } from './supabase-admin'
+ 
+-// Neutral population transport only. Callers own authorization, the question,
+-// typed fact reduction, participation, analytical eligibility, and mathematics.
++// Shared canonical population transport. Callers own authorization,
++// question-specific participation, typed fact reduction, and mathematics.
++// Asking-price participation requires the database price-integrity authority.
++export type CanonicalMarketParticipation =
++  | 'inventory'
++  | 'asking_price'
++  | 'inventory_with_price_eligibility'
+ export type CanonicalMarketBoundary = Readonly<{
+   population?: AnalyticalUniverse
+   transaction: 'sale' | 'rent'
++  participation?: CanonicalMarketParticipation
+   // AND between groups; OR within a group. Atomic AND preferences are never
+   // passed here by Matching; Configuration can use singleton requirement groups.
+   membershipGroups: readonly (readonly string[])[]
+@@ -21,10 +27,21 @@
+ type Client = Pick<typeof supabaseAdmin,'from'>
+ const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
+ function fail():never {throw new Error('Incomplete or invalid canonical market population.')}
++export function hasCanonicalPriceEligibility(row: Record<string, any>): boolean {
++  if (!row || typeof row.id !== 'string' || !Object.hasOwn(row, 'price_eligibility')) fail()
++  const evidence = row.price_eligibility
++  if (evidence === null) return false
++  if (typeof evidence !== 'object' || Array.isArray(evidence) || evidence.id !== row.id) fail()
++  return true
++}
+ function validate(b:CanonicalMarketBoundary) {
+   if(!b||b.transaction!=='sale'&&b.transaction!=='rent'||
+       !Array.isArray(b.membershipGroups)||b.membershipGroups.length>32)fail()
+   if(b.population!==undefined&&b.population!==ordinaryUniverse(b.transaction))fail()
++  if(b.participation!==undefined&&
++     b.participation!=='inventory'&&
++     b.participation!=='asking_price'&&
++     b.participation!=='inventory_with_price_eligibility')fail()
+   for(const group of b.membershipGroups){
+     if(!Array.isArray(group)||!group.length||group.length>64||new Set(group).size!==group.length)fail()
+     for(const id of group)validateOntologyTermId(id)
+@@ -40,6 +57,14 @@
+   // Each embedded inner relationship is an EXISTS-style filter of the parent
+   // listings result. Empty embeds avoid transporting membership/presentation rows.
+   const joins=b.membershipGroups.map((_,i)=>`m${i}:listings_ontology_terms!inner()`)
++
++  if(b.participation==='asking_price'){
++    joins.push(head ? 'marketplace_price_eligibility!inner()' : 'price_eligibility:marketplace_price_eligibility!inner(id)')
++  }
++
++  if(b.participation==='inventory_with_price_eligibility'&&!head){
++    joins.push('price_eligibility:marketplace_price_eligibility(id)')
++  }
+   let q:any=client.from('listings').select([...fields,...(!head&&evidenceCaptureActive()?['evidence_current_price:current_price::text','evidence_monthly_price:monthly_price::text','evidence_property_area:property_area::text','evidence_construction_area:construction_area::text']:[]),...joins].join(','),{count:'exact',head})
+     .eq('canonical_domain_version',1).eq('listing_status','active')
+   q=q.eq('transaction_type',b.transaction)
+@@ -71,6 +96,12 @@
+       recordAnalyticalEvidence('private-scalar-source',{boundary:b,source:row})
+       const scalar:Record<string,any>={}
+       for(const field of selected){if(!Object.hasOwn(row,field))fail();scalar[field]=row[field]}
++
++      if(b.participation==='inventory_with_price_eligibility'){
++        scalar.analytical_price_eligible=hasCanonicalPriceEligibility(row)
++      }
++      if(b.participation==='asking_price'&&!hasCanonicalPriceEligibility(row))fail()
++
+       seen.add(row.id);last=row.id;rows.push(scalar)
+     }
+   }while(rows.length<expected!)
+--- a/lib/canonical-population-acquisition.ts
++++ b/lib/canonical-population-acquisition.ts
+@@ -2,7 +2,7 @@
+ import 'server-only'
+ import {assertAcquisitionPlan} from './canonical-acquisition-plan'
+ import {recordAnalyticalEvidence} from './orchestrator-evidence-v2'
+-import {currentOrchestratorContext,orchestratorMemo} from './orchestrator-execution-context'
++import {currentOrchestratorContext,orchestratorMemo,withOrchestratorContext} from './orchestrator-execution-context'
+ import {createHash} from 'node:crypto'
+ import {supabaseAdmin} from './supabase-admin'
+ import {createServerSupabaseClient} from './supabase-server'
+@@ -133,7 +133,17 @@
+  // Freeze owned request state; callers cannot mutate scope after a grant/cache key.
+  r=JSON.parse(JSON.stringify(r));request(r);r={...r,geography:{province:r.geography.province,canton:r.geography.canton,district:r.geography.district}};let bankRevision:string|null=null,inventoryCount=0,priceEligibleCount=0;const auth=await authorize(r),privateRows:PrivateAnalyticalObservation[]=[],bank:BankAnalyticalObservation[]=[],excluded:AcquisitionResult['excluded'][number][]=[]
+  if(r.population!=='BANK'){
+-  const boundary:CanonicalMarketBoundary={population:r.population as 'SALE'|'RENT',transaction:r.transaction as 'sale'|'rent',membershipGroups:[...Object.values(r.geography).filter((id):id is string=>id!==null).map(id=>[id]),[r.propertyType]]}
++  const boundary:CanonicalMarketBoundary={
++  population:r.population as 'SALE'|'RENT',
++  transaction:r.transaction as 'sale'|'rent',
++  participation:'inventory_with_price_eligibility',
++  membershipGroups:[
++    ...Object.values(r.geography)
++      .filter((id):id is string=>id!==null)
++      .map(id=>[id]),
++    [r.propertyType]
++  ]
++}
+   const raw=await orchestratorMemo('private-raw',JSON.stringify([auth.accountId,auth.population,auth.terms,boundary,!!r.profile]),async()=>{
+   const rows=await readCanonicalMarketScalars(boundary,['canonical_domain_version','listing_status','transaction_type','currency','current_price','monthly_price','property_area','construction_area','created_at'])
+   const evidence=await readCanonicalListingEvidence(rows.map(x=>x.id),r.profile?{facts:['bedrooms','bathrooms','parking','year_built','distance_to_paved_road'],semantics:['property_type','utility','environment','terrain','accessibility','legal_status']}:{facts:[],semantics:['property_type']})
+@@ -141,9 +151,39 @@
+   });const {rows,evidence}=raw
+   recordAnalyticalEvidence('private-acquisition-candidates',{request:r,authority:auth,rows,evidence})
+   for(const row of rows){const e=evidence.get(row.id)!;if(row.canonical_domain_version!==1||row.listing_status!=='active'||row.transaction_type!==r.transaction||!matchesScope([...e.geography,...e.selections.map(t=>({id:t.ontology_term_id,term_type:t.term_type}))],r))continue;const basis=resolvePriceMeterPropertyBasis({propertyType:e.selections.find(t=>t.dimension==='property_type')?.slug,constructionArea:resolvePriceMeterAreaIdentity(row.construction_area)})
+-   inventoryCount++;const price=r.transaction==='sale'?row.current_price:row.monthly_price; if(['CRC','USD'].includes(row.currency)&&typeof price==='number'&&Number.isFinite(price)&&price>0)priceEligibleCount++; if((r.profile??'ppm2')==='ppm2'&&(!['CRC','USD'].includes(row.currency)||typeof price!=='number'||!Number.isFinite(price)||price<=0))continue
++   inventoryCount++;
++
++const price=r.transaction==='sale'
++  ? row.current_price
++  : row.monthly_price;
++
++const priceEligible=
++  row.analytical_price_eligible===true&&
++  ['CRC','USD'].includes(row.currency)&&
++  typeof price==='number'&&
++  Number.isFinite(price)&&
++  price>0;
++
++if(priceEligible)priceEligibleCount++;
++
++if((r.profile??'ppm2')!=='inventory'&&!priceEligible)continue;
+    if((r.profile??'ppm2')==='ppm2'&&(basis!==r.propertyBasis||r.areaBasis==='land'&&resolvePriceMeterAreaIdentity(row.property_area).kind!=='exact'||r.areaBasis==='construction'&&basis!=='improved_property'))continue
+-   privateRows.push({population:r.population as 'SALE'|'RENT',listingId:row.id,row,evidence:e,propertyBasis:basis,areaBasis:r.areaBasis})
++   const analyticalRow=priceEligible
++  ? row
++  : {
++      ...row,
++      current_price:null,
++      monthly_price:null
++    };
++
++privateRows.push({
++  population:r.population as 'SALE'|'RENT',
++  listingId:row.id,
++  row:analyticalRow,
++  evidence:e,
++  propertyBasis:basis,
++  areaBasis:r.areaBasis
++})
+   }
+  }
+  if(r.population==='BANK'){
+@@ -194,6 +234,13 @@
+  const auth=await authorize(ticket.request);if(authorityIdentity(auth)!==authorityIdentity(ticket.authority))throw new PackageCapabilityDenied()
+  // Reacquisition rechecks source revisions, source freshness and publication before
+  // delivery. Possession of a cache identity grants no rights.
+- const fresh=await acquireCanonicalPopulation(ticket.request);if(fresh.cacheIdentity!==result.cacheIdentity)throw Error('Stale analytical acquisition.')
++ const scoped=currentOrchestratorContext()
++ // Delivery must not reuse an execution- or earlier freshness-phase cache: a
++ // price can become stale or pending while the same orchestration is running.
++ // Preserve its authority/plan but isolate every delivery's source reads.
++ const fresh=scoped
++  ? await withOrchestratorContext({...scoped,phase:'freshness',cache:new Map(),acquisitions:new Set()},()=>acquireCanonicalPopulation(ticket.request))
++  : await acquireCanonicalPopulation(ticket.request)
++ if(fresh.cacheIdentity!==result.cacheIdentity)throw Error('Stale analytical acquisition.')
+  return fresh
+ }
+--- a/lib/market-comparison-engine.ts
++++ b/lib/market-comparison-engine.ts
+@@ -198,8 +198,21 @@
+   // Keep the existing Year/Road binding; only count-category terms leave membership joins.
+   const request=Object.freeze({...resolved,numericalTerms:Object.freeze(resolved.terms.filter(
+     term=>['bedrooms','bathrooms','parking'].includes(term.dimension)))})
+-  const acquired=await readMarketNumericalSurvivors(request,canonicalMarketFilterBoundary(request),
+-    ['canonical_domain_version','transaction_type','currency','current_price','monthly_price','property_area','construction_area'])
++     const acquired=await readMarketNumericalSurvivors(
++     request,
++     {
++       ...canonicalMarketFilterBoundary(request),
++       participation:'inventory_with_price_eligibility',
++     },
++     ['canonical_domain_version','transaction_type','currency','current_price','monthly_price','property_area','construction_area']
++   )
++
++   const resolveEligibleAmount:typeof resolveListingAmountCrc =
++  (listing,rate) =>
++    ('analytical_price_eligible' in listing &&
++     listing.analytical_price_eligible===true)
++      ? resolveListingAmountCrc(listing,rate)
++      : null
+ 
+ const usdToCrcRate =
+   analyticalContext.fx.rate
+@@ -210,11 +223,19 @@
+     sideFilters[
+       `${prefix}_price_range`
+     ],
+-    usdToCrcRate
++    usdToCrcRate,
++    resolveEligibleAmount
+   )
+ 
+   const prevalence=await canonicalMarketPrevalence(listings.map(row=>row.id),['property_type','environment','terrain','utility','accessibility','legal_status'])
+-  return calculateMarketComparisonSide(listings,filters,usdToCrcRate,language,prevalence)
++  return calculateMarketComparisonSide(
++    listings,
++    filters,
++    usdToCrcRate,
++    language,
++    prevalence,
++    resolveEligibleAmount
++  )
+ }
+ 
+ export async function getMarketComparison(
+--- a/lib/orchestrator-server.ts
++++ b/lib/orchestrator-server.ts
+@@ -3,6 +3,8 @@
+ import 'server-only'
+ import {canonicalAcquisitionPlan} from './canonical-acquisition-plan'
+ import {resolveCanonicalMarketRequest} from './canonical-market-request'
++import {deriveOrchestratorAskingQuestion} from './orchestrator-asking-question'
++import type {Question as AskingQuestion} from './asking-price-contract'
+ import {compactOrchestratorReport} from './orchestrator-report-delivery'
+ import {recordAnalyticalEvidence} from './orchestrator-evidence-v2'
+ import {claimWitnessedExecution} from './orchestrator-execution-witness'
+@@ -45,10 +47,10 @@
+ }
+ // Forward only options consumed by this engine. The immutable request still records all supplied evidence.
+ function engineOptions(options:OrchestratorRequest['options'],engine:PopulationEngineId){
+- const keys:Record<string,string[]>={geography:['geographyLevel'],'cohort-comparison':['geographyLevel','cohortA','cohortB','referenceCohort'],'cross-dimensional':['questionKey'],comparables:['geographyLevel','activeDimensions','referencePopulation'],position:['referencePopulation'],'asking-area-ratio':['ratioQuestion'],'weighted-price':['ratioQuestion']}
++ const keys:Record<string,string[]>={geography:['geographyLevel'],'cohort-comparison':['geographyLevel','cohortA','cohortB','referenceCohort'],'cross-dimensional':['questionKey'],comparables:['geographyLevel','activeDimensions','referencePopulation'],position:['geographyLevel','referencePopulation'],'asking-area-ratio':['ratioQuestion'],'weighted-price':['ratioQuestion']}
+  return Object.fromEntries(Object.entries(options).filter(([key])=>(keys[engine]??[]).includes(key)))
+ }
+-function engineRequest(r:OrchestratorRequest,engine:PopulationEngineId):PopulationEngineRequest{return {engine,scope:{...r.scope,population:r.population},language:r.language,filters:r.filters,...engineOptions(r.options,engine),...(r.subject.kind==='CANONICAL'?{subject:{population:r.subject.population,listingId:r.subject.listingId}}:engine==='weighted-price'&&r.options.ratioQuestion&&r.subject.attributes.property_area&&r.subject.attributes.construction_area&&r.scope.geography.province&&r.scope.geography.canton?{hypotheticalSubject:{kind:'hypothetical',propertyArea:r.subject.attributes.property_area,constructionArea:r.subject.attributes.construction_area,province:r.scope.geography.province,canton:r.scope.geography.canton,district:r.scope.geography.district,askingPrice:r.subject.attributes.asking_price?{amount:r.subject.attributes.asking_price,currency:r.subject.attributes.currency}:null}}:{})} as PopulationEngineRequest}
++function engineRequest(r:OrchestratorRequest,engine:PopulationEngineId,askingQuestion?:AskingQuestion):PopulationEngineRequest{return {engine,scope:{...r.scope,population:r.population},language:r.language,...(askingQuestion&&['market-asking-price-distribution','discovery'].includes(engine)?{askingQuestion}:{filters:r.filters}),...engineOptions(r.options,engine),...(r.subject.kind==='CANONICAL'?{subject:{population:r.subject.population,listingId:r.subject.listingId}}:engine==='weighted-price'&&r.options.ratioQuestion&&r.subject.attributes.property_area&&r.subject.attributes.construction_area&&r.scope.geography.province&&r.scope.geography.canton?{hypotheticalSubject:{kind:'hypothetical',propertyArea:r.subject.attributes.property_area,constructionArea:r.subject.attributes.construction_area,province:r.scope.geography.province,canton:r.scope.geography.canton,district:r.scope.geography.district,askingPrice:r.subject.attributes.asking_price?{amount:r.subject.attributes.asking_price,currency:r.subject.attributes.currency}:null}}:{})} as PopulationEngineRequest}
+ export function substantiveEngineResult(value:PopulationEngineResult):boolean{
+  const parts=[value.private,value.bank].filter(Boolean) as {n:number;result:any}[]
+  return parts.some(p=>{
+@@ -85,7 +87,7 @@
+  if(s.population!=='BANK'){const p=inventory.private.find(x=>x.listingId===s.listingId);if(!p)throw Error('Subject is outside eligible canonical scope.');return {...s,sourceIdentity:{population:p.population,listingId:p.listingId},propertyBasis:p.propertyBasis,areaBasis:p.areaBasis,attributes:p.row,classification:p.evidence,revision:inventory.sourceDataRevision}}
+  const b=inventory.bank.find(x=>x.listingId===s.listingId);if(!b)throw Error('Subject is outside eligible canonical scope.');return {...s,sourceIdentity:{sourceId:b.sourceId,namespace:b.sourceNamespace,recordKey:b.recordKey,propertyId:b.propertyId,offeringId:b.offeringId},geography:b.geography,propertyType:b.propertyType,propertyBasis:b.propertyBasis,areaBasis:b.areaBasis,areaSelection:b.areaSelection,price:b.price,land:b.land,construction:b.construction,facts:b.otherFacts,semantics:b.semantics,revisions:b.revisions,observedAt:b.observedAt,revision:inventory.sourceDataRevision}
+ }
+-async function validateScope(r:OrchestratorRequest){const ids=[r.scope.propertyType,...Object.values(r.scope.geography).filter((v):v is string=>v!==null)];const v=await supabaseAdmin.from('ontology_terms').select('id::text,parent_id::text,term_type,level,official_code').in('id',ids);if(v.error||v.data?.length!==new Set(ids).size)throw Error('Canonical scope unavailable.');const type=v.data.find(t=>t.id===r.scope.propertyType);if(type?.term_type!=='property_type'||type.level!==1)throw Error('Canonical property type required.');for(const [level,id]of Object.entries(r.scope.geography)){if(id===null)continue;const t=v.data.find(t=>t.id===id);if(t)validateGeographicRow(t,level as 'province'|'canton'|'district');if(t?.term_type!==level||level==='canton'&&t.parent_id!==r.scope.geography.province||level==='district'&&t.parent_id!==r.scope.geography.canton)throw Error('Canonical geography mismatch.')}}
++async function validateScope(r:OrchestratorRequest){const ids=[r.scope.propertyType,...Object.values(r.scope.geography).filter((v):v is string=>v!==null)];const v=await supabaseAdmin.from('ontology_terms').select('id::text,parent_id::text,term_type,level,official_code').in('id',ids);if(v.error||v.data?.length!==new Set(ids).size)throw Error('Canonical scope unavailable.');const type=v.data.find(t=>t.id===r.scope.propertyType);if(type?.term_type!=='property_type'||type.level!==1)throw Error('Canonical property type required.');for(const [level,id]of Object.entries(r.scope.geography)){if(id===null)continue;const t=v.data.find(t=>t.id===id);if(t)validateGeographicRow(t,level as 'province'|'canton'|'district');if(t?.term_type!==level||level==='canton'&&t.parent_id!==r.scope.geography.province||level==='district'&&t.parent_id!==r.scope.geography.canton)throw Error('Canonical geography mismatch.')}return v.data}
+ export async function executeOrchestrator(raw:unknown,measurement?:{signal?:ObservationSignal;grant?:{id:string;revision:number}}):Promise<OrchestratorReply>{
+  const r=validateOrchestratorRequest(raw);await authority(r.orchestrator,r.population)
+  // Standalone Bank adapters are local-qualified. Orchestrated delivery still requires its exact new witness/release and coordinated surface contract.
+@@ -94,7 +96,7 @@
+ }
+ 
+ async function executeEvidenceOrchestrator(raw:unknown,measurement?:{signal?:ObservationSignal;grant?:{id:string;revision:number}}):Promise<OrchestratorReply>{
+- const r=validateOrchestratorRequest(raw),a=await authority(r.orchestrator,r.population);await validateScope(r)
++ const r=validateOrchestratorRequest(raw),a=await authority(r.orchestrator,r.population),scopeTerms=await validateScope(r)
+  const execution=identity(a.accountId,r.requestId,'execution'),reportId=identity(a.accountId,r.requestId,'report'),settlement=identity(a.accountId,r.requestId,'settlement'),worker=randomUUID();const {claims,db:measurementDb}=await executionCreditServerContext()
+  const witness=await claimWitnessedExecution({claims,request:r,execution,worker,reportId,settlement});const claim=witness.claim
+  if(claim.error)throw Error('Execution reservation unavailable.')
+@@ -108,16 +110,18 @@
+   recordAnalyticalEvidence('canonical-acquisition-plan',context.plan)
+   const filters=await resolveCanonicalMarketRequest({...r.filters,transaction_type:r.population==='BANK'?'sale':r.scope.transaction,property_type:r.scope.propertyType},r.language,{universe:r.population})
+   context.cache.set(JSON.stringify([context.identity,context.phase,'request',JSON.stringify([r.filters,r.scope.transaction,r.scope.propertyType,r.language])]),Promise.resolve(filters))
++  const selectedQuestion=deriveOrchestratorAskingQuestion(r,filters,scopeTerms)
+   const inventory=await acquireCanonicalPopulation({...r.scope,population:r.population,capability:'cap-market-summary',profile:'inventory'}),subject=subjectEvidence(r,inventory),engines:OrchestratorReport['engines']=[]
+   for(const id of orchestratorMembers(r.orchestrator)){
++   if((id==='market-asking-price-distribution'||id==='discovery')&&selectedQuestion.state==='unavailable'){engines.push({id,state:'UNDEFINED',reason:selectedQuestion.reason,executed:false,durationMs:0,methodology:'not_executed'});continue}
+    if(performance.now()-started>120000)throw Object.assign(new Error('Bounded execution time exceeded.'),{name:'OrchestratorResourceLimit'})
+-   const at=performance.now(),result=await executePopulationEngine(engineRequest(r,id));ensureFinite(result);if(performance.now()-started>120000)throw Object.assign(new Error('Bounded execution time exceeded.'),{name:'OrchestratorResourceLimit'})
++   const at=performance.now(),result=await executePopulationEngine(engineRequest(r,id,selectedQuestion.state==='ready'?selectedQuestion.question:undefined));ensureFinite(result);if(performance.now()-started>120000)throw Object.assign(new Error('Bounded execution time exceeded.'),{name:'OrchestratorResourceLimit'})
+    const substantive=substantiveEngineResult(result)
+    engines.push({id,state:substantive?'SUBSTANTIVE':'UNDEFINED',...(substantive?{result}:{reason:id==='comparison'?'two_same_universe_market_definitions_required':r.subject.kind==='HYPOTHETICAL'&&['position','comparables'].includes(id)?'canonical_subject_required':'no_established_engine_result',result}),executed:true,durationMs:performance.now()-at,methodology:result.methodology})
+   }
+   const acquisitions=[...context.acquisitions];context.cache.clear();context.phase='freshness'
+   for(const snapshot of acquisitions)await deliverCanonicalPopulation(snapshot)
+-  const fxSnapshots=new Map<string,PopulationEngineResult['fx']>();for(const e of engines){const value=e.result as PopulationEngineResult;if(value.fx)fxSnapshots.set(value.analyticalDate,value.fx)}
++  const fxSnapshots=new Map<string,PopulationEngineResult['fx']>();for(const e of engines){const value=e.result as PopulationEngineResult;if(value?.fx)fxSnapshots.set(value.analyticalDate,value.fx)}
+   for(const [date,fx]of fxSnapshots){const fresh=await getHistoricalUsdToCrcRate(date);if(JSON.stringify({...fresh,conversionApplied:true})!==JSON.stringify(fx))throw Error('BCCR evidence changed before commitment.')}
+   const composedAt=performance.now(),report:OrchestratorReport={format:'twuanis-orchestrator-evidence-v2',executionId:execution,reportId,accountId:a.accountId,orchestrator:r.orchestrator,population:r.population,language:r.language,request:r as unknown as Record<string,unknown>,createdAt:new Date().toISOString(),authority:a,subject,engines,evidence:{executionStartedAt:claim.data.createdAt,methodology:orchestratorMethodologyEvidence,revisions:acquisitions.map(v=>v.sourceDataRevision),financialBasis:{population:r.population,kind:r.population==='BANK'?'BANK_LISTED_SELLING_PRICE':r.population==='RENT'?'MONTHLY_ASKING_PRICE':'TOTAL_ASKING_PRICE'},originalPrices:{PRIVATE:inventory.private.map(v=>({listingId:v.listingId,currency:v.row.currency,amount:r.scope.transaction==='sale'?v.row.current_price:v.row.monthly_price,land:v.row.property_area,construction:v.row.construction_area,createdAt:v.row.created_at,geography:v.evidence.geography.map(g=>g.id),semantics:v.evidence.selections.map(t=>({dimension:t.dimension,termId:t.ontology_term_id})),facts:v.evidence.facts})),BANK:inventory.bank.map(v=>({listingId:v.listingId,sourceId:v.sourceId,recordKey:v.recordKey,price:v.price,namespace:v.sourceNamespace,observedAt:v.observedAt,contentHash:v.contentHash,revisions:v.revisions,land:v.land,construction:v.construction,geography:v.geography.map(g=>g.id)}))},metrics:{wallMs:performance.now()-started,cpu:process.cpuUsage(cpu),memory:process.memoryUsage(),cache:context.metrics,compositionMs:performance.now()-composedAt}},accounting:{executionId:execution,settlementRequestId:settlement,expectedUnits:engines.some(e=>e.state==='SUBSTANTIVE')&&a.kind!=='OWNER_UNMETERED'?1:0},limitations:['Asking-market evidence only; not appraisal or predicted transaction price.','Exactly one of SALE, RENT or BANK is analyzed; cross-universe comparisons are prohibited.','Final report presentation and branded downloadable hypothetical example require Owner review.']}
+   recordAnalyticalEvidence('execution-identity',{execution,reportId,accountId:a.accountId,request:r,authority:a,createdAt:report.createdAt,methodology:orchestratorMethodologyEvidence})
+--- /dev/null
++++ b/lib/orchestrator-asking-question.ts
+@@ -0,0 +1,51 @@
++import 'server-only'
++import {validateQuestion} from './asking-price-question'
++import {FACTS,SEMANTICS,type Constraint,type Fact,type Question,type Semantic} from './asking-price-contract'
++import {validateGeographicRow} from './geography/dta-identity'
++import type {CanonicalMarketRequest} from './canonical-market-request'
++import type {OrchestratorRequest} from './orchestrator-contract'
++
++type ScopeTerm = {id:string;parent_id:string|null;term_type:string;level:number;official_code:string|null}
++export type OrchestratorAskingQuestion =
++ | {state:'ready';question:Question}
++ | {state:'unavailable';reason:'geographic_scope_required'|'road_distance_not_representable'}
++
++/** Translate only explicitly selected, canonically resolved inputs. */
++export function deriveOrchestratorAskingQuestion(
++ request:OrchestratorRequest,resolved:CanonicalMarketRequest,scopeTerms:readonly ScopeTerm[],
++):OrchestratorAskingQuestion {
++ const levels=['district','canton','province'] as const
++ const level=levels.find(k=>request.scope.geography[k]!==null)
++ if(!level)return {state:'unavailable',reason:'geographic_scope_required'}
++ if(resolved.road)return {state:'unavailable',reason:'road_distance_not_representable'}
++ const selectedId=request.scope.geography[level]
++ const matches=scopeTerms.filter(t=>t.id===selectedId)
++ if(matches.length!==1)throw Error('Selected analytical geography unavailable.')
++ const geo=validateGeographicRow(matches[0],level)
++ const selectedType=resolved.terms.filter(t=>t.dimension==='property_type')
++ if(selectedType.length!==1||selectedType[0].id!==request.scope.propertyType)throw Error('Selected analytical property type disagrees.')
++ const semantics:Partial<Record<Semantic,string[]>>={}
++ const facts:Partial<Record<Fact,Constraint[]>>={}
++ for(const t of resolved.terms){
++  if((SEMANTICS as readonly string[]).includes(t.dimension)){
++   const dim=t.dimension as Semantic;(semantics[dim]??=[]).push(t.id)
++  }else if((FACTS as readonly string[]).includes(t.dimension)&&t.dimension!=='year_built'){
++   if(t.dimension==='bathrooms'&&resolved.bathroomConstraints)continue
++   const dim=t.dimension as Fact;(facts[dim]??=[]).push({kind:'category',termId:t.id})
++  }
++ }
++ if(resolved.bathroomConstraints?.length){
++  facts.bathrooms=resolved.bathroomConstraints.map(c=>c.kind==='interval'
++   ? {kind:'interval',interval:{lower:c.lower,upper:c.upper,lowerInclusive:c.lowerInclusive,upperInclusive:c.upperInclusive}}
++   : c)
++ }
++ if(resolved.year){const v=resolved.year.interval;facts.year_built=[{kind:'interval',interval:{
++  lower:v.lower===null?null:String(v.lower),upper:v.upper===null?null:String(v.upper),
++  lowerInclusive:v.lowerInclusive,upperInclusive:v.upperInclusive,
++ }}]}
++ const filters:Question['filters']={semantics,facts}
++ if(request.filters.property_area)filters.propertyArea=request.filters.property_area
++ if(request.filters.construction_area)filters.constructionArea=request.filters.construction_area
++ const transaction=request.population==='BANK'?'sale':request.scope.transaction
++ return {state:'ready',question:validateQuestion({version:1,transaction,geography:{level,officialCode:geo.officialCode},propertyType:request.scope.propertyType,filters})}
++}
+--- a/lib/phase14-complete-analytical-population.ts
++++ b/lib/phase14-complete-analytical-population.ts
+@@ -51,7 +51,12 @@
+   }
+   snapshot(s7.completeness)
+   same(s2.geography,q.geography);same(s3.geography,q.geography);same(s4.propertyType,q.propertyType)
+-  same(s3.predicates,{listingStatus:'active',canonicalDomainVersion:1,transaction:q.transaction})
++  same(s3.predicates,{
++  listingStatus:'active',
++  canonicalDomainVersion:1,
++  transaction:q.transaction,
++  analyticalPriceEligible:true
++})
+   requireEvidence(s3.transaction===q.transaction&&s7.normalizationBasis===s7.execution.normalizationBasis&&['land','construction'].includes(s7.normalizationBasis))
+   requireEvidence(s7.execution.analyticalIdentity===JSON.stringify({version:1,question:envelope.canonicalQuestionSerialization,normalizationBasis:s7.normalizationBasis}))
+   const g=ids(s2.listingIds,s2.acquiredUniqueListingCount),f=ids(s3.listingIds,s3.survivingListingCount),m=ids(s4.listingIds,s4.survivingListingCount),v=ids(s5.listingIds,s5.survivingListingCount),h=ids(s6.listingIds,s6.hydratedListingCount)
+@@ -86,7 +91,8 @@
+   requireEvidence(s5.completeness.requests===s5.trail.reduce((sum,stage)=>sum+stage.completeness.requests,0))
+   requireEvidence(prior===v.size);reduction(m.size,v.size,s5.excludedListingCount)
+   requireEvidence(s6.step5SurvivorCount===v.size&&s6.completeness.exactRequestedIdCoverage===true&&Object.keys(s6.evidenceByListingId).length===h.size)
+-  for(const id of h){const e=s6.evidenceByListingId[id];requireEvidence(e&&e.scalars.id===id&&e.canonical.listing_id===id&&e.scalars.transaction_type===q.transaction&&e.scalars.canonical_domain_version===1&&e.scalars.listing_status==='active')
++  for(const id of h){const e=s6.evidenceByListingId[id];requireEvidence(e&&e.scalars.id===id&&e.canonical.listing_id===id&&e.scalars.transaction_type===q.transaction&&e.scalars.canonical_domain_version===1&&e.scalars.listing_status==='active'&&
++e.scalars.analytical_price_eligible===true)
+     const types=e.canonical.selections.filter(t=>t.dimension==='property_type');requireEvidence(types.length===1&&types[0].ontology_term_id===q.propertyType.termId)
+     requireEvidence(e.canonical.geography.some(t=>t.term_type===q.geography.level&&t.id===q.geography.termId&&t.official_code===q.geography.officialCode))
+   }
+--- a/lib/phase14-fundamental-population.ts
++++ b/lib/phase14-fundamental-population.ts
+@@ -13,7 +13,12 @@
+   transaction: Phase14ExecutionEnvelope['question']['transaction']
+   geographicPopulation: Phase14GeographicPopulation
+   geographicStartingCount: number
+-  predicates: Readonly<{ listingStatus: 'active'; canonicalDomainVersion: 1; transaction: Phase14ExecutionEnvelope['question']['transaction'] }>
++  predicates: Readonly<{
++  listingStatus: 'active'
++  canonicalDomainVersion: 1
++  transaction: Phase14ExecutionEnvelope['question']['transaction']
++  analyticalPriceEligible: true
++}>
+ }>
+ export type Phase14FundamentalPopulation = Provenance & Readonly<{
+   state: 'complete'
+@@ -41,7 +46,12 @@
+   const provenance: Provenance=Object.freeze({kind:'fundamentally_eligible_population',executionId:envelope.executionId,
+     canonicalQuestionSerialization:envelope.canonicalQuestionSerialization,geography:envelope.question.geography,
+     transaction,geographicPopulation:geographic,geographicStartingCount:geographic.acquiredUniqueListingCount,
+-    predicates:Object.freeze({listingStatus:'active',canonicalDomainVersion:1,transaction})})
++    predicates:Object.freeze({
++  listingStatus:'active',
++  canonicalDomainVersion:1,
++  transaction,
++  analyticalPriceEligible:true
++})})
+   const incomplete=(reason:IncompleteReason):Phase14FundamentalAcquisition=>Object.freeze({...provenance,state:'incomplete',reason})
+   const sourceIds=new Set(geographic.listingIds),seen=new Set<string>(),ids:string[]=[]
+   let expected:number|null=null,pagesRead=0,previous:string|null=null
+@@ -51,7 +61,7 @@
+     let response
+     try {
+       response=await supabaseAdmin.from('listings_ontology_terms')
+-        .select('listing_id,ontology_term_id::text,listings!inner(canonical_domain_version,listing_status,transaction_type)',{count:'exact'})
++        .select('listing_id,ontology_term_id::text,listings!inner(id,canonical_domain_version,listing_status,transaction_type,price_eligibility:marketplace_price_eligibility!inner(id))',{count:'exact'})
+         .eq('ontology_term_id',provenance.geography.termId)
+         .eq('listings.canonical_domain_version',1)
+         .eq('listings.listing_status','active')
+@@ -76,7 +86,18 @@
+       const listing:unknown=row.listings
+       if (!listing||typeof listing!=='object'||Array.isArray(listing)||
+           !('canonical_domain_version' in listing)||!('listing_status' in listing)||!('transaction_type' in listing)||
+-          listing.canonical_domain_version!==1||listing.listing_status!=='active'||listing.transaction_type!==transaction) return incomplete('invalid_predicate_evidence')
++          listing.canonical_domain_version!==1||
++listing.listing_status!=='active'||
++listing.transaction_type!==transaction||
++!('id' in listing)||
++listing.id!==id||
++!('price_eligibility' in listing)||
++!listing.price_eligibility||
++typeof listing.price_eligibility!=='object'||
++Array.isArray(listing.price_eligibility)||
++!('id' in listing.price_eligibility)||
++listing.price_eligibility.id!==id)
++  return incomplete('invalid_predicate_evidence')
+       seen.add(id);ids.push(id);previous=id
+     }
+   } while(ids.length<expected!)
+--- a/lib/phase14-hydrated-population.ts
++++ b/lib/phase14-hydrated-population.ts
+@@ -8,6 +8,7 @@
+ type Scalars = Readonly<{
+   id: string; canonical_domain_version: 1; listing_status: 'active'; transaction_type: 'sale' | 'rent'
+   property_area: string | null; construction_area: string | null
++analytical_price_eligible: true
+   current_price?: string | null; monthly_price?: string | null; currency: 'CRC' | 'USD' | null
+ }>
+ type DeepReadonly<T> = T extends object ? { readonly [K in keyof T]: DeepReadonly<T[K]> } : T
+@@ -90,7 +91,16 @@
+     }
+     const priceField = envelope.question.transaction === 'sale' ? 'current_price' : 'monthly_price'
+     const missingAreas = (['property_area','construction_area'] as const).filter(field => areas[field].size !== ids.length)
+-    const fields = ['id','canonical_domain_version','listing_status','transaction_type','currency',priceField,...missingAreas]
++    const fields = [
++  'id',
++  'canonical_domain_version',
++  'listing_status',
++  'transaction_type',
++  'currency',
++  priceField,
++  ...missingAreas,
++  'price_eligibility:marketplace_price_eligibility!inner(id)'
++]
+     const columns = fields.map(field => field === priceField || missingAreas.includes(field as Area) ? field+'::text' : field).join(',')
+     for (let start = 0; start < ids.length; start += CANONICAL_READER_BATCH) {
+       const batch = ids.slice(start,start+CANONICAL_READER_BATCH), scalarRows = new Map<string,Scalars>()
+@@ -108,6 +118,14 @@
+           const raw = item as Record<string,unknown>
+           if (!raw || typeof raw.id !== 'string' || !batch.includes(raw.id) || scalarRows.has(raw.id) || previous !== null && raw.id <= previous) fail()
+           previous = raw.id
++
++const eligibility=raw.price_eligibility
++
++if(!eligibility||
++   typeof eligibility!=='object'||
++   Array.isArray(eligibility)||
++   !('id' in eligibility)||
++   eligibility.id!==raw.id)fail()
+           if (raw.canonical_domain_version !== 1 || raw.listing_status !== 'active' || raw.transaction_type !== envelope.question.transaction ||
+               raw.currency !== null && raw.currency !== 'CRC' && raw.currency !== 'USD') fail()
+           const areaValues = {} as Record<Area,string|null>
+@@ -119,7 +137,10 @@
+             } else areaValues[field] = positiveDecimal(raw[field])
+           }
+           scalarRows.set(raw.id,{id:raw.id,canonical_domain_version:1,listing_status:'active',transaction_type:envelope.question.transaction,
+-            currency:raw.currency,[priceField]:positiveDecimal(raw[priceField]),...areaValues})
++            currency:raw.currency,
++analytical_price_eligible:true,
++[priceField]:positiveDecimal(raw[priceField]),
++...areaValues})
+         }
+         offset += data.length
+       } while (offset < batch.length)
+--- a/lib/population-engine-execution.ts
++++ b/lib/population-engine-execution.ts
+@@ -28,6 +28,7 @@
+ import {getCurrentAnalyticalDate} from './analysis-date'
+ import {getHistoricalUsdToCrcRate} from './fx/fx-service'
+ import {normalizeAmountToCrc} from './currency-conversion'
++import {validateMarketplaceFx} from './marketplace-fx-evidence'
+ import {resolvePriceMeterAnalyticalIdentity,type PriceMeterFxIdentity} from './price-meter-identity'
+ import {buildPriceMeterObservations as live_buildPriceMeterObservations} from './price-meter-observation-builder'
+ import {buildPriceMeterDistribution as live_buildPriceMeterDistribution} from './price-meter-distribution'
+@@ -340,7 +341,7 @@
+   acquisition={...acquisition,bank,inventoryCount:bank.length,priceEligibleCount:bank.filter(r=>r.price!==null).length,excluded:acquisitions.flatMap(a=>a.excluded),cacheIdentity:digest(acquisitions.map(a=>a.cacheIdentity))}
+  }
+  const terms=await orchestratorMemo('dictionary',JSON.stringify([acquisition.sourceDataRevision,r.scope,r.cohortA,r.cohortB]),()=>dictionary(acquisition,r)),all=rows(acquisition,terms),date=getCurrentAnalyticalDate();let fx:PriceMeterFxIdentity|null=null,comparisonRate:number|null=null
+- if(!['summary','composition','matching','configuration'].includes(r.engine)&&all.some(i=>i.row.currency==='USD')||r.engine==='comparison'||r.hypotheticalSubject?.askingPrice?.currency==='USD'){const v=await orchestratorMemo('fx',date,()=>getHistoricalUsdToCrcRate(date));if(v.analyticalDate!==date||v.source!=='BCCR'||v.rateType!=='reference_sale'||v.baseCurrency!=='USD'||v.quoteCurrency!=='CRC'||!Number.isFinite(v.rate)||v.rate<=0)throw Error('Incoherent BCCR identity.');comparisonRate=v.rate;fx={...v,conversionApplied:true}}
++ if(!['summary','composition','matching','configuration'].includes(r.engine)&&all.some(i=>i.row.currency==='USD')||r.engine==='comparison'||r.hypotheticalSubject?.askingPrice?.currency==='USD'){const v=await orchestratorMemo('fx',date,()=>getHistoricalUsdToCrcRate(date));if(!validateMarketplaceFx({...v,usdToCrcRate:v.rate},date))throw Error('Incoherent BCCR identity.');comparisonRate=v.rate;fx={...v,conversionApplied:true}}
+  const context={date,fx,comparisonRate},q=await orchestratorMemo('request',JSON.stringify([r.filters,r.scope.transaction,r.scope.propertyType,r.language]),()=>resolveCanonicalMarketRequest({...r.filters,transaction_type:r.scope.population==='BANK'?'sale':r.scope.transaction,property_type:r.scope.propertyType},r.language,{universe:r.scope.population}))
+  const protectedInput=recordAnalyticalEvidence('resolved-input',{request:r,acquisition,terms,rows:all,context,resolvedRequest:q})
+  const result=await calculateCapturedInputs(protectedInput.request,protectedInput.acquisition,protectedInput.terms,protectedInput.rows,protectedInput.context,protectedInput.resolvedRequest)
+--- a/lib/price-meter-comparable-loader.ts
++++ b/lib/price-meter-comparable-loader.ts
+@@ -1,4 +1,5 @@
+ import 'server-only'
++import {hasCanonicalPriceEligibility} from './canonical-market-population'
+ import {bathroomFactConstraint} from './bathroom-selection'
+ import {comparableStage} from './comparable-private-diagnostics'
+ import { hydrateCanonicalPopulation } from '@/lib/canonical-population'
+@@ -116,7 +117,8 @@
+   current_price,
+   price_millions,
+   monthly_price,
+-  currency
++  currency,
++  price_eligibility:marketplace_price_eligibility(id)
+ `
+ 
+ 
+@@ -745,9 +747,7 @@
+   }
+ 
+ 
+-  if (data.canonical_domain_version !== null && data.canonical_domain_version !== 1) {
+-    throw new Error('Unsupported Phase 12A listing authority.')
+-  }
++  if (data.canonical_domain_version !== 1 || !hasCanonicalPriceEligibility(data)) throw new Error('Subject asking price lacks canonical analytical eligibility.')
+   const [listing] = await hydrateCanonicalPopulation([data], undefined, ['bathrooms'])
+   return listing as PriceMeterComparableRawListing
+ }
+@@ -1150,7 +1150,7 @@
+   const rows: PriceMeterComparableRawListing[] = []
+   for (const chunk of idChunks(ids)) {
+     rows.push(...await completeRows((from,to) => {
+-      let query: any = supabaseAdmin.from('listings').select('id,canonical_domain_version,listing_status,transaction_type,current_price,monthly_price,currency,property_area,construction_area',{count:'exact'})
++      let query: any = supabaseAdmin.from('listings').select('id,canonical_domain_version,listing_status,transaction_type,current_price,monthly_price,currency,property_area,construction_area,price_eligibility:marketplace_price_eligibility(id)',{count:'exact'})
+         .eq('canonical_domain_version',1).eq('listing_status','active').eq('transaction_type',position.transactionType)
+         .in('id',chunk).order('id').range(from,to)
+       query = applyAreaConstraint(query,'property_area',propertyRange)
+@@ -1163,8 +1163,9 @@
+   }
+   if (new Set(rows.map(row=>row.id)).size !== rows.length) throw new Error('Duplicate Phase 12A listing evidence.')
+   if (rows.length !== ids.length) throw new Error('Incomplete Phase 12A listing identity coverage.')
+-  const listings = await hydrateCanonicalPopulation(rows, undefined, dimensions.includes('bathrooms')?['bathrooms']:[])
+-  const memberships=(await loadMembershipDetails(rows.map(r=>r.id),dimensions.filter(d=>d!=='construction_land'&&d!=='property_type'))).map(m=>({...m,characteristics:[subject.propertyType,...m.characteristics],ontologyTermIds:[subject.propertyType.ontologyTermId,...m.ontologyTermIds]}))
++  const eligibleRows = rows.filter(hasCanonicalPriceEligibility)
++  const listings = await hydrateCanonicalPopulation(eligibleRows, undefined, dimensions.includes('bathrooms')?['bathrooms']:[])
++  const memberships=(await loadMembershipDetails(eligibleRows.map(r=>r.id),dimensions.filter(d=>d!=='construction_land'&&d!=='property_type'))).map(m=>({...m,characteristics:[subject.propertyType,...m.characteristics],ontologyTermIds:[subject.propertyType.ontologyTermId,...m.ontologyTermIds]}))
+   return {listings: listings as PriceMeterComparableRawListing[], memberships}
+ }
+ 
+--- a/lib/price-meter-comparison-candidate-loader.ts
++++ b/lib/price-meter-comparison-candidate-loader.ts
+@@ -1,6 +1,7 @@
+ import {readCanonicalListingEvidence} from './canonical-listing-reader'
+ import {isExactCohortCharacteristic,isMembershipCohortCharacteristic} from './cohort-numeric-evidence'
+ import 'server-only'
++import {hasCanonicalPriceEligibility} from './canonical-market-population'
+ import { supabaseAdmin } from '@/lib/supabase-admin'
+ import { hydrateCanonicalPopulation } from '@/lib/canonical-population'
+ import type { PriceMeterComparisonRequest } from '@/lib/price-meter-comparison-request'
+@@ -74,11 +75,11 @@
+     geographyCandidates.get(r.geography)!.filter(id => r.terms.every(term => evidence.get(id)?.has(term)))))].sort()
+   const rows: any[] = []
+   for (const chunk of chunks(ids)) rows.push(...await complete<any>((from,to) => supabaseAdmin.from('listings')
+-    .select('id,canonical_domain_version,transaction_type,currency,monthly_price,current_price,property_area,construction_area', {count:'exact'})
++    .select('id,canonical_domain_version,transaction_type,currency,monthly_price,current_price,property_area,construction_area,price_eligibility:marketplace_price_eligibility(id)', {count:'exact'})
+     .eq('canonical_domain_version',1).eq('listing_status','active').eq('transaction_type',request.transactionType)
+     .in('id',chunk).order('id').range(from,to)))
+-  if (new Set(rows.map(row=>row.id)).size !== rows.length) throw new Error('Duplicate comparison listing evidence.')
+-  const listings = await hydrateCanonicalPopulation(rows, undefined, [])
++  if (new Set(rows.map(row=>row.id)).size !== rows.length || rows.length !== ids.length || rows.some(row=>!ids.includes(row.id))) throw new Error('Incomplete comparison listing evidence.')
++  const listings = await hydrateCanonicalPopulation(rows.filter(hasCanonicalPriceEligibility), undefined, [])
+   const definitions = new Map([request.cohortA, request.cohortB].flatMap(cohort =>
+     [cohort.propertyType,...cohort.characteristics.filter(isMembershipCohortCharacteristic)].map(term => [String(term.ontologyTermId),term] as const)))
+   const dimensions=[...new Set(cohorts.flatMap(cohort=>cohort.characteristics.filter(isExactCohortCharacteristic).map(c=>c.termType)))]
+--- a/lib/price-meter-property-difference-context-acquisition.ts
++++ b/lib/price-meter-property-difference-context-acquisition.ts
+@@ -1,5 +1,6 @@
+ import {requireMembershipCohortCharacteristic} from './cohort-numeric-evidence'
+ import 'server-only'
++import {hasCanonicalPriceEligibility} from './canonical-market-population'
+ import { supabaseAdmin } from './supabase-admin'
+ import { hydrateCanonicalPopulation } from './canonical-population'
+ import { getExplorerOptions } from './explorer-options-engine'
+@@ -102,9 +103,17 @@
+  const rows=required.map(id=>rowsById.get(id)!)
+  // Membership and hydration must agree; disagreement is incomplete evidence, not exclusion.
+  for(const row of rows){const type=row.canonicalEvidence.selections.find(t=>t.dimension==='property_type')!;if(!evidence.get(row.id)?.has(type.ontology_term_id))throw new Error('Incoherent context type.')}
+- const fx=e.result.fx??await resolvePositionFx(rows,e.result.analyticalDate)
+- const observedById=new Map(e.working.observations.map(o=>[o.listingId,o]))
+- const newObservations=buildPositionObservations(rows.filter(r=>!observedById.has(r.id)),e.result.analyticalDate,fx)
++ const eligible=new Set<string>()
++ for(let offset=0;offset<required.length;offset+=25){
++  const batch=required.slice(offset,offset+25)
++  const evidence=await complete<any>(()=>supabaseAdmin.from('listings').select('id,price_eligibility:marketplace_price_eligibility(id)',{count:'exact'}).in('id',batch).eq('canonical_domain_version',1).eq('listing_status','active').eq('transaction_type',e.result.reference.transactionType).order('id'),r=>r.id)
++  if(evidence.length!==batch.length||evidence.some(r=>!batch.includes(r.id)))throw new Error('Missing context price eligibility.')
++  for(const row of evidence)if(hasCanonicalPriceEligibility(row))eligible.add(row.id)
++ }
++ const eligibleRows=rows.filter(row=>eligible.has(row.id))
++ const fx=e.result.fx??await resolvePositionFx(eligibleRows,e.result.analyticalDate)
++ const observedById=new Map(e.working.observations.filter(o=>typeof o.listingId==='string'&&eligible.has(o.listingId)).map(o=>[o.listingId,o]))
++ const newObservations=buildPositionObservations(eligibleRows.filter(r=>!observedById.has(r.id)),e.result.analyticalDate,fx)
+  for(const o of newObservations)if(o.propertyBasis===e.result.reference.propertyBasis&&o.normalizationBasis===e.result.reference.normalizationBasis)observedById.set(o.listingId,o)
+  const observations=required.flatMap(id=>observedById.has(id)?[observedById.get(id)!]:[])
+  const termDefinitions=new Map(cohorts.flatMap(c=>[c.propertyType,...c.characteristics].map(t=>[String(requireMembershipCohortCharacteristic(t).ontologyTermId),requireMembershipCohortCharacteristic(t)] as const)))
+--- a/lib/price-meter-property-position-loader.ts
++++ b/lib/price-meter-property-position-loader.ts
+@@ -1,11 +1,12 @@
+ import 'server-only'
++import {hasCanonicalPriceEligibility} from './canonical-market-population'
+ import { supabaseAdmin } from './supabase-admin'
+ import { hydrateCanonicalPopulation } from './canonical-population'
+ import type { CanonicalEvidence } from './canonical-listing-reader'
+ import type { PriceMeterIdentityListing } from './price-meter-identity'
+ import type { PositionReference } from './price-meter-property-position-result-contract'
+ 
+-const SELECT = 'id,canonical_domain_version,transaction_type,listing_status,property_area,construction_area,current_price,monthly_price,currency'
++const SELECT = 'id,canonical_domain_version,transaction_type,listing_status,property_area,construction_area,current_price,monthly_price,currency,price_eligibility:marketplace_price_eligibility(id)'
+ export type PositionRow = PriceMeterIdentityListing & { id: string; canonical_domain_version: number; listing_status: string; transaction_type: string; canonicalEvidence: CanonicalEvidence }
+ export class PositionAcquisitionError extends Error {}
+ function incomplete(): never { throw new PositionAcquisitionError('Incomplete canonical reference acquisition.') }
+@@ -34,7 +35,8 @@
+     .eq('id', listingId).eq('listing_status','active').eq('canonical_domain_version',1).maybeSingle()
+   if (error) throw error
+   if (!data) return null
+-  return (await hydrateCanonicalPopulation([data], undefined, []))[0] as PositionRow
++  if (!hasCanonicalPriceEligibility(data)) return null
++  return (await hydrateCanonicalPopulation([data], undefined, []))[0] as unknown as PositionRow
+ }
+ 
+ export async function loadPositionReference(reference: PositionReference): Promise<PositionRow[]> {
+@@ -60,7 +62,7 @@
+       const listings = await pages<PositionRow>(() => supabaseAdmin.from('listings').select(SELECT,{count:'exact'})
+         .in('id',ids).eq('canonical_domain_version',1).eq('listing_status','active').eq('transaction_type',reference.transactionType).order('id'), row => validId(row.id) ? row.id : '')
+       if (listings.length !== ids.length || listings.some(row => !ids.includes(row.id))) incomplete()
+-      const hydrated = await hydrateCanonicalPopulation(listings, undefined, []) as PositionRow[]
++      const hydrated = await hydrateCanonicalPopulation(listings.filter(hasCanonicalPriceEligibility), undefined, []) as PositionRow[]
+       for (const row of hydrated) {
+         if (row.canonical_domain_version !== 1 || row.listing_status !== 'active' || row.transaction_type !== reference.transactionType ||
+             !row.canonicalEvidence.geography.some(g => g.term_type === reference.geographyLevel && g.id === reference.geography.id) ||
+--- a/lib/property-price-valuation-data.ts
++++ b/lib/property-price-valuation-data.ts
+@@ -1,4 +1,5 @@
+ import 'server-only'
++import {hasCanonicalPriceEligibility} from './canonical-market-population'
+ import {supabaseAdmin} from './supabase-admin'
+ import {readCanonicalListingEvidence} from './canonical-listing-reader'
+ import {validateGeographicRow} from './geography/dta-identity'
+@@ -71,11 +72,11 @@
+ export async function establishSubject(q:Question,userId:string):Promise<Subject>{
+  const s=q.subject
+  if(s.kind==='listing'){
+-  const {data,error}=await supabaseAdmin.from('listings').select('id,owner_id,canonical_domain_version,listing_status,transaction_type,current_price::text,monthly_price::text,currency').eq('id',s.listingId).maybeSingle()
++  const {data,error}=await supabaseAdmin.from('listings').select('id,owner_id,canonical_domain_version,listing_status,transaction_type,current_price::text,monthly_price::text,currency,price_eligibility:marketplace_price_eligibility(id)').eq('id',s.listingId).maybeSingle()
+   if(error)throw error
+   if(!data||data.id!==s.listingId||data.canonical_domain_version!==1||data.listing_status==='deleted'||data.listing_status!=='active'&&data.owner_id!==userId||!['sale','rent'].includes(data.transaction_type))throw new ValuationSubjectUnavailable()
+   const row=(await structuralRows([s.listingId],data.transaction_type,false,q.activeDimensions))[0]
+-  return {row,kind:'listing',listingId:s.listingId,money:data}
++  return {row,kind:'listing',listingId:s.listingId,money:data.listing_status==='active'&&!hasCanonicalPriceEligibility(data)?{...data,current_price:null,monthly_price:null}:data}
+  }
+  const terms=await valuationTerms([s.province,s.canton,...(s.district===null?[]:[s.district]),s.propertyType,...Object.values(s.characteristics)])
+  const byId=new Map(terms.map(t=>[Number(t.id),t]));const g=(id:number,type:string)=>{const t=byId.get(id);if(!t||t.term_type!==type)invalid();return geo(t)}
+@@ -110,5 +111,5 @@
+ }
+ export async function acquirePeerMoney(ids:string[],transaction:'sale'|'rent'):Promise<any[]>{
+  const rows:any[]=[]
+- for(const batch of batches(ids)){let last='';const found=await completeValuationRows((a,b)=>supabaseAdmin.from('listings').select('id,title,canonical_domain_version,listing_status,transaction_type,current_price::text,monthly_price::text,currency',{count:'exact'}).in('id',batch).order('id').range(a,b),r=>{if(!batch.includes(r.id)||r.id<=last||r.canonical_domain_version!==1||r.listing_status!=='active'||r.transaction_type!==transaction)fail();last=r.id});if(found.length!==batch.length)fail();rows.push(...found)}return rows
++ for(const batch of batches(ids)){let last='';const found=await completeValuationRows((a,b)=>supabaseAdmin.from('listings').select('id,title,canonical_domain_version,listing_status,transaction_type,current_price::text,monthly_price::text,currency,price_eligibility:marketplace_price_eligibility(id)',{count:'exact'}).in('id',batch).order('id').range(a,b),r=>{if(!batch.includes(r.id)||r.id<=last||r.canonical_domain_version!==1||r.listing_status!=='active'||r.transaction_type!==transaction)fail();last=r.id});if(found.length!==batch.length)fail();rows.push(...found.map(row=>hasCanonicalPriceEligibility(row)?row:{...row,current_price:null,monthly_price:null}))}return rows
+ }
+--- a/lib/statistics-engine.ts
++++ b/lib/statistics-engine.ts
+@@ -1,5 +1,6 @@
+ import {cache} from 'react'
+ import 'server-only'
++import {hasCanonicalPriceEligibility} from './canonical-market-population'
+ import { resolveMarketYearBuiltConstraint, evaluateMarketYearBuilt } from '@/lib/market-year-built-constraint'
+ import { supabaseAdmin } from '@/lib/supabase-admin'
+ import { hydrateCanonicalPopulation, resolvePopulationGeography } from '@/lib/canonical-population'
+@@ -1078,27 +1079,13 @@
+       entityType: string,
+       entitySlug: string
+     ) {
+-      const { data: statistics, error: statisticsError } = await supabase
+-        .from('market_statistics')
+-        .select('*')
+-        .eq('entity_type', entityType)
+-        .eq('entity_slug', entitySlug)
+-        .single()
+-
+-      if (statisticsError) throw statisticsError
+-
+-      const { data: distributions, error: distributionsError } =
+-        await supabase
+-          .from('market_distribution_statistics')
+-          .select('*')
+-          .eq('entity_type', entityType)
+-          .eq('entity_slug', entitySlug)
+-
+-      if (distributionsError) throw distributionsError
+-
++      // Stored aggregates have no price-eligibility revision. Recompute rather
++      // than reuse a result that may predate a changed integrity decision.
++      const live = await getMarketStatistics({[entityType]: entitySlug})
++      const s = live.statistics
+       return {
+-        statistics,
+-        distributions
++        statistics: { total_listings:s.totalListings, sale_listings:s.saleListings, rental_listings:s.rentalListings, average_rent_crc:s.averageRentCRC, median_rent_crc:s.medianRentCRC, average_rent_usd:s.averageRentUSD, median_rent_usd:s.medianRentUSD, recent_listing_count:s.recentListingCount },
++        distributions: Object.entries(live.distributions).flatMap(([type, rows]) => rows.map((row, index) => ({ id:`${type}:${index}`, distribution_type:type, value:row.value, percentage:row.percentage })))
+       }
+     }
+ 
+@@ -1158,7 +1145,7 @@
+   }
+   const query=()=>{
+     let q=supabaseAdmin.from('listings').select(`id,title,images,canonical_domain_version,
+-      transaction_type,currency,monthly_price,current_price,price_millions,
++      transaction_type,currency,monthly_price,current_price,price_millions,price_eligibility:marketplace_price_eligibility(id),
+       property_area,construction_area,created_at,province,canton,district`,{count:'exact'})
+       .eq('canonical_domain_version',1).eq('listing_status','active')
+     if (transaction_type) q=q.eq('transaction_type',transaction_type)
+@@ -1171,6 +1158,7 @@
+     canonical.push(...await completePopulationRows<Listing>((from,to)=>query().in('id',chunk).range(from,to)))
+   }
+   if (new Set(canonical.map(l=>l.id)).size!==canonical.length) throw new Error('Duplicate canonical population evidence.')
++  canonical=canonical.map(row=>hasCanonicalPriceEligibility(row)?row:{...row,current_price:null,monthly_price:null,price_millions:null})
+   canonical=await hydrateCanonicalPopulation(canonical,undefined,[...new Set([...factDimensions,...(yearConstraint?['year_built']:[]),...(distance_to_paved_road_range?['distance_to_paved_road']:[])])])
+   canonical=canonical.filter(l=>(!property_area||matchesPropertyAreaConstraint(l.property_area,property_area)) &&
+     (!construction_area||matchesConstructionAreaConstraint(l.construction_area,construction_area)))
+@@ -1184,7 +1172,7 @@
+   }
+   // Legacy compatibility strings are not canonical year evidence. They cannot
+   // establish satisfaction of a selected canonical numerical year constraint.
+-  const legacyRows=yearConstraint?[]:await getLegacyMatchingListings(legacy,terms)
++  const legacyRows=yearConstraint?[]:(await getLegacyMatchingListings(legacy,terms)).map(row=>({...row,current_price:null,monthly_price:null,price_millions:null}))
+   if(yearConstraint) canonical=canonical.filter(l=>evaluateMarketYearBuilt(yearConstraint,
+     l.canonicalEvidence.facts.find((f:any)=>f.dimension==='year_built')).state==='MATCH')
+   return [...new Map([...legacyRows,...canonical].map(l=>[l.id,l])).values()]
+--- a/lib/weighted-price-data.ts
++++ b/lib/weighted-price-data.ts
+@@ -1,5 +1,6 @@
+ import 'server-only'
+ import {supabaseAdmin} from './supabase-admin'
++import {hasCanonicalPriceEligibility} from './canonical-market-population'
+ import {readCanonicalListingEvidence} from './canonical-listing-reader'
+ import {resolveListingOriginalMonetaryValue} from './listing-monetary-value'
+ import {resolvePriceMeterAreaIdentity,resolvePriceMeterPropertyBasis} from './price-meter-identity'
+@@ -12,14 +13,14 @@
+  const s=q.subject,c=q.cohort
+  let L:number,C:number,money:ReturnType<typeof resolveListingOriginalMonetaryValue>,listingId:string|undefined
+  if(s.kind==='listing'){
+-  const {data:r,error}=await supabaseAdmin.from('listings').select('id,owner_id,canonical_domain_version,listing_status,transaction_type,property_area::text,construction_area::text,current_price::text,monthly_price::text,currency').eq('id',s.listingId).maybeSingle()
++  const {data:r,error}=await supabaseAdmin.from('listings').select('id,owner_id,canonical_domain_version,listing_status,transaction_type,property_area::text,construction_area::text,current_price::text,monthly_price::text,currency,price_eligibility:marketplace_price_eligibility(id)').eq('id',s.listingId).maybeSingle()
+   if(error)throw Error('Subject read unavailable')
+   if(!r||r.id!==s.listingId||r.canonical_domain_version!==1||r.listing_status==='deleted'||r.listing_status!=='active'&&r.owner_id!==userId||r.transaction_type!==c.transaction)invalid()
+   try{L=Number(canonicalDecimal(r.property_area));C=Number(canonicalDecimal(r.construction_area))}catch{invalid()}
+   const evidence=(await readCanonicalListingEvidence([r.id],{facts:[],semantics:['property_type']})).get(r.id)
+   if(!evidence||evidence.selections.length!==1||evidence.selections[0].ontology_term_id!==c.propertyType||!evidence.geography.some(g=>g.id===c.geography.termId&&g.term_type===c.geography.level))invalid()
+   if(resolvePriceMeterPropertyBasis({propertyType:evidence!.selections[0].slug,constructionArea:resolvePriceMeterAreaIdentity(C!)})!=='improved_property')invalid()
+-  money=resolveListingOriginalMonetaryValue(r);listingId=r.id
++  money=r.listing_status==='active'&&!hasCanonicalPriceEligibility(r)?null:resolveListingOriginalMonetaryValue(r);listingId=r.id
+  }else{
+   L=Number(s.propertyArea);C=Number(s.constructionArea)
+   const ids=[s.province,s.canton,...(s.district?[s.district]:[]),c.propertyType]

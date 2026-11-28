@@ -141,6 +141,7 @@ function createRunArchive(directory, meta = {}) {
   const outcomes = path.join(directory, 'canonical-outcomes.ndjson')
   if (!fs.existsSync(checkpointCsv)) fs.writeFileSync(checkpointCsv, `${columns.join(',')}\n`, { mode: 0o600 })
   const seen = new Set()
+  let observationCount = 0
   const remote = createRemoteArchive(meta)
   return {
     directory, checkpoint, checkpointCsv, outcomes,
@@ -148,6 +149,7 @@ function createRunArchive(directory, meta = {}) {
       const id = String(row?.source_listing_id || '').trim()
       if (!id || seen.has(id)) return false
       seen.add(id)
+      observationCount += 1
       const preserved = { archived_at: new Date().toISOString(), archive: meta, observation: row }
       fs.appendFileSync(checkpoint, `${JSON.stringify(preserved)}\n`, { mode: 0o600, flag: 'a' })
       fs.appendFileSync(checkpointCsv, csvRow(row, meta), { mode: 0o600, flag: 'a' })
@@ -157,7 +159,13 @@ function createRunArchive(directory, meta = {}) {
     outcome(row, value) {
       fs.appendFileSync(outcomes, `${JSON.stringify({ recorded_at: new Date().toISOString(), source_listing_id: row?.source_listing_id || null, ...value })}\n`, { mode: 0o600, flag: 'a' })
     },
-    async finalize() {
+    async finalize({ materialize = true } = {}) {
+      // Large source inventories are already durable in NDJSON and CSV.  A
+      // caller may opt out of rebuilding them as full in-memory arrays.
+      if (!materialize) {
+        const remoteResult = await remote.finalize()
+        return { observations: observationCount, json: null, csv: checkpointCsv, checkpoint, remote: { ...remote.summary(), ...remoteResult } }
+      }
       const rows = fs.existsSync(checkpoint) ? fs.readFileSync(checkpoint, 'utf8').split(/\r?\n/).filter(Boolean).map(line => JSON.parse(line).observation) : []
       const outcomeById = new Map()
       if (fs.existsSync(outcomes)) for (const line of fs.readFileSync(outcomes, 'utf8').split(/\r?\n/).filter(Boolean)) {

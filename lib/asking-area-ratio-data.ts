@@ -1,5 +1,6 @@
 import 'server-only';
 import { supabaseAdmin } from './supabase-admin';
+import { hasCanonicalPriceEligibility } from './canonical-market-population';
 import { readCanonicalListingEvidence } from './canonical-listing-reader';
 import { resolvePriceMeterAreaIdentity, resolvePriceMeterPropertyBasis } from './price-meter-identity';
 import { resolveListingOriginalMonetaryValue } from './listing-monetary-value';
@@ -58,7 +59,7 @@ export async function acquireAreaRatio(q: RatioQuestion, context: { excludedList
         const selected = typed.map(r => r.listing_id);
         if (!selected.length)
             continue;
-        const rows = await pages((a, b) => bound(supabaseAdmin.from('listings').select('id,canonical_domain_version,listing_status,transaction_type,property_area::text,construction_area::text,current_price::text,monthly_price::text,currency', { count: 'exact' }).in('id', selected).eq('canonical_domain_version', 1).eq('listing_status', 'active').eq('transaction_type', q.transaction)).order('id').range(a, b), r => { if (!selected.includes(r.id) || r.canonical_domain_version !== 1 || r.listing_status !== 'active' || r.transaction_type !== q.transaction)
+        const rows = await pages((a, b) => bound(supabaseAdmin.from('listings').select('id,canonical_domain_version,listing_status,transaction_type,property_area::text,construction_area::text,current_price::text,monthly_price::text,currency,price_eligibility:marketplace_price_eligibility(id)', { count: 'exact' }).in('id', selected).eq('canonical_domain_version', 1).eq('listing_status', 'active').eq('transaction_type', q.transaction)).order('id').range(a, b), r => { if (!selected.includes(r.id) || r.canonical_domain_version !== 1 || r.listing_status !== 'active' || r.transaction_type !== q.transaction)
             throw Error('Scalar mismatch'); return r.id; });
         if (rows.length !== selected.length)
             throw Error('Missing scalar rows');
@@ -76,6 +77,7 @@ export async function acquireAreaRatio(q: RatioQuestion, context: { excludedList
                 throw Error('Invalid exact area');
             if (resolvePriceMeterPropertyBasis({ propertyType: e.selections[0].slug, constructionArea: resolvePriceMeterAreaIdentity(C) }) !== 'improved_property')
                 throw Error('Basis mismatch');
+            if (!hasCanonicalPriceEligibility(row)) { excluded++; continue; }
             const money = resolveListingOriginalMonetaryValue(row);
             if (!money) {
                 excluded++;

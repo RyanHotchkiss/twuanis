@@ -2,7 +2,7 @@ import {assertUniverseScope,type AnalyticalUniverse,universePriceBasis} from './
 import 'server-only'
 import {assertAcquisitionPlan} from './canonical-acquisition-plan'
 import {recordAnalyticalEvidence} from './orchestrator-evidence-v2'
-import {currentOrchestratorContext,orchestratorMemo} from './orchestrator-execution-context'
+import {currentOrchestratorContext,orchestratorMemo,withOrchestratorContext} from './orchestrator-execution-context'
 import {createHash} from 'node:crypto'
 import {supabaseAdmin} from './supabase-admin'
 import {createServerSupabaseClient} from './supabase-server'
@@ -133,7 +133,17 @@ async function acquireUnsharedPopulation(r:AcquisitionRequest):Promise<Acquisiti
  // Freeze owned request state; callers cannot mutate scope after a grant/cache key.
  r=JSON.parse(JSON.stringify(r));request(r);r={...r,geography:{province:r.geography.province,canton:r.geography.canton,district:r.geography.district}};let bankRevision:string|null=null,inventoryCount=0,priceEligibleCount=0;const auth=await authorize(r),privateRows:PrivateAnalyticalObservation[]=[],bank:BankAnalyticalObservation[]=[],excluded:AcquisitionResult['excluded'][number][]=[]
  if(r.population!=='BANK'){
-  const boundary:CanonicalMarketBoundary={population:r.population as 'SALE'|'RENT',transaction:r.transaction as 'sale'|'rent',membershipGroups:[...Object.values(r.geography).filter((id):id is string=>id!==null).map(id=>[id]),[r.propertyType]]}
+  const boundary:CanonicalMarketBoundary={
+  population:r.population as 'SALE'|'RENT',
+  transaction:r.transaction as 'sale'|'rent',
+  participation:'inventory_with_price_eligibility',
+  membershipGroups:[
+    ...Object.values(r.geography)
+      .filter((id):id is string=>id!==null)
+      .map(id=>[id]),
+    [r.propertyType]
+  ]
+}
   const raw=await orchestratorMemo('private-raw',JSON.stringify([auth.accountId,auth.population,auth.terms,boundary,!!r.profile]),async()=>{
   const rows=await readCanonicalMarketScalars(boundary,['canonical_domain_version','listing_status','transaction_type','currency','current_price','monthly_price','property_area','construction_area','created_at'])
   const evidence=await readCanonicalListingEvidence(rows.map(x=>x.id),r.profile?{facts:['bedrooms','bathrooms','parking','year_built','distance_to_paved_road'],semantics:['property_type','utility','environment','terrain','accessibility','legal_status']}:{facts:[],semantics:['property_type']})
@@ -141,9 +151,39 @@ async function acquireUnsharedPopulation(r:AcquisitionRequest):Promise<Acquisiti
   });const {rows,evidence}=raw
   recordAnalyticalEvidence('private-acquisition-candidates',{request:r,authority:auth,rows,evidence})
   for(const row of rows){const e=evidence.get(row.id)!;if(row.canonical_domain_version!==1||row.listing_status!=='active'||row.transaction_type!==r.transaction||!matchesScope([...e.geography,...e.selections.map(t=>({id:t.ontology_term_id,term_type:t.term_type}))],r))continue;const basis=resolvePriceMeterPropertyBasis({propertyType:e.selections.find(t=>t.dimension==='property_type')?.slug,constructionArea:resolvePriceMeterAreaIdentity(row.construction_area)})
-   inventoryCount++;const price=r.transaction==='sale'?row.current_price:row.monthly_price; if(['CRC','USD'].includes(row.currency)&&typeof price==='number'&&Number.isFinite(price)&&price>0)priceEligibleCount++; if((r.profile??'ppm2')==='ppm2'&&(!['CRC','USD'].includes(row.currency)||typeof price!=='number'||!Number.isFinite(price)||price<=0))continue
+   inventoryCount++;
+
+const price=r.transaction==='sale'
+  ? row.current_price
+  : row.monthly_price;
+
+const priceEligible=
+  row.analytical_price_eligible===true&&
+  ['CRC','USD'].includes(row.currency)&&
+  typeof price==='number'&&
+  Number.isFinite(price)&&
+  price>0;
+
+if(priceEligible)priceEligibleCount++;
+
+if((r.profile??'ppm2')!=='inventory'&&!priceEligible)continue;
    if((r.profile??'ppm2')==='ppm2'&&(basis!==r.propertyBasis||r.areaBasis==='land'&&resolvePriceMeterAreaIdentity(row.property_area).kind!=='exact'||r.areaBasis==='construction'&&basis!=='improved_property'))continue
-   privateRows.push({population:r.population as 'SALE'|'RENT',listingId:row.id,row,evidence:e,propertyBasis:basis,areaBasis:r.areaBasis})
+   const analyticalRow=priceEligible
+  ? row
+  : {
+      ...row,
+      current_price:null,
+      monthly_price:null
+    };
+
+privateRows.push({
+  population:r.population as 'SALE'|'RENT',
+  listingId:row.id,
+  row:analyticalRow,
+  evidence:e,
+  propertyBasis:basis,
+  areaBasis:r.areaBasis
+})
   }
  }
  if(r.population==='BANK'){
@@ -194,6 +234,13 @@ export async function deliverCanonicalPopulation(result:AcquisitionResult):Promi
  const auth=await authorize(ticket.request);if(authorityIdentity(auth)!==authorityIdentity(ticket.authority))throw new PackageCapabilityDenied()
  // Reacquisition rechecks source revisions, source freshness and publication before
  // delivery. Possession of a cache identity grants no rights.
- const fresh=await acquireCanonicalPopulation(ticket.request);if(fresh.cacheIdentity!==result.cacheIdentity)throw Error('Stale analytical acquisition.')
+ const scoped=currentOrchestratorContext()
+ // Delivery must not reuse an execution- or earlier freshness-phase cache: a
+ // price can become stale or pending while the same orchestration is running.
+ // Preserve its authority/plan but isolate every delivery's source reads.
+ const fresh=scoped
+  ? await withOrchestratorContext({...scoped,phase:'freshness',cache:new Map(),acquisitions:new Set()},()=>acquireCanonicalPopulation(ticket.request))
+  : await acquireCanonicalPopulation(ticket.request)
+ if(fresh.cacheIdentity!==result.cacheIdentity)throw Error('Stale analytical acquisition.')
  return fresh
 }

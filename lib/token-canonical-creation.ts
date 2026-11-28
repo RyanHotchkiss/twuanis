@@ -36,15 +36,53 @@ export async function tokenCreationInput(db: SupabaseClient, data: Record<string
     const [whole,fraction='']=millions.split('.')
     changes.current_price=(BigInt(whole)*BigInt('1000000')+BigInt(fraction.padEnd(6,'0'))).toString()
   } else changes.monthly_price=String(data.monthly_price)
-  // Reuse the approved equivalents for retained form labels; never edit the token snapshot.
-  const utilityNames: Record<string,string> = {
+ 
+  // Resolve bilingual form labels without changing the saved token snapshot.
+  const utilityNames: Record<string, string> = {
     'Municipal / ASADA Water': 'Municipal Water',
+    'Agua Municipal / ASADA': 'Municipal Water',
+    'Private Well': 'Private Well',
+    'Pozo Privado': 'Private Well',
+    'Shared / Community Well': 'Shared / Community Well',
+    'Pozo Compartido / Comunitario': 'Shared / Community Well',
+    'Spring': 'Spring',
+    'Naciente': 'Spring',
+    'Rainwater Collection': 'Rainwater Collection',
+    'Recolección de Agua de Lluvia': 'Rainwater Collection',
     'Grid Electricity': 'Electricity',
+    'Electricidad de la Red': 'Electricity',
+    'Solar System': 'Solar Power',
+    'Sistema Solar': 'Solar Power',
+    'Hydroelectric System': 'Hydroelectric System',
+    'Sistema Hidroeléctrico': 'Hydroelectric System',
+    'Municipal Sewer': 'Sewer',
+    'Alcantarillado Municipal': 'Sewer',
     'Septic System': 'Septic',
+    'Sistema Séptico': 'Septic',
+    'On-site Treatment System': 'On-site Treatment System',
+    'Sistema de Tratamiento en Sitio': 'On-site Treatment System',
+    'Drain Field / On-site Disposal': 'Drain Field / On-site Disposal',
+    'Campo de Drenaje / Disposición en Sitio': 'Drain Field / On-site Disposal',
+    'Greywater to Municipal Sewer': 'Greywater to Municipal Sewer',
+    'Aguas Grises al Alcantarillado Municipal': 'Greywater to Municipal Sewer',
+    'Surface Discharge': 'Surface Discharge',
+    'Descarga Superficial': 'Surface Discharge',
+    'Fiber Internet': 'Fiber Internet',
+    'Internet por Fibra': 'Fiber Internet',
+    'LPG Cylinder': 'LPG Cylinder',
+    'Cilindro de Gas LP': 'LPG Cylinder',
+    'LPG Fixed Tank': 'LPG Fixed Tank',
+    'Tanque Fijo de Gas LP': 'LPG Fixed Tank',
+    'Piped Gas': 'Piped Gas',
+    'Gas por Tubería': 'Piped Gas',
   }
+
   if (Array.isArray(changes.utility)) {
-    changes.utility = changes.utility.map(value => typeof value === 'string' ? utilityNames[value] ?? value : value)
+    changes.utility = changes.utility.map(value =>
+      typeof value === 'string' ? utilityNames[value] ?? value : value
+    )
   }
+
   if (changes.accessibility === 'Paved Road to Property') changes.accessibility = 'Paved Road'
   const {domains,content}=await customerEditDomains(db,changes,{transaction_type:data.transaction_type})
   return {transaction:data.transaction_type,...domains,content}

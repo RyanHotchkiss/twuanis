@@ -13,7 +13,12 @@ type Provenance = Readonly<{
   transaction: Phase14ExecutionEnvelope['question']['transaction']
   geographicPopulation: Phase14GeographicPopulation
   geographicStartingCount: number
-  predicates: Readonly<{ listingStatus: 'active'; canonicalDomainVersion: 1; transaction: Phase14ExecutionEnvelope['question']['transaction'] }>
+  predicates: Readonly<{
+  listingStatus: 'active'
+  canonicalDomainVersion: 1
+  transaction: Phase14ExecutionEnvelope['question']['transaction']
+  analyticalPriceEligible: true
+}>
 }>
 export type Phase14FundamentalPopulation = Provenance & Readonly<{
   state: 'complete'
@@ -41,7 +46,12 @@ export async function acquirePhase14FundamentalPopulation(
   const provenance: Provenance=Object.freeze({kind:'fundamentally_eligible_population',executionId:envelope.executionId,
     canonicalQuestionSerialization:envelope.canonicalQuestionSerialization,geography:envelope.question.geography,
     transaction,geographicPopulation:geographic,geographicStartingCount:geographic.acquiredUniqueListingCount,
-    predicates:Object.freeze({listingStatus:'active',canonicalDomainVersion:1,transaction})})
+    predicates:Object.freeze({
+  listingStatus:'active',
+  canonicalDomainVersion:1,
+  transaction,
+  analyticalPriceEligible:true
+})})
   const incomplete=(reason:IncompleteReason):Phase14FundamentalAcquisition=>Object.freeze({...provenance,state:'incomplete',reason})
   const sourceIds=new Set(geographic.listingIds),seen=new Set<string>(),ids:string[]=[]
   let expected:number|null=null,pagesRead=0,previous:string|null=null
@@ -51,7 +61,7 @@ export async function acquirePhase14FundamentalPopulation(
     let response
     try {
       response=await supabaseAdmin.from('listings_ontology_terms')
-        .select('listing_id,ontology_term_id::text,listings!inner(canonical_domain_version,listing_status,transaction_type)',{count:'exact'})
+        .select('listing_id,ontology_term_id::text,listings!inner(id,canonical_domain_version,listing_status,transaction_type,price_eligibility:marketplace_price_eligibility!inner(id))',{count:'exact'})
         .eq('ontology_term_id',provenance.geography.termId)
         .eq('listings.canonical_domain_version',1)
         .eq('listings.listing_status','active')
@@ -76,7 +86,18 @@ export async function acquirePhase14FundamentalPopulation(
       const listing:unknown=row.listings
       if (!listing||typeof listing!=='object'||Array.isArray(listing)||
           !('canonical_domain_version' in listing)||!('listing_status' in listing)||!('transaction_type' in listing)||
-          listing.canonical_domain_version!==1||listing.listing_status!=='active'||listing.transaction_type!==transaction) return incomplete('invalid_predicate_evidence')
+          listing.canonical_domain_version!==1||
+listing.listing_status!=='active'||
+listing.transaction_type!==transaction||
+!('id' in listing)||
+listing.id!==id||
+!('price_eligibility' in listing)||
+!listing.price_eligibility||
+typeof listing.price_eligibility!=='object'||
+Array.isArray(listing.price_eligibility)||
+!('id' in listing.price_eligibility)||
+listing.price_eligibility.id!==id)
+  return incomplete('invalid_predicate_evidence')
       seen.add(id);ids.push(id);previous=id
     }
   } while(ids.length<expected!)

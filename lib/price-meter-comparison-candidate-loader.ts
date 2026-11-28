@@ -1,6 +1,7 @@
 import {readCanonicalListingEvidence} from './canonical-listing-reader'
 import {isExactCohortCharacteristic,isMembershipCohortCharacteristic} from './cohort-numeric-evidence'
 import 'server-only'
+import {hasCanonicalPriceEligibility} from './canonical-market-population'
 import { supabaseAdmin } from '@/lib/supabase-admin'
 import { hydrateCanonicalPopulation } from '@/lib/canonical-population'
 import type { PriceMeterComparisonRequest } from '@/lib/price-meter-comparison-request'
@@ -74,11 +75,11 @@ export async function loadPriceMeterComparisonCandidates(request: PriceMeterComp
     geographyCandidates.get(r.geography)!.filter(id => r.terms.every(term => evidence.get(id)?.has(term)))))].sort()
   const rows: any[] = []
   for (const chunk of chunks(ids)) rows.push(...await complete<any>((from,to) => supabaseAdmin.from('listings')
-    .select('id,canonical_domain_version,transaction_type,currency,monthly_price,current_price,property_area,construction_area', {count:'exact'})
+    .select('id,canonical_domain_version,transaction_type,currency,monthly_price,current_price,property_area,construction_area,price_eligibility:marketplace_price_eligibility(id)', {count:'exact'})
     .eq('canonical_domain_version',1).eq('listing_status','active').eq('transaction_type',request.transactionType)
     .in('id',chunk).order('id').range(from,to)))
-  if (new Set(rows.map(row=>row.id)).size !== rows.length) throw new Error('Duplicate comparison listing evidence.')
-  const listings = await hydrateCanonicalPopulation(rows, undefined, [])
+  if (new Set(rows.map(row=>row.id)).size !== rows.length || rows.length !== ids.length || rows.some(row=>!ids.includes(row.id))) throw new Error('Incomplete comparison listing evidence.')
+  const listings = await hydrateCanonicalPopulation(rows.filter(hasCanonicalPriceEligibility), undefined, [])
   const definitions = new Map([request.cohortA, request.cohortB].flatMap(cohort =>
     [cohort.propertyType,...cohort.characteristics.filter(isMembershipCohortCharacteristic)].map(term => [String(term.ontologyTermId),term] as const)))
   const dimensions=[...new Set(cohorts.flatMap(cohort=>cohort.characteristics.filter(isExactCohortCharacteristic).map(c=>c.termType)))]

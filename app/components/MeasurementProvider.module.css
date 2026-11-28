@@ -1,5 +1,15 @@
 .notice { align-items: center; }
-.choices { display: contents; }
+.choices {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.choices > button {
+  width: 100%;
+}
 .notice > button, .notice > a, .choices > button {
   display: inline-flex;
   align-items: center;

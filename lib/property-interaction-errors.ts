@@ -7,5 +7,15 @@ export function propertyInteractionMessage(error: unknown, language: 'en'|'es', 
   return fallback ?? (language === 'es' ? 'No se pudo guardar el cambio. Inténtelo de nuevo.' : 'The change could not be saved. Please try again.')
 }
 export function propertySignIn(language: 'en'|'es') {
-  window.location.assign('/login?lang=' + language + '&next=' + encodeURIComponent(window.location.pathname + window.location.search))
+  const next =
+    window.location.pathname +
+    window.location.search +
+    window.location.hash
+
+  window.location.assign(
+    '/login?' + new URLSearchParams({
+      lang: language,
+      next
+    }).toString()
+  )
 }

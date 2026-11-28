@@ -1,4 +1,5 @@
 import 'server-only'
+import {hasCanonicalPriceEligibility} from './canonical-market-population'
 import {bathroomFactConstraint} from './bathroom-selection'
 import {comparableStage} from './comparable-private-diagnostics'
 import { hydrateCanonicalPopulation } from '@/lib/canonical-population'
@@ -116,7 +117,8 @@ const LISTING_SELECT = `
   current_price,
   price_millions,
   monthly_price,
-  currency
+  currency,
+  price_eligibility:marketplace_price_eligibility(id)
 `
 
 
@@ -745,9 +747,7 @@ async function loadSubjectListing(
   }
 
 
-  if (data.canonical_domain_version !== null && data.canonical_domain_version !== 1) {
-    throw new Error('Unsupported Phase 12A listing authority.')
-  }
+  if (data.canonical_domain_version !== 1 || !hasCanonicalPriceEligibility(data)) throw new Error('Subject asking price lacks canonical analytical eligibility.')
   const [listing] = await hydrateCanonicalPopulation([data], undefined, ['bathrooms'])
   return listing as PriceMeterComparableRawListing
 }
@@ -1150,7 +1150,7 @@ async function loadCanonicalCandidates({subject, geography, dimensions}: {
   const rows: PriceMeterComparableRawListing[] = []
   for (const chunk of idChunks(ids)) {
     rows.push(...await completeRows((from,to) => {
-      let query: any = supabaseAdmin.from('listings').select('id,canonical_domain_version,listing_status,transaction_type,current_price,monthly_price,currency,property_area,construction_area',{count:'exact'})
+      let query: any = supabaseAdmin.from('listings').select('id,canonical_domain_version,listing_status,transaction_type,current_price,monthly_price,currency,property_area,construction_area,price_eligibility:marketplace_price_eligibility(id)',{count:'exact'})
         .eq('canonical_domain_version',1).eq('listing_status','active').eq('transaction_type',position.transactionType)
         .in('id',chunk).order('id').range(from,to)
       query = applyAreaConstraint(query,'property_area',propertyRange)
@@ -1163,8 +1163,9 @@ async function loadCanonicalCandidates({subject, geography, dimensions}: {
   }
   if (new Set(rows.map(row=>row.id)).size !== rows.length) throw new Error('Duplicate Phase 12A listing evidence.')
   if (rows.length !== ids.length) throw new Error('Incomplete Phase 12A listing identity coverage.')
-  const listings = await hydrateCanonicalPopulation(rows, undefined, dimensions.includes('bathrooms')?['bathrooms']:[])
-  const memberships=(await loadMembershipDetails(rows.map(r=>r.id),dimensions.filter(d=>d!=='construction_land'&&d!=='property_type'))).map(m=>({...m,characteristics:[subject.propertyType,...m.characteristics],ontologyTermIds:[subject.propertyType.ontologyTermId,...m.ontologyTermIds]}))
+  const eligibleRows = rows.filter(hasCanonicalPriceEligibility)
+  const listings = await hydrateCanonicalPopulation(eligibleRows, undefined, dimensions.includes('bathrooms')?['bathrooms']:[])
+  const memberships=(await loadMembershipDetails(eligibleRows.map(r=>r.id),dimensions.filter(d=>d!=='construction_land'&&d!=='property_type'))).map(m=>({...m,characteristics:[subject.propertyType,...m.characteristics],ontologyTermIds:[subject.propertyType.ontologyTermId,...m.ontologyTermIds]}))
   return {listings: listings as PriceMeterComparableRawListing[], memberships}
 }
 

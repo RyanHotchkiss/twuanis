@@ -3,12 +3,17 @@ import 'server-only'
 
 import { supabaseAdmin } from '@/lib/supabase-admin'
 import {
-  generateListingTitle,
-  generateListingDescription
-} from '@/app/utils/listing-utils'
+  generatePublicListingTitle,
+  generatePublicListingDescription
+} from '@/lib/public-listing-content-generator'
+
+import {
+  resolveListingOriginalMonetaryValue,
+  type ListingMonetaryInput
+} from '@/lib/listing-monetary-value'
 import type { CanonicalEvidence } from '@/lib/canonical-listing-reader'
 
-type EnglishPresentationListing = {
+type EnglishPresentationListing = ListingMonetaryInput & {
   id: string
   owner_id?: string | null
   listing_origin?: string | null
@@ -143,7 +148,13 @@ async function resolveCanonicalListingContent<
       : undefined
   }
 
+  const monetaryValue =
+    resolveListingOriginalMonetaryValue(listing)
+
   const propertyData = {
+    transaction_type: listing.transaction_type,
+    asking_price: monetaryValue?.amount,
+    currency: monetaryValue?.currency,
     property_type: englishLabels.get(propertyType.ontology_term_id),
     province: geographicLabel(province),
     canton: geographicLabel(canton),
@@ -164,8 +175,8 @@ async function resolveCanonicalListingContent<
     legal_status: labelsFor('legal_status')
   }
 
-  const title = generateListingTitle(propertyData, language)
-  const description = generateListingDescription(propertyData, language)
+  const title = generatePublicListingTitle(propertyData, language)
+  const description = generatePublicListingDescription(propertyData, language)
 
   if (!title.trim() || !description.trim()) {
     throw new Error('English listing content generation returned empty content.')

@@ -1,4 +1,5 @@
 import 'server-only'
+import {hasCanonicalPriceEligibility} from './canonical-market-population'
 import {supabaseAdmin} from './supabase-admin'
 import {readCanonicalListingEvidence} from './canonical-listing-reader'
 import {validateGeographicRow} from './geography/dta-identity'
@@ -71,11 +72,11 @@ export type Subject={row:Omit<StructuralRow,'id'>&{id:string|null};kind:'listing
 export async function establishSubject(q:Question,userId:string):Promise<Subject>{
  const s=q.subject
  if(s.kind==='listing'){
-  const {data,error}=await supabaseAdmin.from('listings').select('id,owner_id,canonical_domain_version,listing_status,transaction_type,current_price::text,monthly_price::text,currency').eq('id',s.listingId).maybeSingle()
+  const {data,error}=await supabaseAdmin.from('listings').select('id,owner_id,canonical_domain_version,listing_status,transaction_type,current_price::text,monthly_price::text,currency,price_eligibility:marketplace_price_eligibility(id)').eq('id',s.listingId).maybeSingle()
   if(error)throw error
   if(!data||data.id!==s.listingId||data.canonical_domain_version!==1||data.listing_status==='deleted'||data.listing_status!=='active'&&data.owner_id!==userId||!['sale','rent'].includes(data.transaction_type))throw new ValuationSubjectUnavailable()
   const row=(await structuralRows([s.listingId],data.transaction_type,false,q.activeDimensions))[0]
-  return {row,kind:'listing',listingId:s.listingId,money:data}
+  return {row,kind:'listing',listingId:s.listingId,money:data.listing_status==='active'&&!hasCanonicalPriceEligibility(data)?{...data,current_price:null,monthly_price:null}:data}
  }
  const terms=await valuationTerms([s.province,s.canton,...(s.district===null?[]:[s.district]),s.propertyType,...Object.values(s.characteristics)])
  const byId=new Map(terms.map(t=>[Number(t.id),t]));const g=(id:number,type:string)=>{const t=byId.get(id);if(!t||t.term_type!==type)invalid();return geo(t)}
@@ -110,5 +111,5 @@ export async function acquireStructuralPeers(subject:Subject,base:StructuralComp
 }
 export async function acquirePeerMoney(ids:string[],transaction:'sale'|'rent'):Promise<any[]>{
  const rows:any[]=[]
- for(const batch of batches(ids)){let last='';const found=await completeValuationRows((a,b)=>supabaseAdmin.from('listings').select('id,title,canonical_domain_version,listing_status,transaction_type,current_price::text,monthly_price::text,currency',{count:'exact'}).in('id',batch).order('id').range(a,b),r=>{if(!batch.includes(r.id)||r.id<=last||r.canonical_domain_version!==1||r.listing_status!=='active'||r.transaction_type!==transaction)fail();last=r.id});if(found.length!==batch.length)fail();rows.push(...found)}return rows
+ for(const batch of batches(ids)){let last='';const found=await completeValuationRows((a,b)=>supabaseAdmin.from('listings').select('id,title,canonical_domain_version,listing_status,transaction_type,current_price::text,monthly_price::text,currency,price_eligibility:marketplace_price_eligibility(id)',{count:'exact'}).in('id',batch).order('id').range(a,b),r=>{if(!batch.includes(r.id)||r.id<=last||r.canonical_domain_version!==1||r.listing_status!=='active'||r.transaction_type!==transaction)fail();last=r.id});if(found.length!==batch.length)fail();rows.push(...found.map(row=>hasCanonicalPriceEligibility(row)?row:{...row,current_price:null,monthly_price:null}))}return rows
 }

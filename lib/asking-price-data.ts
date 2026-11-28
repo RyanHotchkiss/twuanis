@@ -1,5 +1,6 @@
 import 'server-only'
 import { supabaseAdmin } from './supabase-admin'
+import { hasCanonicalPriceEligibility } from './canonical-market-population'
 import { resolveDtaGeography } from './geography/resolve-dta-geography'
 import { readCanonicalListingEvidence, type CanonicalFact } from './canonical-listing-reader'
 import { resolvePropertyAreaConstraint, resolveConstructionAreaConstraint } from './market-intelligence-area-ranges'
@@ -83,7 +84,7 @@ export async function constrainMarket(q:Question,starting:string[]):Promise<stri
 }
 export async function acquireMoney(q:Question,ids:string[]):Promise<any[]>{
  const result:any[]=[];const field=q.transaction==='sale'?'current_price':'monthly_price'
- for(const batch of chunks(ids)){let last='';const rows=await pages((a,b)=>supabaseAdmin.from('listings').select('id,canonical_domain_version,listing_status,transaction_type,currency,'+field+'::text',{count:'exact'}).in('id',batch).order('id').range(a,b),r=>{
+ for(const batch of chunks(ids)){let last='';const rows=await pages((a,b)=>supabaseAdmin.from('listings').select('id,canonical_domain_version,listing_status,transaction_type,currency,'+field+'::text,price_eligibility:marketplace_price_eligibility(id)',{count:'exact'}).in('id',batch).order('id').range(a,b),r=>{
  if(!batch.includes(r.id)||r.id<=last||r.canonical_domain_version!==1||r.listing_status!=='active'||r.transaction_type!==q.transaction)fail();last=r.id
- });if(rows.length!==batch.length)fail();result.push(...rows)}return result
+ });if(rows.length!==batch.length)fail();result.push(...rows.map(row=>hasCanonicalPriceEligibility(row)?row:{...row,[field]:null}))}return result
 }

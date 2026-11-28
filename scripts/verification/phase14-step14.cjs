@@ -5,15 +5,17 @@ let uiHarness=fs.readFileSync(root+'/scripts/verification/phase14-step13.cjs','u
 uiHarness=uiHarness.replace("if(name==='server-only')return {};","if(name==='server-only')return {};if(name==='lucide-react')return {LockKeyhole:()=>null};");
 const uiTests=String.raw`
 async function run14(){
- let identity=null,error=null,throwAuth=false,authCalls=0,otherCalls=0;
- const client={auth:{getUser:async()=>{authCalls++;if(throwAuth)throw Error('private');return{data:{user:identity},error}}},rpc(){otherCalls++;throw Error('Entitlement prohibited in presentation context')},from(){otherCalls++;throw Error('No established tier/role mapping')}};
- const context=loader({'lib/supabase-server.ts':{createServerSupabaseClient:async()=>client}})('lib/current-user-permissions-action.ts');
+ let identity=null,error=null,throwAuth=false,authCalls=0,otherCalls=0,admin=false;
+ process.env.NEXT_PUBLIC_SUPABASE_URL='https://offline.invalid';process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY='offline-key';
+ const client={auth:{getUser:async(token)=>{eq(token,'fixture-token');authCalls++;if(throwAuth)throw Error('private');return{data:{user:identity},error}}},rpc:async(name)=>{eq(name,'is_current_user_administrator');otherCalls++;return{data:admin,error:null}},from(){throw Error('Database reads prohibited')}};
+ const context=loader({'lib/staging-supabase-client.ts':{createClient:(url,key,options)=>{eq(options.global.headers.Authorization,'Bearer fixture-token');return client}}})('lib/current-user-permissions-action.ts');
  const empty={authenticated:false,premium:false,enterprise:false,roles:[]};
- eq(await context.loadCurrentUserPermissionContext(),empty);
+ eq(await context.loadCurrentUserPermissionContext(''),empty);
  for(const malicious of [{premium:true,enterprise:true,roles:['buyer']},{user_metadata:{premium:true,roles:['buyer']}},{app_metadata:{enterprise:true,roles:['developer']}},{package:{hierarchy_level:999,slug:'premium'},entitlements:['price-m2-intelligence']}]){
-  identity={id:'real-user',...malicious};eq(await context.loadCurrentUserPermissionContext(),{...empty,authenticated:true});
+  identity={id:'real-user',...malicious};eq(await context.loadCurrentUserPermissionContext('fixture-token'),{...empty,authenticated:true});
  }
- error=Error('denied');eq(await context.loadCurrentUserPermissionContext(),empty);error=null;throwAuth=true;eq(await context.loadCurrentUserPermissionContext(),empty);throwAuth=false;eq(otherCalls,0);
+ error=Error('denied');eq(await context.loadCurrentUserPermissionContext('fixture-token'),empty);error=null;throwAuth=true;await assert.rejects(()=>context.loadCurrentUserPermissionContext('fixture-token'));checks++;throwAuth=false;eq(otherCalls,4);
+ admin=true;eq(await context.loadCurrentUserPermissionContext('fixture-token'),{authenticated:true,premium:true,enterprise:true,roles:['buyer','seller','agent','brokerage','developer']});admin=false;
  let mounts=0;const ui=loader({'app/components/Phase14Discovery.tsx':{__esModule:true,default:()=>{mounts++;return React.createElement('section',null,'PRODUCT')}} ,'lib/current-user-permissions-action.ts':{loadCurrentUserPermissionContext:async()=>empty}});
  const Surface=ui('app/components/ComparativeDiscoveryAccess.tsx').ComparativeDiscoveryPermissionSurface,permissions=ui('lib/permissions.ts');
  const outcomes=[];
@@ -25,8 +27,8 @@ async function run14(){
   outcomes.push(expected);
  }
  eq(permissions.getWidgetRequiredPermission('price-per-square-meter'),'premium');
- const hook=hookHarness();let loads=0;const access=loader({react:hook.react,'app/components/Phase14Discovery.tsx':{__esModule:true,default:()=>null},'lib/current-user-permissions-action.ts':{loadCurrentUserPermissionContext:async()=>{loads++;return {...empty,authenticated:true}}}})('app/components/ComparativeDiscoveryAccess.tsx');
- let tree=hook.render(access.default,{language:'en'});eq(tree.props.user,empty);await hook.effects();tree=hook.render(access.default,{language:'es'});eq(tree.props.user,{...empty,authenticated:true});eq(loads,1);
+ const hook=hookHarness();let loads=0;const access=loader({react:hook.react,'lib/supabase.ts':{supabase:{auth:{getSession:async()=>({data:{session:{access_token:'fixture-token'}}}),onAuthStateChange:()=>({data:{subscription:{unsubscribe(){}}}})}}},'app/components/Phase14Discovery.tsx':{__esModule:true,default:()=>null},'lib/current-user-permissions-action.ts':{loadCurrentUserPermissionContext:async()=>{loads++;return {...empty,authenticated:true}}}})('app/components/ComparativeDiscoveryAccess.tsx');
+ const renderAccess=language=>{const wrapper=access.default({language});return hook.render(wrapper.type,wrapper.props)};let tree=renderAccess('en');eq(tree.props.user,empty);await hook.effects();tree=renderAccess('es');eq(tree.props.user,{...empty,authenticated:true});eq(loads,1);
  const graphSource=fs.readFileSync(root+'/scripts/verification/pre14-phase11-boundary.cjs','utf8'),fragment=graphSource.slice(graphSource.indexOf('// Follow runtime'),graphSource.indexOf('const contract =')),graph={};
  vm.runInNewContext(fragment+'\nresult.roots=roots.length;result.modules=visited.size;',{fs,path,cp,root,ts,ok,forbidden:new Set(['lib/current-user-permissions.ts','lib/phase14-server-discovery.ts','lib/phase14-browser-result.ts','lib/phase14-application.ts']),result:graph});
  console.log(JSON.stringify({part:'context-and-gate',status:'PASS',checks,authCalls,packageEntitlementRoleReads:otherCalls,gateFixtures:outcomes.length,clientRoots:graph.roots,runtimeModules:graph.modules,liveIO:false}));

@@ -176,7 +176,7 @@ export const getPublicListingById=cache(async function getPublicListingById(
 
 
 
-export async function getPublicListingSitemapRows() {
+export async function getPublicListingSitemapRows(transactionType?: PublicListingTransaction) {
   const pageSize = 500
 
   const listings: {
@@ -199,6 +199,10 @@ export async function getPublicListingSitemapRows() {
       .in('transaction_type', ['sale', 'rent'])
       .order('id', { ascending: true })
       .limit(pageSize)
+
+    if (transactionType) {
+      query = query.eq('transaction_type', transactionType)
+    }
 
     if (lastId !== null) {
       query = query.gt('id', lastId)

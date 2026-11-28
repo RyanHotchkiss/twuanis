@@ -16,14 +16,14 @@ db.from=function(table){
  if(table==='ontology_terms')return originalFrom(table);
  assert.equal(table,'listings_ontology_terms','no later-stage listing/hydration access');
  let selected=null,predicate=null,orders=[],from,to;const filters=[];const third=stage3;
- const q={select(columns,options){assert.equal(columns,third?'listing_id,ontology_term_id::text,listings!inner(canonical_domain_version,listing_status,transaction_type)':'listing_id,ontology_term_id::text');assert.deepEqual(options,{count:'exact'});selected=columns;return q},
+ const q={select(columns,options){assert.equal(columns,third?'listing_id,ontology_term_id::text,listings!inner(id,canonical_domain_version,listing_status,transaction_type,price_eligibility:marketplace_price_eligibility!inner(id))':'listing_id,ontology_term_id::text');assert.deepEqual(options,{count:'exact'});selected=columns;return q},
  eq(key,value){if(third&&key!=='ontology_term_id'){filters.push([key,value]);return q}assert.equal(key,'ontology_term_id','no status/version/transaction/type predicate');assert.equal(predicate,null,'one geography only');predicate=value;return q},
  order(key){orders.push(key);return q},range(a,b){from=a;to=b;return q},then(resolve,reject){return Promise.resolve().then(()=>{
  assert.equal(typeof predicate,'string');assert.deepEqual(orders,['listing_id','ontology_term_id']);assert.equal(to-from,499);assert.ok(from>=0);assert.ok(selected);
  if(third){assert.deepEqual(filters,[['listings.canonical_domain_version',1],['listings.listing_status','active'],['listings.transaction_type',expectedTransaction]]);trace3.push({table,predicate,from,to,selected,filters})}else populationCalls.push({table,predicate,orders,from,to});
  if(fault==='throw' || (fault==='late-throw'&&from>0))throw Error('fake database error');
  let all=members.filter(r=>r.ontology_term_id===predicate).sort((a,b)=>a.listing_id<b.listing_id?-1:a.listing_id>b.listing_id?1:0);
- if(third)all=all.map(r=>({...r,listings:eligibility.get(r.listing_id)||{canonical_domain_version:1,listing_status:'active',transaction_type:'sale'}})).filter(r=>filters.every(([key,value])=>r.listings[key.slice(9)]===value));
+ if(third)all=all.map(r=>({...r,listings:{id:r.listing_id,price_eligibility:{id:r.listing_id},...(eligibility.get(r.listing_id)||{canonical_domain_version:1,listing_status:'active',transaction_type:'sale'})}})).filter(r=>filters.every(([key,value])=>r.listings[key.slice(9)]===value));
  let data=all.slice(from,Math.min(to+1,from+cap)).map(copy),count=all.length;
  if(fault==='count-drift'&&from>0)count++;
  if(fault==='count-null')count=null;if(fault==='count-negative')count=-1;if(fault==='count-fraction')count=1.5;if(fault==='count-unsafe')count=Number.MAX_SAFE_INTEGER+1;
@@ -179,10 +179,10 @@ const from5=db.from.bind(db),rpc5=db.rpc.bind(db);
 db.from=function(table){
  if(!stage6)return from5(table);
  assert.equal(table,'listings');let fields,ids,offset,end;
- const q={select(c,o){fields=c.split(',');assert.deepEqual(o,{count:'exact'});assert.ok(fields.every(f=>['id','canonical_domain_version','listing_status','transaction_type','currency','current_price::text','monthly_price::text','property_area::text','construction_area::text'].includes(f)));return q},
+ const q={select(c,o){fields=c.split(',');assert.deepEqual(o,{count:'exact'});assert.ok(fields.every(f=>['id','canonical_domain_version','listing_status','transaction_type','currency','current_price::text','monthly_price::text','property_area::text','construction_area::text','price_eligibility:marketplace_price_eligibility!inner(id)'].includes(f)));return q},
  in(k,v){assert.equal(k,'id');ids=v;assert.ok(ids.length>0&&ids.length<=25);return q},order(k){assert.equal(k,'id');return q},range(a,b){offset=a;end=b;return q},then(resolve,reject){return Promise.resolve().then(()=>{
  trace6.push({source:'scalar',ids:[...ids],fields:[...fields],offset});assert.equal(end-offset,24);
- let data=ids.slice(offset,Math.min(end+1,offset+cap6)).map(id=>{const r=rows6.get(id);return Object.fromEntries(fields.map(f=>f.split(':')[0]).map(f=>[f,r[f]]))}),count=ids.length;
+ let data=ids.slice(offset,Math.min(end+1,offset+cap6)).map(id=>{const r=rows6.get(id);return Object.fromEntries(fields.map(f=>f.split(':')[0]).map(f=>[f,f==='price_eligibility'?{id}:r[f]]))}),count=ids.length;
  if(extraScalar) data=data.map(r=>({...r,...extraScalar}));
  const hit=trace6.filter(t=>t.source==='scalar').length===at6;
  if(hit){if(fault6==='scalar-error')return{error:{message:'private diagnostic'}};if(fault6==='scalar-throw')throw Error('private diagnostic');if(fault6==='scalar-missing'){data.pop();count--}if(fault6==='scalar-duplicate')data.push(copy(data[0]));if(fault6==='scalar-outside')data[0].id=listingId(99999);if(fault6==='scalar-reverse')data.reverse();if(fault6==='scalar-count')count--;if(fault6==='scalar-empty')data=[];}
@@ -246,6 +246,7 @@ async function run(){
  for(const[field,value]of[['canonical_domain_version',0],['canonical_domain_version','1'],['listing_status','draft'],['transaction_type','rent'],['currency','EUR'],['currency',undefined],['property_area','x'],['construction_area','0'],['current_price',0],['current_price',undefined]]){
   p=await setup6(1);rows6.get(listingId(1))[field]=value;r=await run6(p);eq(r.state,'incomplete',field+' malformed');failures++;
  }
+ for(const evidence of [null,[],{},'malformed',{id:listingId(2)}]){p=await setup6(1);extraScalar={price_eligibility:evidence};r=await run6(p);eq(r.state,'incomplete','malformed or mismatched price eligibility rejected');failures++}
  for(const mutation of[
   e=>{e.canonical_domain_version=0},e=>{e.selections[0].ontology_term_id='bad'},e=>{e.selections=[]},e=>{e.selections[0].ontology_term_id='9007199254740994'},
   e=>{e.geography.pop()},e=>{e.selections[0].term_type='utility'},e=>{e.facts=[exact('bedrooms','3')]},e=>{e.facts=[exact('bedrooms','bad')]},e=>{e.selections[0].slug=123}

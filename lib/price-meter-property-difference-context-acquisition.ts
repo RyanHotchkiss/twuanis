@@ -1,5 +1,6 @@
 import {requireMembershipCohortCharacteristic} from './cohort-numeric-evidence'
 import 'server-only'
+import {hasCanonicalPriceEligibility} from './canonical-market-population'
 import { supabaseAdmin } from './supabase-admin'
 import { hydrateCanonicalPopulation } from './canonical-population'
 import { getExplorerOptions } from './explorer-options-engine'
@@ -102,9 +103,17 @@ export async function acquireComparisons(e:EstablishedExecution,definitions:Reso
  const rows=required.map(id=>rowsById.get(id)!)
  // Membership and hydration must agree; disagreement is incomplete evidence, not exclusion.
  for(const row of rows){const type=row.canonicalEvidence.selections.find(t=>t.dimension==='property_type')!;if(!evidence.get(row.id)?.has(type.ontology_term_id))throw new Error('Incoherent context type.')}
- const fx=e.result.fx??await resolvePositionFx(rows,e.result.analyticalDate)
- const observedById=new Map(e.working.observations.map(o=>[o.listingId,o]))
- const newObservations=buildPositionObservations(rows.filter(r=>!observedById.has(r.id)),e.result.analyticalDate,fx)
+ const eligible=new Set<string>()
+ for(let offset=0;offset<required.length;offset+=25){
+  const batch=required.slice(offset,offset+25)
+  const evidence=await complete<any>(()=>supabaseAdmin.from('listings').select('id,price_eligibility:marketplace_price_eligibility(id)',{count:'exact'}).in('id',batch).eq('canonical_domain_version',1).eq('listing_status','active').eq('transaction_type',e.result.reference.transactionType).order('id'),r=>r.id)
+  if(evidence.length!==batch.length||evidence.some(r=>!batch.includes(r.id)))throw new Error('Missing context price eligibility.')
+  for(const row of evidence)if(hasCanonicalPriceEligibility(row))eligible.add(row.id)
+ }
+ const eligibleRows=rows.filter(row=>eligible.has(row.id))
+ const fx=e.result.fx??await resolvePositionFx(eligibleRows,e.result.analyticalDate)
+ const observedById=new Map(e.working.observations.filter(o=>typeof o.listingId==='string'&&eligible.has(o.listingId)).map(o=>[o.listingId,o]))
+ const newObservations=buildPositionObservations(eligibleRows.filter(r=>!observedById.has(r.id)),e.result.analyticalDate,fx)
  for(const o of newObservations)if(o.propertyBasis===e.result.reference.propertyBasis&&o.normalizationBasis===e.result.reference.normalizationBasis)observedById.set(o.listingId,o)
  const observations=required.flatMap(id=>observedById.has(id)?[observedById.get(id)!]:[])
  const termDefinitions=new Map(cohorts.flatMap(c=>[c.propertyType,...c.characteristics].map(t=>[String(requireMembershipCohortCharacteristic(t).ontologyTermId),requireMembershipCohortCharacteristic(t)] as const)))
